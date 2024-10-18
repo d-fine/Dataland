@@ -48,25 +48,26 @@ class TemplateEmailMessageListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "sendTemplateEmailService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.SendEmail, declare = "false"),
-                key = [RoutingKeyNames.templateEmail],
+                value =
+                    Queue(
+                        "sendTemplateEmailService",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.SEND_EMAIL, declare = "false"),
+                key = [RoutingKeyNames.TEMPLATE_EMAIL],
             ),
         ],
     )
     fun sendTemplateEmail(
         @Payload jsonString: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SendTemplateEmail)
+        messageQueueUtils.validateMessageType(type, MessageType.SEND_TEMPLATE_EMAIL)
         val message = objectMapper.readValue(jsonString, TemplateEmailMessage::class.java)
         logger.info(
             "Received template email message of type ${message.emailTemplateType.name} " +
@@ -85,21 +86,19 @@ class TemplateEmailMessageListener(
         }
     }
 
-    private fun getEmailAddressByRecipient(receiver: TemplateEmailMessage.EmailRecipient): String {
-        return when (receiver) {
+    private fun getEmailAddressByRecipient(receiver: TemplateEmailMessage.EmailRecipient): String =
+        when (receiver) {
             is TemplateEmailMessage.EmailAddressEmailRecipient ->
                 receiver.email
             is TemplateEmailMessage.UserIdEmailRecipient ->
                 getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, receiver.userId)
         }
-    }
 
-    private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory {
-        return templateEmailFactories
+    private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory =
+        templateEmailFactories
             .find { it.builderForType == message.emailTemplateType }
             ?: throw IllegalArgumentException(
                 "There is no builder for TemplateEmailMessages" +
                     " with type ${message.emailTemplateType.name}",
             )
-    }
 }

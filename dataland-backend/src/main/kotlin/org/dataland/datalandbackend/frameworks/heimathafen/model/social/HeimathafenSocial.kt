@@ -19,20 +19,14 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.social.sfdr.Hei
 data class HeimathafenSocial(
     @field:Valid()
     val nachhaltigskeitsrisiken: HeimathafenSocialNachhaltigskeitsrisiken? = null,
-
     @field:Valid()
     val paiSozial: HeimathafenSocialPaiSozial? = null,
-
     @field:Valid()
     val paiSozialesAufDemLand: HeimathafenSocialPaiSozialesAufDemLand? = null,
-
     @field:Valid()
     val sfdr: HeimathafenSocialSfdr? = null,
-
     @field:Valid()
     val kontroverseGeschaeftsfelderWaffen: HeimathafenSocialKontroverseGeschaeftsfelderWaffen? = null,
-
     @field:Valid()
     val kontroverseGeschaeftsfelder: HeimathafenSocialKontroverseGeschaeftsfelder? = null,
-
 )

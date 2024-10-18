@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
-import java.util.*
+import java.util.UUID
 
 /**
  * The entity storing the information considering one data request
@@ -21,25 +21,16 @@ data class DataRequestEntity(
     @Id
     @Column(name = "data_request_id")
     val dataRequestId: String,
-
     val userId: String,
-
     val creationTimestamp: Long,
-
     val dataType: String,
-
     val reportingPeriod: String,
-
     val datalandCompanyId: String,
-
     @OneToMany(mappedBy = "dataRequest")
     var messageHistory: List<MessageEntity>,
-
     @OneToMany(mappedBy = "dataRequest")
     var dataRequestStatusHistory: List<RequestStatusEntity>,
-
     var lastModifiedDate: Long,
-
 ) {
     val requestStatus: RequestStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
@@ -83,31 +74,33 @@ data class DataRequestEntity(
      * Converts this entity to a StoredDataRequest
      * @returns the StoredDataRequest
      */
-    fun toStoredDataRequest(userEmailAddress: String? = null) = StoredDataRequest(
-        dataRequestId = dataRequestId,
-        userId = userId,
-        userEmailAddress = userEmailAddress,
-        creationTimestamp = creationTimestamp,
-        dataType = dataType,
-        reportingPeriod = reportingPeriod,
-        datalandCompanyId = datalandCompanyId,
-        messageHistory = messageHistory
-            .sortedBy { it.creationTimestamp }
-            .map { it.toStoredDataRequestMessageObject() },
-        dataRequestStatusHistory = dataRequestStatusHistory
-            .sortedBy { it.creationTimestamp }
-            .map { it.toStoredDataRequestStatusObject() },
-        lastModifiedDate = lastModifiedDate,
-        requestStatus = requestStatus,
-        accessStatus = accessStatus,
-    )
+    fun toStoredDataRequest(userEmailAddress: String? = null) =
+        StoredDataRequest(
+            dataRequestId = dataRequestId,
+            userId = userId,
+            userEmailAddress = userEmailAddress,
+            creationTimestamp = creationTimestamp,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
+            datalandCompanyId = datalandCompanyId,
+            messageHistory =
+                messageHistory
+                    .sortedBy { it.creationTimestamp }
+                    .map { it.toStoredDataRequestMessageObject() },
+            dataRequestStatusHistory =
+                dataRequestStatusHistory
+                    .sortedBy { it.creationTimestamp }
+                    .map { it.toStoredDataRequestStatusObject() },
+            lastModifiedDate = lastModifiedDate,
+            requestStatus = requestStatus,
+            accessStatus = accessStatus,
+        )
 
     /**
      * This method returns the appropriate description for a given datatype enum
      * @return datatype description
      */
-    fun getDataTypeDescription(): String {
-        return DataTypeEnum.entries.find { it.value == dataType }.let { readableFrameworkNameMapping[it] }
+    fun getDataTypeDescription(): String =
+        DataTypeEnum.entries.find { it.value == dataType }.let { readableFrameworkNameMapping[it] }
             ?: dataType
-    }
 }

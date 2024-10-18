@@ -10,7 +10,7 @@ com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7
 
 org-springframework-boot = { id = "org.springframework.boot", version = "3.3.2" }
 
-org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.0" }
+org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.1" }
 
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
@@ -34,7 +34,7 @@ org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "k
 
 [versions]
 
-kotlin = "1.9.23"
+kotlin = "1.9.25"
 
 okhttp3 = "4.12.0"
 
@@ -175,7 +175,7 @@ jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
 freemarker = "org.freemarker:freemarker:2.3.33"
 
 
-flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.18.0"
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.18.2"
 
 jodconverter-core = "org.jodconverter:jodconverter-core:4.4.8"
 

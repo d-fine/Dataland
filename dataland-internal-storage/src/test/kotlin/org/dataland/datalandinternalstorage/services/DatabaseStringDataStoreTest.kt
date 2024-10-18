@@ -16,7 +16,6 @@ import java.util.Optional
 import java.util.UUID
 
 class DatabaseStringDataStoreTest {
-
     val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val mockTemporarilyCachedDataControllerApi: TemporarilyCachedDataControllerApi =
@@ -29,13 +28,14 @@ class DatabaseStringDataStoreTest {
 
     @BeforeEach
     fun reset() {
-        databaseStringDataStore = DatabaseStringDataStore(
-            mockDataItemRepository,
-            mockCloudEventMessageHandler,
-            mockTemporarilyCachedDataControllerApi,
-            objectMapper,
-            messageQueueUtils,
-        )
+        databaseStringDataStore =
+            DatabaseStringDataStore(
+                mockDataItemRepository,
+                mockCloudEventMessageHandler,
+                mockTemporarilyCachedDataControllerApi,
+                objectMapper,
+                messageQueueUtils,
+            )
         spyDatabaseStringDataStore = spy(databaseStringDataStore)
     }
 

@@ -23,6 +23,7 @@ data class ClassProperty(
                 "(See https://github.com/FasterXML/jackson-module-kotlin/issues/92). "
         }
     }
+
     val imports: Set<String>
         get() = type.imports + annotations.flatMap { it.imports }
 }

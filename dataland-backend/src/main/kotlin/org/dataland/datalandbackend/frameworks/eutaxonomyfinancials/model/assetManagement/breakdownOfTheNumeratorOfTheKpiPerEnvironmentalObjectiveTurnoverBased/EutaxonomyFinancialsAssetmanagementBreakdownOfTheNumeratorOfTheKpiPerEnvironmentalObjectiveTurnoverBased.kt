@@ -11,55 +11,40 @@ import java.math.BigDecimal
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsAssetmanagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased(
     @field:Valid()
-    val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeAdaptationInPercentOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToTransitionToACircularEconomyInPercentOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val shareOfTurnoverBasedKpiSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
 )

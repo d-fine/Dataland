@@ -24,34 +24,23 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 data class CompanyInformation(
     @field:JsonProperty(required = true)
     val companyName: String,
-
     val companyAlternativeNames: List<String>?,
     @field:Schema(example = "\n[\"Test@test.com\"\n]")
     val companyContactDetails: List<String>?,
-
     val companyLegalForm: String?,
-
     @field:JsonProperty(required = true)
     val headquarters: String,
-
     val headquartersPostalCode: String?,
-
     val sector: String?,
-
     val sectorCodeWz: String?,
-
     @field:JsonProperty(required = true)
     @field:Schema(
         example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
     )
     val identifiers: Map<IdentifierType, List<String>>,
-
     @field:JsonProperty(required = true)
     val countryCode: String,
-
     val isTeaserCompany: Boolean?,
-
     val website: String?,
-
     val parentCompanyLei: String?,
 )

@@ -15,23 +15,16 @@ data class EutaxonomyFinancialsInsurancereinsuranceUnderwritingKpi(
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalOfAbsolutePremiumsOfTaxonomyAlignedActivities: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities: CurrencyDataPoint? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities: CurrencyDataPoint? = null,
-
     @field:Valid()
     val proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
-    val proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities: ExtendedDataPoint<BigDecimal?>? = null,
-
 )

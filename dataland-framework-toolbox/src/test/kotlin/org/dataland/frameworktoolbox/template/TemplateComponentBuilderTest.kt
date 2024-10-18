@@ -16,31 +16,30 @@ import kotlin.test.assertFails
 import kotlin.test.assertTrue
 
 class TemplateComponentBuilderTest {
-
-    private val dummyTemplateRow = TemplateRow(
-        fieldIdentifier = "1",
-        category = "The Category",
-        subCategory = "The Sub-Category",
-        fieldName = "The name of the field",
-        combinedTooltip = "A super-duper helpfull tooltip",
-        component = "Date",
-        options = "I need more options!",
-        unit = "A Unit",
-        documentSupport = TemplateDocumentSupport.Extended,
-        dependency = "",
-        showWhenValueIs = "",
-        mandatoryField = TemplateYesNo.No,
-    )
+    private val dummyTemplateRow =
+        TemplateRow(
+            fieldIdentifier = "1",
+            category = "The Category",
+            subCategory = "The Sub-Category",
+            fieldName = "The name of the field",
+            combinedTooltip = "A super-duper helpfull tooltip",
+            component = "Date",
+            options = "I need more options!",
+            unit = "A Unit",
+            documentSupport = TemplateDocumentSupport.Extended,
+            dependency = "",
+            showWhenValueIs = "",
+            mandatoryField = TemplateYesNo.No,
+        )
     private val diagnosticManager = DiagnosticManager()
     private val componentFactories = listOf(DateComponentFactory(TemplateDiagnostic(diagnosticManager)))
 
-    private fun getComponentBuilderForRow(row: TemplateRow): TemplateComponentBuilder {
-        return TemplateComponentBuilder(
+    private fun getComponentBuilderForRow(row: TemplateRow): TemplateComponentBuilder =
+        TemplateComponentBuilder(
             template = ExcelTemplate(mutableListOf(row)),
             componentFactories = componentFactories,
             generationUtils = ComponentGenerationUtils(),
         )
-    }
 
     @Test
     fun `ensure that fields can be created with a category and a subcategory`() {

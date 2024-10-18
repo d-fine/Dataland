@@ -25,30 +25,30 @@ class SfdrDataQaReportController(
     @Autowired qaReportManager: QaReportManager,
     @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<SfdrData>(
-    objectMapper = objectMapper,
-    qaReportManager = qaReportManager,
-    qaReportSecurityPolicy = qaReportSecurityPolicy,
-    clazz = SfdrData::class.java,
-    dataType = "sfdr",
-) {
+        objectMapper = objectMapper,
+        qaReportManager = qaReportManager,
+        qaReportSecurityPolicy = qaReportSecurityPolicy,
+        clazz = SfdrData::class.java,
+        dataType = "sfdr",
+    ) {
     @Operation(operationId = "postSfdrDataQaReport")
     override fun postQaReport(
         dataId: String,
         qaReport: SfdrData,
-    ): ResponseEntity<QaReportMetaInformation> {
-        return super.postQaReport(dataId, qaReport)
-    }
+    ): ResponseEntity<QaReportMetaInformation> = super.postQaReport(dataId, qaReport)
 
     @Operation(operationId = "getSfdrDataQaReport")
     override fun getQaReport(
         dataId: String,
         qaReportId: String,
-    ): ResponseEntity<QaReportWithMetaInformation<SfdrData>> {
-        return super.getQaReport(dataId, qaReportId)
-    }
+    ): ResponseEntity<QaReportWithMetaInformation<SfdrData>> = super.getQaReport(dataId, qaReportId)
 
     @Operation(operationId = "setSfdrDataQaReportStatus")
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+    override fun setQaReportStatus(
+        dataId: String,
+        qaReportId: String,
+        statusPatch: QaReportStatusPatch,
+    ) {
         super.setQaReportStatus(dataId, qaReportId, statusPatch)
     }
 
@@ -57,7 +57,5 @@ class SfdrDataQaReportController(
         dataId: String,
         showInactive: Boolean?,
         reporterUserId: String?,
-    ): ResponseEntity<List<QaReportWithMetaInformation<SfdrData>>> {
-        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
-    }
+    ): ResponseEntity<List<QaReportWithMetaInformation<SfdrData>>> = super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
 }

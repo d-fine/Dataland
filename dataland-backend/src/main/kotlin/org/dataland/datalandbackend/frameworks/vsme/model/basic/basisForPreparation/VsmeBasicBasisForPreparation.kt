@@ -15,11 +15,8 @@ import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 data class VsmeBasicBasisForPreparation(
     @field:Valid()
     val reportingBasis: BaseDataPoint<YesNo>? = null,
-
     val subsidiary: List<VsmeSubsidiary?>? = null,
-
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
-
 )

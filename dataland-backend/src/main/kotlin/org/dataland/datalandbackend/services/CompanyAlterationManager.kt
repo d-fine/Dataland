@@ -35,38 +35,40 @@ class CompanyAlterationManager(
         companyId: String,
         companyInformation: CompanyInformation,
     ): StoredCompanyEntity {
-        val newCompanyEntity = StoredCompanyEntity(
-            companyId = companyId,
-            companyName = companyInformation.companyName,
-            companyAlternativeNames = companyInformation.companyAlternativeNames,
-            companyContactDetails = companyInformation.companyContactDetails,
-            companyLegalForm = companyInformation.companyLegalForm,
-            headquarters = companyInformation.headquarters,
-            headquartersPostalCode = companyInformation.headquartersPostalCode,
-            sector = companyInformation.sector,
-            sectorCodeWz = companyInformation.sectorCodeWz,
-            identifiers = mutableListOf(),
-            dataRegisteredByDataland = mutableListOf(),
-            countryCode = companyInformation.countryCode,
-            isTeaserCompany = companyInformation.isTeaserCompany ?: false,
-            website = companyInformation.website,
-            parentCompanyLei = companyInformation.parentCompanyLei,
-        )
+        val newCompanyEntity =
+            StoredCompanyEntity(
+                companyId = companyId,
+                companyName = companyInformation.companyName,
+                companyAlternativeNames = companyInformation.companyAlternativeNames,
+                companyContactDetails = companyInformation.companyContactDetails,
+                companyLegalForm = companyInformation.companyLegalForm,
+                headquarters = companyInformation.headquarters,
+                headquartersPostalCode = companyInformation.headquartersPostalCode,
+                sector = companyInformation.sector,
+                sectorCodeWz = companyInformation.sectorCodeWz,
+                identifiers = mutableListOf(),
+                dataRegisteredByDataland = mutableListOf(),
+                countryCode = companyInformation.countryCode,
+                isTeaserCompany = companyInformation.isTeaserCompany ?: false,
+                website = companyInformation.website,
+                parentCompanyLei = companyInformation.parentCompanyLei,
+            )
 
         return companyRepository.save(newCompanyEntity)
     }
 
     private fun assertNoDuplicateIdentifiersExist(identifierMap: Map<IdentifierType, List<String>>) {
-        val duplicateIdentifiers = companyIdentifierRepositoryInterface.findAllById(
-            identifierMap.flatMap { identifierPair ->
-                identifierPair.value.map {
-                    CompanyIdentifierEntityId(
-                        identifierType = identifierPair.key,
-                        identifierValue = it,
-                    )
-                }
-            },
-        )
+        val duplicateIdentifiers =
+            companyIdentifierRepositoryInterface.findAllById(
+                identifierMap.flatMap { identifierPair ->
+                    identifierPair.value.map {
+                        CompanyIdentifierEntityId(
+                            identifierType = identifierPair.key,
+                            identifierValue = it,
+                        )
+                    }
+                },
+            )
 
         if (duplicateIdentifiers.isNotEmpty()) {
             throw DuplicateIdentifierApiException(duplicateIdentifiers)
@@ -79,14 +81,15 @@ class CompanyAlterationManager(
     ): List<CompanyIdentifierEntity> {
         assertNoDuplicateIdentifiersExist(identifierMap)
 
-        val newIdentifiers = identifierMap.flatMap { identifierPair ->
-            identifierPair.value.map {
-                CompanyIdentifierEntity(
-                    identifierType = identifierPair.key, identifierValue = it,
-                    company = savedCompanyEntity, isNew = true,
-                )
+        val newIdentifiers =
+            identifierMap.flatMap { identifierPair ->
+                identifierPair.value.map {
+                    CompanyIdentifierEntity(
+                        identifierType = identifierPair.key, identifierValue = it,
+                        company = savedCompanyEntity, isNew = true,
+                    )
+                }
             }
-        }
         try {
             return companyIdentifierRepositoryInterface.saveAllAndFlush(newIdentifiers).toList()
         } catch (ex: DataIntegrityViolationException) {
@@ -133,7 +136,10 @@ class CompanyAlterationManager(
      */
     @Suppress("CyclomaticComplexMethod")
     @Transactional
-    fun patchCompany(companyId: String, patch: CompanyInformationPatch): StoredCompanyEntity {
+    fun patchCompany(
+        companyId: String,
+        patch: CompanyInformationPatch,
+    ): StoredCompanyEntity {
         val companyEntity = companyQueryManager.getCompanyById(companyId)
         logger.info("Patching Company ${companyEntity.companyName} with ID $companyId")
         patch.companyName?.let { companyEntity.companyName = it }
@@ -172,7 +178,10 @@ class CompanyAlterationManager(
      * @return the updated company information object
      */
     @Transactional
-    fun putCompany(companyId: String, companyInformation: CompanyInformation): StoredCompanyEntity {
+    fun putCompany(
+        companyId: String,
+        companyInformation: CompanyInformation,
+    ): StoredCompanyEntity {
         val storedCompanyEntity = companyQueryManager.getCompanyById(companyId)
         logger.info("Updating Company ${storedCompanyEntity.companyName} with ID $companyId")
         storedCompanyEntity.companyName = companyInformation.companyName

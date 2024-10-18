@@ -15,97 +15,66 @@ data class EutaxonomyFinancialsInvestmentfirmsDealingOnOwnAccountServicesTurnove
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount: CurrencyDataPoint? = null,
-
     @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
-    val turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+    val turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling: ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
-    ExtendedDataPoint<BigDecimal?>? = null,
-
+        ExtendedDataPoint<BigDecimal?>? = null,
 )

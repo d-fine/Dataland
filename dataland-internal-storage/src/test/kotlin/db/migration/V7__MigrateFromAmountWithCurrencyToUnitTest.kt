@@ -3,8 +3,8 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V7__MigrateFromAmountWithCurrencyToUnitTest {
-
     @Test
     fun `test eu taxonomy for non financials migration script works as expected for migrating old data`() {
         val dataType = "eutaxonomy-non-financials"

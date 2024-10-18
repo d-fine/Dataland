@@ -17,20 +17,14 @@ import org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.water.
 data class SfdrEnvironmental(
     @field:Valid()
     val greenhouseGasEmissions: SfdrEnvironmentalGreenhouseGasEmissions? = null,
-
     @field:Valid()
     val energyPerformance: SfdrEnvironmentalEnergyPerformance? = null,
-
     @field:Valid()
     val biodiversity: SfdrEnvironmentalBiodiversity? = null,
-
     @field:Valid()
     val water: SfdrEnvironmentalWater? = null,
-
     @field:Valid()
     val waste: SfdrEnvironmentalWaste? = null,
-
     @field:Valid()
     val emissions: SfdrEnvironmentalEmissions? = null,
-
 )

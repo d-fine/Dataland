@@ -20,7 +20,6 @@ data class SectionConfigBuilder(
     var children: MutableList<ViewConfigElement> = mutableListOf(),
     var labelBadgeColor: LabelBadgeColor? = null,
 ) : ViewConfigElement {
-
     override val imports: Set<TypeScriptImport>
         get() = children.foldRight(setOf()) { it, acc -> acc + it.imports }
 
@@ -33,13 +32,14 @@ data class SectionConfigBuilder(
         expandOnPageLoad: Boolean,
         shouldDisplay: FrameworkBooleanLambda,
     ): SectionConfigBuilder {
-        val newSection = SectionConfigBuilder(
-            parentSection = this,
-            label = label,
-            labelBadgeColor = labelBadgeColor,
-            expandOnPageLoad = expandOnPageLoad,
-            shouldDisplay = shouldDisplay,
-        )
+        val newSection =
+            SectionConfigBuilder(
+                parentSection = this,
+                label = label,
+                labelBadgeColor = labelBadgeColor,
+                expandOnPageLoad = expandOnPageLoad,
+                shouldDisplay = shouldDisplay,
+            )
         children.add(newSection)
         return newSection
     }
@@ -53,13 +53,14 @@ data class SectionConfigBuilder(
         shouldDisplay: FrameworkBooleanLambda,
         valueGetter: FrameworkDisplayValueLambda,
     ): CellConfigBuilder {
-        val newCell = CellConfigBuilder(
-            parentSection = this,
-            label = label,
-            explanation = explanation,
-            shouldDisplay = shouldDisplay,
-            valueGetter = valueGetter,
-        )
+        val newCell =
+            CellConfigBuilder(
+                parentSection = this,
+                label = label,
+                explanation = explanation,
+                shouldDisplay = shouldDisplay,
+                valueGetter = valueGetter,
+            )
         children.add(newCell)
         return newCell
     }

@@ -17,18 +17,23 @@ class PptxToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
     val pathToLibre: String,
 ) : MsOfficeToPdfConverterBase(
-    converterSourceType = DefaultDocumentFormatRegistry.PPTX,
-    pathToLibre = pathToLibre,
-    allowedMimeTypesPerFileExtension = mapOf(
-        "pptx" to setOf(
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            "application/x-tika-ooxml",
-        ),
-    ),
-) {
+        converterSourceType = DefaultDocumentFormatRegistry.PPTX,
+        pathToLibre = pathToLibre,
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "pptx" to
+                    setOf(
+                        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                        "application/x-tika-ooxml",
+                    ),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         file.inputStream.use { inputStream ->
             XMLSlideShow(inputStream).use { slideShow ->
                 if (slideShow.slides.isEmpty()) {

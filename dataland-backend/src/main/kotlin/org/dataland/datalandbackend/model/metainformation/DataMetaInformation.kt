@@ -17,24 +17,17 @@ import org.dataland.datalandbackendutils.model.QaStatus
 data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val dataId: String,
-
     @field:JsonProperty(required = true)
     val companyId: String,
-
     @field:JsonProperty(required = true)
     val dataType: DataType,
-
     val uploaderUserId: String? = null,
-
     @field:JsonProperty(required = true)
     val uploadTime: Long,
-
     @field:JsonProperty(required = true)
     val reportingPeriod: String,
-
     @field:JsonProperty(required = true)
     val currentlyActive: Boolean,
-
     @field:JsonProperty(required = true)
     var qaStatus: QaStatus,
 )

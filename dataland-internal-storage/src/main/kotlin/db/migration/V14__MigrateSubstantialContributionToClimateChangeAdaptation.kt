@@ -12,11 +12,13 @@ import org.json.JSONObject
  * This migration script changes the substring "Adaption" to "Adaptation" in all field names that are
  * "substantialContributionToClimateChangeAdaptionInPercent" in all eu-taxonomy-non-financial datasets
  */
+@Suppress("ClassName")
 class V14__MigrateSubstantialContributionToClimateChangeAdaptation : BaseJavaMigration() {
-    private val mapOfOldToNewFieldNames = mapOf(
-        "substantialContributionToClimateChangeAdaptionInPercent"
-            to "substantialContributionToClimateChangeAdaptationInPercent",
-    )
+    private val mapOfOldToNewFieldNames =
+        mapOf(
+            "substantialContributionToClimateChangeAdaptionInPercent"
+                to "substantialContributionToClimateChangeAdaptationInPercent",
+        )
 
     private val pairOfOldToNewDnshFieldName = "dnshToClimateChangeAdaption" to "dnshToClimateChangeAdaptation"
 

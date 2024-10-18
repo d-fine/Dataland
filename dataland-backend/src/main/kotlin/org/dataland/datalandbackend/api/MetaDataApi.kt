@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import java.util.*
+import java.util.UUID
 
 /**
  * Defines the restful dataland-backend API regarding meta data searches.
@@ -23,7 +23,6 @@ import java.util.*
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface MetaDataApi {
-
     /**
      * A method to search for meta info about data sets registered by Dataland
      * @param companyId if set, filters the requested meta info to a specific company.
@@ -55,8 +54,7 @@ interface MetaDataApi {
         @RequestParam reportingPeriod: String? = null,
         @RequestParam uploaderUserIds: Set<UUID>? = null,
         @RequestParam qaStatus: QaStatus? = null,
-    ):
-        ResponseEntity<List<DataMetaInformation>>
+    ): ResponseEntity<List<DataMetaInformation>>
 
     /**
      * A method to retrieve meta info about a specific data set
@@ -65,8 +63,9 @@ interface MetaDataApi {
      */
     @Operation(
         summary = "Look up meta info about a specific data set.",
-        description = "Meta info about a specific data set registered by Dataland " +
-            "and identified by its data ID is retrieved.",
+        description =
+            "Meta info about a specific data set registered by Dataland " +
+                "and identified by its data ID is retrieved.",
     )
     @ApiResponses(
         value = [
@@ -78,5 +77,7 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
-    fun getDataMetaInfo(@PathVariable dataId: String): ResponseEntity<DataMetaInformation>
+    fun getDataMetaInfo(
+        @PathVariable dataId: String,
+    ): ResponseEntity<DataMetaInformation>
 }

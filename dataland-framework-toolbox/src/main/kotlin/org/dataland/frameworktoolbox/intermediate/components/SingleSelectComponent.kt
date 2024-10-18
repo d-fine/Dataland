@@ -29,7 +29,9 @@ open class SingleSelectComponent(
      * The UploadMode of a SingleSelectComponent determines the form element styling for the upload
      * page (i.e., dropdown or radio buttons?)
      */
-    enum class UploadMode(val component: String) {
+    enum class UploadMode(
+        val component: String,
+    ) {
         Dropdown("SingleSelectFormField"),
         RadioButtons("RadioButtonsFormField"),
     }
@@ -39,11 +41,12 @@ open class SingleSelectComponent(
     var uploadMode: UploadMode = UploadMode.Dropdown
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val enum = dataClassBuilder.parentPackage.addEnum(
-            name = enumName,
-            options = options,
-            comment = "Enum class for the single-select-field $identifier",
-        )
+        val enum =
+            dataClassBuilder.parentPackage.addEnum(
+                name = enumName,
+                options = options,
+                comment = "Enum class for the single-select-field $identifier",
+            )
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport = documentSupport,
             name = identifier,
@@ -87,26 +90,28 @@ open class SingleSelectComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val componentName = if (uploadMode == UploadMode.Dropdown) {
-            uploadMode.component
-        } else {
-            when (documentSupport) {
-                is NoDocumentSupport -> uploadMode.component
-                is ExtendedDocumentSupport -> "RadioButtonsExtendedDataPointFormField"
+        val componentName =
+            if (uploadMode == UploadMode.Dropdown) {
+                uploadMode.component
+            } else {
+                when (documentSupport) {
+                    is NoDocumentSupport -> uploadMode.component
+                    is ExtendedDocumentSupport -> "RadioButtonsExtendedDataPointFormField"
 
-                else ->
-                    throw IllegalArgumentException(
-                        "SingleSelectComponent ${uploadMode.component} does not " +
-                            "support document support $documentSupport",
-                    )
+                    else ->
+                        throw IllegalArgumentException(
+                            "SingleSelectComponent ${uploadMode.component} does not " +
+                                "support document support $documentSupport",
+                        )
+                }
             }
-        }
 
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = FrameworkUploadOptions(
-                body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
-                imports = null,
-            ),
+            frameworkUploadOptions =
+                FrameworkUploadOptions(
+                    body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
+                    imports = null,
+                ),
             component = this,
             uploadComponentName = componentName,
         )
@@ -120,10 +125,11 @@ open class SingleSelectComponent(
                 nullableFixtureExpression = "dataGenerator.valueOrNull(pickOneElement(Object.values($enumName)))",
                 nullable = isNullable,
             ),
-            imports = setOf(
-                TypeScriptImport("pickOneElement", "@e2e/fixtures/FixtureUtils"),
-                TypeScriptImport(enumName, "@clients/backend"),
-            ),
+            imports =
+                setOf(
+                    TypeScriptImport("pickOneElement", "@e2e/fixtures/FixtureUtils"),
+                    TypeScriptImport(enumName, "@clients/backend"),
+                ),
         )
     }
 

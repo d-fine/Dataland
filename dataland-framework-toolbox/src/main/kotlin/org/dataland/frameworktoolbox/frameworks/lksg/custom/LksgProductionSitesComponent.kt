@@ -13,13 +13,13 @@ class LksgProductionSitesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : LksgSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatLksgProductionSitesForDisplay",
-    uploadComponentName = "ProductionSitesFormField",
-    guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5)",
-    randomFixtureExpression = null,
-) {
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatLksgProductionSitesForDisplay",
+        uploadComponentName = "ProductionSitesFormField",
+        guaranteedFixtureExpression = "dataGenerator.randomArray(() => dataGenerator.generateLksgProductionSite(), 0, 5)",
+        randomFixtureExpression = null,
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -31,10 +31,8 @@ class LksgProductionSitesComponent(
                         "org.dataland.datalandbackend.frameworks.lksg.custom.LksgProductionSite",
                         true,
                     ),
-
                 ),
             ),
-
         )
     }
 }

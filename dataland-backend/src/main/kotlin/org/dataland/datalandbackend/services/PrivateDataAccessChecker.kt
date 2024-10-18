@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 /**
  * Service to execute access to private data checks to decide whether a user can access a resource or not
@@ -36,7 +36,6 @@ class PrivateDataAccessChecker(
                 UUID.fromString(metaDataEntity.company.companyId),
                 metaDataEntity.dataType, metaDataEntity.reportingPeriod,
                 UUID.fromString(userId),
-
             )
             true
         } catch (clientException: ClientException) {
@@ -54,11 +53,12 @@ class PrivateDataAccessChecker(
      * @return a Boolean indicating whether the user has access or not
      */
     fun hasUserAccessToAtLeastOnePrivateResourceForCompany(companyId: String): Boolean {
-        val metaDataEntities = dataMetaInformationManager.searchDataMetaInfo(
-            companyId = companyId,
-            dataType = DataType.of(VsmeData::class.java), showOnlyActive = true, reportingPeriod = null,
-            uploaderUserIds = null, qaStatus = null,
-        )
+        val metaDataEntities =
+            dataMetaInformationManager.searchDataMetaInfo(
+                companyId = companyId,
+                dataType = DataType.of(VsmeData::class.java), showOnlyActive = true, reportingPeriod = null,
+                uploaderUserIds = null, qaStatus = null,
+            )
         val userId = DatalandAuthentication.fromContext().userId
         metaDataEntities.forEach { metaDataEntity ->
             try {
@@ -66,7 +66,6 @@ class PrivateDataAccessChecker(
                     UUID.fromString(companyId),
                     metaDataEntity.dataType.toString(), metaDataEntity.reportingPeriod,
                     UUID.fromString(userId),
-
                 )
                 return true
             } catch (clientException: ClientException) {

@@ -73,44 +73,36 @@ class CsvParser {
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding T objects
      */
-    private final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader):
+    private final inline fun <reified T> readDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<T> =
         Iterable<T> {
-        return Iterable<T> {
             CsvMapper()
                 .registerModule(kotlinModule())
                 .readerFor(T::class.java)
                 .with(CsvSchema.emptySchema().withHeader())
                 .readValues(bufferedReader)
         }
-    }
 
     /**
      * Transforms the streamed CSV content into an iterable of objects of GleifRelationshipInformation
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding objects
      */
-    fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader):
-        Iterable<GleifRelationshipInformation> {
-        return readDataFromBufferedReader(bufferedReader)
-    }
+    fun readGleifRelationshipDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifRelationshipInformation> =
+        readDataFromBufferedReader(bufferedReader)
 
     /**
      * Transforms the streamed CSV content into an iterable of objects of GleifCompanyInformation
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding objects
      */
-    fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader):
-        Iterable<GleifCompanyInformation> {
-        return readDataFromBufferedReader(bufferedReader)
-    }
+    fun readGleifCompanyDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<GleifCompanyInformation> =
+        readDataFromBufferedReader(bufferedReader)
 
     /**
      * Transforms the streamed CSV content into an iterable of objects of NorthDataCompanyInformation
      * @param bufferedReader the input stream read from the csv file
      * @return An iterable of the corresponding objects
      */
-    fun readNorthDataFromBufferedReader(bufferedReader: BufferedReader):
-        Iterable<NorthDataCompanyInformation> {
-        return readDataFromBufferedReader(bufferedReader)
-    }
+    fun readNorthDataFromBufferedReader(bufferedReader: BufferedReader): Iterable<NorthDataCompanyInformation> =
+        readDataFromBufferedReader(bufferedReader)
 }

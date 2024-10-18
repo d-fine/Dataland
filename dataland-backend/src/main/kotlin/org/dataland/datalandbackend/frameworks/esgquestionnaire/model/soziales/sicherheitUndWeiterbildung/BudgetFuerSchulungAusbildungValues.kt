@@ -8,5 +8,4 @@ import java.math.BigDecimal
  */
 data class BudgetFuerSchulungAusbildungValues(
     val budgetProMitarbeiter: BigDecimal? = null,
-
 )

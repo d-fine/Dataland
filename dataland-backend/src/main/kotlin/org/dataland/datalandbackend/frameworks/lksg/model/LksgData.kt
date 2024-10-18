@@ -17,17 +17,12 @@ import org.dataland.datalandbackend.frameworks.lksg.model.social.LksgSocial
 data class LksgData(
     @field:Valid()
     val general: LksgGeneral,
-
     @field:Valid()
     val governance: LksgGovernance? = null,
-
     @field:Valid()
     val social: LksgSocial? = null,
-
     @field:Valid()
     val environmental: LksgEnvironmental? = null,
-
     @field:Valid()
     val attachment: LksgAttachment? = null,
-
 )

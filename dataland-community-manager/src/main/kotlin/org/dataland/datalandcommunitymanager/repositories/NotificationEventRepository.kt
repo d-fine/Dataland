@@ -9,7 +9,6 @@ import java.util.UUID
  * A JPA repository for storing and retrieving notification events for elementary event types
  */
 interface NotificationEventRepository : JpaRepository<NotificationEventEntity, UUID> {
-
     /**
      * A function for searching for notification events by companyId and the type of the associated elementary events
      * @param companyId to filter for

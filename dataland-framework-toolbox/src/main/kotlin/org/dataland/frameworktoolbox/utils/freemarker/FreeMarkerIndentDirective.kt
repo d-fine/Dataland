@@ -10,7 +10,6 @@ import java.io.StringWriter
  * A FreeMarker directive for indenting all contained content equally
  */
 class FreeMarkerIndentDirective : TemplateDirectiveModel {
-
     private val indent = "    "
 
     override fun execute(

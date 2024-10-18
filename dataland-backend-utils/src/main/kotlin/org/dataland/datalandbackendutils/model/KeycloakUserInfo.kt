@@ -10,13 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class KeycloakUserInfo(
     @JsonProperty("email")
     val email: String?,
-
     @JsonProperty("id")
     val userId: String,
-
     @JsonProperty("firstName")
     val firstName: String?,
-
     @JsonProperty("lastName")
     val lastName: String?,
 )

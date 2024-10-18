@@ -12,7 +12,7 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 /**
  * Manages all alterations of data requests
@@ -23,7 +23,6 @@ class RequestEmailManager(
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
 ) {
-
     /**
      * Method to send email when the request status or access status changes
      * @param dataRequestEntity the request entity
@@ -76,12 +75,13 @@ class RequestEmailManager(
     ) {
         val correlationId = UUID.randomUUID().toString()
         singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-            messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-                dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
-                datalandCompanyId = dataRequestEntity.datalandCompanyId,
-                userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            ),
+            messageInformation =
+                SingleDataRequestEmailMessageSender.MessageInformation(
+                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                    reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
+                    datalandCompanyId = dataRequestEntity.datalandCompanyId,
+                    userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+                ),
             receiverSet = contacts,
             contactMessage = message,
             correlationId = correlationId,

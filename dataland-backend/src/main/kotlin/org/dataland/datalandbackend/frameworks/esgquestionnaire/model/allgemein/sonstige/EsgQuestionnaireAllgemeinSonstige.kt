@@ -8,9 +8,6 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinSonstige(
     val ausrichtungAufDieUnSdgsUndAktivesVerfolgen: String? = null,
-
     val ausschlusslistenAufBasisVonEsgKriterien: YesNo? = null,
-
     val ausschlusslisten: String? = null,
-
 )

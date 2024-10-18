@@ -12,98 +12,74 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsInvestmentfirmsOtherServicesTurnoverBased(
     val turnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount:
-    QaReportDataPoint<CurrencyDataPoint?>? = null,
-
+        QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichTransitional:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeAdaptationOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToPollutionPreventionAndControlOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToProtectionAndRestorationOfBiodiversityAndEcosystemsOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesEligible:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichTransitional:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val turnoverBasedProportionOfRevenueSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )

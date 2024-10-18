@@ -26,7 +26,12 @@ class NullableIfNotRequiredOpenApiCustomizer : OpenApiCustomizer {
 
     private fun setPropertyNullable(property: Schema<*>) {
         val prefix = "#/components/schemas"
-        if (property.`$ref` != null && property.`$ref`.split("/").dropLast(1).joinToString("/") == prefix) {
+        if (property.`$ref` != null &&
+            property.`$ref`
+                .split("/")
+                .dropLast(1)
+                .joinToString("/") == prefix
+        ) {
             val ref = property.`$ref`
             property.`$ref` = null
             property.nullable = true

@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.repositories.utils
 
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
-import java.util.*
+import java.util.UUID
 
 /**
  * A filter class used in the searchDataMetaInformation()-Method which allows

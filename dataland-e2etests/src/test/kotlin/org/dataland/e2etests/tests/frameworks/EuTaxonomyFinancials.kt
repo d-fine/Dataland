@@ -14,15 +14,17 @@ class EuTaxonomyFinancials {
 
     private val euTaxoFinancialsDataset = apiAccessor.testDataProviderEuTaxonomyForFinancials.getTData(1)[0]
 
-    private val companyInfo = apiAccessor.testDataProviderEuTaxonomyForFinancials
-        .getCompanyInformationWithoutIdentifiers(1)[0]
+    private val companyInfo =
+        apiAccessor.testDataProviderEuTaxonomyForFinancials
+            .getCompanyInformationWithoutIdentifiers(1)[0]
 
     @Test
     fun `post a company with EuTaxonomyForFinancials data and check if the data can be retrieved correctly`() {
-        val uploadInfo = apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-            listOf(companyInfo), listOf(euTaxoFinancialsDataset),
-            apiAccessor::euTaxonomyFinancialsUploaderFunction,
-        )
+        val uploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOf(companyInfo), listOf(euTaxoFinancialsDataset),
+                apiAccessor::euTaxonomyFinancialsUploaderFunction,
+            )
         QaApiAccessor().ensureQaCompletedAndUpdateUploadInfo(uploadInfo, apiAccessor.metaDataControllerApi)
 
         val dataMetaInfoOfUpload = uploadInfo[0].actualStoredDataMetaInfo
@@ -30,8 +32,10 @@ class EuTaxonomyFinancials {
         val downloadedMetaData = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
         assertEquals(dataMetaInfoOfUpload, downloadedMetaData)
 
-        val downloadedData = apiAccessor.dataControllerApiForEuTaxonomyFinancials
-            .getCompanyAssociatedEutaxonomyFinancialsData(dataId).data
+        val downloadedData =
+            apiAccessor.dataControllerApiForEuTaxonomyFinancials
+                .getCompanyAssociatedEutaxonomyFinancialsData(dataId)
+                .data
         assertEquals(euTaxoFinancialsDataset, downloadedData)
     }
 
@@ -47,14 +51,15 @@ class EuTaxonomyFinancials {
 
         val uploadPair = Pair(dataSet, "2023")
 
-        val exception = assertThrows<ClientException> {
-            apiAccessor.uploadWithWait(
-                companyId = companyId,
-                frameworkData = uploadPair.first,
-                reportingPeriod = uploadPair.second,
-                uploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
-            )
-        }
+        val exception =
+            assertThrows<ClientException> {
+                apiAccessor.uploadWithWait(
+                    companyId = companyId,
+                    frameworkData = uploadPair.first,
+                    reportingPeriod = uploadPair.second,
+                    uploadFunction = apiAccessor::euTaxonomyFinancialsUploaderFunction,
+                )
+            }
 
         val testClientError = exception.response as ClientError<*>
 

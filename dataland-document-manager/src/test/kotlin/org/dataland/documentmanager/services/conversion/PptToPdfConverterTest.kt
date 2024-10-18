@@ -18,12 +18,13 @@ class PptToPdfConverterTest {
 
     @Test
     fun `verify that a ppt file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(testPpt),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                TestUtils().loadFileBytes(testPpt),
+            )
         Assertions.assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
         pptToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = pptToPdfConverter.convertFile(testInput, correlationId)
@@ -32,16 +33,18 @@ class PptToPdfConverterTest {
 
     @Test
     fun `verify that an empty ppt file is not validated`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(emptyPpt),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                TestUtils().loadFileBytes(emptyPpt),
+            )
         Assertions.assertEquals("application/x-tika-msoffice", Tika().detect(testInput.bytes))
-        val exception = assertThrows<InvalidInputApiException> {
-            pptToPdfConverter.validateFile(testInput, correlationId)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                pptToPdfConverter.validateFile(testInput, correlationId)
+            }
         Assertions.assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

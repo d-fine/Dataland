@@ -8,8 +8,8 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script updates all sfdr datasets to match the new sfdr data model.
  */
+@Suppress("ClassName")
 class V22__IntroduceNewFieldsInSfdr : BaseJavaMigration() {
-
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
@@ -18,11 +18,12 @@ class V22__IntroduceNewFieldsInSfdr : BaseJavaMigration() {
         )
     }
 
-    private val oldToNewSocialAndEmployeeMattersKey = mapOf(
-        "femaleBoardMembers" to "femaleBoardMembersBoardOfDirectors",
-        "maleBoardMembers" to "maleBoardMembersBoardOfDirectors",
-        "boardGenderDiversityInPercent" to "boardGenderDiversityBoardOfDirectorsInPercent",
-    )
+    private val oldToNewSocialAndEmployeeMattersKey =
+        mapOf(
+            "femaleBoardMembers" to "femaleBoardMembersBoardOfDirectors",
+            "maleBoardMembers" to "maleBoardMembersBoardOfDirectors",
+            "boardGenderDiversityInPercent" to "boardGenderDiversityBoardOfDirectorsInPercent",
+        )
 
     /**
      * Migrates sfdr data to the new sfdr data model.

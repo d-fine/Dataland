@@ -25,33 +25,37 @@ class FrameworkUploadConfigBuilder(
 ) {
     private val logger by LoggerDelegate()
 
-    val rootSectionConfigBuilder = UploadCategoryBuilder(
-        parentSection = null,
-        label = "root-section",
-        name = "root-section-name",
-        shouldDisplay = FrameworkBooleanLambda.TRUE,
-    )
+    val rootSectionConfigBuilder =
+        UploadCategoryBuilder(
+            parentSection = null,
+            label = "root-section",
+            name = "root-section-name",
+            shouldDisplay = FrameworkBooleanLambda.TRUE,
+        )
 
     private fun buildUploadConfig(uploadConfigTsPath: Path) {
         var anyLambdaFunctionUsesDataset = false
         rootSectionConfigBuilder.traverse {
-            anyLambdaFunctionUsesDataset = when (it) {
-                is UploadCategoryBuilder -> anyLambdaFunctionUsesDataset || it.shouldDisplay.usesDataset
-                is UploadCellConfigBuilder -> anyLambdaFunctionUsesDataset || it.shouldDisplay.usesDataset
-            }
+            anyLambdaFunctionUsesDataset =
+                when (it) {
+                    is UploadCategoryBuilder -> anyLambdaFunctionUsesDataset || it.shouldDisplay.usesDataset
+                    is UploadCellConfigBuilder -> anyLambdaFunctionUsesDataset || it.shouldDisplay.usesDataset
+                }
         }
 
-        val freeMarkerContext = mapOf(
-            "uploadConfig" to rootSectionConfigBuilder.children,
-            "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
-            "frameworkBaseNameInCamelCase" to Naming.getNameFromLabel(framework.identifier),
-            "frameworkIdentifier" to framework.identifier,
-            "imports" to TypeScriptImport.mergeImports(rootSectionConfigBuilder.imports),
-            "anyLambdaFunctionUsesDataset" to anyLambdaFunctionUsesDataset,
-        )
+        val freeMarkerContext =
+            mapOf(
+                "uploadConfig" to rootSectionConfigBuilder.children,
+                "frameworkDataType" to "${framework.identifier.capitalizeEn()}Data",
+                "frameworkBaseNameInCamelCase" to Naming.getNameFromLabel(framework.identifier),
+                "frameworkIdentifier" to framework.identifier,
+                "imports" to TypeScriptImport.mergeImports(rootSectionConfigBuilder.imports),
+                "anyLambdaFunctionUsesDataset" to anyLambdaFunctionUsesDataset,
+            )
 
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/uploadconfig/UploadConfig.ts.ftl")
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/uploadconfig/UploadConfig.ts.ftl")
 
         val writer = FileWriter(uploadConfigTsPath.toFile())
         freemarkerTemplate.process(freeMarkerContext, writer)

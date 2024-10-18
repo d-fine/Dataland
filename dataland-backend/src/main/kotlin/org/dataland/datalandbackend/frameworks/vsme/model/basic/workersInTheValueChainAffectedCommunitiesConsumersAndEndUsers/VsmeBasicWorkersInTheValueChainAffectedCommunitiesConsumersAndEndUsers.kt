@@ -11,9 +11,6 @@ import java.math.BigDecimal
 data class VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers(
     @field:Valid()
     val negativeEffects: List<BaseDataPoint<String>>? = null,
-
     val numberOfConvictions: BigDecimal? = null,
-
     val sumOfFinesInEuro: BigDecimal? = null,
-
 )

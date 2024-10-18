@@ -13,16 +13,17 @@ class VsmeWasteClassificationObjectCustomComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : VsmeSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatVsmeWasteClassificationObjectForDisplay",
-    uploadComponentName = "WasteClassificationFormField",
-    guaranteedFixtureExpression = "dataGenerator.guaranteedArray(() => " +
-        "dataGenerator.generateRandomVsmeWasteClassificationObject(), 0, 3)",
-    randomFixtureExpression = "dataGenerator.randomArray(() => dataGenerator." +
-        "generateRandomVsmeWasteClassificationObject(), 0, 3)",
-) {
-
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatVsmeWasteClassificationObjectForDisplay",
+        uploadComponentName = "WasteClassificationFormField",
+        guaranteedFixtureExpression =
+            "dataGenerator.guaranteedArray(() => " +
+                "dataGenerator.generateRandomVsmeWasteClassificationObject(), 0, 3)",
+        randomFixtureExpression =
+            "dataGenerator.randomArray(() => dataGenerator." +
+                "generateRandomVsmeWasteClassificationObject(), 0, 3)",
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(

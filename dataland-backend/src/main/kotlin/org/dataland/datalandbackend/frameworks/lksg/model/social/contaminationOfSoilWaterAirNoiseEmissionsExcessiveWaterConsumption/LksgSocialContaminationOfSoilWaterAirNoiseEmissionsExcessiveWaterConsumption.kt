@@ -10,72 +10,43 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgSocialContaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption(
     val harmfulSoilChange: YesNo? = null,
-
     val soilDegradation: YesNo? = null,
-
     val soilErosion: YesNo? = null,
-
     val soilBorneDiseases: YesNo? = null,
-
     val soilContamination: YesNo? = null,
-
     val soilSalinization: YesNo? = null,
-
     @field:Valid()
     val soilProtectionPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val soilSpotChecks: BaseDataPoint<YesNo>? = null,
-
     val harmfulWaterPollution: YesNo? = null,
-
     val fertilizersOrPollutants: YesNo? = null,
-
     val wasteWaterFiltration: YesNo? = null,
-
     @field:Valid()
     val waterProtectionPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val waterSpotChecks: BaseDataPoint<YesNo>? = null,
-
     val harmfulAirPollution: YesNo? = null,
-
     val airFiltration: YesNo? = null,
-
     @field:Valid()
     val airQualityProtectionPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val airQualitySpotChecks: BaseDataPoint<YesNo>? = null,
-
     val harmfulNoiseEmission: YesNo? = null,
-
     val reductionOfNoiseEmissions: YesNo? = null,
-
     @field:Valid()
     val noiseReductionPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val noiseEmissionsSpotChecks: BaseDataPoint<YesNo>? = null,
-
     val excessiveWaterConsumption: YesNo? = null,
-
     val waterSavingMeasures: YesNo? = null,
-
     val waterSavingMeasuresName: String? = null,
-
     @field:Valid()
     val waterUseReductionPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val waterConsumptionSpotChecks: BaseDataPoint<YesNo>? = null,
-
     val waterSources: YesNo? = null,
-
     @field:Valid()
     val contaminationPreventionMeasures: BaseDataPoint<YesNo>? = null,
-
     val contaminationPreventionMeasuresDescription: String? = null,
-
 )

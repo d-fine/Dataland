@@ -25,39 +25,47 @@ class FrameworkDataModelBuilder(
     private val frameworkBasePackageQualifier =
         "org.dataland.datalandbackend.frameworks.${removeUnallowedJavaIdentifierCharacters(framework.identifier)}"
 
-    val rootPackageBuilder: PackageBuilder = PackageBuilder(
-        "$frameworkBasePackageQualifier.model",
-        null,
-    )
+    val rootPackageBuilder: PackageBuilder =
+        PackageBuilder(
+            "$frameworkBasePackageQualifier.model",
+            null,
+        )
 
-    val rootDataModelClass: DataClassBuilder = rootPackageBuilder.addClass(
-        "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
-        "The root data-model for the ${framework.identifier.capitalizeEn()} Framework",
-        mutableListOf(
-            Annotation(
-                "Suppress",
-                "\"MagicNumber\"",
+    val rootDataModelClass: DataClassBuilder =
+        rootPackageBuilder.addClass(
+            "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
+            "The root data-model for the ${framework.identifier.capitalizeEn()} Framework",
+            mutableListOf(
+                Annotation(
+                    "Suppress",
+                    "\"MagicNumber\"",
+                ),
+                Annotation(
+                    "org.dataland.datalandbackend.annotations.DataType",
+                    "\"${framework.identifier}\", ${framework.order}",
+                ),
             ),
-            Annotation(
-                "org.dataland.datalandbackend.annotations.DataType",
-                "\"${framework.identifier}\", ${framework.order}",
-            ),
-        ),
-    )
+        )
 
-    private fun buildFrameworkSpecificApiController(into: DatalandRepository, privateFrameworkBoolean: Boolean) {
+    private fun buildFrameworkSpecificApiController(
+        into: DatalandRepository,
+        privateFrameworkBoolean: Boolean,
+    ) {
         logger.trace("Building the framework-specific API Controller")
-        val targetPath = into.backendKotlinSrc /
-            frameworkBasePackageQualifier.replace(".", "/") /
-            "${rootDataModelClass.name}Controller.kt"
+        val targetPath =
+            into.backendKotlinSrc /
+                frameworkBasePackageQualifier.replace(".", "/") /
+                "${rootDataModelClass.name}Controller.kt"
         logger.trace("Building framework API controller for '{}' into '{}'", framework.identifier, targetPath)
-        val nameOfDataApiController = if (privateFrameworkBoolean) {
-            "/specific/datamodel/PrivateFrameworkDataController.kt.ftl"
-        } else {
-            "/specific/datamodel/PublicFrameworkDataController.kt.ftl"
-        }
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate(nameOfDataApiController)
+        val nameOfDataApiController =
+            if (privateFrameworkBoolean) {
+                "/specific/datamodel/PrivateFrameworkDataController.kt.ftl"
+            } else {
+                "/specific/datamodel/PublicFrameworkDataController.kt.ftl"
+            }
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate(nameOfDataApiController)
 
         val writer = FileWriter(targetPath.toFile())
         freemarkerTemplate.process(
@@ -75,7 +83,11 @@ class FrameworkDataModelBuilder(
      * Generate the code for the DataModel and integrates it into the Dataland Repository.
      * Check if compilation succeeds and re-generates the OpenApi definition.
      */
-    fun build(into: DatalandRepository, buildApiController: Boolean, privateFrameworkBoolean: Boolean) {
+    fun build(
+        into: DatalandRepository,
+        buildApiController: Boolean,
+        privateFrameworkBoolean: Boolean,
+    ) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
         rootPackageBuilder.build(into.backendKotlinSrc)
 

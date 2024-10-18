@@ -10,5 +10,4 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 data class HeimathafenSocialKontroverseGeschaeftsfelder(
     @field:Valid()
     val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
 )

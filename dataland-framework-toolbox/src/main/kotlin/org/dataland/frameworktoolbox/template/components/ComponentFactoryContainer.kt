@@ -7,4 +7,6 @@ import org.springframework.stereotype.Component
  * A surrogate component for retrieving an autowired ordered list of TemplateComponentFactories
  */
 @Component
-class ComponentFactoryContainer(@Autowired val factories: List<TemplateComponentFactory>)
+class ComponentFactoryContainer(
+    @Autowired val factories: List<TemplateComponentFactory>,
+)

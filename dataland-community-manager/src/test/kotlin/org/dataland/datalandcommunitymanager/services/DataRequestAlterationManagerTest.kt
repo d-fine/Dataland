@@ -29,10 +29,10 @@ import org.mockito.kotlin.eq
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 
 class DataRequestAlterationManagerTest {
-
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
     private lateinit var authenticationMock: DatalandJwtAuthentication
     private lateinit var dataRequestRepository: DataRequestRepository
@@ -43,37 +43,41 @@ class DataRequestAlterationManagerTest {
 
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
-    private val dummyDataRequestEntities: List<DataRequestEntity> = listOf(
-        DataRequestEntity(
-            userId = "",
-            dataType = "p2p",
-            reportingPeriod = "",
-            creationTimestamp = 0,
-            datalandCompanyId = "",
-        ),
-        DataRequestEntity(
-            userId = "dummyId",
-            dataType = "dummyDataType",
-            reportingPeriod = "dummyPeriod",
-            creationTimestamp = 123456,
-            datalandCompanyId = "dummyCompanyId",
-        ),
-    )
+    private val dummyDataRequestEntities: List<DataRequestEntity> =
+        listOf(
+            DataRequestEntity(
+                userId = "",
+                dataType = "p2p",
+                reportingPeriod = "",
+                creationTimestamp = 0,
+                datalandCompanyId = "",
+            ),
+            DataRequestEntity(
+                userId = "dummyId",
+                dataType = "dummyDataType",
+                reportingPeriod = "dummyPeriod",
+                creationTimestamp = 123456,
+                datalandCompanyId = "dummyCompanyId",
+            ),
+        )
     private val dummyDataRequestEntity: DataRequestEntity = dummyDataRequestEntities[0]
-    private val metaData = DataMetaInformation(
-        dataId = UUID.randomUUID().toString(),
-        companyId = "companyId",
-        dataType = DataTypeEnum.p2p,
-        uploadTime = 0,
-        reportingPeriod = "",
-        currentlyActive = false,
-        qaStatus = QaStatus.Accepted,
-    )
-    private val dummyMessage = StoredDataRequestMessageObject(
-        contacts = setOf("test@example.com"),
-        message = "test message",
-        creationTimestamp = Instant.now().toEpochMilli(),
-    )
+    private val metaData =
+        DataMetaInformation(
+            dataId = UUID.randomUUID().toString(),
+            companyId = "companyId",
+            dataType = DataTypeEnum.p2p,
+            uploadTime = 0,
+            reportingPeriod = "",
+            currentlyActive = false,
+            qaStatus = QaStatus.Accepted,
+        )
+    private val dummyMessage =
+        StoredDataRequestMessageObject(
+            contacts = setOf("test@example.com"),
+            message = "test message",
+            creationTimestamp = Instant.now().toEpochMilli(),
+        )
+
     private fun mockRepos() {
         dataRequestRepository = mock(DataRequestRepository::class.java)
         `when`<Any>(
@@ -86,10 +90,11 @@ class DataRequestAlterationManagerTest {
         }
         `when`(
             dataRequestRepository.searchDataRequestEntity(
-                searchFilter = DataRequestsFilter(
-                    setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
-                    setOf(RequestStatus.Open), null,
-                ),
+                searchFilter =
+                    DataRequestsFilter(
+                        setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
+                        setOf(RequestStatus.Open), null,
+                    ),
             ),
         ).thenReturn(dummyDataRequestEntities)
 
@@ -114,24 +119,26 @@ class DataRequestAlterationManagerTest {
         `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
 
-        dataRequestAlterationManager = DataRequestAlterationManager(
-            dataRequestRepository = dataRequestRepository,
-            dataRequestLogger = mock(DataRequestLogger::class.java),
-            metaDataControllerApi = metaDataControllerApi,
-            requestEmailManager = requestEmailManager,
-            companyRolesManager = companyRolesManager,
-            utils = processingUtils,
-        )
+        dataRequestAlterationManager =
+            DataRequestAlterationManager(
+                dataRequestRepository = dataRequestRepository,
+                dataRequestLogger = mock(DataRequestLogger::class.java),
+                metaDataControllerApi = metaDataControllerApi,
+                requestEmailManager = requestEmailManager,
+                companyRolesManager = companyRolesManager,
+                utils = processingUtils,
+            )
     }
 
     @BeforeEach
     fun setupSecurityMock() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "user@example.com",
-            "1234-221-1111elf",
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "user@example.com",
+                "1234-221-1111elf",
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)

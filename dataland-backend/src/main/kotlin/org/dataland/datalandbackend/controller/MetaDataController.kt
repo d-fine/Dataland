@@ -23,7 +23,6 @@ class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
 ) : MetaDataApi {
-
     override fun getListOfDataMetaInfo(
         companyId: String?,
         dataType: DataType?,
@@ -31,18 +30,19 @@ class MetaDataController(
         reportingPeriod: String?,
         uploaderUserIds: Set<UUID>?,
         qaStatus: QaStatus?,
-    ):
-        ResponseEntity<List<DataMetaInformation>> {
+    ): ResponseEntity<List<DataMetaInformation>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         return ResponseEntity.ok(
-            dataMetaInformationManager.searchDataMetaInfo(
-                companyId,
-                dataType,
-                showOnlyActive,
-                reportingPeriod,
-                uploaderUserIds,
-                qaStatus,
-            ).filter { it.isDatasetViewableByUser(currentUser) }.map { it.toApiModel(currentUser) },
+            dataMetaInformationManager
+                .searchDataMetaInfo(
+                    companyId,
+                    dataType,
+                    showOnlyActive,
+                    reportingPeriod,
+                    uploaderUserIds,
+                    qaStatus,
+                ).filter { it.isDatasetViewableByUser(currentUser) }
+                .map { it.toApiModel(currentUser) },
         )
     }
 

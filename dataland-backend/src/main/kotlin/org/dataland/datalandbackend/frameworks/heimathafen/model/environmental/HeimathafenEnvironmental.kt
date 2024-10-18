@@ -26,31 +26,21 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.s
 data class HeimathafenEnvironmental(
     @field:Valid()
     val nachhaltigskeitsrisiken: HeimathafenEnvironmentalNachhaltigskeitsrisiken? = null,
-
     @field:Valid()
     val pais: HeimathafenEnvironmentalPais? = null,
-
     @field:Valid()
     val paiBiologischeVielfalt: HeimathafenEnvironmentalPaiBiologischeVielfalt? = null,
-
     @field:Valid()
     val paiWasser: HeimathafenEnvironmentalPaiWasser? = null,
-
     @field:Valid()
     val paiAbfall: HeimathafenEnvironmentalPaiAbfall? = null,
-
     @field:Valid()
     val paiUmweltAufDemLand: HeimathafenEnvironmentalPaiUmweltAufDemLand? = null,
-
     @field:Valid()
     val sfdr: HeimathafenEnvironmentalSfdr? = null,
-
     @field:Valid()
-    val kontroverseGeschaeftsfelderTabakerzeugung:
-    HeimathafenEnvironmentalKontroverseGeschaeftsfelderTabakerzeugung? = null,
-
+    val kontroverseGeschaeftsfelderTabakerzeugung: HeimathafenEnvironmentalKontroverseGeschaeftsfelderTabakerzeugung? = null,
     @field:Valid()
     val kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung:
-    HeimathafenEnvironmentalKontroverseGeschaeftsfelderKohlefoerderungUndVerteilung? = null,
-
+        HeimathafenEnvironmentalKontroverseGeschaeftsfelderKohlefoerderungUndVerteilung? = null,
 )

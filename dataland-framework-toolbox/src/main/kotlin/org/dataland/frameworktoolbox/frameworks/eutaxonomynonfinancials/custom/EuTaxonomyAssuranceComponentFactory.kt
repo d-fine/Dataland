@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component
  * Generates EuTaxonomyAssuranceComponent from rows with the component "Custom - EuTaxonomyAssuranceComponent"
  */
 @Component
-class EuTaxonomyAssuranceComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component.trim() == "Custom EuTaxonomyAssuranceComponent"
+class EuTaxonomyAssuranceComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component.trim() == "Custom EuTaxonomyAssuranceComponent"
 
     override fun generateComponent(
         row: TemplateRow,

@@ -13,11 +13,8 @@ import org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpec
 data class LksgGeneral(
     @field:Valid()
     val masterData: LksgGeneralMasterData,
-
     @field:Valid()
     val productionSpecific: LksgGeneralProductionSpecific? = null,
-
     @field:Valid()
     val productionSpecificOwnOperations: LksgGeneralProductionSpecificOwnOperations? = null,
-
 )

@@ -18,7 +18,6 @@ class DateComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SimpleKotlinBackedBaseComponent(identifier, parent, "java.time.LocalDate") {
-
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
@@ -38,12 +37,13 @@ class DateComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val componentName = when (documentSupport) {
-            is NoDocumentSupport -> "DateFormField"
-            is ExtendedDocumentSupport -> "DateExtendedDataPointFormField"
-            else ->
-                throw IllegalArgumentException("DateComponent does not support document support '$documentSupport")
-        }
+        val componentName =
+            when (documentSupport) {
+                is NoDocumentSupport -> "DateFormField"
+                is ExtendedDocumentSupport -> "DateExtendedDataPointFormField"
+                else ->
+                    throw IllegalArgumentException("DateComponent does not support document support '$documentSupport")
+            }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = componentName,

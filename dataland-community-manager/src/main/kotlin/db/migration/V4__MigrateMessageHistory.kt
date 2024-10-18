@@ -6,6 +6,7 @@ import org.flywaydb.core.api.migration.Context
 /**
  * This migration script migrates the message history to a separate table
  */
+@Suppress("ClassName")
 class V4__MigrateMessageHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         // The message_history is simply dropped because there is no data on for this, yet.

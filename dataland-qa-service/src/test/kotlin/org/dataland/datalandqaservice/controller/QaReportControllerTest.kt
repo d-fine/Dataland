@@ -28,7 +28,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import java.util.*
+import java.util.UUID
 
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -45,7 +45,10 @@ class QaReportControllerTest(
     @MockBean
     private lateinit var metaDataControllerApi: MetaDataControllerApi
 
-    private inline fun withReviewerAuthentication(userId: String = "some-reviewer", block: () -> Unit) {
+    private inline fun withReviewerAuthentication(
+        userId: String = "some-reviewer",
+        block: () -> Unit,
+    ) {
         withAuthenticationMock(
             userId,
             userId,
@@ -82,11 +85,14 @@ class QaReportControllerTest(
             val qaMetaInfo = createEmptyQaReport()
 
             assertEquals(
-                qaReportController.getAllQaReportsForDataset(
-                    dataId = qaMetaInfo.dataId,
-                    showInactive = false,
-                    reporterUserId = null,
-                ).body!!.first().metaInfo.active,
+                qaReportController
+                    .getAllQaReportsForDataset(
+                        dataId = qaMetaInfo.dataId,
+                        showInactive = false,
+                        reporterUserId = null,
+                    ).body!!
+                    .first()
+                    .metaInfo.active,
                 true,
             )
 
@@ -97,11 +103,14 @@ class QaReportControllerTest(
             )
 
             assertEquals(
-                qaReportController.getAllQaReportsForDataset(
-                    dataId = qaMetaInfo.dataId,
-                    showInactive = true,
-                    reporterUserId = null,
-                ).body!!.first().metaInfo.active,
+                qaReportController
+                    .getAllQaReportsForDataset(
+                        dataId = qaMetaInfo.dataId,
+                        showInactive = true,
+                        reporterUserId = null,
+                    ).body!!
+                    .first()
+                    .metaInfo.active,
                 false,
             )
         }
@@ -146,12 +155,13 @@ class QaReportControllerTest(
             val qaReport1 = createEmptyQaReport()
             val qaReport2 = createEmptyQaReport()
 
-            val exception = assertThrows<InvalidInputApiException> {
-                qaReportController.getQaReport(
-                    dataId = qaReport1.dataId,
-                    qaReportId = qaReport2.qaReportId,
-                )
-            }
+            val exception =
+                assertThrows<InvalidInputApiException> {
+                    qaReportController.getQaReport(
+                        dataId = qaReport1.dataId,
+                        qaReportId = qaReport2.qaReportId,
+                    )
+                }
             assertTrue(
                 exception.message.contains(
                     "The requested Qa Report '${qaReport2.qaReportId}' is not associated " +
@@ -169,15 +179,19 @@ class QaReportControllerTest(
             createEmptyQaReport(dataId)
             assertEquals(
                 1,
-                qaReportController.getAllQaReportsForDataset(
-                    dataId, false, "reviewer-1",
-                ).body!!.size,
+                qaReportController
+                    .getAllQaReportsForDataset(
+                        dataId, false, "reviewer-1",
+                    ).body!!
+                    .size,
             )
             assertEquals(
                 0,
-                qaReportController.getAllQaReportsForDataset(
-                    dataId, false, "other-reviewer",
-                ).body!!.size,
+                qaReportController
+                    .getAllQaReportsForDataset(
+                        dataId, false, "other-reviewer",
+                    ).body!!
+                    .size,
             )
         }
     }
@@ -197,9 +211,10 @@ class QaReportControllerTest(
                     uploadTime = 0,
                 ),
             )
-            val ex = assertThrows<InvalidInputApiException> {
-                qaReportController.postQaReport(dataId, SfdrData())
-            }
+            val ex =
+                assertThrows<InvalidInputApiException> {
+                    qaReportController.postQaReport(dataId, SfdrData())
+                }
             assertTrue(
                 ex.message.contains(
                     "is of type '${DataTypeEnum.eutaxonomyMinusFinancials}', but the expected type is 'sfdr'",
@@ -226,9 +241,10 @@ class QaReportControllerTest(
         )
 
         withReviewerAuthentication {
-            val ex = assertThrows<InvalidInputApiException> {
-                qaReportController.getQaReport(dataId, reportId)
-            }
+            val ex =
+                assertThrows<InvalidInputApiException> {
+                    qaReportController.getQaReport(dataId, reportId)
+                }
             assertTrue(
                 ex.message.contains(
                     "is not associated with data type 'sfdr'," +

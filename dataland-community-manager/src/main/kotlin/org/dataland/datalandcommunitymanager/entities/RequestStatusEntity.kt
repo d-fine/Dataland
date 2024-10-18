@@ -10,7 +10,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
-import java.util.*
+import java.util.UUID
 
 /**
  * The entity storing the information considering one data request status
@@ -20,15 +20,11 @@ import java.util.*
 data class RequestStatusEntity(
     @Id
     val statusHistoryId: String,
-
     @Enumerated(EnumType.STRING)
     val requestStatus: RequestStatus,
-
     @Enumerated(EnumType.STRING)
     val accessStatus: AccessStatus,
-
     val creationTimestamp: Long,
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
     var dataRequest: DataRequestEntity,
@@ -48,9 +44,10 @@ data class RequestStatusEntity(
      * Converts this entity to a message object
      * @returns the generated message object
      */
-    fun toStoredDataRequestStatusObject() = StoredDataRequestStatusObject(
-        status = requestStatus,
-        accessStatus = accessStatus,
-        creationTimestamp = creationTimestamp,
-    )
+    fun toStoredDataRequestStatusObject() =
+        StoredDataRequestStatusObject(
+            status = requestStatus,
+            accessStatus = accessStatus,
+            creationTimestamp = creationTimestamp,
+        )
 }

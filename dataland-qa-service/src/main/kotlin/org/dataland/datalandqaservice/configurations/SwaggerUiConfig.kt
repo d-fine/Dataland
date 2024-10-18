@@ -10,12 +10,14 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class SwaggerUiConfig {
-
     /**
      * This method returns all public endpoints to be displayed in the swagger ui
      */
     @Bean
-    fun publicApi(): GroupedOpenApi? {
-        return GroupedOpenApi.builder().group("public").pathsToExclude("/internal/**").build()
-    }
+    fun publicApi(): GroupedOpenApi? =
+        GroupedOpenApi
+            .builder()
+            .group("public")
+            .pathsToExclude("/internal/**")
+            .build()
 }

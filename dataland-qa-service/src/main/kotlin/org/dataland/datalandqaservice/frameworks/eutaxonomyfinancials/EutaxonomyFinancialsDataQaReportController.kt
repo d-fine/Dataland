@@ -25,30 +25,30 @@ class EutaxonomyFinancialsDataQaReportController(
     @Autowired qaReportManager: QaReportManager,
     @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<EutaxonomyFinancialsData>(
-    objectMapper = objectMapper,
-    qaReportManager = qaReportManager,
-    qaReportSecurityPolicy = qaReportSecurityPolicy,
-    clazz = EutaxonomyFinancialsData::class.java,
-    dataType = "eutaxonomy-financials",
-) {
+        objectMapper = objectMapper,
+        qaReportManager = qaReportManager,
+        qaReportSecurityPolicy = qaReportSecurityPolicy,
+        clazz = EutaxonomyFinancialsData::class.java,
+        dataType = "eutaxonomy-financials",
+    ) {
     @Operation(operationId = "postEutaxonomyFinancialsDataQaReport")
     override fun postQaReport(
         dataId: String,
         qaReport: EutaxonomyFinancialsData,
-    ): ResponseEntity<QaReportMetaInformation> {
-        return super.postQaReport(dataId, qaReport)
-    }
+    ): ResponseEntity<QaReportMetaInformation> = super.postQaReport(dataId, qaReport)
 
     @Operation(operationId = "getEutaxonomyFinancialsDataQaReport")
     override fun getQaReport(
         dataId: String,
         qaReportId: String,
-    ): ResponseEntity<QaReportWithMetaInformation<EutaxonomyFinancialsData>> {
-        return super.getQaReport(dataId, qaReportId)
-    }
+    ): ResponseEntity<QaReportWithMetaInformation<EutaxonomyFinancialsData>> = super.getQaReport(dataId, qaReportId)
 
     @Operation(operationId = "setEutaxonomyFinancialsDataQaReportStatus")
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+    override fun setQaReportStatus(
+        dataId: String,
+        qaReportId: String,
+        statusPatch: QaReportStatusPatch,
+    ) {
         super.setQaReportStatus(dataId, qaReportId, statusPatch)
     }
 
@@ -57,7 +57,7 @@ class EutaxonomyFinancialsDataQaReportController(
         dataId: String,
         showInactive: Boolean?,
         reporterUserId: String?,
-    ): ResponseEntity<List<QaReportWithMetaInformation<EutaxonomyFinancialsData>>> {
-        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
-    }
+    ): ResponseEntity<List<QaReportWithMetaInformation<EutaxonomyFinancialsData>>> =
+        super
+            .getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
 }

@@ -21,51 +21,32 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class EutaxonomyNonFinancialsOpex(
     val totalAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
     @field:Valid()
     val nonEligibleShare: EutaxonomyNonFinancialsOpexNonEligibleShare? = null,
-
     @field:Valid()
     val eligibleShare: EutaxonomyNonFinancialsOpexEligibleShare? = null,
-
     @field:Valid()
     val nonAlignedShare: EutaxonomyNonFinancialsOpexNonAlignedShare? = null,
-
     val nonAlignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyActivity?>? = null,
-
     @field:Valid()
     val alignedShare: EutaxonomyNonFinancialsOpexAlignedShare? = null,
-
     @field:Valid()
-    val substantialContributionToClimateChangeMitigationInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeMitigationInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToClimateChangeAdaptationInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToClimateChangeAdaptationInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToTransitionToACircularEconomyInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToTransitionToACircularEconomyInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
-    val substantialContributionToPollutionPreventionAndControlInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+    val substantialContributionToPollutionPreventionAndControlInPercentAligned: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentAligned:
-    QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     val alignedActivities: QaReportDataPoint<ExtendedDataPointListEuTaxonomyAlignedActivity?>? = null,
-
     @field:Valid()
     val enablingShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val transitionalShareInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
 )

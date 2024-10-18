@@ -12,7 +12,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.assertThrows
-import java.util.*
+import java.util.UUID
 
 private val jwtHelper = JwtAuthenticationHelper()
 private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
@@ -67,14 +67,16 @@ private fun checkThatResponseMessageIsAsExpectedForOnlyOneReportingPeriod(
 ) {
     val errorMessage = "The message sent as part of the response to the single data request is not as expected."
     when (expectedNumberOfDuplicateReportingPeriods) {
-        1 -> assertEquals(
-            "Your data request was not stored, as it was already created by you before and exists on Dataland.",
-            singleDataRequestResponse.message, errorMessage,
-        )
-        else -> assertEquals(
-            "Your data request was stored successfully.",
-            singleDataRequestResponse.message, errorMessage,
-        )
+        1 ->
+            assertEquals(
+                "Your data request was not stored, as it was already created by you before and exists on Dataland.",
+                singleDataRequestResponse.message, errorMessage,
+            )
+        else ->
+            assertEquals(
+                "Your data request was stored successfully.",
+                singleDataRequestResponse.message, errorMessage,
+            )
     }
 }
 
@@ -85,26 +87,30 @@ private fun checkThatResponseMessageIsAsExpectedForMoreThanOneReportingPeriod(
 ) {
     val errorMessage = "The message sent as part of the response to the single data request is not as expected."
     when (expectedNumberOfDuplicateReportingPeriods) {
-        0 -> assertEquals(
-            "For each of the $totalNumberOfReportingPeriods reporting periods a data request was stored.",
-            singleDataRequestResponse.message, errorMessage,
-        )
-        1 -> assertEquals(
-            "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
-                "it was already created by you before and exists on Dataland.",
-            singleDataRequestResponse.message, errorMessage,
-        )
-        totalNumberOfReportingPeriods -> assertEquals(
-            "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
-                "already created by you before and exist on Dataland.",
-            singleDataRequestResponse.message, errorMessage,
-        )
-        else -> assertEquals(
-            "The data requests for $expectedNumberOfDuplicateReportingPeriods of your " +
-                "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
-                "created by you before and exist on Dataland.",
-            singleDataRequestResponse.message, errorMessage,
-        )
+        0 ->
+            assertEquals(
+                "For each of the $totalNumberOfReportingPeriods reporting periods a data request was stored.",
+                singleDataRequestResponse.message, errorMessage,
+            )
+        1 ->
+            assertEquals(
+                "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
+                    "it was already created by you before and exists on Dataland.",
+                singleDataRequestResponse.message, errorMessage,
+            )
+        totalNumberOfReportingPeriods ->
+            assertEquals(
+                "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
+                    "already created by you before and exist on Dataland.",
+                singleDataRequestResponse.message, errorMessage,
+            )
+        else ->
+            assertEquals(
+                "The data requests for $expectedNumberOfDuplicateReportingPeriods of your " +
+                    "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
+                    "created by you before and exist on Dataland.",
+                singleDataRequestResponse.message, errorMessage,
+            )
     }
 }
 
@@ -130,21 +136,23 @@ fun postSingleDataRequestForReportingPeriodAndUpdateStatus(
     newStatus: RequestStatus? = null,
 ) {
     val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-    val response = requestControllerApi.postSingleDataRequest(
-        SingleDataRequest(
-            companyIdentifier = companyIdentifier,
-            dataType = SingleDataRequest.DataType.lksg,
-            reportingPeriods = setOf(reportingPeriod),
-        ),
-    )
+    val response =
+        requestControllerApi.postSingleDataRequest(
+            SingleDataRequest(
+                companyIdentifier = companyIdentifier,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf(reportingPeriod),
+            ),
+        )
     checkThatAllReportingPeriodsAreTreatedAsExpected(
         singleDataRequestResponse = response,
         expectedNumberOfStoredReportingPeriods = 1,
         expectedNumberOfDuplicateReportingPeriods = 0,
     )
-    val dataRequestId = UUID.fromString(
-        getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-    )
+    val dataRequestId =
+        UUID.fromString(
+            getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
+        )
     if (newStatus != null) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, newStatus)
@@ -155,8 +163,8 @@ fun postStandardSingleDataRequest(
     companyIdentifier: String,
     contacts: Set<String>? = null,
     message: String? = null,
-): SingleDataRequestResponse {
-    return requestControllerApi.postSingleDataRequest(
+): SingleDataRequestResponse =
+    requestControllerApi.postSingleDataRequest(
         SingleDataRequest(
             companyIdentifier = companyIdentifier,
             dataType = SingleDataRequest.DataType.sfdr,
@@ -165,20 +173,20 @@ fun postStandardSingleDataRequest(
             message = message,
         ),
     )
-}
 
 fun causeClientExceptionBySingleDataRequest(
     identifier: String,
     dataType: SingleDataRequest.DataType,
     reportingPeriods: Set<String>,
 ): ClientException {
-    val clientException = assertThrows<ClientException> {
-        requestControllerApi.postSingleDataRequest(
-            SingleDataRequest(
-                identifier, dataType, reportingPeriods,
-            ),
-        )
-    }
+    val clientException =
+        assertThrows<ClientException> {
+            requestControllerApi.postSingleDataRequest(
+                SingleDataRequest(
+                    identifier, dataType, reportingPeriods,
+                ),
+            )
+        }
     return clientException
 }
 

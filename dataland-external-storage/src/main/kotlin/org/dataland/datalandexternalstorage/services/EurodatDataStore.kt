@@ -48,12 +48,17 @@ class EurodatDataStore(
      * @param correlationId of the current storage process
      * @param payload the content of the message
      */
-    fun storeDataInEurodat(dataId: String, correlationId: String, payload: String) {
+    fun storeDataInEurodat(
+        dataId: String,
+        correlationId: String,
+        payload: String,
+    ) {
         logger.info("Starting storage process for dataId $dataId and correlationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod(loggingMessageGetEurodatConnection) {
-            databaseCredentialResourceClient
-                .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
-        }
+        val eurodatCredentials =
+            retryWrapperMethod(loggingMessageGetEurodatConnection) {
+                databaseCredentialResourceClient
+                    .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+            }
         logger.info("EuroDaT credentials received")
         val jsonToStore = temporarilyCachedDataClient.getReceivedPrivateJson(dataId)
         logger.info("Data from temporary storage retrieved.")
@@ -83,7 +88,12 @@ class EurodatDataStore(
      * @param eurodatCredentials the credentials to log into the eurodat storage
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeJsonInEurodat(correlationId: String, dataId: String, data: String, eurodatCredentials: Credentials) {
+    fun storeJsonInEurodat(
+        correlationId: String,
+        dataId: String,
+        data: String,
+        eurodatCredentials: Credentials,
+    ) {
         logger.info("Storing JSON in EuroDaT for dataId $dataId and correlationId $correlationId")
         val insertStatement = "INSERT INTO safedeposit.json (uuid_json, blob_json) VALUES(?, ?::jsonb)"
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
@@ -132,22 +142,29 @@ class EurodatDataStore(
      * @param payload contains meta info about the stored assets (dataId and hashes)
      * @param correlationId makes it possible to match the message to one specific storage process/thread
      */
-    fun sendMessageAfterSuccessfulStorage(payload: String, correlationId: String) {
+    fun sendMessageAfterSuccessfulStorage(
+        payload: String,
+        correlationId: String,
+    ) {
         logger.info("Storing completed. Sending message that storing assignment is done.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.PrivateDataStored, correlationId, ExchangeName.PrivateItemStored, RoutingKeyNames.data,
+            payload, MessageType.PRIVATE_DATA_STORED, correlationId, ExchangeName.PRIVATE_ITEM_STORED, RoutingKeyNames.DATA,
         )
     }
 
     /**
      * Select a data object from the eurodat storage by its dataId
      */
-    fun selectPrivateDataSet(dataId: String, correlationId: String): String {
+    fun selectPrivateDataSet(
+        dataId: String,
+        correlationId: String,
+    ): String {
         logger.info("Select data for data $dataId from eurodat storage.CorrelationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod(loggingMessageGetEurodatConnection) {
-            databaseCredentialResourceClient
-                .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
-        }
+        val eurodatCredentials =
+            retryWrapperMethod(loggingMessageGetEurodatConnection) {
+                databaseCredentialResourceClient
+                    .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+            }
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlStatement = "SELECT * FROM safedeposit.json WHERE uuid_json = '$dataId'"
         return selectJsonStringFromSqlDatabase(conn, sqlStatement, dataId)
@@ -156,12 +173,16 @@ class EurodatDataStore(
     /**
      * Select a blob object from the eurodat storage by its eurodatId
      */
-    fun selectPrivateDocument(eurodatId: String, correlationId: String): ByteArray {
+    fun selectPrivateDocument(
+        eurodatId: String,
+        correlationId: String,
+    ): ByteArray {
         logger.info("Select document for eurodatId $eurodatId from eurodat storage. CorrelationId $correlationId")
-        val eurodatCredentials = retryWrapperMethod(loggingMessageGetEurodatConnection) {
-            databaseCredentialResourceClient
-                .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
-        }
+        val eurodatCredentials =
+            retryWrapperMethod(loggingMessageGetEurodatConnection) {
+                databaseCredentialResourceClient
+                    .apiV1ClientControllerCredentialServiceDatabaseSafedepositAppIdGet(eurodatAppName)
+            }
         val conn = getConnection(eurodatCredentials.username, eurodatCredentials.password, eurodatCredentials.jdbcUrl)
         val sqlStatement = "SELECT * FROM safedeposit.pdf WHERE uuid_pdf = '$eurodatId'"
         return selectDocumentFromSqlDatabase(conn, sqlStatement, eurodatId)

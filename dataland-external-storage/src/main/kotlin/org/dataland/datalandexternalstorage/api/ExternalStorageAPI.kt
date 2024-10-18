@@ -55,5 +55,8 @@ interface ExternalStorageAPI {
         value = ["/data/{dataId}"],
         produces = ["application/json"],
     )
-    fun selectDataById(@PathVariable("dataId") dataId: String, correlationId: String): ResponseEntity<String>
+    fun selectDataById(
+        @PathVariable("dataId") dataId: String,
+        correlationId: String,
+    ): ResponseEntity<String>
 }

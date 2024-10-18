@@ -10,19 +10,9 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 @Suppress("MaxLineLength")
 data class EutaxonomyFinancialsCreditinstitutionAssetsForCalculationOfGreenAssetRatio(
     val totalGrossCarryingAmount: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible:
-    QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned:
-    QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds:
-    QaReportDataPoint<CurrencyDataPoint?>? = null,
-
-    val totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional:
-    QaReportDataPoint<CurrencyDataPoint?>? = null,
-
+    val totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional: QaReportDataPoint<CurrencyDataPoint?>? = null,
     val totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling: QaReportDataPoint<CurrencyDataPoint?>? = null,
-
 )

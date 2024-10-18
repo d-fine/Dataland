@@ -13,44 +13,49 @@ class NorthDataMappingTest {
     private val testCompanyName = "test Gmbh"
     private val testHeadquarters = "Osnabrück"
     private val testSectorCodeWz = "73.11.0"
-    private val expectedNorthDataCompanyInformation = NorthDataCompanyInformation(
-        companyName = testCompanyName,
-        headquarters = testHeadquarters,
-        headquartersPostalCode = "49078",
-        lei = "",
-        countryCode = "DE",
-        registerId = "Amtsgericht Osnabrück HRB 123456",
-        street = "Test Weg 22",
-        vatId = "",
-        status = "active",
-        sector = testSectorCodeWz,
-    )
+    private val expectedNorthDataCompanyInformation =
+        NorthDataCompanyInformation(
+            companyName = testCompanyName,
+            headquarters = testHeadquarters,
+            headquartersPostalCode = "49078",
+            lei = "",
+            countryCode = "DE",
+            registerId = "Amtsgericht Osnabrück HRB 123456",
+            street = "Test Weg 22",
+            vatId = "",
+            status = "active",
+            sector = testSectorCodeWz,
+        )
 
-    private val expectedIdentifiers = mapOf(
-        IdentifierType.CompanyRegistrationNumber.value to listOf("Amtsgericht Osnabrück HRB 123456"),
-    )
-    private val expectedCompanyInformation = CompanyInformation(
-        companyName = testCompanyName,
-        headquarters = testHeadquarters,
-        headquartersPostalCode = "49078",
-        sectorCodeWz = testSectorCodeWz,
-        identifiers = expectedIdentifiers,
-        countryCode = "DE",
-    )
+    private val expectedIdentifiers =
+        mapOf(
+            IdentifierType.CompanyRegistrationNumber.value to listOf("Amtsgericht Osnabrück HRB 123456"),
+        )
+    private val expectedCompanyInformation =
+        CompanyInformation(
+            companyName = testCompanyName,
+            headquarters = testHeadquarters,
+            headquartersPostalCode = "49078",
+            sectorCodeWz = testSectorCodeWz,
+            identifiers = expectedIdentifiers,
+            countryCode = "DE",
+        )
 
-    private val expectedMinimalCompanyInformationPatch = CompanyInformationPatch(
-        sectorCodeWz = testSectorCodeWz,
-        identifiers = expectedIdentifiers,
-    )
+    private val expectedMinimalCompanyInformationPatch =
+        CompanyInformationPatch(
+            sectorCodeWz = testSectorCodeWz,
+            identifiers = expectedIdentifiers,
+        )
 
-    private val expectedCompanyInformationPatch = CompanyInformationPatch(
-        companyName = testCompanyName,
-        headquarters = testHeadquarters,
-        headquartersPostalCode = "49078",
-        sectorCodeWz = testSectorCodeWz,
-        identifiers = expectedIdentifiers,
-        countryCode = "DE",
-    )
+    private val expectedCompanyInformationPatch =
+        CompanyInformationPatch(
+            companyName = testCompanyName,
+            headquarters = testHeadquarters,
+            headquartersPostalCode = "49078",
+            sectorCodeWz = testSectorCodeWz,
+            identifiers = expectedIdentifiers,
+            countryCode = "DE",
+        )
 
     @Test
     fun `test north data parsing and conversion`() {

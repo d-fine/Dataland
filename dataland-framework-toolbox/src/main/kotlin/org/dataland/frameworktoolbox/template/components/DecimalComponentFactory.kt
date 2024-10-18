@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component
  * Generates DecimalComponents from rows with the component "Number"
  */
 @Component
-class DecimalComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
-
+class DecimalComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     companion object {
         /**
          * Pareses bounds for a numeric variable given in the format [LOWER BOUND, UPPER BOUND].
@@ -25,22 +26,22 @@ class DecimalComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnos
 
             val pattern =
                 """Allowed Range:\s*\[\s*(?<lower>(?:\-?\d+|-INF))\s*,\s*(?<upper>(?:\-?\d+|INF))\s*\]""".toRegex()
-            val matchResult = pattern.find(input)
-                ?: throw IllegalArgumentException(
-                    "Decimal options $input does not" +
-                        " match the expected format 'Allowed Range: [LOWER_BOUND, UPPER_BOUND]'",
-                )
+            val matchResult =
+                pattern.find(input)
+                    ?: throw IllegalArgumentException(
+                        "Decimal options $input does not" +
+                            " match the expected format 'Allowed Range: [LOWER_BOUND, UPPER_BOUND]'",
+                    )
 
             val lowerBoundGroupMatch = matchResult.groups["lower"]!!.value
             val upperBoundGroupMatch = matchResult.groups["upper"]!!.value
 
-            fun getBound(value: String): Long? {
-                return if (value == "INF" || value == "-INF") {
+            fun getBound(value: String): Long? =
+                if (value == "INF" || value == "-INF") {
                     null
                 } else {
                     value.toLong()
                 }
-            }
 
             return Pair(getBound(lowerBoundGroupMatch), getBound(upperBoundGroupMatch))
         }

@@ -22,8 +22,8 @@ class EuTaxonomyAlignedActivitiesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(
-    identifier, parent,
-) {
+        identifier, parent,
+    ) {
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
@@ -87,13 +87,14 @@ class EuTaxonomyAlignedActivitiesComponent(
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
-        val fixtureExpression = if (isNullable) {
-            "dataGenerator.randomExtendedDataPoint(dataGenerator.randomArray(() => " +
-                "dataGenerator.generateAlignedActivity(), 0, 10))"
-        } else {
-            "dataGenerator.randomExtendedDataPoint(dataGenerator.guaranteedArray(() => " +
-                "dataGenerator.generateAlignedActivity(), 0, 10))"
-        }
+        val fixtureExpression =
+            if (isNullable) {
+                "dataGenerator.randomExtendedDataPoint(dataGenerator.randomArray(() => " +
+                    "dataGenerator.generateAlignedActivity(), 0, 10))"
+            } else {
+                "dataGenerator.randomExtendedDataPoint(dataGenerator.guaranteedArray(() => " +
+                    "dataGenerator.generateAlignedActivity(), 0, 10))"
+            }
         sectionBuilder.addAtomicExpression(
             identifier,
             fixtureExpression,

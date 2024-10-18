@@ -9,14 +9,15 @@ import org.dataland.frameworktoolbox.template.components.TemplateComponentFactor
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
 /**
  * Generates the Lksg risk positions component
  */
 @Component
-class LksgRiskAssessmentsComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG Risk Position Assessments"
+class LksgRiskAssessmentsComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "LkSG Risk Position Assessments"
 
     override fun generateComponent(
         row: TemplateRow,

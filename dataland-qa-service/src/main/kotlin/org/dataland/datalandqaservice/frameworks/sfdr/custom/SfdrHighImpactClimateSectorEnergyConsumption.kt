@@ -9,7 +9,5 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
  */
 data class SfdrHighImpactClimateSectorEnergyConsumption(
     val highImpactClimateSectorEnergyConsumptionInGWh: QaReportDataPoint<ExtendedDataPointBigDecimal>? = null,
-
-    val highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue:
-    QaReportDataPoint<ExtendedDataPointBigDecimal>? = null,
+    val highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal>? = null,
 )

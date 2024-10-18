@@ -15,7 +15,11 @@ data class DataTableEntity(
         /**
          * Constructs a DataTableEntity from a dataId, dataType and data object
          */
-        fun fromJsonObject(dataId: String, dataType: String, data: JSONObject): DataTableEntity {
+        fun fromJsonObject(
+            dataId: String,
+            dataType: String,
+            data: JSONObject,
+        ): DataTableEntity {
             val companyAssociatedData = JSONObject()
             companyAssociatedData.put("dataType", dataType)
             companyAssociatedData.put("data", data.toString())
@@ -27,11 +31,12 @@ data class DataTableEntity(
      * Method to get a query that writes the company associated data to the corresponding table entry
      */
     fun executeUpdateQuery(context: Context) {
-        val queryStatement = context.connection.prepareStatement(
-            "UPDATE data_items " +
-                "SET data = ? " +
-                "WHERE data_id = ?",
-        )
+        val queryStatement =
+            context.connection.prepareStatement(
+                "UPDATE data_items " +
+                    "SET data = ? " +
+                    "WHERE data_id = ?",
+            )
         queryStatement.setString(1, ObjectMapper().writeValueAsString(companyAssociatedData.toString()))
         queryStatement.setString(2, dataId)
         queryStatement.executeUpdate()

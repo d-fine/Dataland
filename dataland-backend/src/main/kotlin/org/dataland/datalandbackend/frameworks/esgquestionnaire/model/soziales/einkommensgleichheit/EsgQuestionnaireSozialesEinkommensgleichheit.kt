@@ -7,9 +7,6 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.YearlyTim
  * The data-model for the Einkommensgleichheit section
  */
 data class EsgQuestionnaireSozialesEinkommensgleichheit(
-    val ueberwachungDerEinkommensungleichheit:
-    YearlyTimeseriesData<UeberwachungDerEinkommensungleichheitValues?>? = null,
-
+    val ueberwachungDerEinkommensungleichheit: YearlyTimeseriesData<UeberwachungDerEinkommensungleichheitValues?>? = null,
     val massnahmenZurVerbesserungDerEinkommensungleichheit: String? = null,
-
 )

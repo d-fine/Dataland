@@ -3,8 +3,8 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V22__IntroduceNewFieldsInSfdrTest {
-
     @Test
     fun `check migration script for SFDR one`() {
         TestUtils().testMigrationOfSingleDataset(

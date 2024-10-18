@@ -8,27 +8,26 @@ import org.springframework.http.HttpStatus
 import java.io.File
 
 class DocumentManagerAccessor {
-
     companion object {
         const val WAIT_TIME_IN_MS = 500L
         const val MAX_ATTEMPTS_TO_CHECK_DOCUMENT = 20
     }
 
     val documentControllerApi = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
-    val testFiles = listOf(
-        File("./build/resources/test/documents/some-document.pdf"),
-        File("./build/resources/test/documents/some-document2.pdf"),
-        File("./build/resources/test/documents/StandardWordExport.pdf"),
-        File("./build/resources/test/documents/more-pdfs-in-seperate-directory/some-document.pdf"),
-    )
+    val testFiles =
+        listOf(
+            File("./build/resources/test/documents/some-document.pdf"),
+            File("./build/resources/test/documents/some-document2.pdf"),
+            File("./build/resources/test/documents/StandardWordExport.pdf"),
+            File("./build/resources/test/documents/more-pdfs-in-seperate-directory/some-document.pdf"),
+        )
 
     val jwtHelper = JwtAuthenticationHelper()
 
     fun uploadAllTestDocumentsAndAssurePersistence() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val documentIds = mutableListOf<String>()
-        testFiles.forEach {
-                file ->
+        testFiles.forEach { file ->
             documentIds.add(documentControllerApi.postDocument(file).documentId)
         }
         documentIds.forEach { documentId -> executeDocumentExistenceCheckWithRetries(documentId) }

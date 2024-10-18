@@ -13,13 +13,11 @@ class AuthenticationMethodNotSupportedException(
         "The chosen authentication method is not supported for this request, please authenticate in a different way.",
     cause: Throwable? = null,
 ) : SingleApiException(message, cause) {
-
-    override fun getErrorResponse(): ErrorDetails {
-        return ErrorDetails(
+    override fun getErrorResponse(): ErrorDetails =
+        ErrorDetails(
             errorType = "authentication-method-not-supported-for-this-request",
             summary = summary,
             message = message,
             httpStatus = HttpStatus.FORBIDDEN,
         )
-    }
 }

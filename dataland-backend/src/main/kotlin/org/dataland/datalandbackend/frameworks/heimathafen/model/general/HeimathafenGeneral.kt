@@ -52,69 +52,45 @@ import org.dataland.datalandbackend.frameworks.heimathafen.model.general.unterne
 data class HeimathafenGeneral(
     @field:Valid()
     val unternehmen: HeimathafenGeneralUnternehmen? = null,
-
     @field:Valid()
     val methodik: HeimathafenGeneralMethodik? = null,
-
     @field:Valid()
     val impactmerkmaleKeineArmut: HeimathafenGeneralImpactmerkmaleKeineArmut? = null,
-
     @field:Valid()
     val impactmerkmaleKeinHunger: HeimathafenGeneralImpactmerkmaleKeinHunger? = null,
-
     @field:Valid()
     val impactmerkmaleGesundheitUndWohlergehen: HeimathafenGeneralImpactmerkmaleGesundheitUndWohlergehen? = null,
-
     @field:Valid()
     val impactmerkmaleHochwertigeBildung: HeimathafenGeneralImpactmerkmaleHochwertigeBildung? = null,
-
     @field:Valid()
     val impactmerkmaleGeschlechtergleichheit: HeimathafenGeneralImpactmerkmaleGeschlechtergleichheit? = null,
-
     @field:Valid()
     val impactmerkmaleSauberesWasserUndSanitaereEinrichtungen:
-    HeimathafenGeneralImpactmerkmaleSauberesWasserUndSanitaereEinrichtungen? = null,
-
+        HeimathafenGeneralImpactmerkmaleSauberesWasserUndSanitaereEinrichtungen? = null,
     @field:Valid()
     val impactmerkmaleBezahlbareUndSaubereEnergie: HeimathafenGeneralImpactmerkmaleBezahlbareUndSaubereEnergie? = null,
-
     @field:Valid()
     val impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum:
-    HeimathafenGeneralImpactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum? = null,
-
+        HeimathafenGeneralImpactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum? = null,
     @field:Valid()
-    val impactmerkmaleIndustrieInnovationUndInfrastruktur:
-    HeimathafenGeneralImpactmerkmaleIndustrieInnovationUndInfrastruktur? = null,
-
+    val impactmerkmaleIndustrieInnovationUndInfrastruktur: HeimathafenGeneralImpactmerkmaleIndustrieInnovationUndInfrastruktur? = null,
     @field:Valid()
     val impactmerkmaleWenigerUngleichheiten: HeimathafenGeneralImpactmerkmaleWenigerUngleichheiten? = null,
-
     @field:Valid()
-    val impactmerkmaleNachhaltigeStaedteUndGemeinden:
-    HeimathafenGeneralImpactmerkmaleNachhaltigeStaedteUndGemeinden? = null,
-
+    val impactmerkmaleNachhaltigeStaedteUndGemeinden: HeimathafenGeneralImpactmerkmaleNachhaltigeStaedteUndGemeinden? = null,
     @field:Valid()
-    val impactmerkmaleNachhaltigerKonsumUndProduktion:
-    HeimathafenGeneralImpactmerkmaleNachhaltigerKonsumUndProduktion? = null,
-
+    val impactmerkmaleNachhaltigerKonsumUndProduktion: HeimathafenGeneralImpactmerkmaleNachhaltigerKonsumUndProduktion? = null,
     @field:Valid()
     val impactmerkmaleMassnahmenZumKlimaschutz: HeimathafenGeneralImpactmerkmaleMassnahmenZumKlimaschutz? = null,
-
     @field:Valid()
     val impactmerkmaleLebenUnterWasser: HeimathafenGeneralImpactmerkmaleLebenUnterWasser? = null,
-
     @field:Valid()
     val impactmerkmaleLebenAndLand: HeimathafenGeneralImpactmerkmaleLebenAndLand? = null,
-
     @field:Valid()
     val impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen:
-    HeimathafenGeneralImpactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen? = null,
-
+        HeimathafenGeneralImpactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen? = null,
     @field:Valid()
-    val impactmerkmalePartnerschaftenZurErreichungDerZiele:
-    HeimathafenGeneralImpactmerkmalePartnerschaftenZurErreichungDerZiele? = null,
-
+    val impactmerkmalePartnerschaftenZurErreichungDerZiele: HeimathafenGeneralImpactmerkmalePartnerschaftenZurErreichungDerZiele? = null,
     @field:Valid()
     val implementierung: HeimathafenGeneralImplementierung? = null,
-
 )

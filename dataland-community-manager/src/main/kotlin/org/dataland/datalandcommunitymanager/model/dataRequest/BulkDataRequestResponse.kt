@@ -12,10 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)
     val message: String,
-
     @field:JsonProperty(required = true)
     val acceptedCompanyIdentifiers: List<String>,
-
     @field:JsonProperty(required = true)
     val rejectedCompanyIdentifiers: List<String>,
 )

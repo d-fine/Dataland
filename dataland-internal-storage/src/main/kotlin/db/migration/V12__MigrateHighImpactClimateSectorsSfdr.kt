@@ -11,6 +11,7 @@ import org.json.JSONObject
  * This migration script updates the existing SFDR datasets, more specifically it introduces an additional layer to
  * each sector in the high-impact climate sectors
  */
+@Suppress("ClassName")
 class V12__MigrateHighImpactClimateSectorsSfdr : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
@@ -27,9 +28,10 @@ class V12__MigrateHighImpactClimateSectorsSfdr : BaseJavaMigration() {
     fun migrateSfdrHighImpactClimateSectors(dataTableEntity: DataTableEntity) {
         val sectorsToMigrate = emptyMap<String, JSONObject>().toMutableMap()
         val dataset = dataTableEntity.dataJsonObject
-        val applicableHighImpactClimateSectorsObject = (
-            (dataset.getOrJavaNull("environmental") as JSONObject?)
-                ?.getOrJavaNull("energyPerformance") as JSONObject?
+        val applicableHighImpactClimateSectorsObject =
+            (
+                (dataset.getOrJavaNull("environmental") as JSONObject?)
+                    ?.getOrJavaNull("energyPerformance") as JSONObject?
             )?.getOrJavaNull("applicableHighImpactClimateSectors") as JSONObject?
         if (applicableHighImpactClimateSectorsObject !== null) {
             applicableHighImpactClimateSectorsObject.keys().forEach { naceCode ->

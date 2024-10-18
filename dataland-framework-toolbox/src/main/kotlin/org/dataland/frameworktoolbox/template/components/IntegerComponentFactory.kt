@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates IntegerComponents from rows with the component "Integer"
  */
 @Component
-class IntegerComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class IntegerComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Integer"
 
     override fun generateComponent(

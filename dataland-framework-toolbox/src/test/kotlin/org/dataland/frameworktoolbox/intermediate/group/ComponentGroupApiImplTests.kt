@@ -10,7 +10,6 @@ import kotlin.test.assertContains
 import kotlin.test.assertFails
 
 class ComponentGroupApiImplTests {
-
     @Test
     fun `it should be possible to create new components dynamically`() {
         val componentGroup = DemoComponentGroupApiImpl()
@@ -22,9 +21,10 @@ class ComponentGroupApiImplTests {
     fun `component creation should fail if the identifier is in use`() {
         val componentGroup = DemoComponentGroupApiImpl()
         componentGroup.create<DateComponent>("testDateComponent") {}
-        val exception = assertFails {
-            componentGroup.create<DateComponent>("testDateComponent") {}
-        }
+        val exception =
+            assertFails {
+                componentGroup.create<DateComponent>("testDateComponent") {}
+            }
         assertEquals("The identifier testDateComponent already exists.", exception.message)
     }
 
@@ -47,9 +47,10 @@ class ComponentGroupApiImplTests {
     @Test
     fun `it should be possible to edit components dynamically`() {
         val componentGroup = DemoComponentGroupApiImpl()
-        val component = componentGroup.create<DecimalComponent>("testNumber") {
-            constantUnitSuffix = "unit A"
-        }
+        val component =
+            componentGroup.create<DecimalComponent>("testNumber") {
+                constantUnitSuffix = "unit A"
+            }
         componentGroup.edit<DecimalComponent>("testNumber") {
             constantUnitSuffix = "Unit B"
         }
@@ -59,9 +60,10 @@ class ComponentGroupApiImplTests {
     @Test
     fun `component editing should fail if the component does not exist`() {
         val componentGroup = DemoComponentGroupApiImpl()
-        val exception = assertFails {
-            componentGroup.edit<DecimalComponent>("testNumber") {}
-        }
+        val exception =
+            assertFails {
+                componentGroup.edit<DecimalComponent>("testNumber") {}
+            }
         assertEquals("Could not find the component with identifier testNumber.", exception.message)
     }
 
@@ -69,9 +71,10 @@ class ComponentGroupApiImplTests {
     fun `component editing should fail if the component is of a different type`() {
         val componentGroup = DemoComponentGroupApiImpl()
         componentGroup.create<DecimalComponent>("testNumber") {}
-        val exception = assertFails {
-            componentGroup.edit<DateComponent>("testNumber") {}
-        }
+        val exception =
+            assertFails {
+                componentGroup.edit<DateComponent>("testNumber") {}
+            }
         assertEquals(
             "The component with identifier testNumber is of type class" +
                 " org.dataland.frameworktoolbox.intermediate.components.DecimalComponent." +
@@ -91,9 +94,10 @@ class ComponentGroupApiImplTests {
     @Test
     fun `deleting components should fail if the component does not exist`() {
         val componentGroup = DemoComponentGroupApiImpl()
-        val exception = assertFails {
-            componentGroup.delete<DecimalComponent>("testNumber")
-        }
+        val exception =
+            assertFails {
+                componentGroup.delete<DecimalComponent>("testNumber")
+            }
         assertEquals("Could not find the component with identifier testNumber.", exception.message)
     }
 
@@ -101,9 +105,10 @@ class ComponentGroupApiImplTests {
     fun `deleting components should fail if the component has a different type`() {
         val componentGroup = DemoComponentGroupApiImpl()
         componentGroup.create<DecimalComponent>("testNumber") {}
-        val exception = assertFails {
-            componentGroup.delete<DateComponent>("testNumber")
-        }
+        val exception =
+            assertFails {
+                componentGroup.delete<DateComponent>("testNumber")
+            }
         assertEquals(
             "The component with identifier testNumber is of type class" +
                 " org.dataland.frameworktoolbox.intermediate.components.DecimalComponent." +

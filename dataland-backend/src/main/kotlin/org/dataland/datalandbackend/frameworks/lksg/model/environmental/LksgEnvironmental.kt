@@ -15,15 +15,10 @@ import org.dataland.datalandbackend.frameworks.lksg.model.environmental.useOfMer
  */
 data class LksgEnvironmental(
     @field:Valid()
-    val useOfMercuryMercuryWasteMinamataConvention:
-    LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention? = null,
-
+    val useOfMercuryMercuryWasteMinamataConvention: LksgEnvironmentalUseOfMercuryMercuryWasteMinamataConvention? = null,
     @field:Valid()
     val productionAndUseOfPersistentOrganicPollutantsPopsConvention:
-    LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention? = null,
-
+        LksgEnvironmentalProductionAndUseOfPersistentOrganicPollutantsPopsConvention? = null,
     @field:Valid()
-    val exportImportOfHazardousWasteBaselConvention:
-    LksgEnvironmentalExportImportOfHazardousWasteBaselConvention? = null,
-
+    val exportImportOfHazardousWasteBaselConvention: LksgEnvironmentalExportImportOfHazardousWasteBaselConvention? = null,
 )

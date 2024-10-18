@@ -23,41 +23,47 @@ class QaReportSecurityPolicy(
      * @param user the user requesting the change
      * @return true if the user can change the active status of the report, false otherwise
      */
-    fun canUserSetQaReportStatus(report: QaReportEntity, user: DatalandAuthentication): Boolean {
-        return report.reporterUserId == user.userId || user.roles.contains(DatalandRealmRole.ROLE_ADMIN)
-    }
+    fun canUserSetQaReportStatus(
+        report: QaReportEntity,
+        user: DatalandAuthentication,
+    ): Boolean = report.reporterUserId == user.userId || user.roles.contains(DatalandRealmRole.ROLE_ADMIN)
 
     /**
      * Checks if a user can view a QA report.
      * @param dataId the ID of the data set the QA report is associated with
      * @param user the user requesting the view
      */
-    fun ensureUserCanViewQaReportForDataId(dataId: String, user: DatalandAuthentication) {
-        val userAuthenticatedMetadataController = userAuthenticatedBackendClient
-            .getMetaDataControllerApiForUserAuthentication(user)
+    fun ensureUserCanViewQaReportForDataId(
+        dataId: String,
+        user: DatalandAuthentication,
+    ) {
+        val userAuthenticatedMetadataController =
+            userAuthenticatedBackendClient
+                .getMetaDataControllerApiForUserAuthentication(user)
         try {
             userAuthenticatedMetadataController.getDataMetaInfo(dataId)
             return
         } catch (apiRequestException: ClientException) {
-            val exceptionToRelay = when (apiRequestException.statusCode) {
-                HttpStatus.FORBIDDEN.value() -> {
-                    InsufficientRightsApiException(
-                        "Missing required access rights",
-                        "You do not have the required access rights to view the data id: $dataId",
-                        apiRequestException,
-                    )
-                }
+            val exceptionToRelay =
+                when (apiRequestException.statusCode) {
+                    HttpStatus.FORBIDDEN.value() -> {
+                        InsufficientRightsApiException(
+                            "Missing required access rights",
+                            "You do not have the required access rights to view the data id: $dataId",
+                            apiRequestException,
+                        )
+                    }
 
-                HttpStatus.NOT_FOUND.value() -> {
-                    ResourceNotFoundApiException(
-                        "Data id not found",
-                        "No data id with the id: $dataId could be found.",
-                        apiRequestException,
-                    )
-                }
+                    HttpStatus.NOT_FOUND.value() -> {
+                        ResourceNotFoundApiException(
+                            "Data id not found",
+                            "No data id with the id: $dataId could be found.",
+                            apiRequestException,
+                        )
+                    }
 
-                else -> apiRequestException
-            }
+                    else -> apiRequestException
+                }
             throw exceptionToRelay
         }
     }

@@ -59,23 +59,21 @@ class EmailSender(
     }
 
     private fun logEmail(email: Email) {
-        val emailLog = StringBuilder()
-            .append("Sending email with subject \"${email.content.subject}\"\n")
-            .append("(sender: ${email.sender.emailAddress})\n")
-            .append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
-            .apply {
-                if (!email.cc.isNullOrEmpty()) {
-                    append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
-                }
-            }
-            .toString()
+        val emailLog =
+            StringBuilder()
+                .append("Sending email with subject \"${email.content.subject}\"\n")
+                .append("(sender: ${email.sender.emailAddress})\n")
+                .append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
+                .apply {
+                    if (!email.cc.isNullOrEmpty()) {
+                        append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
+                    }
+                }.toString()
         logger.info(emailLog)
     }
 
-    private fun convertListOfEmailContactsToJoinedString(emailContacts: List<EmailContact>): String {
-        return emailContacts.joinToString(", ") {
-                emailContact ->
+    private fun convertListOfEmailContactsToJoinedString(emailContacts: List<EmailContact>): String =
+        emailContacts.joinToString(", ") { emailContact ->
             emailContact.emailAddress
         }
-    }
 }

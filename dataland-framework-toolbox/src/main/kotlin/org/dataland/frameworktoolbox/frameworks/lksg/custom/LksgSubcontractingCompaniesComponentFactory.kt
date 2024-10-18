@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component
  * Generates the SubContractingCompanies component
  */
 @Component
-class LksgSubcontractingCompaniesComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "LkSG Subcontracting Companies"
+class LksgSubcontractingCompaniesComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "LkSG Subcontracting Companies"
 
     override fun generateComponent(
         row: TemplateRow,

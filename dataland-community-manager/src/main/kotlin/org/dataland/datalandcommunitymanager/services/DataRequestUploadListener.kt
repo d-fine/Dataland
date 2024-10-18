@@ -21,7 +21,6 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 /**
  * This service checks if freshly uploaded and validated data answers a data request
@@ -43,26 +42,27 @@ class DataRequestUploadListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredCommunityManagerDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
+                value =
+                    Queue(
+                        "dataQualityAssuredCommunityManagerDataManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                key = [RoutingKeyNames.DATA],
             ),
         ],
     )
     @Transactional
     fun changeRequestStatusAfterUpload(
         @Payload jsonString: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) id: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
+        messageUtils.validateMessageType(type, MessageType.QA_COMPLETED)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
@@ -87,26 +87,27 @@ class DataRequestUploadListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "privateRequestReceivedCommunityManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [RoutingKeyNames.metaDataPersisted],
+                value =
+                    Queue(
+                        "privateRequestReceivedCommunityManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.PRIVATE_REQUEST_RECEIVED, declare = "false"),
+                key = [RoutingKeyNames.META_DATA_PERSISTED],
             ),
         ],
     )
     @Transactional
     fun changeRequestStatusAfterPrivateDataUpload(
         @Payload payload: String,
-        @Header(MessageHeaderKey.Type) type: String,
-        @Header(MessageHeaderKey.CorrelationId) id: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
+        messageUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
         val payloadJsonObject = JSONObject(payload)
         val dataId = payloadJsonObject.getString("dataId")
         if (dataId.isEmpty()) {

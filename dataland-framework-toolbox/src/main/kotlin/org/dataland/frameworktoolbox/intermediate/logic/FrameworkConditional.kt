@@ -11,18 +11,14 @@ abstract class FrameworkConditional {
      * Always TRUE. Forever.
      */
     object AlwaysTrue : FrameworkConditional() {
-        override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
-            return FrameworkBooleanLambda.TRUE
-        }
+        override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda = FrameworkBooleanLambda.TRUE
     }
 
     /**
      * Always FALSE. Forever.
      */
     object AlwaysFalse : FrameworkConditional() {
-        override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda {
-            return FrameworkBooleanLambda.FALSE
-        }
+        override fun toFrameworkBooleanLambda(): FrameworkBooleanLambda = FrameworkBooleanLambda.FALSE
     }
 
     /**

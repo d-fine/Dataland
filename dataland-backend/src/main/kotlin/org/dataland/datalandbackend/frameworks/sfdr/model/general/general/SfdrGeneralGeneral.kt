@@ -12,13 +12,9 @@ import java.time.LocalDate
  */
 data class SfdrGeneralGeneral(
     val dataDate: LocalDate,
-
     val fiscalYearDeviation: SfdrGeneralGeneralFiscalYearDeviationOptions,
-
     val fiscalYearEnd: LocalDate,
-
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,
-
 )

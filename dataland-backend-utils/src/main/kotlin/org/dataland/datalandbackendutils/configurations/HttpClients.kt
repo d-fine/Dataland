@@ -19,24 +19,23 @@ class HttpClients {
     @ConditionalOnBean(KeycloakTokenManager::class)
     fun getAuthenticatedOkHttpClient(
         @Autowired keycloakTokenManager: KeycloakTokenManager,
-    ): OkHttpClient {
-        return OkHttpClient()
+    ): OkHttpClient =
+        OkHttpClient()
             .newBuilder()
             .addInterceptor {
                 val originalRequest = it.request()
                 val accessToken = keycloakTokenManager.getAccessToken()
-                val modifiedRequest = originalRequest.newBuilder()
-                    .header("Authorization", "Bearer $accessToken")
-                    .build()
+                val modifiedRequest =
+                    originalRequest
+                        .newBuilder()
+                        .header("Authorization", "Bearer $accessToken")
+                        .build()
                 it.proceed(modifiedRequest)
             }.build()
-    }
 
     /**
      * The getter for a standard OkHttpClient
      */
     @Bean("UnauthenticatedOkHttpClient")
-    fun getOkHttpClient(): OkHttpClient {
-        return OkHttpClient()
-    }
+    fun getOkHttpClient(): OkHttpClient = OkHttpClient()
 }

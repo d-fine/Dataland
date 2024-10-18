@@ -13,21 +13,15 @@ import java.math.BigInteger
 data class SfdrSocialHumanRights(
     @field:Valid()
     val humanRightsPolicy: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val humanRightsDueDiligence: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val traffickingInHumanBeingsPolicy: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val reportedChildLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val reportedForcedOrCompulsoryLabourIncidents: ExtendedDataPoint<YesNo?>? = null,
-
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val numberOfReportedIncidentsOfHumanRightsViolations: ExtendedDataPoint<BigInteger?>? = null,
-
 )

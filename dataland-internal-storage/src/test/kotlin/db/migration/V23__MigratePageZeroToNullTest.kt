@@ -3,8 +3,8 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V23__MigratePageZeroToNullTest {
-
     @Test
     fun `check migration script for eu taxonomy financials`() {
         TestUtils().testMigrationOfSingleDataset(

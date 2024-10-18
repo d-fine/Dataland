@@ -25,29 +25,20 @@ import org.dataland.datalandbackend.frameworks.esgquestionnaire.model.umwelt.was
 data class EsgQuestionnaireUmwelt(
     @field:Valid()
     val treibhausgasemissionen: EsgQuestionnaireUmweltTreibhausgasemissionen? = null,
-
     @field:Valid()
     val produktion: EsgQuestionnaireUmweltProduktion? = null,
-
     @field:Valid()
     val energieverbrauch: EsgQuestionnaireUmweltEnergieverbrauch? = null,
-
     @field:Valid()
     val energieeffizienzImmobilienanlagen: EsgQuestionnaireUmweltEnergieeffizienzImmobilienanlagen? = null,
-
     @field:Valid()
     val wasserverbrauch: EsgQuestionnaireUmweltWasserverbrauch? = null,
-
     @field:Valid()
     val abfallproduktion: EsgQuestionnaireUmweltAbfallproduktion? = null,
-
     @field:Valid()
     val biodiversitaet: EsgQuestionnaireUmweltBiodiversitaet? = null,
-
     @field:Valid()
     val fossileBrennstoffe: EsgQuestionnaireUmweltFossileBrennstoffe? = null,
-
     @field:Valid()
     val taxonomie: EsgQuestionnaireUmweltTaxonomie? = null,
-
 )

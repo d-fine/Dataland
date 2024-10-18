@@ -10,8 +10,6 @@ import org.dataland.datalandbackend.model.p2p.categories.realEstate.subcategorie
  */
 data class P2pRealEstate(
     val buildingEfficiency: P2pRealEstateBuildingEfficiency? = null,
-
     val energySource: P2pRealEstateEnergySource? = null,
-
     val technology: P2plRealEstateTechnology? = null,
 )

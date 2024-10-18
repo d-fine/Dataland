@@ -35,7 +35,6 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotificationServiceTest {
-
     private lateinit var notificationService: NotificationService
     val notificationThresholdDays = 30
     val elementaryEventsThreshold = 10
@@ -44,24 +43,26 @@ class NotificationServiceTest {
     private val testDataType = DataTypeEnum.heimathafen
     private val testReportingPeriod = "2022"
 
-    private val testDataMetaInformation = DataMetaInformation(
-        UUID.randomUUID().toString(),
-        testCompanyId.toString(),
-        testDataType,
-        Instant.now().toEpochMilli(),
-        testReportingPeriod,
-        false,
-        QaStatus.Pending,
-        null,
-    )
+    private val testDataMetaInformation =
+        DataMetaInformation(
+            UUID.randomUUID().toString(),
+            testCompanyId.toString(),
+            testDataType,
+            Instant.now().toEpochMilli(),
+            testReportingPeriod,
+            false,
+            QaStatus.Pending,
+            null,
+        )
 
-    private val testCompanyInformation = CompanyInformation(
-        companyName = "Dummy Company",
-        headquarters = "Berlin",
-        identifiers = emptyMap(),
-        countryCode = "DE",
-        companyContactDetails = listOf("emailAddress@dummymail.de", "emailAddress@fakemailingfortest.de"),
-    )
+    private val testCompanyInformation =
+        CompanyInformation(
+            companyName = "Dummy Company",
+            headquarters = "Berlin",
+            identifiers = emptyMap(),
+            countryCode = "DE",
+            companyContactDetails = listOf("emailAddress@dummymail.de", "emailAddress@fakemailingfortest.de"),
+        )
 
     private val testProxyPrimaryUrl = "www.dummy.com"
     private val testCorrelationId = UUID.randomUUID().toString()
@@ -78,17 +79,18 @@ class NotificationServiceTest {
         val companyDataControllerApiMock = mock(CompanyDataControllerApi::class.java)
         val objectMapper = jacksonObjectMapper()
 
-        notificationService = NotificationService(
-            cloudEventMessageHandlerMock,
-            notificationEventRepository,
-            elementaryEventRepository,
-            companyDataControllerApiMock,
-            companyRolesManager,
-            objectMapper,
-            notificationThresholdDays,
-            elementaryEventsThreshold,
-            testProxyPrimaryUrl,
-        )
+        notificationService =
+            NotificationService(
+                cloudEventMessageHandlerMock,
+                notificationEventRepository,
+                elementaryEventRepository,
+                companyDataControllerApiMock,
+                companyRolesManager,
+                objectMapper,
+                notificationThresholdDays,
+                elementaryEventsThreshold,
+                testProxyPrimaryUrl,
+            )
         `when`(metaDataControllerApiMock.getDataMetaInfo(anyString())).thenReturn(testDataMetaInformation)
         `when`(companyDataControllerApiMock.getCompanyInfo(testCompanyId.toString())).thenReturn(testCompanyInformation)
     }
@@ -110,48 +112,38 @@ class NotificationServiceTest {
         creationTimeInDaysBeforeNow: Int,
         framework: DataTypeEnum = testDataType,
         reportingPeriod: String = testReportingPeriod,
-    ): ElementaryEventEntity {
-        return ElementaryEventEntity(
+    ): ElementaryEventEntity =
+        ElementaryEventEntity(
             elementaryEventType = ElementaryEventType.UploadEvent,
             companyId = testCompanyId,
             framework = framework,
             reportingPeriod = reportingPeriod,
             creationTimestamp =
-            Instant.now().minus(creationTimeInDaysBeforeNow.toLong(), ChronoUnit.DAYS).toEpochMilli(),
+                Instant.now().minus(creationTimeInDaysBeforeNow.toLong(), ChronoUnit.DAYS).toEpochMilli(),
             notificationEvent = null,
         )
-    }
 
-    private fun createNotificationEventEntityForDataUploads(
-        creationTimeInDaysBeforeNow: Long,
-    ): NotificationEventEntity {
-        return NotificationEventEntity(
+    private fun createNotificationEventEntityForDataUploads(creationTimeInDaysBeforeNow: Long): NotificationEventEntity =
+        NotificationEventEntity(
             companyId = testCompanyId,
             elementaryEventType = ElementaryEventType.UploadEvent,
             creationTimestamp = Instant.now().minus(creationTimeInDaysBeforeNow, ChronoUnit.DAYS).toEpochMilli(),
         )
-    }
 
-    private fun setTheReturnValueForNotificationEventRepoQuery(
-        notificationEventEntitiesToReturn: List<NotificationEventEntity>,
-    ) {
+    private fun setTheReturnValueForNotificationEventRepoQuery(notificationEventEntitiesToReturn: List<NotificationEventEntity>) {
         `when`(
             notificationService.notificationEventRepository
                 .findNotificationEventByCompanyIdAndElementaryEventType(testCompanyId, ElementaryEventType.UploadEvent),
+        ).thenReturn(
+            notificationEventEntitiesToReturn,
         )
-            .thenReturn(
-                notificationEventEntitiesToReturn,
-            )
     }
 
-    private fun parseJsonStringIntoTemplateEmailMessage(
-        jsonString: String,
-    ): TemplateEmailMessage {
-        return notificationService.objectMapper.readValue(
+    private fun parseJsonStringIntoTemplateEmailMessage(jsonString: String): TemplateEmailMessage =
+        notificationService.objectMapper.readValue(
             jsonString,
             TemplateEmailMessage::class.java,
         )
-    }
 
     @Test
     fun `single mail if no notification event in last 30 days and one unprocessed elementary event`() {
@@ -172,10 +164,11 @@ class NotificationServiceTest {
         setTheReturnValueForNotificationEventRepoQuery(listOf(notificationEvent))
         val latestElementaryEvent = createUploadElementaryEventEntity(0)
 
-        val unprocessedElementaryEvents = listOf(
-            createUploadElementaryEventEntity(60),
-            latestElementaryEvent,
-        )
+        val unprocessedElementaryEvents =
+            listOf(
+                createUploadElementaryEventEntity(60),
+                latestElementaryEvent,
+            )
         val notificationEmailType =
             notificationService.determineNotificationEmailType(
                 latestElementaryEvent,
@@ -293,16 +286,16 @@ class NotificationServiceTest {
     fun `creating and storing a notification event works and is also reflected in the associated elementary events`() {
         val latestElementaryEvent = createUploadElementaryEventEntity(10)
 
-        val unprocessedElementaryEvents = listOf(
-            latestElementaryEvent,
-            createUploadElementaryEventEntity(11),
-        )
+        val unprocessedElementaryEvents =
+            listOf(
+                latestElementaryEvent,
+                createUploadElementaryEventEntity(11),
+            )
 
         lateinit var storedNotificationEventEntity: NotificationEventEntity
 
         `when`(notificationService.notificationEventRepository.saveAndFlush(any(NotificationEventEntity::class.java)))
-            .thenAnswer {
-                    invocation ->
+            .thenAnswer { invocation ->
                 storedNotificationEventEntity = invocation.getArgument(0)
 
                 assertEquals(testCompanyId, storedNotificationEventEntity.companyId)
@@ -349,10 +342,10 @@ class NotificationServiceTest {
             assertEquals(testReportingPeriod, arg1.properties["year"])
             assertEquals(testProxyPrimaryUrl, arg1.properties["baseUrl"])
 
-            assertEquals(MessageType.SendTemplateEmail, arg2)
+            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
             assertEquals(testCorrelationId, arg3)
-            assertEquals(ExchangeName.SendEmail, arg4)
-            assertEquals(RoutingKeyNames.templateEmail, arg5)
+            assertEquals(ExchangeName.SEND_EMAIL, arg4)
+            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
         }
     }
 
@@ -403,10 +396,10 @@ class NotificationServiceTest {
             assertEquals(testProxyPrimaryUrl, arg1.properties["baseUrl"])
             assertEquals("10", arg1.properties["numberOfDays"])
 
-            assertEquals(MessageType.SendTemplateEmail, arg2)
+            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
             assertEquals(testCorrelationId, arg3)
-            assertEquals(ExchangeName.SendEmail, arg4)
-            assertEquals(RoutingKeyNames.templateEmail, arg5)
+            assertEquals(ExchangeName.SEND_EMAIL, arg4)
+            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
         }
     }
 
@@ -414,11 +407,12 @@ class NotificationServiceTest {
     fun `validate that the output of the external email message sender is correctly built`() {
         val latestElementaryEvent = createUploadElementaryEventEntity(10, DataTypeEnum.lksg, "2020")
 
-        val unprocessedElementaryEvents = listOf(
-            latestElementaryEvent,
-            createUploadElementaryEventEntity(11, DataTypeEnum.sfdr, "2021"),
-            createUploadElementaryEventEntity(12, DataTypeEnum.vsme, "2022"),
-        )
+        val unprocessedElementaryEvents =
+            listOf(
+                latestElementaryEvent,
+                createUploadElementaryEventEntity(11, DataTypeEnum.sfdr, "2021"),
+                createUploadElementaryEventEntity(12, DataTypeEnum.vsme, "2022"),
+            )
         val lastNotificationEvent = createNotificationEventEntityForDataUploads(10)
 
         setTheReturnValueForNotificationEventRepoQuery(listOf(lastNotificationEvent))

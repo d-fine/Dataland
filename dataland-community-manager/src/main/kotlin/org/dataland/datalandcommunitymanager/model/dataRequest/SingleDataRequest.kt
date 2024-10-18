@@ -18,30 +18,28 @@ data class SingleDataRequest(
     @field:JsonProperty(required = true)
     @field:Schema(example = "enterValidIdentifier")
     val companyIdentifier: String,
-
     @field:JsonProperty(required = true)
     @field:Schema(
         implementation = DataTypeEnum::class,
         example = "p2p",
     )
     val dataType: DataTypeEnum,
-
     @field:JsonProperty(required = true)
     @field:ArraySchema(
-        arraySchema = Schema(
-            type = "string",
-            example = "[\"2022\", \"2023\"]",
-        ),
+        arraySchema =
+            Schema(
+                type = "string",
+                example = "[\"2022\", \"2023\"]",
+            ),
     )
     val reportingPeriods: Set<String>,
-
     @field:ArraySchema(
-        arraySchema = Schema(
-            type = "string",
-            example = "[\"testuser@example.com\"]",
-        ),
+        arraySchema =
+            Schema(
+                type = "string",
+                example = "[\"testuser@example.com\"]",
+            ),
     )
     val contacts: Set<String>?,
-
     val message: String?,
 )

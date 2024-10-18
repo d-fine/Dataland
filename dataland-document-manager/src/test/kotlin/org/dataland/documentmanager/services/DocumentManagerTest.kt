@@ -51,21 +51,23 @@ class DocumentManagerTest(
         mockStorageApi = mock(StreamingStorageControllerApi::class.java)
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-        val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-            username = "data_uploader",
-            userId = "dummy-user-id",
-            roles = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
-        )
+        val mockAuthentication =
+            AuthenticationMock.mockJwtAuthentication(
+                username = "data_uploader",
+                userId = "dummy-user-id",
+                roles = setOf(DatalandRealmRole.ROLE_USER, DatalandRealmRole.ROLE_UPLOADER),
+            )
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)
 
-        documentManager = DocumentManager(
-            inMemoryDocumentStore = inMemoryDocumentStore,
-            documentMetaInfoRepository = mockDocumentMetaInfoRepository,
-            cloudEventMessageHandler = mockCloudEventMessageHandler,
-            storageApi = mockStorageApi,
-            fileProcessor = fileProcessor,
-        )
+        documentManager =
+            DocumentManager(
+                inMemoryDocumentStore = inMemoryDocumentStore,
+                documentMetaInfoRepository = mockDocumentMetaInfoRepository,
+                cloudEventMessageHandler = mockCloudEventMessageHandler,
+                storageApi = mockStorageApi,
+                fileProcessor = fileProcessor,
+            )
     }
 
     @Test
@@ -90,11 +92,12 @@ class DocumentManagerTest(
                     ),
                 ),
             )
-        val thrown = assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentById(
-                documentId = uploadResponse.documentId,
-            )
-        }
+        val thrown =
+            assertThrows<ResourceNotFoundApiException> {
+                documentManager.retrieveDocumentById(
+                    documentId = uploadResponse.documentId,
+                )
+            }
         assertEquals(
             "A non-quality-assured document with ID: ${uploadResponse.documentId} was found. " +
                 "Only quality-assured documents can be retrieved.",
@@ -127,8 +130,8 @@ class DocumentManagerTest(
         val mockMultipartFile = mockUploadableFile(testDocument)
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(), eq(MessageType.DocumentReceived), anyString(),
-                eq(ExchangeName.DocumentReceived), eq(""),
+                anyString(), eq(MessageType.DOCUMENT_RECEIVED), anyString(),
+                eq(ExchangeName.DOCUMENT_RECEIVED), eq(""),
             ),
         ).thenThrow(
             AmqpException::class.java,
@@ -137,6 +140,7 @@ class DocumentManagerTest(
             documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
         }
     }
+
     private fun mockUploadableFile(reportName: String): MockMultipartFile {
         val testFileStream = javaClass.getResourceAsStream("sampleFiles/$reportName")
         val testFileBytes = IOUtils.toByteArray(testFileStream)

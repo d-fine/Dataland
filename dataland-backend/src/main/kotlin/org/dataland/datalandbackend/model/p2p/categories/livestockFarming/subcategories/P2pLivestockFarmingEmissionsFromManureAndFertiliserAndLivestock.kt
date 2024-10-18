@@ -9,6 +9,5 @@ import java.math.BigDecimal
 */
 data class P2pLivestockFarmingEmissionsFromManureAndFertiliserAndLivestock(
     val compostedFermentedManureInPercent: BigDecimal? = null,
-
     val emissionProofFertiliserStorageInPercent: BigDecimal? = null,
 )

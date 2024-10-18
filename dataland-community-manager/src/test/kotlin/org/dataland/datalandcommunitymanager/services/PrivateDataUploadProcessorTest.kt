@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
-import java.util.*
+import java.util.UUID
 
 class PrivateDataUploadProcessorTest {
     private lateinit var privateDataUploadProcessor: PrivateDataUploadProcessor
@@ -28,26 +28,29 @@ class PrivateDataUploadProcessorTest {
         val elementaryEventRepositoryMock = mock(ElementaryEventRepository::class.java)
         val objectMapper = jacksonObjectMapper()
 
-        privateDataUploadProcessor = PrivateDataUploadProcessor(
-            messageUtilsMock,
-            notificationServiceMock,
-            elementaryEventRepositoryMock,
-            objectMapper,
-        )
+        privateDataUploadProcessor =
+            PrivateDataUploadProcessor(
+                messageUtilsMock,
+                notificationServiceMock,
+                elementaryEventRepositoryMock,
+                objectMapper,
+            )
     }
 
     @Test
     fun `empty dataId leads to rejection exception`() {
-        val payload = JSONObject(
-            mapOf(
-                "dataId" to "",
-                "actionType" to ActionType.StorePrivateDataAndDocuments,
-            ),
-        ).toString()
+        val payload =
+            JSONObject(
+                mapOf(
+                    "dataId" to "",
+                    "actionType" to ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
+                ),
+            ).toString()
 
-        val exception = assertThrows<MessageQueueRejectException> {
-            privateDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.PrivateDataReceived)
-        }
+        val exception =
+            assertThrows<MessageQueueRejectException> {
+                privateDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.PRIVATE_DATA_RECEIVED)
+            }
 
         assertEquals("Message was rejected: The dataId in the message payload is empty.", exception.message)
     }
@@ -55,17 +58,19 @@ class PrivateDataUploadProcessorTest {
     @Test
     fun `unexpected action type leads to rejection exception`() {
         val unexpectedActionType = "unexpected action type"
-        val expectedActionType = ActionType.StorePrivateDataAndDocuments
-        val payload = JSONObject(
-            mapOf(
-                "dataId" to "some-data-Id",
-                "actionType" to unexpectedActionType,
-            ),
-        ).toString()
+        val expectedActionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS
+        val payload =
+            JSONObject(
+                mapOf(
+                    "dataId" to "some-data-Id",
+                    "actionType" to unexpectedActionType,
+                ),
+            ).toString()
 
-        val exception = assertThrows<MessageQueueRejectException> {
-            privateDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, unexpectedActionType)
-        }
+        val exception =
+            assertThrows<MessageQueueRejectException> {
+                privateDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, unexpectedActionType)
+            }
 
         assertEquals(
             "Message was rejected: Expected action type $expectedActionType, but was $unexpectedActionType.",
@@ -77,21 +82,22 @@ class PrivateDataUploadProcessorTest {
     fun `happy path of successful validation`() {
         val dummyCompanyId = UUID.randomUUID()
         val dummyReportingPeriod = "2022"
-        val payload = JSONObject(
-            mapOf(
-                "dataId" to "abc",
-                "bypassQa" to "false",
-                "companyId" to dummyCompanyId.toString(),
-                "framework" to DataTypeEnum.heimathafen.toString(),
-                "reportingPeriod" to dummyReportingPeriod,
-                "actionType" to ActionType.StorePrivateDataAndDocuments,
-            ),
-        ).toString()
+        val payload =
+            JSONObject(
+                mapOf(
+                    "dataId" to "abc",
+                    "bypassQa" to "false",
+                    "companyId" to dummyCompanyId.toString(),
+                    "framework" to DataTypeEnum.heimathafen.toString(),
+                    "reportingPeriod" to dummyReportingPeriod,
+                    "actionType" to ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
+                ),
+            ).toString()
 
         assertDoesNotThrow {
             privateDataUploadProcessor.validateIncomingPayloadAndReturnDataId(
                 payload,
-                ActionType.StorePrivateDataAndDocuments,
+                ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
             )
         }
 

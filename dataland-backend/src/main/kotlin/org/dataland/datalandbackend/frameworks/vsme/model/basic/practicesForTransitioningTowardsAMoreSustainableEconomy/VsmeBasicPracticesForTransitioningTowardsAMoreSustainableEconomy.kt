@@ -10,5 +10,4 @@ import org.dataland.datalandbackend.model.datapoints.BaseDataPoint
 data class VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy(
     @field:Valid()
     val undertakenMeasures: List<BaseDataPoint<String>>? = null,
-
 )

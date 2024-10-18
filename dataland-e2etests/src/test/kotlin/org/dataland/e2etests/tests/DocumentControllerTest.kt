@@ -88,9 +88,10 @@ class DocumentControllerTest {
     fun `test that a non existing document cannot be found`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         val nonExistentDocumentId = "nonExistentDocumentId"
-        val exception = assertThrows<ClientException> {
-            documentControllerClient.checkDocument(nonExistentDocumentId)
-        }
+        val exception =
+            assertThrows<ClientException> {
+                documentControllerClient.checkDocument(nonExistentDocumentId)
+            }
         assertEquals(HttpStatus.NOT_FOUND.value(), exception.statusCode)
     }
 
@@ -123,11 +124,12 @@ class DocumentControllerTest {
     }
 
     private fun removeAllRolesFromUser(userId: UUID) {
-        val rolesOfUser = apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
-            null,
-            null,
-            userId,
-        )
+        val rolesOfUser =
+            apiAccessor.companyRolesControllerApi.getCompanyRoleAssignments(
+                null,
+                null,
+                userId,
+            )
         rolesOfUser.forEach {
             apiAccessor.companyRolesControllerApi.removeCompanyRole(
                 it.companyRole,
@@ -163,7 +165,9 @@ class DocumentControllerTest {
      */
     private fun ensureQaCompleted(uploadResponse: DocumentUploadResponse): File {
         lateinit var downloadedFile: File
-        Awaitility.await().atMost(10, TimeUnit.SECONDS)
+        Awaitility
+            .await()
+            .atMost(10, TimeUnit.SECONDS)
             .until {
                 try {
                     downloadedFile = documentControllerClient.getDocument(uploadResponse.documentId)
@@ -181,8 +185,14 @@ class DocumentControllerTest {
      * @param mimeType expected mime type of the document
      * @param size expected size of the document
      */
-    private fun validateResponseHeaders(uploadResponse: DocumentUploadResponse, mimeType: MediaType, size: String) {
-        Awaitility.await().atMost(10, TimeUnit.SECONDS)
+    private fun validateResponseHeaders(
+        uploadResponse: DocumentUploadResponse,
+        mimeType: MediaType,
+        size: String,
+    ) {
+        Awaitility
+            .await()
+            .atMost(10, TimeUnit.SECONDS)
             .until {
                 try {
                     val response = documentControllerClient.getDocumentWithHttpInfo(uploadResponse.documentId).headers
@@ -202,7 +212,9 @@ class DocumentControllerTest {
      */
     private fun isByteArrayRepresentationOfPdf(byteArray: ByteArray): Boolean {
         val pdfSignature = byteArrayOf(0x25, 0x50, 0x44, 0x46)
-        return byteArray.size >= pdfSignature.size && byteArray.sliceArray(pdfSignature.indices)
-            .contentEquals(pdfSignature)
+        return byteArray.size >= pdfSignature.size &&
+            byteArray
+                .sliceArray(pdfSignature.indices)
+                .contentEquals(pdfSignature)
     }
 }

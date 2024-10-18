@@ -23,7 +23,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRetrievalViaApiKeyTest {
-
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
@@ -36,11 +35,13 @@ class DataRetrievalViaApiKeyTest {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
     }
 
-    private fun buildApiKeyMetaInfoForFailedValidation(validationMessage: String): ApiKeyMetaInfo {
-        return ApiKeyMetaInfo(null, null, null, false, validationMessage)
-    }
+    private fun buildApiKeyMetaInfoForFailedValidation(validationMessage: String): ApiKeyMetaInfo =
+        ApiKeyMetaInfo(null, null, null, false, validationMessage)
 
-    private fun assertUserId(technicalUser: TechnicalUser, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
+    private fun assertUserId(
+        technicalUser: TechnicalUser,
+        receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo,
+    ) {
         val expectedUserIdForUserType = technicalUser.technicalUserId
         val userIdInReceivedApiKeyMetaInfo = receivedApiKeyMetaInfoFromValidation.keycloakUserId
         assertEquals(
@@ -52,7 +53,10 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    private fun assertRoles(technicalUser: TechnicalUser, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
+    private fun assertRoles(
+        technicalUser: TechnicalUser,
+        receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo,
+    ) {
         val expectedRolesForUserType = technicalUser.roles
         val rolesInReceivedApiKeyMetaInfo = receivedApiKeyMetaInfoFromValidation.keycloakRoles
         assertEquals(
@@ -64,11 +68,15 @@ class DataRetrievalViaApiKeyTest {
         )
     }
 
-    private fun assertExpiryDate(daysValid: Int? = null, receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo) {
+    private fun assertExpiryDate(
+        daysValid: Int? = null,
+        receivedApiKeyMetaInfoFromValidation: ApiKeyMetaInfo,
+    ) {
         val expectedExpiryDateForApiKey = datesHandler.calculateExpectedExpiryDateSimpleFormatted(daysValid)
-        val expiryDateInReceivedApiKeyMetaInfo = datesHandler.convertUnixTimeToSimpleFormattedDate(
-            receivedApiKeyMetaInfoFromValidation.expiryDate,
-        )
+        val expiryDateInReceivedApiKeyMetaInfo =
+            datesHandler.convertUnixTimeToSimpleFormattedDate(
+                receivedApiKeyMetaInfoFromValidation.expiryDate,
+            )
         assertEquals(
             expectedExpiryDateForApiKey,
             expiryDateInReceivedApiKeyMetaInfo,
@@ -109,11 +117,15 @@ class DataRetrievalViaApiKeyTest {
 
         assertEquals(
             expectedStoredCompany.copy(
-                companyInformation = expectedStoredCompany
-                    .companyInformation.copy(
-                        companyContactDetails = expectedStoredCompany
-                            .companyInformation.companyContactDetails?.sorted(),
-                    ),
+                companyInformation =
+                    expectedStoredCompany
+                        .companyInformation
+                        .copy(
+                            companyContactDetails =
+                                expectedStoredCompany
+                                    .companyInformation.companyContactDetails
+                                    ?.sorted(),
+                        ),
             ),
             downloadedStoredCompany,
             "The received company $downloadedStoredCompany does not equal the expected company $expectedStoredCompany",
@@ -122,17 +134,24 @@ class DataRetrievalViaApiKeyTest {
 
     @Test
     fun `create a non teaser company upload framework data for it generate an API key and get the data with it`() {
-        val testDataEuTaxonomyNonFinancials = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getTData(1).first()
-        val testCompanyInformationNonTeaser = apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-            .getCompanyInformationWithoutIdentifiers(1).first().copy(isTeaserCompany = false)
-        val mapOfIds = apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
-            testCompanyInformationNonTeaser,
-            testDataEuTaxonomyNonFinancials,
-        )
+        val testDataEuTaxonomyNonFinancials =
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+                .getTData(1)
+                .first()
+        val testCompanyInformationNonTeaser =
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+                .getCompanyInformationWithoutIdentifiers(1)
+                .first()
+                .copy(isTeaserCompany = false)
+        val mapOfIds =
+            apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+                testCompanyInformationNonTeaser,
+                testDataEuTaxonomyNonFinancials,
+            )
         apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
-        val downloadedCompanyAssociatedEuTaxoDataNonFinancials = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
+        val downloadedCompanyAssociatedEuTaxoDataNonFinancials =
+            apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
+                .getCompanyAssociatedEutaxonomyNonFinancialsData(mapOfIds.getValue("dataId"))
         assertEquals(
             CompanyAssociatedDataEutaxonomyNonFinancialsData(
                 companyId = mapOfIds.getValue("companyId"),
@@ -155,11 +174,15 @@ class DataRetrievalViaApiKeyTest {
         val downloadedStoredCompany = apiAccessor.companyDataControllerApi.getCompanyById(companyId)
         assertEquals(
             expectedStoredCompany.copy(
-                companyInformation = expectedStoredCompany
-                    .companyInformation.copy(
-                        companyContactDetails = expectedStoredCompany
-                            .companyInformation.companyContactDetails?.sorted(),
-                    ),
+                companyInformation =
+                    expectedStoredCompany
+                        .companyInformation
+                        .copy(
+                            companyContactDetails =
+                                expectedStoredCompany
+                                    .companyInformation.companyContactDetails
+                                    ?.sorted(),
+                        ),
             ),
             downloadedStoredCompany,
         )
@@ -179,8 +202,10 @@ class DataRetrievalViaApiKeyTest {
     fun `generate an API key with the current max value for daysValid then validate it`() {
         val daysValidMax = MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY
         val technicalUser = TechnicalUser.Reader
-        val apiKeyToValidate = apiKeyHelper
-            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValidMax).apiKey
+        val apiKeyToValidate =
+            apiKeyHelper
+                .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValidMax)
+                .apiKey
         val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToValidate)
         doAssertionsAfterApiKeyValidation(technicalUser, daysValidMax, apiKeyMetaInfo)
     }
@@ -217,8 +242,10 @@ class DataRetrievalViaApiKeyTest {
     fun `generate an API key which is valid forever then validate it`() {
         val daysValid = null
         val technicalUser = TechnicalUser.Reader
-        val apiKeyToValidate = apiKeyHelper
-            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValid).apiKey
+        val apiKeyToValidate =
+            apiKeyHelper
+                .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, daysValid)
+                .apiKey
         val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToValidate)
         doAssertionsAfterApiKeyValidation(technicalUser, daysValid, apiKeyMetaInfo)
     }
@@ -226,8 +253,10 @@ class DataRetrievalViaApiKeyTest {
     @Test
     fun `validate a non existing API key`() {
         val technicalUser = TechnicalUser.Reader
-        val apiKeyToRevokeAndValidate = apiKeyHelper
-            .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, 1).apiKey
+        val apiKeyToRevokeAndValidate =
+            apiKeyHelper
+                .authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, 1)
+                .apiKey
         apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
         val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyToRevokeAndValidate)
         val expectedValidationMessage = "Your Dataland account has no API key registered. Please generate one."
@@ -242,8 +271,9 @@ class DataRetrievalViaApiKeyTest {
     @Test
     fun `validate an API key which has the right format but a wrong secret `() {
         apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(TechnicalUser.Reader, 1)
-        val apiKeyWithWrongSecret = "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
-            "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
+        val apiKeyWithWrongSecret =
+            "MThiNjdlY2MtMTE3Ni00NTA2LTg0MTQtMWU4MTY2MTAxN2Nh_" +
+                "f7d037b92dd8c15022a9761853bcd88d014aab6d34c53705d61d6174a4589ee464c5adee09c9494e_3573499914"
         val apiKeyMetaInfo = apiKeyHelper.resetAuthenticationAndValidateApiKey(apiKeyWithWrongSecret)
         val expectedValidationMessage = "The API key you provided for your Dataland account is not correct."
         val expectedApiKeyMetaInfo = buildApiKeyMetaInfoForFailedValidation(expectedValidationMessage)
@@ -274,8 +304,9 @@ class DataRetrievalViaApiKeyTest {
         apiKeyHelper.authenticateApiCallsWithApiKeyForTechnicalUser(technicalUser, 1)
         apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
         val actualRevokeResponse = apiKeyHelper.revokeApiKeyForTechnicalUserAndResetAuthentication(technicalUser)
-        val expectedRevokeMessage = "Your Dataland account has no API key registered. " +
-            "Therefore no revokement took place."
+        val expectedRevokeMessage =
+            "Your Dataland account has no API key registered. " +
+                "Therefore no revokement took place."
         val expectedRevokeResponse = RevokeApiKeyResponse(false, expectedRevokeMessage)
         assertEquals(
             expectedRevokeResponse,

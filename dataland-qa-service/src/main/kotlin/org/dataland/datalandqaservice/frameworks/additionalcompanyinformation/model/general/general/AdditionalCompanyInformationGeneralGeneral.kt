@@ -14,11 +14,8 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class AdditionalCompanyInformationGeneralGeneral(
     @field:Valid()
     val fiscalYearDeviation:
-    QaReportDataPoint<ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions?>? = null,
-
+        QaReportDataPoint<ExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions?>? = null,
     @field:Valid()
     val fiscalYearEnd: QaReportDataPoint<ExtendedDataPointLocalDate?>? = null,
-
     val referencedReports: QaReportDataPoint<Map<String, CompanyReport>>? = null,
-
 )

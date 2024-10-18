@@ -25,25 +25,29 @@ class FrameworkQaModelBuilder(
     private val frameworkBasePackageQualifier =
         "org.dataland.datalandqaservice.frameworks.${removeUnallowedJavaIdentifierCharacters(framework.identifier)}"
 
-    val rootPackageBuilder: PackageBuilder = PackageBuilder(
-        "$frameworkBasePackageQualifier.model",
-        null,
-    )
+    val rootPackageBuilder: PackageBuilder =
+        PackageBuilder(
+            "$frameworkBasePackageQualifier.model",
+            null,
+        )
 
-    val rootDataModelClass: DataClassBuilder = rootPackageBuilder.addClass(
-        "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
-        "The root QA data-model for the ${framework.identifier.capitalizeEn()} Framework",
-        mutableListOf(),
-    )
+    val rootDataModelClass: DataClassBuilder =
+        rootPackageBuilder.addClass(
+            "${getNameFromLabel(framework.identifier).capitalizeEn()}Data",
+            "The root QA data-model for the ${framework.identifier.capitalizeEn()} Framework",
+            mutableListOf(),
+        )
 
     private fun buildFrameworkSpecificApiController(into: DatalandRepository) {
         logger.trace("Building the framework-specific QA Controller")
-        val targetPath = into.qaKotlinSrc /
-            frameworkBasePackageQualifier.replace(".", "/") /
-            "${rootDataModelClass.name}QaReportController.kt"
+        val targetPath =
+            into.qaKotlinSrc /
+                frameworkBasePackageQualifier.replace(".", "/") /
+                "${rootDataModelClass.name}QaReportController.kt"
         logger.trace("Building framework QA controller for '{}' into '{}'", framework.identifier, targetPath)
-        val freemarkerTemplate = FreeMarker.configuration
-            .getTemplate("/specific/qamodel/FrameworkQaController.kt.ftl")
+        val freemarkerTemplate =
+            FreeMarker.configuration
+                .getTemplate("/specific/qamodel/FrameworkQaController.kt.ftl")
 
         val writer = FileWriter(targetPath.toFile())
         freemarkerTemplate.process(

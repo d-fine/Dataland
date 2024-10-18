@@ -14,10 +14,8 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 data class StoredCompany(
     @field:JsonProperty(required = true)
     val companyId: String,
-
     @field:JsonProperty(required = true)
     val companyInformation: CompanyInformation,
-
     @field:JsonProperty(required = true)
     val dataRegisteredByDataland: List<DataMetaInformation>,
 )

@@ -11,13 +11,11 @@ open class InsufficientRightsApiException(
     override val message: String,
     cause: Throwable? = null,
 ) : SingleApiException(message, cause) {
-
-    override fun getErrorResponse(): ErrorDetails {
-        return ErrorDetails(
+    override fun getErrorResponse(): ErrorDetails =
+        ErrorDetails(
             errorType = "insufficient-rights",
             summary = summary,
             message = message,
             httpStatus = HttpStatus.FORBIDDEN,
         )
-    }
 }

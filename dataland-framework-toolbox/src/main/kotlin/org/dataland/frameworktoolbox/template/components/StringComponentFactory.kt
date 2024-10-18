@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates StringComponents from rows with the component "String"
  */
 @Component
-class StringComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class StringComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "String"
 
     override fun generateComponent(

@@ -18,7 +18,6 @@ class ConfigurationTemporarilyCachedDataControllerApi(
      * The bean to configure the internal client StorageControllerApi
      */
     @Bean
-    fun getTemporarilyCachedDataApiClient(): TemporarilyCachedDataControllerApi {
-        return TemporarilyCachedDataControllerApi(basePath = backendBaseUrl)
-    }
+    fun getTemporarilyCachedDataApiClient(): TemporarilyCachedDataControllerApi =
+        TemporarilyCachedDataControllerApi(basePath = backendBaseUrl)
 }

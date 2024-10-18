@@ -14,7 +14,7 @@ import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.TimeZone
 
 /**
  * This class manages the notification of requesters and company owners about access requests
@@ -56,32 +56,37 @@ class AccessRequestEmailSender(
      * @param emailInformation the email information of the company owner
      * @param correlationId the correlationId of the operation
      */
-    fun notifyRequesterAboutGrantedRequest(emailInformation: GrantedEmailInformation, correlationId: String) {
+    fun notifyRequesterAboutGrantedRequest(
+        emailInformation: GrantedEmailInformation,
+        correlationId: String,
+    ) {
         val companyName = companyApi.getCompanyInfo(emailInformation.datalandCompanyId).companyName
 
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
 
-        val properties = mapOf(
-            "companyId" to emailInformation.datalandCompanyId,
-            "companyName" to companyName,
-            "dataType" to emailInformation.dataType,
-            "dataTypeDescription" to emailInformation.dataTypeDescription,
-            "reportingPeriod" to emailInformation.reportingPeriod,
-            "creationDate" to dateFormat.format(emailInformation.creationTimestamp),
-        )
+        val properties =
+            mapOf(
+                "companyId" to emailInformation.datalandCompanyId,
+                "companyName" to companyName,
+                "dataType" to emailInformation.dataType,
+                "dataTypeDescription" to emailInformation.dataTypeDescription,
+                "reportingPeriod" to emailInformation.reportingPeriod,
+                "creationDate" to dateFormat.format(emailInformation.creationTimestamp),
+            )
 
-        val message = TemplateEmailMessage(
-            emailTemplateType = TemplateEmailMessage.Type.DataAccessGranted,
-            receiver = TemplateEmailMessage.UserIdEmailRecipient(emailInformation.userId),
-            properties = properties,
-        )
+        val message =
+            TemplateEmailMessage(
+                emailTemplateType = TemplateEmailMessage.Type.DataAccessGranted,
+                receiver = TemplateEmailMessage.UserIdEmailRecipient(emailInformation.userId),
+                properties = properties,
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
+            MessageType.SEND_TEMPLATE_EMAIL,
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.TEMPLATE_EMAIL,
         )
     }
 
@@ -112,32 +117,42 @@ class AccessRequestEmailSender(
      * @param emailInformation the requesters email information
      * @param correlationId the correlationId of the operation
      */
-    fun notifyCompanyOwnerAboutNewRequest(emailInformation: RequestEmailInformation, correlationId: String) {
-        val reportingPeriods = emailInformation.reportingPeriods.toList().sorted().joinToString(", ")
+    fun notifyCompanyOwnerAboutNewRequest(
+        emailInformation: RequestEmailInformation,
+        correlationId: String,
+    ) {
+        val reportingPeriods =
+            emailInformation.reportingPeriods
+                .toList()
+                .sorted()
+                .joinToString(", ")
         val companyName = companyApi.getCompanyInfo(emailInformation.datalandCompanyId).companyName
         val requester = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
         val contacts = emailInformation.contacts + setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
-        val receiverList = contacts.flatMap {
-            MessageEntity.addContact(it, companyRolesManager, emailInformation.datalandCompanyId)
-        }
-        val properties = mutableMapOf(
-            "companyId" to emailInformation.datalandCompanyId,
-            "companyName" to companyName,
-            "dataType" to emailInformation.dataTypeDescription,
-            "reportingPeriods" to reportingPeriods,
-            "requesterEmail" to requester.email,
-            "firstName" to requester.firstName.takeIf { it?.isNotBlank() ?: false },
-            "lastName" to requester.lastName.takeIf { it?.isNotBlank() ?: false },
-            "message" to emailInformation.message.takeIf { it?.isNotBlank() ?: false },
-        )
-        receiverList.forEach {
-            val message = TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.DataAccessRequested, receiver = it,
-                properties = properties,
+        val receiverList =
+            contacts.flatMap {
+                MessageEntity.addContact(it, companyRolesManager, emailInformation.datalandCompanyId)
+            }
+        val properties =
+            mutableMapOf(
+                "companyId" to emailInformation.datalandCompanyId,
+                "companyName" to companyName,
+                "dataType" to emailInformation.dataTypeDescription,
+                "reportingPeriods" to reportingPeriods,
+                "requesterEmail" to requester.email,
+                "firstName" to requester.firstName.takeIf { it?.isNotBlank() ?: false },
+                "lastName" to requester.lastName.takeIf { it?.isNotBlank() ?: false },
+                "message" to emailInformation.message.takeIf { it?.isNotBlank() ?: false },
             )
+        receiverList.forEach {
+            val message =
+                TemplateEmailMessage(
+                    emailTemplateType = TemplateEmailMessage.Type.DataAccessRequested, receiver = it,
+                    properties = properties,
+                )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message), MessageType.SendTemplateEmail, correlationId,
-                ExchangeName.SendEmail, RoutingKeyNames.templateEmail,
+                objectMapper.writeValueAsString(message), MessageType.SEND_TEMPLATE_EMAIL, correlationId,
+                ExchangeName.SEND_EMAIL, RoutingKeyNames.TEMPLATE_EMAIL,
             )
         }
     }

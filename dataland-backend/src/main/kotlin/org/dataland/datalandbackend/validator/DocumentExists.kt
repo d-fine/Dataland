@@ -36,7 +36,10 @@ class DocumentReferenceExistsValidator(
 ) : ConstraintValidator<DocumentExists, String> {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun isValid(documentReference: String?, context: ConstraintValidatorContext?): Boolean {
+    override fun isValid(
+        documentReference: String?,
+        context: ConstraintValidatorContext?,
+    ): Boolean {
         if (documentReference == null) return true
         return callDocumentApiAndCheckFileReference(documentReference, documentControllerApi, logger)
     }

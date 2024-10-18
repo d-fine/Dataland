@@ -21,7 +21,6 @@ data class ReferencedReportValidatorBuilder(
     val referencedReportsPath: String,
     val extendedDocumentFileReferences: List<String>,
 ) : DataModelElement {
-
     override val name: String = "ReferencedReportsListValidator"
 
     override val empty: Boolean
@@ -36,9 +35,10 @@ data class ReferencedReportValidatorBuilder(
     override fun build(into: Path) {
         val classPath = into / "${fullyQualifiedName.replace(".", "/")}.kt"
 
-        val freemarkerTemplate = FreeMarker.configuration.getTemplate(
-            "/specific/datamodel/elements/ValidateReferencedReportsList.kt.ftl",
-        )
+        val freemarkerTemplate =
+            FreeMarker.configuration.getTemplate(
+                "/specific/datamodel/elements/ValidateReferencedReportsList.kt.ftl",
+            )
         val writer = FileWriter(classPath.toFile())
         freemarkerTemplate.process(
             mapOf(

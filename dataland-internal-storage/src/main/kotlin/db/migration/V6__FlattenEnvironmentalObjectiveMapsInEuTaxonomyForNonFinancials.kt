@@ -13,8 +13,11 @@ import org.json.JSONObject
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
  * and the new version is integrated into the old datatype
  */
+@Suppress("ClassName")
 class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJavaMigration() {
-    private enum class CriteriaType(val prefix: String) {
+    private enum class CriteriaType(
+        val prefix: String,
+    ) {
         SubstantialContribution("substantialContribution"),
         Dnsh("dnsh"),
     }
@@ -47,15 +50,19 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
         }
     }
 
-    private fun migrateMapForCriteria(baseObject: JSONObject, criteriaType: CriteriaType) {
-        val fieldRenamingHelper = mapOf(
-            "ClimateMitigation" to "ClimateChangeMitigation",
-            "ClimateAdaptation" to "ClimateChangeAdaption",
-            "Water" to "SustainableUseAndProtectionOfWaterAndMarineResources",
-            "CircularEconomy" to "TransitionToACircularEconomy",
-            "PollutionPrevention" to "PollutionPreventionAndControl",
-            "Biodiversity" to "ProtectionAndRestorationOfBiodiversityAndEcosystems",
-        )
+    private fun migrateMapForCriteria(
+        baseObject: JSONObject,
+        criteriaType: CriteriaType,
+    ) {
+        val fieldRenamingHelper =
+            mapOf(
+                "ClimateMitigation" to "ClimateChangeMitigation",
+                "ClimateAdaptation" to "ClimateChangeAdaption",
+                "Water" to "SustainableUseAndProtectionOfWaterAndMarineResources",
+                "CircularEconomy" to "TransitionToACircularEconomy",
+                "PollutionPrevention" to "PollutionPreventionAndControl",
+                "Biodiversity" to "ProtectionAndRestorationOfBiodiversityAndEcosystems",
+            )
         val criteriaObject = baseObject.opt("${criteriaType.prefix}Criteria") ?: return
         if (criteriaObject is JSONObject) {
             fieldRenamingHelper.keys.forEach { oldFieldName ->
@@ -72,14 +79,15 @@ class V6__FlattenEnvironmentalObjectiveMapsInEuTaxonomyForNonFinancials : BaseJa
     }
 
     private fun migrateFieldNames(baseObject: JSONObject) {
-        val fieldsToRemoveTotalPrefix = listOf(
-            "nonEligibleShare",
-            "eligibleShare",
-            "nonAlignedShare",
-            "alignedShare",
-            "enablingShare",
-            "transitionalShare",
-        )
+        val fieldsToRemoveTotalPrefix =
+            listOf(
+                "nonEligibleShare",
+                "eligibleShare",
+                "nonAlignedShare",
+                "alignedShare",
+                "enablingShare",
+                "transitionalShare",
+            )
         val additionalFieldsToAddPercentIndication = listOf("enablingShare", "transitionalShare")
         fieldsToRemoveTotalPrefix.forEach { fieldName ->
             val oldFieldName = "total${fieldName.replaceFirstChar(Char::titlecase)}"

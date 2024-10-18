@@ -21,15 +21,11 @@ class ApiClients(
     @Bean
     fun getCompanyDataControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): CompanyDataControllerApi {
-        return CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
-    }
+    ): CompanyDataControllerApi = CompanyDataControllerApi(backendBaseUrl, authenticatedOkHttpClient)
 
     /**
      * Creates an ActuatorApi of the backend
      */
     @Bean
-    fun getBackendActuatorApi(): ActuatorApi {
-        return ActuatorApi(backendBaseUrl)
-    }
+    fun getBackendActuatorApi(): ActuatorApi = ActuatorApi(backendBaseUrl)
 }

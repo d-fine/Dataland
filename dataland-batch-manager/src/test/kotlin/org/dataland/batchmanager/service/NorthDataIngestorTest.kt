@@ -29,19 +29,20 @@ class NorthDataIngestorTest {
 
     // Map status codes and identifier values to
     // number of expected invocations of mockCompanyUploader.uploadOrPatchSingleCompany
-    private val uploadsForCombinationsOfStatusAndIdentifiers = mapOf(
-        arrayOf("active", dummyLei, dummyRegisterId, dummyVatId) to 1,
-        arrayOf("terminated", dummyLei, dummyRegisterId, dummyVatId) to 0,
-        arrayOf("liquidation", dummyLei, dummyRegisterId, dummyVatId) to 1,
-        arrayOf("", dummyLei, dummyRegisterId, dummyVatId) to 1,
-        arrayOf("notCovered", dummyLei, dummyRegisterId, dummyVatId) to 0,
-        arrayOf("active", "", "", "") to 0,
-        arrayOf("liquidation", "", "", "") to 0,
-        arrayOf("", "", "", "") to 0,
-        arrayOf("active", dummyLei, dummyRegisterId, "") to 1,
-        arrayOf("active", dummyLei, "", "") to 1,
-        arrayOf("active", "", "", dummyVatId) to 1,
-    )
+    private val uploadsForCombinationsOfStatusAndIdentifiers =
+        mapOf(
+            arrayOf("active", dummyLei, dummyRegisterId, dummyVatId) to 1,
+            arrayOf("terminated", dummyLei, dummyRegisterId, dummyVatId) to 0,
+            arrayOf("liquidation", dummyLei, dummyRegisterId, dummyVatId) to 1,
+            arrayOf("", dummyLei, dummyRegisterId, dummyVatId) to 1,
+            arrayOf("notCovered", dummyLei, dummyRegisterId, dummyVatId) to 0,
+            arrayOf("active", "", "", "") to 0,
+            arrayOf("liquidation", "", "", "") to 0,
+            arrayOf("", "", "", "") to 0,
+            arrayOf("active", dummyLei, dummyRegisterId, "") to 1,
+            arrayOf("active", dummyLei, "", "") to 1,
+            arrayOf("active", "", "", dummyVatId) to 1,
+        )
 
     private val infoIterable = mutableListOf<NorthDataCompanyInformation>()
 

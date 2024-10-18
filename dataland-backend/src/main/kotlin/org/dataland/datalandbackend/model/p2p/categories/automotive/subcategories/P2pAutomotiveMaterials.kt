@@ -8,6 +8,5 @@ import java.math.BigDecimal
 */
 data class P2pAutomotiveMaterials(
     val materialUseManagementInPercent: BigDecimal? = null,
-
     val useOfSecondaryMaterialsInPercent: BigDecimal? = null,
 )

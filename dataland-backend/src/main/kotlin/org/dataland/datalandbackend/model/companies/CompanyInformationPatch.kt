@@ -23,33 +23,22 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
  */
 data class CompanyInformationPatch(
     val companyName: String? = null,
-
     val companyAlternativeNames: List<String>? = null,
-
     val companyContactDetails: List<String>? = null,
-
     val companyLegalForm: String? = null,
-
     val headquarters: String? = null,
-
     val headquartersPostalCode: String? = null,
-
     val sector: String? = null,
-
     val sectorCodeWz: String?,
-
     @field:Schema(
         example = "\n{\n\t\"Lei\": [\"ExampleLei\"]\n}",
     )
     val identifiers: Map<IdentifierType, List<String>>? = null,
-
     val countryCode: String? = null,
-
     // The following annotation is required (including the value field) due to a known issue with the openApi generator
     // for boolean fields starting with is
     @field:JsonProperty(value = "isTeaserCompany")
     val isTeaserCompany: Boolean? = null,
-
     val website: String? = null,
     val parentCompanyLei: String? = null,
 )

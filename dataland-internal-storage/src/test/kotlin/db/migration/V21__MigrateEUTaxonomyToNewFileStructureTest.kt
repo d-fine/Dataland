@@ -3,8 +3,8 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V21__MigrateEUTaxonomyToNewFileStructureTest {
-
     private val frameworkEutaxonomy = "eutaxonomy"
 
     @Test

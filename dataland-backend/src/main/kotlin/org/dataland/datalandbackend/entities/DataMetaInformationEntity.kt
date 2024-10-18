@@ -30,30 +30,22 @@ data class DataMetaInformationEntity(
     @Id
     @Column(name = "data_id")
     val dataId: String,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     var company: StoredCompanyEntity,
-
     @Column(name = "data_type", nullable = false)
     var dataType: String,
-
     @Column(name = "uploader_user_id", nullable = false)
     var uploaderUserId: String,
-
     @Column(name = "upload_time", nullable = false)
     var uploadTime: Long,
-
     @Column(name = "reporting_period", nullable = false)
     var reportingPeriod: String,
-
     @Column(name = "currently_active", nullable = true)
     var currentlyActive: Boolean?,
-
     @Column(name = "quality_status", nullable = false)
     var qaStatus: QaStatus,
 ) : ApiModelConversion<DataMetaInformation> {
-
     /**
      * The viewingUser can view information about the dataset or the dataset itself if
      * (a) the dataset is QAd
@@ -61,18 +53,16 @@ data class DataMetaInformationEntity(
      * (c) the user is an admin or a reviewer
      * This function checks these conditions.
      */
-    fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean {
-        return this.qaStatus == QaStatus.Accepted ||
+    fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean =
+        this.qaStatus == QaStatus.Accepted ||
             this.uploaderUserId == viewingUser?.userId ||
             isDatasetViewableByUserViaRole(viewingUser?.roles ?: emptySet())
-    }
 
-    private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean {
-        return roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
-    }
+    private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
+        roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
-    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation {
-        return DataMetaInformation(
+    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation =
+        DataMetaInformation(
             dataId = dataId,
             companyId = company.companyId,
             dataType = DataType.valueOf(dataType),
@@ -82,5 +72,4 @@ data class DataMetaInformationEntity(
             currentlyActive = currentlyActive == true,
             qaStatus = qaStatus,
         )
-    }
 }

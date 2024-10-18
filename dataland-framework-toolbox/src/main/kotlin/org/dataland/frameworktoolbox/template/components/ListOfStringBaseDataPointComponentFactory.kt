@@ -16,8 +16,7 @@ import org.springframework.stereotype.Component
 class ListOfStringBaseDataPointComponentFactory(
     @Autowired val templateDiagnostic: TemplateDiagnostic,
 ) : TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Multiple Documents With Descriptions"
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Multiple Documents With Descriptions"
 
     override fun generateComponent(
         row: TemplateRow,

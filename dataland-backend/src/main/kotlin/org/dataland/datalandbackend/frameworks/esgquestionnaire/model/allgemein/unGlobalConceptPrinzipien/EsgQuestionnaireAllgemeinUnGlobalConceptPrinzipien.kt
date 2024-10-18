@@ -10,10 +10,7 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class EsgQuestionnaireAllgemeinUnGlobalConceptPrinzipien(
     val mechanismenZurUeberwachungDerEinhaltungDerUngcp: YesNo? = null,
-
     @field:Valid()
     val richtlinienZurEinhaltungDerUngcp: List<BaseDataPoint<String>>? = null,
-
     val erklaerungDerEinhaltungDerUngcp: String? = null,
-
 )

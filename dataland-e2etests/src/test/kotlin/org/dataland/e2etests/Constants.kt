@@ -44,8 +44,9 @@ val MUTUAL_ROLES_DATALAND_USERS =
     listOf("default-roles-datalandsecurity", "ROLE_USER", "offline_access", "uma_authorization")
 
 private val valueFromEnv = System.getenv("MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY")
-val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY = if (valueFromEnv.isNullOrEmpty()) {
-    3650
-} else {
-    valueFromEnv.toInt()
-}
+val MAX_NUMBER_OF_DAYS_SELECTABLE_FOR_API_KEY_VALIDITY =
+    if (valueFromEnv.isNullOrEmpty()) {
+        3650
+    } else {
+        valueFromEnv.toInt()
+    }

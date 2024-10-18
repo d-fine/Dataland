@@ -3,6 +3,7 @@ package db.migration
 import db.migration.utils.TestUtils
 import org.junit.jupiter.api.Test
 
+@Suppress("ClassName")
 class V10__MigrateRefactoredDataPointClassesLksgTest {
     @Test
     fun `test migration of refactored data point classes in Lksg framework`() {

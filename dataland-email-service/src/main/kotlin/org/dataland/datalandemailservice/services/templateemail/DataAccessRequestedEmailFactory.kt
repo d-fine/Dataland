@@ -13,11 +13,10 @@ class DataAccessRequestedEmailFactory(
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
 ) : TemplateEmailFactory(
-    proxyPrimaryUrl = proxyPrimaryUrl,
-    senderEmail = senderEmail,
-    senderName = senderName,
-) {
-
+        proxyPrimaryUrl = proxyPrimaryUrl,
+        senderEmail = senderEmail,
+        senderName = senderName,
+    ) {
     /**
      * The keys component holds constants used for generation access granted emails
      */
@@ -41,40 +40,39 @@ class DataAccessRequestedEmailFactory(
 
     override val templateFile = "/data_access_requested.html.ftl"
 
-    override fun buildSubject(properties: Map<String, String?>): String {
-        return "Access to your data has been requested on Dataland!"
-    }
+    override fun buildSubject(properties: Map<String, String?>): String = "Access to your data has been requested on Dataland!"
 
     override fun buildTextContent(properties: Map<String, String?>): String {
         val hasMultipleReportingPeriods = properties[REPORTING_PERIODS]?.contains(",") ?: false
 
         val userStringStart = buildUserStringStart(properties)
 
-        val messageString = if (properties[MESSAGE] != null) {
-            """
-            The user also send the following message: 
-              ${properties[MESSAGE]}." 
-            """.trimIndent()
-        } else {
-            ""
-        }
+        val messageString =
+            if (properties[MESSAGE] != null) {
+                """
+                The user also send the following message: 
+                  ${properties[MESSAGE]}." 
+                """.trimIndent()
+            } else {
+                ""
+            }
 
         return """
-            Great News! 
-            Your data are in high demand on Dataland! 
-            $userStringStart is requesting access to your data from ${properties[COMPANY_NAME]} on dataland.
-            
-            The user is asking for your ${properties[DATA_TYPE]} data for the year${if (hasMultipleReportingPeriods) {
+                        Great News! 
+                        Your data are in high demand on Dataland! 
+                        $userStringStart is requesting access to your data from ${properties[COMPANY_NAME]} on dataland.
+                        
+                        The user is asking for your ${properties[DATA_TYPE]} data for the year${if (hasMultipleReportingPeriods) {
             "s"
         } else {
             ""
         }}.
-            You can contact the user with their Email-Address ${properties[REQUESTER_EMAIL]}.
-            $messageString
-            
-            You can verify the access request and grant access to your data on Dataland: 
-            $proxyPrimaryUrl/companies/${properties[COMPANY_ID]}.
-        """.trimIndent()
+                        You can contact the user with their Email-Address ${properties[REQUESTER_EMAIL]}.
+                        $messageString
+                        
+                        You can verify the access request and grant access to your data on Dataland: 
+                        $proxyPrimaryUrl/companies/${properties[COMPANY_ID]}.
+            """.trimIndent()
     }
 
     private fun buildUserStringStart(properties: Map<String, String?>): String {

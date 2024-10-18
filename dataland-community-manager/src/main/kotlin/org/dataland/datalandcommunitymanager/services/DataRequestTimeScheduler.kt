@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
 import java.util.UUID
+
 /**
  * Implementation of a time scheduler for data requests
  * @param alterationManager DataRequestAlterationManager
@@ -35,12 +36,14 @@ class DataRequestTimeScheduler(
         val correlationId = UUID.randomUUID().toString()
         logger.info("Searching for stale answered data request. CorrelationId: $correlationId")
         val thresholdTime = Instant.now().minus(Duration.ofDays(staleDaysThreshold)).toEpochMilli()
-        val searchFilterForAnsweredDataRequests = DataRequestsFilter(
-            null, null, null, null, null,
-            setOf(RequestStatus.Answered), null,
-        )
+        val searchFilterForAnsweredDataRequests =
+            DataRequestsFilter(
+                null, null, null, null, null,
+                setOf(RequestStatus.Answered), null,
+            )
         val staleAnsweredRequests =
-            dataRequestRepository.searchDataRequestEntity(searchFilterForAnsweredDataRequests)
+            dataRequestRepository
+                .searchDataRequestEntity(searchFilterForAnsweredDataRequests)
                 .filter { it.lastModifiedDate < thresholdTime }
         staleAnsweredRequests.forEach {
             logger.info(

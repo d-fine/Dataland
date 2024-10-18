@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates MultiSelectComponents from rows with the component "Multi-Select Dropdown"
  */
 @Component
-class MultiSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class MultiSelectComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Multi-Select Dropdown"
 
     override fun generateComponent(
