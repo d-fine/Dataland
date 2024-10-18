@@ -356,7 +356,7 @@ export const esgDatenkatalogDataModel = [
             name: 'geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe" in 2040',
             description:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?  Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -406,7 +406,7 @@ export const esgDatenkatalogDataModel = [
             name: 'geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien" in 2040',
             description:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?  Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -455,7 +455,7 @@ export const esgDatenkatalogDataModel = [
             name: 'geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Umstrittene Waffen" in 2040',
             description:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?  Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -505,7 +505,7 @@ export const esgDatenkatalogDataModel = [
             name: 'geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung" in 2040',
             description:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?  Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -524,9 +524,10 @@ export const esgDatenkatalogDataModel = [
           {
             name: 'esgRating',
             label: 'ESG-Rating',
-            description: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
+            description:
+              'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur? Bitte Bericht hochladen falls vorhanden.',
 
-            component: 'YesNoFormField',
+            component: 'YesNoBaseDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -538,7 +539,7 @@ export const esgDatenkatalogDataModel = [
             component: 'InputTextFormField',
             required: false,
             showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating?.value == 'Yes',
           },
           {
             name: 'ergebnisDesEsgRatings',
@@ -548,17 +549,7 @@ export const esgDatenkatalogDataModel = [
             component: 'InputTextFormField',
             required: false,
             showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
-          },
-          {
-            name: 'ratingbericht',
-            label: 'Ratingbericht',
-            description: 'Liegt ein Ratingbericht vor?',
-
-            component: 'YesNoBaseDataPointFormField',
-            required: false,
-            showIf: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating?.value == 'Yes',
           },
           {
             name: 'iso14001',
@@ -1261,7 +1252,7 @@ export const esgDatenkatalogDataModel = [
             name: 'zielReduzierungTreibhausgasemmissionen2040',
             label: 'Ziel Reduzierung Treibhausgasemmissionen 2040',
             description:
-              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040?',
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040? Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -1273,7 +1264,7 @@ export const esgDatenkatalogDataModel = [
             name: 'zielReduzierungTreibhausgasemmissionen2050',
             label: 'Ziel Reduzierung Treibhausgasemmissionen 2050',
             description:
-              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050?',
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050? Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -1327,7 +1318,7 @@ export const esgDatenkatalogDataModel = [
             name: 'zielAnteilErneuerbarerEnergien2040',
             label: 'Ziel Anteil erneuerbarer Energien 2040',
             description:
-              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2040?',
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2040?  Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -1339,7 +1330,7 @@ export const esgDatenkatalogDataModel = [
             name: 'zielAnteilErneuerbarerEnergien2050',
             label: 'Ziel Anteil erneuerbarer Energien 2050',
             description:
-              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2050?',
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2050? Optionale Angabe.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -1387,7 +1378,7 @@ export const esgDatenkatalogDataModel = [
             label:
               'Anteil wiederverwendeter oder recycelter Komponenten, Produkte und Materialien im Produktionsprozess',
             description:
-              'Wie hoch ist der Anteil von wiederverwendeten oder recycelten sekundären Komponenten, Produkten und Materialien, der im Produktionsprozess des Unternehmens verwendet wird?',
+              'Wie hoch ist der Anteil von wiederverwendeten oder recycelten sekundären Komponenten, Produkten und Materialien, der im Produktionsprozess des Unternehmens verwendet wird? Methodik analog ESRS E5-4. Angabe als Anteil der verwendeten Ressourcen angeben (in %). Soweit das Unternehmen plant, den Anteil zu erhöhen, bitte hier kurz erörternde Ausführungen. Bei Bedarf können hier zudem weitere Details zur Verwendung von Recyclaten aufgeführt werden.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -1475,7 +1466,7 @@ export const esgDatenkatalogDataModel = [
             required: false,
             showIf: (dataset: EsgDatenkatalogData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
-                ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+                ?.negativeAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
           },
           {
             name: 'planZurReduktionDesWasserverbrauchs',
@@ -1561,11 +1552,10 @@ export const esgDatenkatalogDataModel = [
             description:
               'Besteht im Unternehmen bei gleicher Tätigkeit ein signifikanter Unterschied in der Vergütung weiblicher und männlicher Personen? Methodik analog zu ESRS S1-16.',
 
-            unit: '%',
+            unit: 'Percent',
             component: 'NumberFormField',
             required: false,
             showIf: (): boolean => true,
-            validation: 'between:0,100',
           },
           {
             name: 'jaehrlicheGesamtverguetungsquote',
@@ -1573,11 +1563,11 @@ export const esgDatenkatalogDataModel = [
             description:
               'In welchem Verhältnis steht die Vergütung der höchstbezahlten Person des Unternehmens zum Median der jährlichen Gesamtvergütung aller Beschäftigen? Methodik analog zu ESRS S1-16.',
 
-            unit: '%',
+            unit: 'Percent',
             component: 'NumberFormField',
             required: false,
             showIf: (): boolean => true,
-            validation: 'between:0,100',
+            validation: 'min:0',
           },
           {
             name: 'anteilVonUnterDreissigjaehrigen',
@@ -1619,7 +1609,7 @@ export const esgDatenkatalogDataModel = [
             name: 'durchschnittlicheAnzahlAnTrainingsstunden',
             label: 'Durchschnittliche Anzahl an Trainingsstunden',
             description:
-              'Wieviele Tranings- und Fortbildungsstunden erhielten Beschäftigte im letzten abgeschlossenen Geschäftsjahr?',
+              'Wieviele Tranings- und Fortbildungsstunden erhielten Beschäftigte im letzten abgeschlossenen Geschäftsjahr? Methodik analog zu ESRS S1-13.',
 
             component: 'NumberFormField',
             required: false,
@@ -1629,7 +1619,8 @@ export const esgDatenkatalogDataModel = [
           {
             name: 'fluktuationsquote',
             label: 'Fluktuationsquote',
-            description: 'Wie hoch war die Fluktuationsquote im Unternehmen im letzten abgeschlossenen Geschäftsjahr?',
+            description:
+              'Wie hoch war die Fluktuationsquote im Unternehmen im letzten abgeschlossenen Geschäftsjahr? Methodik analog zu ESRS S1-6.',
 
             unit: '%',
             component: 'NumberFormField',
@@ -1662,7 +1653,7 @@ export const esgDatenkatalogDataModel = [
               },
             ],
 
-            component: 'MultiSelectFormField',
+            component: 'SingleSelectFormField',
             required: false,
             showIf: (): boolean => true,
           },
@@ -1695,8 +1686,8 @@ export const esgDatenkatalogDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen',
-            label: 'Einbindung von Beschäftigten in Entscheidungen Erläuterungen',
+            name: 'einbindungVonBeschaeftigtenLaenderspezifischeErlaeuterungen',
+            label: 'Einbindung von Beschäftigten länderspezifische Erläuterungen',
             description:
               'Bei Unternehmen, die aufgrund länderspezifischer Besonderheiten nicht zu einer eindeutigen Antwort kommen, bitte hier erläutern.',
 
@@ -1724,7 +1715,7 @@ export const esgDatenkatalogDataModel = [
             name: 'anzahlDerArbeitsunfaelleProFuenfhundertVollzeitbeschaeftigte',
             label: 'Anzahl der Arbeitsunfälle pro fünfhundert Vollzeitbeschäftigte',
             description:
-              'Wie hoch ist die Häufigkeitsrate von Arbeitsunfällen des Unternehmens pro 500 Vollzeitbeschäftigte?',
+              'Wie hoch ist die Häufigkeitsrate von Arbeitsunfällen des Unternehmens pro 500 Vollzeitbeschäftigte? Methodik analog zu ESRS S1-14.',
 
             component: 'NumberFormField',
             required: false,

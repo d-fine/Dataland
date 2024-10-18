@@ -88,11 +88,9 @@ describeIf(
                         const frontendSubmittedEsgDatenkatalogDataset = axiosResponse.data.data;
                         esgDatenkatalogFixtureForTest.t.allgemein?.richtlinienDesUnternehmens?.existenzVonRichtlinienZuSpezifischenThemen?.sort();
                         esgDatenkatalogFixtureForTest.t.umwelt?.risikenUndMassnahmenKlima?.physischeKlimaUndUmweltrisiken?.sort();
-                        esgDatenkatalogFixtureForTest.t.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungen?.sort();
                         esgDatenkatalogFixtureForTest.t.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInGremien?.sort();
                         frontendSubmittedEsgDatenkatalogDataset.allgemein?.richtlinienDesUnternehmens?.existenzVonRichtlinienZuSpezifischenThemen?.sort();
                         frontendSubmittedEsgDatenkatalogDataset.umwelt?.risikenUndMassnahmenKlima?.physischeKlimaUndUmweltrisiken?.sort();
-                        frontendSubmittedEsgDatenkatalogDataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungen?.sort();
                         frontendSubmittedEsgDatenkatalogDataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInGremien?.sort();
                         compareObjectKeysAndValuesDeep(
                           esgDatenkatalogFixtureForTest.t as unknown as Record<string, object>,

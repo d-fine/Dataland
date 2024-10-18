@@ -4,12 +4,12 @@ package org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.soziales.e
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * Enum class for the multi-select-field einbindungVonBeschaeftigtenInEntscheidungen
+ * Enum class for the single-select-field einbindungVonBeschaeftigtenInEntscheidungen
  */
 @Schema(
     enumAsRef = true,
 )
-enum class EinbindungVonBeschaeftigtenInEntscheidungenOptions {
+enum class EsgDatenkatalogSozialesEinbindungderbeschaeftigtenEinbindungVonBeschaeftigtenInEntscheidungenOptions {
     Ja,
     NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden,
     NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben,

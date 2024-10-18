@@ -7,7 +7,8 @@ import java.util.EnumSet
  * The data-model for the EinbindungDerBeschaeftigten section
  */
 data class EsgDatenkatalogSozialesEinbindungDerBeschaeftigten(
-    val einbindungVonBeschaeftigtenInEntscheidungen: EnumSet<EinbindungVonBeschaeftigtenInEntscheidungenOptions>? = null,
+    val einbindungVonBeschaeftigtenInEntscheidungen:
+        EsgDatenkatalogSozialesEinbindungderbeschaeftigtenEinbindungVonBeschaeftigtenInEntscheidungenOptions? = null,
     val einbindungVonBeschaeftigtenInGremien: EnumSet<EinbindungVonBeschaeftigtenInGremienOptions>? = null,
-    val einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen: String? = null,
+    val einbindungVonBeschaeftigtenLaenderspezifischeErlaeuterungen: String? = null,
 )

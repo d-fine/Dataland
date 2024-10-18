@@ -15,6 +15,7 @@ data class EsgDatenkatalogSozialesBeschaeftigtenprofilUndEntlohnung(
     val anteilMaennlicherPersonenUnterDenBeschaeftigten: BigDecimal? = null,
     val anteilDiverserPersonenUnterDenBeschaeftigten: BigDecimal? = null,
     val geschlechtsspezifischesLohngefaelle: BigDecimal? = null,
+    @field:MinimumValue(minimumValue = 0)
     val jaehrlicheGesamtverguetungsquote: BigDecimal? = null,
     val anteilVonUnterDreissigjaehrigen: BigDecimal? = null,
     val anteilVonDreissigBisFuenfzigjaehrigen: BigDecimal? = null,

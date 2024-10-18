@@ -59,10 +59,7 @@ function setAllYesNoValuesToYesInCategoryAllgemein(newFixture: FixtureData<EsgDa
       YesNo.Yes;
   }
   if (newFixture.t.allgemein?.esgRatingUndZertifizierung?.esgRating) {
-    newFixture.t.allgemein.esgRatingUndZertifizierung.esgRating = YesNo.Yes;
-  }
-  if (newFixture.t.allgemein?.esgRatingUndZertifizierung?.ratingbericht) {
-    newFixture.t.allgemein.esgRatingUndZertifizierung.ratingbericht.value = YesNo.Yes;
+    newFixture.t.allgemein.esgRatingUndZertifizierung.esgRating.value = YesNo.Yes;
   }
   if (newFixture.t.allgemein?.unGlobalCompactPrinzipien?.mechanismenZurUeberwachungDerEinhaltungDerUngcp) {
     newFixture.t.allgemein.unGlobalCompactPrinzipien.mechanismenZurUeberwachungDerEinhaltungDerUngcp = YesNo.Yes;

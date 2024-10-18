@@ -362,7 +362,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Fossile Brennstoffe" in 2040',
             explanation:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Fossile Brennstoffe (Kohle, Gas, Öl)" zurückzuführen sein?  Optionale Angabe.',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
               dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorFossileBrennstoffe == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
@@ -413,7 +413,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Herstellung von Chemikalien" in 2040',
             explanation:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Herstellung von Chemikalien" zurückzuführen sein?  Optionale Angabe.',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
               dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorHerstellungVonChemikalien ==
               'Yes',
@@ -463,7 +463,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Umstrittene Waffen" in 2040',
             explanation:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Umstrittene Waffen" zurückzuführen sein?  Optionale Angabe.',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
               dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorUmstritteneWaffen == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
@@ -514,7 +514,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Geplanter prozentualer Umsatzanteil im Sektor "Tabakanbau und -verarbeitung" in 2040',
             explanation:
-              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?',
+              'Welcher prozentuale Anteil am Gesamtumsatz wird im Jahr 2040 voraussichtlich auf den Sektor "Tabakanbau und -verarbeitung" zurückzuführen sein?  Optionale Angabe.',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
               dataset.allgemein?.taxonomieKpisUndBestimmteAktivitaeten?.aktivitaetImSektorTabakanbauUndVerarbeitung ==
               'Yes',
@@ -535,17 +535,22 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           {
             type: 'cell',
             label: 'ESG-Rating',
-            explanation: 'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur?',
+            explanation:
+              'Hat das Unternehmen bereits ein ESG-Rating einer anerkannten Ratingagentur? Bitte Bericht hochladen falls vorhanden.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.esgRating),
+              wrapDisplayValueWithDatapointInformation(
+                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.esgRating?.value),
+                'ESG-Rating',
+                dataset.allgemein?.esgRatingUndZertifizierung?.esgRating
+              ),
           },
           {
             type: 'cell',
             label: 'Ratingagentur',
             explanation: 'Welche Rating Agentur hat das Rating durchgeführt?',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating?.value == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.ratingagentur),
           },
@@ -554,22 +559,9 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Ergebnis des ESG-Ratings',
             explanation: 'Wie lautet das Rating?',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
+              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating?.value == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.ergebnisDesEsgRatings),
-          },
-          {
-            type: 'cell',
-            label: 'Ratingbericht',
-            explanation: 'Liegt ein Ratingbericht vor?',
-            shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
-              dataset.allgemein?.esgRatingUndZertifizierung?.esgRating == 'Yes',
-            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatYesNoValueForDatatable(dataset.allgemein?.esgRatingUndZertifizierung?.ratingbericht?.value),
-                'Ratingbericht',
-                dataset.allgemein?.esgRatingUndZertifizierung?.ratingbericht
-              ),
           },
           {
             type: 'cell',
@@ -1250,7 +1242,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Ziel Reduzierung Treibhausgasemmissionen 2040',
             explanation:
-              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040?',
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2040? Optionale Angabe.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
@@ -1261,7 +1253,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Ziel Reduzierung Treibhausgasemmissionen 2050',
             explanation:
-              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050?',
+              'Welche Zielsetzung verfolgt das Unternehmen bei der Reduzierung seiner Treibhausgasemissionen für 2050? Optionale Angabe.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
@@ -1316,7 +1308,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Ziel Anteil erneuerbarer Energien 2040',
             explanation:
-              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2040?',
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2040?  Optionale Angabe.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
@@ -1327,7 +1319,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Ziel Anteil erneuerbarer Energien 2050',
             explanation:
-              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2050?',
+              'Welche Zielsetzung verfolgt das Unternehmen bzgl. des Anteils erneuerbarer Energien am gesamten Energieverbrauch für 2050? Optionale Angabe.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
@@ -1379,7 +1371,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label:
               'Anteil wiederverwendeter oder recycelter Komponenten, Produkte und Materialien im Produktionsprozess',
             explanation:
-              'Wie hoch ist der Anteil von wiederverwendeten oder recycelten sekundären Komponenten, Produkten und Materialien, der im Produktionsprozess des Unternehmens verwendet wird?',
+              'Wie hoch ist der Anteil von wiederverwendeten oder recycelten sekundären Komponenten, Produkten und Materialien, der im Produktionsprozess des Unternehmens verwendet wird? Methodik analog ESRS E5-4. Angabe als Anteil der verwendeten Ressourcen angeben (in %). Soweit das Unternehmen plant, den Anteil zu erhöhen, bitte hier kurz erörternde Ausführungen. Bei Bedarf können hier zudem weitere Details zur Verwendung von Recyclaten aufgeführt werden.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(
@@ -1477,7 +1469,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Welche Gegenmaßnahmen ergreift das Unternehmen bezüglich negativer Auswirkungen gegenüber Biodiversität und Ökosystem?',
             shouldDisplay: (dataset: EsgDatenkatalogData): boolean =>
               dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
-                ?.positiveAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
+                ?.negativeAuswirkungenAufBiodiversitaetUndOekosystem == 'Yes',
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
                 dataset.umwelt?.risikenUndMassnahmenBiodiversitaetUndOekosysteme
@@ -1571,8 +1563,9 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'Besteht im Unternehmen bei gleicher Tätigkeit ein signifikanter Unterschied in der Vergütung weiblicher und männlicher Personen? Methodik analog zu ESRS S1-16.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(
-                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.geschlechtsspezifischesLohngefaelle
+              formatNumberForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.geschlechtsspezifischesLohngefaelle,
+                'Percent'
               ),
           },
           {
@@ -1582,8 +1575,9 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
               'In welchem Verhältnis steht die Vergütung der höchstbezahlten Person des Unternehmens zum Median der jährlichen Gesamtvergütung aller Beschäftigen? Methodik analog zu ESRS S1-16.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
-              formatPercentageForDatatable(
-                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.jaehrlicheGesamtverguetungsquote
+              formatNumberForDatatable(
+                dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.jaehrlicheGesamtverguetungsquote,
+                'Percent'
               ),
           },
           {
@@ -1623,7 +1617,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Durchschnittliche Anzahl an Trainingsstunden',
             explanation:
-              'Wieviele Tranings- und Fortbildungsstunden erhielten Beschäftigte im letzten abgeschlossenen Geschäftsjahr?',
+              'Wieviele Tranings- und Fortbildungsstunden erhielten Beschäftigte im letzten abgeschlossenen Geschäftsjahr? Methodik analog zu ESRS S1-13.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
@@ -1634,7 +1628,8 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           {
             type: 'cell',
             label: 'Fluktuationsquote',
-            explanation: 'Wie hoch war die Fluktuationsquote im Unternehmen im letzten abgeschlossenen Geschäftsjahr?',
+            explanation:
+              'Wie hoch war die Fluktuationsquote im Unternehmen im letzten abgeschlossenen Geschäftsjahr? Methodik analog zu ESRS S1-6.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatPercentageForDatatable(dataset.soziales?.beschaeftigtenprofilUndEntlohnung?.fluktuationsquote),
@@ -1652,21 +1647,24 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             label: 'Einbindung von Beschäftigten in Entscheidungen',
             explanation: 'Sind Beschäftigte in betriebliche Entscheidungen des Unternehmens eingebunden?',
             shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes => {
-              const mappings = {
-                Ja: 'Ja',
-                NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden:
-                  'Nein, Beschäftigte nicht in Entscheidungsgremien eingebunden',
-                NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben:
-                  'Nein, Arbeitnehmervertretung nicht gesetzlich vorgeschrieben',
-              };
-              return formatListOfStringsForDatatable(
-                dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungen?.map((it) =>
-                  getOriginalNameFromTechnicalName(it, mappings)
-                ),
-                'Einbindung von Besch\u00E4ftigten in Entscheidungen'
-              );
-            },
+            valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
+              ((): AvailableMLDTDisplayObjectTypes => {
+                const mappings = {
+                  Ja: 'Ja',
+                  NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden:
+                    'Nein, Beschäftigte nicht in Entscheidungsgremien eingebunden',
+                  NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben:
+                    'Nein, Arbeitnehmervertretung nicht gesetzlich vorgeschrieben',
+                };
+                return formatStringForDatatable(
+                  dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungen
+                    ? getOriginalNameFromTechnicalName(
+                        dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungen,
+                        mappings
+                      )
+                    : ''
+                );
+              })(),
           },
           {
             type: 'cell',
@@ -1691,13 +1689,14 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
           },
           {
             type: 'cell',
-            label: 'Einbindung von Beschäftigten in Entscheidungen Erläuterungen',
+            label: 'Einbindung von Beschäftigten länderspezifische Erläuterungen',
             explanation:
               'Bei Unternehmen, die aufgrund länderspezifischer Besonderheiten nicht zu einer eindeutigen Antwort kommen, bitte hier erläutern.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatFreeTextForDatatable(
-                dataset.soziales?.einbindungDerBeschaeftigten?.einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen
+                dataset.soziales?.einbindungDerBeschaeftigten
+                  ?.einbindungVonBeschaeftigtenLaenderspezifischeErlaeuterungen
               ),
           },
         ],
@@ -1723,7 +1722,7 @@ export const esgDatenkatalogViewConfiguration: MLDTConfig<EsgDatenkatalogData> =
             type: 'cell',
             label: 'Anzahl der Arbeitsunfälle pro fünfhundert Vollzeitbeschäftigte',
             explanation:
-              'Wie hoch ist die Häufigkeitsrate von Arbeitsunfällen des Unternehmens pro 500 Vollzeitbeschäftigte?',
+              'Wie hoch ist die Häufigkeitsrate von Arbeitsunfällen des Unternehmens pro 500 Vollzeitbeschäftigte? Methodik analog zu ESRS S1-14.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EsgDatenkatalogData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(

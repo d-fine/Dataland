@@ -9,11 +9,10 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  * The data-model for the EsgRatingUndZertifizierung section
  */
 data class EsgDatenkatalogAllgemeinEsgRatingUndZertifizierung(
-    val esgRating: YesNo? = null,
+    @field:Valid()
+    val esgRating: BaseDataPoint<YesNo>? = null,
     val ratingagentur: String? = null,
     val ergebnisDesEsgRatings: String? = null,
-    @field:Valid()
-    val ratingbericht: BaseDataPoint<YesNo>? = null,
     @field:Valid()
     val iso14001: BaseDataPoint<YesNo>? = null,
     @field:Valid()

@@ -10,6 +10,7 @@ import {
 } from '@e2e/fixtures/FixtureUtils';
 import {
   EsgDatenkatalogGovernanceVorstandsprofilUmfangDesTopManagementImUnternehmenOptions,
+  EsgDatenkatalogSozialesEinbindungderbeschaeftigtenEinbindungVonBeschaeftigtenInEntscheidungenOptions,
   type EsgDatenkatalogData,
 } from '@clients/backend';
 import { generateNaceCodes } from '@e2e/fixtures/common/NaceCodeFixtures';
@@ -87,10 +88,9 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
         geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040: dataGenerator.randomPercentageValue(),
       },
       esgRatingUndZertifizierung: {
-        esgRating: dataGenerator.randomYesNo(),
+        esgRating: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         ratingagentur: dataGenerator.randomShortString(),
         ergebnisDesEsgRatings: dataGenerator.randomShortString(),
-        ratingbericht: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         iso14001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         iso45001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
         iso27001: dataGenerator.randomBaseDataPoint(dataGenerator.guaranteedYesNo()),
@@ -229,8 +229,8 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
         anteilWeiblicherPersonenUnterDenBeschaeftigten: dataGenerator.randomPercentageValue(),
         anteilMaennlicherPersonenUnterDenBeschaeftigten: dataGenerator.randomPercentageValue(),
         anteilDiverserPersonenUnterDenBeschaeftigten: dataGenerator.randomPercentageValue(),
-        geschlechtsspezifischesLohngefaelle: dataGenerator.randomPercentageValue(),
-        jaehrlicheGesamtverguetungsquote: dataGenerator.randomPercentageValue(),
+        geschlechtsspezifischesLohngefaelle: dataGenerator.randomFloat(),
+        jaehrlicheGesamtverguetungsquote: dataGenerator.randomFloat(0),
         anteilVonUnterDreissigjaehrigen: dataGenerator.randomPercentageValue(),
         anteilVonDreissigBisFuenfzigjaehrigen: dataGenerator.randomPercentageValue(),
         anteilVonUeberFuenfzigjaehrigen: dataGenerator.randomPercentageValue(),
@@ -239,16 +239,16 @@ export function generateEsgDatenkatalogData(nullProbability = DEFAULT_PROBABILIT
       },
       einbindungDerBeschaeftigten: {
         einbindungVonBeschaeftigtenInEntscheidungen: dataGenerator.valueOrNull(
-          pickSubsetOfElements([
-            'Ja',
-            'NeinBeschaeftigteNichtInEntscheidungsgremienEingebunden',
-            'NeinArbeitnehmervertretungNichtGesetzlichVorgeschrieben',
-          ])
+          pickOneElement(
+            Object.values(
+              EsgDatenkatalogSozialesEinbindungderbeschaeftigtenEinbindungVonBeschaeftigtenInEntscheidungenOptions
+            )
+          )
         ),
         einbindungVonBeschaeftigtenInGremien: dataGenerator.valueOrNull(
           pickSubsetOfElements(['BetriebsratGesetzlicheVertretungsorgane', 'Aufsichtsrat', 'Verwaltungsrat', 'Keine'])
         ),
-        einbindungVonBeschaeftigtenInEntscheidungenErlaeuterungen: dataGenerator.randomParagraphs(),
+        einbindungVonBeschaeftigtenLaenderspezifischeErlaeuterungen: dataGenerator.randomParagraphs(),
       },
       arbeitsschutz: {
         massnahmenZumSchutzDerGesundheitUndVerbesserungDerSicherheit: dataGenerator.randomParagraphs(),
