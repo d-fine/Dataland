@@ -4,7 +4,7 @@
     <template #content>
       <div v-if="waitingForData" class="d-center-div text-center px-7 py-4">
         <p class="font-medium text-xl">Loading Nuclear & Gas data...</p>
-        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f"/>
+        <em class="pi pi-spinner pi-spin" aria-hidden="true" style="z-index: 20; color: #e67f3f" />
       </div>
       <div v-else class="grid uploadFormWrapper">
         <div id="uploadForm" class="text-left uploadForm col-9">
@@ -17,7 +17,7 @@
             @submit="postNuclearAndGasData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID"/>
+            <FormKit type="hidden" name="companyId" :model-value="companyID" />
             <div class="uploadFormSection grid">
               <div class="col-3 p-3 topicLabel">
                 <h4 id="reportingPeriod" class="anchor title">Reporting Period</h4>
@@ -39,7 +39,7 @@
                     validation="required"
                   />
                 </div>
-                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod"/>
+                <FormKit type="hidden" :modelValue="reportingPeriodYear.toString()" name="reportingPeriod" />
               </div>
             </div>
 
@@ -51,9 +51,10 @@
                 :label="category.label"
                 :name="category.name"
               >
-                <div class="uploadFormSection grid"
-                     v-for="subcategory in category.subcategories"
-                     :key="subcategory.name"
+                <div
+                  class="uploadFormSection grid"
+                  v-for="subcategory in category.subcategories"
+                  :key="subcategory.name"
                 >
                   <template v-if="subcategoryVisibility.get(subcategory) ?? true">
                     <div class="col-3 p-3 topicLabel">
@@ -85,7 +86,8 @@
                           @reports-updated="updateDocumentsList"
                           @field-specific-documents-updated="
                             updateDocumentsOnField(`${category.name}.${subcategory.name}.${field.name}`, $event)
-                          " :ref="field.name"
+                          "
+                          :ref="field.name"
                         />
                       </FormKit>
                     </div>
@@ -96,10 +98,10 @@
           </FormKit>
         </div>
         <SubmitSideBar>
-          <SubmitButton :formId="formId"/>
+          <SubmitButton :formId="formId" />
           <div v-if="postNuclearAndGasDataProcessed">
-            <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter"/>
-            <FailMessage v-else :message="message" :messageId="messageCounter"/>
+            <SuccessMessage v-if="uploadSucceded" :messageId="messageCounter" />
+            <FailMessage v-else :message="message" :messageId="messageCounter" />
           </div>
 
           <h4 id="topicTitles" class="title pt-3">On this page</h4>
@@ -110,7 +112,7 @@
                   <a
                     v-if="subcategoryVisibility.get(subcategory) ?? true"
                     @click="smoothScroll(`#${subcategory.name}`)"
-                  >{{ subcategory.label }}</a
+                    >{{ subcategory.label }}</a
                   >
                 </li>
               </ul>
@@ -122,43 +124,43 @@
   </Card>
 </template>
 <script lang="ts">
-import {FormKit} from '@formkit/vue';
-import {ApiClientProvider} from '@/services/ApiClients';
+import { FormKit } from '@formkit/vue';
+import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
-import {computed, defineComponent, inject} from 'vue';
+import { computed, defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
-import {assertDefined} from '@/utils/TypeScriptUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 import Tooltip from 'primevue/tooltip';
 import PrimeButton from 'primevue/button';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
-import {nuclearAndGasDataModel} from '@/frameworks/nuclear-and-gas/UploadConfig';
+import { nuclearAndGasDataModel } from '@/frameworks/nuclear-and-gas/UploadConfig';
 import {
   type CompanyAssociatedDataNuclearAndGasData,
   type CompanyReport,
   DataTypeEnum,
   type NuclearAndGasData,
 } from '@clients/backend';
-import {useRoute} from 'vue-router';
-import {checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel} from '@/utils/ValidationUtils';
+import { useRoute } from 'vue-router';
+import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import UploadReports from '@/components/forms/parts/UploadReports.vue';
-import {objectDropNull, type ObjectType} from '@/utils/UpdateObjectUtils';
-import {smoothScroll} from '@/utils/SmoothScroll';
-import type {FrameworkData, Subcategory} from '@/utils/GenericFrameworkTypes';
-import {createSubcategoryVisibilityMap} from '@/utils/UploadFormUtils';
-import {formatAxiosErrorMessage} from '@/utils/AxiosErrorMessageFormatter';
+import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
+import { smoothScroll } from '@/utils/SmoothScroll';
+import type { FrameworkData, Subcategory } from '@/utils/GenericFrameworkTypes';
+import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
+import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import BaseDataPointFormField from '@/components/forms/parts/elements/basic/BaseDataPointFormField.vue';
-import {getFilledKpis} from '@/utils/DataPoint';
-import {type PublicFrameworkDataApi} from '@/utils/api/UnifiedFrameworkDataApi';
-import {getBasePublicFrameworkDefinition} from '@/frameworks/BasePublicFrameworkRegistry';
-import {hasUserCompanyOwnerOrDataUploaderRole} from '@/utils/CompanyRolesUtils';
-import {type DocumentToUpload, getAvailableFileNames, uploadFiles} from "@/utils/FileUploadUtils";
-import NuclearAndGasFormElement from "@/components/forms/parts/elements/derived/NuclearAndGasFormElement.vue";
+import { getFilledKpis } from '@/utils/DataPoint';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
+import { hasUserCompanyOwnerOrDataUploaderRole } from '@/utils/CompanyRolesUtils';
+import { type DocumentToUpload, getAvailableFileNames, uploadFiles } from '@/utils/FileUploadUtils';
+import NuclearAndGasFormElement from '@/components/forms/parts/elements/derived/NuclearAndGasFormElement.vue';
 
 const referenceableReportsFieldId = 'referenceableReports';
 
@@ -182,7 +184,7 @@ export default defineComponent({
     Calendar,
     NuclearAndGasFormElement,
     UploadReports,
-    YesNoExtendedDataPointFormField
+    YesNoExtendedDataPointFormField,
   },
   directives: {
     tooltip: Tooltip,
@@ -206,8 +208,7 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-
-    }
+    };
   },
   computed: {
     reportingPeriodYear(): number {
@@ -220,7 +221,8 @@ export default defineComponent({
       return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
     },
     subcategoryVisibility(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(this.nuclearAndGasDataModel,
+      return createSubcategoryVisibilityMap(
+        this.nuclearAndGasDataModel,
         this.companyAssociatedNuclearAndGasData.data as FrameworkData
       );
     },
@@ -241,7 +243,6 @@ export default defineComponent({
     if (this.reportingPeriod === undefined) {
       this.reportingPeriod = new Date();
     }
-    console.log(this.companyAssociatedNuclearAndGasData.data)
   },
   methods: {
     /**
@@ -270,7 +271,9 @@ export default defineComponent({
         const nuclearAndGasResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);
         this.referencedReportsForPrefill = nuclearAndGasResponseData.data?.general?.general?.referencedReports ?? {};
-        this.companyAssociatedNuclearAndGasData = objectDropNull(nuclearAndGasResponseData) as CompanyAssociatedDataNuclearAndGasData;
+        this.companyAssociatedNuclearAndGasData = objectDropNull(
+          nuclearAndGasResponseData
+        ) as CompanyAssociatedDataNuclearAndGasData;
         this.waitingForData = false;
       }
     },

@@ -164,7 +164,28 @@ export const nuclearAndGasDataModel = [
       {
         name: 'taxonomyNonEligible',
         label: 'Taxonomy-non-eligible',
-        fields: [],
+        fields: [
+          {
+            name: 'nuclearAndGasTaxonomyNonEligibleRevenue',
+            label: 'Nuclear and Gas Taxonomy-non-eligible Revenue',
+            description:
+              'Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - Revenue-based',
+
+            component: 'NuclearAndGasFormElement',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'nuclearAndGasTaxonomyNonEligibleCapex',
+            label: 'Nuclear and Gas Taxonomy-non-eligible CapEx',
+            description:
+              'Proportion of Taxonomy-non-eligible Economic Activity referred to in Sections 4.26 to 4.31 of Annexes I and II to Delegated Regulation 2021/2139 in the denominator of the applicable KPI - CapEx-based',
+
+            component: 'NuclearAndGasFormElement',
+            required: false,
+            showIf: (): boolean => true,
+          },
+        ],
       },
     ],
   },
