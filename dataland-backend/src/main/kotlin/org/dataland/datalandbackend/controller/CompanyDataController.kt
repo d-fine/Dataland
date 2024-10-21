@@ -67,7 +67,7 @@ class CompanyDataController(
         return ResponseEntity.ok(
             companyQueryManager.getCompaniesInChunks(
                 StoredCompanySearchFilter(
-                    searchString = searchString ?: "",
+                    searchString = searchString?.trim() ?: "",
                     dataTypeFilter = dataTypes?.map { it.name } ?: listOf(),
                     countryCodeFilter = countryCodes?.toList() ?: listOf(),
                     sectorFilter = sectors?.toList() ?: listOf(),
