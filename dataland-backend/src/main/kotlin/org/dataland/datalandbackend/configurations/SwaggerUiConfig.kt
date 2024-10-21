@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.configurations
 
-import org.dataland.datalandbackend.frameworks.esgquestionnaire.custom.OpenApiEsgQuestionnaireExampleCustomizer
+import org.dataland.datalandbackend.frameworks.esgdatenkatalog.custom.OpenApiEsgDatenkatalogExampleCustomizer
 import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,13 +15,13 @@ class SwaggerUiConfig {
      * This method returns all public endpoints to be displayed in the swagger ui
      */
     @Bean
-    fun publicApi(esgQuestionnaireCustomizer: OpenApiEsgQuestionnaireExampleCustomizer): GroupedOpenApi? =
+    fun publicApi(esgDatenkatalogCustomizer: OpenApiEsgDatenkatalogExampleCustomizer): GroupedOpenApi? =
         GroupedOpenApi
             .builder()
             .group("public")
             .pathsToExclude("/internal/**")
             .addOpenApiCustomizer(
                 DataTypeSchemaCustomizer(),
-            ).addOpenApiCustomizer(esgQuestionnaireCustomizer)
+            ).addOpenApiCustomizer(esgDatenkatalogCustomizer)
             .build()
 }
