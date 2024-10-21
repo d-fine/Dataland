@@ -19,7 +19,7 @@ import TheHeader from '@/components/generics/TheHeader.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { DataTypeEnum } from '@clients/backend';
 
-import CreateEsgQuestionnaireDataset from '@/components/forms/CreateEsgQuestionnaireDataset.vue';
+import CreateEsgDatenkatalogDataset from '@/components/forms/CreateEsgDatenkatalogDataset.vue';
 import CreateSfdrDataset from '@/components/forms/CreateSfdrDataset.vue';
 import CreateP2pDataset from '@/components/forms/CreateP2pDataset.vue';
 import CreateEuTaxonomyForFinancials from '@/components/forms/CreateEuTaxonomyFinancials.vue';
@@ -39,7 +39,7 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { defineComponent } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
-import CreateNuclearAndGasDataset from "@/components/forms/CreateNuclearAndGasDataset.vue";
+import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
 
 export default defineComponent({
   name: 'UploadFormWrapper',
@@ -88,8 +88,8 @@ export default defineComponent({
           return CreateSfdrDataset;
         case `${DataTypeEnum.Heimathafen}`:
           return CreateHeimathafenDataset;
-        case `${DataTypeEnum.EsgQuestionnaire}`:
-          return CreateEsgQuestionnaireDataset;
+        case `${DataTypeEnum.EsgDatenkatalog}`:
+          return CreateEsgDatenkatalogDataset;
         case `${DataTypeEnum.Vsme}`:
           return CreateVsmeDataset;
         case `${DataTypeEnum.NuclearAndGas}`:
