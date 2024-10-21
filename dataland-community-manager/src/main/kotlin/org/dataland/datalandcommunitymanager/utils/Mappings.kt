@@ -6,6 +6,7 @@ val readableFrameworkNameMapping: Map<DataTypeEnum, String> =
     mapOf(
         DataTypeEnum.eutaxonomyMinusFinancials to "EU Taxonomy for financial companies",
         DataTypeEnum.eutaxonomyMinusNonMinusFinancials to "EU Taxonomy for non-financial companies",
+        DataTypeEnum.nuclearMinusAndMinusGas to "EU Taxonomy nuclear and gas",
         DataTypeEnum.lksg to "LkSG",
         DataTypeEnum.sfdr to "SFDR",
         DataTypeEnum.vsme to "VSME",
