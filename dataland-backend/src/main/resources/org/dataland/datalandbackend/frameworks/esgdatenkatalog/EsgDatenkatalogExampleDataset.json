@@ -1,0 +1,606 @@
+{
+  "companyId": "string",
+  "reportingPeriod": "2022",
+  "data": {
+    "general": {
+      "masterData": {
+        "gueltigkeitsDatum": "2022-12-31"
+      }
+    },
+    "allgemein": {
+      "esgZiele": {
+        "existenzVonEsgZielen": "Yes",
+        "beschreibungDerEsgZiele": "Transitioning to energy consumption from 100% renewable resources",
+        "investitionenInZielerreichung": "50000 EUR"
+      },
+      "sektoren": {
+        "sektorenMitHohenKlimaauswirkungen": "Yes",
+        "auflistungDerSektoren": [
+          "GHandelInstandhaltungUndReparaturVonKraftfahrzeugen",
+          "LGrundstuecksUndWohnungswesen"
+        ]
+      },
+      "esgBerichte": {
+        "nachhaltigkeitsberichte": "Yes",
+        "frequenzDerBerichterstattung": "Halbjaehrlich",
+        "aktuelleBerichte": [
+          {
+            "value": "Bayer Geschäftsbericht 2022",
+            "dataSource": {
+              "fileName": "Bayer-Geschaeftsbericht-2022",
+              "fileReference": "3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881"
+            }
+          }
+        ]
+      },
+      "akkreditierungen": {
+        "iso14001": {
+          "value": "Yes",
+          "dataSource": {
+            "fileName": "",
+            "fileReference": ""
+          }
+        },
+        "iso45001": {
+          "value": "No",
+          "dataSource": null
+        },
+        "iso27001": {
+          "value": "No",
+          "dataSource": null
+        },
+        "iso50001": {
+          "value": "No",
+          "dataSource": null
+        },
+        "weitereAkkreditierungen": [
+          {
+            "value": "Data quality",
+            "dataSource": {
+              "fileName": "Data_Quality_1_28_2019_FINAL_1",
+              "fileReference": "21567034fc692753175270d7eadeb135e9e885c77f71b79358a1fb897d992a7d"
+            }
+          }
+        ]
+      },
+      "unGlobalConceptPrinzipien": {
+        "mechanismenZurUeberwachungDerEinhaltungDerUngcp": "No",
+        "richtlinienZurEinhaltungDerUngcp": null,
+        "erklaerungDerEinhaltungDerUngcp": null
+      },
+      "oecdLeitsaetze": {
+        "mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": "Yes",
+        "richtlinienZurEinhaltungDerOecdLeitsaetze": [
+          {
+            "value": "Annual report",
+            "dataSource": {
+              "fileName": "Bayer-Geschaeftsbericht-2022",
+              "fileReference": "3bbdc1879acbc211af4b87a8593cfd7523adedd7100ca59326df05f8adbfe881"
+            }
+          }
+        ],
+        "erklaerungDerEinhaltungDerOecdLeitsaetze": "Erklärung der Einhaltung"
+      },
+      "sonstige": {
+        "ausrichtungAufDieUnSdgsUndAktivesVerfolgen": "n/a",
+        "ausschlusslistenAufBasisVonEsgKriterien": "Yes",
+        "ausschlusslisten": "controversial weapons, tobacco, alcohol, gambling, adult entertainment, fossil fuels"
+      },
+      "fuehrungsstandards": {
+        "oekologischeSozialeFuehrungsstandardsOderPrinzipien": "Yes",
+        "anreizmechanismenFuerDasManagementUmwelt": "JaGeschaeftsleitung",
+        "anreizmechanismenFuerDasManagementSoziales": "JaAufsichtsrat"
+      },
+      "rechtsstreitigkeiten": {
+        "esgBezogeneRechtsstreitigkeiten": "Yes",
+        "rechtsstreitigkeitenMitBezugZuE": "Yes",
+        "statusZuE": "Geklaert",
+        "einzelheitenZuDenRechtsstreitigkeitenZuE": "Wasserverschmutzung",
+        "rechtsstreitigkeitenMitBezugZuS": "No",
+        "statusZuS": null,
+        "einzelheitenZuDenRechtsstreitigkeitenZuS": null,
+        "rechtsstreitigkeitenMitBezugZuG": "No",
+        "statusZuG": null,
+        "einzelheitenZuDenRechtsstreitigkeitenZuG": null
+      },
+      "rating": {
+        "esgRating": "Yes",
+        "agentur": "MSCI",
+        "ergebnis": "A",
+        "ratingbericht": {
+          "value": "No",
+          "dataSource": null
+        },
+        "kritischePunkte": "n/a"
+      },
+      "anleihen": {
+        "grueneSozialeUndOderNachhaltigeEmissionen": "Yes",
+        "ausstehendeGrueneSozialeUndOderNachhaltigeEmissionen": 10000,
+        "sustainibilityLinkedDebt": "Yes",
+        "ausstehendeSustainibilityLinkedDebt": 20000
+      },
+      "risiken": {
+        "wichtigsteESUndGRisikenUndBewertung": "Risiken und Bewertung",
+        "hindernisseBeimUmgangMitEsgBedenken": "Hindernisse 1, Hindernisse 2"
+      }
+    },
+    "umwelt": {
+      "treibhausgasemissionen": {
+        "treibhausgasBerichterstattungUndPrognosen": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "scope1": null,
+              "scope2": null,
+              "scope3": null
+            },
+            "2020": {
+              "scope1": null,
+              "scope2": null,
+              "scope3": null
+            },
+            "2021": {
+              "scope1": 305000,
+              "scope2": 51900,
+              "scope3": 223000
+            },
+            "2022": {
+              "scope1": 351000,
+              "scope2": 195000,
+              "scope3": 405000
+            },
+            "2023": {
+              "scope1": 293000,
+              "scope2": 318000,
+              "scope3": 561000
+            },
+            "2024": {
+              "scope1": null,
+              "scope2": null,
+              "scope3": null
+            },
+            "2025": {
+              "scope1": null,
+              "scope2": null,
+              "scope3": null
+            }
+          }
+        },
+        "treibhausgasEmissionsintensitaetDerUnternehmenInDieInvestiertWird": "223000",
+        "strategieUndZieleZurReduzierungVonTreibhausgasEmissionen": "Strategie und Ziele"
+      },
+      "produktion": {
+        "produkteZurVerringerungDerUmweltbelastung": "Yes",
+        "verringerungenDerUmweltbelastung": null,
+        "oekologischerMindestStandardFuerProduktionsprozesse": "No"
+      },
+      "energieverbrauch": {
+        "berichterstattungEnergieverbrauch": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "energieverbrauch": null,
+              "prozentDesVerbrauchsErneuerbarerEnergien": null,
+              "ggfProzentDerErneuerbarenEnergieerzeugung": null
+            },
+            "2020": {
+              "energieverbrauch": null,
+              "prozentDesVerbrauchsErneuerbarerEnergien": null,
+              "ggfProzentDerErneuerbarenEnergieerzeugung": null
+            },
+            "2021": {
+              "energieverbrauch": 195000,
+              "prozentDesVerbrauchsErneuerbarerEnergien": 25,
+              "ggfProzentDerErneuerbarenEnergieerzeugung": null
+            },
+            "2022": {
+              "energieverbrauch": 561000,
+              "prozentDesVerbrauchsErneuerbarerEnergien": 70,
+              "ggfProzentDerErneuerbarenEnergieerzeugung": null
+            },
+            "2023": {
+              "energieverbrauch": 51900,
+              "prozentDesVerbrauchsErneuerbarerEnergien": 100,
+              "ggfProzentDerErneuerbarenEnergieerzeugung": 5
+            },
+            "2024": {
+              "energieverbrauch": null,
+              "prozentDesVerbrauchsErneuerbarerEnergien": null,
+              "ggfProzentDerErneuerbarenEnergieerzeugung": null
+            },
+            "2025": {
+              "energieverbrauch": null,
+              "prozentDesVerbrauchsErneuerbarerEnergien": null,
+              "ggfProzentDerErneuerbarenEnergieerzeugung": null
+            }
+          }
+        },
+        "unternehmensGruppenStrategieBzglEnergieverbrauch": null
+      },
+      "energieeffizienzImmobilienanlagen": {
+        "berichterstattungEnergieverbrauchVonImmobilienvermoegen": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "engagementAnteilInEnergieineffizientenImmobilienanlagen": null
+            },
+            "2020": {
+              "engagementAnteilInEnergieineffizientenImmobilienanlagen": null
+            },
+            "2021": {
+              "engagementAnteilInEnergieineffizientenImmobilienanlagen": 30
+            },
+            "2022": {
+              "engagementAnteilInEnergieineffizientenImmobilienanlagen": 70
+            },
+            "2023": {
+              "engagementAnteilInEnergieineffizientenImmobilienanlagen": 90
+            },
+            "2024": {
+              "engagementAnteilInEnergieineffizientenImmobilienanlagen": null
+            },
+            "2025": {
+              "engagementAnteilInEnergieineffizientenImmobilienanlagen": null
+            }
+          }
+        },
+        "unternehmensGruppenStrategieBzglEnergieeffizientenImmobilienanlagen": null
+      },
+      "wasserverbrauch": {
+        "berichterstattungWasserverbrauch": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "wasserverbrauch": null,
+              "emissionenInWasser": null
+            },
+            "2020": {
+              "wasserverbrauch": null,
+              "emissionenInWasser": null
+            },
+            "2021": {
+              "wasserverbrauch": 30000,
+              "emissionenInWasser": 5
+            },
+            "2022": {
+              "wasserverbrauch": 15000,
+              "emissionenInWasser": 0
+            },
+            "2023": {
+              "wasserverbrauch": 10000,
+              "emissionenInWasser": 0
+            },
+            "2024": {
+              "wasserverbrauch": null,
+              "emissionenInWasser": null
+            },
+            "2025": {
+              "wasserverbrauch": null,
+              "emissionenInWasser": null
+            }
+          }
+        },
+        "unternehmensGruppenStrategieBzglWasserverbrauch": null
+      },
+      "abfallproduktion": {
+        "berichterstattungAbfallproduktion": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "gesamteAbfallmenge": null,
+              "prozentAbfallRecyclet": null,
+              "prozentGefaehrlicherAbfall": null
+            },
+            "2020": {
+              "gesamteAbfallmenge": null,
+              "prozentAbfallRecyclet": null,
+              "prozentGefaehrlicherAbfall": null
+            },
+            "2021": {
+              "gesamteAbfallmenge": 30,
+              "prozentAbfallRecyclet": 15,
+              "prozentGefaehrlicherAbfall": 0
+            },
+            "2022": {
+              "gesamteAbfallmenge": 20,
+              "prozentAbfallRecyclet": 47,
+              "prozentGefaehrlicherAbfall": 0
+            },
+            "2023": {
+              "gesamteAbfallmenge": 10,
+              "prozentAbfallRecyclet": 68,
+              "prozentGefaehrlicherAbfall": 0
+            },
+            "2024": {
+              "gesamteAbfallmenge": null,
+              "prozentAbfallRecyclet": null,
+              "prozentGefaehrlicherAbfall": null
+            },
+            "2025": {
+              "gesamteAbfallmenge": null,
+              "prozentAbfallRecyclet": null,
+              "prozentGefaehrlicherAbfall": null
+            }
+          }
+        },
+        "unternehmensGruppenStrategieBzglAbfallproduktion": null,
+        "recyclingImProduktionsprozess": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "prozentRecycelteWerkstoffeImProduktionsprozess": null
+            },
+            "2020": {
+              "prozentRecycelteWerkstoffeImProduktionsprozess": null
+            },
+            "2021": {
+              "prozentRecycelteWerkstoffeImProduktionsprozess": 0
+            },
+            "2022": {
+              "prozentRecycelteWerkstoffeImProduktionsprozess": 0
+            },
+            "2023": {
+              "prozentRecycelteWerkstoffeImProduktionsprozess": 0
+            },
+            "2024": {
+              "prozentRecycelteWerkstoffeImProduktionsprozess": null
+            },
+            "2025": {
+              "prozentRecycelteWerkstoffeImProduktionsprozess": null
+            }
+          }
+        },
+        "gefaehrlicherAbfall": "0"
+      },
+      "biodiversitaet": {
+        "negativeAktivitaetenFuerDieBiologischeVielfalt": "No",
+        "negativeMassnahmenFuerDieBiologischeVielfalt": null,
+        "positiveAktivitaetenFuerDieBiologischeVielfalt": "Yes",
+        "positiveMassnahmenFuerDieBiologischeVielfalt": "Positive Maßnahme"
+      },
+      "fossileBrennstoffe": {
+        "einnahmenAusFossilenBrennstoffen": "Yes",
+        "berichterstattungEinnahmenAusFossilenBrennstoffen": {
+          "currentYear": 2022,
+          "yearlyData": {
+            "2019": {
+              "prozentDerEinnahmenAusFossilenBrennstoffen": null
+            },
+            "2020": {
+              "prozentDerEinnahmenAusFossilenBrennstoffen": null
+            },
+            "2021": {
+              "prozentDerEinnahmenAusFossilenBrennstoffen": 60
+            },
+            "2022": {
+              "prozentDerEinnahmenAusFossilenBrennstoffen": 15
+            },
+            "2023": {
+              "prozentDerEinnahmenAusFossilenBrennstoffen": 0
+            },
+            "2024": {
+              "prozentDerEinnahmenAusFossilenBrennstoffen": null
+            },
+            "2025": {
+              "prozentDerEinnahmenAusFossilenBrennstoffen": null
+            }
+          }
+        }
+      },
+      "taxonomie": {
+        "taxonomieBerichterstattung": "Nfrd",
+        "euTaxonomieKompassAktivitaeten": [
+          "ForestManagement",
+          "ManufactureOfLowCarbonTechnologiesForTransport",
+          "ManufactureOfIronAndSteel"
+        ],
+        "umsatzInvestitionsaufwandFuerNachhaltigeAktivitaeten": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "taxonomieGeeignetNachProzentUmsatz": null,
+              "taxonomieGeeignetNachProzentCapex": null,
+              "taxonomieKonformNachProzentUmsatz": null,
+              "taxonomieKonformNachProzentCapex": null
+            },
+            "2020": {
+              "taxonomieGeeignetNachProzentUmsatz": null,
+              "taxonomieGeeignetNachProzentCapex": null,
+              "taxonomieKonformNachProzentUmsatz": null,
+              "taxonomieKonformNachProzentCapex": null
+            },
+            "2021": {
+              "taxonomieGeeignetNachProzentUmsatz": 25,
+              "taxonomieGeeignetNachProzentCapex": 7,
+              "taxonomieKonformNachProzentUmsatz": 15,
+              "taxonomieKonformNachProzentCapex": 5
+            },
+            "2022": {
+              "taxonomieGeeignetNachProzentUmsatz": 56,
+              "taxonomieGeeignetNachProzentCapex": 8,
+              "taxonomieKonformNachProzentUmsatz": 18,
+              "taxonomieKonformNachProzentCapex": 6
+            },
+            "2023": {
+              "taxonomieGeeignetNachProzentUmsatz": 70,
+              "taxonomieGeeignetNachProzentCapex": 14,
+              "taxonomieKonformNachProzentUmsatz": 24,
+              "taxonomieKonformNachProzentCapex": 10
+            },
+            "2024": {
+              "taxonomieGeeignetNachProzentUmsatz": null,
+              "taxonomieGeeignetNachProzentCapex": null,
+              "taxonomieKonformNachProzentUmsatz": null,
+              "taxonomieKonformNachProzentCapex": null
+            },
+            "2025": {
+              "taxonomieGeeignetNachProzentUmsatz": null,
+              "taxonomieGeeignetNachProzentCapex": null,
+              "taxonomieKonformNachProzentUmsatz": null,
+              "taxonomieKonformNachProzentCapex": null
+            }
+          }
+        }
+      }
+    },
+    "soziales": {
+      "unternehmensstrukturaenderungen": {
+        "vorhandenseinKuerzlicherAenderungenDerUnternehmensstruktur": "Yes",
+        "anzahlUnbefristeterVertraegeInDeutschland": 543,
+        "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDeutschland": 63,
+        "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDeutschland": 34,
+        "anzahlUnbefristeterVertraegeInDerGesamtgruppe": 453,
+        "anzahlDerVonEinemVerkaufBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": 75,
+        "anzahlDerVonEinerAkquisitionBetroffenenUnbefristetenVertraegeInDerGesamtgruppe": 967,
+        "auswirkungenAufAnteilBefristerVertraegeUndFluktuation": {
+          "currentYear": 2022,
+          "yearlyData": {
+            "2019": {
+              "anzahlDerBefristetenVertraege": null,
+              "fluktuation": null
+            },
+            "2020": {
+              "anzahlDerBefristetenVertraege": null,
+              "fluktuation": null
+            },
+            "2021": {
+              "anzahlDerBefristetenVertraege": 456,
+              "fluktuation": 24
+            },
+            "2022": {
+              "anzahlDerBefristetenVertraege": 477,
+              "fluktuation": 57
+            }
+          }
+        }
+      },
+      "sicherheitUndWeiterbildung": {
+        "sicherheitsmassnahmenFuerMitarbeiter": "Sicherheitsmaßnahme",
+        "unfallrate": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": null
+            },
+            "2020": {
+              "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": null
+            },
+            "2021": {
+              "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 8
+            },
+            "2022": {
+              "haeufigkeitsrateVonArbeitsunfaellenMitZeitverlust": 3
+            }
+          }
+        },
+        "budgetFuerSchulungAusbildung": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "budgetProMitarbeiter": null
+            },
+            "2020": {
+              "budgetProMitarbeiter": null
+            },
+            "2021": {
+              "budgetProMitarbeiter": 500
+            },
+            "2022": {
+              "budgetProMitarbeiter": 1000
+            }
+          }
+        }
+      },
+      "einkommensgleichheit": {
+        "ueberwachungDerEinkommensungleichheit": {
+          "currentYear": 2023,
+          "yearlyData": {
+            "2019": {
+              "unbereinigtesGeschlechtsspezifischesLohngefaelle": null,
+              "einkommensungleichheitsverhaeltnis": null,
+              "ceoEinkommensungleichheitsverhaeltnis": null
+            },
+            "2020": {
+              "unbereinigtesGeschlechtsspezifischesLohngefaelle": null,
+              "einkommensungleichheitsverhaeltnis": null,
+              "ceoEinkommensungleichheitsverhaeltnis": null
+            },
+            "2021": {
+              "unbereinigtesGeschlechtsspezifischesLohngefaelle": 45,
+              "einkommensungleichheitsverhaeltnis": 23,
+              "ceoEinkommensungleichheitsverhaeltnis": 12
+            },
+            "2022": {
+              "unbereinigtesGeschlechtsspezifischesLohngefaelle": 34,
+              "einkommensungleichheitsverhaeltnis": 34,
+              "ceoEinkommensungleichheitsverhaeltnis": 76
+            }
+          }
+        },
+        "massnahmenZurVerbesserungDerEinkommensungleichheit": null
+      },
+      "geschlechterdiversitaet": {
+        "mitarbeiterAufTopManagementEbene": 2,
+        "frauenAufTopManagementEbene": 6,
+        "mitgliederGeschaeftsfuehrung": 4671,
+        "frauenInDerGeschaeftsfuehrung": 2,
+        "definitionTopManagement": "Definition ",
+        "einhaltungRechtlicherVorgaben": null
+      },
+      "audit": {
+        "auditsZurEinhaltungVonArbeitsstandards": "Yes",
+        "artDesAudits": "PruefungDurchDritte",
+        "auditErgebnisse": ""
+      }
+    },
+    "unternehmensfuehrungGovernance": {
+      "aufsichtsrat": {
+        "anzahlDerMitgliederImAufsichtsrat": 34,
+        "anzahlUnabhaengigerMitgliederImAufsichtsrat": 23,
+        "anzahlVonFrauenImAufsichtsrat": 15
+      },
+      "verguetungsausschuss": {
+        "anzahlDerMitgliederImVerguetungsausschuss": 36,
+        "anzahlUnabhaengigerMitgliederImVerguetungsausschuss": null,
+        "anzahlVonFrauenImVerguetungsausschuss": null
+      },
+      "nominierungsausschuss": {
+        "anzahlDerMitgliederImNominierungsausschuss": 43,
+        "anzahlUnabhaengigerMitgliederImNominierungsausschuss": null,
+        "anzahlVonFrauenImVerguetungsausschuss": 23
+      },
+      "pruefungsausschuss": {
+        "anzahlDerMitgliederImPruefungsausschuss": 41,
+        "anzahlUnabhaengigerMitgliederImPruefungsausschuss": 35,
+        "anzahlVonFrauenImPruefungsausschuss": null
+      },
+      "nachhaltigkeitsausschuss": {
+        "anzahlDerMitgliederImNachhaltigkeitsausschuss": 12,
+        "anzahlUnabhaengigerMitgliederImNachhaltigkeitsausschuss": 4,
+        "anzahlVonFrauenImNachhaltigkeitsausschuss": 4
+      },
+      "sonstige": {
+        "wirtschaftspruefer": "John Doe",
+        "trennungVonCeoOderVorsitzenden": "Yes",
+        "amtszeitBisZurTrennung": "4"
+      },
+      "stakeholder": {
+        "einbeziehungVonStakeholdern": "Yes",
+        "prozessDerEinbeziehungVonStakeholdern": "Prozess",
+        "mechanismenZurAusrichtungAufStakeholder": null
+      },
+      "unternehmensrichtlinien": {
+        "veroeffentlichteUnternehmensrichtlinien": [
+          "Verhaltenskodex",
+          "Zwangsarbeit",
+          "MgtVonUmweltgefahren"
+        ],
+        "weitereVeroeffentlicheUnternehmensrichtlinien": "Keine"
+      },
+      "lieferantenauswahl": {
+        "esgKriterienUndUeberwachungDerLieferanten": "Yes",
+        "auswahlkriterien": null
+      }
+    }
+  }
+}

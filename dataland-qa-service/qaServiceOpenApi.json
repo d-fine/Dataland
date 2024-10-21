@@ -1239,13 +1239,13 @@
                 "enum": [
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
+                  "nuclear-and-gas",
                   "lksg",
                   "p2p",
                   "sfdr",
                   "vsme",
-                  "esg-questionnaire",
+                  "esg-datenkatalog",
                   "heimathafen",
-                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1336,13 +1336,13 @@
                 "enum": [
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
+                  "nuclear-and-gas",
                   "lksg",
                   "p2p",
                   "sfdr",
                   "vsme",
-                  "esg-questionnaire",
+                  "esg-datenkatalog",
                   "heimathafen",
-                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -5405,14 +5405,9 @@
           "message": {
             "type": "string"
           },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "dataId": {
-            "type": "string"
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           },
           "companyId": {
             "type": "string"
@@ -5420,9 +5415,14 @@
           "companyName": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "dataId": {
+            "type": "string"
           }
         }
       },
@@ -5505,13 +5505,13 @@
             "enum": [
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
+              "nuclear-and-gas",
               "lksg",
               "p2p",
               "sfdr",
               "vsme",
-              "esg-questionnaire",
+              "esg-datenkatalog",
               "heimathafen",
-              "nuclear-and-gas",
               "additional-company-information"
             ]
           },

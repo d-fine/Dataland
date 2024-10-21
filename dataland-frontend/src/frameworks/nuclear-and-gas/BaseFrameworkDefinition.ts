@@ -9,7 +9,7 @@ export class BaseNuclearAndGasFrameworkDefinition implements BasePublicFramework
   readonly identifier = 'nuclear-and-gas';
   readonly explanation =
     'EU Taxonomy Nuclear and Gas Framework according to the Commission Delegated Regulation (EU) 2021/2178, Annex XII ';
-  readonly label = 'EU Taxonomy Nuclear and Gas Framework';
+  readonly label = 'EU Taxonomy Nuclear and Gas';
   getPublicFrameworkApiClient(
     configuration?: Configuration,
     axiosInstance?: AxiosInstance

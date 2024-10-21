@@ -676,13 +676,13 @@
                 "enum": [
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
+                  "nuclear-and-gas",
                   "lksg",
                   "p2p",
                   "sfdr",
                   "vsme",
-                  "esg-questionnaire",
+                  "esg-datenkatalog",
                   "heimathafen",
-                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -945,13 +945,13 @@
                 "enum": [
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
+                  "nuclear-and-gas",
                   "lksg",
                   "p2p",
                   "sfdr",
                   "vsme",
-                  "esg-questionnaire",
+                  "esg-datenkatalog",
                   "heimathafen",
-                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1086,13 +1086,13 @@
                 "enum": [
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
+                  "nuclear-and-gas",
                   "lksg",
                   "p2p",
                   "sfdr",
                   "vsme",
-                  "esg-questionnaire",
+                  "esg-datenkatalog",
                   "heimathafen",
-                  "nuclear-and-gas",
                   "additional-company-information"
                 ]
               }
@@ -1497,13 +1497,13 @@
             "enum": [
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
+              "nuclear-and-gas",
               "lksg",
               "p2p",
               "sfdr",
               "vsme",
-              "esg-questionnaire",
+              "esg-datenkatalog",
               "heimathafen",
-              "nuclear-and-gas",
               "additional-company-information"
             ]
           },
@@ -1595,13 +1595,13 @@
               "enum": [
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
+                "nuclear-and-gas",
                 "lksg",
                 "p2p",
                 "sfdr",
                 "vsme",
-                "esg-questionnaire",
+                "esg-datenkatalog",
                 "heimathafen",
-                "nuclear-and-gas",
                 "additional-company-information"
               ]
             }
@@ -1862,13 +1862,13 @@
             "enum": [
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
+              "nuclear-and-gas",
               "lksg",
               "p2p",
               "sfdr",
               "vsme",
-              "esg-questionnaire",
+              "esg-datenkatalog",
               "heimathafen",
-              "nuclear-and-gas",
               "additional-company-information"
             ]
           },
