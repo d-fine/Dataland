@@ -26,17 +26,6 @@ class ExcelTemplate(
             }
 
         /**
-         * Load a xlsx file with a specific sheet index to an ExcelTemplate.
-         */
-        fun fromFile(file: File, sheetName: String): ExcelTemplate {
-            return when (file.extension) {
-                "xlsx" -> fromXlsxSheet(file, sheetName)
-                "csv" -> fromCsv(file)
-                else -> throw IllegalArgumentException("Can only parse CSV and XLSX files. Got ${file.name}.")
-            }
-        }
-
-        /**
          * Parse an Excel Template from a xlsx file.
          */
         fun fromXlsx(xlsxFile: File): ExcelTemplate {
@@ -45,18 +34,6 @@ class ExcelTemplate(
                     .resolve("${xlsxFile.nameWithoutExtension}.csv")
 
             ExcelToCsvConverter(xlsxFile, "Framework Data Model", targetCsvFile).convert()
-
-            return fromCsv(targetCsvFile)
-        }
-
-        /**
-         * Parse an Excel Template from a xlsx file with a specific sheet index.
-         */
-        private fun fromXlsxSheet(xlsxFile: File, sheetName: String): ExcelTemplate {
-            val targetCsvFile = xlsxFile.parentFile
-                .resolve("${xlsxFile.nameWithoutExtension}.csv")
-
-            ExcelToCsvConverter(xlsxFile, sheetName, targetCsvFile).convert()
 
             return fromCsv(targetCsvFile)
         }
