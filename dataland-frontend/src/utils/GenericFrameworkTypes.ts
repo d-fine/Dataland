@@ -1,6 +1,6 @@
 import { type DropdownOption } from '@/utils/PremadeDropdownDatasets';
 import {
-  type EsgQuestionnaireData,
+  type EsgDatenkatalogData,
   type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type HeimathafenData,
@@ -51,6 +51,6 @@ export type FrameworkData =
   | LksgData
   | SfdrData
   | VsmeData
-  | EsgQuestionnaireData
+  | EsgDatenkatalogData
   | PathwaysToParisData
   | HeimathafenData;
