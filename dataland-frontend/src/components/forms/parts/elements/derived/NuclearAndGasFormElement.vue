@@ -39,7 +39,7 @@ import { defineComponent } from 'vue';
 import NuclearAndGasActivityField from '@/components/forms/parts/fields/NuclearAndGasActivityField.vue';
 import ExtendedDataPointFormField from '@/components/forms/parts/elements/basic/ExtendedDataPointFormField.vue';
 import { BaseFormFieldProps } from '@/components/forms/parts/fields/FormFieldProps';
-import { nuclearAndGasTooltipMapping } from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasTooltipMapping';
+import { nuclearAndGasActivityNames } from '@/components/resources/frameworkDataSearch/nuclearAndGas/NuclearAndGasActivityNames';
 import PercentageFormField from '@/components/forms/parts/fields/PercentageFormField.vue';
 
 export default defineComponent({
@@ -51,17 +51,17 @@ export default defineComponent({
   computed: {
     activities() {
       if (this.name?.toLowerCase().includes('denominator')) {
-        return nuclearAndGasTooltipMapping.alignedDenominator;
+        return nuclearAndGasActivityNames.alignedDenominator;
       } else if (this.name?.toLowerCase().includes('numerator')) {
-        return nuclearAndGasTooltipMapping.alignedNumerator;
+        return nuclearAndGasActivityNames.alignedNumerator;
       } else if (this.name?.toLowerCase().includes('aligned')) {
-        return nuclearAndGasTooltipMapping.eligibleButNotAligned;
+        return nuclearAndGasActivityNames.eligibleButNotAligned;
       } else {
-        return nuclearAndGasTooltipMapping.nonEligible;
+        return nuclearAndGasActivityNames.nonEligible;
       }
     },
     isNonEligible() {
-      return this.activities === nuclearAndGasTooltipMapping.nonEligible;
+      return this.activities === nuclearAndGasActivityNames.nonEligible;
     },
   },
 });
