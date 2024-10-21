@@ -40,11 +40,11 @@ okhttp3 = "4.12.0"
 
 moshi = "1.15.1"
 
-mockito = "5.14.0"
+mockito = "5.14.2"
 
-junit-jupiter = "5.11.1"
+junit-jupiter = "5.11.2"
 
-log4j = "2.24.0"
+log4j = "2.24.1"
 
 [libraries]
 
