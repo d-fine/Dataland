@@ -6,9 +6,10 @@
     :label="label"
     :required="required"
     :input-class="inputClass"
+
   >
     <FormKit type="group" name="value">
-      <div v-for="activity in activities" :key="activity.key">
+      <div v-for="activity in activities" :key="activity.key" :data-test="activity.key">
         <div v-if="isNonEligible">
           <div class="grid grid-nogutter">
             <PercentageFormField
