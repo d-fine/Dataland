@@ -45,6 +45,9 @@
             </template>
           </AutoComplete>
         </span>
+        <div class="mt-2">
+          <span class="red-text" v-if="areNotEnoughCharactersProvided">Please type at least 3 characters</span>
+        </div>
       </span>
     </div>
   </div>
@@ -137,6 +140,7 @@ export default defineComponent({
       this.focusOnSearchBar();
     },
     searchBarInput(newValue: string) {
+      this.validateSearchBarInput();
       this.saveCurrentSearchStringIfValid(newValue);
     },
     filter: {
@@ -162,6 +166,8 @@ export default defineComponent({
       autocompleteArray: [] as Array<object>,
       autocompleteArrayDisplayed: [] as Array<object>,
       route: useRoute(),
+      notEnoughCharactersWarningTimeoutId: 0,
+      areNotEnoughCharactersProvided: false,
     };
   },
   methods: {
@@ -218,7 +224,7 @@ export default defineComponent({
      * if no specific company is highlighted
      */
     executeSearchIfNoItemFocused() {
-      if (this.searchBarInput.length >= 2 && this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
+      if (!this.areNotEnoughCharactersProvided && this.currentFocusedOptionIndex === -1 && this.wereKeysPressed) {
         this.autocomplete?.hide();
         this.autocomplete?.$refs.focusInput.blur();
         this.$emit('search-confirmed', this.searchBarInput);
@@ -298,6 +304,23 @@ export default defineComponent({
         );
       }
       this.autocompleteArrayDisplayed = this.autocompleteArray;
+    },
+
+    /**
+     * Validates the current search bar input. If there are only one or two characters typed, an error message
+     * shall be rendered asking the user to provide at least three characters.
+     */
+    validateSearchBarInput() {
+      clearTimeout(this.notEnoughCharactersWarningTimeoutId);
+      const areThereNotEnoughCharacters = this.searchBarInput.length > 0 && this.searchBarInput.length < 3;
+
+      if (areThereNotEnoughCharacters) {
+        this.notEnoughCharactersWarningTimeoutId = setTimeout(() => {
+          this.areNotEnoughCharactersProvided = true;
+        }, 1000);
+      } else {
+        this.areNotEnoughCharactersProvided = false;
+      }
     },
   },
 });
