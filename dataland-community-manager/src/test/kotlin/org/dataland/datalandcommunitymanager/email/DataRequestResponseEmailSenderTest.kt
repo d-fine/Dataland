@@ -96,7 +96,7 @@ class DataRequestResponseEmailSenderTest {
             DataTypeEnum.lksg.toString() to "LkSG",
             DataTypeEnum.sfdr.toString() to "SFDR",
             DataTypeEnum.vsme.toString() to "VSME",
-            DataTypeEnum.esgMinusQuestionnaire.toString() to "ESG Questionnaire",
+            DataTypeEnum.esgMinusDatenkatalog.toString() to "ESG Datenkatalog",
             DataTypeEnum.heimathafen.toString() to "Heimathafen",
         )
 

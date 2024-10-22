@@ -4,8 +4,8 @@ import { getAllPublicFrameworkIdentifiers } from '@/frameworks/BasePublicFramewo
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry';
 
 describe('Unit test for the data type sorting in the Constants', () => {
-  it('Check framework order of esg questionnaire, heimathafen, and additional company information', () => {
-    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 3]).to.equal(DataTypeEnum.EsgQuestionnaire);
+  it('Check framework order of esg datenkatalog, heimathafen, and additional company information', () => {
+    expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 3]).to.equal(DataTypeEnum.EsgDatenkatalog);
     expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 2]).to.equal(DataTypeEnum.Heimathafen);
     expect(ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 1]).to.equal(
       DataTypeEnum.AdditionalCompanyInformation
