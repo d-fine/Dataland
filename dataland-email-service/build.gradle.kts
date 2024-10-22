@@ -19,6 +19,7 @@ plugins {
     jacoco
     id("org.springframework.boot")
     kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.jpa")
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_21
@@ -34,13 +35,16 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(Spring.boot.web)
     implementation(Spring.boot.actuator)
+    implementation(Spring.boot.data.jpa)
     implementation(Spring.boot.amqp)
     implementation(libs.mailjet.client)
     implementation(libs.jackson.kotlin)
     implementation(libs.freemarker)
+    implementation(libs.okhttp)
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
-    implementation(libs.okhttp)
+    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
 }
 
