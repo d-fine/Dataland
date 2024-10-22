@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.model.datapoints.standard
 
 import jakarta.validation.Validation
+import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import org.junit.jupiter.api.Test
 import java.math.BigDecimal
-import java.util.Currency
 
 class CurrencyDataTest {
     private val validator = Validation.buildDefaultValidatorFactory().validator
@@ -21,9 +21,17 @@ class CurrencyDataTest {
 
     @Test
     fun `Check that validation fails for CurrencyDataPoint`() {
-        val currency = Currency.getAvailableCurrencies()
-        val testString: String? = null
-        val test = Currency.getInstance(testString)
+        val incorrectExample =
+            CurrencyData(
+                value = BigDecimal.valueOf(0.5),
+                currency = null,
+                quality = QualityOptions.NoDataFound,
+            )
+        val validationResult = validator.validate(incorrectExample)
+        println(validationResult.toString())
+        // val currency = Currency.getAvailableCurrencies()
+        // val testString: String? = null
+        // val test = Currency.getInstance(testString)
         // assert(currency.contains(Currency.getInstance("USD"))) { "USD not in available currencies" }
         // println(currency)
         /*val incorrectExample =

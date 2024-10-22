@@ -30,7 +30,7 @@ class CurrencyStringValidator : ConstraintValidator<Iso4217Currency, String> {
 }
 
 private fun isValidCurrency(value: String?): Boolean {
-    if (value == null) return false
+    if (value == null) return true
     try {
         Currency.getInstance(value)
     } catch (e: IllegalArgumentException) {
