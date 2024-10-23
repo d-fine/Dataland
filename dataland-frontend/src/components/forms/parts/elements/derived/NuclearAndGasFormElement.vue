@@ -6,7 +6,6 @@
     :label="label"
     :required="required"
     :input-class="inputClass"
-
   >
     <FormKit type="group" name="value">
       <div v-for="activity in activities" :key="activity.key" :data-test="activity.key">
