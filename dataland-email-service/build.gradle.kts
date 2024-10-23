@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.okhttp)
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
+    testImplementation(libs.mockito.kotlin)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)

@@ -20,36 +20,35 @@ class EmailSender(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    /** This method checks incoming email objects if their receivers or cc property contains the domain name
-     * "@example.com" and suppresses their forwarding to the mailjet client
-     * @param email the email to be checked
+    /**
+     *  Filters the receivers and CC addresses of the given [email] to exclude those with the "@example.com"
+     *  domain or those who are not subscribed, then sends the [email] via the Mailjet client based on the
+     *  filtered results.
      */
-    fun sendEmailWithoutTestReceivers(email: Email) {
-        val receiversWithoutExampleDomains = email.receivers.filter(::shouldFilterEmailAddress)
-        val ccWithoutExampleDomains = email.cc?.filter(::shouldFilterEmailAddress)
-        if (receiversWithoutExampleDomains.isEmpty() && !ccWithoutExampleDomains.isNullOrEmpty()) {
-            sendEmail(
-                Email(
-                    email.sender,
-                    ccWithoutExampleDomains,
-                    listOf(),
-                    email.content,
-                ),
-            )
-        } else if (receiversWithoutExampleDomains.isEmpty() && ccWithoutExampleDomains.isNullOrEmpty()) {
-            logger.info("No email was sent. After filtering example.com email domain no recipients remain.")
-        } else {
-            sendEmail(email)
+    fun filterReceiversAndSentEmail(email: Email) {
+        val filteredReceivers = email.receivers.filter(::shouldSendToEmailContact)
+        val filteredCc = email.cc?.filter(::shouldSendToEmailContact)
+        if (filteredReceivers.isEmpty() && filteredCc.isNullOrEmpty()) {
+            logger.info("No email was sent. After filtering the receivers none remained.")
+            return
         }
+        sendEmail(
+            Email(
+                email.sender,
+                filteredReceivers,
+                filteredCc,
+                email.content,
+            ),
+        )
     }
 
     /**
      * This functions checks whether an [emailContact] should be filtered or not.
      * The function returns 'true' if the contact should be filtered and 'false' otherwise.
-     * * */
-    private fun shouldFilterEmailAddress(emailContact: EmailContact): Boolean =
-        !emailContact.emailAddress.contains("@example.com") ||
-            emailSubscriptionService.emailIsSubscribed(emailContact.emailAddress)?.not() ?: false
+     */
+    private fun shouldSendToEmailContact(emailContact: EmailContact): Boolean =
+        !emailContact.emailAddress.contains("@example.com") &&
+            emailSubscriptionService.emailIsSubscribed(emailContact.emailAddress) ?: true
 
     /** This method sends an email
      * @param email the email to send
