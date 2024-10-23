@@ -300,6 +300,36 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: 'financedScope1AndScope2Emissions',
+            label: 'Financed scope 1 and scope 2 emissions',
+            description: 'The sum of scope 1 and scope 2 emissions of financed companies',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'financedScope3Emissions',
+            label: 'Financed scope 3 emissions',
+            description: 'The scope 3 emissions of financed companies',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'financedScope4Emissions',
+            label: 'Financed scope 4 emissions',
+            description: 'The scope 4 emissions of financed companies',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: 'fossilFuelSectorExposure',
             label: 'Fossil Fuel Sector Exposure',
             description:

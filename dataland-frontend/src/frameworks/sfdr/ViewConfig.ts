@@ -395,6 +395,51 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
+            label: 'Financed scope 1 and scope 2 emissions',
+            explanation: 'The sum of scope 1 and scope 2 emissions of financed companies',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions?.value,
+                  'Tonnes'
+                ),
+                'Financed scope 1 and scope 2 emissions',
+                dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Financed scope 3 emissions',
+            explanation: 'The scope 3 emissions of financed companies',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions?.value,
+                  'Tonnes'
+                ),
+                'Financed scope 3 emissions',
+                dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Financed scope 4 emissions',
+            explanation: 'The scope 4 emissions of financed companies',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.financedScope4Emissions?.value,
+                  'Tonnes'
+                ),
+                'Financed scope 4 emissions',
+                dataset.environmental?.greenhouseGasEmissions?.financedScope4Emissions
+              ),
+          },
+          {
+            type: 'cell',
             label: 'Fossil Fuel Sector Exposure',
             explanation:
               '(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).',

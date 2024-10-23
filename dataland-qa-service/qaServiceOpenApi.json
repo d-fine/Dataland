@@ -2293,6 +2293,15 @@
           "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "financedScope1AndScope2Emissions": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "financedScope3Emissions": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "financedScope4Emissions": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
           "fossilFuelSectorExposure": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
@@ -4725,23 +4734,23 @@
           "message": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
           "dataId": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "framework": {
             "type": "string"
           },
-          "framework": {
+          "reportingPeriod": {
             "type": "string"
           }
         }

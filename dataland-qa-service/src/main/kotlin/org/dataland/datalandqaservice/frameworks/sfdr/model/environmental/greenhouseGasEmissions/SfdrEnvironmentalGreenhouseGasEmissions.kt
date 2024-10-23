@@ -52,5 +52,11 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
     val ghgIntensityScope4InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
+    val financedScope1AndScope2Emissions: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val financedScope3Emissions: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
+    val financedScope4Emissions: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    @field:Valid()
     val fossilFuelSectorExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
 )

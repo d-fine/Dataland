@@ -69,6 +69,9 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         ghgIntensityScope4InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat()
         ),
+        financedScope1AndScope2Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        financedScope3Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        financedScope4Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       },
       energyPerformance: {

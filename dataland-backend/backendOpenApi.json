@@ -5588,6 +5588,30 @@
               }
             ]
           },
+          "financedScope1AndScope2Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "financedScope3Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "financedScope4Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "fossilFuelSectorExposure": {
             "nullable": true,
             "allOf": [
@@ -17056,13 +17080,17 @@
         ],
         "type": "object",
         "properties": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           },
@@ -17071,10 +17099,6 @@
           },
           "headquarters": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
