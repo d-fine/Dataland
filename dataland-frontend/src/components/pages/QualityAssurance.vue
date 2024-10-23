@@ -321,6 +321,7 @@ export default defineComponent({
      * Validates the current company name search bar input.
      * If there are only one or two characters typed, an error message shall be rendered asking the user to
      * provide at least three characters.
+     * @returns the outcome of the validation
      */
     validateSearchBarInput(): boolean {
       clearTimeout(this.notEnoughCharactersWarningTimeoutId);
