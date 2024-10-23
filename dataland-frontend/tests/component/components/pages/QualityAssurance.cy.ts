@@ -115,8 +115,34 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('span', 'Showing results 1-2 of 2.');
   }
 
+  /**
+   * Validates that no search is triggered if the company search term is too short and that a warning is show to users.
+   */
+  function validateNoSearchIfNotEnoughChars(): void {
+    cy.contains('span', 'Please type at least 3 characters').should('not.exist');
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).type('a');
+    cy.contains('span', 'Please type at least 3 characters').should('exist');
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).type('b');
+    cy.contains('span', 'Please type at least 3 characters').should('exist');
+
+    cy.intercept(`**/qa/datasets?companyName=abc&chunkSize=10&chunkIndex=0`, []).as('searchForAbc');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?companyName=abc`, '0').as('searchForAbcNumber');
+    cy.get(`input[data-test="companyNameSearchbar"]`).type('c');
+    cy.contains('span', 'Please type at least 3 characters').should('not.exist');
+
+    cy.wait('@searchForAbc');
+    cy.wait('@searchForAbcNumber');
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).clear();
+    cy.contains('span', 'Please type at least 3 characters').should('not.exist');
+  }
+
   it('Check QA-overview-page for filtering on company name', () => {
     mountQaAssurancePageWithMocks();
+
+    validateNoSearchIfNotEnoughChars();
 
     const companySearchTerm = 'Alpha';
     cy.intercept(`**/qa/datasets?companyName=${companySearchTerm}&chunkSize=10&chunkIndex=0`, [
