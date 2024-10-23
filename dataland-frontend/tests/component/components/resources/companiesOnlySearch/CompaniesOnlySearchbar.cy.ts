@@ -2,13 +2,8 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
 
-describe('Component test for ClaimOwnershipPanel', () => {
-  beforeEach(() => {
-    const mockApiResponse = { status: 200 };
-    cy.intercept('**/company-ownership/*', mockApiResponse);
-  });
-
-  it('No search occurs and warning is displayed if search string is too short', () => {
+describe('Component test for companies search bar', () => {
+  it('No search occurs and a warning is displayed if search string is too short', () => {
     getMountingFunction({ keycloak: minimalKeycloakMock() })(CompaniesOnlySearchBar);
     cy.contains('span', 'Please type at least 3 characters').should('not.exist');
 
