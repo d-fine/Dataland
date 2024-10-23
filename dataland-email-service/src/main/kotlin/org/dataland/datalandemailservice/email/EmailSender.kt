@@ -4,6 +4,7 @@ import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
+import org.dataland.datalandemailservice.services.EmailSubscriptionService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -15,6 +16,7 @@ import java.lang.StringBuilder
 @Component
 class EmailSender(
     @Autowired private val mailjetClient: MailjetClient,
+    @Autowired private val emailSubscriptionService: EmailSubscriptionService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -23,8 +25,8 @@ class EmailSender(
      * @param email the email to be checked
      */
     fun sendEmailWithoutTestReceivers(email: Email) {
-        val receiversWithoutExampleDomains = email.receivers.filterNot { it.emailAddress.contains("@example.com") }
-        val ccWithoutExampleDomains = email.cc?.filterNot { it.emailAddress.contains("@example.com") }
+        val receiversWithoutExampleDomains = email.receivers.filter(::shouldFilterEmailAddress)
+        val ccWithoutExampleDomains = email.cc?.filter(::shouldFilterEmailAddress)
         if (receiversWithoutExampleDomains.isEmpty() && !ccWithoutExampleDomains.isNullOrEmpty()) {
             sendEmail(
                 Email(
@@ -40,6 +42,14 @@ class EmailSender(
             sendEmail(email)
         }
     }
+
+    /**
+     * This functions checks whether an [emailContact] should be filtered or not.
+     * The function returns 'true' if the contact should be filtered and 'false' otherwise.
+     * * */
+    private fun shouldFilterEmailAddress(emailContact: EmailContact): Boolean =
+        !emailContact.emailAddress.contains("@example.com") ||
+            emailSubscriptionService.emailIsSubscribed(emailContact.emailAddress)?.not() ?: false
 
     /** This method sends an email
      * @param email the email to send

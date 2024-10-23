@@ -31,6 +31,17 @@ class EmailSubscriptionService(
     }
 
     /**
+     * Checks if the specified email address is subscribed.
+     *
+     * This function queries the [EmailSubscriptionRepository] to determine whether the
+     * provided [emailAddress] is currently subscribed. It returns `true` if the email
+     * is subscribed, `false` if it is not subscribed, and `null` if the email address
+     * does not exist in the repository.
+     */
+    @Transactional(readOnly = true)
+    fun emailIsSubscribed(emailAddress: String): Boolean? = emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed
+
+    /**
      * Inserts a new email subscription if one does not already exist and returns its UUID.
      *
      * This method checks if an email subscription exists for the given email address.
