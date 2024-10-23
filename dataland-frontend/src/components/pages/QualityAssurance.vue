@@ -58,6 +58,9 @@
                 <span>{{ numberOfUnreviewedDatasets }}</span>
               </div>
             </span>
+            <div class="pb-2 ml-3 flex justify-content-start">
+              <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
+            </div>
           </div>
 
           <div class="col-12 text-left p-3">
@@ -198,6 +201,8 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableReportingPeriods: undefined as undefined | Array<Date>,
+      notEnoughCharactersWarningTimeoutId: 0,
+      showNotEnoughCharactersWarning: false,
     };
   },
   mounted() {
@@ -219,14 +224,16 @@ export default defineComponent({
         this.getQaDataForCurrentPage();
       }
     },
-    searchBarInput(newSearch: string) {
-      this.searchBarInput = newSearch;
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (this.timerId) {
-        clearTimeout(this.timerId);
+    searchBarInput() {
+      const isValid = this.validateSearchBarInput();
+      if (isValid) {
+        this.currentChunkIndex = 0;
+        this.firstRowIndex = 0;
+        if (this.timerId) {
+          clearTimeout(this.timerId);
+        }
+        this.timerId = setTimeout(() => this.getQaDataForCurrentPage(), this.debounceInMs);
       }
-      this.timerId = setTimeout(() => this.getQaDataForCurrentPage(), this.debounceInMs);
     },
   },
   methods: {
@@ -309,6 +316,27 @@ export default defineComponent({
         this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
         this.getQaDataForCurrentPage();
       }
+    },
+    /**
+     * Validates the current company name search bar input.
+     * If there are only one or two characters typed, an error message shall be rendered asking the user to
+     * provide at least three characters.
+     */
+    validateSearchBarInput(): boolean {
+      clearTimeout(this.notEnoughCharactersWarningTimeoutId);
+
+      const inputLength = this.searchBarInput.length;
+      const notEnoughCharacters = inputLength > 0 && inputLength < 3;
+
+      if (notEnoughCharacters) {
+        this.notEnoughCharactersWarningTimeoutId = setTimeout(() => {
+          this.showNotEnoughCharactersWarning = true;
+        }, 1000);
+        return false;
+      }
+
+      this.showNotEnoughCharactersWarning = false;
+      return true;
     },
   },
   computed: {
