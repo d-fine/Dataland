@@ -12,7 +12,7 @@ jobs:
   log-everything:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/logObjects
         name: log everything
         with:
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -80,7 +80,7 @@ jobs:
     outputs:
       frameworkList: ${{ steps.listFrameworks.outputs.frameworkList }}
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -118,7 +118,7 @@ jobs:
       matrix:
         framework: ${{ fromJson(needs.framework-toolbox-list-frameworks.outputs.frameworkList) }}
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -153,7 +153,7 @@ jobs:
   framework-toolbox-integration-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -183,7 +183,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -267,7 +267,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/logObjects
         name: log job contexts
         with:
@@ -336,7 +336,7 @@ jobs:
           - testExecutor: "RESTARTABILITY"
             testGroup: 100
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - uses: ./.github/workflows/downloadImageVersions
       - uses: ./.github/workflows/logObjects
         name: log job contexts
@@ -464,7 +464,7 @@ jobs:
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
       - uses: ./.github/workflows/logObjects
@@ -559,7 +559,7 @@ jobs:
   manual-maintenance-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           fetch-depth: 0
       - name: "Check if manual maintenance was executed recently"
