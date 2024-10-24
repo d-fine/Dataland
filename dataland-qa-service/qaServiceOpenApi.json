@@ -2269,6 +2269,9 @@
           "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "scope4GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
           "enterpriseValue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
@@ -2295,6 +2298,12 @@
           },
           "fossilFuelSectorExposure": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "financedScope1AndScope2Emissions": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "financedScope3Emissions": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },

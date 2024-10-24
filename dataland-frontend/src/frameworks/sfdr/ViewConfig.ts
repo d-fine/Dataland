@@ -279,6 +279,22 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
+            label: 'Scope 4 GHG emissions',
+            explanation:
+              'Scope 4 carbon emissions refer to emissions avoided when a product is used as a substitute for other goods or services that fulfill the same functions but have a lower carbon intensity.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 4 GHG emissions',
+                dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes
+              ),
+          },
+          {
+            type: 'cell',
             label: 'Enterprise Value',
             explanation:
               'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).',
@@ -406,6 +422,36 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Fossil Fuel Sector Exposure',
                 dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Financed scope 1 and scope 2 emissions',
+            explanation: 'The sum of scope 1 and scope 2 emissions of financed companies',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions?.value,
+                  'Tonnes'
+                ),
+                'Financed scope 1 and scope 2 emissions',
+                dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Financed scope 3 emissions',
+            explanation: 'The scope 3 emissions of financed companies',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions?.value,
+                  'Tonnes'
+                ),
+                'Financed scope 3 emissions',
+                dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions
               ),
           },
         ],

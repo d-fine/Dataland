@@ -53,6 +53,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         scope1And2And3GhgEmissionsMarketBasedInTonnes: dataGenerator.randomExtendedDataPoint(
           dataGenerator.randomFloat()
         ),
+        scope4GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
         totalRevenue: dataGenerator.randomCurrencyDataPoint(),
         carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
@@ -70,6 +71,8 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
           dataGenerator.randomFloat()
         ),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
+        financedScope1AndScope2Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
+        financedScope3Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
       },
       energyPerformance: {
         renewableEnergyProductionInGWh: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
