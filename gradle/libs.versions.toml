@@ -6,7 +6,7 @@ com-github-jk1-dependency-license-report = { id = "com.github.jk1.dependency-lic
 
 io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1.23.6" }
 
-com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.0.2" }
+com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 
 org-springframework-boot = { id = "org.springframework.boot", version = "3.3.2" }
 
