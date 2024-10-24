@@ -6,7 +6,7 @@ import {
   getSectionHead,
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { mountMLDTFrameworkPanelFromFakeFixture } from '@ct/testUtils/MultiLayerDataTableComponentTestUtils';
-import {nuclearAndGasViewConfiguration} from "@/frameworks/nuclear-and-gas/ViewConfig";
+import { nuclearAndGasViewConfiguration } from '@/frameworks/nuclear-and-gas/ViewConfig';
 
 describe('Component Test for the nuclear and gas view Page with its components', () => {
   let preparedFixtures: Array<FixtureData<NuclearAndGasData>>;
