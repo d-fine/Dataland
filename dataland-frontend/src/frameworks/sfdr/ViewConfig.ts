@@ -295,21 +295,6 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'Scope 1 and 2 and 3 and 4 GHG emissions',
-            explanation: 'Sum of scope 1, 2, 3 and 4 carbon emissions',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.scope1And2And3And4GhgEmissionsInTonnes?.value,
-                  'Tonnes'
-                ),
-                'Scope 1 and 2 and 3 and 4 GHG emissions',
-                dataset.environmental?.greenhouseGasEmissions?.scope1And2And3And4GhgEmissionsInTonnes
-              ),
-          },
-          {
-            type: 'cell',
             label: 'Enterprise Value',
             explanation:
               'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).',

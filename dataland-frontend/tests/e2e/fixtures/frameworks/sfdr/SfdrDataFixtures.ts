@@ -54,7 +54,6 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
           dataGenerator.randomFloat()
         ),
         scope4GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        scope1And2And3And4GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
         totalRevenue: dataGenerator.randomCurrencyDataPoint(),
         carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),

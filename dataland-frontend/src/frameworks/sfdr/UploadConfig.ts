@@ -226,16 +226,6 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'scope1And2And3And4GhgEmissionsInTonnes',
-            label: 'Scope 1 and 2 and 3 and 4 GHG emissions',
-            description: 'Sum of scope 1, 2, 3 and 4 carbon emissions',
-
-            unit: 'Tonnes',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
             name: 'enterpriseValue',
             label: 'Enterprise Value',
             description:

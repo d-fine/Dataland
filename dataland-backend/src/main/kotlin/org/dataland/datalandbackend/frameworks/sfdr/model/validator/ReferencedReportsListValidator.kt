@@ -67,7 +67,6 @@ class ReferencedReportsListConstraintValidator :
             dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsLocationBasedInTonnes?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.scope1And2And3GhgEmissionsMarketBasedInTonnes?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes?.dataSource?.fileReference,
-            dataset.environmental?.greenhouseGasEmissions?.scope1And2And3And4GhgEmissionsInTonnes?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.enterpriseValue?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.totalRevenue?.dataSource?.fileReference,
             dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue?.dataSource?.fileReference,

@@ -2272,9 +2272,6 @@
           "scope4GhgEmissionsInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "scope1And2And3And4GhgEmissionsInTonnes": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "enterpriseValue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
@@ -4737,6 +4734,13 @@
           "message": {
             "type": "string"
           },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "companyId": {
+            "type": "string"
+          },
           "companyName": {
             "type": "string"
           },
@@ -4748,13 +4752,6 @@
           },
           "framework": {
             "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },
