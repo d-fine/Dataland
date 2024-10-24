@@ -2,6 +2,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
@@ -68,7 +70,20 @@ class QaReportMetadataService(
             .toEpochMilli()
 
     private fun getCompanyIdFromCompanyIdentifier(companyIdentifier: String): String? {
-        val matchingCompanyIdsAndNamesOnDataland = companyController.getCompaniesBySearchString(companyIdentifier)
+        val matchingCompanyIdsAndNamesOnDataland =
+            try {
+                companyController.getCompaniesBySearchString(companyIdentifier)
+            } catch (clientException: ClientException) {
+                val message = (clientException.response as ClientError<*>).body.toString()
+                throw InvalidInputApiException(
+                    summary = "Failed to retrieve companies by search string.",
+                    message =
+                        "The search request for companies for the provided identifier failed. " +
+                            "This is probably due to an input error. Original message: $message",
+                    cause = clientException,
+                )
+            }
+
         return when (matchingCompanyIdsAndNamesOnDataland.size) {
             0 -> null
             1 -> matchingCompanyIdsAndNamesOnDataland[0].companyId

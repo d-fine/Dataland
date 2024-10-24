@@ -2,6 +2,8 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
@@ -57,7 +59,18 @@ class DataRequestProcessingUtils(
         returnOnlyUnique: Boolean = false,
     ): CompanyIdAndName? {
         val matchingCompanyIdsAndNamesOnDataland =
-            companyApi.getCompaniesBySearchString(identifierValue)
+            try {
+                companyApi.getCompaniesBySearchString(identifierValue)
+            } catch (clientException: ClientException) {
+                val message = (clientException.response as ClientError<*>).body.toString()
+                throw InvalidInputApiException(
+                    summary = "Failed to retrieve companies by search string.",
+                    message =
+                        "The search request for companies for the provided identifier failed. " +
+                            "This is probably due to an input error. Original message: $message",
+                    cause = clientException,
+                )
+            }
         val datalandCompanyIdAndName =
             if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
                 matchingCompanyIdsAndNamesOnDataland.first()

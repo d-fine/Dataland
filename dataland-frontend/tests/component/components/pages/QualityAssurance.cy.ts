@@ -115,8 +115,65 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.contains('span', 'Showing results 1-2 of 2.');
   }
 
+  /**
+   * Validates that no search is triggered if the company search term is too short and that a warning is show to users.
+   */
+  function validateNoSearchIfNotEnoughChars(): void {
+    /**
+     * Types the input into the search bar
+     * @param input to type
+     */
+    function typeIntoSearchBar(input: string): void {
+      cy.get(`input[data-test="companyNameSearchbar"]`).type(input);
+    }
+
+    /**
+     * Checks if the warning is there or is not there, based on the boolean passed to the function.
+     * @param isWarningExpectedToExist decides whether the warning is expected to be displayed or not
+     */
+    function validateSearchStringWarning(isWarningExpectedToExist: boolean): void {
+      cy.contains('span', 'Please type at least 3 characters').should(isWarningExpectedToExist ? 'exist' : 'not.exist');
+    }
+
+    /**
+     * Checks if the search results for an empty company name search string are currently displayed or not,
+     * based on the boolean passed to the function.
+     * @param searchResultsExpectedToBeDisplayed decides whether the search results are expected to be displayed or not
+     */
+    function validateAllMockSearchResults(searchResultsExpectedToBeDisplayed: boolean): void {
+      cy.contains('td', `${dataIdAlpha}`).should(searchResultsExpectedToBeDisplayed ? 'exist' : 'not.exist');
+      cy.contains('td', `${dataIdBeta}`).should(searchResultsExpectedToBeDisplayed ? 'exist' : 'not.exist');
+    }
+
+    validateSearchStringWarning(false);
+    validateAllMockSearchResults(true);
+
+    typeIntoSearchBar('a');
+    validateSearchStringWarning(true);
+    validateAllMockSearchResults(true);
+
+    typeIntoSearchBar('b');
+    validateSearchStringWarning(true);
+    validateAllMockSearchResults(true);
+
+    cy.intercept(`**/qa/datasets?companyName=abc&chunkSize=10&chunkIndex=0`, []).as('searchForAbc');
+    cy.intercept(`**/qa/numberOfUnreviewedDatasets?companyName=abc`, '0').as('searchForAbcNumber');
+    typeIntoSearchBar('c');
+    validateSearchStringWarning(false);
+
+    cy.wait('@searchForAbc');
+    cy.wait('@searchForAbcNumber');
+    validateAllMockSearchResults(false);
+
+    cy.get(`input[data-test="companyNameSearchbar"]`).clear();
+    validateSearchStringWarning(false);
+    validateAllMockSearchResults(true);
+  }
+
   it('Check QA-overview-page for filtering on company name', () => {
     mountQaAssurancePageWithMocks();
+
+    validateNoSearchIfNotEnoughChars();
 
     const companySearchTerm = 'Alpha';
     cy.intercept(`**/qa/datasets?companyName=${companySearchTerm}&chunkSize=10&chunkIndex=0`, [

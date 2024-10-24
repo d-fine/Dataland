@@ -16,12 +16,9 @@
                     <p>Select the company for which you would like to add a new dataset.</p>
                   </div>
                   <div class="col-9 d-card">
-                    <div class="mb-3">
-                      <span>Type at least 3 characters to search for companies on Dataland:</span>
-                    </div>
                     <CompaniesOnlySearchBar
                       @select-company="pushToChooseFrameworkForDataUploadPageForItem"
-                      class="w-12"
+                      wrapper-class-additions="w-full"
                     />
                     <div v-if="isAdmin" class="mt-6">
                       <span>Can't find the company? </span>
