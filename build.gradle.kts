@@ -113,6 +113,8 @@ sonar {
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials/" +
                 "EutaxonomyFinancialsDataFixtures.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
+                    "NuclearAndGasActivityNames.ts," +
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
@@ -131,6 +133,7 @@ sonar {
                 "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
                 "NuclearAndGasTooltipMapping.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +
+                "dataland-frontend/src/frameworks/nuclear-and-gas/UploadConfig.ts," +
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
 
@@ -140,7 +143,15 @@ sonar {
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
                 "LksgGeneralViolationAssessmentsComponent.kt," +
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
-                "LksgGeneralViolationAssessmentsComponent.kt",
+                "LksgGeneralViolationAssessmentsComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                    "custom/NuclearAndGasAlignedNumeratorComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                    "custom/NuclearAndGasEligibleButNotAlignedComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                    "custom/NuclearAndGasNonEligibleComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                    "custom/NuclearAndGasAlignedDenominatorComponent.kt"
         )
         property(
             "sonar.exclusions",
