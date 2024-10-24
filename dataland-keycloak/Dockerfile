@@ -11,6 +11,7 @@ FROM registry.access.redhat.com/ubi9@sha256:b00d5990a00937bd1ef7f44547af6c7fd36e
 RUN mkdir -p /mnt/rootfs
 RUN dnf install --installroot /mnt/rootfs curl --releasever 9 --setopt install_weak_deps=false --nodocs -y; dnf --installroot /mnt/rootfs clean all
 
+# Timeout issue, but it probably makes sense to make the update to version 26 directly...
 FROM quay.io/keycloak/keycloak:25.0.6@sha256:82c5b7a110456dbd42b86ea572e728878549954cc8bd03cd65410d75328095d2
 
 COPY --from=ubi-micro-build /mnt/rootfs /
