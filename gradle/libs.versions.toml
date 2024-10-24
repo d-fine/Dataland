@@ -33,7 +33,7 @@ org-jetbrains-kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.
 org-jetbrains-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 [versions]
-
+# execution issue causing gradle build failure
 kotlin = "2.0.21"
 
 okhttp3 = "4.12.0"
