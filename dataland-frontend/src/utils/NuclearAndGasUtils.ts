@@ -14,7 +14,11 @@ import type {
 export function isAlignedDenominator(
   nuclearAndGasData: NuclearAndGasType
 ): nuclearAndGasData is NuclearAndGasAlignedDenominator {
-  return typeof nuclearAndGasData === 'object' && 'taxonomyAlignedShareDenominatorNAndG426' in nuclearAndGasData;
+  return (
+    typeof nuclearAndGasData === 'object' &&
+    nuclearAndGasData !== null &&
+    Object.keys(nuclearAndGasData).some((key) => key.toLowerCase().includes('denominator'))
+  );
 }
 
 /**
@@ -26,7 +30,11 @@ export function isAlignedDenominator(
 export function isAlignedNumerator(
   nuclearAndGasData: NuclearAndGasType
 ): nuclearAndGasData is NuclearAndGasAlignedNumerator {
-  return typeof nuclearAndGasData === 'object' && 'taxonomyAlignedShareNumeratorNAndG426' in nuclearAndGasData;
+  return (
+    typeof nuclearAndGasData === 'object' &&
+    nuclearAndGasData !== null &&
+    Object.keys(nuclearAndGasData).some((key) => key.toLowerCase().includes('numerator'))
+  );
 }
 
 /**
@@ -38,7 +46,11 @@ export function isAlignedNumerator(
 export function isEligibleButNotAlignedNumerator(
   nuclearAndGasData: NuclearAndGasType
 ): nuclearAndGasData is NuclearAndGasEligibleButNotAligned {
-  return typeof nuclearAndGasData === 'object' && 'taxonomyEligibleButNotAlignedShareNAndG426' in nuclearAndGasData;
+  return (
+    typeof nuclearAndGasData === 'object' &&
+    nuclearAndGasData !== null &&
+    Object.keys(nuclearAndGasData).some((key) => key.toLowerCase().includes('eligiblebutnotaligned'))
+  );
 }
 
 /**
@@ -48,7 +60,11 @@ export function isEligibleButNotAlignedNumerator(
  * @returns Returns true if the data represents a non-eligible activity, otherwise false.
  */
 export function isNonEligible(nuclearAndGasData: NuclearAndGasType): nuclearAndGasData is NuclearAndGasNonEligible {
-  return typeof nuclearAndGasData === 'object' && 'taxonomyNonEligibleShareNAndG426' in nuclearAndGasData;
+  return (
+    typeof nuclearAndGasData === 'object' &&
+    nuclearAndGasData !== null &&
+    Object.keys(nuclearAndGasData).some((key) => key.toLowerCase().includes('noneligible'))
+  );
 }
 
 export type NuclearAndGasType =

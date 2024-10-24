@@ -16,7 +16,7 @@ describe('Component Test for the nuclear and gas view Page with its components',
     });
   });
 
-  it('Check that on the nuclear and gas view Page the list base data point component works properly', () => {
+  it('Check that on the nuclear and gas view page the extended nuclearAndGas components work properly', () => {
     const preparedFixture = getPreparedFixture('All-fields-defined-for-EU-NuclearAndGas-Framework', preparedFixtures);
     mountMLDTFrameworkPanelFromFakeFixture(DataTypeEnum.NuclearAndGas, nuclearAndGasViewConfiguration, [
       preparedFixture,

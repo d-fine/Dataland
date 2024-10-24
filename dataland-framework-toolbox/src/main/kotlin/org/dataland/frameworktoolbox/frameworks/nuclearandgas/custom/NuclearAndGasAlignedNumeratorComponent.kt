@@ -17,7 +17,7 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
 import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
 
 /**
- * Represents the EuTaxonomy-specific "NuclearAndGasAlignedDenominator" component
+ * Represents the EuTaxonomy-specific "NuclearAndGasAlignedNumerator" component
  */
 class NuclearAndGasAlignedNumeratorComponent(
     identifier: String,

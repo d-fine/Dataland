@@ -23,7 +23,7 @@ import {
   isNonEligible,
   type NuclearAndGasType,
 } from '@/utils/NuclearAndGasUtils';
-import type { NuclearAndGasEnvironmentalObjective } from '@clients/qaservice';
+import type { NuclearAndGasEnvironmentalObjective } from '@clients/backend';
 
 interface DialogRefData {
   input: NuclearAndGasType;
