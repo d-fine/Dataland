@@ -1,0 +1,15 @@
+{
+  "general": {
+    "general": {
+      "fiscalYearDeviation": "fiscalYearDeviationDataPoint",
+      "fiscalYearEnd": "fiscalYearEndDataPoint",
+      "referencedReports": "referencedReportsDataPoint"
+    },
+    "financialInformation": {
+      "equity": "equityDataPoint",
+      "debt": "debtDataPoint",
+      "balanceSheetTotal": "balanceSheetTotalDataPoint",
+      "evic": "evicDataPoint",
+    }
+  }
+}
