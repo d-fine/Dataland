@@ -30,7 +30,7 @@
     "axios": "^1.6.8",
     "currency-codes": "^2.1.0",
     "i18n-iso-countries": "^7.11.1",
-    "keycloak-js": "^24.0.0",
+    "keycloak-js": "^25.0.0",
     "material-icons": "^1.13.12",
     "pinia": "^2.1.7",
     "pinia-shared-state": "^0.5.1",
