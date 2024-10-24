@@ -5524,6 +5524,22 @@
               }
             ]
           },
+          "scope4GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "scope1And2And3And4GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "enterpriseValue": {
             "nullable": true,
             "allOf": [
@@ -5588,6 +5604,14 @@
               }
             ]
           },
+          "fossilFuelSectorExposure": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
           "financedScope1AndScope2Emissions": {
             "nullable": true,
             "allOf": [
@@ -5601,22 +5625,6 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "financedScope4Emissions": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "fossilFuelSectorExposure": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
               }
             ]
           }
@@ -17080,7 +17088,7 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           },
@@ -17090,15 +17098,15 @@
           "companyName": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "countryCode": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

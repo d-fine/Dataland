@@ -2269,6 +2269,12 @@
           "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "scope4GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
+          "scope1And2And3And4GhgEmissionsInTonnes": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          },
           "enterpriseValue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
@@ -2293,17 +2299,14 @@
           "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "fossilFuelSectorExposure": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
           "financedScope1AndScope2Emissions": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "financedScope3Emissions": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "financedScope4Emissions": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "fossilFuelSectorExposure": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           }
         }
       },
@@ -4734,24 +4737,24 @@
           "message": {
             "type": "string"
           },
-          "companyId": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
-          },
           "dataId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           },
           "framework": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "companyId": {
             "type": "string"
+          },
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

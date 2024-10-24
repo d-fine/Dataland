@@ -215,6 +215,27 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: 'scope4GhgEmissionsInTonnes',
+            label: 'Scope 4 GHG emissions',
+            description:
+              'Scope 4 carbon emissions refer to emissions avoided when a product is used as a substitute for other goods or services that fulfill the same functions but have a lower carbon intensity.',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'scope1And2And3And4GhgEmissionsInTonnes',
+            label: 'Scope 1 and 2 and 3 and 4 GHG emissions',
+            description: 'Sum of scope 1, 2, 3 and 4 carbon emissions',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: 'enterpriseValue',
             label: 'Enterprise Value',
             description:
@@ -300,6 +321,16 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: 'fossilFuelSectorExposure',
+            label: 'Fossil Fuel Sector Exposure',
+            description:
+              'Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).',
+
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: 'financedScope1AndScope2Emissions',
             label: 'Financed scope 1 and scope 2 emissions',
             description: 'The sum of scope 1 and scope 2 emissions of financed companies',
@@ -316,26 +347,6 @@ export const sfdrDataModel = [
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: 'financedScope4Emissions',
-            label: 'Financed scope 4 emissions',
-            description: 'The scope 4 emissions of financed companies',
-
-            unit: 'Tonnes',
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-          },
-          {
-            name: 'fossilFuelSectorExposure',
-            label: 'Fossil Fuel Sector Exposure',
-            description:
-              'Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).',
-
-            component: 'YesNoExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
