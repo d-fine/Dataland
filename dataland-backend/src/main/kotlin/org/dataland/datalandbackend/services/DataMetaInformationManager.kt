@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * A service class for managing data meta-information
@@ -86,9 +87,9 @@ class DataMetaInformationManager(
         showOnlyActive: Boolean,
         reportingPeriod: String?,
     ): List<DataMetaInformationEntity> {
-        if (companyId != "") {
+        /*if (companyId != "") {
             companyQueryManager.verifyCompanyIdExists(companyId)
-        }
+        }*/
         val dataTypeFilter = dataType ?: ""
         logger.info("dataTypeFilter: $dataTypeFilter")
         val reportingPeriodFilter = reportingPeriod ?: ""

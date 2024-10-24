@@ -226,7 +226,7 @@ class DataManagerTest(
         )
         assertThrows<AmqpException> {
             spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
-                dataUUId, storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
+                dataUUId, storableEuTaxonomyDataSetForNonFinancials.data, storableEuTaxonomyDataSetForNonFinancials.dataType.name, storableEuTaxonomyDataSetForNonFinancials.companyId, false, correlationId,
             )
         }
     }

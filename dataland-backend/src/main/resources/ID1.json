@@ -1,0 +1,19 @@
+{
+  "specification": "https://dataland.com/specifications/datapoints/0192a633-b25c-75d7-9259-95817b236f12.json",
+  "title": "Equity",
+  "description": "The value of ownership interest in the company, calculated as total assets minus total liabilities.",
+  "uniqueIdentifier": "0192a633-b25c-75d7-9259-95817b236f12",
+  "dataType": "https://dataland.com/specifications/datatype/java.math.BigDecimal.json",
+  "restrictions": {
+    "minimum": 0,
+    "maximum": 100,
+    "notEmpty": true
+  },
+  "usedByFrameworks": [
+    "https://dataland.com/specifications/frameworks/sfdr.json",
+    "https://dataland.com/specifications/frameworks/additional-company-information.json"
+  ],
+  "convertableTo": [
+    "https://dataland.com/specifications/datapoints/4592a63e-6bf6-7bc1-9d43-cdbae4d9e951.json"
+  ]
+}

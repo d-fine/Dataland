@@ -74,6 +74,13 @@ abstract class DataController<T>(
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        val test = dataMetaInformationManager.searchDataMetaInfo(
+            companyId = metaInfo.company.companyId,
+            dataType = null,
+            showOnlyActive = false,
+            reportingPeriod = metaInfo.reportingPeriod,
+        )
+        logger.info(test.toString())
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
@@ -84,7 +91,10 @@ abstract class DataController<T>(
         logger.info(clazz.simpleName)
         var data: T? = null
         data = if (clazz.simpleName == "LksgminiData" || clazz.simpleName == "LksgmediumData") {
-            objectMapper.readValue(dataManager.assembleDataSetFromDataPoints(clazz.simpleName, companyId, metaInfo.reportingPeriod, correlationId), clazz)
+            //val test = "java.math.BigDecimal"
+            //val kotlinClass = Class.forName(test).kotlin
+            //objectMapper.readValue(dataManager.assembleDataSetFromDataPoints(metaInfo, correlationId), kotlinClass::class.java)
+            objectMapper.readValue(dataManager.assembleDataSetFromDataPoints(metaInfo, correlationId), clazz)
         } else {
             objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz)
         }

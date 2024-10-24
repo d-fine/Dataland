@@ -161,6 +161,10 @@ constructor(
 
             }
 
+            dataId = IdUtils.generateUUID()
+            storeMetaDataFrom(dataId, storableDataSet.dataType.toString(), storableDataSet.uploaderUserId, storableDataSet.uploadTime, storableDataSet.reportingPeriod, storableDataSet.companyId, correlationId)
+            //storeDataSetInTemporaryStoreAndSendMessage(dataId, objectMapper.writeValueAsString(storableDataSet), storableDataSet.dataType.toString(), storableDataSet.companyId, bypassQa, correlationId)
+
             return dataId
         } else {
             logger.info("Processing data storage request for ${storableDataSet.dataType} with original logic")
@@ -266,9 +270,21 @@ constructor(
         return dataAsDataPoint
     }
 
-    fun assembleDataSetFromDataPoints(framework: String, companyId: String, reportingPeriod: String, correlationId: String): String {
+    @Transactional
+    fun assembleDataSetFromDataPoints(metaInformation: DataMetaInformationEntity, correlationId: String): String {
+        val companyId = metaInformation.company.companyId
+        val reportingPeriod = metaInformation.reportingPeriod
+        val framework = metaInformation.dataType
+        logger.info(metaInformation.reportingPeriod)
+        logger.info(metaInformation.company.companyId)
+        logger.info(metaInformation.dataType)
+        //val test = metaDataManager.searchDataMetaInfo(companyId, "lksgmini", showOnlyActive = false, reportingPeriod)
+        //logger.info(test.toString())
+        //logger.info(test.first().dataId)
+        //logger.info(test.size.toString())
+
         var frameworkData = ""
-        val jsonFrameworkSpec = readJsonFile("${framework.lowercase().dropLast(4)}.json")
+        /*val jsonFrameworkSpec = readJsonFile("$framework.json")
         logger.info("Identifying blocks.")
         val frameworkSpecJsonNode = getJsonNodeFromString(jsonFrameworkSpec)
         val relevantFields = mutableMapOf<String, String>()
@@ -278,11 +294,13 @@ constructor(
             logger.info("Processing field name ${it.key} with value ${it.value}")
             logger.info("companyID: $companyId")
             logger.info("reportingPeriod: $reportingPeriod")
-            val test = metaDataManager.searchDataMetaInfo(companyId, null, showOnlyActive = false, reportingPeriod)
+            val test = metaDataManager.searchDataMetaInfo(companyId, it.value, showOnlyActive = false, reportingPeriod)
+            //val test = metaDataManager.getUserDataMetaInformation()
             logger.info(test.toString())
             logger.info(test.first().dataId)
             logger.info(test.size.toString())
-        }
+
+        }*/
 
 
         /*relevantFields.forEach {
