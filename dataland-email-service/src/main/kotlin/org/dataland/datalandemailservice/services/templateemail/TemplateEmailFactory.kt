@@ -34,7 +34,7 @@ abstract class TemplateEmailFactory(
      * @param receiverEmail the single receiver email address
      * @param properties the properties required to fill the HTML template
      */
-    fun buildEmail(
+    open fun buildEmail(
         receiverEmail: String,
         properties: Map<String, String?>,
     ): Email {
