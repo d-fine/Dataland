@@ -41,7 +41,7 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "3.12.36",
+    "@cypress/code-coverage": "3.13.4",
     "@faker-js/faker": "8.4.1",
     "@rushstack/eslint-patch": "1.10.4",
     "@tsconfig/node20": "20.1.4",
