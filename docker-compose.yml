@@ -40,7 +40,7 @@ services:
     <<: *uncritical-constants-env
     environment:
       # The primary server URL all other URLS get redirected to
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      PROXY_PRIMARY_URL: "${PROXY_PRIMARY_URL:-local-dev.dataland.com}"
       # This is the path to the letsencrypt directory (usually /etc/letsencrypt/live/FIRST_DOMAIN_ON_CERT)
       PROXY_LETSENCRYPT_PATH: ${PROXY_LETSENCRYPT_PATH}
       # These are the config options for the initial LetsEncrypt certificate request
@@ -494,6 +494,19 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  specification-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service:${DATALAND_SPECIFICATION_SERVICE_VERSION}}
+    expose:
+      - "8080"
+    networks:
+      - internal
+    <<: *uncritical-constants-env
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET: ${DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET}
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -607,4 +620,6 @@ volumes:
   community_manager_data:
     driver: local
   batch_manager_data:
+    driver: local
+  specification_service_data:
     driver: local

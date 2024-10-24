@@ -48,6 +48,12 @@ location /community/ {
   include utils/communityManagerErrors.conf;
 }
 
+location /specification/ {
+  proxy_pass http://specification-service/;
+  include utils/proxy.conf;
+  include utils/specificationServiceErrors.conf;
+}
+
 location /images/ {
   root /var/www;
 }

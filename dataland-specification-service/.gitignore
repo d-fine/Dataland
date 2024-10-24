@@ -1,0 +1,34 @@
+.DS_Store
+node_modules
+build
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+*.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Coverage
+cypress
+reports
+/src/test/e2e/videos/
+/.nyc_output/
+**/coverage/
+**/.gradle/
+/src/test/*/screenshots/
+
+# auto generated code
+mock-server
+*.tsbuildinfo
