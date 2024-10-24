@@ -25,6 +25,7 @@ class EmailSubscriptionService(
      */
     @Transactional
     fun unsubscribeEmailWithUuid(uuid: UUID) {
+        // TODO in this event we want to send an stakeholder email to inform about the subscription
         emailSubscriptionRepository.findByUuid(uuid)?.let {
             it.isSubscribed = false
         }
@@ -53,11 +54,11 @@ class EmailSubscriptionService(
      * @return The UUID of the active subscription, or `null` if the subscription is inactive.
      */
     @Transactional
-    fun insertSubscriptionEntityIfNeededAndReturnUuidIfSubscribed(emailAddress: String): UUID? {
+    fun insertSubscriptionEntityIfNeededAndReturnUuid(emailAddress: String): UUID {
         val entity =
             emailSubscriptionRepository.findByEmailAddress(emailAddress)
                 ?: emailSubscriptionRepository.save(EmailSubscriptionEntity(emailAddress = emailAddress, isSubscribed = true))
 
-        return if (entity.isSubscribed) entity.uuid else null
+        return entity.uuid
     }
 }

@@ -156,5 +156,7 @@
 <#include "./general/why_me.ftl">
 <#include "./general/footer.ftl">
 
+<p>If you wish to unsubscribe, please <a href="${baseUrl}/mail/updates/unsubscribe/${subscriptionUuid}">click here</a>.</p>
+
 </body>
 </html>
