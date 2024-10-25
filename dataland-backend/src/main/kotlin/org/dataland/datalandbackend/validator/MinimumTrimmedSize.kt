@@ -4,8 +4,11 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import kotlin.reflect.KClass
+
+const val VALIDATION_MESSAGE = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEARCHSTRING_TOO_SHORT_THRESHOLD"
 
 /**
  * A custom validation annotation that checks the length of a string after trimming whitespace.
@@ -22,7 +25,7 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [TrimmedSizeValidator::class])
 annotation class MinimumTrimmedSize(
     val min: Int = 0,
-    val message: String = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: {min}",
+    val message: String = VALIDATION_MESSAGE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )

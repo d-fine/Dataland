@@ -27,7 +27,7 @@ class ExceptionForwarder {
         if (statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE)) {
             throw InvalidInputApiException(
                 summary = "Failed to retrieve companies by search string.",
-                message = SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE, // TODO message trägt die min Info nicht
+                message = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEARCHSTRING_TOO_SHORT_THRESHOLD",
                 cause = throwable,
             )
         }
