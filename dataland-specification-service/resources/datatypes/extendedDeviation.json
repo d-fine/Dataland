@@ -1,0 +1,29 @@
+{
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datatypes/extendedDeviation.json",
+  "title": "General deviation data point with an extended source",
+  "description": "Data point with an extended document reference as source, signifying a deviation. Can only have values 'Deviation' and 'NoDeviation'.",
+  "class": "dataland.datapoints.ExtendedDeviation",
+  "usedBy": [
+    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedFiscalYearDeviateCalendarYear.json"
+  ],
+  "types": {
+    "value": "Deviation?",
+    "quality": "QualityOptions?",
+    "comment": "String?",
+    "dataSource": "ExtendedDocumentReference?",
+    "applicable": "Boolean?"
+  },
+  "example": {
+    "value": "NoDeviation",
+    "quality": "Reported",
+    "comment": "The value is reported by the company.",
+    "dataSource": {
+      "page": "5-7",
+      "tagName": "date",
+      "fileName": "AnnualReport2020.pdf",
+      "fileReference": "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    },
+    "applicable": true
+  }
+}
+

@@ -1,0 +1,11 @@
+{
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedFiscalYearDeviateCalendarYear.json",
+  "title": "Does the Fiscal Year deviate from the Calendar Year?",
+  "description": "Does the fiscal year deviate from the calendar year?",
+  "uniqueIdentifier": "extendedFiscalYearDeviateCalendarYear",
+  "dataType": "https://${PROXY_PRIMARY_URL}/specifications/datatypes/extendedDeviation.json",
+  "usedBy": [
+    "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
+  ],
+  "convertableTo": []
+}

@@ -1,0 +1,11 @@
+{
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/enterpriseValueCashEVIC.json",
+  "title": "EVIC",
+  "description": "Enterprise Value Including Cash.",
+  "uniqueIdentifier": "enterpriseValueCashEVIC",
+  "dataType": "https://${PROXY_PRIMARY_URL}/specifications/datatypes/currencyDatapointWithExtendedSource.json",
+  "usedBy": [
+    "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
+  ],
+  "convertableTo": []
+}

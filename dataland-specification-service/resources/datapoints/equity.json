@@ -1,11 +1,11 @@
 {
-  "specification": "<PLACEHOLDER>/specifications/datapoints/equity.json",
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/equity.json",
   "title": "Equity",
   "description": "The value of ownership interest in the company, calculated as total assets minus total liabilities.",
   "uniqueIdentifier": "equity",
-  "dataType": "<PLACEHOLDER>/specifications/datatypes/currencyDatapointWithExtendedSource.json",
+  "dataType": "https://${PROXY_PRIMARY_URL}/specifications/datatypes/currencyDatapointWithExtendedSource.json",
   "usedBy": [
-    "<PLACEHOLDER>/specifications/frameworks/additionalCompanyInformation.json"
+    "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
   ],
   "convertableTo": []
 }

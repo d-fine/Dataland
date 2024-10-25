@@ -1,0 +1,11 @@
+{
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedFiscalYearEndDateDay.json",
+  "title": "Fiscal Year End",
+  "description": "The date, the fiscal year ends.",
+  "uniqueIdentifier": "extendedFiscalYearEndDateDay",
+  "dataType": "https://${PROXY_PRIMARY_URL}/specifications/datatypes/extendedDateDay.json",
+  "usedBy": [
+    "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
+  ],
+  "convertableTo": []
+}

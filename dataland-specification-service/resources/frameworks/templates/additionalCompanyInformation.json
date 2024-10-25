@@ -9,7 +9,7 @@
       "equity": "equityDataPoint",
       "debt": "debtDataPoint",
       "balanceSheetTotal": "balanceSheetTotalDataPoint",
-      "evic": "evicDataPoint",
+      "evic": "evicDataPoint"
     }
   }
 }
