@@ -35,30 +35,15 @@ class QaReviewManager(
         chunkSize: Int,
         chunkIndex: Int,
     ): List<ReviewQueueResponse> {
-        var companyIds = emptySet<String>()
-        if (!companyName.isNullOrBlank()) {
-            try {
-                companyIds = companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
-            } catch (clientException: ClientException) {
-                val responseBody = (clientException.response as ClientError<*>).body.toString()
-                exceptionForwarder.catchSearchStringTooShortClientException(
-                    responseBody,
-                    clientException.statusCode,
-                    clientException,
-                )
-                throw clientException
-            }
-        }
-        val searchFilter =
+        val offset = (chunkIndex) * (chunkSize)
+        return reviewQueueRepository.getSortedPendingMetadataSet(
             QaSearchFilter(
                 dataTypes = dataTypes,
                 reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
+                companyIds = getCompanyIdsForCompanyName(companyName),
                 companyName = companyName,
-            )
-        val offset = (chunkIndex) * (chunkSize)
-        return reviewQueueRepository.getSortedPendingMetadataSet(
-            searchFilter, resultOffset = offset,
+            ),
+            resultOffset = offset,
             resultLimit = chunkSize,
         )
     }
@@ -73,7 +58,15 @@ class QaReviewManager(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
-    ): Int {
+    ): Int =
+        reviewQueueRepository.getNumberOfRequests(
+            QaSearchFilter(
+                dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
+                companyIds = getCompanyIdsForCompanyName(companyName),
+            ),
+        )
+
+    private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {
             try {
@@ -87,12 +80,7 @@ class QaReviewManager(
                 )
                 throw clientException
             }
-        } // TODO reduce duplicate code
-        val filter =
-            QaSearchFilter(
-                dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
-                companyIds = companyIds,
-            )
-        return reviewQueueRepository.getNumberOfRequests(filter)
+        }
+        return companyIds
     }
 }
