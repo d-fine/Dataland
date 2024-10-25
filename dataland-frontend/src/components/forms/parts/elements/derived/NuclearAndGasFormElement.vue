@@ -19,7 +19,7 @@
               validation-label="Relative Value"
               validation="number|between:0,100"
               class="col"
-              input-class="col-10"
+              input-class="col-4"
             />
           </div>
         </div>
