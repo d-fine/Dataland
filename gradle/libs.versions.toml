@@ -126,7 +126,7 @@ jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
-
+# gradle build failure ->Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
 jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.18.0"
 
 jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.18.0"
