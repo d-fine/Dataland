@@ -63,7 +63,7 @@ Check the cloud provider's dashboard for manually created backups and images. De
 - [x] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
   disk space with `df -h` command. If the open disk space is close to the minimum requirement, clear up disk space
   with `sudo docker image prune --all`.
-- [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
+- [x] On all environments, no new messages should have been added to the dead letter queue since the last manual
   maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
