@@ -5,12 +5,11 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.ZoneId
@@ -24,6 +23,7 @@ class QaReportMetadataService(
     @Autowired private val companyController: CompanyDataControllerApi,
     @Autowired private val qaReportRepository: QaReportRepository,
     @Autowired val metadataController: MetaDataControllerApi,
+    @Autowired val exceptionForwarder: ExceptionForwarder,
 ) {
     /**
      * Method to search all data and the connected meta information associated with a data set.
@@ -76,19 +76,13 @@ class QaReportMetadataService(
             try {
                 companyController.getCompaniesBySearchString(companyIdentifier)
             } catch (clientException: ClientException) {
-                var exceptionToThrow: Exception = clientException
-
-                val response = (clientException.response as ClientError<*>).body.toString()
-                val errorMessageIfSearchStringTooShort = SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
-                if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
-                    exceptionToThrow =
-                        InvalidInputApiException(
-                            summary = "Failed to retrieve companies by search string.",
-                            message = errorMessageIfSearchStringTooShort,
-                            cause = clientException,
-                        )
-                }
-                throw exceptionToThrow
+                val responseBody = (clientException.response as ClientError<*>).body.toString()
+                exceptionForwarder.catchSearchStringTooShortClientException(
+                    responseBody,
+                    clientException.statusCode,
+                    clientException,
+                )
+                throw clientException
             }
 
         return when (matchingCompanyIdsAndNamesOnDataland.size) {

@@ -1,3 +1,4 @@
 package org.dataland.datalandbackendutils.exceptions
 
-const val SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE = "Length must be at least {min} characters after trimming."
+const val SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE = "Search string is shorter than minimum number of characters"
+// TODO rename class

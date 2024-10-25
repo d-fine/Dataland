@@ -4,13 +4,11 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
+import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 /**
@@ -20,6 +18,7 @@ import org.springframework.stereotype.Service
 class QaReviewManager(
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
     @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired val exceptionForwarder: ExceptionForwarder,
 ) {
     /**
      * The method returns a list of unreviewed datasets with corresponding information for the specified input params
@@ -38,24 +37,16 @@ class QaReviewManager(
     ): List<ReviewQueueResponse> {
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {
-// TODO testing for this modularized function?
             try {
-                // TODO modularize in function all across all services into backend utils
                 companyIds = companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
             } catch (clientException: ClientException) {
-                var exceptionToThrow: Exception = clientException
-
-                val response = (clientException.response as ClientError<*>).body.toString()
-                val errorMessageIfSearchStringTooShort = SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
-                if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
-                    exceptionToThrow =
-                        InvalidInputApiException(
-                            summary = "Failed to retrieve companies by search string.",
-                            message = errorMessageIfSearchStringTooShort,
-                            cause = clientException,
-                        )
-                }
-                throw exceptionToThrow
+                val responseBody = (clientException.response as ClientError<*>).body.toString()
+                exceptionForwarder.catchSearchStringTooShortClientException(
+                    responseBody,
+                    clientException.statusCode,
+                    clientException,
+                )
+                throw clientException
             }
         }
         val searchFilter =
@@ -88,21 +79,15 @@ class QaReviewManager(
             try {
                 companyIds = companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
             } catch (clientException: ClientException) {
-                var exceptionToThrow: Exception = clientException
-
-                val response = (clientException.response as ClientError<*>).body.toString()
-                val errorMessageIfSearchStringTooShort = SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
-                if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
-                    exceptionToThrow =
-                        InvalidInputApiException(
-                            summary = "Failed to retrieve companies by search string.",
-                            message = errorMessageIfSearchStringTooShort,
-                            cause = clientException,
-                        )
-                }
-                throw exceptionToThrow
+                val responseBody = (clientException.response as ClientError<*>).body.toString()
+                exceptionForwarder.catchSearchStringTooShortClientException(
+                    responseBody,
+                    clientException.statusCode,
+                    clientException,
+                )
+                throw clientException
             }
-        }
+        } // TODO reduce duplicate code
         val filter =
             QaSearchFilter(
                 dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
