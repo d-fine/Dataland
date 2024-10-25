@@ -504,9 +504,10 @@ services:
       - internal
     <<: *uncritical-constants-env
     environment:
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-      DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET: ${DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET}
+      # The primary server URL all other URLS get redirected to
+      PROXY_PRIMARY_URL: "${PROXY_PRIMARY_URL:-local-dev.dataland.com}"
+      INTERNAL_BACKEND_URL: "${INTERNAL_BACKEND_URL:-http://backend:8080/api}"
+      DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET: "${DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET}"
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
