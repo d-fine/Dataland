@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -78,7 +79,7 @@ class QaReportMetadataService(
                 var exceptionToThrow: Exception = clientException
 
                 val response = (clientException.response as ClientError<*>).body.toString()
-                val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
+                val errorMessageIfSearchStringTooShort = SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
                 if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
                     exceptionToThrow =
                         InvalidInputApiException(

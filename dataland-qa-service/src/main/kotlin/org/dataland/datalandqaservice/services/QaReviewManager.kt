@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
@@ -45,7 +46,7 @@ class QaReviewManager(
                 var exceptionToThrow: Exception = clientException
 
                 val response = (clientException.response as ClientError<*>).body.toString()
-                val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
+                val errorMessageIfSearchStringTooShort = SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
                 if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
                     exceptionToThrow =
                         InvalidInputApiException(
@@ -85,13 +86,12 @@ class QaReviewManager(
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {
             try {
-                // TODO modularize in function all across all services into backend utils
                 companyIds = companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
             } catch (clientException: ClientException) {
                 var exceptionToThrow: Exception = clientException
 
                 val response = (clientException.response as ClientError<*>).body.toString()
-                val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
+                val errorMessageIfSearchStringTooShort = SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
                 if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
                     exceptionToThrow =
                         InvalidInputApiException(

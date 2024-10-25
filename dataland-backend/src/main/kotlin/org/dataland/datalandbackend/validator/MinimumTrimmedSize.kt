@@ -4,6 +4,7 @@ import jakarta.validation.Constraint
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext
 import jakarta.validation.Payload
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE
 import kotlin.reflect.KClass
 
 /**
@@ -21,7 +22,7 @@ import kotlin.reflect.KClass
 @Constraint(validatedBy = [TrimmedSizeValidator::class])
 annotation class MinimumTrimmedSize(
     val min: Int = 0,
-    val message: String = "Length must be at least {min} characters after trimming.",
+    val message: String = SEARCHSTRING_TOO_LONG_VALIDATION_MESSAGE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
