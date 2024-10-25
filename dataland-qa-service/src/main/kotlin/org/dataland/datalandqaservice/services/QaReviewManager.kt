@@ -1,11 +1,15 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 /**
@@ -33,8 +37,25 @@ class QaReviewManager(
     ): List<ReviewQueueResponse> {
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {
-            companyIds =
-                companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
+// TODO testing for this modularized function?
+            try {
+                // TODO modularize in function all across all services into backend utils
+                companyIds = companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
+            } catch (clientException: ClientException) {
+                var exceptionToThrow: Exception = clientException
+
+                val response = (clientException.response as ClientError<*>).body.toString()
+                val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
+                if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
+                    exceptionToThrow =
+                        InvalidInputApiException(
+                            summary = "Failed to retrieve companies by search string.",
+                            message = errorMessageIfSearchStringTooShort,
+                            cause = clientException,
+                        )
+                }
+                throw exceptionToThrow
+            }
         }
         val searchFilter =
             QaSearchFilter(
@@ -63,8 +84,24 @@ class QaReviewManager(
     ): Int {
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {
-            companyIds =
-                companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
+            try {
+                // TODO modularize in function all across all services into backend utils
+                companyIds = companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
+            } catch (clientException: ClientException) {
+                var exceptionToThrow: Exception = clientException
+
+                val response = (clientException.response as ClientError<*>).body.toString()
+                val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
+                if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
+                    exceptionToThrow =
+                        InvalidInputApiException(
+                            summary = "Failed to retrieve companies by search string.",
+                            message = errorMessageIfSearchStringTooShort,
+                            cause = clientException,
+                        )
+                }
+                throw exceptionToThrow
+            }
         }
         val filter =
             QaSearchFilter(

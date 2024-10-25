@@ -67,7 +67,7 @@ class DataRequestProcessingUtils(
 
                 val response = (clientException.response as ClientError<*>).body.toString()
                 val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
-                if (clientException.statusCode == HttpStatus.NOT_FOUND.value() && response.contains(errorMessageIfSearchStringTooShort)) {
+                if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
                     exceptionToThrow =
                         InvalidInputApiException(
                             summary = "Failed to retrieve companies by search string.",
