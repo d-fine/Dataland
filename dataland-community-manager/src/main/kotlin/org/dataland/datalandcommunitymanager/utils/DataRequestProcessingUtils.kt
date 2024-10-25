@@ -22,6 +22,7 @@ import org.dataland.datalandcommunitymanager.repositories.RequestStatusRepositor
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.Instant
 
@@ -62,14 +63,19 @@ class DataRequestProcessingUtils(
             try {
                 companyApi.getCompaniesBySearchString(identifierValue)
             } catch (clientException: ClientException) {
-                val message = (clientException.response as ClientError<*>).body.toString()
-                throw InvalidInputApiException(
-                    summary = "Failed to retrieve companies by search string.",
-                    message =
-                        "The search request for companies for the provided identifier failed. " +
-                            "This is probably due to an input error. Original message: $message",
-                    cause = clientException,
-                )
+                var exceptionToThrow: Exception = clientException
+
+                val response = (clientException.response as ClientError<*>).body.toString()
+                val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
+                if (clientException.statusCode == HttpStatus.NOT_FOUND.value() && response.contains(errorMessageIfSearchStringTooShort)) {
+                    exceptionToThrow =
+                        InvalidInputApiException(
+                            summary = "Failed to retrieve companies by search string.",
+                            message = errorMessageIfSearchStringTooShort,
+                            cause = clientException,
+                        )
+                }
+                throw exceptionToThrow
             }
         val datalandCompanyIdAndName =
             if (matchingCompanyIdsAndNamesOnDataland.size == 1) {

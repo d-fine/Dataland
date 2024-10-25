@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.ZoneId
@@ -74,14 +75,19 @@ class QaReportMetadataService(
             try {
                 companyController.getCompaniesBySearchString(companyIdentifier)
             } catch (clientException: ClientException) {
-                val message = (clientException.response as ClientError<*>).body.toString()
-                throw InvalidInputApiException(
-                    summary = "Failed to retrieve companies by search string.",
-                    message =
-                        "The search request for companies for the provided identifier failed. " +
-                            "This is probably due to an input error. Original message: $message",
-                    cause = clientException,
-                )
+                var exceptionToThrow: Exception = clientException
+
+                val response = (clientException.response as ClientError<*>).body.toString()
+                val errorMessageIfSearchStringTooShort = "Length must be at least 3 characters after trimming."
+                if (clientException.statusCode == HttpStatus.BAD_REQUEST.value() && response.contains(errorMessageIfSearchStringTooShort)) {
+                    exceptionToThrow =
+                        InvalidInputApiException(
+                            summary = "Failed to retrieve companies by search string.",
+                            message = errorMessageIfSearchStringTooShort,
+                            cause = clientException,
+                        )
+                }
+                throw exceptionToThrow
             }
 
         return when (matchingCompanyIdsAndNamesOnDataland.size) {

@@ -150,12 +150,17 @@ class KnownErrorControllerAdvice(
      */
     @ExceptionHandler(HandlerMethodValidationException::class)
     fun handleMethodValidationException(ex: HandlerMethodValidationException): ResponseEntity<ErrorResponse> {
-        val errorList = ex.allValidationResults.map { it.toString() }
+        val errorMessages =
+            ex.allValidationResults
+                .flatMap { it.resolvableErrors }
+                .joinToString(", ") { resolvable ->
+                    resolvable.defaultMessage ?: "Invalid parameter"
+                }
         return prepareResponse(
             ErrorDetails(
                 errorType = "bad-input",
                 summary = "Invalid input",
-                message = errorList.takeIf { it.isNotEmpty() }?.joinToString(separator = "; ") ?: "No detailed error message retrieved.",
+                message = errorMessages,
                 httpStatus = HttpStatus.BAD_REQUEST,
             ),
             ex,
