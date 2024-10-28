@@ -1,0 +1,10 @@
+{
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedCurrencyTotalAssetsBalance.json",
+  "name": "Total Assets listed on Balance Sheet",
+  "businessDefinition": "The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",
+  "uniqueIdentifier": "extendedCurrencyTotalAssetsBalance",
+  "datapointType": "https://${PROXY_PRIMARY_URL}/specifications/datapointtypes/extendedCurrency.json",
+  "usedBy": [
+    "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
+  ]
+}

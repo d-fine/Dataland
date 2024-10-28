@@ -33,7 +33,7 @@ class DataPointManager(
 
     private fun constructDataPointUrl(dataPoint: String): String = "$specificationServiceBaseUrl/datapoints/$dataPoint.json"
 
-    private fun constructDataTypeUrl(dataType: String): String = "$specificationServiceBaseUrl/datatypes/$dataType.json"
+    private fun constructDataTypeUrl(dataType: String): String = "$specificationServiceBaseUrl/datapointtypes/$dataType.json"
 
     private fun getDataType(dataPoint: String): String {
         val dataTypeUrl = getJsonNodeFromUrl(constructDataPointUrl(dataPoint)).get("dataType").asText()

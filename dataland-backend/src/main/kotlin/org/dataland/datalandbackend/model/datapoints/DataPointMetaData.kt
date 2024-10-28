@@ -16,6 +16,7 @@ import java.util.UUID
 
 data class DataPointMetaData(
     val dataPointId: UUID,
+    // TODO: rename to datapointSpecification
     val dataPoint: String,
     val companyId: UUID,
     val reportingPeriod: String,
