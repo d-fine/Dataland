@@ -388,7 +388,7 @@ class SingleDataRequestsTest {
                 companyIdentifier = tooShortCompanyIdentifier,
                 dataType = SingleDataRequest.DataType.lksg,
                 reportingPeriods = setOf("2025"),
-                contacts = setOf("someContact@example.com"),
+                contacts = setOf("someMail@example.com"),
                 message = "Does not matter for this test.",
             )
 
