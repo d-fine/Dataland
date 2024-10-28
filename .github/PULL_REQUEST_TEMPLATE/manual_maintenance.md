@@ -36,12 +36,12 @@ On all servers to the following:
 Start the process with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
 fine, proceed with other servers.
 
-- [x] dev1.dataland.com
-- [x] dev2.dataland.com
-- [x] dev3.dataland.com
-- [x] test.dataland.com
-- [x] letsencrypt.dataland.com
-- [x] dataland.com (align beforehand)
+- [ ] dev1.dataland.com
+- [ ] dev2.dataland.com
+- [ ] dev3.dataland.com
+- [ ] test.dataland.com
+- [ ] letsencrypt.dataland.com
+- [ ] dataland.com (align beforehand)
 
 If the updates require a reboot (for e.g. a kernel update), you can restart the machine with `sudo reboot`.
 However, for dataland.com, you may want to avoid any interruption and schedule the reboot during the night with `sudo shutdown -r 02:00`.
@@ -50,8 +50,8 @@ However, for dataland.com, you may want to avoid any interruption and schedule t
 
 Check the cloud provider's dashboard for manually created backups and images. Delete them if they are not needed anymore.
 
-- [x] not needed images deleted (only latest relevant for clone)
-- [x] manually created backups deleted (older than one month)
+- [ ] not needed images deleted (only latest relevant for clone)
+- [ ] manually created backups deleted (older than one month)
 
 ## ssh-keys maintenance
 
@@ -60,17 +60,17 @@ Check the cloud provider's dashboard for manually created backups and images. De
 
 ## Check RabbitMQ dead letter queue and disk space
 
-- [x] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
+- [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
   disk space with `df -h` command. If the open disk space is close to the minimum requirement, clear up disk space
   with `sudo docker image prune --all`.
-- [x] On all environments, no new messages should have been added to the dead letter queue since the last manual
+- [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
   maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
 ## Check that the main branch has no sonar issues
-- [x] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
+- [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
   findings, either fix them directly or bring them up for discussion with the team.
 
 ## Conclusion
