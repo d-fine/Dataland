@@ -23,25 +23,35 @@ consult the internal Dataland Wiki.
   3. Execute the following snippet of code (requires python): `curl http://localhost:8080/api/v1/client-controller/openapi | sed 's/\(example: \)\([^ ]*\)/\1"\2"/g' | python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2))' > ./eurodatClientOpenApi.json`
   4. If there are changes to `eurodatClientOpenApi.json`, discuss with the team how to proceed
 
-## Server updates
+## Server maintenance
 
 Note: Before applying any update to any server make sure that a backup exists. In case of prod, create a fresh backup just
 before applying any changes and align with the team when to apply them.
 
-Start the update with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
+On all servers to the following:
+- Execute `sudo apt-get update && sudo apt-get upgrade` to update the server (if updates require a reboot it works better to start it manually with `sudo reboot` than from the opened message window)
+- Execute `sudo docker system prune -a` to clean up unused docker components and liberate disk space
+- Check for new ubuntu releases and install them if available with `sudo do-release-upgrade` (see internal documentation for details, you might need to run `sudo apt update && sudo apt upgrade` first if packages are missing)  
+
+Start the process with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
 fine, proceed with other servers.
 
-Execute `sudo apt-get update && sudo apt-get upgrade` on
-
-- [ ] dev1.dataland.com
-- [ ] dev2.dataland.com
-- [ ] dev3.dataland.com
-- [ ] test.dataland.com
-- [ ] letsencrypt.dataland.com
-- [ ] dataland.com (align beforehand)
+- [x] dev1.dataland.com
+- [x] dev2.dataland.com
+- [x] dev3.dataland.com
+- [x] test.dataland.com
+- [x] letsencrypt.dataland.com
+- [x] dataland.com (align beforehand)
 
 If the updates require a reboot (for e.g. a kernel update), you can restart the machine with `sudo reboot`.
-However, for dataland.com, you may want to avoid any interruption and schedule the reboot at the night with `sudo shutdown -r 02:00`.
+However, for dataland.com, you may want to avoid any interruption and schedule the reboot during the night with `sudo shutdown -r 02:00`.
+
+## Cloud maintenance
+
+Check the cloud provider's dashboard for manually created backups and images. Delete them if they are not needed anymore.
+
+- [x] not needed images deleted (only latest relevant for clone)
+- [x] manually created backups deleted (older than one month)
 
 ## ssh-keys maintenance
 
@@ -50,17 +60,17 @@ However, for dataland.com, you may want to avoid any interruption and schedule t
 
 ## Check RabbitMQ dead letter queue and disk space
 
-- [ ] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
+- [x] RabbitMQ does need at least 768MB of free disk space to operate. `ssh` into all servers and check the available
   disk space with `df -h` command. If the open disk space is close to the minimum requirement, clear up disk space
   with `sudo docker image prune --all`.
-- [ ] On all environments, no new messages should have been added to the dead letter queue since the last manual
+- [x] On all environments, no new messages should have been added to the dead letter queue since the last manual
   maintenance. If new messages have appeared this needs to be investigated. The dead letter queue can be accessed
   and messages on it read in the RabbitMQ GUI. Access it by port-forwarding port `6789` from the server and then
   accessing the GUI at `localhost:6789/rabbitmq`. After login, the dead letter queue can be found at Queues &rarr;
   deadLetterQueue &rarr; Get message.
 
 ## Check that the main branch has no sonar issues
-- [ ] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
+- [x] Go to the sonar report summary of the main branch and verify that there are no sonar findings. If there are sonar 
   findings, either fix them directly or bring them up for discussion with the team.
 
 ## Conclusion
