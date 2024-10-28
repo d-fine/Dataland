@@ -24,7 +24,7 @@ const val VALIDATION_MESSAGE = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEA
 @Retention(AnnotationRetention.RUNTIME)
 @Constraint(validatedBy = [TrimmedSizeValidator::class])
 annotation class MinimumTrimmedSize(
-    val min: Int = 0,
+    val min: Int,
     val message: String = VALIDATION_MESSAGE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
