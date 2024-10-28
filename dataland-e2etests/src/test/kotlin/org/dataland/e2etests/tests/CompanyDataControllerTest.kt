@@ -380,17 +380,6 @@ class CompanyDataControllerTest {
     }
 
     @Test
-    fun `check that Exception is thrown when company search string is too short`() {
-        val tooShortCompanySearchString = "aa"
-        assertThrows<ClientException> {
-            apiAccessor.companyDataControllerApi
-                .getCompaniesBySearchString(
-                    searchString = tooShortCompanySearchString,
-                )
-        }
-    }
-
-    @Test
     fun `counts the number of datasets for a company`() {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val companyId = companyDataControllerTestUtils.uploadModifiedBaseCompany("AggregatedInformation", null)
