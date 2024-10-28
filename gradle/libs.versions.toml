@@ -48,7 +48,7 @@ log4j = "2.24.1"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:8.8"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.10.2"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.23.7"
 
@@ -185,9 +185,9 @@ itext-core = "com.itextpdf:itext-core:8.0.5"
 
 layout = "com.itextpdf:layout:8.0.5"
 
-tika-core = "org.apache.tika:tika-core:2.9.2"
+tika-core = "org.apache.tika:tika-core:3.0.0"
 
-tika-parsers = "org.apache.tika:tika-parsers:2.9.2"
+tika-parsers = "org.apache.tika:tika-parsers:3.0.0"
 
 poi = "org.apache.poi:poi:5.3.0"
 
