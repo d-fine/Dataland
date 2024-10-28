@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -30,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataManagerUtils holds util methods for handling of data
-*/
+ */
 @Component("DataManager")
 class DataManager
     @Suppress("LongParameterList")
@@ -93,7 +92,7 @@ class DataManager
                 DataMetaInformationEntity(
                     dataId,
                     company,
-                    storableDataSet.dataType.toString(),
+                    storableDataSet.dataType,
                     storableDataSet.uploaderUserId,
                     storableDataSet.uploadTime,
                     storableDataSet.reportingPeriod,
@@ -162,7 +161,7 @@ class DataManager
          */
         fun getPublicDataSet(
             dataId: String,
-            dataType: DataType,
+            dataType: String,
             correlationId: String,
         ): StorableDataSet =
             dataManagerUtils.getStorableDataset(

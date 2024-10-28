@@ -13,8 +13,7 @@ import kotlin.reflect.KClass
 @Target(AnnotationTarget.FIELD)
 @Constraint(validatedBy = [CurrencyStringValidator::class])
 annotation class Iso4217Currency(
-    val message: String =
-        "contains entry that does not represent a ISO 4217 currency. Valid examples: EUR, USD, JPY",
+    val message: String = "contains entry that does not represent a ISO 4217 currency. Valid examples: EUR, USD, JPY",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [],
 )
@@ -31,10 +30,6 @@ class CurrencyStringValidator : ConstraintValidator<Iso4217Currency, String> {
 
 private fun isValidCurrency(value: String?): Boolean {
     if (value == null) return true
-    try {
-        Currency.getInstance(value)
-    } catch (e: IllegalArgumentException) {
-        return false
-    }
-    return true
+
+    return Currency.getAvailableCurrencies().contains(Currency.getInstance(value))
 }

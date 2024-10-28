@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
-import org.dataland.datalandbackend.model.datapoints.StorableDataPoint
+import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.io.FileNotFoundException
 import java.net.URI
+import java.time.Instant
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -22,67 +22,102 @@ import java.util.concurrent.ConcurrentHashMap
 @Component("DataPointManager")
 class DataPointManager(
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val dataManager: DataManager,
     @Value("\${dataland.specification-service.base-url}")
     private val specificationServiceBaseUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val logMessageBuilder = LogMessageBuilder()
-    private val dataPointInMemoryStorage = ConcurrentHashMap<UUID, String>()
+    // ToDo: Implement proper logging
 
-    fun getJsonNodeFromUrl(url: String): JsonNode = ObjectMapper().readTree(URI(url).toURL())
+    private fun getJsonNodeFromUrl(url: String): JsonNode = ObjectMapper().readTree(URI(url).toURL())
 
-    fun constructDataPointUrl(dataPoint: String): String = "$specificationServiceBaseUrl/datapoints/$dataPoint.json"
+    private fun constructDataPointUrl(dataPoint: String): String = "$specificationServiceBaseUrl/datapoints/$dataPoint.json"
 
-    fun constructDataTypeUrl(dataType: String): String = "$specificationServiceBaseUrl/datatypes/$dataType.json"
+    private fun constructDataTypeUrl(dataType: String): String = "$specificationServiceBaseUrl/datatypes/$dataType.json"
 
-    fun getDataType(dataPoint: String): String {
+    private fun getDataType(dataPoint: String): String {
         val dataTypeUrl = getJsonNodeFromUrl(constructDataPointUrl(dataPoint)).get("dataType").asText()
         return dataTypeUrl.split("/").last().replace(".json", "")
     }
 
-    fun checkIfDataPointDefinitionExists(dataPoint: String) {
+    /*fun doesDataPointDefinitionExist(dataPoint: String): Boolean =
+        try {
+            checkIfDataPointDefinitionExists(dataPoint)
+            true
+        } catch (e: IllegalArgumentException) {
+            false
+        }*/
+
+    private fun checkIfDataPointDefinitionExists(dataPoint: String) {
         logger.info("Checking if data point definition exists for $dataPoint")
         checkIfSpecificationExists(constructDataPointUrl(dataPoint))
     }
 
-    fun checkIfSpecificationExists(specPath: String) {
+    private fun checkIfSpecificationExists(specPath: String) {
         val url = URI(specPath).toURL()
         logger.info("Checking if specification exists at $url")
         try {
             getJsonNodeFromUrl(url.toString())
         } catch (e: FileNotFoundException) {
-            logger.error("No specification for $specPath exists.")
+            logger.error("No specification for $specPath exists. Message: ${e.message}")
+            // Todo: implement proper error message
             throw IllegalArgumentException("No specification for $specPath exists.")
         }
     }
 
-    fun storeDataPoint(uploadedData: UploadableDataPoint): String {
-        logger.info("Storing data point of types ${uploadedData.dataPoint}")
-        checkIfDataPointDefinitionExists(uploadedData.dataPoint)
-        val dataTypeUrl = constructDataTypeUrl(getDataType(uploadedData.dataPoint))
+    fun validateDataPoint(
+        dataPoint: String,
+        data: String,
+    ) {
+        checkIfDataPointDefinitionExists(dataPoint)
+        val dataTypeUrl = constructDataTypeUrl(getDataType(dataPoint))
         checkIfSpecificationExists(dataTypeUrl)
         val validationClass = getJsonNodeFromUrl(dataTypeUrl).get("validatedBy").asText()
-        validateDatapoint(uploadedData.data, validationClass)
+        validateConsistency(data, validationClass)
+    }
+
+    fun storeDataPoint(
+        uploadedData: UploadableDataPoint,
+        uploaderUserId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+    ): String {
+        logger.info("Executing check for '${uploadedData.dataPoint}' data point (correlation ID: $correlationId).")
+        validateDataPoint(uploadedData.dataPoint, uploadedData.data)
+        logger.info("Storing '${uploadedData.dataPoint}' data point.")
+        val uploadTime = Instant.now().toEpochMilli()
+        val storableDataSet =
+            StorableDataSet(
+                companyId = uploadedData.companyId.toString(),
+                dataType = uploadedData.dataPoint,
+                uploaderUserId = uploaderUserId,
+                uploadTime = uploadTime,
+                reportingPeriod = uploadedData.reportingPeriod,
+                data = uploadedData.data,
+            )
+
         val dataId = UUID.randomUUID()
-        dataPointInMemoryStorage[dataId] = objectMapper.writeValueAsString(uploadedData)
+        dataManager.storeMetaDataFrom(
+            dataId = dataId.toString(),
+            storableDataSet = storableDataSet,
+            correlationId = correlationId,
+        )
+        dataManager.storeDataSetInTemporaryStoreAndSendMessage(dataId.toString(), storableDataSet, bypassQa, correlationId)
+
         return dataId.toString()
     }
 
-    fun retrieveDataPoint(dataId: UUID): StorableDataPoint {
+    fun retrieveDataPoint(
+        dataId: UUID,
+        dataType: String,
+        correlationId: String,
+    ): StorableDataSet {
         logger.info("Retrieving data point with id $dataId")
-        val storedData = dataPointInMemoryStorage[dataId] ?: throw IllegalArgumentException("Data point with id $dataId not found.")
-        val uploadableDataPoint = objectMapper.readValue(storedData, UploadableDataPoint::class.java)
-
-        return StorableDataPoint(
-            dataPointId = dataId,
-            dataPoint = uploadableDataPoint.dataPoint,
-            companyId = uploadableDataPoint.companyId,
-            reportingPeriod = uploadableDataPoint.reportingPeriod,
-            data = uploadableDataPoint.data,
-        )
+        val storedDataPoint = dataManager.getPublicDataSet(dataId.toString(), dataType, correlationId)
+        return storedDataPoint
     }
 
-    fun validateDatapoint(
+    fun validateConsistency(
         jsonData: String,
         className: String,
     ) {

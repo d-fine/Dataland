@@ -66,7 +66,7 @@ abstract class DataController<T>(
     ): StorableDataSet =
         StorableDataSet(
             companyId = companyAssociatedData.companyId,
-            dataType = dataType,
+            dataType = dataType.toString(),
             uploaderUserId = userId,
             uploadTime = uploadTime,
             reportingPeriod = companyAssociatedData.reportingPeriod,
@@ -85,7 +85,7 @@ abstract class DataController<T>(
             CompanyAssociatedData(
                 companyId = companyId,
                 reportingPeriod = metaInfo.reportingPeriod,
-                data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
+                data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType.toString(), correlationId).data, clazz),
             )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
@@ -111,7 +111,7 @@ abstract class DataController<T>(
             val dataAsString =
                 dataManager
                     .getPublicDataSet(
-                        it.dataId, DataType.valueOf(it.dataType),
+                        it.dataId, it.dataType,
                         correlationId,
                     ).data
             listOfFrameworkDataAndMetaInfo.add(

@@ -79,7 +79,7 @@ class DataManagerTest(
         val companyId = companyAlterationManager.addCompany(companyInformation).companyId
         return StorableDataSet(
             companyId,
-            DataType("eutaxonomy-non-financials"),
+            DataType("eutaxonomy-non-financials").toString(),
             "USER_ID_OF_AN_UPLOADING_USER",
             Instant.now().toEpochMilli(),
             "",
@@ -97,7 +97,7 @@ class DataManagerTest(
             )
         val thrown =
             assertThrows<InvalidInputApiException> {
-                dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-financials"), correlationId)
+                dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-financials").toString(), correlationId)
             }
         assertEquals(
             "The data with the id: $dataId is registered as type eutaxonomy-non-financials by " +
@@ -119,7 +119,7 @@ class DataManagerTest(
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
-                dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
+                dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-non-financials").toString(), correlationId)
             }
         assertEquals("No dataset with the id: $dataId could be found in the data store.", thrown.message)
     }
@@ -139,7 +139,7 @@ class DataManagerTest(
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
         val thrown =
             assertThrows<InternalServerErrorApiException> {
-                dataManager.getPublicDataSet(dataId, DataType(expectedDataTypeName), correlationId)
+                dataManager.getPublicDataSet(dataId, DataType(expectedDataTypeName).toString(), correlationId)
             }
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database", thrown.message,
@@ -151,9 +151,9 @@ class DataManagerTest(
         dataId: String,
         unexpectedDataTypeName: String,
     ): String {
-        val expectedDataTypeName = storableDataSet.dataType.name
+        val expectedDataTypeName = storableDataSet.dataType
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
-            objectMapper.writeValueAsString(storableDataSet.copy(dataType = DataType(unexpectedDataTypeName))),
+            objectMapper.writeValueAsString(storableDataSet.copy(dataType = DataType(unexpectedDataTypeName).toString())),
         )
         return expectedDataTypeName
     }
@@ -254,11 +254,11 @@ class DataManagerTest(
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(
                 mockMetaInfo.dataId,
-                DataType("lksg"), "",
+                DataType("lksg").toString(), "",
             )
         }
         assertThrows<ResourceNotFoundApiException> {
-            dataManager.getPublicDataSet("i-exist-by-no-means", DataType("lksg"), "")
+            dataManager.getPublicDataSet("i-exist-by-no-means", DataType("lksg").toString(), "")
         }
     }
 }

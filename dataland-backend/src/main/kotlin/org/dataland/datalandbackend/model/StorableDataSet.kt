@@ -15,8 +15,9 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
  */
 
 data class StorableDataSet(
+    // ToDo: reconsider this class name in light of data points
     val companyId: String,
-    val dataType: DataType,
+    val dataType: String,
     val uploaderUserId: String,
     val uploadTime: Long,
     val reportingPeriod: String,
@@ -28,7 +29,7 @@ data class StorableDataSet(
      * Throws an InternalServerErrorApiException if inconsistencies are detected
      */
     fun requireConsistencyWith(metaDataEntry: DataMetaInformationEntity) {
-        if (dataType != DataType.valueOf(metaDataEntry.dataType) ||
+        if (dataType != metaDataEntry.dataType ||
             uploaderUserId != metaDataEntry.uploaderUserId ||
             uploadTime != metaDataEntry.uploadTime
         ) {
