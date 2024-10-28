@@ -1,21 +1,20 @@
 package org.dataland.datalandemailservice.controller
 
-
 import org.dataland.datalandemailservice.api.EmailApi
+import org.dataland.datalandemailservice.services.EmailSubscriptionService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
-import org.dataland.datalandemailservice.services.EmailSubscriptionService
 
 /**
  * Controller for the email service API.
  */
 @RestController
 class EmailController(
-    @Autowired val emailSubscriptionService: EmailSubscriptionService
+    @Autowired val emailSubscriptionService: EmailSubscriptionService,
 ) : EmailApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -29,7 +28,6 @@ class EmailController(
     override fun unsubscribeUuid(subscriptionUuid: UUID): ResponseEntity<String> {
         logger.info("Received request to unsubscribe with UUID: $subscriptionUuid")
 
-        // Perform the unsubscription
         emailSubscriptionService.unsubscribeEmailWithUuid(subscriptionUuid)
 
         return ResponseEntity.ok("Successfully unsubscribed")
