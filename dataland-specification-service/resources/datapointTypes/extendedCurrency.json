@@ -1,15 +1,15 @@
 {
-  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datatypes/currencyDatapointWithExtendedSource.json",
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapointtypes/extendedCurrency.json",
   "name": "General currency data point with an extended source",
-  "definition": "Data point with an extended document reference as source, a currency represented by a string and a number as value. The currency has to conform to ISO 4217. Currency and value have to be both set or both null.",
+  "businessDefinition": "Data point with an extended document reference as source, a currency represented by a string and a number as value. The currency has to conform to ISO 4217. Currency and value have to be both set or both null.",
   "validatedBy": "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint",
   "usedBy": [
-    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/equity.json",
-    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/amountObligationsExternalPartiesDebt.json",
-    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/enterpriseValueCashEVIC.json",
-    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/assetsBalanceSheetValueResources.json"
+    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedCurrencyTotalEquity.json",
+    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedCurrencyTotalDebtObligations.json",
+    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedCurrencyEnterpriseValueCash.json",
+    "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedCurrencyTotalAssetsBalance.json"
   ],
-  "types": {
+  "definition": {
     "value": "BigDecimal?",
     "currency": "String?",
     "quality": "QualityOptions?",

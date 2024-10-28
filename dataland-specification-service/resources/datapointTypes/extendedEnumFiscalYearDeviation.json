@@ -1,12 +1,12 @@
 {
-  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datatypes/extendedDeviation.json",
-  "title": "General deviation data point with an extended source",
-  "description": "Data point with an extended document reference as source, signifying a deviation. Can only have values 'Deviation' and 'NoDeviation'.",
-  "class": "dataland.datapoints.ExtendedDeviation",
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapointtypes/extendedEnumFiscalYearDeviation.json",
+  "name": "General deviation data point with an extended source",
+  "businessDefinition": "Data point with an extended document reference as source, signifying a deviation. Can only have values 'Deviation' and 'NoDeviation'.",
+  "validatedBy": "org.dataland.datalandbackend.model.datapoints.enums.FiscalYearDeviationDataPoint",
   "usedBy": [
     "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedFiscalYearDeviateCalendarYear.json"
   ],
-  "types": {
+  "definition": {
     "value": "Deviation?",
     "quality": "QualityOptions?",
     "comment": "String?",

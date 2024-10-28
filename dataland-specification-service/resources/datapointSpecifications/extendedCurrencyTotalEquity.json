@@ -1,0 +1,10 @@
+{
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedCurrencyTotalEquity.json",
+  "name": "Equity: Total assets less total liabilities",
+  "businessDefinition": "The value of ownership interest in the company, calculated as total assets minus total liabilities.",
+  "uniqueIdentifier": "extendedCurrencyTotalEquity",
+  "datapointType": "https://${PROXY_PRIMARY_URL}/specifications/datapointtypes/extendedCurrency.json",
+  "usedBy": [
+    "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
+  ]
+}
