@@ -117,9 +117,9 @@ mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mo
 
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 
-spring-security-crypto = "org.springframework.security:spring-security-crypto:6.3.3"
+spring-security-crypto = "org.springframework.security:spring-security-crypto:6.3.4"
 
-spring-security-web = "org.springframework.security:spring-security-web:6.3.3"
+spring-security-web = "org.springframework.security:spring-security-web:6.3.4"
 
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 
