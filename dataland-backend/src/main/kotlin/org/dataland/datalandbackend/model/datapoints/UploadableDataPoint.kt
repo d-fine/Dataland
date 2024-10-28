@@ -13,7 +13,9 @@ import java.util.UUID
 
 data class UploadableDataPoint(
     // ToDo: introduce interface for triple and use in the related types
+    // TODO: rename to dataAsJson
     val data: String,
+    // TODO: dataPointSpecification
     val dataPoint: String,
     val companyId: UUID,
     val reportingPeriod: String,

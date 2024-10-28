@@ -14,7 +14,9 @@ import java.util.UUID
 
 data class StorableDataPoint(
     val dataPointId: UUID,
+    // TODO: rename to dataAsJson
     val data: String,
+    // TODO: rename to datapointSpecification
     val dataPoint: String,
     val companyId: UUID,
     val reportingPeriod: String,
