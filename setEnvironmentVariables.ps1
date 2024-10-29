@@ -62,7 +62,7 @@
 [Environment]::SetEnvironmentVariable("DATA_EXPORTER_OUTPUT_DIRECTORY", "./dataland-data-exporter", [System.EnvironmentVariableTarget]::User)
 
 # EuroDaT credentials - if value is not hardcoded here, look them up in our wiki
-[Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://int.gcp.qa-int.eurodat.org", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://app.int.eurodat.org", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("EURODAT_CLIENT_TLS_CERT", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("KEY_STORE_FILE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
