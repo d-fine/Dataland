@@ -497,17 +497,10 @@ services:
   specification-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
-    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service:${DATALAND_SPECIFICATION_SERVICE_VERSION}}
-    expose:
-      - "8080"
+    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_test:${DATALAND_SPECIFICATION_SERVICE_TEST_VERSION}}
     networks:
       - internal
     <<: *uncritical-constants-env
-    environment:
-      # The primary server URL all other URLS get redirected to
-      PROXY_PRIMARY_URL: "${PROXY_PRIMARY_URL:-local-dev.dataland.com}"
-      INTERNAL_BACKEND_URL: "${INTERNAL_BACKEND_URL:-http://backend:8080/api}"
-      DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET: "${DATALAND_SPECIFICATION_SERVICE_CLIENT_SECRET}"
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -621,6 +614,4 @@ volumes:
   community_manager_data:
     driver: local
   batch_manager_data:
-    driver: local
-  specification_service_data:
     driver: local

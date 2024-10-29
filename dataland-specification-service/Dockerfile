@@ -1,10 +1,8 @@
-FROM nginx:1.27.2@sha256:28402db69fec7c17e179ea87882667f1e054391138f77ffaf0c3eb388efc3ffb
-COPY ./dataland-specification-service/custom_entrypoint.sh ./custom_entrypoint.sh
-COPY ./dataland-specification-service/resources /usr/share/nginx/html
-COPY ./dataland-specification-service/default.conf /etc/nginx/conf.d/default.conf
-COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/utils/securityHeaderMap.conf
-COPY ./dataland-inbound-proxy/config/utils/security.conf /etc/nginx/utils/security.conf
+ARG DATALAND_SPECIFICATION_SERVICE_BASE_VERSION
+FROM ghcr.io/d-fine/dataland/dataland_qa_service_base:${DATALAND_SPECIFICATION_SERVICE_BASE_VERSION} AS builder
 
-RUN chmod +x ./custom_entrypoint.sh
+FROM eclipse-temurin:21.0.4_7-jre-alpine@sha256:848653d62f2fe03f2ef6d0527236fbdedd296ee44bfeb7a9836662dc2f0f58d3
+COPY --from=builder /app/dataland-specification-service/build/libs/dataland-specification-service-0.0.1-SNAPSHOT.jar /jar/dataland-specification-service.jar
+CMD ["java","-jar","/jar/dataland-specification-service.jar"]
 
-CMD ["sh", "-c", "/custom_entrypoint.sh"]
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -nv -O- -t 1 http://localhost:8080/specifications/actuator/health | tee /dev/stderr | grep -q '^{"status":"UP"' || false

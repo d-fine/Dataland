@@ -22,6 +22,8 @@ include(
     "dataland-external-storage",
     "dataland-dummy-eurodat-client",
     "dataland-data-exporter",
+    "dataland-specification-lib",
+    "dataland-specification-service"
 )
 
 plugins {
