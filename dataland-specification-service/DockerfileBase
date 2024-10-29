@@ -6,4 +6,4 @@ COPY ./dataland-specification-service/ ./dataland-specification-service/
 COPY ./dataland-specification-lib/ ./dataland-specification-lib/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./.git/ ./.git
-RUN ./gradlew dataland-qa-service:bootJar --no-daemon --stacktrace
+RUN ./gradlew dataland-specification-service:bootJar --no-daemon --stacktrace
