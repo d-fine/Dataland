@@ -4734,14 +4734,14 @@
           "message": {
             "type": "string"
           },
+          "companyName": {
+            "type": "string"
+          },
           "receptionTime": {
             "type": "integer",
             "format": "int64"
           },
           "companyId": {
-            "type": "string"
-          },
-          "companyName": {
             "type": "string"
           },
           "dataId": {
