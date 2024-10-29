@@ -1,17 +1,38 @@
 <template>
-  <h1>Hallo die Seite ist noch leer</h1>
-  <h1>Die uuid ist: {{ subscriptionId }}</h1>
+  <TheHeader :showUserProfileDropdown="false" />
 
-  <PrimeButton @click="logSubscriptionId"> Unsubscribe </PrimeButton>
+  <main>
+    <div>
+      <div v-if="isSubscribed" class="subscribed">
+        <h1>We are sorry you want to unsubscribe from our mailing list.</h1>
+
+        <!--  <h1>Die uuid ist: {{ subscriptionId }}</h1> -->
+        <PrimeButton @click="unsubscribeFromMailingList" class="unsubscribe-button"> Unsubscribe </PrimeButton>
+      </div>
+
+      <p v-else class="unsubscribed-confirmation">
+        <span> {{ mailAddress }} </span> <br>
+        has successfully been removed from our mailing list.
+      </p>
+    </div>
+
+  </main>
+
 </template>
 
 <script lang="ts">
 import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
 import PrimeButton from 'primevue/button';
+import TheHeader from "@/components/generics/TheHeader.vue";
+import type {AutoCompleteCompleteEvent} from "primevue/autocomplete";
+import {ApiClientProvider} from "@/services/ApiClients";
+import {assertDefined} from "@/utils/TypeScriptUtils";
+
 
 export default defineComponent({
   name: 'UnsubscribeFromMailsPage',
   components: {
+    TheHeader,
     PrimeButton,
   },
 
@@ -21,7 +42,7 @@ export default defineComponent({
       required: true,
     },
   },
-  /*
+
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -30,10 +51,11 @@ export default defineComponent({
 
   data() {
     return {
-
+      isSubscribed: true,
+      mailAddress: "",
     };
   },
-*/
+
 
   methods: {
     /**
@@ -42,6 +64,75 @@ export default defineComponent({
     logSubscriptionId() {
       console.log(this.subscriptionId);
     },
+    /**
+     * This function sends the subscriptionId to our backend and receives the corresponding email address
+     */
+    unsubscribeFromMailingList(){
+      try{
+        const emailUnsubscribeApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise())).backendClients.handleSubscriptionId;
+        const response = await emailUnsubscribeApi.getUnsubscribedMail();
+
+
+
+
+      } catch (error) {
+        console.error(error);
+      }
+      /*
+      send http post-request : subscriptionId
+
+      get email-address that belongs to subscriptionId
+      store as string in this.mailAddress
+
+       */
+      this.mailAddress = "mail-address@example.com";
+
+      this.changePageContent();
+    },
+
+   /* async searchCompanyName(autoCompleteCompleteEvent: AutoCompleteCompleteEvent) {
+      try {
+        const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
+            .companyDataController;
+        const response = await companyDataControllerApi.getCompaniesBySearchString(
+            autoCompleteCompleteEvent.query,
+            this.resultLimit
+        );
+        this.autocompleteArray = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+ */
+
+    /**
+     * This function sets the variable used for the conditional rendering of the page content to false
+     */
+    changePageContent(){
+      this.isSubscribed = false;
+    },
   },
 });
 </script>
+
+<style lang="scss" scoped>
+main {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.unsubscribe-button{
+  font-size: 1.6rem;
+  padding: 0.7rem 1rem;
+}
+
+h1, .unsubscribed-confirmation{
+  font-size: 1.3rem;
+  font-weight: 500
+}
+.unsubscribed-confirmation > span {
+  text-decoration: underline;
+}
+</style>

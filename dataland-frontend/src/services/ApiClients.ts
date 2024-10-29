@@ -29,6 +29,7 @@ interface ApiClients {
   requestController: RequestControllerApiInterface;
   companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
+  emailController: Email
 }
 
 type ApiClientConstructor<T> = new (
