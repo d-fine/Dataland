@@ -13,6 +13,9 @@ from dataland_backend_api_documentation_client.api.meta_data_controller.get_data
     sync as get_data_meta_info,
 )
 
+from dataland_backend_api_documentation_client.models.company_associated_data_nuclear_and_gas_data import (
+    CompanyAssociatedDataNuclearAndGasData,
+)
 from dataland_backend_api_documentation_client.models.company_associated_data_eutaxonomy_financials_data import (
     CompanyAssociatedDataEutaxonomyFinancialsData,
 )
@@ -64,6 +67,7 @@ class DataResource(Resource):
 
 def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient) -> any:
     type_to_company_associated_data = {
+        DataTypeEnum.NUCLEAR_AND_GAS: CompanyAssociatedDataNuclearAndGasData,
         DataTypeEnum.EUTAXONOMY_FINANCIALS: CompanyAssociatedDataEutaxonomyFinancialsData,
         DataTypeEnum.EUTAXONOMY_NON_FINANCIALS: CompanyAssociatedDataEutaxonomyNonFinancialsData,
         DataTypeEnum.LKSG: CompanyAssociatedDataLksgData,
