@@ -1,9 +1,9 @@
 {
-  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedFiscalYearDeviateCalendarYear.json",
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapointSpecifications/extendedFiscalYearDeviateCalendarYear.json",
   "name": "Does the Fiscal Year deviate from the Calendar Year?",
   "businessDefinition": "Does the fiscal year deviate from the calendar year?",
   "uniqueIdentifier": "extendedFiscalYearDeviateCalendarYear",
-  "datapointType": "https://${PROXY_PRIMARY_URL}/specifications/datapointtypes/extendedEnumFiscalYearDeviation.json",
+  "datapointType": "https://${PROXY_PRIMARY_URL}/specifications/datapointTypes/extendedEnumFiscalYearDeviation.json",
   "usedBy": [
     "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
   ]

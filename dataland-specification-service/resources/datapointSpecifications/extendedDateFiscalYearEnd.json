@@ -1,9 +1,9 @@
 {
-  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapoints/extendedDateFiscalYearEnd.json",
+  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapointSpecifications/extendedDateFiscalYearEnd.json",
   "name": "Fiscal Year End",
   "businessDefinition": "The date, the fiscal year ends.",
   "uniqueIdentifier": "extendedDateFiscalYearEnd",
-  "datapointType": "https://${PROXY_PRIMARY_URL}/specifications/datapointtypes/extendedDate.json",
+  "datapointType": "https://${PROXY_PRIMARY_URL}/specifications/datapointTypes/extendedDate.json",
   "usedBy": [
     "https://${PROXY_PRIMARY_URL}/specifications/frameworks/additionalCompanyInformation.json"
   ]
