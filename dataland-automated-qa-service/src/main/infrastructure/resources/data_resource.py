@@ -75,11 +75,20 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.ADDITIONAL_COMPANY_INFORMATION: CompanyAssociatedDataAdditionalCompanyInformationData
     }
     # ToDo: add switch in case of a data point and not a framework
-    response = client.get_httpx_client().request(method="get", url=f"/data/{data_type}/{data_id}")
-    if response.status_code == HTTPStatus.OK:
-        return type_to_company_associated_data.get(data_type).from_dict(response.json())
-    if response.status_code == HTTPStatus.UNAUTHORIZED:
-        return cast(Any, None)
-    if client.raise_on_unexpected_status:
-        raise errors.UnexpectedStatus(response.status_code, response.content)
+    if type_to_company_associated_data(data_type):
+        response = client.get_httpx_client().request(method="get", url=f"/data/{data_type}/{data_id}")
+        if response.status_code == HTTPStatus.OK:
+            return type_to_company_associated_data.get(data_type).from_dict(response.json())
+        if response.status_code == HTTPStatus.UNAUTHORIZED:
+            return cast(Any, None)
+        if client.raise_on_unexpected_status:
+            raise errors.UnexpectedStatus(response.status_code, response.content)
+    else:
+        response = client.get_httpx_client().request(method="get", url=f"/specification/datapoints/{data_id}")
+        if response.status_code == HTTPStatus.OK:
+            return response.json()
+        if response.status_code == HTTPStatus.UNAUTHORIZED:
+            return cast(Any, None)
+        if client.raise_on_unexpected_status:
+            raise errors.UnexpectedStatus(response.status_code, response.content)
     return None
