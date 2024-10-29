@@ -53,10 +53,6 @@ open class DecimalComponent(
                 is NoDocumentSupport -> "NumberFormField"
                 is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
                 is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
-                else -> throw IllegalArgumentException(
-                    "Upload-page generation for this component " +
-                        "does not support $documentSupport",
-                )
             }
 
         uploadCategoryBuilder.addStandardUploadConfigCell(
