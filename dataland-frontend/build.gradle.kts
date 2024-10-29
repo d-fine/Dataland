@@ -181,17 +181,17 @@ tasks.register("generateEmailServiceClient", org.openapitools.generator.gradle.p
     description = "Task to generate clients for the email service."
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.emailservice"
-    input = project.file("${project.rootDir}/dataland-community-manager/.json").path
-    outputDir.set(backendClientOutputDir)
+    input = project.file("${project.rootDir}/dataland-email-service/emailServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/emailservice")
+            .get()
+            .toString(),
+    )
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
     generatorName.set("typescript-axios")
-    additionalProperties.set(
-        mapOf(
-            "removeEnumValuePrefix" to false,
-        ),
-    )
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",

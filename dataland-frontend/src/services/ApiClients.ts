@@ -15,6 +15,7 @@ import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import * as backendApis from '@clients/backend/api';
+import { type EmailControllerApi } from '@clients/emailservice';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -29,7 +30,7 @@ interface ApiClients {
   requestController: RequestControllerApiInterface;
   companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
-  emailController: Email
+  emailController: EmailControllerApi;
 }
 
 type ApiClientConstructor<T> = new (

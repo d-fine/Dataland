@@ -11,23 +11,20 @@
       </div>
 
       <p v-else class="unsubscribed-confirmation">
-        <span> {{ mailAddress }} </span> <br>
+        <span> {{ mailAddress }} </span> <br />
         has successfully been removed from our mailing list.
       </p>
     </div>
-
   </main>
-
 </template>
 
 <script lang="ts">
-import { type ComponentPublicInstance, defineComponent, inject, ref } from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import PrimeButton from 'primevue/button';
-import TheHeader from "@/components/generics/TheHeader.vue";
-import type {AutoCompleteCompleteEvent} from "primevue/autocomplete";
-import {ApiClientProvider} from "@/services/ApiClients";
-import {assertDefined} from "@/utils/TypeScriptUtils";
-
+import type Keycloak from 'keycloak-js';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import { ApiClientProvider } from '@/services/ApiClients';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 
 export default defineComponent({
   name: 'UnsubscribeFromMailsPage',
@@ -52,29 +49,19 @@ export default defineComponent({
   data() {
     return {
       isSubscribed: true,
-      mailAddress: "",
+      mailAddress: '',
     };
   },
 
-
   methods: {
-    /**
-     * This function logs the subscirptionId
-     */
-    logSubscriptionId() {
-      console.log(this.subscriptionId);
-    },
     /**
      * This function sends the subscriptionId to our backend and receives the corresponding email address
      */
-    unsubscribeFromMailingList(){
-      try{
-        const emailUnsubscribeApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise())).backendClients.handleSubscriptionId;
-        const response = await emailUnsubscribeApi.getUnsubscribedMail();
-
-
-
-
+    async unsubscribeFromMailingList() {
+      try {
+        const emailUnsubscribeApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .emailController;
+        const response = await emailUnsubscribeApi.unsubscribeUuid(this.subscriptionId);
       } catch (error) {
         console.error(error);
       }
@@ -85,12 +72,12 @@ export default defineComponent({
       store as string in this.mailAddress
 
        */
-      this.mailAddress = "mail-address@example.com";
+      this.mailAddress = 'mail-address@example.com';
 
       this.changePageContent();
     },
 
-   /* async searchCompanyName(autoCompleteCompleteEvent: AutoCompleteCompleteEvent) {
+    /* async searchCompanyName(autoCompleteCompleteEvent: AutoCompleteCompleteEvent) {
       try {
         const companyDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients
             .companyDataController;
@@ -108,7 +95,7 @@ export default defineComponent({
     /**
      * This function sets the variable used for the conditional rendering of the page content to false
      */
-    changePageContent(){
+    changePageContent() {
       this.isSubscribed = false;
     },
   },
@@ -123,14 +110,15 @@ main {
   transform: translate(-50%, -50%);
 }
 
-.unsubscribe-button{
+.unsubscribe-button {
   font-size: 1.6rem;
   padding: 0.7rem 1rem;
 }
 
-h1, .unsubscribed-confirmation{
+h1,
+.unsubscribed-confirmation {
   font-size: 1.3rem;
-  font-weight: 500
+  font-weight: 500;
 }
 .unsubscribed-confirmation > span {
   text-decoration: underline;

@@ -12,11 +12,13 @@ val jacocoClasses by extra(
     },
 )
 val jacocoVersion: String by project
+val openApiGeneratorTimeOutThresholdInSeconds: String by project
 
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     jacoco
+    id("org.springdoc.openapi-gradle-plugin")
     id("org.springframework.boot")
     kotlin("kapt")
     id("org.jetbrains.kotlin.plugin.jpa")
@@ -49,6 +51,15 @@ dependencies {
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     kapt(Spring.boot.configurationProcessor)
+}
+
+openApi {
+    outputFileName.set("$projectDir/emailServiceOpenApi.json")
+    apiDocsUrl.set("http://localhost:8489/email/v3/api-docs")
+    customBootRun {
+        args.set(listOf("--spring.profiles.active=nodb", "--server.port=8489"))
+    }
+    waitTimeInSeconds.set(openApiGeneratorTimeOutThresholdInSeconds.toInt())
 }
 
 tasks.test {
