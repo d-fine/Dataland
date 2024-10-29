@@ -261,8 +261,11 @@ class PrivateDataManager(
         documentHashes: MutableMap<String, String>,
     ) {
         documentHashes.keys.forEach { hash ->
-            documentInMemoryStorage.remove(hash)
-            logger.info("Removed document with hash '$hash' in private-data internal document cache (For DataID: $dataId).")
+            val documentIsUsedByOtherDataId = documentHashesInMemoryStorage.any { it.value.containsKey(hash) }
+            if (!documentIsUsedByOtherDataId) {
+                documentInMemoryStorage.remove(hash)
+                logger.info("Removed document with hash '$hash' in private-data internal document cache (For DataID: $dataId).")
+            }
         }
         documentHashesInMemoryStorage.remove(dataId)
     }
