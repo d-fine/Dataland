@@ -4,7 +4,10 @@ import org.dataland.datalandemailservice.services.templateemail.SingleNotificati
 import org.dataland.datalandemailservice.services.templateemail.SummaryNotificationEmailFactory
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito
+import java.util.UUID
 
 class NotificationEmailFactoriesTest {
     private val proxyPrimaryUrl = "local-dev.dataland.com"
@@ -15,9 +18,22 @@ class NotificationEmailFactoriesTest {
     private val dummyCompanyName = "some-company-name"
     private val dummyCompanyId = "some-id"
 
+    private val mockUuidString = "123e4567-e89b-12d3-a456-426614174000"
+    private val mockUuid = UUID.fromString(mockUuidString)
+
+    val emailSubscriptionServiceMock = Mockito.mock(EmailSubscriptionService::class.java)
+
+    @BeforeEach
+    fun setup() {
+        Mockito
+            .`when`(emailSubscriptionServiceMock.insertSubscriptionEntityIfNeededAndReturnUuid(receiverEmail))
+            .thenReturn(mockUuid)
+    }
+
     @Test
     fun `validate the text of the notification mail for one single data upload`() {
-        val singleNotificationEmailFactory = SingleNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName)
+        val singleNotificationEmailFactory =
+            SingleNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName, emailSubscriptionServiceMock)
 
         val someFramework = "some-framework"
         val someYear = "2019"
@@ -28,6 +44,7 @@ class NotificationEmailFactoriesTest {
                 "framework" to someFramework,
                 "year" to someYear,
                 "baseUrl" to proxyPrimaryUrl,
+                "subscriptionUuid" to mockUuidString,
             )
 
         val mail = singleNotificationEmailFactory.buildEmail(receiverEmail, properties)
@@ -44,7 +61,8 @@ class NotificationEmailFactoriesTest {
 
     @Test
     fun `validate the text of the summary notification mail for several data uploads`() {
-        val summaryNotificationEmailFactory = SummaryNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName)
+        val summaryNotificationEmailFactory =
+            SummaryNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName, emailSubscriptionServiceMock)
 
         val frameworks = "framework-alpha, framework-beta"
         val numberOfDays = "12"
@@ -55,6 +73,7 @@ class NotificationEmailFactoriesTest {
                 "frameworks" to frameworks,
                 "baseUrl" to proxyPrimaryUrl,
                 "numberOfDays" to numberOfDays,
+                "subscriptionUuid" to mockUuidString,
             )
 
         val mail = summaryNotificationEmailFactory.buildEmail(receiverEmail, properties)
