@@ -5405,9 +5405,11 @@
           "message": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
@@ -5415,11 +5417,9 @@
           "companyName": {
             "type": "string"
           },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "framework": {
-            "type": "string"
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           },
           "dataId": {
             "type": "string"
