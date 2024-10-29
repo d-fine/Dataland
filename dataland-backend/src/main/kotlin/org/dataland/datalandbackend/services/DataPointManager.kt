@@ -31,12 +31,12 @@ class DataPointManager(
 
     private fun getJsonNodeFromUrl(url: String): JsonNode = ObjectMapper().readTree(URI(url).toURL())
 
-    private fun constructDataPointUrl(dataPoint: String): String = "$specificationServiceBaseUrl/datapoints/$dataPoint.json"
+    private fun constructDataPointUrl(dataPoint: String): String = "$specificationServiceBaseUrl/datapointSpecifications/$dataPoint.json"
 
-    private fun constructDataTypeUrl(dataType: String): String = "$specificationServiceBaseUrl/datapointtypes/$dataType.json"
+    private fun constructDataTypeUrl(dataType: String): String = "$specificationServiceBaseUrl/datapointTypes/$dataType.json"
 
     private fun getDataType(dataPoint: String): String {
-        val dataTypeUrl = getJsonNodeFromUrl(constructDataPointUrl(dataPoint)).get("dataType").asText()
+        val dataTypeUrl = getJsonNodeFromUrl(constructDataPointUrl(dataPoint)).get("datapointType").asText()
         return dataTypeUrl.split("/").last().replace(".json", "")
     }
 
@@ -49,7 +49,7 @@ class DataPointManager(
         }*/
 
     private fun checkIfDataPointDefinitionExists(dataPoint: String) {
-        logger.info("Checking if data point definition exists for $dataPoint")
+        logger.info("Checkinpagig if data point definition exists for $dataPoint")
         checkIfSpecificationExists(constructDataPointUrl(dataPoint))
     }
 
@@ -82,14 +82,14 @@ class DataPointManager(
         bypassQa: Boolean,
         correlationId: String,
     ): String {
-        logger.info("Executing check for '${uploadedData.dataPoint}' data point (correlation ID: $correlationId).")
-        validateDataPoint(uploadedData.dataPoint, uploadedData.data)
-        logger.info("Storing '${uploadedData.dataPoint}' data point.")
+        logger.info("Executing check for '${uploadedData.datapointSpecification}' data point (correlation ID: $correlationId).")
+        validateDataPoint(uploadedData.datapointSpecification, uploadedData.data)
+        logger.info("Storing '${uploadedData.datapointSpecification}' data point.")
         val uploadTime = Instant.now().toEpochMilli()
         val storableDataSet =
             StorableDataSet(
                 companyId = uploadedData.companyId.toString(),
-                dataType = uploadedData.dataPoint,
+                dataType = uploadedData.datapointSpecification,
                 uploaderUserId = uploaderUserId,
                 uploadTime = uploadTime,
                 reportingPeriod = uploadedData.reportingPeriod,
