@@ -151,6 +151,7 @@ class PrivateDataManager(
             documentHashes[documentHash] = documentUuid
             val documentAsByteArray = convertMultipartFileToByteArray(document)
             documentInMemoryStorage[documentHash] = documentAsByteArray
+            logger.info("Stored document with hash '$documentHash' in private-data internal document cache.")
         }
         logger.info(
             "Stored ${documentHashes.size} distinct Vsme document/s in temporary storage for dataId $dataId " +
@@ -261,6 +262,7 @@ class PrivateDataManager(
     ) {
         documentHashes.keys.forEach { hash ->
             documentInMemoryStorage.remove(hash)
+            logger.info("Removed document with hash '$hash' in private-data internal document cache (For DataID: $dataId).")
         }
         documentHashesInMemoryStorage.remove(dataId)
     }
@@ -285,7 +287,11 @@ class PrivateDataManager(
      * Retrieves the document identified by the given hash from the in-memory store.
      * @param hash of the document which should be retrieved
      */
-    fun getDocumentFromInMemoryStore(hash: String): ByteArray? = documentInMemoryStorage[hash]
+    fun getDocumentFromInMemoryStore(hash: String): ByteArray? {
+        val document = documentInMemoryStorage[hash]
+        logger.info("Attempting to retrieve document for hash '$hash' from private-data temporary storage (Found=${document != null})")
+        return document
+    }
 
     /**
      * Retrieves a private vsme data object from the private storage
