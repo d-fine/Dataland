@@ -1052,7 +1052,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             description:
-              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption',
+              'Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1065,7 +1065,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption',
+              'Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1227,7 +1227,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             description:
-              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption',
+              'Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1240,7 +1240,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption',
+              'Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation',
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1537,7 +1537,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1550,7 +1550,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1712,7 +1712,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1725,7 +1725,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaption - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',

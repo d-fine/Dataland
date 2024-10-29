@@ -17,6 +17,7 @@ class DataTypesExtractorTest {
                 "esg-datenkatalog",
                 "heimathafen",
                 "additional-company-information",
+                "nuclear-and-gas",
             )
         val dataTypes = DataTypesExtractor().getAllDataTypes()
         Assertions.assertTrue(
