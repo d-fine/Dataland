@@ -301,6 +301,149 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "getNuclearAndGasDataAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QaReportWithMetaInformationNuclearAndGasData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "postNuclearAndGasDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NuclearAndGasData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}/reports": {
       "get": {
         "tags": [
@@ -799,6 +942,75 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "setNuclearAndGasDataQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -1027,6 +1239,7 @@
                 "enum": [
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
+                  "nuclear-and-gas",
                   "lksg",
                   "p2p",
                   "sfdr",
@@ -1123,6 +1336,7 @@
                 "enum": [
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
+                  "nuclear-and-gas",
                   "lksg",
                   "p2p",
                   "sfdr",
@@ -1367,6 +1581,72 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndQaReportMetadata"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-qa-report-controller"
+        ],
+        "operationId": "getNuclearAndGasDataQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportWithMetaInformationNuclearAndGasData"
                 }
               }
             }
@@ -2269,9 +2549,6 @@
           "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "scope4GhgEmissionsInTonnes": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
           "enterpriseValue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
@@ -2298,12 +2575,6 @@
           },
           "fossilFuelSectorExposure": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
-          },
-          "financedScope1AndScope2Emissions": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "financedScope3Emissions": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }
       },
@@ -2574,6 +2845,406 @@
           },
           "active": {
             "type": "boolean"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasAlignedDenominator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasAlignedNumerator"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasEligibleButNotAligned"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/NuclearAndGasNonEligible"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "Audited",
+              "Reported",
+              "Estimated",
+              "Incomplete",
+              "NoDataFound"
+            ]
+          },
+          "comment": {
+            "type": "string"
+          },
+          "dataSource": {
+            "$ref": "#/components/schemas/ExtendedDocumentReference"
+          }
+        }
+      },
+      "NuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareDenominatorNAndG426": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareDenominatorNAndG427": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareDenominatorNAndG428": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareDenominatorNAndG429": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareDenominatorNAndG430": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareDenominatorNAndG431": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareDenominatorOtherActivities": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareDenominator": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          }
+        }
+      },
+      "NuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareNumeratorNAndG426": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareNumeratorNAndG427": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareNumeratorNAndG428": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareNumeratorNAndG429": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareNumeratorNAndG430": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareNumeratorNAndG431": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareNumeratorOtherActivities": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyAlignedShareNumerator": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          }
+        }
+      },
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneral"
+          }
+        }
+      },
+      "NuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleButNotAlignedShareNAndG426": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG427": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG428": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG429": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG430": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG431": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShareOtherActivities": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          },
+          "taxonomyEligibleButNotAlignedShare": {
+            "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+          }
+        }
+      },
+      "NuclearAndGasEnvironmentalObjective": {
+        "type": "object",
+        "properties": {
+          "mitigationAndAdaptation": {
+            "type": "number"
+          },
+          "mitigation": {
+            "type": "number"
+          },
+          "adaptation": {
+            "type": "number"
+          }
+        }
+      },
+      "NuclearAndGasGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralGeneral"
+          },
+          "taxonomyAlignedDenominator": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedDenominator"
+          },
+          "taxonomyAlignedNumerator": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedNumerator"
+          },
+          "taxonomyEligibleButNotAligned": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyEligibleButNotAligned"
+          },
+          "taxonomyNonEligible": {
+            "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyNonEligible"
+          }
+        }
+      },
+      "NuclearAndGasGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "referencedReports": {
+            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
+          },
+          "nuclearEnergyRelatedActivitiesSection426": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection427": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "nuclearEnergyRelatedActivitiesSection428": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection429": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection430": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "fossilGasRelatedActivitiesSection431": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueDenominator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator"
+          },
+          "nuclearAndGasTaxonomyAlignedCapexDenominator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator"
+          },
+          "nuclearAndGasTaxonomyAlignedCapexNumerator": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned"
+          },
+          "nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned"
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyNonEligible": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyNonEligibleRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasNonEligible"
+          },
+          "nuclearAndGasTaxonomyNonEligibleCapex": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointNuclearAndGasNonEligible"
+          }
+        }
+      },
+      "NuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "taxonomyNonEligibleShareNAndG426": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG427": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG428": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG429": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG430": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareNAndG431": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShareOtherActivities": {
+            "type": "number"
+          },
+          "taxonomyNonEligibleShare": {
+            "type": "number"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
+          }
+        }
+      },
+      "QaReportDataPointExtendedDataPointNuclearAndGasNonEligible": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
           }
         }
       },
@@ -4744,13 +5415,16 @@
           "companyId": {
             "type": "string"
           },
-          "dataId": {
+          "companyName": {
             "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
           },
           "framework": {
+            "type": "string"
+          },
+          "dataId": {
             "type": "string"
           }
         }
@@ -4834,6 +5508,7 @@
             "enum": [
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
+              "nuclear-and-gas",
               "lksg",
               "p2p",
               "sfdr",
@@ -4863,6 +5538,21 @@
           },
           "uploaderUserId": {
             "type": "string"
+          }
+        }
+      },
+      "QaReportWithMetaInformationNuclearAndGasData": {
+        "required": [
+          "metaInfo",
+          "report"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/QaReportMetaInformation"
+          },
+          "report": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
           }
         }
       },
