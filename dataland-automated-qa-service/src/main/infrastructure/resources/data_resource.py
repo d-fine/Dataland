@@ -74,6 +74,7 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
         DataTypeEnum.HEIMATHAFEN: CompanyAssociatedDataHeimathafenData,
         DataTypeEnum.ADDITIONAL_COMPANY_INFORMATION: CompanyAssociatedDataAdditionalCompanyInformationData
     }
+    # ToDo: add switch in case of a data point and not a framework
     response = client.get_httpx_client().request(method="get", url=f"/data/{data_type}/{data_id}")
     if response.status_code == HTTPStatus.OK:
         return type_to_company_associated_data.get(data_type).from_dict(response.json())
