@@ -57,14 +57,17 @@ class FileSystemSpecificationDatabase(
             .forEach { (id, specification) ->
                 dataPointTypeSpecifications[id] = specification
             }
+        logger.info("Loaded ${dataPointTypeSpecifications.size} data point type specifications")
         loadSpecifications<DataPointSpecification>(File(baseFolder, "dataPoints"), objectMapper, logger)
             .forEach { (id, specification) ->
                 dataPointSpecifications[id] = specification
             }
+        logger.info("Loaded ${dataPointSpecifications.size} data point specifications")
         loadSpecifications<FrameworkSpecification>(File(baseFolder, "frameworks"), objectMapper, logger)
             .forEach { (id, specification) ->
                 frameworkSpecifications[id] = specification
             }
+        logger.info("Loaded ${frameworkSpecifications.size} framework specifications")
         validateIntegrity()
     }
 

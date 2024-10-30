@@ -23,7 +23,7 @@ class SpecificationDatabaseConfiguration {
         @Value("\${dataland.specification-folder}") specificationFolder: String,
     ): SpecificationDatabase =
         FileSystemSpecificationDatabase(
-            baseFolder = File(object {}.javaClass.getResource(specificationFolder)!!.file),
+            baseFolder = File(specificationFolder),
             objectMapper = objectMapper,
         )
 }

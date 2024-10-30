@@ -56,4 +56,34 @@ interface SpecificationApi {
     fun getDataPointTypeSpecification(
         @PathVariable("dataPointTypeSpecificationId") dataPointTypeSpecificationId: String,
     ): ResponseEntity<DataPointTypeSpecificationDto>
+
+    /**
+     * Get the java class that validates a data point
+     */
+    @Operation(
+        summary = "Get the kotlin class that validates the data point type.",
+        description = "Get the kotlin class that validates the data point type.",
+    )
+    @GetMapping(
+        value = ["/data-point-types/{dataPointTypeSpecificationId}/validated-by"],
+        produces = ["text/plain"],
+    )
+    fun getKotlinClassValidatingTheDataPointType(
+        @PathVariable("dataPointTypeSpecificationId") dataPointTypeSpecificationId: String,
+    ): ResponseEntity<String>
+
+    /**
+     * Get the java class that validates a data point
+     */
+    @Operation(
+        summary = "Get the kotlin class that validates the data point.",
+        description = "Get the kotlin class that validates the data point.",
+    )
+    @GetMapping(
+        value = ["/data-points/{dataPointSpecificationId}/validated-by"],
+        produces = ["text/plain"],
+    )
+    fun getKotlinClassValidatingTheDataPoint(
+        @PathVariable("dataPointSpecificationId") dataPointSpecificationId: String,
+    ): ResponseEntity<String>
 }
