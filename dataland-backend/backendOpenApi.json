@@ -5729,6 +5729,14 @@
               }
             ]
           },
+          "scope4GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "enterpriseValue": {
             "nullable": true,
             "allOf": [
@@ -5798,6 +5806,22 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "financedScope1AndScope2Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "financedScope3Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -17891,24 +17915,24 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "lei": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           }
         }
@@ -17932,10 +17956,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
