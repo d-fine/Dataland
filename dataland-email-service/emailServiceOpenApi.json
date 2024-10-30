@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/mail/updates/unsubscribe/{subscriptionUuid}": {
+    "/mail/subscriptions/{subscriptionId}": {
       "patch": {
         "tags": [
           "email-controller"
@@ -31,7 +31,7 @@
         "operationId": "unsubscribeUuid",
         "parameters": [
           {
-            "name": "subscriptionUuid",
+            "name": "subscriptionId",
             "in": "path",
             "required": true,
             "schema": {

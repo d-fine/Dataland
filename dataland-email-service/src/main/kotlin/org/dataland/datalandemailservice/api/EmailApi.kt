@@ -14,7 +14,7 @@ interface EmailApi {
     /**
      * Unsubscribes a user from email communications based on the provided UUID.
      *
-     * @param subscriptionUuid The UUID of the subscription to be unsubscribed.
+     * @param subscriptionId The UUID of the subscription to be unsubscribed.
      * @return A response entity indicating the result of the unsubscription.
      */
     @Operation(
@@ -22,8 +22,8 @@ interface EmailApi {
         // TODO Emanuel: Unsubscribed nur die E-Mail-Adresse und keinen "user" => Wortlaut ändern
         description = "Unsubscribes a user from email communications based on the provided UUID.",
     )
-    @PatchMapping(value = ["/mail/updates/unsubscribe/{subscriptionUuid}"])
+    @PatchMapping(value = ["/mail/subscriptions/{subscriptionId}"])
     fun unsubscribeUuid(
-        @PathVariable("subscriptionUuid") subscriptionUuid: UUID,
+        @PathVariable("subscriptionId") subscriptionId: UUID,
     ): ResponseEntity<String>
 }
