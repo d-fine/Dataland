@@ -171,6 +171,8 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
 }
 
+// TODO add client for email service tests
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"

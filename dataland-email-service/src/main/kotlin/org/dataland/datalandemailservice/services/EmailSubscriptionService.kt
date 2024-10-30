@@ -1,9 +1,7 @@
 package org.dataland.datalandemailservice.services
 
-import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.entities.EmailSubscriptionEntity
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
-import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -15,8 +13,6 @@ import java.util.UUID
 @Component("EmailSubscriptionService")
 class EmailSubscriptionService(
     @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
-    @Autowired private val emailSender: EmailSender,
-    private val internalEmailBuilder: InternalEmailBuilder,
 ) {
     /**
      * Unsubscribes an email based on the provided UUID.
@@ -31,20 +27,7 @@ class EmailSubscriptionService(
     fun unsubscribeEmailWithUuid(uuid: UUID) {
         emailSubscriptionRepository.findByUuid(uuid)?.let {
             it.isSubscribed = false
-            sendUnsubscriptionEmailToStakeholders(it.emailAddress)
         }
-    }
-
-    private fun sendUnsubscriptionEmailToStakeholders(unsubscribedEmailAddress: String) {
-        val unsubscriptionMessage =
-            InternalEmailMessage(
-                subject = "Someone has unsubscribed",
-                textTitle = "Someone has unsubscribed",
-                htmlTitle = "Someone has unsubscribed",
-                properties = mapOf("UnsubscribedEmail" to unsubscribedEmailAddress),
-            )
-
-        emailSender.filterReceiversAndSentEmail(internalEmailBuilder.buildInternalEmail(unsubscriptionMessage))
     }
 
     /**
