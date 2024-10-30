@@ -60,9 +60,13 @@ class DataResource(Resource):
         token = get_access_token()
         backend_client = AuthenticatedClient(base_url=backend_api_url, token=token)
         logging.info(f"Retrieving meta information for dataset with ID {self.id}")
-        self.meta_info = get_data_meta_info(self.id, client=backend_client)
-        logging.info(f"Retrieving dataset with ID {self.id}")
-        self.data = _get_data(data_type=self.meta_info.data_type, data_id=self.id, client=backend_client).data
+        try:
+            self.meta_info = get_data_meta_info(self.id, client=backend_client)
+            logging.info(f"Retrieving dataset with ID {self.id}")
+            self.data = _get_data(data_type=self.meta_info.data_type, data_id=self.id, client=backend_client).data
+        except ValueError as e:
+            logging.info(f"Exception caught while retrieving metadata': {e}.")
+            self.data = _get_datapoint(data_id=self.id, client=backend_client)
 
 
 def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient) -> any:
@@ -87,12 +91,14 @@ def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient
             return cast(Any, None)
         if client.raise_on_unexpected_status:
             raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        response = client.get_httpx_client().request(method="get", url=f"/specification/datapoints/{data_id}")
-        if response.status_code == HTTPStatus.OK:
-            return response.json()
-        if response.status_code == HTTPStatus.UNAUTHORIZED:
-            return cast(Any, None)
-        if client.raise_on_unexpected_status:
-            raise errors.UnexpectedStatus(response.status_code, response.content)
+
+
+def _get_datapoint(data_id: str, client: AuthenticatedClient) -> any:
+    response = client.get_httpx_client().request(method="get", url=f"/specification/datapoints/{data_id}")
+    if response.status_code == HTTPStatus.OK:
+        return response.json()
+    if response.status_code == HTTPStatus.UNAUTHORIZED:
+        return cast(Any, None)
+    if client.raise_on_unexpected_status:
+        raise errors.UnexpectedStatus(response.status_code, response.content)
     return None

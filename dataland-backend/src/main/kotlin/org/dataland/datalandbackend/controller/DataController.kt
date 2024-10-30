@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.DataPointManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -26,10 +27,11 @@ import java.time.Instant
  */
 
 abstract class DataController<T>(
-    var dataManager: DataManager,
+    private var dataManager: DataManager,
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
+    private var dataPointManager: DataPointManager,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -47,7 +49,16 @@ abstract class DataController<T>(
         val uploadTime = Instant.now().toEpochMilli()
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
-        val dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
+
+        val dataIdOfPostedData: String
+        if (datasetToStore.dataType == "additional-company-information") {
+            logger.info("Breaking down the data.")
+            dataIdOfPostedData = dataPointManager.processDataSet(datasetToStore, bypassQa, correlationId)
+        } else {
+            logger.info("Storing the data set as a whole.")
+            dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
+        }
+
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
 
         return ResponseEntity.ok(

@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.DataPointManager
 import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -56,6 +57,7 @@ internal class DataControllerTest(
 
     lateinit var mockSecurityContext: SecurityContext
     lateinit var mockDataManager: DataManager
+    lateinit var mockDataPointManager: DataPointManager
     lateinit var mockDataMetaInformationManager: DataMetaInformationManager
     lateinit var dataController: EutaxonomyNonFinancialsDataController
 
@@ -64,10 +66,13 @@ internal class DataControllerTest(
         mockSecurityContext = mock(SecurityContext::class.java)
         mockDataManager = mock(DataManager::class.java)
         mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
+        mockDataPointManager = mock(DataPointManager::class.java)
         dataController =
             EutaxonomyNonFinancialsDataController(
                 mockDataManager,
-                mockDataMetaInformationManager, objectMapper,
+                mockDataMetaInformationManager,
+                objectMapper,
+                mockDataPointManager,
             )
     }
 
