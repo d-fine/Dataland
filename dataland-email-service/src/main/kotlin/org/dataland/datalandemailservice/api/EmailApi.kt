@@ -1,6 +1,7 @@
 package org.dataland.datalandemailservice.api
 
 import io.swagger.v3.oas.annotations.Operation
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import java.util.UUID
@@ -21,8 +22,10 @@ interface EmailApi {
         // TODO Emanuel: Unsubscribed nur die E-Mail-Adresse und keinen "user" => Wortlaut ändern
         description = "Unsubscribes a user from email communications based on the provided UUID.",
     )
-    @PatchMapping(value = ["/subscriptions/{subscriptionId}"])
+    @PatchMapping(
+        value = ["/subscriptions/{subscriptionId}"],
+    )
     fun unsubscribeUuid(
         @PathVariable("subscriptionId") subscriptionId: UUID,
-    ): String?
+    ): ResponseEntity<String>
 }
