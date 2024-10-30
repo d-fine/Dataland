@@ -81,7 +81,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId\"",
             ),
         )
-        assertTrue(email.content.htmlContent.contains("/mail/updates/unsubscribe/$subscriptionUuid"))
+        assertTrue(email.content.htmlContent.contains("/unsubscribe/$subscriptionUuid"))
     }
 
     @Test

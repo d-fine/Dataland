@@ -1,1 +1,1 @@
-<p>If you wish to unsubscribe, please <a href="${baseUrl}/mail/updates/unsubscribe/${subscriptionUuid}">click here</a>.</p>
+<p>If you wish to unsubscribe, please <a href="${baseUrl}/unsubscribe/${subscriptionUuid}">click here</a>.</p>
