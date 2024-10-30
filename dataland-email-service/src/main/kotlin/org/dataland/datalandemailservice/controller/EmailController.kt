@@ -26,23 +26,23 @@ class EmailController(
      * Unsubscribes a user from email communications based on the provided UUID and
      * sends a mail to the stakeholders that this email address is now unsubscribed.
      *
-     * @param subscriptionUuid The UUID of the subscription to be unsubscribed.
+     * @param subscriptionId The UUID of the subscription to be unsubscribed.
      * @return A response entity indicating the result of the unsubscription.
      */
     @Transactional
-    override fun unsubscribeUuid(subscriptionUuid: UUID): ResponseEntity<String> {
-        logger.info("Received request to unsubscribe user with UUID: $subscriptionUuid")
+    override fun unsubscribeUuid(subscriptionId: UUID): ResponseEntity<String> {
+        logger.info("Received request to unsubscribe user with UUID: $subscriptionId")
 
-        val emailSubscription = emailSubscriptionRepository.findByUuid(subscriptionUuid)
+        val emailSubscription = emailSubscriptionRepository.findByUuid(subscriptionId)
 
         if (emailSubscription != null) {
             emailSubscriptionService.unsubscribeEmailWithUuid(emailSubscription.uuid)
-            logger.info("User with UUID: $subscriptionUuid has been successfully unsubscribed")
+            logger.info("User with UUID: $subscriptionId has been successfully unsubscribed")
 
             unsubscriptionEmailToStakeholdersSender.sendUnsubscriptionEmail(emailSubscription.emailAddress)
-            logger.info("Stakeholders have been informed that user with UUID: $subscriptionUuid has unsubscribed")
+            logger.info("Stakeholders have been informed that user with UUID: $subscriptionId has unsubscribed")
         } else {
-            logger.info("No user with UUID: $subscriptionUuid exists")
+            logger.info("No user with UUID: $subscriptionId exists")
         }
 
         return ResponseEntity.ok("Successfully unsubscribed")
