@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -13,7 +14,8 @@ class DataPointManagerTest {
         DataPointManager(
             objectMapper = ObjectMapper(),
             dataManager = mock(DataManager::class.java),
-            specificationServiceBaseUrl = "/specifications",
+            metaDataManager = mock(DataMetaInformationManager::class.java),
+            specificationManager = mock(SpecificationControllerApi::class.java),
         )
 
     @Test
@@ -69,12 +71,22 @@ class DataPointManagerTest {
             {
               "category": {
                 "subcategory": {
-                  "field": "dataPoint"
+                  "field": {
+                    "id": "dataPoint",
+                    "ref": "reference"
+                  }
                 }
               },
               "anotherCategory": {
-                "field2": "anotherDataPoint",
-                "field3": "yetAnotherDataPoint"
+                "field2": {
+                    "id": "anotherDataPoint",
+                    "ref": "reference"
+                  },
+                "field3": {
+                    "id": "yetAnotherDataPoint",
+                    "ref": "reference"
+                  }
+                }
               }
             }
             """.trimIndent()
@@ -104,5 +116,91 @@ class DataPointManagerTest {
         val input = ObjectMapper().readTree(templateJson)
 
         assertThrows<IllegalArgumentException> { dataPointManager.extractDataPointsFromFrameworkTemplate(input, "") }
+    }
+
+    @Test
+    fun `Test replacement logic`() {
+        val templateJson =
+            """
+            {
+              "category": {
+                "subcategory": {
+                  "field": {
+                    "id": "dataPoint",
+                    "ref": "reference"
+                  }
+                }
+              },
+              "anotherCategory": {
+                "field2": {
+                    "id": "anotherDataPoint",
+                    "ref": "reference"
+                  },
+                "field3": {
+                    "id": "yetAnotherDataPoint",
+                    "ref": "reference"
+                  }
+                }
+              }
+            }
+            """.trimIndent()
+        val replacementValue =
+            """
+            {
+              "value": "1.5",
+              "currency": "USD"
+            }
+            """.trimIndent()
+        val fieldName = "category.subcategory.field"
+        val test = ObjectMapper().readTree(templateJson)
+        println(test.toPrettyString())
+        dataPointManager.replaceFieldInTemplate(test, fieldName, "", ObjectMapper().readTree(replacementValue))
+        println("After replacement:")
+        println(test.toPrettyString())
+    }
+
+    @Test
+    fun `Test extraction logic`() {
+        val templateJson =
+            """
+            {
+              "category": {
+                "subcategory": {
+                  "field": "dataPoint"
+                }
+              },
+              "anotherCategory": {
+                "field2": "anotherDataPoint",
+                "field3": "yetAnotherDataPoint"
+              }
+            }
+            """.trimIndent()
+        val test = ObjectMapper().readTree(templateJson)
+        val result = dataPointManager.extractDataPointsFromFrameworkTemplate(test, "")
+        println(result)
+    }
+
+    @Test
+    fun `Test replacement with null`() {
+        val templateJson =
+            """
+            {
+              "category": {
+                "subcategory": {
+                  "field": "dataPoint"
+                }
+              },
+              "anotherCategory": {
+                "field2": "anotherDataPoint",
+                "field3": "yetAnotherDataPoint"
+              }
+            }
+            """.trimIndent()
+        val fieldName = "category.subcategory.field"
+        val test = ObjectMapper().readTree(templateJson)
+        println(test.toPrettyString())
+        dataPointManager.replaceFieldInTemplate(test, fieldName, "", ObjectMapper().readTree("null"))
+        println("After replacement:")
+        println(test.toPrettyString())
     }
 }

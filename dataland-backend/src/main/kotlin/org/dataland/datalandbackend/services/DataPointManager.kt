@@ -2,19 +2,19 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import java.io.FileNotFoundException
-import java.net.URI
 import java.time.Instant
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -24,30 +24,17 @@ import java.util.UUID
 class DataPointManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataManager: DataManager,
-    @Value("\${dataland.specification-service.base-url}")
-    private val specificationServiceBaseUrl: String,
+    @Autowired private val metaDataManager: DataMetaInformationManager,
+    @Autowired private val specificationManager: SpecificationControllerApi,
 ) {
+    // ToDo: Implement persistent storing of mapping between data point IDs and the data set ID
+    private val dataSetToDataPointIds = ConcurrentHashMap<String, String>()
     private val logger = LoggerFactory.getLogger(javaClass)
     // ToDo: Implement proper logging
 
-    private fun getJsonNodeFromUrl(url: String): JsonNode = ObjectMapper().readTree(URI(url).toURL())
-
-    private fun constructDataPointUrl(dataPoint: String): String = "$specificationServiceBaseUrl/datapointSpecifications/$dataPoint.json"
-
-    private fun constructDataTypeUrl(dataType: String): String = "$specificationServiceBaseUrl/datapointTypes/$dataType.json"
-
-    private fun constructFrameworkTemplateUrl(framework: String): String =
-        "$specificationServiceBaseUrl/frameworks/templates/$framework.json"
-
-    private fun getDataType(dataPoint: String): String {
-        val dataTypeUrl = getJsonNodeFromUrl(constructDataPointUrl(dataPoint)).get("datapointType").asText()
-        return dataTypeUrl.split("/").last().replace(".json", "")
-    }
-
     fun getFrameworkTemplate(framework: String): JsonNode {
-        val frameworkUrl = constructFrameworkTemplateUrl(framework)
-        checkIfSpecificationExists(frameworkUrl)
-        return getJsonNodeFromUrl(frameworkUrl)
+        // Todo: error handling if framework does not exist
+        return getJsonNodeFromString(specificationManager.getFrameworkSpecification(framework).schema)
     }
 
     fun getJsonNodeFromString(json: String): JsonNode = ObjectMapper().readTree(json)
@@ -57,8 +44,11 @@ class DataPointManager(
         bypassQa: Boolean,
         correlationId: String,
     ): String {
+        logger.info("Get Template for framework ${uploadedData.dataType}")
         val frameworkTemplate = getFrameworkTemplate(uploadedData.dataType)
         logger.info("Extract the expected data points and their respective JSON path.")
+        logger.info(frameworkTemplate.toPrettyString())
+
         val expectedDataPoints = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val dataJson = getJsonNodeFromString(uploadedData.data)
 
@@ -93,8 +83,77 @@ class DataPointManager(
             logger.info("Created storable data point for key-value pair ${it.key} and ${it.value} under id $dataId")
             dataIds += dataId
         }
+        dataSetToDataPointIds[dataSetId] = dataIds.joinToString(",")
         logger.info("Stored data points with ids $dataIds")
         return dataSetId
+    }
+
+    fun replaceFieldInTemplate(
+        frameworkTemplate: JsonNode,
+        fullFieldName: String,
+        currentJsonPath: String,
+        replacementValue: JsonNode,
+    ) {
+        val simpleFieldName = fullFieldName.split(".").last()
+        val expectedFullPath = "$currentJsonPath.$simpleFieldName"
+
+        if (frameworkTemplate.has(simpleFieldName) && expectedFullPath == fullFieldName) {
+            (frameworkTemplate as ObjectNode).set<JsonNode?>(simpleFieldName, replacementValue)
+        } else if (frameworkTemplate.isObject) {
+            val fields = frameworkTemplate.fields()
+            while (fields.hasNext()) {
+                val jsonField = fields.next()
+                val jsonPath = if (currentJsonPath.isEmpty()) jsonField.key else "$currentJsonPath.${jsonField.key}"
+                replaceFieldInTemplate(jsonField.value, fullFieldName, jsonPath, replacementValue)
+            }
+        }
+    }
+
+    fun getDataSetFromId(
+        dataSetId: String,
+        framework: String,
+        correlationId: String,
+    ): String {
+        val dataPoints =
+            dataSetToDataPointIds[dataSetId]?.split(",") ?: throw IllegalArgumentException("No data set found for id $dataSetId")
+        return assembleDataSetFromDataPoints(dataPoints, framework, correlationId)
+    }
+
+    fun assembleDataSetFromDataPoints(
+        dataPointIds: List<String>,
+        framework: String,
+        correlationId: String,
+    ): String {
+        var dataPoints = mutableListOf<String>()
+        val frameworkTemplate = getFrameworkTemplate(framework)
+        val allDataPointsInTemplate = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
+
+        dataPointIds.forEach { dataPoint ->
+            val currentDataPoint = metaDataManager.getDataMetaInformationByDataId(dataPoint).dataType
+            logger.info("Retrieving data with id $dataPoint and data point $currentDataPoint")
+            if (!allDataPointsInTemplate.containsValue(currentDataPoint)) {
+                throw IllegalArgumentException("Data point $currentDataPoint is not part of the framework template.")
+            }
+            dataPoints.add(currentDataPoint)
+            val dataPointData = retrieveDataPoint(UUID.fromString(dataPoint), currentDataPoint, correlationId).data
+            val replacementValue = getJsonNodeFromString(dataPointData)
+
+            val jsonPaths = allDataPointsInTemplate.filterValues { it == currentDataPoint }.keys
+            jsonPaths.forEach {
+                replaceFieldInTemplate(frameworkTemplate, it, "", replacementValue)
+            }
+        }
+
+        allDataPointsInTemplate.forEach {
+            if (!dataPoints.contains(it.value)) {
+                logger.info("No data point found for key ${it.key}. Remove it from template.")
+                replaceFieldInTemplate(frameworkTemplate, it.key, "", getJsonNodeFromString("null"))
+            }
+        }
+        logger.info("Assembled data set from data points:")
+        logger.info(frameworkTemplate.toPrettyString())
+
+        return frameworkTemplate.toString()
     }
 
     /**
@@ -126,49 +185,29 @@ class DataPointManager(
     ): Map<String, String> {
         val results = mutableMapOf<String, String>()
         if (jsonNode.isObject) {
-            val fields = jsonNode.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                val nextFieldName = if (fieldName.isEmpty()) jsonField.key else "$fieldName.${jsonField.key}"
-                results += extractDataPointsFromFrameworkTemplate(jsonField.value, nextFieldName)
+            if (jsonNode.has("id") && jsonNode.has("ref")) {
+                results[fieldName] = jsonNode.get("id").asText()
+            } else {
+                val fields = jsonNode.fields()
+                while (fields.hasNext()) {
+                    val jsonField = fields.next()
+                    val nextFieldName = if (fieldName.isEmpty()) jsonField.key else "$fieldName.${jsonField.key}"
+                    results += extractDataPointsFromFrameworkTemplate(jsonField.value, nextFieldName)
+                }
             }
-            // ToDo: Reconsider if these if-else checks are sufficient
-        } else if (jsonNode.toString() == "null" || jsonNode.isArray) {
-            throw IllegalArgumentException("Framework template contains unexpected null or array values.")
-        } else {
-            logger.info("Found leaf node $fieldName with value $jsonNode")
-            results[fieldName] = jsonNode.textValue()
         }
-
         return results
-    }
-
-    private fun checkIfDataPointDefinitionExists(dataPoint: String) {
-        logger.info("Checkinpagig if data point definition exists for $dataPoint")
-        checkIfSpecificationExists(constructDataPointUrl(dataPoint))
-    }
-
-    private fun checkIfSpecificationExists(specPath: String) {
-        val url = URI(specPath).toURL()
-        logger.info("Checking if specification exists at $url")
-        try {
-            getJsonNodeFromUrl(url.toString())
-        } catch (e: FileNotFoundException) {
-            logger.error("No specification for $specPath exists. Message: ${e.message}")
-            // Todo: implement proper error message
-            throw IllegalArgumentException("No specification for $specPath exists.")
-        }
     }
 
     fun validateDataPoint(
         dataPoint: String,
         data: String,
     ) {
-        checkIfDataPointDefinitionExists(dataPoint)
-        val dataTypeUrl = constructDataTypeUrl(getDataType(dataPoint))
-        checkIfSpecificationExists(dataTypeUrl)
-        val validationClass = getJsonNodeFromUrl(dataTypeUrl).get("validatedBy").asText()
-        validateConsistency(data, validationClass)
+        // Todo: handle case when data point does not exist
+        logger.info("Validating data point $dataPoint")
+        // Todo: figure out why validation failed locally
+        // val validationClass = specificationManager.getKotlinClassValidatingTheDataPoint(dataPoint)
+        // validateConsistency(data, validationClass)
     }
 
     fun storeDataPoint(

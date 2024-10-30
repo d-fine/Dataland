@@ -1,5 +1,6 @@
 package org.dataland.datalandspecificationservice.model
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.database.SpecificationDatabase
@@ -54,7 +55,7 @@ fun FrameworkSpecification.toDto(
         frameworkSpecification = this.getRef(baseUrl),
         name = this.name,
         businessDefinition = this.businessDefinition,
-        schema = newSchema,
+        schema = ObjectMapper().writeValueAsString(newSchema),
     )
 }
 
@@ -62,5 +63,5 @@ data class FrameworkSpecificationDto(
     val frameworkSpecification: IdWithRef,
     val name: String,
     val businessDefinition: String,
-    val schema: ObjectNode,
+    val schema: String,
 )

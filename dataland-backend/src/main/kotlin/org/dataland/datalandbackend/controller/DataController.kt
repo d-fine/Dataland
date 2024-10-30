@@ -92,11 +92,21 @@ abstract class DataController<T>(
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
+
+        val data: String
+        if (metaInfo.dataType == "additional-company-information") {
+            logger.info("Assemble data set from data points.")
+            data = dataPointManager.getDataSetFromId(dataId, metaInfo.dataType, correlationId)
+        } else {
+            logger.info("Retrieving the data set as a whole.")
+            data = dataManager.getPublicDataSet(dataId, dataType.toString(), correlationId).data
+        }
+
         val companyAssociatedData =
             CompanyAssociatedData(
                 companyId = companyId,
                 reportingPeriod = metaInfo.reportingPeriod,
-                data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType.toString(), correlationId).data, clazz),
+                data = objectMapper.readValue(data, clazz),
             )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
