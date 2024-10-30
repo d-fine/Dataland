@@ -976,10 +976,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3340,10 +3342,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3437,10 +3441,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "resultLimit",
@@ -17891,10 +17897,7 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "sector": {
@@ -17904,7 +17907,10 @@
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "lei": {
@@ -17932,10 +17938,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
