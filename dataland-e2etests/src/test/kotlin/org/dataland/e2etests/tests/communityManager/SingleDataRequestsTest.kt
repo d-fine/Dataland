@@ -8,7 +8,10 @@ import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -375,5 +378,31 @@ class SingleDataRequestsTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertDoesNotThrow { requestControllerApi.postSingleDataRequest(singleDataRequest) }
+    }
+
+    @Test
+    fun `post single data request with too short company identifier and assert correct error response`() {
+        val tooShortCompanyIdentifier = "aa"
+        val singleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = tooShortCompanyIdentifier,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf("2025"),
+                contacts = setOf("someMail@example.com"),
+                message = "Does not matter for this test.",
+            )
+
+        val expectedExceptionSummary = "Failed to retrieve companies by search string."
+        val expectedExceptionMessage = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEARCHSTRING_TOO_SHORT_THRESHOLD"
+
+        withTechnicalUser(TechnicalUser.Reader) {
+            val exception =
+                assertThrows<ClientException> { requestControllerApi.postSingleDataRequest(singleDataRequest) }
+            check400ClientExceptionErrorMessage(exception)
+
+            val responseString = (exception.response as ClientError<*>).body as String
+            assertTrue(responseString.contains(expectedExceptionSummary))
+            assertTrue(responseString.contains(expectedExceptionMessage))
+        }
     }
 }
