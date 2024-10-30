@@ -103,7 +103,7 @@ export default defineComponent({
      * This function sets the variable used for the conditional rendering of the page content to false
      */
     changePageContent() {
-      this.isSubscribed = false;
+      this.isUnsubscribed = true;
     },
   },
 });
