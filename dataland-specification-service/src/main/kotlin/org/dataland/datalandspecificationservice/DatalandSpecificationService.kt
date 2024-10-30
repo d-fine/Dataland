@@ -10,11 +10,11 @@ import org.springframework.context.annotation.ComponentScan
  */
 @SpringBootApplication
 @ComponentScan(basePackages = ["org.dataland"])
-class DatalandQaService : OpenAPIConfiguration
+class DatalandSpecificationService : OpenAPIConfiguration
 
 /**
  * Main function to be executed for running the spring boot dataland internal storage API process
  */
 fun main(args: Array<String>) {
-    runApplication<DatalandQaService>(args = args)
+    runApplication<DatalandSpecificationService>(args = args)
 }

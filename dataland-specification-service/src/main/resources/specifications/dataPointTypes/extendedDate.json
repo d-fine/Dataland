@@ -1,19 +1,8 @@
 {
-  "specification": "https://${PROXY_PRIMARY_URL}/specifications/datapointTypes/extendedDate.json",
+  "id": "extendedDate",
   "name": "General date data point with an extended source",
   "businessDefinition": "Data point with an extended document reference as source, a date without a time-zone represented by a LocalDate. The date has to comply with ISO-8601.",
   "validatedBy": "org.dataland.datalandbackend.model.datapoints.standard.LocalDateDataPoint",
-  "usedBy": [
-    "https://${PROXY_PRIMARY_URL}/specifications/datapointSpecifications/extendedDateFiscalYearEnd.json"
-  ],
-  "definition": {
-    "value": "LocalDate?",
-    "dateFormat": "String?",
-    "quality": "QualityOptions?",
-    "comment": "String?",
-    "dataSource": "ExtendedDocumentReference?",
-    "applicable": "Boolean?"
-  },
   "example": {
     "value": "2007-03-05",
     "dateFormat": "YYYY-MM-DD",

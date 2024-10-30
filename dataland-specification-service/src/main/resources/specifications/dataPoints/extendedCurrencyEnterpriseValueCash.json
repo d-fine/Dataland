@@ -1,0 +1,6 @@
+{
+  "id": "extendedCurrencyEnterpriseValueCash",
+  "name": "Enterprise Value including Cash (EVIC)",
+  "businessDefinition": "Enterprise Value including Cash (EVIC).",
+  "dataPointTypeId": "extendedCurrency"
+}

@@ -23,7 +23,7 @@ include(
     "dataland-dummy-eurodat-client",
     "dataland-data-exporter",
     "dataland-specification-lib",
-    "dataland-specification-service"
+    "dataland-specification-service",
 )
 
 plugins {

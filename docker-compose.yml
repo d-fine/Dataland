@@ -501,6 +501,8 @@ services:
     networks:
       - internal
     <<: *uncritical-constants-env
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]

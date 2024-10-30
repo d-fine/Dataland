@@ -1,0 +1,19 @@
+{
+  "id": "additional-company-information",
+  "businessDefinition": "Additional company information that is not part of the financial statements.",
+  "name": "Additional company information",
+  "schema": {
+    "general": {
+      "general": {
+        "fiscalYearDeviation": "extendedFiscalYearDeviateCalendarYear",
+        "fiscalYearEnd": "extendedDateFiscalYearEnd"
+      },
+      "financialInformation": {
+        "equity": "extendedCurrencyTotalEquity",
+        "debt": "extendedCurrencyTotalDebtObligations",
+        "balanceSheetTotal": "extendedCurrencyTotalAssetsBalance",
+        "evic": "extendedCurrencyEnterpriseValueCash"
+      }
+    }
+  }
+}
