@@ -20,13 +20,13 @@ import io.swagger.v3.oas.annotations.servers.Server
         ),
     servers = [Server(url = "/email")],
 )
-@SecurityScheme(
+@SecurityScheme( // TODO kann vermutlioch weg
     name = "default-bearer-auth",
     scheme = "bearer",
     type = SecuritySchemeType.HTTP,
     `in` = SecuritySchemeIn.HEADER,
 )
-@SecurityScheme(
+@SecurityScheme( // TODO kann vermutlioch weg
     name = "default-oauth",
     type = SecuritySchemeType.OAUTH2,
     flows =
