@@ -6,7 +6,6 @@ import org.dataland.datalandemailservice.services.EmailSubscriptionService
 import org.dataland.datalandemailservice.services.UnsubscriptionEmailToStakeholdersSender
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -30,7 +29,7 @@ class EmailController(
      * @return A response entity indicating the result of the unsubscription.
      */
     @Transactional
-    override fun unsubscribeUuid(subscriptionId: UUID): ResponseEntity<String> {
+    override fun unsubscribeUuid(subscriptionId: UUID): String? {
         logger.info("Received request to unsubscribe user with UUID: $subscriptionId")
 
         val emailSubscription = emailSubscriptionRepository.findByUuid(subscriptionId)
@@ -41,10 +40,10 @@ class EmailController(
 
             unsubscriptionEmailToStakeholdersSender.sendUnsubscriptionEmail(emailSubscription.emailAddress)
             logger.info("Stakeholders have been informed that user with UUID: $subscriptionId has unsubscribed")
+            return emailSubscription.emailAddress
         } else {
             logger.info("No user with UUID: $subscriptionId exists")
+            return null
         }
-
-        return ResponseEntity.ok("Successfully unsubscribed")
     }
 }
