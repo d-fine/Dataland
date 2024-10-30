@@ -1047,10 +1047,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3471,10 +3473,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3568,10 +3572,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "resultLimit",
@@ -4117,7 +4123,7 @@
         "required": [
           "companyId",
           "data",
-          "dataPoint",
+          "datapointSpecification",
           "reportingPeriod"
         ],
         "type": "object",
@@ -4125,7 +4131,7 @@
           "data": {
             "type": "string"
           },
-          "dataPoint": {
+          "datapointSpecification": {
             "type": "string"
           },
           "companyId": {
@@ -18078,7 +18084,7 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           },
@@ -18094,7 +18100,7 @@
           "headquarters": {
             "type": "string"
           },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           }
