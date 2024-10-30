@@ -54,7 +54,7 @@ class EmailSender(
      * @param email the email to send
      * @return a sending success indicator which is true if the sending was successful
      */
-    private fun sendEmail(email: Email) {
+    fun sendEmail(email: Email) {
         try {
             logEmail(email)
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
