@@ -5,33 +5,70 @@
         >BACK TO PLATFORM <i class="material-icons pl-1" aria-hidden="true" alt="arrow_forward">arrow_forward</i></a
       >
     </div>
-    <div v-if="isUserLoggedIn == false" class="header__authsection">
+    <div v-if="!isUserLoggedIn" class="header__authsection">
       <a aria-label="Login to account" class="header__authsection-login" @click="login"> Login </a>
       <ButtonComponent label="Sign Up" ariaLabel="Sign up to account" name="signup_dataland_button" @click="register" />
     </div>
   </template>
   <template v-else>
     <div class="header__authsection">
-      <ButtonComponent
-        label="Log in"
-        buttonType="login-button"
-        ariaLabel="Login to account"
-        name="login_dataland_button"
-        @click="login"
-      />
-      <ButtonComponent
-        label="Sign Up"
-        buttonType="registration-button"
-        ariaLabel="Sign up to account"
-        name="signup_dataland_button"
-        @click="register"
-      />
+
+      <div v-if="!isUserLoggedIn && isSmallScreen" class="dropdown">
+        <div
+            class="dropdown-toggle"
+            role="button"
+            tabindex="0"
+            @click="toggleDropdown"
+        >
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path d="M4 18L20 18" stroke="#5b5b5b" stroke-width="2" stroke-linecap="round"></path>
+              <path d="M4 12L20 12" stroke="#5b5b5b" stroke-width="2" stroke-linecap="round"></path>
+              <path d="M4 6L20 6" stroke="#5b5b5b" stroke-width="2" stroke-linecap="round"></path>
+            </g>
+          </svg>
+        </div>
+        <div v-if="isDropdownOpen" class="dropdown-menu">
+          <ButtonComponent
+              label="Log in"
+              buttonType="login-button"
+              ariaLabel="Login to account"
+              name="login_dataland_button"
+              @click="login"
+          />
+          <ButtonComponent
+              label="Sign Up"
+              buttonType="registration-button"
+              ariaLabel="Sign up to account"
+              name="signup_dataland_button"
+              @click="register"
+          />
+        </div>
+      </div>
+      <div v-else class="menu-large-screen">
+        <ButtonComponent
+            label="Log in"
+            buttonType="login-button"
+            ariaLabel="Login to account"
+            name="login_dataland_button"
+            @click="login"
+        />
+        <ButtonComponent
+            label="Sign Up"
+            buttonType="registration-button"
+            ariaLabel="Sign up to account"
+            name="signup_dataland_button"
+            @click="register"
+        />
+      </div>
     </div>
   </template>
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, onBeforeUnmount, ref } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import ButtonComponent from '@/components/resources/newLandingPage/ButtonComponent.vue';
@@ -44,6 +81,38 @@ const isUserLoggedIn = ref<undefined | boolean>(undefined);
 const { isLandingPage } = defineProps<{
   isLandingPage: boolean;
 }>();
+const isDropdownOpen = ref(false);
+const isSmallScreen = ref(window.innerWidth < 992);
+
+const toggleDropdown = (): void => {
+  isDropdownOpen.value = !isDropdownOpen.value;
+};
+const handleResize = () => {
+  isSmallScreen.value = window.innerWidth < 992;
+}
+
+// Ensure to close the dropdown on clicking outside
+const handleClickOutside = (event: MouseEvent) => {
+  const target = event.target as HTMLElement;
+  if (!target.closest('.dropdown')) {
+    isDropdownOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('click', handleClickOutside);
+  window.addEventListener('resize', handleResize);
+  handleResize();
+  assertDefined(getKeycloakPromise)()
+      .then((keycloak) => {
+        isUserLoggedIn.value = keycloak.authenticated;
+      })
+      .catch((error) => console.error(error));
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', handleResize);
+})
 /**
  * Sends the user to the keycloak login page (if not authenticated already)
  */
@@ -66,14 +135,6 @@ const login = (): void => {
 const backToPlatform = (): void => {
   void router.push({ path: '/companies' });
 };
-
-onMounted(() => {
-  assertDefined(getKeycloakPromise)()
-    .then((keycloak) => {
-      isUserLoggedIn.value = keycloak.authenticated;
-    })
-    .catch((error) => console.error(error));
-});
 
 /**
  * Sends the user to the keycloak register page (if not authenticated already)
@@ -132,6 +193,42 @@ const register = (): void => {
       }
     }
   }
+}
+.dropdown {
+
+  .dropdown-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+    margin-bottom: 2px;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--basic-dark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    margin-top: 0;
+    gap: 8px;
+
+    ButtonComponent {
+      width: 100%;
+    }
+  }
+}
+
+.menu-large-screen{
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
 }
 @media only screen and (max-width: $small) {
   .header {
