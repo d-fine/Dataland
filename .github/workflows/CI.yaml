@@ -366,6 +366,7 @@ jobs:
           DOCUMENT_MANAGER_DB_PASSWORD: "password"
           QA_SERVICE_DB_PASSWORD: "password"
           COMMUNITY_MANAGER_DB_PASSWORD: "password"
+          EMAIL_SERVICE_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
           KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
