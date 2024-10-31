@@ -146,6 +146,11 @@
           "200": {
             "description": "OK",
             "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
               "text/plain": {
                 "schema": {
                   "type": "string"
@@ -250,6 +255,11 @@
           "200": {
             "description": "OK",
             "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
               "text/plain": {
                 "schema": {
                   "type": "string"

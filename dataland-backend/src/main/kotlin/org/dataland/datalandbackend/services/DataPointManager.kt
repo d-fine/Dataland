@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
+import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.slf4j.LoggerFactory
@@ -14,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.UUID
-import java.util.concurrent.ConcurrentHashMap
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -26,9 +28,10 @@ class DataPointManager(
     @Autowired private val dataManager: DataManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val specificationManager: SpecificationControllerApi,
+    @Autowired private val datasetDatapointRepository: DatasetDatapointRepository,
 ) {
-    // ToDo: Implement persistent storing of mapping between data point IDs and the data set ID
-    private val dataSetToDataPointIds = ConcurrentHashMap<String, String>()
+//    // ToDo: Implement persistent storing of mapping between data point IDs and the data set ID
+//    private val dataSetToDataPointIds = ConcurrentHashMap<String, String>()
     private val logger = LoggerFactory.getLogger(javaClass)
     // ToDo: Implement proper logging
 
@@ -83,7 +86,9 @@ class DataPointManager(
             logger.info("Created storable data point for key-value pair ${it.key} and ${it.value} under id $dataId")
             dataIds += dataId
         }
-        dataSetToDataPointIds[dataSetId] = dataIds.joinToString(",")
+        this.datasetDatapointRepository.save(
+            DatasetDatapointEntity(dataId = dataSetId, dataPoints = dataIds.joinToString(",")),
+        )
         logger.info("Stored data points with ids $dataIds")
         return dataSetId
     }
@@ -115,7 +120,12 @@ class DataPointManager(
         correlationId: String,
     ): String {
         val dataPoints =
-            dataSetToDataPointIds[dataSetId]?.split(",") ?: throw IllegalArgumentException("No data set found for id $dataSetId")
+            datasetDatapointRepository
+                .findById(dataSetId)
+                .getOrNull()
+                ?.dataPoints
+                ?.split(",")
+                ?: throw IllegalArgumentException("No data set found for id $dataSetId")
         return assembleDataSetFromDataPoints(dataPoints, framework, correlationId)
     }
 
@@ -124,7 +134,7 @@ class DataPointManager(
         framework: String,
         correlationId: String,
     ): String {
-        var dataPoints = mutableListOf<String>()
+        val dataPoints = mutableListOf<String>()
         val frameworkTemplate = getFrameworkTemplate(framework)
         val allDataPointsInTemplate = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
 
@@ -205,9 +215,9 @@ class DataPointManager(
     ) {
         // Todo: handle case when data point does not exist
         logger.info("Validating data point $dataPoint")
-        // Todo: figure out why validation failed locally
-        // val validationClass = specificationManager.getKotlinClassValidatingTheDataPoint(dataPoint)
-        // validateConsistency(data, validationClass)
+        val validationClass = specificationManager.getKotlinClassValidatingTheDataPoint(dataPoint)
+        logger.info("ValidationClass is $validationClass")
+        validateConsistency(data, validationClass)
     }
 
     fun storeDataPoint(
@@ -236,7 +246,12 @@ class DataPointManager(
             storableDataSet = storableDataSet,
             correlationId = correlationId,
         )
-        dataManager.storeDataSetInTemporaryStoreAndSendMessage(dataId.toString(), storableDataSet, bypassQa, correlationId)
+        dataManager.storeDataSetInTemporaryStoreAndSendMessage(
+            dataId.toString(),
+            storableDataSet,
+            bypassQa,
+            correlationId,
+        )
 
         return dataId.toString()
     }
