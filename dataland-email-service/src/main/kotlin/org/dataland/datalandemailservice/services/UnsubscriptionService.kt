@@ -30,15 +30,15 @@ class UnsubscriptionService(
     fun unsubscribeUuidAndSendMailToStakeholders(uuid: UUID): ResponseEntity<String> {
         val emailSubscription = emailSubscriptionRepository.findByUuid(uuid)
 
-        if (emailSubscription != null) {
+        return if (emailSubscription != null) {
             emailSubscriptionService.unsubscribeEmailWithUuid(emailSubscription.uuid)
             sendUnsubscriptionEmail(emailSubscription.emailAddress)
 
             logger.info("Successfully unsubscribed email address corresponding to UUID: $uuid")
-            return ResponseEntity.ok("Successfully unsubscribed email address corresponding to the UUID: $uuid.")
+            ResponseEntity.ok("Successfully unsubscribed email address corresponding to the UUID: $uuid.")
         } else {
             logger.info("There is no email address corresponding to the UUID: $uuid.")
-            return ResponseEntity.ok("There is no email address corresponding to the UUID: $uuid.")
+            ResponseEntity.ok("There is no email address corresponding to the UUID: $uuid.")
         }
     }
 
