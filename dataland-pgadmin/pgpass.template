@@ -5,3 +5,4 @@ internal-storage-db:5432:*:internal_storage:${INTERNAL_STORAGE_DB_PASSWORD}
 document-manager-db:5432:*:document_manager:${DOCUMENT_MANAGER_DB_PASSWORD}
 qa-service-db:5432:*:qa_service:${QA_SERVICE_DB_PASSWORD}
 community-manager-db:5432:*:community_manager:${COMMUNITY_MANAGER_DB_PASSWORD}
+email-service-db:5432:*:email_service:${COMMUNITY_MANAGER_DB_PASSWORD}

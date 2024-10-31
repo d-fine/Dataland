@@ -64,9 +64,10 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5439:5433-5439"
+      - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
@@ -352,6 +353,7 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     profiles: [ "production", "testing", "development" ]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
