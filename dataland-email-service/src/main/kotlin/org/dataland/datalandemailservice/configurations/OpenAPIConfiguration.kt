@@ -1,13 +1,9 @@
 package org.dataland.datalandemailservice.configurations
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType
 import io.swagger.v3.oas.annotations.info.Info
-import io.swagger.v3.oas.annotations.security.OAuthFlow
-import io.swagger.v3.oas.annotations.security.OAuthFlows
-import io.swagger.v3.oas.annotations.security.SecurityScheme
 import io.swagger.v3.oas.annotations.servers.Server
+import org.springframework.context.annotation.Configuration
 
 /**
  * Basic configuration for the OpenAPI Swagger-UI available at /email/swagger-ui/index.html
@@ -20,22 +16,5 @@ import io.swagger.v3.oas.annotations.servers.Server
         ),
     servers = [Server(url = "/email")],
 )
-@SecurityScheme( // TODO kann vermutlioch weg
-    name = "default-bearer-auth",
-    scheme = "bearer",
-    type = SecuritySchemeType.HTTP,
-    `in` = SecuritySchemeIn.HEADER,
-)
-@SecurityScheme( // TODO kann vermutlioch weg
-    name = "default-oauth",
-    type = SecuritySchemeType.OAUTH2,
-    flows =
-        OAuthFlows(
-            authorizationCode =
-                OAuthFlow(
-                    authorizationUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/auth",
-                    tokenUrl = "/keycloak/realms/datalandsecurity/protocol/openid-connect/token",
-                ),
-        ),
-)
+@Configuration
 interface OpenAPIConfiguration

@@ -44,7 +44,6 @@ dependencies {
     implementation(libs.jackson.kotlin)
     implementation(libs.freemarker)
     implementation(libs.okhttp)
-    implementation(Spring.boot.security)
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(libs.mockito.kotlin)
