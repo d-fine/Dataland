@@ -52,13 +52,13 @@ class UnsubscriptionServiceTest {
         `when`(internalEmailBuilder.buildInternalEmail(any())).thenReturn(mock())
         doNothing().whenever(emailSubscriptionService).unsubscribeEmailWithUuid(validUuid)
         doNothing().whenever(emailSubscriptionService).unsubscribeEmailWithUuid(invalidUuid)
-        doNothing().whenever(emailSender).sendEmail(any())
+        doNothing().whenever(emailSender).filterReceiversAndSentEmail(any())
 
         val response: ResponseEntity<String> = unsubscriptionService.unsubscribeUuidAndSendMailToStakeholders(validUuid)
 
         assertEquals("Successfully unsubscribed email address corresponding to the UUID: $validUuid.", response.body)
         verify(emailSubscriptionService, times(1)).unsubscribeEmailWithUuid(validUuid)
-        verify(emailSender, times(1)).sendEmail(any())
+        verify(emailSender, times(1)).filterReceiversAndSentEmail(any())
     }
 
     @Test
@@ -70,6 +70,6 @@ class UnsubscriptionServiceTest {
 
         assertEquals("There is no email address corresponding to the UUID: $invalidUuid.", response.body)
         verify(emailSubscriptionService, times(0)).unsubscribeEmailWithUuid(any())
-        verify(emailSender, times(0)).sendEmail(any())
+        verify(emailSender, times(0)).filterReceiversAndSentEmail(any())
     }
 }
