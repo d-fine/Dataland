@@ -33,7 +33,7 @@ import TheContent from '@/components/generics/TheContent.vue';
 import TheNewFooter from '@/components/generics/TheNewFooter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type { Content, Page, Section } from '@/types/ContentTypes';
+import type { Content, Page } from '@/types/ContentTypes';
 import contentData from '@/assets/content.json';
 
 export default defineComponent({
