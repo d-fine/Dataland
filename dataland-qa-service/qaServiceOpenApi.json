@@ -5417,15 +5417,15 @@
           "dataId": {
             "type": "string"
           },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
+          "receptionTime": {
+            "type": "integer",
+            "format": "int64"
           },
           "framework": {
             "type": "string"
