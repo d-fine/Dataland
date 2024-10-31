@@ -1,9 +1,7 @@
 package org.dataland.datalandemailservice.controller
 
 import org.dataland.datalandemailservice.api.EmailApi
-import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
-import org.dataland.datalandemailservice.services.EmailSubscriptionService
-import org.dataland.datalandemailservice.services.UnsubscriptionEmailToStakeholdersSender
+import org.dataland.datalandemailservice.services.UnsubscriptionService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -16,9 +14,7 @@ import java.util.UUID
  */
 @RestController
 class EmailController(
-    @Autowired val emailSubscriptionService: EmailSubscriptionService,
-    @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
-    @Autowired private val unsubscriptionEmailToStakeholdersSender: UnsubscriptionEmailToStakeholdersSender,
+    @Autowired val unsubscriptionService: UnsubscriptionService,
 ) : EmailApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -30,24 +26,7 @@ class EmailController(
      */
     @Transactional
     override fun unsubscribeUuid(subscriptionId: UUID): ResponseEntity<String> {
-        // TODO log is misleading, as the person unsubscribing is probably no Dataland user
-        logger.info("Received request to unsubscribe user with UUID: $subscriptionId")
-
-        val emailSubscription = emailSubscriptionRepository.findByUuid(subscriptionId)
-
-        if (emailSubscription != null) {
-            emailSubscriptionService.unsubscribeEmailWithUuid(emailSubscription.uuid)
-            // TODO log is misleading, as the person unsubscribing is probably no Dataland user
-            logger.info("User with UUID: $subscriptionId has been successfully unsubscribed")
-
-            unsubscriptionEmailToStakeholdersSender.sendUnsubscriptionEmail(emailSubscription.emailAddress)
-            // TODO log is misleading, as the person unsubscribing is probably no Dataland user
-            logger.info("Stakeholders have been informed that user with UUID: $subscriptionId has unsubscribed")
-            return ResponseEntity.ok(emailSubscription.emailAddress + " has been successfully unsubscribed.")
-        } else {
-            logger.info("No user with UUID: $subscriptionId exists")
-            return ResponseEntity.ok("There is no email address associated with the subscriptionId $subscriptionId.")
-        }
-    } // TODO logic should be in own serice e.g. "SubscriptionManager".
-    // TODO a controller should only map the endpoint to some functionality somewhere
+        logger.info("Received request to unsubscribe email corresponding to UUID: $subscriptionId")
+        return unsubscriptionService.unsubscribeUuidAndSendMailToStakeholders(subscriptionId)
+    }
 }
