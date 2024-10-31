@@ -58,6 +58,7 @@ pg_isready -d internal_storage -h "localhost" -p 5436
 pg_isready -d document_manager -h "localhost" -p 5437
 pg_isready -d qa_service -h "localhost" -p 5438
 pg_isready -d community_manager -h "localhost" -p 5439
+pg_isready -d email_service -h "localhost" -p 5440
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`
