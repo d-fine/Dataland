@@ -55,6 +55,6 @@ class UnsubscriptionService(
                 htmlTitle = "$unsubscribedEmailAddress has unsubscribed from notifications of data uploads.",
                 properties = mapOf("Unsubscribed Email Address" to unsubscribedEmailAddress),
             )
-        emailSender.sendEmail(internalEmailBuilder.buildInternalEmail(unsubscriptionMessage))
+        emailSender.filterReceiversAndSentEmail(internalEmailBuilder.buildInternalEmail(unsubscriptionMessage))
     }
 }
