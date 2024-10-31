@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.servers.Server
 @OpenAPIDefinition(
     info =
         Info(
-            title = "Dataland QA Service API documentation",
+            title = "Dataland Email Service API documentation",
             version = "1.0.0",
         ),
     servers = [Server(url = "/email")],
