@@ -14,15 +14,14 @@ import java.util.UUID
 
 interface EmailApi {
     /**
-     * Unsubscribes a user from email communications based on the provided UUID.
+     * Unsubscribes an email address from email communications based on the provided UUID.
      *
-     * @param subscriptionId The UUID of the subscription to be unsubscribed.
-     * @return A response entity indicating the result of the unsubscription.
+     * @param subscriptionId is a UUID that is associated with the email address to be unsubscribed
+     * @return A response entity indicating the result of the unsubscription request
      */
     @Operation(
         summary = "Unsubscribe from email communications",
-        // TODO Emanuel: Unsubscribed nur die E-Mail-Adresse und keinen "user" => Wortlaut ändern
-        description = "Unsubscribes a user from email communications based on the provided UUID.",
+        description = "Unsubscribes an email address from email communications based on the provided UUID.",
     )
     @ApiResponses(
         value = [
