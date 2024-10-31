@@ -77,23 +77,15 @@ export default defineComponent({
         const emailUnsubscribeApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .emailController;
         const response = await emailUnsubscribeApi.unsubscribeUuid(this.subscriptionId);
-        console.log(response.data);
         if (response.data.includes('Successfully unsubscribed')) {
           this.message = 'You have been successfully removed from our mailing list.';
         } else {
           this.message = 'This UUID does not belong to any email address in our mailing list.';
         }
-        this.changePageContent();
+        this.isUnsubscribed = true;
       } catch (error) {
         console.error(error);
       }
-    },
-
-    /**
-     * This function sets the variable used for the conditional rendering of the page content to true
-     */
-    changePageContent() {
-      this.isUnsubscribed = true;
     },
   },
 });
