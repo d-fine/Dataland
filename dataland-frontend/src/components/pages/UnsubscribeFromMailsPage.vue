@@ -10,7 +10,7 @@
         </div>
         <div v-else>
           <p class="unsubscribed-confirmation">
-            {{ unsubscribedMessage }}
+            {{ message }}
           </p>
           <p>
             Go to
@@ -21,7 +21,7 @@
     </main>
   </TheContent>
 
-  <TheNewFooter :is-light-version="true" :sections="footerContent" class="footer" />
+  <TheNewFooter :is-light-version="true" :sections="footerPageSections" class="footer" />
 </template>
 
 <script lang="ts">
@@ -33,7 +33,7 @@ import TheContent from '@/components/generics/TheContent.vue';
 import TheNewFooter from '@/components/generics/TheNewFooter.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type { Page, Section } from '@/types/ContentTypes';
+import type { Content, Page, Section } from '@/types/ContentTypes';
 import contentData from '@/assets/content.json';
 
 export default defineComponent({
@@ -58,13 +58,13 @@ export default defineComponent({
     };
   },
 
-  data(): { footerContent: Section[] | undefined } {
+  data() {
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
     return {
+      footerPageSections: footerPage?.sections,
       isUnsubscribed: false,
-      footerContent,
+      message: '',
     };
   },
 
@@ -79,9 +79,9 @@ export default defineComponent({
         const response = await emailUnsubscribeApi.unsubscribeUuid(this.subscriptionId);
         console.log(response.data);
         if (response.data.includes('Successfully unsubscribed')) {
-          this.unsubscribedMessage = 'You have been successfully removed from our mailing list.';
+          this.message = 'You have been successfully removed from our mailing list.';
         } else {
-          this.unsubscribedMessage = 'This UUID does not belong to any email address in our mailing list.';
+          this.message = 'This UUID does not belong to any email address in our mailing list.';
         }
         this.changePageContent();
       } catch (error) {

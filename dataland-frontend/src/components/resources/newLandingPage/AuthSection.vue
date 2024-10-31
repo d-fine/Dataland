@@ -12,14 +12,8 @@
   </template>
   <template v-else>
     <div class="header__authsection">
-
       <div v-if="!isUserLoggedIn && isSmallScreen" class="dropdown">
-        <div
-            class="dropdown-toggle"
-            role="button"
-            tabindex="0"
-            @click="toggleDropdown"
-        >
+        <div class="dropdown-toggle" role="button" tabindex="0" @click="toggleDropdown">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -32,35 +26,35 @@
         </div>
         <div v-if="isDropdownOpen" class="dropdown-menu">
           <ButtonComponent
-              label="Log in"
-              buttonType="login-button"
-              ariaLabel="Login to account"
-              name="login_dataland_button"
-              @click="login"
-          />
-          <ButtonComponent
-              label="Sign Up"
-              buttonType="registration-button"
-              ariaLabel="Sign up to account"
-              name="signup_dataland_button"
-              @click="register"
-          />
-        </div>
-      </div>
-      <div v-else class="menu-large-screen">
-        <ButtonComponent
             label="Log in"
             buttonType="login-button"
             ariaLabel="Login to account"
             name="login_dataland_button"
             @click="login"
-        />
-        <ButtonComponent
+          />
+          <ButtonComponent
             label="Sign Up"
             buttonType="registration-button"
             ariaLabel="Sign up to account"
             name="signup_dataland_button"
             @click="register"
+          />
+        </div>
+      </div>
+      <div v-else class="menu-large-screen">
+        <ButtonComponent
+          label="Log in"
+          buttonType="login-button"
+          ariaLabel="Login to account"
+          name="login_dataland_button"
+          @click="login"
+        />
+        <ButtonComponent
+          label="Sign Up"
+          buttonType="registration-button"
+          ariaLabel="Sign up to account"
+          name="signup_dataland_button"
+          @click="register"
         />
       </div>
     </div>
@@ -87,12 +81,12 @@ const isSmallScreen = ref(window.innerWidth < 992);
 const toggleDropdown = (): void => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
-const handleResize = () => {
+const handleResize = (): void => {
   isSmallScreen.value = window.innerWidth < 992;
-}
+};
 
 // Ensure to close the dropdown on clicking outside
-const handleClickOutside = (event: MouseEvent) => {
+const handleClickOutside = (event: MouseEvent): void => {
   const target = event.target as HTMLElement;
   if (!target.closest('.dropdown')) {
     isDropdownOpen.value = false;
@@ -104,15 +98,15 @@ onMounted(() => {
   window.addEventListener('resize', handleResize);
   handleResize();
   assertDefined(getKeycloakPromise)()
-      .then((keycloak) => {
-        isUserLoggedIn.value = keycloak.authenticated;
-      })
-      .catch((error) => console.error(error));
+    .then((keycloak) => {
+      isUserLoggedIn.value = keycloak.authenticated;
+    })
+    .catch((error) => console.error(error));
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
-})
+});
 /**
  * Sends the user to the keycloak login page (if not authenticated already)
  */
@@ -195,7 +189,6 @@ const register = (): void => {
   }
 }
 .dropdown {
-
   .dropdown-toggle {
     background: none;
     border: none;
@@ -225,7 +218,7 @@ const register = (): void => {
   }
 }
 
-.menu-large-screen{
+.menu-large-screen {
   display: flex;
   flex-direction: row;
   gap: 8px;
