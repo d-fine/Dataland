@@ -19,7 +19,7 @@ import java.util.UUID
 class UnsubscriptionServiceTest {
     private lateinit var emailSender: EmailSender
     private lateinit var internalEmailBuilder: InternalEmailBuilder
-    private lateinit var emailSubscriptionService: EmailUnsubscriber
+    private lateinit var emailUnsubscriber: EmailUnsubscriber
     private lateinit var emailSubscriptionRepository: EmailSubscriptionRepository
     private lateinit var unsubscriptionService: UnsubscriptionService
 
@@ -31,14 +31,14 @@ class UnsubscriptionServiceTest {
     fun setup() {
         emailSender = mock(EmailSender::class.java)
         internalEmailBuilder = mock(InternalEmailBuilder::class.java)
-        emailSubscriptionService = mock(EmailUnsubscriber::class.java)
+        emailUnsubscriber = mock(EmailUnsubscriber::class.java)
         emailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
 
         unsubscriptionService =
             UnsubscriptionService(
                 emailSender,
                 internalEmailBuilder,
-                emailSubscriptionService,
+                emailUnsubscriber,
                 emailSubscriptionRepository,
             )
     }
@@ -50,14 +50,14 @@ class UnsubscriptionServiceTest {
         `when`(emailSubscriptionRepository.findByUuid(validUuid)).thenReturn(validEmailSubscriptionEntity)
         `when`(emailSubscriptionRepository.findByUuid(invalidUuid)).thenReturn(null)
         `when`(internalEmailBuilder.buildInternalEmail(any())).thenReturn(mock())
-        doNothing().whenever(emailSubscriptionService).unsubscribeEmailWithUuid(validUuid)
-        doNothing().whenever(emailSubscriptionService).unsubscribeEmailWithUuid(invalidUuid)
+        doNothing().whenever(emailUnsubscriber).unsubscribeEmailWithUuid(validUuid)
+        doNothing().whenever(emailUnsubscriber).unsubscribeEmailWithUuid(invalidUuid)
         doNothing().whenever(emailSender).filterReceiversAndSentEmail(any())
 
         val response: ResponseEntity<String> = unsubscriptionService.unsubscribeUuidAndSendMailToStakeholders(validUuid)
 
         assertEquals("Successfully unsubscribed email address corresponding to the UUID: $validUuid.", response.body)
-        verify(emailSubscriptionService, times(1)).unsubscribeEmailWithUuid(validUuid)
+        verify(emailUnsubscriber, times(1)).unsubscribeEmailWithUuid(validUuid)
         verify(emailSender, times(1)).filterReceiversAndSentEmail(any())
     }
 
@@ -69,7 +69,7 @@ class UnsubscriptionServiceTest {
             unsubscriptionService.unsubscribeUuidAndSendMailToStakeholders(invalidUuid)
 
         assertEquals("There is no email address corresponding to the UUID: $invalidUuid.", response.body)
-        verify(emailSubscriptionService, times(0)).unsubscribeEmailWithUuid(any())
+        verify(emailUnsubscriber, times(0)).unsubscribeEmailWithUuid(any())
         verify(emailSender, times(0)).filterReceiversAndSentEmail(any())
     }
 }
