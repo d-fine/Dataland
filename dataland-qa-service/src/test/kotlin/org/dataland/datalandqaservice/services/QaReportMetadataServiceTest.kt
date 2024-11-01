@@ -14,7 +14,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataA
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportMetadataService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -51,6 +52,33 @@ class QaReportMetadataServiceTest(
     val dataId1 = "dataId1"
     val dataId2 = "dataId2"
 
+    @BeforeAll
+    fun insertTestData() {
+        val now = Instant.now()
+        qaReportRepository.save(
+            QaReportEntity(
+                qaReportId = IdUtils.generateUUID(),
+                qaReport = UUID.randomUUID().toString(),
+                dataId = dataId1,
+                dataType = "sfdr",
+                reporterUserId = reporterId1.toString(),
+                uploadTime = now.toEpochMilli(),
+                active = true,
+            ),
+        )
+        qaReportRepository.save(
+            QaReportEntity(
+                qaReportId = IdUtils.generateUUID(),
+                qaReport = UUID.randomUUID().toString(),
+                dataId = dataId2,
+                dataType = "sfdr",
+                reporterUserId = reporterId2.toString(),
+                uploadTime = now.minus(7, ChronoUnit.DAYS).toEpochMilli(),
+                active = true,
+            ),
+        )
+    }
+
     @Test
     fun `check that non unique company ids throw an exception`() {
         val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> =
@@ -65,7 +93,7 @@ class QaReportMetadataServiceTest(
             assertThrows<InvalidInputApiException> {
                 qaReportMetadataService.searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
             }
-        Assertions.assertEquals(
+        assertEquals(
             "Multiple companies have been found for the identifier you specified. " +
                 "Please specify a unique company identifier.",
             thrown.message,
@@ -77,7 +105,7 @@ class QaReportMetadataServiceTest(
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
-        Assertions.assertTrue(result.isEmpty())
+        assertTrue(result.isEmpty())
     }
 
     @Test
@@ -93,7 +121,7 @@ class QaReportMetadataServiceTest(
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(null, true, null, null, null, null)
-        Assertions.assertEquals(2, result.size)
+        assertEquals(2, result.size)
     }
 
     @Test
@@ -121,8 +149,8 @@ class QaReportMetadataServiceTest(
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(setOf<UUID>(reporterId1), true, null, null, null, null)
-        Assertions.assertEquals(1, result.size)
-        Assertions.assertEquals(reporterId1.toString(), result[0].dataMetadata.uploaderUserId)
+        assertEquals(1, result.size)
+        assertEquals(reporterId1.toString(), result[0].dataMetadata.uploaderUserId)
     }
 
     @Test
@@ -138,7 +166,7 @@ class QaReportMetadataServiceTest(
         val result: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(null, false, null, null, null, null)
-        Assertions.assertTrue(result.isEmpty())
+        assertTrue(result.isEmpty())
     }
 
     @Test
@@ -161,7 +189,7 @@ class QaReportMetadataServiceTest(
                     LocalDate.now().plusDays(2),
                     null,
                 )
-        Assertions.assertEquals(2, result.size)
+        assertEquals(2, result.size)
     }
 
     @Test
@@ -180,42 +208,15 @@ class QaReportMetadataServiceTest(
                 .searchDataAndQaReportMetadata(
                     null, true, null, LocalDate.now().minusDays(3), null, null,
                 )
-        Assertions.assertEquals(1, resultOnlyStart.size)
-        Assertions.assertEquals(dataId1, resultOnlyStart[0].qaReportMetadata.dataId)
+        assertEquals(1, resultOnlyStart.size)
+        assertEquals(dataId1, resultOnlyStart[0].qaReportMetadata.dataId)
 
         val resultOnlyEnd: List<DataAndQaReportMetadata> =
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(
                     null, true, null, null, LocalDate.now().minusDays(3), null,
                 )
-        Assertions.assertEquals(1, resultOnlyEnd.size)
-        Assertions.assertEquals(dataId2, resultOnlyEnd[0].qaReportMetadata.dataId)
-    }
-
-    @BeforeAll
-    fun insertTestData() {
-        val now = Instant.now()
-        qaReportRepository.save(
-            QaReportEntity(
-                qaReportId = IdUtils.generateUUID(),
-                qaReport = UUID.randomUUID().toString(),
-                dataId = dataId1,
-                dataType = "sfdr",
-                reporterUserId = reporterId1.toString(),
-                uploadTime = now.toEpochMilli(),
-                active = true,
-            ),
-        )
-        qaReportRepository.save(
-            QaReportEntity(
-                qaReportId = IdUtils.generateUUID(),
-                qaReport = UUID.randomUUID().toString(),
-                dataId = dataId2,
-                dataType = "sfdr",
-                reporterUserId = reporterId2.toString(),
-                uploadTime = now.minus(7, ChronoUnit.DAYS).toEpochMilli(),
-                active = true,
-            ),
-        )
+        assertEquals(1, resultOnlyEnd.size)
+        assertEquals(dataId2, resultOnlyEnd[0].qaReportMetadata.dataId)
     }
 }
