@@ -19,7 +19,7 @@ import java.util.UUID
 class UnsubscriptionServiceTest {
     private lateinit var emailSender: EmailSender
     private lateinit var internalEmailBuilder: InternalEmailBuilder
-    private lateinit var emailSubscriptionService: EmailSubscriptionService
+    private lateinit var emailSubscriptionService: EmailUnsubscriber
     private lateinit var emailSubscriptionRepository: EmailSubscriptionRepository
     private lateinit var unsubscriptionService: UnsubscriptionService
 
@@ -31,7 +31,7 @@ class UnsubscriptionServiceTest {
     fun setup() {
         emailSender = mock(EmailSender::class.java)
         internalEmailBuilder = mock(InternalEmailBuilder::class.java)
-        emailSubscriptionService = mock(EmailSubscriptionService::class.java)
+        emailSubscriptionService = mock(EmailUnsubscriber::class.java)
         emailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
 
         unsubscriptionService =

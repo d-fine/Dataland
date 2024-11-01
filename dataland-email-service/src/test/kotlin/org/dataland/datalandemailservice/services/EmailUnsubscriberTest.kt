@@ -12,9 +12,9 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import java.util.UUID
 
-class EmailSubscriptionServiceTest {
+class EmailUnsubscriberTest {
     private lateinit var mockEmailSubscriptionRepository: EmailSubscriptionRepository
-    private lateinit var emailSubscriptionService: EmailSubscriptionService
+    private lateinit var emailSubscriptionService: EmailUnsubscriber
 
     val subscribedUuid = UUID.randomUUID()
     val invalidUuid = UUID.randomUUID()
@@ -43,7 +43,7 @@ class EmailSubscriptionServiceTest {
     fun setup() {
         mockEmailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
 
-        emailSubscriptionService = EmailSubscriptionService(mockEmailSubscriptionRepository)
+        emailSubscriptionService = EmailUnsubscriber(mockEmailSubscriptionRepository)
 
         `when`(mockEmailSubscriptionRepository.findByUuid(subscribedUuid)).thenReturn(subscribedEntity)
         `when`(mockEmailSubscriptionRepository.findByUuid(invalidUuid)).thenReturn(null)

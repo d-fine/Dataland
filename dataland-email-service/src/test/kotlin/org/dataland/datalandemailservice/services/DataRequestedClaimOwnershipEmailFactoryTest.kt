@@ -29,12 +29,12 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
 
     private var subscriptionUuid = UUID.randomUUID()
 
-    private lateinit var emailSubscriptionService: EmailSubscriptionService
+    private lateinit var emailSubscriptionService: EmailUnsubscriber
     private lateinit var dataRequestedClaimOwnershipEmailFactory: DataRequestedClaimOwnershipEmailFactory
 
     @BeforeEach
     fun setup() {
-        emailSubscriptionService = mock(EmailSubscriptionService::class.java)
+        emailSubscriptionService = mock(EmailUnsubscriber::class.java)
         `when`(emailSubscriptionService.insertSubscriptionEntityIfNeededAndReturnUuid(any())).thenReturn(subscriptionUuid)
         dataRequestedClaimOwnershipEmailFactory =
             DataRequestedClaimOwnershipEmailFactory(
