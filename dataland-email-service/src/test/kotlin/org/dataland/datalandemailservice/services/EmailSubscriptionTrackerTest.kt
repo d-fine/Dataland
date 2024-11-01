@@ -5,6 +5,8 @@ import org.dataland.datalandemailservice.DatalandEmailService
 import org.dataland.datalandemailservice.entities.EmailSubscriptionEntity
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,7 +42,7 @@ class EmailSubscriptionTrackerTest(
         EmailSubscriptionEntity(
             uuid = unsubscribedUuid,
             emailAddress = unsubscribedEmail,
-            isSubscribed = true,
+            isSubscribed = false,
         )
 
     @BeforeEach
@@ -69,8 +71,23 @@ class EmailSubscriptionTrackerTest(
     }
 
     @Test
-    fun `validate that null is returned for unsubscriber`() {
+    fun `validate that the uuid  is returned for unsubscriber`() {
         val uuid = emailSubscriptionTracker.insertSubscriptionEntityIfNeededAndReturnUuid(unsubscribedEmail)
         assertEquals(unsubscribedUuid, uuid)
+    }
+
+    @Test
+    fun `validate that a subscribed email is returned as true`() {
+        emailSubscriptionTracker.emailIsSubscribed(subscribedEmail)?.let { assertTrue(it) }
+    }
+
+    @Test
+    fun `validate that a unsubscribed email is returned as false`() {
+        emailSubscriptionTracker.emailIsSubscribed(unsubscribedEmail)?.let { assertFalse(it) }
+    }
+
+    @Test
+    fun `validate that a unknown email is returned as null`() {
+        emailSubscriptionTracker.emailIsSubscribed(unknownEmail)?.let { assertNull(it) }
     }
 }
