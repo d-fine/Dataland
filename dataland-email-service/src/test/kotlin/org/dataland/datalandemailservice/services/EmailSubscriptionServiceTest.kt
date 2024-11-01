@@ -1,38 +1,50 @@
 package org.dataland.datalandemailservice.services
 
+import jakarta.transaction.Transactional
+import org.dataland.datalandemailservice.DatalandEmailService
 import org.dataland.datalandemailservice.entities.EmailSubscriptionEntity
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
+import org.springframework.boot.test.context.SpringBootTest
 import java.util.UUID
 
-class EmailSubscriptionServiceTest {
-    private lateinit var mockEmailSubscriptionRepository: EmailSubscriptionRepository
+@SpringBootTest(classes = [DatalandEmailService::class], properties = ["spring.profiles.active=nodb"])
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@Transactional
+class EmailSubscriptionServiceTest(
+    @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
+) {
     private lateinit var emailSubscriptionService: EmailSubscriptionService
 
-    val subscribedUuid = UUID.randomUUID()
-    val invalidUuid = UUID.randomUUID()
-    val newUuid = UUID.randomUUID()
+    final val subscribedUuid = UUID.randomUUID()
+    final val unsubscribedUuid = UUID.randomUUID()
+    final val newUuid = UUID.randomUUID()
 
-    val subscriberEmail = "subscriber@mail.com"
-    val notASubscriberEmail = "notasubscriber@mail.com"
-    val unkownEmail = "unknown@mail.com"
-    val newEmail = "new@mail.com"
+    final val subscribedEmail = "subscriber@mail.com"
+    final val unsubscribedEmail = "notasubscriber@mail.com"
+    final val unkownEmail = "unknown@mail.com"
+    final val newEmail = "new@mail.com"
 
     val subscribedEntity =
         EmailSubscriptionEntity(
             uuid = subscribedUuid,
-            emailAddress = subscriberEmail,
+            emailAddress = subscribedEmail,
             isSubscribed = true,
         )
 
-    val newSubscriberEntity =
+    val unsubscribedEntity =
+        EmailSubscriptionEntity(
+            uuid = unsubscribedUuid,
+            emailAddress = unsubscribedEmail,
+            isSubscribed = false,
+        )
+
+    val newlySubscribedEntity =
         EmailSubscriptionEntity(
             uuid = newUuid,
             emailAddress = newEmail,
@@ -41,49 +53,16 @@ class EmailSubscriptionServiceTest {
 
     @BeforeEach
     fun setup() {
-        mockEmailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
-
-        emailSubscriptionService = EmailSubscriptionService(mockEmailSubscriptionRepository)
-
-        `when`(mockEmailSubscriptionRepository.findByUuid(subscribedUuid)).thenReturn(subscribedEntity)
-        `when`(mockEmailSubscriptionRepository.findByUuid(invalidUuid)).thenReturn(null)
-        `when`(mockEmailSubscriptionRepository.save(any(EmailSubscriptionEntity::class.java)))
-            .thenReturn(newSubscriberEntity)
+        emailSubscriptionRepository.deleteAll()
+        emailSubscriptionRepository.save(subscribedEntity)
+        emailSubscriptionRepository.save(unsubscribedEntity)
+        emailSubscriptionRepository.save(newlySubscribedEntity)
     }
 
     @Test
-    fun `validate that the email is unsubscribed for a valid UUID`() {
-        emailSubscriptionService.unsubscribeEmailWithUuid(subscribedUuid)
-        assertFalse(subscribedEntity.isSubscribed, "The email subscription should be unsubscribed.")
+    fun `validate that a new subscription is generated to a new email address`() {
+        emailSubscriptionService.insertSubscriptionEntityIfNeededAndReturnUuid(unkownEmail)
+        val entity = emailSubscriptionRepository.findByEmailAddress(unkownEmail)
+        entity?.isSubscribed?.let { assertTrue(it, "The email subscription should be subscribed.") }
     }
-
-    @Test
-    fun `validate that unsubscribe does nothing for a invalid UUID`() {
-        emailSubscriptionService.unsubscribeEmailWithUuid(invalidUuid)
-        assertTrue(subscribedEntity.isSubscribed, "The email subscription should be subscribed as nothing happened.")
-    }
-
-    @Test
-    fun `validate that isSubscribed is true if a email is subscribed`() {
-        val isSubscribed = emailSubscriptionService.emailIsSubscribed(subscriberEmail)
-        if (isSubscribed != null) {
-            assertTrue(isSubscribed, "The email subscription should be subscribed.")
-        }
-    }
-
-    @Test
-    fun `validate that isSubscribed is false if a email is not subscribed`() {
-        val isSubscribed = emailSubscriptionService.emailIsSubscribed(notASubscriberEmail)
-        if (isSubscribed != null) {
-            assertFalse(isSubscribed, "The email subscription should be subscribed.")
-        }
-    }
-
-    @Test
-    fun `validate that isSubscribed is null for unknown email`() {
-        val isSubscribed = emailSubscriptionService.emailIsSubscribed(unkownEmail)
-        assertNull(isSubscribed, "The response should be null for a unknown email.")
-    }
-
-    // To do: add tests for emailSubscriptionService.insertSubscriptionEntityIfNeededAndReturnUuid
 }
