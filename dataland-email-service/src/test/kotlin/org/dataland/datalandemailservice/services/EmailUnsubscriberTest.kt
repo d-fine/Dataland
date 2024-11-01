@@ -14,7 +14,7 @@ import java.util.UUID
 
 class EmailUnsubscriberTest {
     private lateinit var mockEmailSubscriptionRepository: EmailSubscriptionRepository
-    private lateinit var emailSubscriptionService: EmailUnsubscriber
+    private lateinit var emailUnsubscriber: EmailUnsubscriber
 
     val subscribedUuid = UUID.randomUUID()
     val invalidUuid = UUID.randomUUID()
@@ -43,7 +43,7 @@ class EmailUnsubscriberTest {
     fun setup() {
         mockEmailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
 
-        emailSubscriptionService = EmailUnsubscriber(mockEmailSubscriptionRepository)
+        emailUnsubscriber = EmailUnsubscriber(mockEmailSubscriptionRepository)
 
         `when`(mockEmailSubscriptionRepository.findByUuid(subscribedUuid)).thenReturn(subscribedEntity)
         `when`(mockEmailSubscriptionRepository.findByUuid(invalidUuid)).thenReturn(null)
@@ -53,19 +53,19 @@ class EmailUnsubscriberTest {
 
     @Test
     fun `validate that the email is unsubscribed for a valid UUID`() {
-        emailSubscriptionService.unsubscribeEmailWithUuid(subscribedUuid)
+        emailUnsubscriber.unsubscribeEmailWithUuid(subscribedUuid)
         assertFalse(subscribedEntity.isSubscribed, "The email subscription should be unsubscribed.")
     }
 
     @Test
     fun `validate that unsubscribe does nothing for a invalid UUID`() {
-        emailSubscriptionService.unsubscribeEmailWithUuid(invalidUuid)
+        emailUnsubscriber.unsubscribeEmailWithUuid(invalidUuid)
         assertTrue(subscribedEntity.isSubscribed, "The email subscription should be subscribed as nothing happened.")
     }
 
     @Test
     fun `validate that isSubscribed is true if a email is subscribed`() {
-        val isSubscribed = emailSubscriptionService.emailIsSubscribed(subscriberEmail)
+        val isSubscribed = emailUnsubscriber.emailIsSubscribed(subscriberEmail)
         if (isSubscribed != null) {
             assertTrue(isSubscribed, "The email subscription should be subscribed.")
         }
@@ -73,7 +73,7 @@ class EmailUnsubscriberTest {
 
     @Test
     fun `validate that isSubscribed is false if a email is not subscribed`() {
-        val isSubscribed = emailSubscriptionService.emailIsSubscribed(notASubscriberEmail)
+        val isSubscribed = emailUnsubscriber.emailIsSubscribed(notASubscriberEmail)
         if (isSubscribed != null) {
             assertFalse(isSubscribed, "The email subscription should be subscribed.")
         }
@@ -81,9 +81,9 @@ class EmailUnsubscriberTest {
 
     @Test
     fun `validate that isSubscribed is null for unknown email`() {
-        val isSubscribed = emailSubscriptionService.emailIsSubscribed(unkownEmail)
+        val isSubscribed = emailUnsubscriber.emailIsSubscribed(unkownEmail)
         assertNull(isSubscribed, "The response should be null for a unknown email.")
     }
 
-    // To do: add tests for emailSubscriptionService.insertSubscriptionEntityIfNeededAndReturnUuid
+    // To do: add tests for emailUnsubscriber.insertSubscriptionEntityIfNeededAndReturnUuid
 }
