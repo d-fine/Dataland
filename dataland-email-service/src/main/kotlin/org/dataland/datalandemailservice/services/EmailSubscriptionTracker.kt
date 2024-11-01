@@ -23,7 +23,8 @@ class EmailSubscriptionTracker(
      * otherwise returns `null`.
      *
      * @param emailAddress The email address to subscribe.
-     * @return The UUID of the active subscription, or `null` if the subscription is inactive.
+     * @return The UUID of the active/inactive subscription,
+     * or the UUID of the newly created entity if no subscription existed.
      */
     @Transactional
     fun insertSubscriptionEntityIfNeededAndReturnUuid(emailAddress: String): UUID {

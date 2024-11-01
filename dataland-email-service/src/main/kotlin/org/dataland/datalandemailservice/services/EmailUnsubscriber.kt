@@ -1,7 +1,6 @@
 package org.dataland.datalandemailservice.services
 
 import org.dataland.datalandemailservice.email.EmailSender
-import org.dataland.datalandemailservice.entities.EmailSubscriptionEntity
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.slf4j.LoggerFactory
