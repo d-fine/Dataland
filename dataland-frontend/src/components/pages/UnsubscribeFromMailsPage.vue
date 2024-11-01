@@ -6,10 +6,12 @@
       <div>
         <div v-if="!isUnsubscribed" class="subscribed">
           <h1>We are sorry you want to unsubscribe from our mailing list.</h1>
-          <PrimeButton @click="unsubscribeFromMailingList" class="unsubscribe-button"> Unsubscribe </PrimeButton>
+          <PrimeButton @click="unsubscribeFromMailingList" data-test="unsubscribeButton" class="unsubscribe-button">
+            Unsubscribe
+          </PrimeButton>
         </div>
         <div v-else>
-          <p class="unsubscribed-confirmation">
+          <p data-test="unsubscribeMessage" class="unsubscribed-confirmation">
             {{ message }}
           </p>
           <p>
