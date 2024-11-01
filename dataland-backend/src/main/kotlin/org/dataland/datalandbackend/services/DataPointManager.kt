@@ -10,7 +10,10 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientError
+import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -29,16 +32,28 @@ class DataPointManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val specificationManager: SpecificationControllerApi,
     @Autowired private val datasetDatapointRepository: DatasetDatapointRepository,
+    @Autowired private val exceptionForwarder: ExceptionForwarder,
 ) {
-//    // ToDo: Implement persistent storing of mapping between data point IDs and the data set ID
-//    private val dataSetToDataPointIds = ConcurrentHashMap<String, String>()
     private val logger = LoggerFactory.getLogger(javaClass)
     // ToDo: Implement proper logging
 
-    fun getFrameworkTemplate(framework: String): JsonNode {
-        // Todo: error handling if framework does not exist
-        return getJsonNodeFromString(specificationManager.getFrameworkSpecification(framework).schema)
+    fun retrieveDataPoint(
+        dataId: UUID,
+        dataType: String,
+        correlationId: String,
+    ): StorableDataSet {
+        logger.info("Retrieving data point with id $dataId")
+        val storedDataPoint = dataManager.getPublicDataSet(dataId.toString(), dataType, correlationId)
+        return storedDataPoint
     }
+
+    fun getFrameworkTemplate(framework: String): JsonNode =
+        try {
+            getJsonNodeFromString(specificationManager.getFrameworkSpecification(framework).schema)
+        } catch (clientException: ClientException) {
+            logger.info("Framework $framework not found.")
+            throw clientException
+        }
 
     fun getJsonNodeFromString(json: String): JsonNode = ObjectMapper().readTree(json)
 
@@ -209,17 +224,6 @@ class DataPointManager(
         return results
     }
 
-    fun validateDataPoint(
-        dataPoint: String,
-        data: String,
-    ) {
-        // Todo: handle case when data point does not exist
-        logger.info("Validating data point $dataPoint")
-        val validationClass = specificationManager.getKotlinClassValidatingTheDataPoint(dataPoint)
-        logger.info("ValidationClass is $validationClass")
-        validateConsistency(data, validationClass)
-    }
-
     fun storeDataPoint(
         uploadedData: UploadableDataPoint,
         uploaderUserId: String,
@@ -227,7 +231,7 @@ class DataPointManager(
         correlationId: String,
     ): String {
         logger.info("Executing check for '${uploadedData.datapointSpecification}' data point (correlation ID: $correlationId).")
-        validateDataPoint(uploadedData.datapointSpecification, uploadedData.data)
+        validateDataPoint(uploadedData.datapointSpecification, uploadedData.data, correlationId)
         logger.info("Storing '${uploadedData.datapointSpecification}' data point.")
         val uploadTime = Instant.now().toEpochMilli()
         val storableDataSet =
@@ -256,19 +260,38 @@ class DataPointManager(
         return dataId.toString()
     }
 
-    fun retrieveDataPoint(
-        dataId: UUID,
-        dataType: String,
+    private fun validateDataPoint(
+        dataPoint: String,
+        data: String,
         correlationId: String,
-    ): StorableDataSet {
-        logger.info("Retrieving data point with id $dataId")
-        val storedDataPoint = dataManager.getPublicDataSet(dataId.toString(), dataType, correlationId)
-        return storedDataPoint
+    ) {
+        logger.info("Validating data point $dataPoint (correlation ID: $correlationId)")
+        val dataPointType: String
+
+        try {
+            dataPointType = specificationManager.getDataPointSpecification(dataPoint).validatedBy.id
+        } catch (clientException: ClientException) {
+            logger.error(
+                "A ClientException is thrown while retrieving the validating class for the data point." +
+                    "(correlation ID: $correlationId)",
+            )
+            val responseBody = (clientException.response as ClientError<*>).body.toString()
+            exceptionForwarder.catchDataPointValidationClassNotFoundClientException(
+                response = responseBody,
+                statusCode = clientException.statusCode,
+                throwable = clientException,
+            )
+            throw clientException
+        }
+
+        val validationClass = specificationManager.getDataPointTypeSpecification(dataPointType).validatedBy
+        validateConsistency(data, validationClass, correlationId)
     }
 
-    fun validateConsistency(
+    private fun validateConsistency(
         jsonData: String,
         className: String,
+        correlationId: String,
     ) {
         val classForValidation = Class.forName(className).kotlin.java
         val validator = Validation.buildDefaultValidatorFactory().validator
@@ -276,8 +299,7 @@ class DataPointManager(
         val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
         val violations = validator.validate(dataPointObject)
         if (violations.isNotEmpty()) {
-            // ToDo: properly handle the exception and the associated messages
-            logger.error("Validation failed when casting $jsonData into $className")
+            logger.error("Validation failed when casting $jsonData into $className (correlation ID: $correlationId)")
             var errorMessage = "Validation failed for data point of type $className: "
             violations.forEach {
                 logger.error(it.message)

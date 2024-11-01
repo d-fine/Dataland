@@ -66,7 +66,7 @@ interface SpecificationApi {
     )
     @GetMapping(
         value = ["/data-point-types/{dataPointTypeSpecificationId}/validated-by"],
-        produces = ["application/json"],
+        produces = ["text/plain", "*/*"],
     )
     fun getKotlinClassValidatingTheDataPointType(
         @PathVariable("dataPointTypeSpecificationId") dataPointTypeSpecificationId: String,
@@ -81,7 +81,7 @@ interface SpecificationApi {
     )
     @GetMapping(
         value = ["/data-points/{dataPointSpecificationId}/validated-by"],
-        produces = ["application/json"],
+        produces = ["text/plain", "*/*"],
     )
     fun getKotlinClassValidatingTheDataPoint(
         @PathVariable("dataPointSpecificationId") dataPointSpecificationId: String,
