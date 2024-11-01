@@ -6,11 +6,11 @@ import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DataPointManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 /**
  * Controller for the company metadata endpoints
@@ -28,7 +28,7 @@ class DataPointController(
         bypassQa: Boolean,
     ): ResponseEntity<String> {
         val currentUser = DatalandAuthentication.fromContext()
-        val correlationId = UUID.randomUUID().toString()
+        val correlationId = IdUtils.generateCorrelationId(uploadedDataPoint.companyId.toString(), null)
         logMessageBuilder.postDataPointMessage(currentUser.userId, uploadedDataPoint, bypassQa, correlationId)
         return ResponseEntity.ok(dataPointManager.storeDataPoint(uploadedDataPoint, currentUser.userId, bypassQa, correlationId))
     }
@@ -36,7 +36,7 @@ class DataPointController(
     override fun getDataPoint(dataId: String): ResponseEntity<StorableDataSet> {
         // Todo: Implement access control
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        val correlationId = UUID.randomUUID().toString()
-        return ResponseEntity.ok(dataPointManager.retrieveDataPoint(UUID.fromString(dataId), metaInfo.dataType, correlationId))
+        val correlationId = IdUtils.generateCorrelationId(metaInfo.company.companyId, dataId)
+        return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, metaInfo.dataType, correlationId))
     }
 }

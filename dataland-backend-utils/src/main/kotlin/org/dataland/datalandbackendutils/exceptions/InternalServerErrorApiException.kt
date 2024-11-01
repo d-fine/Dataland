@@ -4,13 +4,13 @@ import org.dataland.datalandbackendutils.model.ErrorDetails
 import org.springframework.http.HttpStatus
 
 /**
- * An InternalServerErrorApiException should be thrown if something went terribly wrong on Datalands side.
+ * An InternalServerErrorApiException should be thrown if something went terribly wrong on Dataland side.
  * It will be returned as a 500 error. publicSummary and publicMessage will be displayed to the user,
  * internalMessage and internalCause will only be displayed in development mode
  */
 class InternalServerErrorApiException(
-    val publicSummary: String,
-    val publicMessage: String,
+    private val publicSummary: String,
+    private val publicMessage: String,
     internalMessage: String,
     internalCause: Throwable? = null,
 ) : SingleApiException(internalMessage, internalCause) {

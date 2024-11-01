@@ -1,18 +1,18 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import jakarta.validation.Validation
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
+import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
+import org.dataland.datalandbackend.utils.JsonOperations.getJsonNodeFromString
+import org.dataland.datalandbackend.utils.JsonOperations.getValueFromJsonNode
+import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
+import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
-import org.dataland.specificationservice.openApiClient.infrastructure.ClientError
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,113 +22,162 @@ import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Implementation of a data manager for Dataland including metadata storages
- * @param objectMapper object mapper used for converting data classes to strings and vice versa
+ * Class for managing data points and associated validations
+ * @param dataManager service for handling data storage
+ * @param metaDataManager service for handling data meta information
+ * @param specificationManager service for handling data point specifications
+ * @param datasetDatapointRepository repository for storing the mapping between data sets and data points
  */
 @Component("DataPointManager")
 class DataPointManager(
-    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataManager: DataManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val specificationManager: SpecificationControllerApi,
     @Autowired private val datasetDatapointRepository: DatasetDatapointRepository,
-    @Autowired private val exceptionForwarder: ExceptionForwarder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    // ToDo: Implement proper logging
 
-    fun retrieveDataPoint(
-        dataId: UUID,
-        dataType: String,
-        correlationId: String,
-    ): StorableDataSet {
-        logger.info("Retrieving data point with id $dataId")
-        val storedDataPoint = dataManager.getPublicDataSet(dataId.toString(), dataType, correlationId)
-        return storedDataPoint
-    }
-
-    fun getFrameworkTemplate(framework: String): JsonNode =
-        try {
-            getJsonNodeFromString(specificationManager.getFrameworkSpecification(framework).schema)
-        } catch (clientException: ClientException) {
-            logger.info("Framework $framework not found.")
-            throw clientException
-        }
-
-    fun getJsonNodeFromString(json: String): JsonNode = ObjectMapper().readTree(json)
-
-    fun processDataSet(
-        uploadedData: StorableDataSet,
+    /**
+     * Stores a single data point in the internal storage
+     * @param uploadedDataPoint the data point to store
+     * @param uploaderUserId the user id of the user who uploaded the data point
+     * @param bypassQa whether to bypass the QA process
+     * @param correlationId the correlation id for the operation
+     * @return the id of the stored data point
+     */
+    fun storeDataPoint(
+        uploadedDataPoint: UploadableDataPoint,
+        uploaderUserId: String,
         bypassQa: Boolean,
         correlationId: String,
     ): String {
-        logger.info("Get Template for framework ${uploadedData.dataType}")
-        val frameworkTemplate = getFrameworkTemplate(uploadedData.dataType)
-        logger.info("Extract the expected data points and their respective JSON path.")
-        logger.info(frameworkTemplate.toPrettyString())
+        logger.info("Executing check for '${uploadedDataPoint.dataPointIdentifier}' data point (correlation ID: $correlationId).")
+        validateDataPoint(uploadedDataPoint.dataPointIdentifier, uploadedDataPoint.dataPointContent, correlationId)
+        logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point.")
+        val uploadTime = Instant.now().toEpochMilli()
+        val storableDataSet = uploadedDataPoint.toStorableDataSet(uploaderUserId, uploadTime)
 
+        val dataId = IdUtils.generateUUID()
+        dataManager.storeMetaDataFrom(dataId, storableDataSet, correlationId)
+        dataManager.storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
+
+        return dataId
+    }
+
+    /**
+     * Validates a single data point by casting it to the correct class and running the validations
+     * @param dataPointIdentifier the identifier of the data point
+     * @param dataPointContent the content of the data point
+     * @param correlationId the correlation id for the operation
+     */
+    private fun validateDataPoint(
+        dataPointIdentifier: String,
+        dataPointContent: String,
+        correlationId: String,
+    ) {
+        logger.info("Validating data point $dataPointIdentifier (correlation ID: $correlationId)")
+        val dataPointType: String
+
+        try {
+            dataPointType = specificationManager.getDataPointSpecification(dataPointIdentifier).validatedBy.id
+        } catch (clientException: ClientException) {
+            logger.error("Data point identifier $dataPointIdentifier found: ${clientException.message} (correlation ID: $correlationId).")
+            throw InvalidInputApiException(
+                "Specified data point identifier $dataPointIdentifier is not valid.",
+                "The specified data point identifier $dataPointIdentifier is not known to the specification service.",
+            )
+        }
+
+        val validationClass = specificationManager.getDataPointTypeSpecification(dataPointType).validatedBy
+        validateConsistency(dataPointContent, validationClass, correlationId)
+    }
+
+    /**
+     * Retrieves a single data point from the internal storage
+     * @param dataId the id of the data point
+     * @param dataPointIdentifier the identifier of the data point
+     * @param correlationId the correlation id for the operation
+     * @return the data point in form of a StorableDataSet
+     */
+    fun retrieveDataPoint(
+        dataId: String,
+        dataPointIdentifier: String,
+        correlationId: String,
+    ): StorableDataSet {
+        logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
+        val storedDataPoint = dataManager.getPublicDataSet(dataId, dataPointIdentifier, correlationId)
+        return storedDataPoint
+    }
+
+    /**
+     * Processes a data set by breaking it up and storing its data points in the internal storage
+     * @param uploadedDataSet the data set to process
+     * @param bypassQa whether to bypass the QA process
+     * @param correlationId the correlation id for the operation
+     * @return the id of the stored data set
+     */
+    fun processDataSet(
+        uploadedDataSet: StorableDataSet,
+        bypassQa: Boolean,
+        correlationId: String,
+    ): String {
+        val frameworkTemplate = getFrameworkTemplate(uploadedDataSet.dataType)
+
+        // Todo: deal with the referenced reports field
         val expectedDataPoints = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
-        val dataJson = getJsonNodeFromString(uploadedData.data)
+        val companyId = UUID.fromString(uploadedDataSet.companyId)
+        val dataSetContent = getJsonNodeFromString(uploadedDataSet.data)
 
         val dataSetId = IdUtils.generateUUID()
-        dataManager.storeMetaDataFrom(
-            dataId = dataSetId,
-            storableDataSet = uploadedData,
-            correlationId = correlationId,
-        )
+        dataManager.storeMetaDataFrom(dataSetId, uploadedDataSet, correlationId)
 
-        val dataIds = mutableListOf<String>()
+        logger.info("Processing data set with id $dataSetId for framework ${uploadedDataSet.dataType}")
+        val createdDataIds = mutableListOf<String>()
         expectedDataPoints.forEach {
-            val dataPointValue = getValueFromJsonNode(dataJson, it.key)
-            if (dataPointValue.isEmpty()) {
-                logger.info("No value found for key ${it.key}")
-                return@forEach
-            }
-            logger.info("Found value $dataPointValue for key ${it.key}")
+            val dataPointJsonPath = it.key
+            val dataPointIdentifier = it.value
+            val dataPointContent = getValueFromJsonNode(dataSetContent, dataPointJsonPath)
+            if (dataPointContent.isEmpty()) return@forEach
+            logger.info("Storing value found for $dataPointIdentifier under $dataPointJsonPath (correlation ID: $correlationId)")
 
-            val dataId =
+            createdDataIds +=
                 storeDataPoint(
                     UploadableDataPoint(
-                        data = dataPointValue,
-                        datapointSpecification = expectedDataPoints.getValue(it.key),
-                        companyId = UUID.fromString(uploadedData.companyId),
-                        reportingPeriod = uploadedData.reportingPeriod,
+                        dataPointContent = dataPointContent,
+                        dataPointIdentifier = dataPointIdentifier,
+                        companyId = companyId,
+                        reportingPeriod = uploadedDataSet.reportingPeriod,
                     ),
-                    uploadedData.uploaderUserId,
+                    uploadedDataSet.uploaderUserId,
                     bypassQa,
                     correlationId,
                 )
-            logger.info("Created storable data point for key-value pair ${it.key} and ${it.value} under id $dataId")
-            dataIds += dataId
         }
         this.datasetDatapointRepository.save(
-            DatasetDatapointEntity(dataId = dataSetId, dataPoints = dataIds.joinToString(",")),
+            DatasetDatapointEntity(dataId = dataSetId, dataPoints = createdDataIds.joinToString(",")),
         )
-        logger.info("Stored data points with ids $dataIds")
+        logger.info("Completed processing data set (correlation ID: $correlationId).")
         return dataSetId
     }
 
-    fun replaceFieldInTemplate(
-        frameworkTemplate: JsonNode,
-        fullFieldName: String,
-        currentJsonPath: String,
-        replacementValue: JsonNode,
-    ) {
-        val simpleFieldName = fullFieldName.split(".").last()
-        val expectedFullPath = "$currentJsonPath.$simpleFieldName"
-
-        if (frameworkTemplate.has(simpleFieldName) && expectedFullPath == fullFieldName) {
-            (frameworkTemplate as ObjectNode).set<JsonNode?>(simpleFieldName, replacementValue)
-        } else if (frameworkTemplate.isObject) {
-            val fields = frameworkTemplate.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                val jsonPath = if (currentJsonPath.isEmpty()) jsonField.key else "$currentJsonPath.${jsonField.key}"
-                replaceFieldInTemplate(jsonField.value, fullFieldName, jsonPath, replacementValue)
-            }
+    private fun getFrameworkTemplate(framework: String): JsonNode =
+        try {
+            getJsonNodeFromString(specificationManager.getFrameworkSpecification(framework).schema)
+        } catch (clientException: ClientException) {
+            logger.error("Framework $framework not found: ${clientException.message}.")
+            throw InvalidInputApiException(
+                "Framework $framework not found.",
+                "The specified framework is not known to the specification service.",
+            )
         }
-    }
 
+    /**
+     * Retrieves a data set by assembling the data points from the internal storage
+     * @param dataSetId the id of the data set
+     * @param framework the type of data set
+     * @param correlationId the correlation id for the operation
+     * @return the data set in form of a JSON string
+     */
     fun getDataSetFromId(
         dataSetId: String,
         framework: String,
@@ -140,12 +189,22 @@ class DataPointManager(
                 .getOrNull()
                 ?.dataPoints
                 ?.split(",")
-                ?: throw IllegalArgumentException("No data set found for id $dataSetId")
+                ?: throw InvalidInputApiException(
+                    "Data set not found.",
+                    "There is no record of a data set of type $framework and ID $dataSetId.",
+                )
         return assembleDataSetFromDataPoints(dataPoints, framework, correlationId)
     }
 
-    fun assembleDataSetFromDataPoints(
-        dataPointIds: List<String>,
+    /**
+     * Assembles a data set by retrieving the data points from the internal storage and filling their content into the framework template
+     * @param dataIds a list of all required data points
+     * @param framework the type of data set
+     * @param correlationId the correlation id for the operation
+     * @return the data set in form of a JSON string
+     */
+    private fun assembleDataSetFromDataPoints(
+        dataIds: List<String>,
         framework: String,
         correlationId: String,
     ): String {
@@ -153,14 +212,17 @@ class DataPointManager(
         val frameworkTemplate = getFrameworkTemplate(framework)
         val allDataPointsInTemplate = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
 
-        dataPointIds.forEach { dataPoint ->
-            val currentDataPoint = metaDataManager.getDataMetaInformationByDataId(dataPoint).dataType
-            logger.info("Retrieving data with id $dataPoint and data point $currentDataPoint")
+        logger.info("Filling template with stored data (correlation ID: $correlationId).")
+        dataIds.forEach { dataId ->
+            val currentDataPoint = metaDataManager.getDataMetaInformationByDataId(dataId).dataType
             if (!allDataPointsInTemplate.containsValue(currentDataPoint)) {
-                throw IllegalArgumentException("Data point $currentDataPoint is not part of the framework template.")
+                throw IllegalArgumentException(
+                    "Data point $currentDataPoint is not part of the framework template for $framework " +
+                        "(correlation ID $correlationId).",
+                )
             }
             dataPoints.add(currentDataPoint)
-            val dataPointData = retrieveDataPoint(UUID.fromString(dataPoint), currentDataPoint, correlationId).data
+            val dataPointData = retrieveDataPoint(dataId, currentDataPoint, correlationId).data
             val replacementValue = getJsonNodeFromString(dataPointData)
 
             val jsonPaths = allDataPointsInTemplate.filterValues { it == currentDataPoint }.keys
@@ -169,144 +231,13 @@ class DataPointManager(
             }
         }
 
+        logger.info("Removing fields from the template where no data was provided (correlation ID $correlationId).")
         allDataPointsInTemplate.forEach {
             if (!dataPoints.contains(it.value)) {
-                logger.info("No data point found for key ${it.key}. Remove it from template.")
                 replaceFieldInTemplate(frameworkTemplate, it.key, "", getJsonNodeFromString("null"))
             }
         }
-        logger.info("Assembled data set from data points:")
-        logger.info(frameworkTemplate.toPrettyString())
-
+        logger.info("Completed framework assembly from data points (correlation ID $correlationId)")
         return frameworkTemplate.toString()
-    }
-
-    /**
-     * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
-     * @param jsonNode The JSON node
-     * @param jsonPath The JSON path identifying the value
-     * @return The string representation of the value
-     */
-    fun getValueFromJsonNode(
-        jsonNode: JsonNode,
-        jsonPath: String,
-    ): String {
-        var currentNode = jsonNode
-        jsonPath.split(".").forEach { path ->
-            currentNode = currentNode.get(path) ?: return ""
-        }
-        return if (currentNode.isNull) {
-            ""
-        } else if (currentNode.isTextual) {
-            currentNode.textValue()
-        } else {
-            currentNode.toString()
-        }
-    }
-
-    fun extractDataPointsFromFrameworkTemplate(
-        jsonNode: JsonNode,
-        fieldName: String,
-    ): Map<String, String> {
-        val results = mutableMapOf<String, String>()
-        if (jsonNode.isObject) {
-            if (jsonNode.has("id") && jsonNode.has("ref")) {
-                results[fieldName] = jsonNode.get("id").asText()
-            } else {
-                val fields = jsonNode.fields()
-                while (fields.hasNext()) {
-                    val jsonField = fields.next()
-                    val nextFieldName = if (fieldName.isEmpty()) jsonField.key else "$fieldName.${jsonField.key}"
-                    results += extractDataPointsFromFrameworkTemplate(jsonField.value, nextFieldName)
-                }
-            }
-        }
-        return results
-    }
-
-    fun storeDataPoint(
-        uploadedData: UploadableDataPoint,
-        uploaderUserId: String,
-        bypassQa: Boolean,
-        correlationId: String,
-    ): String {
-        logger.info("Executing check for '${uploadedData.datapointSpecification}' data point (correlation ID: $correlationId).")
-        validateDataPoint(uploadedData.datapointSpecification, uploadedData.data, correlationId)
-        logger.info("Storing '${uploadedData.datapointSpecification}' data point.")
-        val uploadTime = Instant.now().toEpochMilli()
-        val storableDataSet =
-            StorableDataSet(
-                companyId = uploadedData.companyId.toString(),
-                dataType = uploadedData.datapointSpecification,
-                uploaderUserId = uploaderUserId,
-                uploadTime = uploadTime,
-                reportingPeriod = uploadedData.reportingPeriod,
-                data = uploadedData.data,
-            )
-
-        val dataId = UUID.randomUUID()
-        dataManager.storeMetaDataFrom(
-            dataId = dataId.toString(),
-            storableDataSet = storableDataSet,
-            correlationId = correlationId,
-        )
-        dataManager.storeDataSetInTemporaryStoreAndSendMessage(
-            dataId.toString(),
-            storableDataSet,
-            bypassQa,
-            correlationId,
-        )
-
-        return dataId.toString()
-    }
-
-    private fun validateDataPoint(
-        dataPoint: String,
-        data: String,
-        correlationId: String,
-    ) {
-        logger.info("Validating data point $dataPoint (correlation ID: $correlationId)")
-        val dataPointType: String
-
-        try {
-            dataPointType = specificationManager.getDataPointSpecification(dataPoint).validatedBy.id
-        } catch (clientException: ClientException) {
-            logger.error(
-                "A ClientException is thrown while retrieving the validating class for the data point." +
-                    "(correlation ID: $correlationId)",
-            )
-            val responseBody = (clientException.response as ClientError<*>).body.toString()
-            exceptionForwarder.catchDataPointValidationClassNotFoundClientException(
-                response = responseBody,
-                statusCode = clientException.statusCode,
-                throwable = clientException,
-            )
-            throw clientException
-        }
-
-        val validationClass = specificationManager.getDataPointTypeSpecification(dataPointType).validatedBy
-        validateConsistency(data, validationClass, correlationId)
-    }
-
-    private fun validateConsistency(
-        jsonData: String,
-        className: String,
-        correlationId: String,
-    ) {
-        val classForValidation = Class.forName(className).kotlin.java
-        val validator = Validation.buildDefaultValidatorFactory().validator
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
-        val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
-        val violations = validator.validate(dataPointObject)
-        if (violations.isNotEmpty()) {
-            logger.error("Validation failed when casting $jsonData into $className (correlation ID: $correlationId)")
-            var errorMessage = "Validation failed for data point of type $className: "
-            violations.forEach {
-                logger.error(it.message)
-                errorMessage += (it.message)
-            }
-
-            throw IllegalArgumentException(errorMessage)
-        }
     }
 }
