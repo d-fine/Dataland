@@ -21,7 +21,7 @@ class NotificationEmailFactoriesTest {
     private val mockUuidString = "123e4567-e89b-12d3-a456-426614174000"
     private val mockUuid = UUID.fromString(mockUuidString)
 
-    val emailSubscriptionServiceMock = Mockito.mock(EmailSubscriptionService::class.java)
+    val emailSubscriptionServiceMock = Mockito.mock(EmailUnsubscriber::class.java)
 
     @BeforeEach
     fun setup() {

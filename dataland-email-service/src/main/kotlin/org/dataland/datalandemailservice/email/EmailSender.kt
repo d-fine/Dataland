@@ -4,7 +4,7 @@ import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
-import org.dataland.datalandemailservice.services.EmailSubscriptionService
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -16,7 +16,7 @@ import java.lang.StringBuilder
 @Component
 class EmailSender(
     @Autowired private val mailjetClient: MailjetClient,
-    @Autowired private val emailSubscriptionService: EmailSubscriptionService,
+    @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -48,7 +48,7 @@ class EmailSender(
      */
     private fun shouldSendToEmailContact(emailContact: EmailContact): Boolean =
         !emailContact.emailAddress.contains("@example.com") &&
-            emailSubscriptionService.emailIsSubscribed(emailContact.emailAddress) ?: true
+            emailSubscriptionTracker.emailIsSubscribed(emailContact.emailAddress) ?: true
 
     /** This method sends an email
      * @param email the email to send

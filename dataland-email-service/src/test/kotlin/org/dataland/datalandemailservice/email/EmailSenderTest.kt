@@ -1,7 +1,7 @@
 package org.dataland.datalandemailservice.email
 import com.mailjet.client.MailjetClient
 import com.mailjet.client.MailjetResponse
-import org.dataland.datalandemailservice.services.EmailSubscriptionService
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -16,7 +16,7 @@ class EmailSenderTest {
 
     private lateinit var mockMailjetClient: MailjetClient
     private lateinit var emailSender: EmailSender
-    private lateinit var mockEmailSubscriptionService: EmailSubscriptionService
+    private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
 
     private val unsubscribedEmailAddress = "abc@123.com"
     private val missingEmailAddress = "xyz@123.com"
@@ -26,11 +26,11 @@ class EmailSenderTest {
     fun setup() {
         mockMailjetClient = mock(MailjetClient::class.java)
         `when`(mockMailjetClient.post(any())).thenReturn(MailjetResponse(200, "{}"))
-        mockEmailSubscriptionService = mock(EmailSubscriptionService::class.java)
-        `when`(mockEmailSubscriptionService.emailIsSubscribed(unsubscribedEmailAddress)).thenReturn(false)
-        `when`(mockEmailSubscriptionService.emailIsSubscribed(missingEmailAddress)).thenReturn(null)
-        `when`(mockEmailSubscriptionService.emailIsSubscribed(subscribedEmailAddress)).thenReturn(true)
-        emailSender = EmailSender(mockMailjetClient, mockEmailSubscriptionService)
+        emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
+        `when`(emailSubscriptionTracker.emailIsSubscribed(unsubscribedEmailAddress)).thenReturn(false)
+        `when`(emailSubscriptionTracker.emailIsSubscribed(missingEmailAddress)).thenReturn(null)
+        `when`(emailSubscriptionTracker.emailIsSubscribed(subscribedEmailAddress)).thenReturn(true)
+        emailSender = EmailSender(mockMailjetClient, emailSubscriptionTracker)
     }
 
     @Test
