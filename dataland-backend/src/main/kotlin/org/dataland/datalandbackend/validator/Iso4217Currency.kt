@@ -31,5 +31,9 @@ class CurrencyStringValidator : ConstraintValidator<Iso4217Currency, String> {
 private fun isValidCurrency(value: String?): Boolean {
     if (value == null) return true
 
-    return Currency.getAvailableCurrencies().contains(Currency.getInstance(value))
+    return try {
+        Currency.getAvailableCurrencies().contains(Currency.getInstance(value))
+    } catch (ignore: IllegalArgumentException) {
+        false
+    }
 }

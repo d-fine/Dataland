@@ -76,18 +76,8 @@ class DataPointManager(
         correlationId: String,
     ) {
         logger.info("Validating data point $dataPointIdentifier (correlation ID: $correlationId)")
-        val dataPointType: String
-
-        try {
-            dataPointType = specificationManager.getDataPointSpecification(dataPointIdentifier).validatedBy.id
-        } catch (clientException: ClientException) {
-            logger.error("Data point identifier $dataPointIdentifier found: ${clientException.message} (correlation ID: $correlationId).")
-            throw InvalidInputApiException(
-                "Specified data point identifier $dataPointIdentifier is not valid.",
-                "The specified data point identifier $dataPointIdentifier is not known to the specification service.",
-            )
-        }
-
+        validateDataPointIdentifierExists(dataPointIdentifier)
+        val dataPointType = specificationManager.getDataPointSpecification(dataPointIdentifier).validatedBy.id
         val validationClass = specificationManager.getDataPointTypeSpecification(dataPointType).validatedBy
         validateConsistency(dataPointContent, validationClass, correlationId)
     }
@@ -105,8 +95,21 @@ class DataPointManager(
         correlationId: String,
     ): StorableDataSet {
         logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
+        validateDataPointIdentifierExists(dataPointIdentifier)
         val storedDataPoint = dataManager.getPublicDataSet(dataId, dataPointIdentifier, correlationId)
         return storedDataPoint
+    }
+
+    private fun validateDataPointIdentifierExists(dataPointIdentifier: String) {
+        try {
+            specificationManager.getDataPointSpecification(dataPointIdentifier)
+        } catch (clientException: ClientException) {
+            logger.error("Data point identifier $dataPointIdentifier not found: ${clientException.message}.")
+            throw InvalidInputApiException(
+                "Specified data point identifier $dataPointIdentifier is not valid.",
+                "The specified data point identifier $dataPointIdentifier is not known to the specification service.",
+            )
+        }
     }
 
     /**
@@ -167,7 +170,7 @@ class DataPointManager(
             logger.error("Framework $framework not found: ${clientException.message}.")
             throw InvalidInputApiException(
                 "Framework $framework not found.",
-                "The specified framework is not known to the specification service.",
+                "The specified framework $framework is not known to the specification service.",
             )
         }
 
