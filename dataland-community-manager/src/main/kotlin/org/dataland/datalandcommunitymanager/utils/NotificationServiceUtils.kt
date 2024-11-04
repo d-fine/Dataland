@@ -39,7 +39,7 @@ object NotificationServiceUtils {
             emailProperties.mapKeys { keyMap[it.key] ?: "Unknown key" } +
                 mapOf(
                     "Notification Email Type" to notificationEmailType.toString(),
-                    "Receivers" to receivers.joinToString(","),
+                    "Receivers" to receivers.joinToString(", "),
                 )
         )
 
