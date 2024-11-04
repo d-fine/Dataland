@@ -232,7 +232,7 @@ class NotificationService
             val keyMap =
                 mapOf(
                     "baseUrl" to "Environment",
-                    "companyId" to "Company (Dataland ID):",
+                    "companyId" to "Company (Dataland ID)",
                     "companyName" to "Company Name",
                     "year" to "Reporting periods",
                     "numberOfDays" to "Number of days",
