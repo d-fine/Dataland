@@ -17,10 +17,9 @@ class EmailSubscriptionTracker(
     /**
      * Inserts a new email subscription if one does not already exist and returns its UUID.
      *
-     * This method checks if an email subscription exists for the given email address.
+     * First, this method checks if an email subscription exists for the given email address.
      * If it does not exist, a new subscription is created with `isSubscribed` set to `true`.
-     * The method returns the UUID of the subscription if it is active (subscribed),
-     * otherwise returns `null`.
+     * Second, the method returns the UUID of the subscription entity for the email address.
      *
      * @param emailAddress The email address to subscribe.
      * @return The UUID of the active/inactive subscription,
