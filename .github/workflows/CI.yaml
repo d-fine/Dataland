@@ -213,7 +213,7 @@ jobs:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           NOTIFICATION_INTERNAL_RECEIVERS: "dummyCI@example.com"
-          NOTIFICATION_INTERNAL_CC: ""
+          NOTIFICATION_INTERNAL_CC: "dummyCI@example.com"
           DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
