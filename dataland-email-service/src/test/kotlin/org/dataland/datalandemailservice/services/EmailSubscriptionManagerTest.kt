@@ -16,10 +16,10 @@ import org.mockito.kotlin.whenever
 import org.springframework.http.ResponseEntity
 import java.util.UUID
 
-class EmailUnsubscriberTest {
+class EmailSubscriptionManagerTest {
     private lateinit var emailSender: EmailSender
     private lateinit var internalEmailBuilder: InternalEmailBuilder
-    private lateinit var emailUnsubscriber: EmailUnsubscriber
+    private lateinit var emailSubscriptionManager: EmailSubscriptionManager
     private lateinit var emailSubscriptionRepository: EmailSubscriptionRepository
 
     private val validUuid = UUID.randomUUID()
@@ -33,11 +33,11 @@ class EmailUnsubscriberTest {
     fun setup() {
         emailSender = mock(EmailSender::class.java)
         internalEmailBuilder = mock(InternalEmailBuilder::class.java)
-        emailUnsubscriber = mock(EmailUnsubscriber::class.java)
+        emailSubscriptionManager = mock(EmailSubscriptionManager::class.java)
         emailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
 
-        emailUnsubscriber =
-            EmailUnsubscriber(
+        emailSubscriptionManager =
+            EmailSubscriptionManager(
                 emailSubscriptionRepository,
                 emailSender,
                 internalEmailBuilder,
@@ -46,23 +46,23 @@ class EmailUnsubscriberTest {
         `when`(emailSubscriptionRepository.findByUuid(validUuid)).thenReturn(validEmailSubscriptionEntity)
         `when`(emailSubscriptionRepository.findByUuid(invalidUuid)).thenReturn(null)
         `when`(internalEmailBuilder.buildInternalEmail(any())).thenReturn(mock())
-        doNothing().whenever(emailSender).filterReceiversAndSentEmail(any())
+        doNothing().whenever(emailSender).filterReceiversAndSendEmail(any())
     }
 
     @Test
-    fun `should unsubscribe email and send notification when email exists`() {
-        val response: ResponseEntity<String> = emailUnsubscriber.unsubscribeUuidAndSendMailToStakeholders(validUuid)
+    fun `validate that a email to the stakeholders is sent when someone unsubscribes an existing subscription`() {
+        val response: ResponseEntity<String> = emailSubscriptionManager.unsubscribeUuidAndSendMailToStakeholders(validUuid)
 
-        assertEquals("Successfully unsubscribed email address corresponding to the UUID: $validUuid.", response.body)
-        verify(emailSender, times(1)).filterReceiversAndSentEmail(any())
+        assertEquals("Successfully unsubscribed email address corresponding to UUID: $validUuid.", response.body)
+        verify(emailSender, times(1)).filterReceiversAndSendEmail(any())
     }
 
     @Test
-    fun `should not send message when no email subscription found`() {
+    fun `validate that no email is sent to the stakeholders if there is no existing email subscription found`() {
         val response: ResponseEntity<String> =
-            emailUnsubscriber.unsubscribeUuidAndSendMailToStakeholders(invalidUuid)
+            emailSubscriptionManager.unsubscribeUuidAndSendMailToStakeholders(invalidUuid)
 
-        assertEquals("There is no email address corresponding to the UUID: $invalidUuid.", response.body)
-        verify(emailSender, times(0)).filterReceiversAndSentEmail(any())
+        assertEquals("There is no email address corresponding to UUID: $invalidUuid.", response.body)
+        verify(emailSender, times(0)).filterReceiversAndSendEmail(any())
     }
 }

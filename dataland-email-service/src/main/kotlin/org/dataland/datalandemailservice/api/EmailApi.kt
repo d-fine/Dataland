@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import java.util.UUID
 
 /**
- * Defines the restful dataland mail service API
+ * Defines the restful dataland email service API
  */
 
 interface EmailApi {
@@ -25,7 +25,8 @@ interface EmailApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully unsubscribed associated email address."),
+            ApiResponse(responseCode = "200", description = "Successfully unsubscribed email address corresponding to this UUID."),
+            ApiResponse(responseCode = "404", description = "Could not find an email address corresponding to this UUID."),
         ],
     )
     @PatchMapping(

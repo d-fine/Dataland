@@ -18,54 +18,61 @@ class EmailSenderTest {
     private lateinit var emailSender: EmailSender
     private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
 
+    private val subscribedEmailAddress = "def@123.com"
     private val unsubscribedEmailAddress = "abc@123.com"
     private val missingEmailAddress = "xyz@123.com"
-    private val subscribedEmailAddress = "def@123.com"
+
+    private val subscribedEmailContact = EmailContact(subscribedEmailAddress, "Subscriber")
+    private val unsubscribedEmailContact = EmailContact(subscribedEmailAddress, "Unsubscriber")
+    private val missingEmailContact = EmailContact(missingEmailAddress, "Unknown")
 
     @BeforeEach
     fun setup() {
         mockMailjetClient = mock(MailjetClient::class.java)
         `when`(mockMailjetClient.post(any())).thenReturn(MailjetResponse(200, "{}"))
         emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
-        `when`(emailSubscriptionTracker.emailIsSubscribed(unsubscribedEmailAddress)).thenReturn(false)
-        `when`(emailSubscriptionTracker.emailIsSubscribed(missingEmailAddress)).thenReturn(null)
-        `when`(emailSubscriptionTracker.emailIsSubscribed(subscribedEmailAddress)).thenReturn(true)
+        `when`(emailSubscriptionTracker.isEmailSubscribed(subscribedEmailAddress)).thenReturn(true)
+        `when`(emailSubscriptionTracker.isEmailSubscribed(unsubscribedEmailAddress)).thenReturn(false)
+        `when`(emailSubscriptionTracker.isEmailSubscribed(missingEmailAddress)).thenReturn(false)
+        `when`(emailSubscriptionTracker.shouldSendToEmailContact(subscribedEmailContact)).thenReturn(true)
+        `when`(emailSubscriptionTracker.shouldSendToEmailContact(unsubscribedEmailContact)).thenReturn(false)
+        `when`(emailSubscriptionTracker.shouldSendToEmailContact(missingEmailContact)).thenReturn(false)
         emailSender = EmailSender(mockMailjetClient, emailSubscriptionTracker)
     }
 
     @Test
-    fun `check if the mail is send to subscribed email address`() {
-        val receiver = EmailContact(subscribedEmailAddress)
+    fun `check if the email is sent to subscribed email address`() {
+        val receiver = subscribedEmailContact
         val email =
             Email(
                 senderContact, listOf(receiver),
                 listOf(), emailContent,
             )
-        emailSender.filterReceiversAndSentEmail(email)
-        verify(mockMailjetClient, times(1)).post(any())
-    }
-
-    @Test
-    fun `check if the mail is send to email address not stored in the database`() {
-        val receiver = EmailContact(missingEmailAddress)
-        val email =
-            Email(
-                senderContact, listOf(receiver),
-                listOf(), emailContent,
-            )
-        emailSender.filterReceiversAndSentEmail(email)
+        emailSender.filterReceiversAndSendEmail(email)
         verify(mockMailjetClient, times(1)).post(any())
     }
 
     @Test
     fun `check that email is not send to not subscribed email address`() {
-        val receiver = EmailContact(unsubscribedEmailAddress)
+        val receiver = unsubscribedEmailContact
         val email =
             Email(
                 senderContact, listOf(receiver),
                 listOf(), emailContent,
             )
-        emailSender.filterReceiversAndSentEmail(email)
+        emailSender.filterReceiversAndSendEmail(email)
+        verify(mockMailjetClient, times(0)).post(any())
+    }
+
+    @Test
+    fun `check that email is not sent to email address not stored in the database`() {
+        val receiver = missingEmailContact
+        val email =
+            Email(
+                senderContact, listOf(receiver),
+                listOf(), emailContent,
+            )
+        emailSender.filterReceiversAndSendEmail(email)
         verify(mockMailjetClient, times(0)).post(any())
     }
 
@@ -74,7 +81,7 @@ class EmailSenderTest {
         val cc = EmailContact("CC@example.comn")
 
         val email = Email(senderContact, emptyList(), listOf(cc), emailContent)
-        emailSender.filterReceiversAndSentEmail(email)
+        emailSender.filterReceiversAndSendEmail(email)
         verify(mockMailjetClient, times(0)).post(any())
     }
 }

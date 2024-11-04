@@ -18,15 +18,15 @@ class NotificationEmailFactoriesTest {
     private val dummyCompanyName = "some-company-name"
     private val dummyCompanyId = "some-id"
 
-    private val mockUuidString = "123e4567-e89b-12d3-a456-426614174000"
-    private val mockUuid = UUID.fromString(mockUuidString)
+    private val mockUuid = UUID.randomUUID()
+    private val mockUuidString = mockUuid.toString()
 
     private val emailSubscriptionTrackerMock = Mockito.mock(EmailSubscriptionTracker::class.java)
 
     @BeforeEach
     fun setup() {
         Mockito
-            .`when`(emailSubscriptionTrackerMock.insertSubscriptionEntityIfNeededAndReturnUuid(receiverEmail))
+            .`when`(emailSubscriptionTrackerMock.addSubscription(receiverEmail))
             .thenReturn(mockUuid)
     }
 
