@@ -217,6 +217,7 @@ jobs:
           DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
       - name: Execute unit tests for all spring services
         run: |
           sudo apt update && sudo apt install libreoffice
