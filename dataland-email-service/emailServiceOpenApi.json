@@ -1,13 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+    "title": "Dataland Email Service API documentation",
+    "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://localhost:8489/email",
-      "description": "Generated server url"
+      "url": "/email"
     }
   ],
   "tags": [
@@ -21,17 +20,17 @@
     }
   ],
   "paths": {
-    "/mail/updates/unsubscribe/{subscriptionUuid}": {
+    "/subscriptions/{subscriptionId}": {
       "patch": {
         "tags": [
           "email-controller"
         ],
         "summary": "Unsubscribe from email communications",
-        "description": "Unsubscribes a user from email communications based on the provided UUID.",
+        "description": "Unsubscribes an email address from email communications based on the provided UUID.",
         "operationId": "unsubscribeUuid",
         "parameters": [
           {
-            "name": "subscriptionUuid",
+            "name": "subscriptionId",
             "in": "path",
             "required": true,
             "schema": {
@@ -42,7 +41,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Successfully unsubscribed associated email address.",
             "content": {
               "*/*": {
                 "schema": {

@@ -18,22 +18,22 @@ class NotificationEmailFactoriesTest {
     private val dummyCompanyName = "some-company-name"
     private val dummyCompanyId = "some-id"
 
-    private val mockUuidString = "123e4567-e89b-12d3-a456-426614174000"
-    private val mockUuid = UUID.fromString(mockUuidString)
+    private val mockUuid = UUID.randomUUID()
+    private val mockUuidString = mockUuid.toString()
 
-    val emailSubscriptionServiceMock = Mockito.mock(EmailSubscriptionService::class.java)
+    private val emailSubscriptionTrackerMock = Mockito.mock(EmailSubscriptionTracker::class.java)
 
     @BeforeEach
     fun setup() {
         Mockito
-            .`when`(emailSubscriptionServiceMock.insertSubscriptionEntityIfNeededAndReturnUuid(receiverEmail))
+            .`when`(emailSubscriptionTrackerMock.addSubscription(receiverEmail))
             .thenReturn(mockUuid)
     }
 
     @Test
     fun `validate the text of the notification mail for one single data upload`() {
         val singleNotificationEmailFactory =
-            SingleNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName, emailSubscriptionServiceMock)
+            SingleNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName, emailSubscriptionTrackerMock)
 
         val someFramework = "some-framework"
         val someYear = "2019"
@@ -62,7 +62,7 @@ class NotificationEmailFactoriesTest {
     @Test
     fun `validate the text of the summary notification mail for several data uploads`() {
         val summaryNotificationEmailFactory =
-            SummaryNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName, emailSubscriptionServiceMock)
+            SummaryNotificationEmailFactory(proxyPrimaryUrl, senderEmail, senderName, emailSubscriptionTrackerMock)
 
         val frameworks = "framework-alpha, framework-beta"
         val numberOfDays = "12"

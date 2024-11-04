@@ -1,7 +1,7 @@
 package org.dataland.datalandemailservice.services.templateemail
 
 import org.dataland.datalandemailservice.email.Email
-import org.dataland.datalandemailservice.services.EmailSubscriptionService
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -15,7 +15,7 @@ class SummaryNotificationEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
-    @Autowired val emailSubscriptionService: EmailSubscriptionService,
+    @Autowired val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) : TemplateEmailFactory(
         proxyPrimaryUrl = proxyPrimaryUrl,
         senderEmail = senderEmail,
@@ -48,7 +48,7 @@ class SummaryNotificationEmailFactory(
         receiverEmail: String,
         properties: Map<String, String?>,
     ): Email {
-        val subscriptionUuid = emailSubscriptionService.insertSubscriptionEntityIfNeededAndReturnUuid(receiverEmail).toString()
+        val subscriptionUuid = emailSubscriptionTracker.addSubscription(receiverEmail).toString()
         val subscriptionProperty = mapOf(keys.subscriptionUuid to subscriptionUuid)
         return super.buildEmail(receiverEmail, properties + subscriptionProperty)
     }

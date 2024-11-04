@@ -64,9 +64,10 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5439:5433-5439"
+      - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
@@ -352,6 +353,7 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     profiles: [ "production", "testing", "development" ]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -365,6 +367,7 @@ services:
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
+      EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
@@ -508,7 +511,6 @@ services:
     environment:
       <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}

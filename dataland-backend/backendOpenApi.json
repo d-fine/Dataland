@@ -976,10 +976,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3340,10 +3342,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3437,10 +3441,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "resultLimit",
@@ -5729,6 +5735,14 @@
               }
             ]
           },
+          "scope4GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "enterpriseValue": {
             "nullable": true,
             "allOf": [
@@ -5798,6 +5812,22 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "financedScope1AndScope2Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "financedScope3Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -17891,21 +17921,21 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",

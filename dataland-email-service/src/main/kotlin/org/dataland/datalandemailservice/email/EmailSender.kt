@@ -4,7 +4,7 @@ import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
-import org.dataland.datalandemailservice.services.EmailSubscriptionService
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -16,18 +16,20 @@ import java.lang.StringBuilder
 @Component
 class EmailSender(
     @Autowired private val mailjetClient: MailjetClient,
-    @Autowired private val emailSubscriptionService: EmailSubscriptionService,
+    @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     *  Filters the receivers and CC addresses of the given [email] to exclude those with the "@example.com"
-     *  domain or those who are not subscribed, then sends the [email] via the Mailjet client based on the
+     *  Filters the receivers and CC addresses of the given email to exclude those with the "@example.com"
+     *  domain or those who are not subscribed, then sends the email via the Mailjet client based on the
      *  filtered results.
+     *  @param email The email object that should be sent.
+     *  @return This method does not return any value.
      */
-    fun filterReceiversAndSentEmail(email: Email) {
-        val filteredReceivers = email.receivers.filter(::shouldSendToEmailContact)
-        val filteredCc = email.cc?.filter(::shouldSendToEmailContact)
+    fun filterReceiversAndSendEmail(email: Email) {
+        val filteredReceivers = email.receivers.filter(emailSubscriptionTracker::shouldSendToEmailContact)
+        val filteredCc = email.cc?.filter(emailSubscriptionTracker::shouldSendToEmailContact)
         if (filteredReceivers.isEmpty() && filteredCc.isNullOrEmpty()) {
             logger.info("No email was sent. After filtering the receivers none remained.")
             return
@@ -41,14 +43,6 @@ class EmailSender(
             ),
         )
     }
-
-    /**
-     * This functions checks whether an [emailContact] should be filtered or not.
-     * The function returns 'true' if the contact should be filtered and 'false' otherwise.
-     */
-    private fun shouldSendToEmailContact(emailContact: EmailContact): Boolean =
-        !emailContact.emailAddress.contains("@example.com") &&
-            emailSubscriptionService.emailIsSubscribed(emailContact.emailAddress) ?: true
 
     /** This method sends an email
      * @param email the email to send

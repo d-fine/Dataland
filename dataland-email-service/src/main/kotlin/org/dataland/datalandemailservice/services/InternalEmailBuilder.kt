@@ -14,8 +14,8 @@ class InternalEmailBuilder(
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
-    @Value("adrian.hess@d-fine.com") semicolonSeparatedReceiverEmails: String,
-    @Value("adrian.hess@d-fine.com") semicolonSeparatedCcEmails: String,
+    @Value("\${dataland.notification.internal.receivers}") semicolonSeparatedReceiverEmails: String,
+    @Value("\${dataland.notification.internal.cc}") semicolonSeparatedCcEmails: String,
 ) : PropertyStyleEmailBuilder(
         senderEmail = senderEmail,
         senderName = senderName,

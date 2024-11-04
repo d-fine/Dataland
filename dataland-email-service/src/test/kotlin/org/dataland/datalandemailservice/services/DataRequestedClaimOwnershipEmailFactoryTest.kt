@@ -29,19 +29,19 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
 
     private var subscriptionUuid = UUID.randomUUID()
 
-    private lateinit var emailSubscriptionService: EmailSubscriptionService
+    private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
     private lateinit var dataRequestedClaimOwnershipEmailFactory: DataRequestedClaimOwnershipEmailFactory
 
     @BeforeEach
     fun setup() {
-        emailSubscriptionService = mock(EmailSubscriptionService::class.java)
-        `when`(emailSubscriptionService.insertSubscriptionEntityIfNeededAndReturnUuid(any())).thenReturn(subscriptionUuid)
+        emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
+        `when`(emailSubscriptionTracker.addSubscription(any())).thenReturn(subscriptionUuid)
         dataRequestedClaimOwnershipEmailFactory =
             DataRequestedClaimOwnershipEmailFactory(
                 proxyPrimaryUrl = proxyPrimaryUrl,
                 senderEmail = senderEmail,
                 senderName = senderName,
-                emailSubscriptionService = emailSubscriptionService,
+                emailSubscriptionTracker = emailSubscriptionTracker,
             )
     }
 
@@ -81,7 +81,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId\"",
             ),
         )
-        assertTrue(email.content.htmlContent.contains("/mail/updates/unsubscribe/$subscriptionUuid"))
+        assertTrue(email.content.htmlContent.contains("/unsubscribe/$subscriptionUuid"))
     }
 
     @Test

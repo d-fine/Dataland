@@ -1,7 +1,7 @@
 package org.dataland.datalandemailservice.controller
 
 import org.dataland.datalandemailservice.api.EmailApi
-import org.dataland.datalandemailservice.services.EmailSubscriptionService
+import org.dataland.datalandemailservice.services.EmailSubscriptionManager
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -14,22 +14,19 @@ import java.util.UUID
  */
 @RestController
 class EmailController(
-    @Autowired val emailSubscriptionService: EmailSubscriptionService,
+    @Autowired val emailSubscriptionManager: EmailSubscriptionManager,
 ) : EmailApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Unsubscribes a user from email communications based on the provided UUID.
-     *
-     * @param subscriptionUuid The UUID of the subscription to be unsubscribed.
+     * Unsubscribes an email address from email communications based on the provided UUID and sends a mail
+     * to the stakeholders that this email address is now unsubscribed.
+     * @param subscriptionId The UUID of the subscription to be unsubscribed.
      * @return A response entity indicating the result of the unsubscription.
      */
     @Transactional
-    override fun unsubscribeUuid(subscriptionUuid: UUID): ResponseEntity<String> {
-        logger.info("Received request to unsubscribe with UUID: $subscriptionUuid")
-
-        emailSubscriptionService.unsubscribeEmailWithUuid(subscriptionUuid)
-
-        return ResponseEntity.ok("Successfully unsubscribed")
+    override fun unsubscribeUuid(subscriptionId: UUID): ResponseEntity<String> {
+        logger.info("Received request to unsubscribe email corresponding to UUID: $subscriptionId")
+        return emailSubscriptionManager.unsubscribeUuidAndInformStakeholders(subscriptionId)
     }
 }
