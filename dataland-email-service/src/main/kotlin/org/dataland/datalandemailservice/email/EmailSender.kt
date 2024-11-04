@@ -30,6 +30,12 @@ class EmailSender(
     fun filterReceiversAndSendEmail(email: Email) {
         val filteredReceivers = email.receivers.filter(emailSubscriptionTracker::shouldSendToEmailContact)
         val filteredCc = email.cc?.filter(emailSubscriptionTracker::shouldSendToEmailContact)
+        val blockedReceivers = email.receivers.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
+        val blockedCc = email.cc?.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
+        val blockedContacts = blockedReceivers + blockedCc
+        if (blockedContacts.isNotEmpty()) {
+            println("Did not send email to the following blocked contacts: $blockedContacts")
+        }
         if (filteredReceivers.isEmpty() && filteredCc.isNullOrEmpty()) {
             logger.info("No email was sent. After filtering the receivers none remained.")
             return
