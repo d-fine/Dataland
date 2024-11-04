@@ -13,6 +13,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -87,6 +88,7 @@ class NotificationService
                                 unprocessedElementaryEvents,
                             )
                         sendEmailMessagesToQueue(notificationEmailType, emailProperties, emailReceivers, correlationId)
+                        sendInternalMessageToQueue(notificationEmailType, emailProperties, correlationId)
                     }
                 }
         }
@@ -216,6 +218,44 @@ class NotificationService
                     RoutingKeyNames.TEMPLATE_EMAIL,
                 )
             }
+        }
+
+        /**
+         * Sends messages to queue in order to make the email service send mails to all receivers.
+         */
+        fun sendInternalMessageToQueue(
+            notificationEmailType: NotificationEmailType,
+            emailProperties: Map<String, String?>,
+            correlationId: String,
+        ) {
+            val keyMap =
+                mapOf(
+                    "baseUrl" to "Environment",
+                    "companyId" to "Company (Dataland ID):",
+                    "companyName" to "Company Name",
+                    "year" to "Reporting periods",
+                    "numberOfDays" to "Number of days",
+                    "framework" to "Framework",
+                    "frameworks" to "Frameworks",
+                    "Notification Email Type" to notificationEmailType.toString(),
+                )
+
+            val internalEmailProperties = emailProperties.mapKeys { keyMap[it.key] ?: "Unknown key" }
+
+            val message =
+                InternalEmailMessage(
+                    "Dataland Notification Email has been send",
+                    "An IR Notification Email has been send",
+                    "IR Notification Email has been send",
+                    internalEmailProperties,
+                )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                objectMapper.writeValueAsString(message),
+                MessageType.SEND_INTERNAL_EMAIL,
+                correlationId,
+                ExchangeName.SEND_EMAIL,
+                RoutingKeyNames.INTERNAL_EMAIL,
+            )
         }
 
         /**
