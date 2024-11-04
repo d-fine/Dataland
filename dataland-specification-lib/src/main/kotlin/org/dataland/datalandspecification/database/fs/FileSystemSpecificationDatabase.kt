@@ -9,6 +9,7 @@ import org.dataland.datalandspecification.specifications.FrameworkSpecification
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.IOException
 
 private inline fun <reified T> loadSpecifications(
     folder: File,
@@ -20,7 +21,7 @@ private inline fun <reified T> loadSpecifications(
         try {
             val specification = objectMapper.readValue<T>(file)
             specifications[file.nameWithoutExtension] = specification
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             logger.error("Failed to load ${T::class.simpleName} specification from file: ${file.name}", e)
             throw e
         }

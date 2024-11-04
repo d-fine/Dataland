@@ -59,6 +59,9 @@ fun FrameworkSpecification.toDto(
     )
 }
 
+/**
+ * A DTO for a framework specification.
+ */
 data class FrameworkSpecificationDto(
     val frameworkSpecification: IdWithRef,
     val name: String,

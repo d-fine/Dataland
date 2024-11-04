@@ -27,6 +27,9 @@ data class FrameworkSpecification(
     val flattenedSchema: List<FrameworkSpecificationSchemaEntry>
         get() = flattenSchema(schema, "").toList()
 
+    /**
+     * Updates the schema with a new entry
+     */
     fun setSchemaEntry(
         jsonPath: String,
         dataPointId: String,

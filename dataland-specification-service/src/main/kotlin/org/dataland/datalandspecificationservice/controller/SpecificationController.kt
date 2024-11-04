@@ -22,22 +22,19 @@ class SpecificationController(
     @Autowired val database: SpecificationDatabase,
     @Value("\${dataland.primary-url}") val datalandPrimaryUrl: String,
 ) : SpecificationApi {
+    private fun getRawDataPointSpecification(dataPointSpecificationId: String): DataPointSpecification =
+        database.dataPointSpecifications[dataPointSpecificationId]
+            ?: throw ResourceNotFoundApiException(
+                "Data Point Specification with id $dataPointSpecificationId not found",
+                "The data point specification with the given id was not found in the database.",
+            )
 
-    private fun getRawDataPointSpecification(dataPointSpecificationId: String): DataPointSpecification {
-        return database.dataPointSpecifications[dataPointSpecificationId]
-                ?: throw ResourceNotFoundApiException(
-                    "Data Point Specification with id $dataPointSpecificationId not found",
-                    "The data point specification with the given id was not found in the database.",
-                )
-    }
-
-    private fun getRawDataPointTypeSpecification(dataPointTypeSpecificationId: String): DataPointTypeSpecification {
-        return database.dataPointTypeSpecifications[dataPointTypeSpecificationId]
-                ?: throw ResourceNotFoundApiException(
-                    "Data Point Type Specification with id $dataPointTypeSpecificationId not found",
-                    "The data point type specification with the given id was not found in the database.",
-                )
-    }
+    private fun getRawDataPointTypeSpecification(dataPointTypeSpecificationId: String): DataPointTypeSpecification =
+        database.dataPointTypeSpecifications[dataPointTypeSpecificationId]
+            ?: throw ResourceNotFoundApiException(
+                "Data Point Type Specification with id $dataPointTypeSpecificationId not found",
+                "The data point type specification with the given id was not found in the database.",
+            )
 
     override fun getFrameworkSpecification(frameworkSpecificationId: String): ResponseEntity<FrameworkSpecificationDto> {
         val frameworkSpecification =
