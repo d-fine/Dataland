@@ -41,9 +41,9 @@ object NotificationServiceUtils {
 
         val message =
             InternalEmailMessage(
-                "Dataland Notification Email has been send",
-                "An IR Notification Email has been send",
-                "IR Notification Email has been send",
+                "Dataland Notification Email has been sent",
+                "An IR Notification Email has been sent",
+                "IR Notification Email has been sent",
                 internalEmailProperties,
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
