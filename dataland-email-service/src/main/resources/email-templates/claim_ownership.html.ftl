@@ -145,7 +145,7 @@
     </tr>
     <tr>
         <td colspan="3">Claiming ownership process usually requires 1-2 business days.<br />
-            You will be notified by email</td>
+            You will be notified by email.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>

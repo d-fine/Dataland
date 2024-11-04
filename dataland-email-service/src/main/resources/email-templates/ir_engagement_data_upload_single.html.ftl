@@ -29,14 +29,18 @@
         <td rowspan="15" style="width: 40px">&nbsp;</td>
     </tr>
     <tr>
-        <td colspan="3">Exciting news! 📣<br>Data for ${companyName} has been uploaded to Dataland!</td>
+        <td colspan="3">
+            We are Dataland, an open, neutral, and transparent data engagement platform.
+            One of our members has specifically requested data about your company.
+            A data provider within our network has created a dataset for your company, which is now accessible on Dataland:
+        </td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
     </tr>
     <tr>
         <td colspan="3">
-            <table style="background-color: #f6f6f6; border-collapse: collapse; padding: 0; margin: 0; width: 520px">
+            <table style="background-color: #f6f6f6; border-collapse: collapse; border-radius: 15px; padding: 0; margin: 0; width: 520px">
                 <tbody>
                 <tr>
                     <td style="text-align: left; width: 20px; height: 13px; padding: 0">
@@ -102,7 +106,7 @@
     </tr>
     <tr>
         <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
-        <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
+        <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px; border-radius: 30px;">
             <a href="${baseUrl}/companies/${companyId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
                 CLAIM COMPANY OWNERSHIP
             </a>
@@ -115,7 +119,7 @@
     </tr>
     <tr>
         <td colspan="3">Claiming ownership process usually requires 1-2 business days.<br />
-            You will be notified by email</td>
+            You will be notified by email.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
@@ -123,7 +127,7 @@
     </tbody>
 </table>
 
-<#include "./general/why_me.ftl">
+<#include "./general/your_benefits_with_dataland.ftl">
 <#include "./general/footer.ftl">
 <#include "./general/unsubscribe.ftl">
 
