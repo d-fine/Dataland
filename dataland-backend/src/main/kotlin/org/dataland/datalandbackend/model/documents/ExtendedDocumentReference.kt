@@ -20,6 +20,9 @@ data class ExtendedDocumentReference(
     @field:DocumentExists
     override val fileReference: String,
 ) : ExtendedDocumentReference {
+    /**
+     * Converts this reference to a company report
+     */
     fun toCompanyReport(): CompanyReport =
         CompanyReport(
             fileName = fileName,

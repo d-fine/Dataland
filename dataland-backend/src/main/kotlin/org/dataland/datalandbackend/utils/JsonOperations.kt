@@ -119,6 +119,11 @@ object JsonOperations {
         }
     }
 
+    /**
+     * Extracts the company report from an extended data source.
+     * @param dataPointContent The content of the data point
+     * @return The company report or null if it could not be extracted
+     */
     fun getCompanyReportFromDataSource(dataPointContent: String): CompanyReport? {
         val dataSource = getJsonNodeFromString(dataPointContent).get("dataSource")
 
@@ -128,7 +133,7 @@ object JsonOperations {
 
         return try {
             objectMapper.readValue(dataSource.toString(), ExtendedDocumentReference::class.java).toCompanyReport()
-        } catch (e: Exception) {
+        } catch (ignore: Exception) {
             null
         }
     }

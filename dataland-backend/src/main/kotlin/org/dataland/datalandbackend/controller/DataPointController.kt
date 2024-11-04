@@ -35,7 +35,6 @@ class DataPointController(
     }
 
     override fun getDataPoint(dataId: String): ResponseEntity<StorableDataSet> {
-        // Todo: Implement access control
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         val correlationId = IdUtils.generateCorrelationId(metaInfo.company.companyId, dataId)
         return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, metaInfo.dataType, correlationId))

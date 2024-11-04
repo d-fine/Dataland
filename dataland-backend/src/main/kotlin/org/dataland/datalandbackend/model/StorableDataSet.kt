@@ -15,7 +15,6 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
  */
 
 data class StorableDataSet(
-    // ToDo: reconsider this class name in light of data points
     val companyId: String,
     val dataType: String,
     val uploaderUserId: String,
