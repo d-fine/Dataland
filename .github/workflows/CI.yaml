@@ -232,6 +232,7 @@ jobs:
           DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
+            DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_formatci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
