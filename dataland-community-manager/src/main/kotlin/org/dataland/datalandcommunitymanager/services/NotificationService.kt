@@ -238,10 +238,12 @@ class NotificationService
                     "numberOfDays" to "Number of days",
                     "framework" to "Framework",
                     "frameworks" to "Frameworks",
-                    "Notification Email Type" to notificationEmailType.toString(),
                 )
 
-            val internalEmailProperties = emailProperties.mapKeys { keyMap[it.key] ?: "Unknown key" }
+            val internalEmailProperties = (
+                emailProperties.mapKeys { keyMap[it.key] ?: "Unknown key" } +
+                    mapOf("Notification Email Type" to notificationEmailType.toString())
+            )
 
             val message =
                 InternalEmailMessage(
