@@ -65,7 +65,7 @@ class InternalEmailMessageListener(
         logger.info("Received internal email message with correlationId $correlationId.")
 
         messageQueueUtils.rejectMessageOnException {
-            emailSender.sendEmailWithoutTestReceivers(internalEmailBuilder.buildInternalEmail(internalEmailMessage))
+            emailSender.filterReceiversAndSendEmail(internalEmailBuilder.buildInternalEmail(internalEmailMessage))
         }
     }
 }

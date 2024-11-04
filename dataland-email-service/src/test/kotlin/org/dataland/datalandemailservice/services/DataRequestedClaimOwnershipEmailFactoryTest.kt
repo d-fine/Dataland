@@ -5,7 +5,12 @@ import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.services.templateemail.DataRequestedClaimOwnershipEmailFactory
 import org.dataland.datalandemailservice.utils.assertEmailContactInformationEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import java.util.UUID
 
 class DataRequestedClaimOwnershipEmailFactoryTest {
     private val proxyPrimaryUrl = "local-dev.dataland.com"
@@ -22,6 +27,24 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
     private val dummyFirstName = "testUserName"
     private val dummyLastName = "testUserLastName"
 
+    private var subscriptionUuid = UUID.randomUUID()
+
+    private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
+    private lateinit var dataRequestedClaimOwnershipEmailFactory: DataRequestedClaimOwnershipEmailFactory
+
+    @BeforeEach
+    fun setup() {
+        emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
+        `when`(emailSubscriptionTracker.addSubscription(any())).thenReturn(subscriptionUuid)
+        dataRequestedClaimOwnershipEmailFactory =
+            DataRequestedClaimOwnershipEmailFactory(
+                proxyPrimaryUrl = proxyPrimaryUrl,
+                senderEmail = senderEmail,
+                senderName = senderName,
+                emailSubscriptionTracker = emailSubscriptionTracker,
+            )
+    }
+
     private fun buildTestEmail(reportingPeriods: String): Email {
         val properties =
             mapOf(
@@ -34,18 +57,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
                 "firstName" to dummyFirstName,
                 "lastName" to dummyLastName,
             )
-
-        val email =
-            DataRequestedClaimOwnershipEmailFactory(
-                proxyPrimaryUrl = proxyPrimaryUrl,
-                senderEmail = senderEmail,
-                senderName = senderName,
-            ).buildEmail(
-                receiverEmail = receiverEmail,
-                properties = properties,
-            )
-
-        return email
+        return dataRequestedClaimOwnershipEmailFactory.buildEmail(receiverEmail, properties)
     }
 
     @Test
@@ -69,6 +81,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
                 "href=\"https://$proxyPrimaryUrl/companies/$companyId\"",
             ),
         )
+        assertTrue(email.content.htmlContent.contains("/unsubscribe/$subscriptionUuid"))
     }
 
     @Test
@@ -81,7 +94,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
         validateTextContent(reportingPeriod)
     }
 
-    fun validateTextContent(reportingPeriods: String) {
+    private fun validateTextContent(reportingPeriods: String) {
         val email = buildTestEmail(reportingPeriods)
         val pluralSuffix = if (reportingPeriods.contains(",")) "s" else ""
         assertTrue(

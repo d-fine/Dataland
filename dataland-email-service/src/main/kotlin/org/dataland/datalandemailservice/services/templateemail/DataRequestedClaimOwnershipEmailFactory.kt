@@ -1,6 +1,9 @@
 package org.dataland.datalandemailservice.services.templateemail
 
+import org.dataland.datalandemailservice.email.Email
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -12,6 +15,7 @@ class DataRequestedClaimOwnershipEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
+    @Autowired val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) : TemplateEmailFactory(
         proxyPrimaryUrl = proxyPrimaryUrl,
         senderEmail = senderEmail,
@@ -27,17 +31,26 @@ class DataRequestedClaimOwnershipEmailFactory(
             val dataType = "dataType"
             val reportingPeriods = "reportingPeriods"
             val message = "message"
+            val subscriptionUuid = "subscriptionUuid"
         }
 
     override val builderForType = TemplateEmailMessage.Type.ClaimOwnership
     override val requiredProperties =
         setOf(
-            keys.companyId, keys.companyName,
-            keys.requesterEmail, keys.dataType, keys.reportingPeriods,
+            keys.companyId, keys.companyName, keys.requesterEmail, keys.dataType, keys.reportingPeriods, keys.subscriptionUuid,
         )
     override val optionalProperties = setOf(keys.message, keys.firstName, keys.lastName)
 
     override val templateFile = "/claim_ownership.html.ftl"
+
+    override fun buildEmail(
+        receiverEmail: String,
+        properties: Map<String, String?>,
+    ): Email {
+        val subscriptionUuid = emailSubscriptionTracker.addSubscription(receiverEmail).toString()
+        val subscriptionProperty = mapOf(keys.subscriptionUuid to subscriptionUuid)
+        return super.buildEmail(receiverEmail, properties + subscriptionProperty)
+    }
 
     override fun buildSubject(properties: Map<String, String?>): String = "A message from Dataland: Your ESG data are high on demand!"
 

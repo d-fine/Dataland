@@ -129,6 +129,7 @@
 
 <#include "./general/your_benefits_with_dataland.ftl">
 <#include "./general/footer.ftl">
+<#include "./general/unsubscribe.ftl">
 
 </body>
 </html>
