@@ -31,7 +31,7 @@
     <tr>
         <td colspan="3">
             We are Dataland, an open, neutral, and transparent data engagement platform.
-            One of out members has specifically requested data about your company.
+            One of our members has specifically requested data about your company.
             A data provider within our network has created a dataset for your company, which is now accessible on Dataland:
         </td>
     </tr>
