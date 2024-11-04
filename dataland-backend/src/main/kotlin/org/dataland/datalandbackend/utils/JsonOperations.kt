@@ -5,8 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
+import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 
 object JsonOperations {
+    val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
+
     /**
      * Converts a JSON string to a JSON node.
      * @param json The JSON string
@@ -104,7 +108,6 @@ object JsonOperations {
     ) {
         val classForValidation = Class.forName(className).kotlin.java
         val validator = Validation.buildDefaultValidatorFactory().validator
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
         val violations = validator.validate(dataPointObject)
         if (violations.isNotEmpty()) {
@@ -113,6 +116,20 @@ object JsonOperations {
                 errorMessage += (it.message)
             }
             throw IllegalArgumentException(errorMessage)
+        }
+    }
+
+    fun getCompanyReportFromDataSource(dataPointContent: String): CompanyReport? {
+        val dataSource = getJsonNodeFromString(dataPointContent).get("dataSource")
+
+        if (dataSource == null || dataSource.isNull) {
+            return null
+        }
+
+        return try {
+            objectMapper.readValue(dataSource.toString(), ExtendedDocumentReference::class.java).toCompanyReport()
+        } catch (e: Exception) {
+            null
         }
     }
 }

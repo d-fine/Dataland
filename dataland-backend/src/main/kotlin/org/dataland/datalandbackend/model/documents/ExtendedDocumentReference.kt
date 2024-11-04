@@ -19,4 +19,11 @@ data class ExtendedDocumentReference(
     @field:NotBlank
     @field:DocumentExists
     override val fileReference: String,
-) : ExtendedDocumentReference
+) : ExtendedDocumentReference {
+    fun toCompanyReport(): CompanyReport =
+        CompanyReport(
+            fileName = fileName,
+            fileReference = fileReference,
+            publicationDate = null,
+        )
+}

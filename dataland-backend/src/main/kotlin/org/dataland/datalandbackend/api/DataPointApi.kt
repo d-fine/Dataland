@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -17,24 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 /**
- * Defines the restful dataland-backend API regarding meta data searches.
+ * Defines the restful dataland-backend API regarding data point up and downloads.
  */
 
 @RequestMapping("/datapoints")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DataPointApi {
-    // Todo: revisit the docs and comments
-
     /**
-     * A method to store data via Dataland into a data store
-     * @param uploadedDataPoint consisting of the triple data type company ID and reporting period and the actual data
+     * A method to store a data point via Dataland into a data store
+     * @param uploadedDataPoint consisting of the triple data point identifier, company ID and reporting period and the actual data
      * @param bypassQa if set to true, the data will be stored without going through the QA process
      * @return meta info about the stored data point including the ID of the created entry in the data store
      */
     @Operation(
-        summary = "Upload new data set.",
-        description = "The uploaded data is added to the data store, the generated data id is returned.",
+        summary = "Upload new data point.",
+        description = "The uploaded data point is added to the data store, the generated data id is returned.",
     )
     @ApiResponses(
         value = [
@@ -45,14 +44,12 @@ interface DataPointApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    // ToDo: revisit the required roles
-    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDataPoint(
         @Valid @RequestBody
         uploadedDataPoint: UploadableDataPoint,
         @RequestParam(defaultValue = "false") bypassQa: Boolean,
-        // Todo: change to the appropriate return type
-    ): ResponseEntity<String>
+    ): ResponseEntity<DataPointMetaInformation>
 
     /**
      * A method to retrieve a data point by providing its ID
@@ -72,10 +69,8 @@ interface DataPointApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    // Todo: revisit the required roles
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataPoint(
         @PathVariable dataId: String,
-        // Todo: change to the appropriate return type
     ): ResponseEntity<StorableDataSet>
 }

@@ -1,12 +1,17 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.convertValue
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
+import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
 import org.dataland.datalandbackend.utils.JsonOperations.getJsonNodeFromString
 import org.dataland.datalandbackend.utils.JsonOperations.getValueFromJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
@@ -17,6 +22,7 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
@@ -50,7 +56,7 @@ class DataPointManager(
         uploaderUserId: String,
         bypassQa: Boolean,
         correlationId: String,
-    ): String {
+    ): DataPointMetaInformation {
         logger.info("Executing check for '${uploadedDataPoint.dataPointIdentifier}' data point (correlation ID: $correlationId).")
         validateDataPoint(uploadedDataPoint.dataPointIdentifier, uploadedDataPoint.dataPointContent, correlationId)
         logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point.")
@@ -61,7 +67,14 @@ class DataPointManager(
         dataManager.storeMetaDataFrom(dataId, storableDataSet, correlationId)
         dataManager.storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
 
-        return dataId
+        return DataPointMetaInformation(
+            dataId = dataId,
+            dataPointIdentifier = uploadedDataPoint.dataPointIdentifier,
+            companyId = uploadedDataPoint.companyId,
+            reportingPeriod = storableDataSet.reportingPeriod,
+            uploaderUserId = uploaderUserId,
+            uploadTime = uploadTime,
+        )
     }
 
     /**
@@ -154,7 +167,7 @@ class DataPointManager(
                     uploadedDataSet.uploaderUserId,
                     bypassQa,
                     correlationId,
-                )
+                ).dataId
         }
         this.datasetDatapointRepository.save(
             DatasetDatapointEntity(dataId = dataSetId, dataPoints = createdDataIds.joinToString(",")),
@@ -214,6 +227,9 @@ class DataPointManager(
         val dataPoints = mutableListOf<String>()
         val frameworkTemplate = getFrameworkTemplate(framework)
         val allDataPointsInTemplate = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
+        val referencedReports = mutableMapOf<String, CompanyReport>()
+        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         logger.info("Filling template with stored data (correlation ID: $correlationId).")
         dataIds.forEach { dataId ->
@@ -225,8 +241,12 @@ class DataPointManager(
                 )
             }
             dataPoints.add(currentDataPoint)
-            val dataPointData = retrieveDataPoint(dataId, currentDataPoint, correlationId).data
-            val replacementValue = getJsonNodeFromString(dataPointData)
+            val dataPointContent = retrieveDataPoint(dataId, currentDataPoint, correlationId).data
+            val replacementValue = getJsonNodeFromString(dataPointContent)
+            val companyReport = getCompanyReportFromDataSource(dataPointContent)
+            if (companyReport != null) {
+                referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
+            }
 
             val jsonPaths = allDataPointsInTemplate.filterValues { it == currentDataPoint }.keys
             jsonPaths.forEach {
@@ -234,6 +254,7 @@ class DataPointManager(
             }
         }
 
+        replaceFieldInTemplate(frameworkTemplate, "referencedReports", "", objectMapper.convertValue<JsonNode>(referencedReports))
         logger.info("Removing fields from the template where no data was provided (correlation ID $correlationId).")
         allDataPointsInTemplate.forEach {
             if (!dataPoints.contains(it.value)) {

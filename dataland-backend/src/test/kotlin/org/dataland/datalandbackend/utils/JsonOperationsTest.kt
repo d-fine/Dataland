@@ -3,7 +3,11 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
+import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
+import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,7 +19,9 @@ class JsonOperationsTest {
     private val correlationId = "correlationId"
     private val validationClass = "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint"
 
-    private val currencyDataPointJson = "./json/validation/currencyDataPoint.json"
+    private val currencyDataPoint = "./json/validation/currencyDataPoint.json"
+    private val currencyDataPointWithExtendedDocumentReference =
+        "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
     private val invalidCurrencyDataPoint = "./json/validation/invalidCurrencyDataPoint.json"
     private val currencyDataPointWithUnknownProperty = "./json/validation/currencyDataPointWithUnknownProperty.json"
     private val frameworkTemplate = "./json/frameworkTemplate/template.json"
@@ -33,7 +39,7 @@ class JsonOperationsTest {
 
     @Test
     fun `Check that a valid input passes the validation`() {
-        assertDoesNotThrow { validateConsistency(getJsonString(currencyDataPointJson), validationClass, correlationId) }
+        assertDoesNotThrow { validateConsistency(getJsonString(currencyDataPoint), validationClass, correlationId) }
     }
 
     @Test
@@ -79,5 +85,26 @@ class JsonOperationsTest {
         val fieldName = "category.subcategory.field"
         replaceFieldInTemplate(frameworkTemplate, fieldName, "", replacementValue)
         assertEquals(expectedTemplate, frameworkTemplate)
+    }
+
+    @Test
+    fun `Check that extraction of the referenced report works as expected`() {
+        val dataPointContent = getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
+        val expectedCompanyReport =
+            CompanyReport(
+                fileReference = dataSource?.fileReference ?: "dummy",
+                fileName = dataSource?.fileName,
+                publicationDate = null,
+            )
+        val companyReport = getCompanyReportFromDataSource(dataPointContent)
+        assertEquals(expectedCompanyReport, companyReport)
+    }
+
+    @Test
+    fun `Check that a data point without data source yields null`() {
+        val dataPointContent = getJsonString(currencyDataPoint)
+        val companyReport = getCompanyReportFromDataSource(dataPointContent)
+        assertEquals(null, companyReport)
     }
 }

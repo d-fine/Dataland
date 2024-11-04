@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.DataPointApi
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DataPointManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -26,7 +27,7 @@ class DataPointController(
     override fun postDataPoint(
         uploadedDataPoint: UploadableDataPoint,
         bypassQa: Boolean,
-    ): ResponseEntity<String> {
+    ): ResponseEntity<DataPointMetaInformation> {
         val currentUser = DatalandAuthentication.fromContext()
         val correlationId = IdUtils.generateCorrelationId(uploadedDataPoint.companyId.toString(), null)
         logMessageBuilder.postDataPointMessage(currentUser.userId, uploadedDataPoint, bypassQa, correlationId)
