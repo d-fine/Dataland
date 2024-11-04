@@ -51,7 +51,7 @@ class EmailSubscriptionManagerTest {
 
     @Test
     fun `validate that a email to the stakeholders is sent when someone unsubscribes an existing subscription`() {
-        val response: ResponseEntity<String> = emailSubscriptionManager.unsubscribeUuidAndSendMailToStakeholders(validUuid)
+        val response: ResponseEntity<String> = emailSubscriptionManager.unsubscribeUuidAndInformStakeholders(validUuid)
 
         assertEquals("Successfully unsubscribed email address corresponding to UUID: $validUuid.", response.body)
         verify(emailSender, times(1)).filterReceiversAndSendEmail(any())
@@ -60,7 +60,7 @@ class EmailSubscriptionManagerTest {
     @Test
     fun `validate that no email is sent to the stakeholders if there is no existing email subscription found`() {
         val response: ResponseEntity<String> =
-            emailSubscriptionManager.unsubscribeUuidAndSendMailToStakeholders(invalidUuid)
+            emailSubscriptionManager.unsubscribeUuidAndInformStakeholders(invalidUuid)
 
         assertEquals("There is no email address corresponding to UUID: $invalidUuid.", response.body)
         verify(emailSender, times(0)).filterReceiversAndSendEmail(any())

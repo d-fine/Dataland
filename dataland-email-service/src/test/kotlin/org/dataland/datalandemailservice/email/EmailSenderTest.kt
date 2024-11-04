@@ -77,7 +77,7 @@ class EmailSenderTest {
     }
 
     @Test
-    fun `check that email is not send to example domain`() {
+    fun `check that email is not sent to example domain`() {
         val cc = EmailContact("CC@example.comn")
 
         val email = Email(senderContact, emptyList(), listOf(cc), emailContent)

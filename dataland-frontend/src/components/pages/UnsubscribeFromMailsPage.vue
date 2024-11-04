@@ -5,7 +5,7 @@
     <main>
       <div>
         <div v-if="!isUnsubscribed" class="subscribed">
-          <h1>We are sorry you want to unsubscribe from our mailing list.</h1>
+          <h1>We are sorry that you wish to unsubscribe from our mailing list.</h1>
           <PrimeButton @click="unsubscribeFromMailingList" data-test="unsubscribeButton" class="unsubscribe-button">
             Unsubscribe
           </PrimeButton>
@@ -16,7 +16,7 @@
           </p>
           <p>
             Go to
-            <router-link to="/" class="text-primary" title="back to landing page">Dataland</router-link>
+            <RouterLink to="/" class="text-primary" title="back to landing page">Dataland</RouterLink>
           </p>
         </div>
       </div>

@@ -29,12 +29,12 @@ class EmailSubscriptionManager(
      * @return A response entity indicating the result of the unsubscription.
      */
     @Transactional
-    fun unsubscribeUuidAndSendMailToStakeholders(uuid: UUID): ResponseEntity<String> {
+    fun unsubscribeUuidAndInformStakeholders(uuid: UUID): ResponseEntity<String> {
         val emailSubscription = emailSubscriptionRepository.findByUuid(uuid)
 
         return if (emailSubscription != null) {
-            unsubscribeEmailWithUuid(emailSubscription.uuid)
-            sendUnsubscriptionEmail(emailSubscription.emailAddress)
+            unsubscribeUuid(emailSubscription.uuid)
+            informStakeholdersOfUnsubscription(emailSubscription.emailAddress)
             val successMessage = "Successfully unsubscribed email address corresponding to UUID: $uuid."
             logger.info(successMessage)
             ResponseEntity.ok(successMessage)
@@ -56,7 +56,7 @@ class EmailSubscriptionManager(
      * @return This method has no return value.
      *
      */
-    private fun unsubscribeEmailWithUuid(uuid: UUID) {
+    private fun unsubscribeUuid(uuid: UUID) {
         emailSubscriptionRepository.findByUuid(uuid)?.let {
             it.isSubscribed = false
         }
@@ -69,7 +69,7 @@ class EmailSubscriptionManager(
      * @return This method has no return value.
      *
      */
-    private fun sendUnsubscriptionEmail(unsubscribedEmailAddress: String) {
+    private fun informStakeholdersOfUnsubscription(unsubscribedEmailAddress: String) {
         val unsubscriptionMessage =
             InternalEmailMessage(
                 subject = "Someone has unsubscribed from notifications of data uploads",

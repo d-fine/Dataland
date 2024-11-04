@@ -27,6 +27,6 @@ class EmailController(
     @Transactional
     override fun unsubscribeUuid(subscriptionId: UUID): ResponseEntity<String> {
         logger.info("Received request to unsubscribe email corresponding to UUID: $subscriptionId")
-        return emailSubscriptionManager.unsubscribeUuidAndSendMailToStakeholders(subscriptionId)
+        return emailSubscriptionManager.unsubscribeUuidAndInformStakeholders(subscriptionId)
     }
 }

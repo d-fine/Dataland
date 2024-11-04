@@ -60,11 +60,13 @@ class EmailSubscriptionTrackerTest(
             assertTrue(newEntity.isSubscribed, "The email subscription should be unsubscribed.")
             assertEquals(unknownEmail, newEntity.emailAddress)
             assertEquals(uuid, newEntity.uuid)
+        } else {
+            throw IllegalStateException("The new subscription entity should not be null.")
         }
     }
 
     @Test
-    fun `validate if the uuid is returned for a subscribed email`() {
+    fun `validate that the uuid is returned for a subscribed email`() {
         val uuid = emailSubscriptionTracker.addSubscription(subscribedEmail)
         assertEquals(subscribedUuid, uuid)
     }
@@ -85,17 +87,17 @@ class EmailSubscriptionTrackerTest(
     }
 
     @Test
-    fun `validate that a subscribed email is returned as true`() {
+    fun `validate that a subscribed email address is identified as subscribed`() {
         assertTrue(emailSubscriptionTracker.isEmailSubscribed(subscribedEmail))
     }
 
     @Test
-    fun `validate that an unsubscribed email is returned as false`() {
+    fun `validate that a unsubscribed email address is not identified as subscribed`() {
         assertFalse(emailSubscriptionTracker.isEmailSubscribed(unsubscribedEmail))
     }
 
     @Test
-    fun `validate that an unknown email is returned as false`() {
+    fun `validate that a unknown email address is not identified as subscribed`() {
         assertFalse(emailSubscriptionTracker.isEmailSubscribed(unknownEmail))
     }
 }
