@@ -5,7 +5,7 @@
     <main>
       <div>
         <div v-if="!isUnsubscribed" class="subscribed">
-          <h1>We are sorry that you wish to unsubscribe from our mailing list.</h1>
+          <h1>Please confirm to unsubscribe from our mailing list.</h1>
           <PrimeButton @click="unsubscribeFromMailingList" data-test="unsubscribeButton" class="unsubscribe-button">
             Unsubscribe
           </PrimeButton>
@@ -82,7 +82,7 @@ export default defineComponent({
         if (response.data.includes('Successfully unsubscribed')) {
           this.message = 'You have been successfully removed from our mailing list.';
         } else {
-          this.message = 'This UUID does not belong to any email address in our mailing list.';
+          this.message = 'This UUID does not correspond to any email address in our mailing list.';
         }
         this.isUnsubscribed = true;
       } catch (error) {
