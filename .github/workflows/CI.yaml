@@ -206,6 +206,17 @@ jobs:
       - name: Execute linting and detekt
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
+      - name: Execute unit tests for the email service
+        run: ./gradlew :dataland-email-service:test --no-daemon --stacktrace
+        if: always()
+        env:
+          MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
+          MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
+          NOTIFICATION_INTERNAL_RECEIVERS: "dummyCI@example.com"
+          NOTIFICATION_INTERNAL_CC: ""
+          DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
+          DATALAND_BACKEND_CLIENT_SECRET: "password"
+          DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
       - name: Execute unit tests for all spring services
         run: |
           sudo apt update && sudo apt install libreoffice
