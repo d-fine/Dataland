@@ -17921,7 +17921,7 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           },
@@ -17931,13 +17931,13 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
-          "sector": {
+          "headquarters": {
+            "type": "string"
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }
