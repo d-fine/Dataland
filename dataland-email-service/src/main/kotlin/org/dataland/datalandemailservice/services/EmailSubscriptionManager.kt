@@ -33,7 +33,9 @@ class EmailSubscriptionManager(
         val emailSubscription = emailSubscriptionRepository.findByUuid(uuid)
 
         return if (emailSubscription != null) {
-            unsubscribeUuid(emailSubscription.uuid)
+            emailSubscriptionRepository.findByUuid(emailSubscription.uuid)?.let {
+                it.isSubscribed = false
+            }
             informStakeholdersOfUnsubscription(emailSubscription.emailAddress)
             val successMessage = "Successfully unsubscribed email address corresponding to UUID: $uuid."
             logger.info(successMessage)
@@ -42,23 +44,6 @@ class EmailSubscriptionManager(
             val errorMessage = "There is no email address corresponding to UUID: $uuid."
             logger.info(errorMessage)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage)
-        }
-    }
-
-    /**
-     * Unsubscribes an email based on the provided UUID.
-     *
-     * This method sets the `isSubscribed` flag to `false` for the email subscription entity
-     * identified by the given UUID. If no entity is found with the provided UUID, the method
-     * performs no action.
-     *
-     * @param uuid The UUID of the email subscription to unsubscribe.
-     * @return This method has no return value.
-     *
-     */
-    private fun unsubscribeUuid(uuid: UUID) {
-        emailSubscriptionRepository.findByUuid(uuid)?.let {
-            it.isSubscribed = false
         }
     }
 

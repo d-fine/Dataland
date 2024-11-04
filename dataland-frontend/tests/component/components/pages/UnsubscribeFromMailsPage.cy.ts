@@ -2,7 +2,7 @@ import UnsubscribeFromMailsPage from '@/components/pages/UnsubscribeFromMailsPag
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 
-describe('Component tests for the Quality Assurance page', () => {
+describe('Component tests for the Email Unsubscription page', () => {
   const testUuid = '123e4567-e89b-12d3-a456-426614174000';
   const expectedSuccessTextFromApi = `Successfully unsubscribed email address corresponding to the UUID: ${testUuid}`;
   const expectedFailTextFromApi = `There is no email address corresponding to the UUID: ${testUuid}.`;

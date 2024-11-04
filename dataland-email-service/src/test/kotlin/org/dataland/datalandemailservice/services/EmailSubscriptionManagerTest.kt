@@ -50,7 +50,7 @@ class EmailSubscriptionManagerTest {
     }
 
     @Test
-    fun `validate that a email to the stakeholders is sent when someone unsubscribes an existing subscription`() {
+    fun `validate that an email to the stakeholders is sent when someone unsubscribes an existing subscription`() {
         val response: ResponseEntity<String> = emailSubscriptionManager.unsubscribeUuidAndInformStakeholders(validUuid)
 
         assertEquals("Successfully unsubscribed email address corresponding to UUID: $validUuid.", response.body)
