@@ -28,7 +28,6 @@ import java.util.UUID
  * Service that handles creation of notification events and sending notifications to interested parties
  * in case of elementary events
  */
-@Suppress("TooManyFunctions")
 @Service("NotificationService")
 class NotificationService
     @Suppress("LongParameterList")
