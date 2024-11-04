@@ -222,7 +222,7 @@ class NotificationService
         }
 
         /**
-         * Sends messages iternal message about the ir email to the queue.
+         * Sends an internal message about the ir email to the queue.
          */
         fun sendInternalMessageToQueue(
             notificationEmailType: NotificationEmailType,
