@@ -38,7 +38,7 @@ describe('Component tests for the Quality Assurance page', () => {
 
     cy.get('[data-test="unsubscribeMessage"]').should(
       'have.text',
-      'This UUID does not belong to any email address in our mailing list.'
+      'This UUID does not correspond to any email address in our mailing list.'
     );
     cy.get('[data-test="unsubscribeButton"]').should('not.exist');
   });
