@@ -207,7 +207,7 @@ jobs:
         run: ./gradlew ktlintCheck detekt --no-daemon --stacktrace
         if: always()
       - name: Execute unit tests for the email service
-        run: ./gradlew :dataland-email-service:test --no-daemon --stacktrace
+        run: ./gradlew :dataland-email-service:test -i --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
