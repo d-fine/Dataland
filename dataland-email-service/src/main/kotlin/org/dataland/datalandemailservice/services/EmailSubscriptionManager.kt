@@ -72,9 +72,9 @@ class EmailSubscriptionManager(
     private fun informStakeholdersOfUnsubscription(unsubscribedEmailAddress: String) {
         val unsubscriptionMessage =
             InternalEmailMessage(
-                subject = "Someone has unsubscribed from notifications of data uploads",
-                textTitle = "$unsubscribedEmailAddress has unsubscribed from notifications of data uploads.",
-                htmlTitle = "$unsubscribedEmailAddress has unsubscribed from notifications of data uploads.",
+                subject = "A user has unsubscribed from data uploads notifications",
+                textTitle = "A user has unsubscribed from data uploads notifications.",
+                htmlTitle = "A user has unsubscribed from data uploads notifications.",
                 properties = mapOf("Unsubscribed Email Address" to unsubscribedEmailAddress),
             )
         emailSender.filterReceiversAndSendEmail(internalEmailBuilder.buildInternalEmail(unsubscriptionMessage))
