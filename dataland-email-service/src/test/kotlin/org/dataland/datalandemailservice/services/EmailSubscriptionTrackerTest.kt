@@ -61,7 +61,7 @@ class EmailSubscriptionTrackerTest(
             assertEquals(unknownEmail, newEntity.emailAddress)
             assertEquals(uuid, newEntity.uuid)
         } else {
-            throw IllegalStateException("The new subscription entity should not be null.")
+            error("The new subscription entity should not be null.")
         }
     }
 
