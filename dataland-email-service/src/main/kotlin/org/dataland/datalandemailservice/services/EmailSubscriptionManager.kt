@@ -5,16 +5,17 @@ import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepositor
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
  * Service responsible for managing email subscriptions.
  */
-@Component
-class EmailUnsubscriber(
+@Service
+class EmailSubscriptionManager(
     @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
     @Autowired private val emailSender: EmailSender,
     @Autowired private val internalEmailBuilder: InternalEmailBuilder,
@@ -34,12 +35,13 @@ class EmailUnsubscriber(
         return if (emailSubscription != null) {
             unsubscribeEmailWithUuid(emailSubscription.uuid)
             sendUnsubscriptionEmail(emailSubscription.emailAddress)
-
-            logger.info("Successfully unsubscribed email address corresponding to UUID: $uuid")
-            ResponseEntity.ok("Successfully unsubscribed email address corresponding to the UUID: $uuid.")
+            val successMessage = "Successfully unsubscribed email address corresponding to UUID: $uuid."
+            logger.info(successMessage)
+            ResponseEntity.ok(successMessage)
         } else {
-            logger.info("There is no email address corresponding to the UUID: $uuid.")
-            ResponseEntity.ok("There is no email address corresponding to the UUID: $uuid.")
+            val errorMessage = "There is no email address corresponding to UUID: $uuid."
+            logger.info(errorMessage)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage)
         }
     }
 
@@ -51,6 +53,8 @@ class EmailUnsubscriber(
      * performs no action.
      *
      * @param uuid The UUID of the email subscription to unsubscribe.
+     * @return This method has no return value.
+     *
      */
     private fun unsubscribeEmailWithUuid(uuid: UUID) {
         emailSubscriptionRepository.findByUuid(uuid)?.let {
@@ -62,6 +66,8 @@ class EmailUnsubscriber(
      * Send a mail with the information who unsubscribed to the stakeholders.
      *
      * @param unsubscribedEmailAddress The email address of the person who unsubscribed.
+     * @return This method has no return value.
+     *
      */
     private fun sendUnsubscriptionEmail(unsubscribedEmailAddress: String) {
         val unsubscriptionMessage =
@@ -71,6 +77,6 @@ class EmailUnsubscriber(
                 htmlTitle = "$unsubscribedEmailAddress has unsubscribed from notifications of data uploads.",
                 properties = mapOf("Unsubscribed Email Address" to unsubscribedEmailAddress),
             )
-        emailSender.filterReceiversAndSentEmail(internalEmailBuilder.buildInternalEmail(unsubscriptionMessage))
+        emailSender.filterReceiversAndSendEmail(internalEmailBuilder.buildInternalEmail(unsubscriptionMessage))
     }
 }

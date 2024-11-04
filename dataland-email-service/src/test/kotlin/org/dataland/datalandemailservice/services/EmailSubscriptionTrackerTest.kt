@@ -6,7 +6,6 @@ import org.dataland.datalandemailservice.entities.EmailSubscriptionEntity
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -54,8 +53,8 @@ class EmailSubscriptionTrackerTest(
     }
 
     @Test
-    fun `validate if a new subscription entity is created for a unknown email`() {
-        val uuid = emailSubscriptionTracker.insertSubscriptionEntityIfNeededAndReturnUuid(unknownEmail)
+    fun `validate if a new subscription entity is created for an unknown email`() {
+        val uuid = emailSubscriptionTracker.addSubscription(unknownEmail)
         val newEntity = emailSubscriptionRepository.findByEmailAddress(unknownEmail)
         if (newEntity != null) {
             assertTrue(newEntity.isSubscribed, "The email subscription should be unsubscribed.")
@@ -65,29 +64,38 @@ class EmailSubscriptionTrackerTest(
     }
 
     @Test
-    fun `validate if the uuid is returned for a known email`() {
-        val uuid = emailSubscriptionTracker.insertSubscriptionEntityIfNeededAndReturnUuid(subscribedEmail)
+    fun `validate if the uuid is returned for a subscribed email`() {
+        val uuid = emailSubscriptionTracker.addSubscription(subscribedEmail)
         assertEquals(subscribedUuid, uuid)
     }
 
     @Test
-    fun `validate that the uuid  is returned for unsubscriber`() {
-        val uuid = emailSubscriptionTracker.insertSubscriptionEntityIfNeededAndReturnUuid(unsubscribedEmail)
+    fun `validate that a uuid is returned for an unsubscribed email address`() {
+        val uuid = emailSubscriptionTracker.addSubscription(unsubscribedEmail)
         assertEquals(unsubscribedUuid, uuid)
     }
 
     @Test
+    fun `validate that a uuid is returned for a unknown email address`() {
+        val uuid = emailSubscriptionTracker.addSubscription(unknownEmail)
+        val uuidString = uuid.toString()
+        val convertedUuid = UUID.fromString(uuidString)
+
+        assertEquals(uuid, convertedUuid)
+    }
+
+    @Test
     fun `validate that a subscribed email is returned as true`() {
-        emailSubscriptionTracker.emailIsSubscribed(subscribedEmail)?.let { assertTrue(it) }
+        assertTrue(emailSubscriptionTracker.isEmailSubscribed(subscribedEmail))
     }
 
     @Test
-    fun `validate that a unsubscribed email is returned as false`() {
-        emailSubscriptionTracker.emailIsSubscribed(unsubscribedEmail)?.let { assertFalse(it) }
+    fun `validate that an unsubscribed email is returned as false`() {
+        assertFalse(emailSubscriptionTracker.isEmailSubscribed(unsubscribedEmail))
     }
 
     @Test
-    fun `validate that a unknown email is returned as null`() {
-        emailSubscriptionTracker.emailIsSubscribed(unknownEmail)?.let { assertNull(it) }
+    fun `validate that an unknown email is returned as false`() {
+        assertFalse(emailSubscriptionTracker.isEmailSubscribed(unknownEmail))
     }
 }

@@ -77,7 +77,7 @@ class TemplateEmailMessageListener(
         messageQueueUtils.rejectMessageOnException {
             val receiverEmailAddress = getEmailAddressByRecipient(message.receiver)
             val templateEmailFactory = getMatchingEmailFactory(message)
-            emailSender.filterReceiversAndSentEmail(
+            emailSender.filterReceiversAndSendEmail(
                 templateEmailFactory.buildEmail(
                     receiverEmail = receiverEmailAddress,
                     properties = message.properties,

@@ -35,7 +35,7 @@ class DataRequestedClaimOwnershipEmailFactoryTest {
     @BeforeEach
     fun setup() {
         emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
-        `when`(emailSubscriptionTracker.insertSubscriptionEntityIfNeededAndReturnUuid(any())).thenReturn(subscriptionUuid)
+        `when`(emailSubscriptionTracker.addSubscription(any())).thenReturn(subscriptionUuid)
         dataRequestedClaimOwnershipEmailFactory =
             DataRequestedClaimOwnershipEmailFactory(
                 proxyPrimaryUrl = proxyPrimaryUrl,

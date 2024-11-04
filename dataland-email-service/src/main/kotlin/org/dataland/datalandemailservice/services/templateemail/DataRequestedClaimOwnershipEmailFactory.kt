@@ -47,7 +47,7 @@ class DataRequestedClaimOwnershipEmailFactory(
         receiverEmail: String,
         properties: Map<String, String?>,
     ): Email {
-        val subscriptionUuid = emailSubscriptionTracker.insertSubscriptionEntityIfNeededAndReturnUuid(receiverEmail).toString()
+        val subscriptionUuid = emailSubscriptionTracker.addSubscription(receiverEmail).toString()
         val subscriptionProperty = mapOf(keys.subscriptionUuid to subscriptionUuid)
         return super.buildEmail(receiverEmail, properties + subscriptionProperty)
     }
