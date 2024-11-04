@@ -19,6 +19,7 @@ object NotificationServiceUtils {
     fun sendInternalMessageToQueue(
         objectMapper: ObjectMapper,
         cloudEventMessageHandler: CloudEventMessageHandler,
+        receivers: List<String>,
         notificationEmailType: NotificationEmailType,
         emailProperties: Map<String, String?>,
         correlationId: String,
@@ -36,7 +37,10 @@ object NotificationServiceUtils {
 
         val internalEmailProperties = (
             emailProperties.mapKeys { keyMap[it.key] ?: "Unknown key" } +
-                mapOf("Notification Email Type" to notificationEmailType.toString())
+                mapOf(
+                    "Notification Email Type" to notificationEmailType.toString(),
+                    "Receivers" to receivers.joinToString(","),
+                )
         )
 
         val message =

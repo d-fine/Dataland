@@ -89,7 +89,7 @@ class NotificationService
                             )
                         sendEmailMessagesToQueue(notificationEmailType, emailProperties, emailReceivers, correlationId)
                         NotificationServiceUtils.sendInternalMessageToQueue(
-                            objectMapper, cloudEventMessageHandler,
+                            objectMapper, cloudEventMessageHandler, emailReceivers,
                             notificationEmailType, emailProperties, correlationId,
                         )
                     }
