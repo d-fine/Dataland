@@ -6,14 +6,20 @@ import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
+import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
+import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 
 class JsonOperationsTest {
     private val correlationId = "correlationId"
@@ -27,6 +33,10 @@ class JsonOperationsTest {
     private val frameworkTemplate = "./json/frameworkTemplate/template.json"
     private val frameworkTemplateAfterReplacement = "./json/frameworkTemplate/templateAfterReplacement.json"
     private val replacementValue = "./json/frameworkTemplate/replacementValue.json"
+    private val frameworkWithReferencedReports = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
+    private val frameworkWithoutReferencedReports = "./json/frameworkTemplate/frameworkWithoutReferencedReports.json"
+    private val frameworkWithDataSource = "./json/frameworkTemplate/frameworkWithDataSources.json"
+    private val expectedFrameworkWithDataSource = "./json/frameworkTemplate/expectedFrameworkWithDataSources.json"
 
     private fun getJsonString(resourceFile: String): String =
         ObjectMapper()
@@ -106,5 +116,83 @@ class JsonOperationsTest {
         val dataPointContent = getJsonString(currencyDataPoint)
         val companyReport = getCompanyReportFromDataSource(dataPointContent)
         assertEquals(null, companyReport)
+    }
+
+    @Test
+    fun `Check that the extracted mapping is as expected`() {
+        val inputNode = getJsonNode(frameworkWithReferencedReports)
+        val extracted = getFileReferenceToPublicationDateMapping(inputNode, "general.general.referencedReports")
+        val expected =
+            mapOf(
+                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2023-11-04"),
+                "70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2023-05-03"),
+            )
+        assertEquals(expected, extracted)
+    }
+
+    @Test
+    fun `Check that a framework without referenced reports yields an empty map`() {
+        val inputNode = getJsonNode(frameworkWithoutReferencedReports)
+        val extracted = getFileReferenceToPublicationDateMapping(inputNode, "general.general.referencedReports")
+        assertTrue(extracted.isEmpty())
+    }
+
+    @Test
+    fun `Check that updating a single data point with a publication date works as expected`() {
+        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val dataPointContent = getJsonString(currencyDataPointWithExtendedDocumentReference)
+
+        val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
+        val contentNode = jacksonObjectMapper().readTree(dataPointContent)
+
+        if (dataSource?.fileReference == null) {
+            throw IllegalArgumentException("Data point does not contain a proper data source")
+        }
+
+        val fileReferenceToPublicationDateMapping = mapOf(dataSource.fileReference to LocalDate.parse("2023-11-04"))
+
+        updatePublicationDateInJsonNode(
+            contentNode,
+            fileReferenceToPublicationDateMapping,
+            "dataSource",
+        )
+
+        val expected =
+            ExtendedDocumentReference(
+                fileReference = dataSource.fileReference,
+                fileName = dataSource.fileName,
+                page = dataSource.page,
+                tagName = dataSource.tagName,
+                publicationDate = fileReferenceToPublicationDateMapping[dataSource.fileReference],
+            )
+        val actual =
+            contentNode.get("dataSource").let {
+                objectMapper.readValue(it.toString(), ExtendedDocumentReference::class.java)
+            }
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Check that updating a framework with a publication date works as expected`() {
+        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
+        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
+
+        val frameworkContent = getJsonNode(frameworkWithDataSource)
+        val expected = getJsonNode(expectedFrameworkWithDataSource)
+
+        val fileReferenceToPublicationDateMapping =
+            mapOf(
+                "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2022-12-05"),
+                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2023-11-04"),
+            )
+
+        updatePublicationDateInJsonNode(
+            frameworkContent,
+            fileReferenceToPublicationDateMapping,
+            "",
+        )
+
+        assertEquals(expected, frameworkContent)
     }
 }

@@ -12,9 +12,12 @@ import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
+import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
 import org.dataland.datalandbackend.utils.JsonOperations.getJsonNodeFromString
 import org.dataland.datalandbackend.utils.JsonOperations.getValueFromJsonNode
+import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
+import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -148,18 +151,32 @@ class DataPointManager(
         dataManager.storeMetaDataFrom(dataSetId, uploadedDataSet, correlationId)
 
         logger.info("Processing data set with id $dataSetId for framework ${uploadedDataSet.dataType}")
+
+        val fileReferenceToPublicationDateMapping =
+            getFileReferenceToPublicationDateMapping(
+                dataSetContent = dataSetContent,
+                jsonPath = "general.general.referencedReports",
+            )
+
         val createdDataIds = mutableListOf<String>()
         expectedDataPoints.forEach {
             val dataPointJsonPath = it.key
             val dataPointIdentifier = it.value
             val dataPointContent = getValueFromJsonNode(dataSetContent, dataPointJsonPath)
             if (dataPointContent.isEmpty()) return@forEach
+            val contentJsonNode = objectMapper.readTree(dataPointContent)
+
+            updatePublicationDateInJsonNode(
+                contentJsonNode,
+                fileReferenceToPublicationDateMapping,
+                "dataSource",
+            )
             logger.info("Storing value found for $dataPointIdentifier under $dataPointJsonPath (correlation ID: $correlationId)")
 
             createdDataIds +=
                 storeDataPoint(
                     UploadableDataPoint(
-                        dataPointContent = dataPointContent,
+                        dataPointContent = objectMapper.writeValueAsString(contentJsonNode),
                         dataPointIdentifier = dataPointIdentifier,
                         companyId = companyId,
                         reportingPeriod = uploadedDataSet.reportingPeriod,

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
+import java.time.LocalDate
 
 object JsonOperations {
     val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
@@ -135,6 +136,69 @@ object JsonOperations {
             objectMapper.readValue(dataSource.toString(), ExtendedDocumentReference::class.java).toCompanyReport()
         } catch (ignore: Exception) {
             null
+        }
+    }
+
+    /**
+     * Extracts the mapping of file references to publication dates from a data set.
+     * @param dataSetContent The content of the data set as JSON node
+     * @param jsonPath The JSON path to the referenced reports
+     * @return The mapping of file references to publication dates
+     */
+    fun getFileReferenceToPublicationDateMapping(
+        dataSetContent: JsonNode,
+        jsonPath: String,
+    ): Map<String, LocalDate> {
+        val result = mutableMapOf<String, LocalDate>()
+        var referencedReportsNode = dataSetContent
+        jsonPath.split(".").forEach { path ->
+            if (referencedReportsNode.has(path)) {
+                referencedReportsNode = referencedReportsNode.get(path)
+            } else {
+                return result
+            }
+        }
+        if (referencedReportsNode.isNull || !referencedReportsNode.isObject) {
+            return result
+        }
+
+        val fields = referencedReportsNode.fields()
+        while (fields.hasNext()) {
+            val referencedReport = fields.next().value
+            if (referencedReport is ObjectNode) {
+                val publicationDate = referencedReport.get("publicationDate")
+                val fileReference = referencedReport.get("fileReference")
+                if (publicationDate != null && publicationDate.isTextual) {
+                    result[fileReference.asText()] = LocalDate.parse(publicationDate.asText())
+                }
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Updates the publication date in a JSON node.
+     * @param jsonNode The JSON node to update
+     * @param fileReferenceToPublicationDate The mapping of file references to publication dates
+     * @param currentNodeName The name of the current JSON node
+     */
+    fun updatePublicationDateInJsonNode(
+        jsonNode: JsonNode,
+        fileReferenceToPublicationDate: Map<String, LocalDate>,
+        currentNodeName: String,
+    ) {
+        if (jsonNode.isObject && currentNodeName == "dataSource" && jsonNode.has("fileReference")) {
+            val fileReference = jsonNode.get("fileReference").asText()
+            if (fileReferenceToPublicationDate.containsKey(fileReference)) {
+                (jsonNode as ObjectNode).put("publicationDate", fileReferenceToPublicationDate[fileReference].toString())
+            }
+        } else if (jsonNode.isObject) {
+            val fields = jsonNode.fields()
+            while (fields.hasNext()) {
+                val jsonField = fields.next()
+                updatePublicationDateInJsonNode(jsonField.value, fileReferenceToPublicationDate, jsonField.key)
+            }
         }
     }
 }
