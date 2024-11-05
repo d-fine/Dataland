@@ -1,5 +1,6 @@
 package org.dataland.datalandspecification.specifications
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.database.SpecificationDatabase
@@ -19,31 +20,15 @@ data class FrameworkSpecification(
     val id: String,
     val name: String,
     val businessDefinition: String,
+    val referencedReportJsonPath: String? = null,
     val schema: ObjectNode = JsonNodeFactory.instance.objectNode(),
 ) {
     /**
      * A flattened version of the schema
      */
+    @get:JsonIgnore
     val flattenedSchema: List<FrameworkSpecificationSchemaEntry>
         get() = flattenSchema(schema, "").toList()
-
-    /**
-     * Updates the schema with a new entry
-     */
-    fun setSchemaEntry(
-        jsonPath: String,
-        dataPointId: String,
-    ) {
-        val path = jsonPath.split(".")
-        var currentNode = schema
-        for (pathSegment in path) {
-            if (!currentNode.has(pathSegment)) {
-                currentNode.putObject(pathSegment)
-            }
-            currentNode = currentNode.get(pathSegment) as ObjectNode
-        }
-        currentNode.put(path.last(), dataPointId)
-    }
 
     private fun flattenSchema(
         schema: ObjectNode,

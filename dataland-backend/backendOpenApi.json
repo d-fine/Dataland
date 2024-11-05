@@ -275,8 +275,8 @@
         "tags": [
           "data-point-controller"
         ],
-        "summary": "Upload new data set.",
-        "description": "The uploaded data is added to the data store, the generated data id is returned.",
+        "summary": "Upload new data point.",
+        "description": "The uploaded data point is added to the data store, the generated data id is returned.",
         "operationId": "postDataPoint",
         "parameters": [
           {
@@ -305,7 +305,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/DataPointMetaInformation"
                 }
               }
             }
@@ -4122,16 +4122,16 @@
       "UploadableDataPoint": {
         "required": [
           "companyId",
-          "data",
-          "datapointSpecification",
+          "dataPointContent",
+          "dataPointIdentifier",
           "reportingPeriod"
         ],
         "type": "object",
         "properties": {
-          "data": {
+          "dataPointContent": {
             "type": "string"
           },
-          "datapointSpecification": {
+          "dataPointIdentifier": {
             "type": "string"
           },
           "companyId": {
@@ -4140,6 +4140,39 @@
           },
           "reportingPeriod": {
             "type": "string"
+          }
+        }
+      },
+      "DataPointMetaInformation": {
+        "required": [
+          "companyId",
+          "dataId",
+          "dataPointIdentifier",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "uploaderUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -18084,23 +18117,23 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "headquarters": {
             "type": "string"
           },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }

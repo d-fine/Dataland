@@ -36,7 +36,7 @@ private inline fun <reified T> saveSpecifications(
 ) {
     specifications.forEach { (id, specification) ->
         val file = File(folder, "$id.json")
-        objectMapper.writeValue(file, specification)
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, specification)
     }
 }
 
@@ -87,7 +87,10 @@ class FileSystemSpecificationDatabase(
         }
     }
 
-    private fun saveToDisk() {
+    /**
+     * Save the specifications to the file system.
+     */
+    fun saveToDisk() {
         validateIntegrity()
         saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointTypeSpecifications)
         saveSpecifications(File(baseFolder, "dataPoints"), objectMapper, dataPointSpecifications)
