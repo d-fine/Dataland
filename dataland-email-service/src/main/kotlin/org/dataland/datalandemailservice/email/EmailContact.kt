@@ -8,8 +8,17 @@ import com.mailjet.client.transactional.TransactionalEmail
  */
 data class EmailContact(
     val emailAddress: String,
-    val name: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
 ) {
+
+    val name: String? = when {
+        firstName != null && lastName != null -> "$firstName $lastName"
+        firstName != null -> firstName
+        lastName != null -> lastName
+        else -> null
+    }
+
     /**
      * Converts a Dataland EmailContact object into a SendContact object of the mailjet client library
      */

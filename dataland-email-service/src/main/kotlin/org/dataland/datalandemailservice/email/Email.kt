@@ -9,7 +9,8 @@ import com.mailjet.client.transactional.TransactionalEmail
 data class Email(
     val sender: EmailContact,
     val receivers: List<EmailContact>,
-    val cc: List<EmailContact>?,
+    val cc: List<EmailContact>,
+    val bcc: List<EmailContact>,
     val content: EmailContent,
 )
 
