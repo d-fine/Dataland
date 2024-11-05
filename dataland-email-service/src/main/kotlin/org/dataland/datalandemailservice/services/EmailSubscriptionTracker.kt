@@ -50,7 +50,7 @@ class EmailSubscriptionTracker(
      *  does not exist in the repository.
      */
     fun isEmailSubscribed(emailAddress: String): Boolean =
-        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: false
+        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
 
     /**
      * This functions checks whether an email contact should be filtered or not.
