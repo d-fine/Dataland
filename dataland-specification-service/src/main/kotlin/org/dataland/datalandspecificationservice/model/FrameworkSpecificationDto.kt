@@ -56,6 +56,7 @@ fun FrameworkSpecification.toDto(
         name = this.name,
         businessDefinition = this.businessDefinition,
         schema = ObjectMapper().writeValueAsString(newSchema),
+        referencedReportJsonPath = this.referencedReportJsonPath,
     )
 }
 
@@ -67,4 +68,5 @@ data class FrameworkSpecificationDto(
     val name: String,
     val businessDefinition: String,
     val schema: String,
+    val referencedReportJsonPath: String?,
 )

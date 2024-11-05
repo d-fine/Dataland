@@ -5409,19 +5409,19 @@
             "type": "integer",
             "format": "int64"
           },
+          "dataId": {
+            "type": "string"
+          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "reportingPeriod": {
-            "type": "string"
-          },
           "framework": {
             "type": "string"
           },
-          "dataId": {
+          "reportingPeriod": {
             "type": "string"
           }
         }

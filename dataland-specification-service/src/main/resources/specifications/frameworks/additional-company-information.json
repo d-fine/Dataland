@@ -2,6 +2,7 @@
   "id" : "additional-company-information",
   "name" : "Additional Company Information",
   "businessDefinition" : "Additional Company Information",
+  "referencedReportJsonPath" : "general.general.referencedReports",
   "schema" : {
     "general" : {
       "general" : {

@@ -20,6 +20,7 @@ data class FrameworkSpecification(
     val id: String,
     val name: String,
     val businessDefinition: String,
+    val referencedReportJsonPath: String? = null,
     val schema: ObjectNode = JsonNodeFactory.instance.objectNode(),
 ) {
     /**
@@ -28,24 +29,6 @@ data class FrameworkSpecification(
     @get:JsonIgnore
     val flattenedSchema: List<FrameworkSpecificationSchemaEntry>
         get() = flattenSchema(schema, "").toList()
-
-    /**
-     * Updates the schema with a new entry
-     */
-    fun setSchemaEntry(
-        jsonPath: String,
-        dataPointId: String,
-    ) {
-        val path = jsonPath.split(".")
-        var currentNode = schema
-        for (pathSegment in path) {
-            if (!currentNode.has(pathSegment)) {
-                currentNode.putObject(pathSegment)
-            }
-            currentNode = currentNode.get(pathSegment) as ObjectNode
-        }
-        currentNode.put(path.last(), dataPointId)
-    }
 
     private fun flattenSchema(
         schema: ObjectNode,
