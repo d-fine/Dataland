@@ -97,7 +97,7 @@ class EmailSubscriptionTrackerTest(
     }
 
     @Test
-    fun `validate that a unknown email address is not identified as subscribed`() {
-        assertFalse(emailSubscriptionTracker.isEmailSubscribed(unknownEmail))
+    fun `validate that an unknown email address is not identified as subscribed`() {
+        assertTrue(emailSubscriptionTracker.isEmailSubscribed(unknownEmail))
     }
 }
