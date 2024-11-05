@@ -1,5 +1,6 @@
 package org.dataland.datalandspecification.specifications
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.database.SpecificationDatabase
@@ -24,6 +25,7 @@ data class FrameworkSpecification(
     /**
      * A flattened version of the schema
      */
+    @get:JsonIgnore
     val flattenedSchema: List<FrameworkSpecificationSchemaEntry>
         get() = flattenSchema(schema, "").toList()
 

@@ -1,6 +1,0 @@
-{
-  "id": "extendedCurrencyTotalAssetsBalance",
-  "name": "Total Assets listed on Balance Sheet",
-  "businessDefinition": "The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",
-  "dataPointTypeId": "extendedCurrency"
-}

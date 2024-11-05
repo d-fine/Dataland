@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.ReferencedRepor
 import org.dataland.frameworktoolbox.specific.fixturegenerator.FrameworkFixtureGeneratorBuilder
 import org.dataland.frameworktoolbox.specific.frameworkregistryimports.FrameworkRegistryImportsUpdater
 import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
+import org.dataland.frameworktoolbox.specific.specification.FrameworkSpecificationBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.FrameworkUploadConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.FrameworkViewConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
@@ -171,7 +172,14 @@ abstract class PavedRoadFramework(
         // Empty as it's just a customization endpoint
     }
 
-    private fun compileDataModel(datalandProject: DatalandRepository) {
+    /**
+     * Can be overwritten to programmatically customize the specifications
+     */
+    open fun customizeSpecifications(specifications: FrameworkSpecificationBuilder) {
+        // Empty as it's just a customization endpoint
+    }
+
+    protected fun compileDataModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.BackendDataModel)) {
             return
         }
@@ -187,7 +195,7 @@ abstract class PavedRoadFramework(
         )
     }
 
-    private fun compileQaModel(datalandProject: DatalandRepository) {
+    protected fun compileQaModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.QaModel)) {
             return
         }
@@ -225,7 +233,7 @@ abstract class PavedRoadFramework(
         }
     }
 
-    private fun compileViewModel(datalandProject: DatalandRepository) {
+    protected fun compileViewModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.ViewPage)) {
             return
         }
@@ -234,7 +242,7 @@ abstract class PavedRoadFramework(
         viewConfig.build(into = datalandProject, isPrivateFramework)
     }
 
-    private fun compileFixtureGenerator(datalandProject: DatalandRepository) {
+    protected fun compileFixtureGenerator(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.FakeFixtures)) {
             return
         }
@@ -243,13 +251,22 @@ abstract class PavedRoadFramework(
         fixtureGenerator.build(into = datalandProject)
     }
 
-    private fun compileUploadModel(datalandProject: DatalandRepository) {
+    protected fun compileUploadModel(datalandProject: DatalandRepository) {
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.UploadPage)) {
             return
         }
         val uploadConfig = generateUploadModel(framework)
         customizeUploadModel(uploadConfig)
         uploadConfig.build(into = datalandProject)
+    }
+
+    protected fun compileSpecifications(datalandProject: DatalandRepository) {
+        if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications)) {
+            return
+        }
+
+        val specifications = framework.generateSpecifications(datalandProject)
+        specifications.build(into = datalandProject)
     }
 
     /**
@@ -277,6 +294,7 @@ abstract class PavedRoadFramework(
         compileViewModel(datalandProject)
         compileUploadModel(datalandProject)
         compileFixtureGenerator(datalandProject)
+        compileSpecifications(datalandProject)
 
         FrameworkRegistryImportsUpdater().update(datalandProject)
         datalandProject.gradleInterface.executeGradleTasks(listOf(":dataland-frontend:npm_run_typecheck"))
