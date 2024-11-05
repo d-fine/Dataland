@@ -4,7 +4,10 @@ import org.dataland.frameworktoolbox.intermediate.datapoints.DocumentSupport
 import org.dataland.frameworktoolbox.utils.capitalizeEn
 
 object SpecificationNamingConvention {
-    fun generateName(
+    /**
+     * Generate a name for a specification element
+     */
+    fun generateDataPointSpecificationName(
         documentSupport: DocumentSupport,
         identifier: String,
         dataType: String,

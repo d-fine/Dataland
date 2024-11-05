@@ -34,6 +34,9 @@ class Framework(
         return frameworkDataModelBuilder
     }
 
+    /**
+     * Generate a LegoBrick specification for this framework In-Memory.
+     */
     fun generateSpecifications(datalandRepository: DatalandRepository): FrameworkSpecificationBuilder {
         val frameworkDataModelBuilder = FrameworkSpecificationBuilder(this, datalandRepository)
 

@@ -266,7 +266,7 @@ abstract class PavedRoadFramework(
         }
 
         val specifications = framework.generateSpecifications(datalandProject)
-        specifications.build(into = datalandProject)
+        specifications.build()
     }
 
     /**

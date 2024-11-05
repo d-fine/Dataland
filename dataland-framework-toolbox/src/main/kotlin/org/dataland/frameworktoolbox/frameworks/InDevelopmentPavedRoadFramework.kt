@@ -31,6 +31,7 @@ abstract class InDevelopmentPavedRoadFramework(
         compilationStep: String,
         lambda: () -> Unit,
     ) {
+        @Suppress("TooGenericExceptionCaught")
         try {
             lambda()
         } catch (e: Exception) {

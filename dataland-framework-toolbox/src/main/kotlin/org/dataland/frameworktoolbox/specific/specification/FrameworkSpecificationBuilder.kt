@@ -7,9 +7,12 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.utils.DatalandRepository
 
+/**
+ * A builder for a framework specification
+ */
 class FrameworkSpecificationBuilder(
     val framework: Framework,
-    private val datalandRepository: DatalandRepository,
+    datalandRepository: DatalandRepository,
 ) {
     val rootCategoryBuilder =
         CategoryBuilder(
@@ -44,7 +47,10 @@ class FrameworkSpecificationBuilder(
         database.frameworkSpecifications[framework.identifier] = frameworkSpecification
     }
 
-    fun build(into: DatalandRepository) {
+    /**
+     * Build the framework specification and save it to the repository
+     */
+    fun build() {
         buildFrameworkSpecification()
         database.saveToDisk()
     }

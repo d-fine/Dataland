@@ -17,6 +17,9 @@ class CategoryBuilder(
     private val builder: FrameworkSpecificationBuilder,
     val childElements: MutableList<SpecificationElement> = mutableListOf(),
 ) : SpecificationElement {
+    /**
+     * Add a new category to the hierarchy
+     */
     fun addCategory(identifier: String): CategoryBuilder {
         val newCategory =
             CategoryBuilder(
@@ -36,13 +39,16 @@ class CategoryBuilder(
         return node
     }
 
+    /**
+     * Add a new data point specification to the framework and include it in the hierarchy
+     */
     fun addDefaultDatapointAndSpecification(
         component: ComponentBase,
         typeNameSuffix: String,
         dataPointTypeId: String,
     ): Pair<DataPointSpecification, DatapointBuilder> {
         val specificationId =
-            SpecificationNamingConvention.generateName(
+            SpecificationNamingConvention.generateDataPointSpecificationName(
                 component.documentSupport,
                 component.identifier,
                 typeNameSuffix,
@@ -63,6 +69,9 @@ class CategoryBuilder(
         return Pair(specification, datapoint)
     }
 
+    /**
+     * Add a new data point specification to the framework
+     */
     fun addDatapointSpecification(
         id: String,
         name: String,
@@ -87,6 +96,9 @@ class CategoryBuilder(
         return newDatapointSpecification
     }
 
+    /**
+     * Add a new data point to the framework hierarchy
+     */
     fun addDatapointToFrameworkHierarchy(
         identifier: String,
         dataPointId: String,

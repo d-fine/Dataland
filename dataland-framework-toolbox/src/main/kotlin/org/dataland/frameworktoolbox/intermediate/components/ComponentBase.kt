@@ -221,10 +221,16 @@ open class ComponentBase(
             emptyList()
         }
 
+    /**
+     * Build the specification for this component
+     */
     fun generateSpecification(specificationCategoryBuilder: CategoryBuilder) {
         specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultSpecification(specificationCategoryBuilder)
     }
 
+    /**
+     * Build the specification for this component using the default generator
+     */
     open fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder): Unit =
         throw NotImplementedError("This component did not implement specification generation.")
 }

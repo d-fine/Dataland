@@ -87,6 +87,9 @@ class FileSystemSpecificationDatabase(
         }
     }
 
+    /**
+     * Save the specifications to the file system.
+     */
     fun saveToDisk() {
         validateIntegrity()
         saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointTypeSpecifications)

@@ -10,5 +10,8 @@ sealed interface SpecificationElement {
     val identifier: String
     val parentCategory: CategoryBuilder?
 
+    /**
+     * Convert the element to a JsonNode for the framework schema
+     */
     fun toJsonNode(): JsonNode
 }
