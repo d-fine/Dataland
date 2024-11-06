@@ -11,7 +11,7 @@ class V1__MigrateQaStatusToEnumValues : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "ALTER TABLE review_information " +
-                "ADD qa_status_new TYPE VARCHAR(255);",
+                "ADD qa_status_new VARCHAR(255);",
         )
 
         context.connection.createStatement().execute(
