@@ -11,15 +11,25 @@ class V1__MigrateQaStatusToEnumValues : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "ALTER TABLE review_information " +
-                "ALTER COLUMN qa_status SET DATA TYPE VARCHAR(255) " +
-                "USING qa_status::VARCHAR(255)",
+                "ADD qa_status_new TYPE VARCHAR(255);",
         )
+
         context.connection.createStatement().execute(
             "UPDATE review_information " +
-                "SET qa_status = CASE " +
-                "WHEN qa_status = '1' THEN 'Accepted' " +
-                "WHEN qa_status = '2' THEN 'Rejected' " +
+                "SET qa_status_new = CASE " +
+                "WHEN qa_status = 1 THEN 'Accepted' " +
+                "WHEN qa_status = 2 THEN 'Rejected' " +
                 "END;",
+        )
+
+        context.connection.createStatement().execute(
+            "ALTER TABLE review_information " +
+                "DROP COLUMN qa_status;",
+        )
+
+        context.connection.createStatement().execute(
+            "ALTER TABLE review_information " +
+                "RENAME COLUMN qa_status_new to qa_status;",
         )
     }
 }
