@@ -145,7 +145,7 @@
     </tr>
     <tr>
         <td colspan="3">Claiming ownership process usually requires 1-2 business days.<br />
-            You will be notified by email</td>
+            You will be notified by email.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
@@ -155,6 +155,7 @@
 
 <#include "./general/why_me.ftl">
 <#include "./general/footer.ftl">
+<#include "./general/unsubscribe.ftl">
 
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.utils.NotificationServiceUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -87,6 +88,10 @@ class NotificationService
                                 unprocessedElementaryEvents,
                             )
                         sendEmailMessagesToQueue(notificationEmailType, emailProperties, emailReceivers, correlationId)
+                        NotificationServiceUtils.sendInternalMessageToQueue(
+                            objectMapper, cloudEventMessageHandler, emailReceivers,
+                            notificationEmailType, emailProperties, correlationId,
+                        )
                     }
                 }
         }

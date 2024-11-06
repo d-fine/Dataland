@@ -4,6 +4,7 @@ import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -15,30 +16,38 @@ import java.lang.StringBuilder
 @Component
 class EmailSender(
     @Autowired private val mailjetClient: MailjetClient,
+    @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    /** This method checks incoming email objects if their receivers or cc property contains the domain name
-     * "@example.com" and suppresses their forwarding to the mailjet client
-     * @param email the email to be checked
+    /**
+     *  Filters the receivers and CC addresses of the given email to exclude those with the "@example.com"
+     *  domain or those who are not subscribed, then sends the email via the Mailjet client based on the
+     *  filtered results.
+     *  @param email The email object that should be sent.
+     *  @return This method does not return any value.
      */
-    fun sendEmailWithoutTestReceivers(email: Email) {
-        val receiversWithoutExampleDomains = email.receivers.filterNot { it.emailAddress.contains("@example.com") }
-        val ccWithoutExampleDomains = email.cc?.filterNot { it.emailAddress.contains("@example.com") }
-        if (receiversWithoutExampleDomains.isEmpty() && !ccWithoutExampleDomains.isNullOrEmpty()) {
-            sendEmail(
-                Email(
-                    email.sender,
-                    ccWithoutExampleDomains,
-                    listOf(),
-                    email.content,
-                ),
-            )
-        } else if (receiversWithoutExampleDomains.isEmpty() && ccWithoutExampleDomains.isNullOrEmpty()) {
-            logger.info("No email was sent. After filtering example.com email domain no recipients remain.")
-        } else {
-            sendEmail(email)
+    fun filterReceiversAndSendEmail(email: Email) {
+        val filteredReceivers = email.receivers.filter(emailSubscriptionTracker::shouldSendToEmailContact)
+        val filteredCc = email.cc?.filter(emailSubscriptionTracker::shouldSendToEmailContact)
+        val blockedReceivers = email.receivers.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
+        val blockedCc = email.cc?.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
+        val blockedContacts = blockedReceivers + blockedCc
+        if (blockedContacts.isNotEmpty()) {
+            logger.info("Did not send email to the following blocked contacts: $blockedContacts")
         }
+        if (filteredReceivers.isEmpty() && filteredCc.isNullOrEmpty()) {
+            logger.info("No email was sent. After filtering the receivers none remained.")
+            return
+        }
+        sendEmail(
+            Email(
+                email.sender,
+                filteredReceivers,
+                filteredCc,
+                email.content,
+            ),
+        )
     }
 
     /** This method sends an email
