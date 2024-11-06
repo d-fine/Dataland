@@ -163,10 +163,10 @@ class NotificationService
                         )
                     NotificationEmailType.Summary -> {
                         val frameworkData = unprocessedElementaryEvents
-                            .groupBy(keySelector = { it.framework }, valueTransform = { it.reportingPeriod })
-                            .map {MultipleDatasetsUploadedEngagement.FrameworkData(
-                                    readableFrameworkNameMapping[it.key] ?: "",
-                                    it.value
+                            .groupBy { it.framework }
+                            .map { (framework, events) ->
+                                MultipleDatasetsUploadedEngagement.FrameworkData(
+                                    readableFrameworkNameMapping[framework] ?: "", events.map { it.reportingPeriod }
                                 )
                             }
 
