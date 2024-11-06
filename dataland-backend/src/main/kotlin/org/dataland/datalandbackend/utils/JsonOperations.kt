@@ -7,10 +7,11 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 object JsonOperations {
-    val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
+    val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
     /**
      * Converts a JSON string to a JSON node.
@@ -200,5 +201,25 @@ object JsonOperations {
                 updatePublicationDateInJsonNode(jsonField.value, fileReferenceToPublicationDate, jsonField.key)
             }
         }
+    }
+
+    fun insertReferencedReports(
+        inputJsonNode: JsonNode,
+        targetPath: String,
+        referencedReports: Map<String, CompanyReport>,
+    ) {
+        var referencedReportsNode = inputJsonNode
+        targetPath.split(".").dropLast(1).forEach { path ->
+            if (referencedReportsNode.has(path)) {
+                referencedReportsNode = referencedReportsNode.get(path)
+            } else {
+                throw IllegalArgumentException("The path $targetPath is not valid in the provided template.")
+            }
+        }
+        if (referencedReportsNode.isNull || !referencedReportsNode.isObject) {
+            throw IllegalArgumentException("The path $targetPath is not valid in the provided template.")
+        }
+
+        (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", objectMapper.valueToTree(referencedReports))
     }
 }

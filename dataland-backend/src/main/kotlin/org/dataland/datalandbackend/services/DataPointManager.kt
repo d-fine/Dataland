@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -15,6 +14,7 @@ import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDat
 import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
 import org.dataland.datalandbackend.utils.JsonOperations.getJsonNodeFromString
 import org.dataland.datalandbackend.utils.JsonOperations.getValueFromJsonNode
+import org.dataland.datalandbackend.utils.JsonOperations.insertReferencedReports
 import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
@@ -142,7 +142,6 @@ class DataPointManager(
     ): String {
         val frameworkTemplate = getFrameworkTemplate(uploadedDataSet.dataType)
 
-        // Todo: deal with the referenced reports field
         val expectedDataPoints = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val companyId = UUID.fromString(uploadedDataSet.companyId)
         val dataSetContent = getJsonNodeFromString(uploadedDataSet.data)
@@ -271,7 +270,7 @@ class DataPointManager(
             }
         }
 
-        replaceFieldInTemplate(frameworkTemplate, "referencedReports", "", objectMapper.convertValue<JsonNode>(referencedReports))
+        insertReferencedReports(frameworkTemplate, "general.general.referencedReports", referencedReports)
         logger.info("Removing fields from the template where no data was provided (correlation ID $correlationId).")
         allDataPointsInTemplate.forEach {
             if (!dataPoints.contains(it.value)) {

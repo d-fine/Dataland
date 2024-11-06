@@ -1,15 +1,17 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
 import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
+import org.dataland.datalandbackend.utils.JsonOperations.insertReferencedReports
+import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
@@ -37,15 +39,22 @@ class JsonOperationsTest {
     private val frameworkWithoutReferencedReports = "./json/frameworkTemplate/frameworkWithoutReferencedReports.json"
     private val frameworkWithDataSource = "./json/frameworkTemplate/frameworkWithDataSources.json"
     private val expectedFrameworkWithDataSource = "./json/frameworkTemplate/expectedFrameworkWithDataSources.json"
+    private val templateWithWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
+    private val referencedReports = "./json/frameworkTemplate/referencedReports.json"
 
-    private fun getJsonString(resourceFile: String): String =
-        ObjectMapper()
-            .readTree(this.javaClass.classLoader.getResourceAsStream(resourceFile))
-            .toString()
+    private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
 
     private fun getJsonNode(resourceFile: String): JsonNode =
-        ObjectMapper()
-            .readTree(this.javaClass.classLoader.getResourceAsStream(resourceFile))
+        objectMapper
+            .readTree(
+                this.javaClass.classLoader.getResourceAsStream(resourceFile)
+                    ?: throw IllegalArgumentException("Could not load the resource file"),
+            )
+
+    private inline fun <reified T> getKotlinObject(resourceFile: String): T =
+        this.javaClass.classLoader
+            .getResourceAsStream(resourceFile)
+            ?.let { objectMapper.readValue<T>(it) } ?: throw IllegalArgumentException("Could not load the object")
 
     @Test
     fun `Check that a valid input passes the validation`() {
@@ -194,5 +203,16 @@ class JsonOperationsTest {
         )
 
         assertEquals(expected, frameworkContent)
+    }
+
+    @Test
+    fun `Check that the referenced reports are correctly inserted into the framework template`() {
+        val frameworkTemplate = getJsonNode(frameworkTemplate)
+        val targetPath = "category.subcategory.referencedReports"
+        val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
+
+        insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
+        val expected = getJsonNode(templateWithWithReferencedReports)
+        assertEquals(frameworkTemplate, expected)
     }
 }
