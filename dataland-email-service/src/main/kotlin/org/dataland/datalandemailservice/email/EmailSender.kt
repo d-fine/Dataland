@@ -29,14 +29,14 @@ class EmailSender(
      */
     fun filterReceiversAndSendEmail(email: Email) {
         val filteredReceivers = email.receivers.filter(emailSubscriptionTracker::shouldSendToEmailContact)
-        val filteredCc = email.cc?.filter(emailSubscriptionTracker::shouldSendToEmailContact)
+        val filteredCc = email.cc.filter(emailSubscriptionTracker::shouldSendToEmailContact)
         val blockedReceivers = email.receivers.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
-        val blockedCc = email.cc?.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
+        val blockedCc = email.cc.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
         val blockedContacts = blockedReceivers + blockedCc
         if (blockedContacts.isNotEmpty()) {
             logger.info("Did not send email to the following blocked contacts: $blockedContacts")
         }
-        if (filteredReceivers.isEmpty() && filteredCc.isNullOrEmpty()) {
+        if (filteredReceivers.isEmpty() && filteredCc.isEmpty()) {
             logger.info("No email was sent. After filtering the receivers none remained.")
             return
         }
@@ -45,6 +45,7 @@ class EmailSender(
                 email.sender,
                 filteredReceivers,
                 filteredCc,
+                emptyList(),
                 email.content,
             ),
         )
@@ -54,7 +55,7 @@ class EmailSender(
      * @param email the email to send
      * @return a sending success indicator which is true if the sending was successful
      */
-    private fun sendEmail(email: Email) {
+    fun sendEmail(email: Email) {
         try {
             logEmail(email)
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
@@ -68,18 +69,23 @@ class EmailSender(
     }
 
     private fun logEmail(email: Email) {
-        val emailLog =
-            StringBuilder()
-                .append("Sending email with subject \"${email.content.subject}\"\n")
-                .append("(sender: ${email.sender.emailAddress})\n")
-                .append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
-                .apply {
-                    if (!email.cc.isNullOrEmpty()) {
-                        append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
-                    }
-                }.toString()
+        val emailLog = buildString {
+            append("Sending email with subject \"${email.content.subject}\"\n")
+            append("(sender: ${email.sender.emailAddress})\n")
+            append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
+
+            if (email.cc.isNotEmpty()) {
+                append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
+            }
+
+            if (email.bcc.isNotEmpty()) {
+                append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
+            }
+        }
+
         logger.info(emailLog)
     }
+
 
     private fun convertListOfEmailContactsToJoinedString(emailContacts: List<EmailContact>): String =
         emailContacts.joinToString(", ") { emailContact ->

@@ -48,7 +48,8 @@ abstract class TemplateEmailFactory(
         return Email(
             sender = senderEmailContact,
             receivers = listOf(EmailContact(receiverEmail)),
-            cc = null,
+            cc = emptyList(),
+            bcc = emptyList(),
             content = content,
         )
     }

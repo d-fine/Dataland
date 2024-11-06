@@ -45,3 +45,11 @@ fun TransactionalEmail.TransactionalEmailBuilder.integrateReceiversIntoTransacti
 fun TransactionalEmail.TransactionalEmailBuilder.integrateCcIntoTransactionalEmailBuilder(
     ccReceivers: List<EmailContact>,
 ): TransactionalEmail.TransactionalEmailBuilder = this.cc(ccReceivers.map { it.toMailjetSendContact() })
+
+/**
+ * Integrates the provided list of EmailContact objects as bcc receivers into the build of a TransactionalEmail
+ * TODO improve and add note that empty list for bcc (as well as cc) is totally fine
+ */
+fun TransactionalEmail.TransactionalEmailBuilder.integrateBccIntoTransactionalEmailBuilder(
+    bccReceivers: List<EmailContact>,
+): TransactionalEmail.TransactionalEmailBuilder = this.bcc(bccReceivers.map { it.toMailjetSendContact() })

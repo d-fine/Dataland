@@ -25,19 +25,53 @@ class EmailSubscriptionTracker(
      * @param emailAddress The email address to subscribe.
      * @return The UUID of the active/inactive subscription,
      * or the UUID of the newly created entity if no subscription existed.
+     *
+     * TODO can be removed
+     * TODO Also remove any blacklist mentioning
      */
     @Transactional
     fun addSubscriptionIfNeededAndReturnUuid(emailAddress: String): UUID {
-        val entity =
-            emailSubscriptionRepository.findByEmailAddress(emailAddress)
-                ?: emailSubscriptionRepository.save(
-                    EmailSubscriptionEntity(
-                        emailAddress = emailAddress,
-                        isSubscribed = true,
-                    ),
-                )
-
+        val entity = getOrAddSubscription(emailAddress)
         return entity.uuid
+    }
+
+    /**
+     * TODO
+     * Important: This function should be called inside a Transactional block.
+     */
+    private fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
+        emailSubscriptionRepository.findByEmailAddress(emailAddress)
+            ?: emailSubscriptionRepository.save(
+                EmailSubscriptionEntity(
+                    emailAddress = emailAddress,
+                    isSubscribed = true,
+                ),
+            )
+
+    data class FilteredContacts(
+        val allowed: Map<EmailContact, UUID>,
+        val blocked: List<EmailContact>
+    )
+
+    /**
+     *
+     */
+    @Transactional
+    fun filterContacts(contacts: List<EmailContact>): FilteredContacts {
+        val (subscribedEntities, blockedEntities) = contacts
+            .map { it to getOrAddSubscription(it.emailAddress) }
+            .partition { (_, entity) -> entity.shouldReceiveEmail() }
+
+        val subscribedMap = subscribedEntities
+            .associate { (contact, entity) -> contact to entity.uuid }
+
+        val blockedList = blockedEntities
+            .map { (contact, _) -> contact }
+
+        return FilteredContacts(
+            allowed = subscribedMap,
+            blocked = blockedList
+        )
     }
 
     /**
@@ -47,9 +81,11 @@ class EmailSubscriptionTracker(
      *
      * @param emailAddress that should be checked
      * @return `true` if the email is subscribed or no entity is found, false otherwise.
+     *
+     * TODO remove this function
      */
     fun isEmailSubscribed(emailAddress: String): Boolean =
-        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
+        TODO("remove this function")
 
     /**
      * This function checks whether an email should be sent to an email contact.
@@ -59,6 +95,5 @@ class EmailSubscriptionTracker(
      * @return Boolean which is 'true' if the contact should be filtered and 'false' otherwise.
      */
     fun shouldSendToEmailContact(emailContact: EmailContact): Boolean =
-        !emailContact.emailAddress.contains("@example.com") &&
-            isEmailSubscribed(emailContact.emailAddress)
+        TODO("remove this function")
 }

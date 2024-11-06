@@ -33,7 +33,6 @@ class EmailSubscriptionManagerTest {
     fun setup() {
         emailSender = mock(EmailSender::class.java)
         internalEmailBuilder = mock(InternalEmailBuilder::class.java)
-        emailSubscriptionManager = mock(EmailSubscriptionManager::class.java)
         emailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
 
         emailSubscriptionManager =

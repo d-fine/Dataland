@@ -1,8 +1,17 @@
 package org.dataland.datalandmessagequeueutils.messages.email
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 
-@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes(
+    JsonSubTypes.Type(value = DatasetRequestedClaimOwnership::class, name = "DatasetRequestedClaimOwnership"),
+)
 sealed class TypedEmailData
 
 interface InitializeSubscriptionUuidLater {
@@ -22,7 +31,9 @@ data class DatasetRequestedClaimOwnership(
     val message: String?,
     val firstName: String?,
     val lastName: String?) : TypedEmailData(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
+        @JsonIgnore
         override lateinit var subscriptionUuid: String
+        @JsonIgnore
         override lateinit var baseUrl: String
     }
 

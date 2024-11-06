@@ -11,6 +11,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.InitializeBaseUrlLater
+import org.dataland.datalandmessagequeueutils.messages.email.InitializeSubscriptionUuidLater
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailData
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
@@ -20,9 +22,11 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
+import java.util.*
 
 /**
  * TODO
@@ -33,7 +37,8 @@ class EmailMessageListener(
     @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val emailContactService: EmailContactService,
-    @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker
+    @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
+    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
 ) {
     private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
 
@@ -60,17 +65,16 @@ class EmailMessageListener(
             ),
         ],
     )
-    fun sendTemplateEmail(
+    fun sendEmail(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SEND_TEMPLATE_EMAIL)
+        messageQueueUtils.validateMessageType(type, MessageType.SEND_EMAIL)
 
         val message = objectMapper.readValue(jsonString, EmailMessage::class.java)
         logger.info(
-            "Received template email message of type ${message.typedEmailData::class} " +
-                    "with correlationId $correlationId.",
+            "Received template email message of type ${message.typedEmailData::class}  with correlationId $correlationId.",
         )
 
         messageQueueUtils.rejectMessageOnException {
@@ -79,27 +83,38 @@ class EmailMessageListener(
             val cc = resolveRecipients(message.cc)
             val bcc = resolveRecipients(message.bcc)
 
-            if (receivers.isEmpty() && cc.isEmpty() && bcc.isEmpty()) {
-                // TODO log there are no receivers and we bail
+            val blockedContacts = receivers.blocked + cc.blocked + bcc.blocked
+            if (blockedContacts.isNotEmpty()) {
+                logger.info("Did not send email to the following blocked contacts: $blockedContacts")
+            }
+
+            if (receivers.allowed.isEmpty() && cc.allowed.isEmpty() && bcc.allowed.isEmpty()) {
+                logger.info("No email was sent. After filtering the receivers none remained.")
                 return@rejectMessageOnException
             }
 
             val sender = emailContactService.getSenderContact()
-
-            // TODO do lateInit of vars, should be another method
-
-            val email = getEmailBuilder(message.typedEmailData).build(sender, receivers, cc, bcc)
-
-            // TODO do not filter there anymore
-            emailSender.filterReceiversAndSendEmail(email)
+            setLateInitVars(message.typedEmailData, receivers.allowed)
+            val email = getEmailBuilder(message.typedEmailData)
+                .build(sender, receivers.allowed.keys.toList(), cc.allowed.keys.toList(), bcc.allowed.keys.toList())
+            emailSender.sendEmail(email)
         }
     }
 
-    private fun resolveRecipients(recipients: List<EmailRecipient>): List<EmailContact> =
+    private fun resolveRecipients(recipients: List<EmailRecipient>): EmailSubscriptionTracker.FilteredContacts =
         recipients
             .flatMap { emailContactService.getContacts(it) }
-            .filter { emailSubscriptionTracker.shouldSendToEmailContact(it) }
+            .let { emailSubscriptionTracker.filterContacts(it) }
 
+    private fun setLateInitVars(typedEmailData: TypedEmailData, receivers: Map<EmailContact, UUID>) {
+        if (typedEmailData is InitializeBaseUrlLater) {
+            typedEmailData.baseUrl = proxyPrimaryUrl
+        }
+        if (typedEmailData is InitializeSubscriptionUuidLater) {
+            require(receivers.size == 1)
+            typedEmailData.subscriptionUuid = receivers.values.first().toString()
+        }
+    }
 
     private fun getEmailBuilder(typedEmailData: TypedEmailData): EmailBuilder {
         return when (typedEmailData) {
@@ -107,8 +122,8 @@ class EmailMessageListener(
                 EmailBuilder(
                     typedEmailData,
                     "A message from Dataland: Your ESG data are high on demand!",
-                    "/claim_ownership.html.ftl",
-                    "TODO"
+                    "/html/dataset_requested_claim_ownership.ftl",
+                    "/text/dataset_requested_claim_ownership.ftl"
                 )
         }
     }

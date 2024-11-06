@@ -134,7 +134,8 @@ abstract class PropertyStyleEmailBuilder(
         return Email(
             senderEmailContact,
             receiverEmailContacts,
-            ccEmailContacts,
+            ccEmailContacts ?: emptyList(),
+            emptyList(),
             buildPropertyStyleEmailContent(
                 subject,
                 textTitle,

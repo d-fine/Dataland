@@ -12,8 +12,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     property = "type",
 )
 @JsonSubTypes(
-    JsonSubTypes.Type(value = EmailAddressRecipient::class, name = "address"),
-    JsonSubTypes.Type(value = UserIdRecipient::class, name = "user"),
+    JsonSubTypes.Type(value = EmailAddressRecipient::class, name = "EmailAddressRecipient"),
+    JsonSubTypes.Type(value = UserIdRecipient::class, name = "UserIdRecipient"),
+    JsonSubTypes.Type(value = InternalRecipients::class, name = "InternalRecipients"),
+    JsonSubTypes.Type(value = InternalRecipients::class, name = "InternalCcRecipients"),
 )
 sealed class EmailRecipient
 

@@ -46,7 +46,7 @@ class EmailSenderTest {
         val email =
             Email(
                 senderContact, listOf(receiver),
-                listOf(), emailContent,
+                listOf(), listOf(), emailContent,
             )
         emailSender.filterReceiversAndSendEmail(email)
         verify(mockMailjetClient, times(1)).post(any())
@@ -58,7 +58,7 @@ class EmailSenderTest {
         val email =
             Email(
                 senderContact, listOf(receiver),
-                listOf(), emailContent,
+                listOf(), listOf(), emailContent,
             )
         emailSender.filterReceiversAndSendEmail(email)
         verify(mockMailjetClient, times(0)).post(any())
@@ -70,7 +70,7 @@ class EmailSenderTest {
         val email =
             Email(
                 senderContact, listOf(receiver),
-                listOf(), emailContent,
+                listOf(), listOf(), emailContent,
             )
         emailSender.filterReceiversAndSendEmail(email)
         verify(mockMailjetClient, times(0)).post(any())
@@ -80,7 +80,7 @@ class EmailSenderTest {
     fun `check that email is not sent to example domain`() {
         val cc = EmailContact("CC@example.comn")
 
-        val email = Email(senderContact, emptyList(), listOf(cc), emailContent)
+        val email = Email(senderContact, emptyList(), listOf(cc), listOf(), emailContent)
         emailSender.filterReceiversAndSendEmail(email)
         verify(mockMailjetClient, times(0)).post(any())
     }

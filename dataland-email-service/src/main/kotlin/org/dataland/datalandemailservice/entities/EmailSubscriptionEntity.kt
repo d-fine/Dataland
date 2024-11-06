@@ -34,4 +34,6 @@ data class EmailSubscriptionEntity(
      */
     @Column(name = "is_subscribed", nullable = false)
     var isSubscribed: Boolean,
-)
+) {
+    fun shouldReceiveEmail(): Boolean = isSubscribed && !emailAddress.contains("@example.com")
+}
