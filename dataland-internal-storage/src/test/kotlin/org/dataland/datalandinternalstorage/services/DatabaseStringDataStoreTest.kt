@@ -24,7 +24,6 @@ class DatabaseStringDataStoreTest {
     lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
     val correlationId = UUID.randomUUID().toString()
     val objectMapper: ObjectMapper = ObjectMapper()
-    val messageQueueUtils: MessageQueueUtils = MessageQueueUtils()
 
     @BeforeEach
     fun reset() {
@@ -34,7 +33,6 @@ class DatabaseStringDataStoreTest {
                 mockCloudEventMessageHandler,
                 mockTemporarilyCachedDataControllerApi,
                 objectMapper,
-                messageQueueUtils,
             )
         spyDatabaseStringDataStore = spy(databaseStringDataStore)
     }

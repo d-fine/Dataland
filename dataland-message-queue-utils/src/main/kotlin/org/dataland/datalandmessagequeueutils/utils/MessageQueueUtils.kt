@@ -2,13 +2,11 @@ package org.dataland.datalandmessagequeueutils.utils
 
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.json.JSONObject
-import org.springframework.stereotype.Component
 
 /**
  * MessageQueueUtils provides utility functions to be used with the processing of messages
  */
-@Component("MessageQueueUtils")
-class MessageQueueUtils {
+object MessageQueueUtils {
     /**
      * rejectMessageOnException is a wrapper function which provides a possibility to add a try catch block to a
      * function

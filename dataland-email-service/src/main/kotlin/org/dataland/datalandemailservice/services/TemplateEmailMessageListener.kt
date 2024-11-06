@@ -31,7 +31,6 @@ import org.springframework.stereotype.Service
 @Service
 class TemplateEmailMessageListener(
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
@@ -67,14 +66,14 @@ class TemplateEmailMessageListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SEND_TEMPLATE_EMAIL)
+        MessageQueueUtils.validateMessageType(type, MessageType.SEND_TEMPLATE_EMAIL)
         val message = objectMapper.readValue(jsonString, TemplateEmailMessage::class.java)
         logger.info(
             "Received template email message of type ${message.emailTemplateType.name} " +
                 "with correlationId $correlationId.",
         )
 
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val receiverEmailAddress = getEmailAddressByRecipient(message.receiver)
             val templateEmailFactory = getMatchingEmailFactory(message)
             emailSender.filterReceiversAndSendEmail(

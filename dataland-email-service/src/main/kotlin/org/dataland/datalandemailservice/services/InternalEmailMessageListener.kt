@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service
 class InternalEmailMessageListener(
     @Autowired private val internalEmailBuilder: InternalEmailBuilder,
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(InternalEmailMessageListener::class.java)
@@ -60,11 +59,11 @@ class InternalEmailMessageListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SEND_INTERNAL_EMAIL)
+        MessageQueueUtils.validateMessageType(type, MessageType.SEND_INTERNAL_EMAIL)
         val internalEmailMessage = objectMapper.readValue(jsonString, InternalEmailMessage::class.java)
         logger.info("Received internal email message with correlationId $correlationId.")
 
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             emailSender.filterReceiversAndSendEmail(internalEmailBuilder.buildInternalEmail(internalEmailMessage))
         }
     }

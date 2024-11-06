@@ -34,7 +34,6 @@ import java.util.*
 @Service
 class EmailMessageListener(
     @Autowired private val emailSender: EmailSender,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val emailContactService: EmailContactService,
     @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
@@ -70,15 +69,14 @@ class EmailMessageListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.SEND_EMAIL)
+        MessageQueueUtils.validateMessageType(type, MessageType.SEND_EMAIL)
 
         val message = objectMapper.readValue(jsonString, EmailMessage::class.java)
         logger.info(
             "Received template email message of type ${message.typedEmailData::class}  with correlationId $correlationId.",
         )
 
-        messageQueueUtils.rejectMessageOnException {
-
+        MessageQueueUtils.rejectMessageOnException {
             val receivers = resolveRecipients(message.receiver)
             val cc = resolveRecipients(message.cc)
             val bcc = resolveRecipients(message.bcc)

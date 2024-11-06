@@ -41,7 +41,6 @@ class DatabaseStringDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -74,13 +73,13 @@ class DatabaseStringDataStore(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             if (actionType == ActionType.STORE_PUBLIC_DATA) {
                 persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
             }

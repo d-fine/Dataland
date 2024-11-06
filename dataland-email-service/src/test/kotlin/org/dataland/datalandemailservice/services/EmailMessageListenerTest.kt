@@ -1,10 +1,8 @@
 package org.dataland.datalandemailservice.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.aspectj.bridge.Message
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.email.EmailSender
-import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailAddressRecipient
@@ -23,14 +21,11 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.whenever
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import java.util.*
 
 class EmailMessageListenerTest {
 
     private lateinit var emailSender: EmailSender
-    private val messageQueueUtils = MessageQueueUtils()
     private var objectMapper  = jacksonObjectMapper()
     private lateinit var emailContactService: EmailContactService
     private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
@@ -82,7 +77,7 @@ class EmailMessageListenerTest {
         }
 
         emailMessageListener = EmailMessageListener(
-            emailSender, messageQueueUtils, objectMapper, emailContactService, emailSubscriptionTracker, proxyPrimaryUrl
+            emailSender, objectMapper, emailContactService, emailSubscriptionTracker, proxyPrimaryUrl
         )
     }
 

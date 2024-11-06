@@ -25,14 +25,12 @@ import org.springframework.transaction.annotation.Transactional
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param metaDataManager service for managing metadata
- * @param messageQueueUtils contains utils to be used to handle messages for the message queue
  * @param dataManager the dataManager service for public data
 */
 @Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val dataManager: DataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -66,13 +64,13 @@ class MessageQueueListenerForDataManager(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = qaCompletedMessage.validationResult
             if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
@@ -115,7 +113,7 @@ class MessageQueueListenerForDataManager(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
+        MessageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
@@ -123,7 +121,7 @@ class MessageQueueListenerForDataManager(
             "Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: " +
                 "$correlationId.",
         )
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             dataManager.removeDataSetFromInMemoryStore(dataId)
         }
     }
