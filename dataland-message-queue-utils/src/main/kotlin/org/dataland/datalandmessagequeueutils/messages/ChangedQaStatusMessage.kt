@@ -8,6 +8,6 @@ import org.dataland.datalandbackendutils.model.QaStatus
  */
 data class ChangedQaStatusMessage(
     val changedQaStatusDataId: String,
-    val validationResult: QaStatus,
+    val updatedQaStatus: QaStatus,
     val currentlyActiveDataId: String,
 )
