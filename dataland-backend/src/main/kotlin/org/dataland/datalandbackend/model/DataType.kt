@@ -45,16 +45,5 @@ data class DataType
                 get() = allowedDataTypes.map { valueOf(it) }
         }
 
-        // Todo: consider if validations are required
-
-        /*init {
-            if (!allowedDataTypes.contains(name)) {
-                throw InvalidInputApiException(
-                    "$name is not a recognised dataType",
-                    "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values",
-                )
-            }
-        }*/
-
         override fun toString(): String = name
     }

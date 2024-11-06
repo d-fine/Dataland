@@ -1,0 +1,21 @@
+{
+  "category": {
+    "subcategory": {
+      "field": {
+        "id": "dataPoint",
+        "ref": "reference"
+      },
+      "referencedReports": null
+    }
+  },
+  "anotherCategory": {
+    "field2": {
+      "id": "anotherDataPoint",
+      "ref": "reference"
+    },
+    "field3": {
+      "id": "yetAnotherDataPoint",
+      "ref": "reference"
+    }
+  }
+}

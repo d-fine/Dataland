@@ -39,7 +39,8 @@ class JsonOperationsTest {
     private val frameworkWithoutReferencedReports = "./json/frameworkTemplate/frameworkWithoutReferencedReports.json"
     private val frameworkWithDataSource = "./json/frameworkTemplate/frameworkWithDataSources.json"
     private val expectedFrameworkWithDataSource = "./json/frameworkTemplate/expectedFrameworkWithDataSources.json"
-    private val templateWithWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
+    private val templateWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
+    private val templateWithNullReferencedReports = "./json/frameworkTemplate/templateWithNullReferencedReports.json"
     private val referencedReports = "./json/frameworkTemplate/referencedReports.json"
 
     private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
@@ -208,11 +209,31 @@ class JsonOperationsTest {
     @Test
     fun `Check that the referenced reports are correctly inserted into the framework template`() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
-        val targetPath = "category.subcategory.referencedReports"
+        val targetPath = "category.subcategory"
         val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
 
         insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
-        val expected = getJsonNode(templateWithWithReferencedReports)
+        val expected = getJsonNode(templateWithReferencedReports)
         assertEquals(frameworkTemplate, expected)
+    }
+
+    @Test
+    fun `Check that empty referenced reports are inserted as null into the framework template`() {
+        val frameworkTemplate = getJsonNode(frameworkTemplate)
+        val targetPath = "category.subcategory"
+        val referencedReports = emptyMap<String, CompanyReport>()
+
+        insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
+        val expected = getJsonNode(templateWithNullReferencedReports)
+        assertEquals(frameworkTemplate, expected)
+    }
+
+    @Test
+    fun `Check that inserting a path that does not exist throws an exception `() {
+        val frameworkTemplate = getJsonNode(frameworkTemplate)
+        val targetPath = "does.not.exist"
+        val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
+
+        assertThrows<IllegalArgumentException> { insertReferencedReports(frameworkTemplate, targetPath, referencedReports) }
     }
 }

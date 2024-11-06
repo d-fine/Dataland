@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
@@ -25,7 +24,6 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
@@ -244,8 +242,6 @@ class DataPointManager(
         val frameworkTemplate = getFrameworkTemplate(framework)
         val allDataPointsInTemplate = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val referencedReports = mutableMapOf<String, CompanyReport>()
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
-        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         logger.info("Filling template with stored data (correlation ID: $correlationId).")
         dataIds.forEach { dataId ->
@@ -270,7 +266,7 @@ class DataPointManager(
             }
         }
 
-        insertReferencedReports(frameworkTemplate, "general.general.referencedReports", referencedReports)
+        insertReferencedReports(frameworkTemplate, "general.general", referencedReports)
         logger.info("Removing fields from the template where no data was provided (correlation ID $correlationId).")
         allDataPointsInTemplate.forEach {
             if (!dataPoints.contains(it.value)) {

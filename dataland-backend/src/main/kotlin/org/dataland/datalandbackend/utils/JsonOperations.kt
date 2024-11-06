@@ -7,10 +7,14 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
+import org.slf4j.LoggerFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 object JsonOperations {
+    private val logger = LoggerFactory.getLogger(javaClass)
+    private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
+
     val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
     /**
@@ -18,7 +22,7 @@ object JsonOperations {
      * @param json The JSON string
      * @return The JSON node
      */
-    fun getJsonNodeFromString(json: String): JsonNode = ObjectMapper().readTree(json)
+    fun getJsonNodeFromString(json: String): JsonNode = objectMapper.readTree(json)
 
     /**
      * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
@@ -151,15 +155,12 @@ object JsonOperations {
         jsonPath: String,
     ): Map<String, LocalDate> {
         val result = mutableMapOf<String, LocalDate>()
-        var referencedReportsNode = dataSetContent
-        jsonPath.split(".").forEach { path ->
-            if (referencedReportsNode.has(path)) {
-                referencedReportsNode = referencedReportsNode.get(path)
-            } else {
-                return result
-            }
-        }
-        if (referencedReportsNode.isNull || !referencedReportsNode.isObject) {
+        val referencedReportsNode: JsonNode
+
+        try {
+            referencedReportsNode = navigateToNode(dataSetContent, jsonPath)
+        } catch (ex: IllegalArgumentException) {
+            logger.warn("Could not extract the fileReference to publicationDate mapping: ${ex.message}")
             return result
         }
 
@@ -176,6 +177,31 @@ object JsonOperations {
         }
 
         return result
+    }
+
+    /**
+     * Navigates to a JSON node identified by a JSON path.
+     * @param jsonNode The JSON node to navigate
+     * @param jsonPath The JSON path to the target node
+     * @return The target JSON node
+     */
+    fun navigateToNode(
+        jsonNode: JsonNode,
+        jsonPath: String,
+    ): JsonNode {
+        var currentNode = jsonNode
+        jsonPath.split(".").forEach { path ->
+            if (currentNode.has(path)) {
+                currentNode = currentNode.get(path)
+            } else {
+                throw IllegalArgumentException(JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath))
+            }
+        }
+        if (currentNode.isNull || !currentNode.isObject) {
+            throw IllegalArgumentException(JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath))
+        }
+
+        return currentNode
     }
 
     /**
@@ -203,23 +229,22 @@ object JsonOperations {
         }
     }
 
+    /**
+     * Inserts the referenced reports into a JSON node.
+     * @param inputJsonNode The JSON node to update
+     * @param targetPath The path to the target node
+     * @param referencedReports The referencedReports object to be inserted
+     */
     fun insertReferencedReports(
         inputJsonNode: JsonNode,
         targetPath: String,
         referencedReports: Map<String, CompanyReport>,
     ) {
-        var referencedReportsNode = inputJsonNode
-        targetPath.split(".").dropLast(1).forEach { path ->
-            if (referencedReportsNode.has(path)) {
-                referencedReportsNode = referencedReportsNode.get(path)
-            } else {
-                throw IllegalArgumentException("The path $targetPath is not valid in the provided template.")
-            }
+        val referencedReportsNode = navigateToNode(inputJsonNode, targetPath)
+        if (referencedReports.isEmpty()) {
+            (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", getJsonNodeFromString("null"))
+        } else {
+            (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", objectMapper.valueToTree(referencedReports))
         }
-        if (referencedReportsNode.isNull || !referencedReportsNode.isObject) {
-            throw IllegalArgumentException("The path $targetPath is not valid in the provided template.")
-        }
-
-        (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", objectMapper.valueToTree(referencedReports))
     }
 }
