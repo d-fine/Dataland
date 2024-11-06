@@ -8,13 +8,16 @@ import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.utils.NotificationServiceUtils
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
+import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
+import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailData
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -43,8 +46,6 @@ class NotificationService
         private val notificationThresholdDays: Int,
         @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
         private val elementaryEventsThreshold: Int,
-        @Value("\${dataland.community-manager.proxy-primary-url:local-dev.dataland.com}")
-        private val proxyPrimaryUrl: String,
     ) {
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -80,18 +81,19 @@ class NotificationService
                     createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
 
                     if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
-                        val emailProperties =
-                            buildEmailProperties(
+                        val typedEmailData =
+                            buildEmailData(
                                 companyInfo.companyName,
                                 notificationEmailType,
                                 latestElementaryEvent,
                                 unprocessedElementaryEvents,
-                            )
-                        sendEmailMessagesToQueue(notificationEmailType, emailProperties, emailReceivers, correlationId)
-                        NotificationServiceUtils.sendInternalMessageToQueue(
-                            objectMapper, cloudEventMessageHandler, emailReceivers,
-                            notificationEmailType, emailProperties, correlationId,
-                        )
+                                )
+                        sendEmailMessagesToQueue(typedEmailData, emailReceivers, correlationId)
+                        // TODO fix this later
+                        //NotificationServiceUtils.sendInternalMessageToQueue(
+                        //    objectMapper, cloudEventMessageHandler, emailReceivers,
+                        //    notificationEmailType, emailProperties, correlationId,
+                        //)
                     }
                 }
         }
@@ -142,83 +144,59 @@ class NotificationService
             }
         }
 
-        private fun buildSingleMailProperties(
-            companyName: String,
-            latestElementaryEvent: ElementaryEventEntity,
-        ): Map<String, String?> =
-            mapOf(
-                "companyName" to companyName,
-                "companyId" to latestElementaryEvent.companyId.toString(),
-                "framework" to readableFrameworkNameMapping[latestElementaryEvent.framework],
-                "year" to latestElementaryEvent.reportingPeriod,
-                "baseUrl" to proxyPrimaryUrl,
-            )
-
-        private fun buildSummaryMailProperties(
-            companyName: String,
-            latestElementaryEvent: ElementaryEventEntity,
-            unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        ): Map<String, String?> =
-            mapOf(
-                "companyName" to companyName,
-                "companyId" to latestElementaryEvent.companyId.toString(),
-                "frameworks" to createFrameworkAndYearStringFromElementaryEvents(unprocessedElementaryEvents),
-                "baseUrl" to proxyPrimaryUrl,
-                "numberOfDays" to
-                    getDaysPassedSinceLastNotificationEvent(
-                        latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
-                    ).toString(),
-            )
-
         /**
-         * Builds the properties of the email to send.
+         * TODO
          */
-        fun buildEmailProperties(
-            companyName: String,
-            notificationEmailType: NotificationEmailType,
-            latestElementaryEvent: ElementaryEventEntity,
-            unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        ): Map<String, String?> =
-            when (notificationEmailType) {
-                NotificationEmailType.Single -> {
-                    buildSingleMailProperties(companyName, latestElementaryEvent)
+        fun buildEmailData(
+                companyName: String,
+                notificationEmailType: NotificationEmailType,
+                latestElementaryEvent: ElementaryEventEntity,
+                unprocessedElementaryEvents: List<ElementaryEventEntity>,
+            ) : TypedEmailData =
+                when (notificationEmailType) {
+                    NotificationEmailType.Single ->
+                        SingleDatasetUploadedEngagement(
+                            companyName = companyName,
+                            companyId = latestElementaryEvent.companyId.toString(),
+                            dataType = readableFrameworkNameMapping[latestElementaryEvent.framework] ?: "",
+                            reportingPeriod = latestElementaryEvent.reportingPeriod
+                        )
+                    NotificationEmailType.Summary -> {
+                        val frameworkData = unprocessedElementaryEvents
+                            .groupBy(keySelector = { it.framework }, valueTransform = { it.reportingPeriod })
+                            .map {MultipleDatasetsUploadedEngagement.FrameworkData(
+                                    readableFrameworkNameMapping[it.key] ?: "",
+                                    it.value
+                                )
+                            }
+
+                        MultipleDatasetsUploadedEngagement(
+                            companyName = companyName,
+                            companyId = latestElementaryEvent.companyId.toString(),
+                            frameworkData = frameworkData,
+                            numberOfDays = getDaysPassedSinceLastNotificationEvent(
+                                latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
+                            )
+                        )
+                    }
                 }
-                NotificationEmailType.Summary -> {
-                    buildSummaryMailProperties(companyName, latestElementaryEvent, unprocessedElementaryEvents)
-                }
-            }
 
         /**
          * Sends messages to queue in order to make the email service send mails to all receivers.
          */
         fun sendEmailMessagesToQueue(
-            notificationEmailType: NotificationEmailType,
-            emailProperties: Map<String, String?>,
+            typedEmailData: TypedEmailData,
             emailReceivers: List<String>,
             correlationId: String,
         ) {
-            val templateEmailMessage =
-                when (notificationEmailType) {
-                    NotificationEmailType.Single -> {
-                        TemplateEmailMessage.Type.SingleNotification
-                    }
-                    NotificationEmailType.Summary -> {
-                        TemplateEmailMessage.Type.SummaryNotification
-                    }
-                }
-            emailReceivers.forEach { contactAddress ->
-                val message =
-                    TemplateEmailMessage(
-                        emailTemplateType = templateEmailMessage,
-                        receiver = TemplateEmailMessage.EmailAddressEmailRecipient(contactAddress),
-                        properties = emailProperties,
-                    )
+            emailReceivers.forEach { emailAddress ->
+                val message = EmailMessage(typedEmailData, listOf(EmailRecipient.EmailAddress(emailAddress)), emptyList(), emptyList())
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     objectMapper.writeValueAsString(message),
-                    MessageType.SEND_TEMPLATE_EMAIL,
+                    MessageType.SEND_EMAIL,
                     correlationId,
                     ExchangeName.SEND_EMAIL,
-                    RoutingKeyNames.TEMPLATE_EMAIL,
+                    RoutingKeyNames.EMAIL,
                 )
             }
         }
@@ -282,24 +260,5 @@ class NotificationService
                 )
 
             return companyOwner.isNotEmpty()
-        }
-
-        /**
-         * Summarizes meta info from multiple elementary events by writing one single string.
-         * @param elementaryEvents that need to be summarized
-         * @returns the summary-string
-         */
-        fun createFrameworkAndYearStringFromElementaryEvents(elementaryEvents: List<ElementaryEventEntity>): String {
-            val frameworkAndYears =
-                elementaryEvents
-                    .groupBy(
-                        keySelector = { it.framework },
-                        valueTransform = { it.reportingPeriod },
-                    ).mapValues { (_, years) -> years.toSortedSet() }
-
-            return frameworkAndYears.entries.joinToString("<br>") { (framework, years) ->
-                val readableFramework = readableFrameworkNameMapping[framework] ?: framework.toString()
-                "$readableFramework: ${years.joinToString(", ")}"
-            }
         }
     }

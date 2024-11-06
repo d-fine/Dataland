@@ -12,11 +12,14 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -127,24 +130,25 @@ class SingleDataRequestEmailMessageSenderTest {
                 anyString(),
             ),
         ).then {
-            val arg1 = objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
+            val arg1 = objectMapper.readValue(it.getArgument<String>(0), EmailMessage::class.java)
             val arg2 = it.getArgument<String>(1)
             val arg3 = it.getArgument<String>(2)
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertEquals(TemplateEmailMessage.Type.ClaimOwnership, arg1.emailTemplateType)
-            assertEquals(TemplateEmailMessage.EmailAddressEmailRecipient(email = "alphabet@example.com"), arg1.receiver)
-            assertEquals(datalandCompanyId, arg1.properties.getValue("companyId"))
-            assertEquals(companyName, arg1.properties.getValue("companyName"))
-            assertEquals(authenticationMock.username, arg1.properties.getValue("requesterEmail"))
-            assertEquals(readableFrameworkNameMapping.getValue(DataTypeEnum.p2p), arg1.properties.getValue("dataType"))
-            assertEquals(reportingPeriodsAsString, arg1.properties.getValue("reportingPeriods"))
-            assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", arg1.properties.getValue("message"))
-            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
+            assertTrue(arg1.typedEmailData is DatasetRequestedClaimOwnership)
+            val emailData = arg1.typedEmailData as DatasetRequestedClaimOwnership
+            assertEquals(listOf(EmailRecipient.EmailAddress(email = "alphabet@example.com")), arg1.receiver)
+            assertEquals(datalandCompanyId, emailData.companyId)
+            assertEquals(companyName, emailData.companyName)
+            assertEquals(authenticationMock.username, emailData.requesterEmail)
+            assertEquals(readableFrameworkNameMapping.getValue(DataTypeEnum.p2p), emailData.dataType)
+            assertEquals(reportingPeriods.toList().sorted(), emailData.reportingPeriods)
+            assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", emailData.message)
+            assertEquals(MessageType.SEND_EMAIL, arg2)
             assertEquals(correlationId, arg3)
             assertEquals(ExchangeName.SEND_EMAIL, arg4)
-            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
+            assertEquals(RoutingKeyNames.EMAIL, arg5)
         }
     }
 

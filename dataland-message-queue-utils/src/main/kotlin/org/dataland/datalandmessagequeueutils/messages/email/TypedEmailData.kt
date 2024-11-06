@@ -11,6 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 )
 @JsonSubTypes(
     JsonSubTypes.Type(value = DatasetRequestedClaimOwnership::class, name = "DatasetRequestedClaimOwnership"),
+    JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetRequested"),
+    JsonSubTypes.Type(value = MultipleDatasetsUploadedEngagement::class, name = "MultipleDatasetsUploadedEngagement"),
+    JsonSubTypes.Type(value = SingleDatasetUploadedEngagement::class, name = "SingleDatasetUploadedEngagement"),
 )
 sealed class TypedEmailData
 
@@ -37,3 +40,44 @@ data class DatasetRequestedClaimOwnership(
         override lateinit var baseUrl: String
     }
 
+data class AccessToDatasetRequested(
+    val companyId: String,
+    val companyName: String,
+    val dataType: String,
+    val reportingPeriods: List<String>,
+    val message: String?,
+    val requesterEmail: String?,
+    val requesterFirstName: String?,
+    val requesterLastName: String?,
+) : TypedEmailData(), InitializeBaseUrlLater {
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+data class SingleDatasetUploadedEngagement(
+    val companyId: String,
+    val companyName: String,
+    val dataType: String,
+    val reportingPeriod: String
+) : TypedEmailData(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
+    @JsonIgnore
+    override lateinit var subscriptionUuid: String
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+data class MultipleDatasetsUploadedEngagement(
+    val companyId: String,
+    val companyName: String,
+    val frameworkData: List<FrameworkData>,
+    val numberOfDays: Long?
+) : TypedEmailData(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
+    data class FrameworkData(
+        val dataType: String,
+        val reportingPeriods: List<String>
+    )
+    @JsonIgnore
+    override lateinit var subscriptionUuid: String
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}

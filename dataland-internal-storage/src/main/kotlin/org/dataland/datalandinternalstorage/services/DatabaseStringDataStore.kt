@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param messageUtils utils for handling of messages
  */
 @Component
 class DatabaseStringDataStore(

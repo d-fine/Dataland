@@ -8,11 +8,14 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InitializeBaseUrlLater
 import org.dataland.datalandmessagequeueutils.messages.email.InitializeSubscriptionUuidLater
+import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
+import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailData
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
@@ -52,7 +55,7 @@ class EmailMessageListener(
             QueueBinding(
                 value =
                 Queue(
-                    "sendTemplateEmailService",
+                    "sendEmailService",
                     arguments = [
                         Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                         Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -60,7 +63,7 @@ class EmailMessageListener(
                     ],
                 ),
                 exchange = Exchange(ExchangeName.SEND_EMAIL, declare = "false"),
-                key = [RoutingKeyNames.TEMPLATE_EMAIL],
+                key = [RoutingKeyNames.EMAIL],
             ),
         ],
     )
@@ -73,7 +76,7 @@ class EmailMessageListener(
 
         val message = objectMapper.readValue(jsonString, EmailMessage::class.java)
         logger.info(
-            "Received template email message of type ${message.typedEmailData::class}  with correlationId $correlationId.",
+            "Received email message of type ${message.typedEmailData::class} with correlationId $correlationId.",
         )
 
         MessageQueueUtils.rejectMessageOnException {
@@ -83,7 +86,7 @@ class EmailMessageListener(
 
             val blockedContacts = receivers.blocked + cc.blocked + bcc.blocked
             if (blockedContacts.isNotEmpty()) {
-                logger.info("Did not send email to the following blocked contacts: $blockedContacts")
+                logger.info("Will not send email to the following blocked contacts: $blockedContacts")
             }
 
             if (receivers.allowed.isEmpty() && cc.allowed.isEmpty() && bcc.allowed.isEmpty()) {
@@ -102,7 +105,7 @@ class EmailMessageListener(
     private fun resolveRecipients(recipients: List<EmailRecipient>): EmailSubscriptionTracker.FilteredContacts =
         recipients
             .flatMap { emailContactService.getContacts(it) }
-            .let { emailSubscriptionTracker.filterContacts(it) }
+            .let { emailSubscriptionTracker.subscribeContactsIfNeededAndFilter(it) }
 
     private fun setLateInitVars(typedEmailData: TypedEmailData, receivers: Map<EmailContact, UUID>) {
         if (typedEmailData is InitializeBaseUrlLater) {
@@ -114,8 +117,8 @@ class EmailMessageListener(
         }
     }
 
-    private fun getEmailBuilder(typedEmailData: TypedEmailData): EmailBuilder {
-        return when (typedEmailData) {
+    private fun getEmailBuilder(typedEmailData: TypedEmailData): EmailBuilder =
+        when (typedEmailData) {
             is DatasetRequestedClaimOwnership ->
                 EmailBuilder(
                     typedEmailData,
@@ -123,7 +126,28 @@ class EmailMessageListener(
                     "/html/dataset_requested_claim_ownership.ftl",
                     "/text/dataset_requested_claim_ownership.ftl"
                 )
+            is AccessToDatasetRequested ->
+                EmailBuilder(
+                    typedEmailData,
+                    "Access to your data has been requested on Dataland!",
+                    "/html/access_to_dataset_requested.ftl",
+                    "/text/access_to_dataset_requested.ftl"
+                )
+            is SingleDatasetUploadedEngagement ->
+                EmailBuilder(
+                    typedEmailData,
+                    "New data for ${typedEmailData.companyName} on Dataland",
+                    "/html/single_dataset_uploaded_engagement.ftl",
+                    "/text/single_dataset_uploaded_engagement.ftl"
+                )
+            is MultipleDatasetsUploadedEngagement ->
+                EmailBuilder(
+                    typedEmailData,
+                    "New data for ${typedEmailData.companyName} on Dataland",
+                    "/html/multiple_datasets_uploaded_engagement.ftl",
+                    "/text/multiple_datasets_uploaded_engagement.ftl"
+                )
         }
-    }
+
 
 }

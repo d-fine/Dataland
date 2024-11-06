@@ -57,7 +57,7 @@ class EmailSubscriptionTracker(
      *
      */
     @Transactional
-    fun filterContacts(contacts: List<EmailContact>): FilteredContacts {
+    fun subscribeContactsIfNeededAndFilter(contacts: List<EmailContact>): FilteredContacts {
         val (subscribedEntities, blockedEntities) = contacts
             .map { it to getOrAddSubscription(it.emailAddress) }
             .partition { (_, entity) -> entity.shouldReceiveEmail() }
@@ -85,7 +85,7 @@ class EmailSubscriptionTracker(
      * TODO remove this function
      */
     fun isEmailSubscribed(emailAddress: String): Boolean =
-        TODO("remove this function")
+        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
 
     /**
      * This function checks whether an email should be sent to an email contact.
@@ -93,7 +93,9 @@ class EmailSubscriptionTracker(
      *
      * @param emailContact that should be checked
      * @return Boolean which is 'true' if the contact should be filtered and 'false' otherwise.
+     * TODO remove this function
      */
     fun shouldSendToEmailContact(emailContact: EmailContact): Boolean =
-        TODO("remove this function")
+        !emailContact.emailAddress.contains("@example.com") &&
+                isEmailSubscribed(emailContact.emailAddress)
 }

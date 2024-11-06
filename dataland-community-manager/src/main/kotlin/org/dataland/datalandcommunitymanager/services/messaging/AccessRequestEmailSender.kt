@@ -11,6 +11,8 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
@@ -121,11 +123,6 @@ class AccessRequestEmailSender(
         emailInformation: RequestEmailInformation,
         correlationId: String,
     ) {
-        val reportingPeriods =
-            emailInformation.reportingPeriods
-                .toList()
-                .sorted()
-                .joinToString(", ")
         val companyName = companyApi.getCompanyInfo(emailInformation.datalandCompanyId).companyName
         val requester = keycloakUserControllerApiService.getUser(emailInformation.requesterUserId)
         val contacts = emailInformation.contacts + setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
@@ -133,26 +130,27 @@ class AccessRequestEmailSender(
             contacts.flatMap {
                 MessageEntity.addContact(it, companyRolesManager, emailInformation.datalandCompanyId)
             }
-        val properties =
-            mutableMapOf(
-                "companyId" to emailInformation.datalandCompanyId,
-                "companyName" to companyName,
-                "dataType" to emailInformation.dataTypeDescription,
-                "reportingPeriods" to reportingPeriods,
-                "requesterEmail" to requester.email,
-                "firstName" to requester.firstName.takeIf { it?.isNotBlank() ?: false },
-                "lastName" to requester.lastName.takeIf { it?.isNotBlank() ?: false },
-                "message" to emailInformation.message.takeIf { it?.isNotBlank() ?: false },
+
+        val emailData =
+            AccessToDatasetRequested(
+                companyId = emailInformation.datalandCompanyId,
+                companyName = companyName,
+                dataType = emailInformation.dataTypeDescription,
+                reportingPeriods = emailInformation.reportingPeriods.toList().sorted(),
+                message = emailInformation.message.takeIf { it?.isNotBlank() ?: false },
+                requesterEmail = requester.email,
+                requesterFirstName = requester.firstName.takeIf { it?.isNotBlank() ?: false },
+                requesterLastName = requester.lastName.takeIf { it?.isNotBlank() ?: false },
             )
-        receiverList.forEach {
+
+        receiverList.forEach { receiver ->
             val message =
-                TemplateEmailMessage(
-                    emailTemplateType = TemplateEmailMessage.Type.DataAccessRequested, receiver = it,
-                    properties = properties,
+                EmailMessage(
+                    emailData, listOf(receiver), emptyList(), emptyList(),
                 )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message), MessageType.SEND_TEMPLATE_EMAIL, correlationId,
-                ExchangeName.SEND_EMAIL, RoutingKeyNames.TEMPLATE_EMAIL,
+                objectMapper.writeValueAsString(message), MessageType.SEND_EMAIL, correlationId,
+                ExchangeName.SEND_EMAIL, RoutingKeyNames.EMAIL,
             )
         }
     }

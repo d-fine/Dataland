@@ -39,7 +39,6 @@ class QaEventListenerQaService
     constructor(
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired var objectMapper: ObjectMapper,
-        @Autowired var messageUtils: MessageQueueUtils,
         @Autowired val reviewQueueRepository: ReviewQueueRepository,
         @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
         @Autowired val companyDataControllerApi: CompanyDataControllerApi,
@@ -91,7 +90,7 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
             val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
 
             val comment = message.comment
@@ -103,7 +102,7 @@ class QaEventListenerQaService
             val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
             val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
-            messageUtils.rejectMessageOnException {
+            MessageQueueUtils.rejectMessageOnException {
                 logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
                 storeDatasetAsToBeReviewed(
                     dataId,
@@ -165,13 +164,13 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
             val forwardedQaMessage = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
             val documentId = forwardedQaMessage.identifier
             if (documentId.isEmpty()) {
                 throw MessageQueueRejectException("Provided document ID is empty")
             }
-            messageUtils.rejectMessageOnException {
+            MessageQueueUtils.rejectMessageOnException {
                 logger.info(
                     "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
                 )
@@ -215,7 +214,7 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
+            MessageQueueUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
             val persistAutomatedQaResultMessage =
                 objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
             if (persistAutomatedQaResultMessage.resourceType == "data") {
@@ -226,7 +225,7 @@ class QaEventListenerQaService
                     throw MessageQueueRejectException("Provided data ID is empty")
                 }
 
-                messageUtils.rejectMessageOnException {
+                MessageQueueUtils.rejectMessageOnException {
                     logger.info(
                         "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
                     )

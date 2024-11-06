@@ -30,12 +30,11 @@ import org.springframework.stereotype.Component
 */
 @Component
 class PublicDataUploadProcessor(
-    @Autowired messageUtils: MessageQueueUtils,
     @Autowired notificationService: NotificationService,
     @Autowired elementaryEventRepository: ElementaryEventRepository,
     @Autowired objectMapper: ObjectMapper,
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
-) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
+) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
     override val elementaryEventType = ElementaryEventType.UploadEvent
     override val messageType = MessageType.QA_COMPLETED
     override val actionType = null
@@ -85,7 +84,7 @@ class PublicDataUploadProcessor(
         payload: String,
         messageType: String,
     ): String {
-        messageUtils.validateMessageType(messageType, this.messageType)
+        MessageQueueUtils.validateMessageType(messageType, this.messageType)
 
         val payloadJsonObject = JSONObject(payload)
 

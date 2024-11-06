@@ -5,12 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.dataland.datalandemailservice.email.EmailContact
-import org.dataland.datalandmessagequeueutils.messages.email.EmailAddressRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.InternalCcRecipients
-import org.dataland.datalandmessagequeueutils.messages.email.InternalRecipients
-import org.dataland.datalandmessagequeueutils.messages.email.UserIdRecipient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -32,25 +29,38 @@ class EmailContactService(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    // TODO parse the values into the list
-    private val internalContacts: List<EmailContact> = emptyList()
-    private val internalCcContacts: List<EmailContact> = emptyList()
+    private val internalContacts: List<EmailContact> = getEmailContactsFromString(semicolonSeparatedInternalRecipients)
+    private val internalCcContacts: List<EmailContact> = getEmailContactsFromString(semicolonSeparatedInternalCcRecipients)
+
+    private fun getEmailContactsFromString(semicolonSeperatedEmailAddresses: String): List<EmailContact> =
+        semicolonSeperatedEmailAddresses.split(";").mapNotNull { emailAddress ->
+            if (emailAddress.isEmailAddress()) {
+                EmailContact(emailAddress)
+            } else {
+                logger.error(
+                    "One email address provided by the Spring properties has a wrong format. " +
+                    "The following email address was parsed from that prop and caused this error: $emailAddress" +
+                    "This email address is ignored.")
+                // TODO should the spring service shutdown??
+                null
+            }
+        }
 
     /**
      * TODO
      */
     fun getContacts(recipient: EmailRecipient): List<EmailContact> {
         return when (recipient) {
-            is EmailAddressRecipient ->
+            is EmailRecipient.EmailAddress ->
                 listOf(EmailContact(recipient.email))
-            is UserIdRecipient -> {
+            is EmailRecipient.UserId -> {
                 val keycloakUser = getUser(recipient.userId) ?: return emptyList()
                 val emailAddress = keycloakUser.email ?: return emptyList()
                 listOf(EmailContact(emailAddress, keycloakUser.firstName, keycloakUser.lastName))
             }
-            is InternalRecipients ->
+            is EmailRecipient.Internal ->
                 internalContacts
-            is InternalCcRecipients ->
+            is EmailRecipient.InternalCc ->
                 internalCcContacts
         }
     }
@@ -59,6 +69,7 @@ class EmailContactService(
 
     private fun getUser(userId: String): KeycloakUserInfo? {
         // TODO this is just copy paste add should be somewhere else
+        // or retrieve old logic if sufficient
         val request =
             Request
                 .Builder()

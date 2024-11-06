@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("DataRequestUpdater")
 class DataRequestUploadListener(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
@@ -62,7 +61,7 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
@@ -73,7 +72,7 @@ class DataRequestUploadListener(
             logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
             return
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
         }
     }
@@ -107,13 +106,13 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
+        MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
         val payloadJsonObject = JSONObject(payload)
         val dataId = payloadJsonObject.getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
         }
     }

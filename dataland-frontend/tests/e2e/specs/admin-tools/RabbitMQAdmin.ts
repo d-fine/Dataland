@@ -20,6 +20,7 @@ const queues = [
   'privateRequestReceivedEurodatDataStore',
   'sendInternalEmailService',
   'sendTemplateEmailService',
+  'sendEmailService',
   'privateRequestReceivedCommunityManager',
   'qaReportDeleteDataRequestReceivedQueue',
 ];

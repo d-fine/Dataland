@@ -11,7 +11,8 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -81,16 +82,17 @@ class SingleDataRequestEmailMessageSender(
         correlationId: String,
     ) {
         val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
-        val properties =
-            mapOf(
-                "companyId" to messageInformation.datalandCompanyId,
-                "companyName" to companyName,
-                "requesterEmail" to messageInformation.userAuthentication.username,
-                "firstName" to messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
-                "lastName" to messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
-                "dataType" to readableFrameworkNameMapping.getValue(messageInformation.dataType),
-                "reportingPeriods" to formatReportingPeriods(messageInformation.reportingPeriods),
-                "message" to contactMessage.takeIf { !contactMessage.isNullOrBlank() },
+
+        val emailData =
+            DatasetRequestedClaimOwnership(
+                companyId = messageInformation.datalandCompanyId,
+                companyName = companyName,
+                requesterEmail = messageInformation.userAuthentication.username,
+                firstName = messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
+                lastName = messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
+                dataType = readableFrameworkNameMapping.getValue(messageInformation.dataType),
+                reportingPeriods = messageInformation.reportingPeriods.toList().sorted(),
+                message = contactMessage.takeIf { !contactMessage.isNullOrBlank() },
             )
 
         val receiverList =
@@ -98,14 +100,14 @@ class SingleDataRequestEmailMessageSender(
                 MessageEntity.addContact(it, companyRolesManager, messageInformation.datalandCompanyId)
             }
 
-        receiverList.forEach {
+        receiverList.forEach { receiver ->
             val message =
-                TemplateEmailMessage(
-                    emailTemplateType = TemplateEmailMessage.Type.ClaimOwnership, receiver = it, properties = properties,
+                EmailMessage(
+                    emailData, listOf(receiver), emptyList(), emptyList(),
                 )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                objectMapper.writeValueAsString(message), MessageType.SEND_TEMPLATE_EMAIL, correlationId,
-                ExchangeName.SEND_EMAIL, RoutingKeyNames.TEMPLATE_EMAIL,
+                objectMapper.writeValueAsString(message), MessageType.SEND_EMAIL, correlationId,
+                ExchangeName.SEND_EMAIL, RoutingKeyNames.EMAIL,
             )
         }
     }

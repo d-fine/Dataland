@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.repositories.ElementaryEventReposit
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -23,7 +22,6 @@ class PublicDataUploadProcessorTest {
 
     @BeforeEach
     fun setup() {
-        val messageUtilsMock = mock(MessageQueueUtils::class.java)
         val notificationServiceMock = mock(NotificationService::class.java)
         val elementaryEventRepositoryMock = mock(ElementaryEventRepository::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
@@ -31,7 +29,6 @@ class PublicDataUploadProcessorTest {
 
         publicDataUploadProcessor =
             PublicDataUploadProcessor(
-                messageUtilsMock,
                 notificationServiceMock,
                 elementaryEventRepositoryMock,
                 objectMapper,
