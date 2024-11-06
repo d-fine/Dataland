@@ -27,7 +27,7 @@ class LksgDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var myDataPointManager: DataPointManager,
+    @Autowired val myDataPointManager: DataPointManager,
 ) : DataController<LksgData>(
         myDataManager,
         myMetaDataManager,
