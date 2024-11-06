@@ -29,7 +29,7 @@ class V1__MigrateQaStatusToEnumValues : BaseJavaMigration() {
 
         context.connection.createStatement().execute(
             "ALTER TABLE review_information " +
-                "RENAME COLUMN qa_status_new to qa_status;",
+                "RENAME COLUMN qa_status_new TO qa_status;",
         )
     }
 }
