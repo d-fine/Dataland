@@ -43,6 +43,9 @@ class JsonOperationsTest {
     private val templateWithNullReferencedReports = "./json/frameworkTemplate/templateWithNullReferencedReports.json"
     private val referencedReports = "./json/frameworkTemplate/referencedReports.json"
 
+    private val testDate = "2023-11-04"
+    private val anotherTestDate = "2023-05-03"
+
     private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
 
     private fun getJsonNode(resourceFile: String): JsonNode =
@@ -58,32 +61,32 @@ class JsonOperationsTest {
             ?.let { objectMapper.readValue<T>(it) } ?: throw IllegalArgumentException("Could not load the object")
 
     @Test
-    fun `Check that a valid input passes the validation`() {
+    fun `check that a valid input passes the validation`() {
         assertDoesNotThrow { validateConsistency(getJsonString(currencyDataPoint), validationClass, correlationId) }
     }
 
     @Test
-    fun `Check that unrecognized properties are rejected`() {
+    fun `check that unrecognized properties are rejected`() {
         assertThrows<UnrecognizedPropertyException> {
             validateConsistency(getJsonString(currencyDataPointWithUnknownProperty), validationClass, correlationId)
         }
     }
 
     @Test
-    fun `Check that invalid inputs are rejected`() {
+    fun `check that invalid inputs are rejected`() {
         assertThrows<IllegalArgumentException> {
             validateConsistency(getJsonString(invalidCurrencyDataPoint), validationClass, correlationId)
         }
     }
 
     @Test
-    fun `Check that invalid classes are rejected`() {
+    fun `check that invalid classes are rejected`() {
         val className = "org.dataland.datalandbackend.model.datapoints.standard.DummyDataPoint"
         assertThrows<ClassNotFoundException> { validateConsistency("{}", className, correlationId) }
     }
 
     @Test
-    fun `Check that parsing of a framework template yields the expected results`() {
+    fun `check that parsing of a framework template yields the expected results`() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
         val expectedResults =
             mapOf(
@@ -97,7 +100,7 @@ class JsonOperationsTest {
     }
 
     @Test
-    fun `Check that replacement of a single data point yields the expected result`() {
+    fun `check that replacement of a single data point yields the expected result`() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
         val replacementValue = getJsonNode(replacementValue)
         val expectedTemplate = getJsonNode(frameworkTemplateAfterReplacement)
@@ -108,7 +111,7 @@ class JsonOperationsTest {
     }
 
     @Test
-    fun `Check that extraction of the referenced report works as expected`() {
+    fun `check that extraction of the referenced report works as expected`() {
         val dataPointContent = getJsonString(currencyDataPointWithExtendedDocumentReference)
         val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
@@ -122,33 +125,33 @@ class JsonOperationsTest {
     }
 
     @Test
-    fun `Check that a data point without data source yields null`() {
+    fun `check that a data point without data source yields null`() {
         val dataPointContent = getJsonString(currencyDataPoint)
         val companyReport = getCompanyReportFromDataSource(dataPointContent)
         assertEquals(null, companyReport)
     }
 
     @Test
-    fun `Check that the extracted mapping is as expected`() {
+    fun `check that the extracted mapping is as expected`() {
         val inputNode = getJsonNode(frameworkWithReferencedReports)
         val extracted = getFileReferenceToPublicationDateMapping(inputNode, "general.general.referencedReports")
         val expected =
             mapOf(
-                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2023-11-04"),
-                "70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2023-05-03"),
+                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
+                "70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(anotherTestDate),
             )
         assertEquals(expected, extracted)
     }
 
     @Test
-    fun `Check that a framework without referenced reports yields an empty map`() {
+    fun `check that a framework without referenced reports yields an empty map`() {
         val inputNode = getJsonNode(frameworkWithoutReferencedReports)
         val extracted = getFileReferenceToPublicationDateMapping(inputNode, "general.general.referencedReports")
         assertTrue(extracted.isEmpty())
     }
 
     @Test
-    fun `Check that updating a single data point with a publication date works as expected`() {
+    fun `check that updating a single data point with a publication date works as expected`() {
         val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val dataPointContent = getJsonString(currencyDataPointWithExtendedDocumentReference)
@@ -156,11 +159,9 @@ class JsonOperationsTest {
         val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
         val contentNode = jacksonObjectMapper().readTree(dataPointContent)
 
-        if (dataSource?.fileReference == null) {
-            throw IllegalArgumentException("Data point does not contain a proper data source")
-        }
+        requireNotNull(dataSource) { "Data point does not contain a proper data source" }
 
-        val fileReferenceToPublicationDateMapping = mapOf(dataSource.fileReference to LocalDate.parse("2023-11-04"))
+        val fileReferenceToPublicationDateMapping = mapOf(dataSource.fileReference to LocalDate.parse(testDate))
 
         updatePublicationDateInJsonNode(
             contentNode,
@@ -184,7 +185,7 @@ class JsonOperationsTest {
     }
 
     @Test
-    fun `Check that updating a framework with a publication date works as expected`() {
+    fun `check that updating a framework with a publication date works as expected`() {
         val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
@@ -194,7 +195,7 @@ class JsonOperationsTest {
         val fileReferenceToPublicationDateMapping =
             mapOf(
                 "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2022-12-05"),
-                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse("2023-11-04"),
+                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
             )
 
         updatePublicationDateInJsonNode(
@@ -207,7 +208,7 @@ class JsonOperationsTest {
     }
 
     @Test
-    fun `Check that the referenced reports are correctly inserted into the framework template`() {
+    fun `check that the referenced reports are correctly inserted into the framework template`() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
         val targetPath = "category.subcategory"
         val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
@@ -218,7 +219,7 @@ class JsonOperationsTest {
     }
 
     @Test
-    fun `Check that empty referenced reports are inserted as null into the framework template`() {
+    fun `check that empty referenced reports are inserted as null into the framework template`() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
         val targetPath = "category.subcategory"
         val referencedReports = emptyMap<String, CompanyReport>()
@@ -229,7 +230,7 @@ class JsonOperationsTest {
     }
 
     @Test
-    fun `Check that inserting a path that does not exist throws an exception `() {
+    fun `check that inserting a path that does not exist throws an exception `() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
         val targetPath = "does.not.exist"
         val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)

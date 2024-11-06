@@ -6,7 +6,6 @@ import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.intermediate.group.get
 import org.springframework.stereotype.Component
 import java.io.File
 
