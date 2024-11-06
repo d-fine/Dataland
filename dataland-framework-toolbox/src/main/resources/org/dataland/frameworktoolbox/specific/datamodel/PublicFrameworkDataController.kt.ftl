@@ -28,7 +28,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired val myDataPointManager: DataPointManager
+    @Autowired var myDataPointManager: DataPointManager
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
     myDataManager,
     myMetaDataManager,
