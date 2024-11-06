@@ -1,18 +1,29 @@
-package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories
+package org.dataland.datalandqaservice.repositories
 
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetQaReviewLogEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetQaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import java.util.UUID
 
 /**
- * A JPA repository for accessing information about a reviewable dataset
+ * A JPA repository for accessing QA information of a dataset
  */
-interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
+interface DatasetQaReviewRepository : JpaRepository<DatasetQaReviewLogEntity, UUID> {
     /**
-     * A function for getting a list of dataset IDs with pending reviews ascendingly ordered by reception time
+     * Find QA information for a specific dataId.
+     */
+    fun findByDataId(dataId: String): DatasetQaReviewLogEntity?
+
+    /**
+     * Deletes QA information for a specific dataId.
+     */
+    fun deleteByDataId(dataId: String)
+
+    /**
+     * A function for getting a list of dataset IDs with pending reviews in ascending order by reception time
      */
     @Query(
         nativeQuery = true,
@@ -35,7 +46,7 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
         @Param("searchFilter") searchFilter: QaSearchFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
-    ): List<ReviewQueueResponse>
+    ): List<DatasetQaReviewResponse>
 
     /**
      * This query counts the number of unreviewed datasets that matches the search fiter and returns this number.
@@ -56,9 +67,4 @@ interface ReviewQueueRepository : JpaRepository<ReviewQueueEntity, String> {
     fun getNumberOfRequests(
         @Param("searchFilter") searchFilter: QaSearchFilter,
     ): Int
-
-    /**
-     * Deletes queued QA request for a specific dataId.
-     */
-    fun deleteByDataId(dataId: String)
 }
