@@ -4260,6 +4260,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -4352,6 +4357,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -5923,6 +5933,14 @@
               }
             ]
           },
+          "scope4GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "enterpriseValue": {
             "nullable": true,
             "allOf": [
@@ -5992,6 +6010,22 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "financedScope1AndScope2Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "financedScope3Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -18126,12 +18160,12 @@
           "headquarters": {
             "type": "string"
           },
+          "countryCode": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
           },
           "lei": {
             "type": "string",

@@ -1,66 +1,87 @@
 package org.dataland.datalandemailservice.email
 import com.mailjet.client.MailjetClient
-import com.mailjet.client.MailjetRequest
+import com.mailjet.client.MailjetResponse
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 
 class EmailSenderTest {
-    private class EmailSendException : RuntimeException()
-
     private val senderContact = EmailContact("sender@example.com")
-    private val receiversContact = EmailContact("receiver@example.com")
-    private val mockMailjetClient = mock(MailjetClient::class.java)
-    private val mockMailjetRequest = mock(MailjetRequest::class.java)
+    private val emailContent = EmailContent("", "", "")
 
-    private fun callEmailSender(): EmailSender {
-        `when`(mockMailjetClient.post(any() ?: mockMailjetRequest)).thenThrow(EmailSendException())
-        val emailSender = EmailSender(mockMailjetClient)
-        return emailSender
+    private lateinit var mockMailjetClient: MailjetClient
+    private lateinit var emailSender: EmailSender
+    private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
+
+    private val subscribedEmailAddress = "def@123.com"
+    private val unsubscribedEmailAddress = "abc@123.com"
+    private val missingEmailAddress = "xyz@123.com"
+
+    private val subscribedEmailContact = EmailContact(subscribedEmailAddress, "Subscriber")
+    private val unsubscribedEmailContact = EmailContact(subscribedEmailAddress, "Unsubscriber")
+    private val missingEmailContact = EmailContact(missingEmailAddress, "Unknown")
+
+    @BeforeEach
+    fun setup() {
+        mockMailjetClient = mock(MailjetClient::class.java)
+        `when`(mockMailjetClient.post(any())).thenReturn(MailjetResponse(200, "{}"))
+        emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
+        `when`(emailSubscriptionTracker.isEmailSubscribed(subscribedEmailAddress)).thenReturn(true)
+        `when`(emailSubscriptionTracker.isEmailSubscribed(unsubscribedEmailAddress)).thenReturn(false)
+        `when`(emailSubscriptionTracker.isEmailSubscribed(missingEmailAddress)).thenReturn(false)
+        `when`(emailSubscriptionTracker.shouldSendToEmailContact(subscribedEmailContact)).thenReturn(true)
+        `when`(emailSubscriptionTracker.shouldSendToEmailContact(unsubscribedEmailContact)).thenReturn(false)
+        `when`(emailSubscriptionTracker.shouldSendToEmailContact(missingEmailContact)).thenReturn(false)
+        emailSender = EmailSender(mockMailjetClient, emailSubscriptionTracker)
     }
 
     @Test
-    fun `check if the mail sender works as expected`() {
-        val senderContact = EmailContact("sender@dataland.com")
+    fun `check if the email is sent to subscribed email address`() {
+        val receiver = subscribedEmailContact
         val email =
             Email(
-                senderContact, listOf(senderContact),
-                listOf(), EmailContent("", "", ""),
+                senderContact, listOf(receiver),
+                listOf(), emailContent,
             )
-        val emailSender = callEmailSender()
-        assertThrows<EmailSendException> {
-            emailSender.sendEmailWithoutTestReceivers(email)
-        }
+        emailSender.filterReceiversAndSendEmail(email)
+        verify(mockMailjetClient, times(1)).post(any())
     }
 
     @Test
-    fun `check if the suppressing of test receivers works as expected  `() {
-        val senderCC = EmailContact("CC@somethingelse.comn")
+    fun `check that email is not send to not subscribed email address`() {
+        val receiver = unsubscribedEmailContact
         val email =
             Email(
-                senderContact, listOf(receiversContact), listOf(senderCC),
-                EmailContent("", "", ""),
+                senderContact, listOf(receiver),
+                listOf(), emailContent,
             )
-        val emailSender = callEmailSender()
-        assertThrows<EmailSendException> {
-            emailSender.sendEmailWithoutTestReceivers(email)
-        }
+        emailSender.filterReceiversAndSendEmail(email)
+        verify(mockMailjetClient, times(0)).post(any())
     }
 
     @Test
-    fun `check if the suppressing of test receivers and carbon copy works as expected`() {
-        val senderCC = EmailContact("CC@example.comn")
+    fun `check that email is not sent to email address not stored in the database`() {
+        val receiver = missingEmailContact
         val email =
             Email(
-                senderContact, listOf(receiversContact), listOf(senderCC),
-                EmailContent("", "", ""),
+                senderContact, listOf(receiver),
+                listOf(), emailContent,
             )
-        val emailSender = callEmailSender()
-        assertDoesNotThrow {
-            emailSender.sendEmailWithoutTestReceivers(email)
-        }
+        emailSender.filterReceiversAndSendEmail(email)
+        verify(mockMailjetClient, times(0)).post(any())
+    }
+
+    @Test
+    fun `check that email is not sent to example domain`() {
+        val cc = EmailContact("CC@example.comn")
+
+        val email = Email(senderContact, emptyList(), listOf(cc), emailContent)
+        emailSender.filterReceiversAndSendEmail(email)
+        verify(mockMailjetClient, times(0)).post(any())
     }
 }

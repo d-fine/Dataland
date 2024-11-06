@@ -40,6 +40,7 @@ tasks.register("generateClients") {
     dependsOn("generateDocumentManagerClient")
     dependsOn("generateQaServiceClient")
     dependsOn("generateCommunityManagerClient")
+    dependsOn("generateEmailServiceClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -168,6 +169,29 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
             "removeEnumValuePrefix" to false,
         ),
     )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
+tasks.register("generateEmailServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the email service."
+    group = "clients"
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.emailservice"
+    input = project.file("${project.rootDir}/dataland-email-service/emailServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/emailservice")
+            .get()
+            .toString(),
+    )
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
+    generatorName.set("typescript-axios")
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",

@@ -1,8 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
@@ -12,9 +10,13 @@ import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
+import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
 import org.dataland.datalandbackend.utils.JsonOperations.getJsonNodeFromString
 import org.dataland.datalandbackend.utils.JsonOperations.getValueFromJsonNode
+import org.dataland.datalandbackend.utils.JsonOperations.insertReferencedReports
+import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
+import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -22,7 +24,6 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.text.SimpleDateFormat
 import java.time.Instant
 import java.util.UUID
 import kotlin.jvm.optionals.getOrNull
@@ -139,7 +140,6 @@ class DataPointManager(
     ): String {
         val frameworkTemplate = getFrameworkTemplate(uploadedDataSet.dataType)
 
-        // Todo: deal with the referenced reports field
         val expectedDataPoints = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val companyId = UUID.fromString(uploadedDataSet.companyId)
         val dataSetContent = getJsonNodeFromString(uploadedDataSet.data)
@@ -148,18 +148,32 @@ class DataPointManager(
         dataManager.storeMetaDataFrom(dataSetId, uploadedDataSet, correlationId)
 
         logger.info("Processing data set with id $dataSetId for framework ${uploadedDataSet.dataType}")
+
+        val fileReferenceToPublicationDateMapping =
+            getFileReferenceToPublicationDateMapping(
+                dataSetContent = dataSetContent,
+                jsonPath = "general.general.referencedReports",
+            )
+
         val createdDataIds = mutableListOf<String>()
         expectedDataPoints.forEach {
             val dataPointJsonPath = it.key
             val dataPointIdentifier = it.value
             val dataPointContent = getValueFromJsonNode(dataSetContent, dataPointJsonPath)
             if (dataPointContent.isEmpty()) return@forEach
+            val contentJsonNode = objectMapper.readTree(dataPointContent)
+
+            updatePublicationDateInJsonNode(
+                contentJsonNode,
+                fileReferenceToPublicationDateMapping,
+                "dataSource",
+            )
             logger.info("Storing value found for $dataPointIdentifier under $dataPointJsonPath (correlation ID: $correlationId)")
 
             createdDataIds +=
                 storeDataPoint(
                     UploadableDataPoint(
-                        dataPointContent = dataPointContent,
+                        dataPointContent = objectMapper.writeValueAsString(contentJsonNode),
                         dataPointIdentifier = dataPointIdentifier,
                         companyId = companyId,
                         reportingPeriod = uploadedDataSet.reportingPeriod,
@@ -228,8 +242,6 @@ class DataPointManager(
         val frameworkTemplate = getFrameworkTemplate(framework)
         val allDataPointsInTemplate = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val referencedReports = mutableMapOf<String, CompanyReport>()
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
-        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
         logger.info("Filling template with stored data (correlation ID: $correlationId).")
         dataIds.forEach { dataId ->
@@ -254,7 +266,7 @@ class DataPointManager(
             }
         }
 
-        replaceFieldInTemplate(frameworkTemplate, "referencedReports", "", objectMapper.convertValue<JsonNode>(referencedReports))
+        insertReferencedReports(frameworkTemplate, "general.general", referencedReports)
         logger.info("Removing fields from the template where no data was provided (correlation ID $correlationId).")
         allDataPointsInTemplate.forEach {
             if (!dataPoints.contains(it.value)) {

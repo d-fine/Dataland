@@ -20,6 +20,8 @@ const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pa
 const DatasetOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetOverview.vue');
 const MyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/MyDataRequestsOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
+const UnsubscribeFromMailsPage = (): Promise<RouteComponent> =>
+  import('@/components/pages/UnsubscribeFromMailsPage.vue');
 const CompanyDataRequestsOverview = (): Promise<RouteComponent> =>
   import('@/components/pages/CompanyDataRequestsOverview.vue');
 const UploadFormWrapper = (): Promise<RouteComponent> => import('@/components/pages/UploadFormWrapper.vue');
@@ -138,6 +140,12 @@ const routes = [
     path: '/api-key',
     name: 'ApiKeysPage',
     component: ApiKeysPage,
+  },
+  {
+    path: '/unsubscribe/:subscriptionId',
+    name: 'Unsubscribe from mails',
+    props: true,
+    component: UnsubscribeFromMailsPage,
   },
   {
     path: '/dataprivacy',

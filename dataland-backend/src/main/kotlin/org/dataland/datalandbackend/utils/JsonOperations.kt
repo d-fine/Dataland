@@ -7,16 +7,22 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
+import org.slf4j.LoggerFactory
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 
 object JsonOperations {
-    val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules()
+    private val logger = LoggerFactory.getLogger(javaClass)
+    private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
+
+    val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
     /**
      * Converts a JSON string to a JSON node.
      * @param json The JSON string
      * @return The JSON node
      */
-    fun getJsonNodeFromString(json: String): JsonNode = ObjectMapper().readTree(json)
+    fun getJsonNodeFromString(json: String): JsonNode = objectMapper.readTree(json)
 
     /**
      * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
@@ -135,6 +141,110 @@ object JsonOperations {
             objectMapper.readValue(dataSource.toString(), ExtendedDocumentReference::class.java).toCompanyReport()
         } catch (ignore: Exception) {
             null
+        }
+    }
+
+    /**
+     * Extracts the mapping of file references to publication dates from a data set.
+     * @param dataSetContent The content of the data set as JSON node
+     * @param jsonPath The JSON path to the referenced reports
+     * @return The mapping of file references to publication dates
+     */
+    fun getFileReferenceToPublicationDateMapping(
+        dataSetContent: JsonNode,
+        jsonPath: String,
+    ): Map<String, LocalDate> {
+        val result = mutableMapOf<String, LocalDate>()
+        val referencedReportsNode: JsonNode
+
+        try {
+            referencedReportsNode = navigateToNode(dataSetContent, jsonPath)
+        } catch (ex: IllegalArgumentException) {
+            logger.warn("Could not extract the fileReference to publicationDate mapping: ${ex.message}")
+            return result
+        }
+
+        val fields = referencedReportsNode.fields()
+        while (fields.hasNext()) {
+            val referencedReport = fields.next().value
+            if (referencedReport is ObjectNode) {
+                val publicationDate = referencedReport.get("publicationDate")
+                val fileReference = referencedReport.get("fileReference")
+                if (publicationDate != null && publicationDate.isTextual) {
+                    result[fileReference.asText()] = LocalDate.parse(publicationDate.asText())
+                }
+            }
+        }
+
+        return result
+    }
+
+    /**
+     * Navigates to a JSON node identified by a JSON path.
+     * @param jsonNode The JSON node to navigate
+     * @param jsonPath The JSON path to the target node
+     * @return The target JSON node
+     */
+    fun navigateToNode(
+        jsonNode: JsonNode,
+        jsonPath: String,
+    ): JsonNode {
+        var currentNode = jsonNode
+        jsonPath.split(".").forEach { path ->
+            if (currentNode.has(path)) {
+                currentNode = currentNode.get(path)
+            } else {
+                throw IllegalArgumentException(JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath))
+            }
+        }
+        if (currentNode.isNull || !currentNode.isObject) {
+            throw IllegalArgumentException(JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath))
+        }
+
+        return currentNode
+    }
+
+    /**
+     * Updates the publication date in a JSON node.
+     * @param jsonNode The JSON node to update
+     * @param fileReferenceToPublicationDate The mapping of file references to publication dates
+     * @param currentNodeName The name of the current JSON node
+     */
+    fun updatePublicationDateInJsonNode(
+        jsonNode: JsonNode,
+        fileReferenceToPublicationDate: Map<String, LocalDate>,
+        currentNodeName: String,
+    ) {
+        if (jsonNode.isObject && currentNodeName == "dataSource" && jsonNode.has("fileReference")) {
+            val fileReference = jsonNode.get("fileReference").asText()
+            if (fileReferenceToPublicationDate.containsKey(fileReference)) {
+                (jsonNode as ObjectNode).put("publicationDate", fileReferenceToPublicationDate[fileReference].toString())
+            }
+        } else if (jsonNode.isObject) {
+            val fields = jsonNode.fields()
+            while (fields.hasNext()) {
+                val jsonField = fields.next()
+                updatePublicationDateInJsonNode(jsonField.value, fileReferenceToPublicationDate, jsonField.key)
+            }
+        }
+    }
+
+    /**
+     * Inserts the referenced reports into a JSON node.
+     * @param inputJsonNode The JSON node to update
+     * @param targetPath The path to the target node
+     * @param referencedReports The referencedReports object to be inserted
+     */
+    fun insertReferencedReports(
+        inputJsonNode: JsonNode,
+        targetPath: String,
+        referencedReports: Map<String, CompanyReport>,
+    ) {
+        val referencedReportsNode = navigateToNode(inputJsonNode, targetPath)
+        if (referencedReports.isEmpty()) {
+            (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", getJsonNodeFromString("null"))
+        } else {
+            (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", objectMapper.valueToTree(referencedReports))
         }
     }
 }

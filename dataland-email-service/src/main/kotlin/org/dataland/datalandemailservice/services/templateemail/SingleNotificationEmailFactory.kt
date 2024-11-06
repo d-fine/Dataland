@@ -1,6 +1,9 @@
 package org.dataland.datalandemailservice.services.templateemail
 
+import org.dataland.datalandemailservice.email.Email
+import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
@@ -12,6 +15,7 @@ class SingleNotificationEmailFactory(
     @Value("\${dataland.proxy.primary.url}") proxyPrimaryUrl: String,
     @Value("\${dataland.notification.sender.address}") senderEmail: String,
     @Value("\${dataland.notification.sender.name}") senderName: String,
+    @Autowired val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) : TemplateEmailFactory(
         proxyPrimaryUrl = proxyPrimaryUrl,
         senderEmail = senderEmail,
@@ -24,6 +28,7 @@ class SingleNotificationEmailFactory(
             val framework = "framework"
             val year = "year"
             val baseUrl = "baseUrl"
+            val subscriptionUuid = "subscriptionUuid"
         }
 
     override val builderForType = TemplateEmailMessage.Type.SingleNotification
@@ -32,11 +37,21 @@ class SingleNotificationEmailFactory(
         setOf(
             keys.companyId, keys.companyName,
             keys.framework, keys.year, keys.baseUrl,
+            keys.subscriptionUuid,
         )
 
     override val optionalProperties = setOf<String>()
 
     override val templateFile = "/ir_engagement_data_upload_single.html.ftl"
+
+    override fun buildEmail(
+        receiverEmail: String,
+        properties: Map<String, String?>,
+    ): Email {
+        val subscriptionUuid = emailSubscriptionTracker.addSubscriptionIfNeededAndReturnUuid(receiverEmail).toString()
+        val subscriptionProperty = mapOf(keys.subscriptionUuid to subscriptionUuid)
+        return super.buildEmail(receiverEmail, properties + subscriptionProperty)
+    }
 
     override fun buildSubject(properties: Map<String, String?>): String = "New data for ${properties[keys.companyName]} on Dataland"
 
