@@ -11,7 +11,7 @@ class V9__DropDataTypeEnumConstraint : BaseJavaMigration() {
     override fun migrate(context: Context) {
         val sql =
             """
-            ALTER TABLE elementary_events
+            ALTER TABLE IF EXISTS elementary_events
                 DROP CONSTRAINT IF EXISTS elementary_events_framework_check;
             """.trimIndent()
 
