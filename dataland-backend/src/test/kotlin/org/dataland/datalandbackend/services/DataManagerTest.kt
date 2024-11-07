@@ -264,17 +264,32 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check a MessageQueueRejectException if we got the wrong message type to routing key `() {
+    fun `check a MessageQueueRejectException if we got no data for currently active `() {
         // fill with code
     }
 
     @Test
-    fun `check a MessageQueueRejectException if one of the data ids is empty`() {
-        // generate some data in the database so that we can change active to inactive and change the status of a dataset
+    fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
+        val messageWithChangedQAStatus =
+            objectMapper.writeValueAsString(
+                QAStatusChangeMessage(
+                    changedQaStatusDataId = "453545",
+                    updatedQaStatus = QaStatus.Accepted,
+                    currentlyActiveDataId = "1273091",
+                ),
+            )
+        val thrown =
+            assertThrows<MessageQueueRejectException> {
+                messageQueueListenerForDataManager.changeQaStatus(
+                    messageWithChangedQAStatus,
+                    "",
+                    MessageType.QA_STATUS_CHANGED,
+                )
+            }
     }
 
     @Test
-    fun `check a AmqpRejectAndDontRequeueException if one of the data ids is empty`() {
+    fun `check an AmqpRejectAndDontRequeueException if one of the data ids is empty`() {
         val messageWithEmptyDataIDs =
             objectMapper.writeValueAsString(
                 QAStatusChangeMessage(
