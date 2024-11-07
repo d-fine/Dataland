@@ -12,7 +12,7 @@ data class TemplateEmailMessage(
     val properties: Map<String, String?>,
 ) {
     /**
-     * This specifies the types of a template email.
+     * This specifies the types of a template email
      */
     enum class Type {
         ClaimOwnership,
