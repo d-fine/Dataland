@@ -6,8 +6,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
+import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -30,8 +29,7 @@ import org.springframework.transaction.annotation.Transactional
 class QaReportEventListenerService(
     @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val reportManager: QaReportManager,
-    @Autowired val reviewQueueRepository: ReviewQueueRepository,
-    @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
+    @Autowired val qaReviewRepository: QaReviewRepository,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -77,8 +75,7 @@ class QaReportEventListenerService(
         messageUtils.rejectMessageOnException {
             if (actionType == ActionType.DELETE_DATA) {
                 reportManager.deleteAllQaReportsForDataId(dataId)
-                reviewQueueRepository.deleteByDataId(dataId)
-                reviewHistoryRepository.deleteByDataId(dataId)
+                qaReviewRepository.deleteByDataId(dataId)
             }
         }
     }

@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -12,10 +13,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewLogEntity
+import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -40,8 +39,7 @@ class QaEventListenerQaService
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired var objectMapper: ObjectMapper,
         @Autowired var messageUtils: MessageQueueUtils,
-        @Autowired val reviewQueueRepository: ReviewQueueRepository,
-        @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
+        @Autowired val datasetQaReviewRepository: QaReviewRepository,
         @Autowired val companyDataControllerApi: CompanyDataControllerApi,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,
     ) {
@@ -86,7 +84,7 @@ class QaEventListenerQaService
             ],
         )
         @Transactional
-        fun addDataToQueue(
+        fun addDataSetToQaReviewQueue(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
@@ -105,33 +103,41 @@ class QaEventListenerQaService
 
             messageUtils.rejectMessageOnException {
                 logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-                storeDatasetAsToBeReviewed(
-                    dataId,
-                    dataMetaInfo.companyId,
-                    companyName,
-                    dataMetaInfo.dataType.value,
-                    dataMetaInfo.reportingPeriod,
+                storeDatasetWithQaStatusPending(
+                    dataId = dataId,
+                    companyId = dataMetaInfo.companyId,
+                    companyName = companyName,
+                    dataType = dataMetaInfo.dataType,
+                    reportingPeriod = dataMetaInfo.reportingPeriod,
+                    uploaderId = dataMetaInfo.uploaderUserId ?: "",
                     comment,
                 )
             }
         }
 
-        private fun storeDatasetAsToBeReviewed(
+        /**
+         * Save new QaReviewLogEntity for new pending dataset in database
+         */
+        @Suppress("LongParameterList")
+        private fun storeDatasetWithQaStatusPending(
             dataId: String,
             companyId: String,
             companyName: String,
-            framework: String,
+            dataType: DataTypeEnum,
             reportingPeriod: String,
+            uploaderId: String,
             comment: String,
         ) {
-            reviewQueueRepository.save(
-                ReviewQueueEntity(
+            datasetQaReviewRepository.save(
+                QaReviewLogEntity(
                     dataId = dataId,
                     companyId = companyId,
                     companyName = companyName,
-                    framework = framework,
+                    dataType = dataType,
                     reportingPeriod = reportingPeriod,
-                    receptionTime = Instant.now().toEpochMilli(),
+                    timestamp = Instant.now().toEpochMilli(),
+                    qaStatus = QaStatus.Pending,
+                    reviewerId = uploaderId,
                     comment = comment,
                 ),
             )
@@ -180,7 +186,7 @@ class QaEventListenerQaService
                         QaCompletedMessage(documentId, QaStatus.Accepted, reviewerIdAutomatedQaService, null),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    messageToSend, MessageType.QA_COMPLETED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+                    messageToSend, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
                     RoutingKeyNames.DOCUMENT,
                 )
             }
@@ -226,6 +232,9 @@ class QaEventListenerQaService
                     throw MessageQueueRejectException("Provided data ID is empty")
                 }
 
+                val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+                val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+
                 messageUtils.rejectMessageOnException {
                     logger.info(
                         "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
@@ -233,13 +242,17 @@ class QaEventListenerQaService
                     logger.info(
                         "Assigning quality status $validationResult and reviewerId $reviewerId to dataset with ID $dataId",
                     )
-                    reviewHistoryRepository.save(
-                        ReviewInformationEntity(
+                    datasetQaReviewRepository.save(
+                        QaReviewLogEntity(
                             dataId = dataId,
-                            receptionTime = System.currentTimeMillis(),
+                            companyId = dataMetaInfo.companyId,
+                            companyName = companyName,
+                            dataType = dataMetaInfo.dataType,
+                            reportingPeriod = dataMetaInfo.reportingPeriod,
+                            timestamp = Instant.now().toEpochMilli(),
                             qaStatus = validationResult,
-                            reviewerKeycloakId = reviewerId,
-                            message = persistAutomatedQaResultMessage.message,
+                            reviewerId = reviewerId,
+                            comment = persistAutomatedQaResultMessage.message,
                         ),
                     )
                 }

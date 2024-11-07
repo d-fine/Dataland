@@ -8,13 +8,13 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.QAStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.api.QaApi
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetQaReviewLogEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetQaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewLogEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.toDatasetQaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
-import org.dataland.datalandqaservice.repositories.DatasetQaReviewRepository
+import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
@@ -30,7 +30,7 @@ import java.util.UUID.randomUUID
  */
 @RestController
 class QaController(
-    @Autowired var datasetQaReviewRepository: DatasetQaReviewRepository,
+    @Autowired var datasetQaReviewRepository: QaReviewRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired var qaReviewManager: QaReviewManager,
@@ -44,7 +44,7 @@ class QaController(
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
-    ): ResponseEntity<List<DatasetQaReviewResponse>> {
+    ): ResponseEntity<List<QaReviewResponse>> {
         logger.info("Received request to respond with information about unreviewed datasets")
         return ResponseEntity.ok(
             qaReviewManager.getInfoOnUnreviewedDatasets(
@@ -55,7 +55,7 @@ class QaController(
     }
 
     @Transactional
-    override fun getQaReviewEventsByDataId(dataId: UUID): ResponseEntity<DatasetQaReviewResponse> {
+    override fun getQaReviewEventsByDataId(dataId: UUID): ResponseEntity<QaReviewResponse> {
         logger.info(
             "Received request to respond with the review information " +
                 "of the dataset with identifier $dataId",
@@ -87,7 +87,7 @@ class QaController(
         val datasetQaReviewLogEntry = validateDataIdAndGetDataReviewStatus(dataId)
         logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId")
         datasetQaReviewRepository.save(
-            DatasetQaReviewLogEntity(
+            QaReviewLogEntity(
                 dataId = dataId,
                 companyId = datasetQaReviewLogEntry.companyId,
                 companyName = datasetQaReviewLogEntry.companyName,
@@ -101,7 +101,7 @@ class QaController(
         )
 
         val qaStatusChangeMessage =
-            QAStatusChangeMessage(
+            QaStatusChangeMessage(
                 changedQaStatusDataId = dataId,
                 updatedQaStatus = qaStatus,
                 currentlyActiveDataId =
@@ -141,7 +141,7 @@ class QaController(
      * @param dataId the ID of the data to validate
      * @returns the ReviewQueueEntity corresponding the dataId
      */
-    fun validateDataIdAndGetDataReviewStatus(dataId: String): DatasetQaReviewLogEntity =
+    fun validateDataIdAndGetDataReviewStatus(dataId: String): QaReviewLogEntity =
         datasetQaReviewRepository.findByDataId(dataId)
             ?: throw InvalidInputApiException(
                 "There is no reviewable dataset with ID $dataId.",
@@ -156,7 +156,7 @@ class QaController(
      * @param comment optional message attached to the QA completion
      */
     fun sendQaStatusChangeMessage(
-        qaStatusChangeMessage: QAStatusChangeMessage,
+        qaStatusChangeMessage: QaStatusChangeMessage,
         correlationId: String,
     ) {
         logger.info("Send QA status change message to messageQueue.")

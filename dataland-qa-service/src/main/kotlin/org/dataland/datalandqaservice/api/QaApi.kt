@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetQaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -44,7 +44,7 @@ interface QaApi {
         @RequestParam companyName: String?,
         @RequestParam(defaultValue = "10") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
-    ): ResponseEntity<List<DatasetQaReviewResponse>>
+    ): ResponseEntity<List<QaReviewResponse>>
 
     /**
      * A method to get the QA review status of an uploaded dataset for a given identifier
@@ -74,7 +74,7 @@ interface QaApi {
     )
     fun getQaReviewEventsByDataId(
         @PathVariable("dataId") dataId: UUID,
-    ): ResponseEntity<DatasetQaReviewResponse>
+    ): ResponseEntity<QaReviewResponse>
 
     /**
      * Assigns a QA review status to an unreviewed dataset

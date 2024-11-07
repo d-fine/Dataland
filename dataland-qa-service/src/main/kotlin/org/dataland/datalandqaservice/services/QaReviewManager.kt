@@ -5,9 +5,9 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
+import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 class QaReviewManager(
-    @Autowired val reviewQueueRepository: ReviewQueueRepository,
+    @Autowired val qaReviewRepository: QaReviewRepository,
     @Autowired val companyDataControllerApi: CompanyDataControllerApi,
     @Autowired val exceptionForwarder: ExceptionForwarder,
 ) {
@@ -34,9 +34,9 @@ class QaReviewManager(
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
-    ): List<ReviewQueueResponse> {
+    ): List<QaReviewResponse> {
         val offset = (chunkIndex) * (chunkSize)
-        return reviewQueueRepository.getSortedPendingMetadataSet(
+        return qaReviewRepository.getSortedPendingMetadataSet(
             QaSearchFilter(
                 dataTypes = dataTypes,
                 reportingPeriods = reportingPeriods,
@@ -59,7 +59,7 @@ class QaReviewManager(
         reportingPeriods: Set<String>?,
         companyName: String?,
     ): Int =
-        reviewQueueRepository.getNumberOfRequests(
+        qaReviewRepository.getNumberOfRequests(
             QaSearchFilter(
                 dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
                 companyIds = getCompanyIdsForCompanyName(companyName),

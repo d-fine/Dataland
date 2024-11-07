@@ -1,8 +1,8 @@
 package org.dataland.datalandqaservice.repositories
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetQaReviewLogEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetQaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewLogEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -12,11 +12,11 @@ import java.util.UUID
 /**
  * A JPA repository for accessing QA information of a dataset
  */
-interface DatasetQaReviewRepository : JpaRepository<DatasetQaReviewLogEntity, UUID> {
+interface QaReviewRepository : JpaRepository<QaReviewLogEntity, UUID> {
     /**
      * Find QA information for a specific dataId.
      */
-    fun findByDataId(dataId: String): DatasetQaReviewLogEntity?
+    fun findByDataId(dataId: String): QaReviewLogEntity?
 
     /**
      * Deletes QA information for a specific dataId.
@@ -30,7 +30,7 @@ interface DatasetQaReviewRepository : JpaRepository<DatasetQaReviewLogEntity, UU
         companyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
-    ): List<DatasetQaReviewLogEntity>?
+    ): List<QaReviewLogEntity>?
 
     /**
      * A function for getting a list of dataset IDs with pending reviews in ascending order by reception time
@@ -56,7 +56,7 @@ interface DatasetQaReviewRepository : JpaRepository<DatasetQaReviewLogEntity, UU
         @Param("searchFilter") searchFilter: QaSearchFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
-    ): List<DatasetQaReviewResponse>
+    ): List<QaReviewResponse>
 
     /**
      * This query counts the number of unreviewed datasets that matches the search fiter and returns this number.

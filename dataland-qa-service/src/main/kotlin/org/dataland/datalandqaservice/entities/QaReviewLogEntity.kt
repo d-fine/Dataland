@@ -15,7 +15,7 @@ import java.util.UUID
  */
 @Entity
 @Table(name = "dataset_qa_review_log")
-data class DatasetQaReviewLogEntity(
+data class QaReviewLogEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val eventId: UUID? = null,
