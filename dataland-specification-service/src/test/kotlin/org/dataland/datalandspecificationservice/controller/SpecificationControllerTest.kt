@@ -1,5 +1,6 @@
 package org.dataland.datalandspecificationservice.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandspecificationservice.DatalandSpecificationService
 import org.junit.jupiter.api.Test
