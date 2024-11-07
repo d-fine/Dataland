@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.db.migration
+package db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -15,7 +15,7 @@ class V1_1__CreateReviewInformationTables : BaseJavaMigration() {
                 "reception_time smallint NOT NULL, " +
                 "qa_status smallint NOT NULL, " +
                 "reviewer_keycloak_id varchar(255) NOT NULL, " +
-                "message varchar(255) NOT NULL, " +
+                "message varchar(255), " +
                 "PRIMARY KEY (data_id)" +
                 ")",
         )
