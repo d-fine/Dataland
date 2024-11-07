@@ -11,10 +11,10 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  */
 @Converter(autoApply = true)
 class DataTypEnumAttributeConverter : AttributeConverter<DataTypeEnum, String> {
-    override fun convertToDatabaseColumn(dataType: DataTypeEnum?): String? = dataType?.value
+    override fun convertToDatabaseColumn(dataType: DataTypeEnum?): String? = dataType?.name
 
     override fun convertToEntityAttribute(string: String?): DataTypeEnum? =
         string?.let {
-            DataTypeEnum.entries.find { it.value == string } ?: throw IllegalArgumentException("Unknown dataType $string")
+            DataTypeEnum.entries.find { it.name == string } ?: throw IllegalArgumentException("Unknown dataType $string")
         }
 }
