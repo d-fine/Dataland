@@ -246,11 +246,9 @@ class DataPointManager(
         logger.info("Filling template with stored data (correlation ID: $correlationId).")
         dataIds.forEach { dataId ->
             val currentDataPoint = metaDataManager.getDataMetaInformationByDataId(dataId).dataType
-            if (!allDataPointsInTemplate.containsValue(currentDataPoint)) {
-                throw IllegalArgumentException(
-                    "Data point $currentDataPoint is not part of the framework template for $framework " +
-                        "(correlation ID $correlationId).",
-                )
+            require(allDataPointsInTemplate.containsValue(currentDataPoint)) {
+                "Data point $currentDataPoint is not part of the framework template for $framework " +
+                    "(correlation ID $correlationId)."
             }
             dataPoints.add(currentDataPoint)
             val dataPointContent = retrieveDataPoint(dataId, currentDataPoint, correlationId).data

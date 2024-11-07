@@ -91,7 +91,7 @@ object JsonOperations {
 
         if (frameworkTemplate.has(simpleFieldName) && expectedFullPath == fullFieldName) {
             (frameworkTemplate as ObjectNode).set<JsonNode?>(simpleFieldName, replacementValue)
-        } else if (frameworkTemplate.isObject) {
+        } else {
             val fields = frameworkTemplate.fields()
             while (fields.hasNext()) {
                 val jsonField = fields.next()

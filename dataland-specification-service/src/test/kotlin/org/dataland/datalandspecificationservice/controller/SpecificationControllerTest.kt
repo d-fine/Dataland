@@ -1,6 +1,5 @@
 package org.dataland.datalandspecificationservice.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandspecificationservice.DatalandSpecificationService
 import org.junit.jupiter.api.Test
@@ -52,7 +51,7 @@ class SpecificationControllerTest(
     }
 
     @Test
-    fun `retrieving a non-existing framework specification should return 404`() {
+    fun `retrieving a non existing framework specification should return 404`() {
         assertThrows<ResourceNotFoundApiException> {
             specificationController.getFrameworkSpecification("non-existing-framework")
         }
@@ -66,7 +65,7 @@ class SpecificationControllerTest(
     }
 
     @Test
-    fun `retrieving a non-existing data point type specification should return 404`() {
+    fun `retrieving a non existing data point type specification should return 404`() {
         assertThrows<ResourceNotFoundApiException> {
             specificationController.getDataPointTypeSpecification("non-existing-datapoint-type")
         }

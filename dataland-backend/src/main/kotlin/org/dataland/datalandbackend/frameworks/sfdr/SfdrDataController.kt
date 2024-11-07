@@ -27,7 +27,7 @@ class SfdrDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired val myDataPointManager: DataPointManager,
+    @Autowired var myDataPointManager: DataPointManager,
 ) : DataController<SfdrData>(
         myDataManager,
         myMetaDataManager,
