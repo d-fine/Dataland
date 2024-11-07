@@ -7,6 +7,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.QAStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
@@ -125,6 +126,57 @@ class MessageQueueListenerForDataManager(
         )
         messageQueueUtils.rejectMessageOnException {
             dataManager.removeDataSetFromInMemoryStore(dataId)
+        }
+    }
+
+    /**
+     * Method that listens to the qa_queue and changes the qa status and the active data set after successful qa process
+     * @param jsonString the message describing the result of the completed QA process
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        "dataQualityAssuredBackendDataManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                key = [RoutingKeyNames.QA_STATUS_CHANGE],
+            ),
+        ],
+    )
+    @Transactional
+    fun changeQaStatus(
+        @Payload jsonString: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+    ) {
+        messageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+        val qaStatusChangeMessage = objectMapper.readValue(jsonString, QAStatusChangeMessage::class.java)
+        val changedQaStatusDataId = qaStatusChangeMessage.changedQaStatusDataId
+        val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
+        val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
+        messageQueueUtils.rejectMessageOnException {
+            val changedQaStatusMetaInformation =
+                metaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId)
+
+            changedQaStatusMetaInformation.qaStatus = updatedQaStatus
+            val currentlyActiveMetaInformation =
+                metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
+            metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
+
+            logger.info(
+                "Received quality assurance: ${qaStatusChangeMessage.updatedQaStatus} for data upload with DataId: " +
+                    "$changedQaStatusDataId  and set currently active dataset with DataId $currentlyActiveDataId" +
+                    "on true with Correlation Id: $correlationId",
+            )
         }
     }
 }

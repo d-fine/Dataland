@@ -12,4 +12,5 @@ object RoutingKeyNames {
     const val PERSIST_AUTOMATED_QA_RESULT = "persistAutomatedQaResult"
     const val META_DATA_PERSISTED = "metaDataPersisted"
     const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
+    const val QA_STATUS_CHANGE = "qaStatusChange"
 }
