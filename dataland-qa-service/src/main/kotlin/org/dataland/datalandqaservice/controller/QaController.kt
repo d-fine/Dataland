@@ -163,7 +163,7 @@ class QaController(
         val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            messageBody, MessageType.QA_COMPLETED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+            messageBody, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
             RoutingKeyNames.DATA,
         )
     }
