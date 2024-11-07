@@ -7,7 +7,7 @@ import org.flywaydb.core.api.migration.Context
  * This class migrates the QA Status Values in the ReviewInformation Table from Int to their actual ENUM.Values
  */
 @Suppress("ClassName")
-class V1__MigrateQaStatusToEnumValues : BaseJavaMigration() {
+class V2__MigrateQaStatusToEnumValues : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "ALTER TABLE review_information " +
