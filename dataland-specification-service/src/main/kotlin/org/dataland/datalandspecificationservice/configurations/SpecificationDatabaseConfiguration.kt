@@ -21,9 +21,16 @@ class SpecificationDatabaseConfiguration {
     fun getSpecificationDatabase(
         @Autowired objectMapper: ObjectMapper,
         @Value("\${dataland.specification-folder}") specificationFolder: String,
-    ): SpecificationDatabase =
-        FileSystemSpecificationDatabase(
-            baseFolder = File(specificationFolder),
+    ): SpecificationDatabase {
+        val baseFolder =
+            if (specificationFolder.startsWith("res:")) {
+                File(object {}.javaClass.getResource(specificationFolder.substringAfter("res:"))!!.file)
+            } else {
+                File(specificationFolder)
+            }
+        return FileSystemSpecificationDatabase(
+            baseFolder = baseFolder,
             objectMapper = objectMapper,
         )
+    }
 }
