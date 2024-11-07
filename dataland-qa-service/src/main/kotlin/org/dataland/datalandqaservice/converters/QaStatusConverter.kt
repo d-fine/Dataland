@@ -1,4 +1,4 @@
-package org.dataland.datalandbackendutils.converters
+package org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
