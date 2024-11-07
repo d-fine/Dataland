@@ -17,8 +17,8 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientE
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QAStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -292,7 +292,7 @@ class DataManagerTest(
     fun `check an AmqpRejectAndDontRequeueException if one of the data ids is empty`() {
         val messageWithEmptyDataIDs =
             objectMapper.writeValueAsString(
-                QAStatusChangeMessage(
+                QaStatusChangeMessage(
                     changedQaStatusDataId = "",
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = "1273091",

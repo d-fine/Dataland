@@ -7,8 +7,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QAStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -159,7 +159,7 @@ class MessageQueueListenerForDataManager(
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         messageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
-        val qaStatusChangeMessage = objectMapper.readValue(jsonString, QAStatusChangeMessage::class.java)
+        val qaStatusChangeMessage = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
 
         val changedQaStatusDataId = qaStatusChangeMessage.changedQaStatusDataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
