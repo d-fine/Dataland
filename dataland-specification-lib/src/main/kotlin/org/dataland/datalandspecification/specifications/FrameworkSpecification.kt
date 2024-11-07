@@ -56,11 +56,6 @@ data class FrameworkSpecification(
         val dataPointIds = database.dataPointSpecifications.keys
         val schemaDataPointIds = flattenedSchema.map { it.dataPointId }.toSet()
         val missingDataPointIds = schemaDataPointIds - dataPointIds
-        if (missingDataPointIds.isNotEmpty()) {
-            throw IllegalStateException(
-                "The following data point ids " +
-                    "are missing in the database: $missingDataPointIds",
-            )
-        }
+        check(missingDataPointIds.isEmpty()) { "The following data point ids are missing in the database: $missingDataPointIds" }
     }
 }

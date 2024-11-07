@@ -197,9 +197,7 @@ object JsonOperations {
                 throw IllegalArgumentException(JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath))
             }
         }
-        if (currentNode.isNull || !currentNode.isObject) {
-            throw IllegalArgumentException(JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath))
-        }
+        require(!(currentNode.isNull || !currentNode.isObject)) { JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath) }
 
         return currentNode
     }
@@ -220,7 +218,7 @@ object JsonOperations {
             if (fileReferenceToPublicationDate.containsKey(fileReference)) {
                 (jsonNode as ObjectNode).put("publicationDate", fileReferenceToPublicationDate[fileReference].toString())
             }
-        } else if (jsonNode.isObject) {
+        } else {
             val fields = jsonNode.fields()
             while (fields.hasNext()) {
                 val jsonField = fields.next()

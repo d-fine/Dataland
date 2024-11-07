@@ -23,8 +23,8 @@ data class DataPointSpecification(
      */
     fun validateIntegrity(database: SpecificationDatabase) {
         VerificationUtils.assertValidId(id)
-        if (!database.dataPointTypeSpecifications.containsKey(dataPointTypeId)) {
-            throw IllegalArgumentException("Data point type id $dataPointTypeId does not exist in the database.")
+        require(database.dataPointTypeSpecifications.containsKey(dataPointTypeId)) {
+            "Data point type id $dataPointTypeId does not exist in the database."
         }
     }
 }
