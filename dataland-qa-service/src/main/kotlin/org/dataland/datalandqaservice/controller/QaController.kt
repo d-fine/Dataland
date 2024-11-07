@@ -8,7 +8,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QAStatusChangeMessage
 import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetQaReviewLogEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetQaReviewResponse
@@ -20,7 +20,6 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -74,14 +73,15 @@ class QaController(
     }
 
     @Transactional
-    override fun assignQaStatus(
+    override fun changeQaStatus(
         dataId: String,
         qaStatus: QaStatus,
         comment: String?,
     ) {
         val correlationId = randomUUID().toString()
+        val reviewerId = DatalandAuthentication.fromContext().userId
         logger.info(
-            "Received request to change the quality status of dataset with ID $dataId " +
+            "Received request from user $reviewerId to change the quality status of dataset with ID $dataId " +
                 "(correlationId: $correlationId)",
         )
         val datasetQaReviewLogEntry = validateDataIdAndGetDataReviewStatus(dataId)
@@ -95,18 +95,46 @@ class QaController(
                 reportingPeriod = datasetQaReviewLogEntry.reportingPeriod,
                 timestamp = datasetQaReviewLogEntry.timestamp,
                 qaStatus = qaStatus,
-                reviewerId = DatalandAuthentication.fromContext().userId,
+                reviewerId = reviewerId,
                 comment = comment,
             ),
         )
-        sendQaUpdateMessage(
-            changedDataId = dataId,
-            newQaStatus = qaStatus,
-            newActiveDataId = activeDataId,
+
+        val qaStatusChangeMessage =
+            QAStatusChangeMessage(
+                changedQaStatusDataId = dataId,
+                updatedQaStatus = qaStatus,
+                currentlyActiveDataId =
+                    getDataIdOfCurrentlyActiveDataset(
+                        datasetQaReviewLogEntry.companyId,
+                        datasetQaReviewLogEntry.dataType,
+                        datasetQaReviewLogEntry.reportingPeriod,
+                    ),
+            )
+
+        sendQaStatusChangeMessage(
+            qaStatusChangeMessage = qaStatusChangeMessage,
             correlationId = correlationId,
-            comment = comment,
         )
     }
+
+    /**
+     * Retrieve dataId of currently active dataset for same triple (companyId, dataType, reportingPeriod)
+     * @param companyId
+     * @param dataType
+     * @param reportingPeriod
+     * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
+     */
+    private fun getDataIdOfCurrentlyActiveDataset(
+        companyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+    ): String =
+        datasetQaReviewRepository
+            .findByCompanyIdAndDataTypeAndReportingPeriod(companyId, dataType, reportingPeriod)
+            ?.filter { it.qaStatus == QaStatus.Accepted }
+            ?.maxByOrNull { it.timestamp }
+            ?.dataId ?: ""
 
     /**
      * Validates that a dataset corresponding to a data ID needs to be reviewed
@@ -121,23 +149,19 @@ class QaController(
             )
 
     /**
-     * Sends the QA completed message
-     * @param dataId the ID of the QAed dataset
-     * @param qaStatus the assigned quality status
+     * Sends the QA Status Change Message to MessageQueue
+     * @param qaStatusChangeMessage QAStatusChangeMessage containing the dataId of the changed data set, the new QA
+     * status and the dataId of the newly active dataset
      * @param correlationId the ID of the process
-     * @param message optional message attached to the QA completion
+     * @param comment optional message attached to the QA completion
      */
-    fun sendQaUpdateMessage(
-        dataId: String,
-        qaStatus: QaStatus,
+    fun sendQaStatusChangeMessage(
+        qaStatusChangeMessage: QAStatusChangeMessage,
         correlationId: String,
-        message: String?,
     ) {
-        val reviewerId = SecurityContextHolder.getContext().authentication.name
-        val messageBody =
-            objectMapper.writeValueAsString(
-                QaCompletedMessage(dataId, qaStatus, reviewerId, message),
-            )
+        logger.info("Send QA status change message to messageQueue.")
+        val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
+
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             messageBody, MessageType.QA_COMPLETED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
             RoutingKeyNames.DATA,
@@ -146,9 +170,9 @@ class QaController(
 
     /**
      * Retrieves the number of unreviewed datasets specified by certain query parameter
-     * @param dataType the set of datatypes for which should be filtered
-     * @param reportingPeriod the set of reportingPeriods for which should be filtered
-     * @param companyName the companyName for which should be filtered
+     * @param dataTypes the set of datatypes by which to filter
+     * @param reportingPeriods the set of reportingPeriods by which to filter
+     * @param companyName the companyName by which to filter
      */
     override fun getNumberOfUnreviewedDatasets(
         dataTypes: Set<DataTypeEnum>?,

@@ -96,7 +96,7 @@ interface QaApi {
         value = ["/datasets/{dataId}"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun assignQaStatus(
+    fun changeQaStatus(
         @PathVariable("dataId") dataId: String,
         @RequestParam qaStatus: QaStatus,
         @RequestParam comment: String? = null,

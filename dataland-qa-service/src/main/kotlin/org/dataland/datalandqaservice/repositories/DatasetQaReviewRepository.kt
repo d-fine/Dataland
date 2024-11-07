@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.repositories
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DatasetQaReviewLogEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DatasetQaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
@@ -21,6 +22,15 @@ interface DatasetQaReviewRepository : JpaRepository<DatasetQaReviewLogEntity, UU
      * Deletes QA information for a specific dataId.
      */
     fun deleteByDataId(dataId: String)
+
+    /**
+     * Find QA Information based on companyId, dataType, and reportingPeriod
+     */
+    fun findByCompanyIdAndDataTypeAndReportingPeriod(
+        companyId: String,
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+    ): List<DatasetQaReviewLogEntity>?
 
     /**
      * A function for getting a list of dataset IDs with pending reviews in ascending order by reception time

@@ -2,8 +2,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -27,14 +25,12 @@ data class DatasetQaReviewLogEntity(
     val companyId: String,
     @Column(name = "company_name")
     val companyName: String,
-    @Enumerated(EnumType.STRING)
     @Column(name = "data_type")
     val dataType: DataTypeEnum,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
     @Column(name = "timestamp")
     val timestamp: Long,
-    @Enumerated(EnumType.STRING)
     @Column(name = "qa_status")
     var qaStatus: QaStatus,
     @Column(name = "reviewer_id")
