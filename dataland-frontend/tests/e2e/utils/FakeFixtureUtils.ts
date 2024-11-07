@@ -208,7 +208,7 @@ export class Generator {
    * @returns the generated datapoint
    */
   generateCurrencyExtendedDataPoint(value: number | null, currency: string | null): CurrencyDataPoint {
-    if ( value === null || currency === null) {
+    if (value === null || currency === null) {
       value = null;
       currency = null;
     }

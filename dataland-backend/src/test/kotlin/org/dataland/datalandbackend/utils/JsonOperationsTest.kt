@@ -210,7 +210,7 @@ class JsonOperationsTest {
     @Test
     fun `check that the referenced reports are correctly inserted into the framework template`() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
-        val targetPath = "category.subcategory"
+        val targetPath = "category.subcategory.referencedReports"
         val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
 
         insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
@@ -221,7 +221,7 @@ class JsonOperationsTest {
     @Test
     fun `check that empty referenced reports are inserted as null into the framework template`() {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
-        val targetPath = "category.subcategory"
+        val targetPath = "category.subcategory.referencedReports"
         val referencedReports = emptyMap<String, CompanyReport>()
 
         insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
