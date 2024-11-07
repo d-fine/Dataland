@@ -59,7 +59,7 @@ class SpecificationControllerTest(
     }
 
     @Test
-    fun `retrieving a non-existing data point specification should return 404`() {
+    fun `retrieving a non existing data point specification should return 404`() {
         assertThrows<ResourceNotFoundApiException> {
             specificationController.getDataPointSpecification("non-existing-datapoint")
         }

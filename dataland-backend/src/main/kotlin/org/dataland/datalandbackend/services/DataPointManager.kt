@@ -138,7 +138,9 @@ class DataPointManager(
         bypassQa: Boolean,
         correlationId: String,
     ): String {
-        val frameworkTemplate = getFrameworkTemplate(uploadedDataSet.dataType)
+        val framework = uploadedDataSet.dataType
+        val referencedReportsPath = specificationManager.getFrameworkSpecification(framework).referencedReportJsonPath ?: ""
+        val frameworkTemplate = getFrameworkTemplate(framework)
 
         val expectedDataPoints = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val companyId = UUID.fromString(uploadedDataSet.companyId)
@@ -152,7 +154,7 @@ class DataPointManager(
         val fileReferenceToPublicationDateMapping =
             getFileReferenceToPublicationDateMapping(
                 dataSetContent = dataSetContent,
-                jsonPath = "general.general.referencedReports",
+                jsonPath = referencedReportsPath,
             )
 
         val createdDataIds = mutableListOf<String>()
@@ -240,6 +242,7 @@ class DataPointManager(
     ): String {
         val dataPoints = mutableListOf<String>()
         val frameworkTemplate = getFrameworkTemplate(framework)
+        val referencedReportsPath = specificationManager.getFrameworkSpecification(framework).referencedReportJsonPath ?: ""
         val allDataPointsInTemplate = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val referencedReports = mutableMapOf<String, CompanyReport>()
 
@@ -264,7 +267,11 @@ class DataPointManager(
             }
         }
 
-        insertReferencedReports(frameworkTemplate, "general.general", referencedReports)
+        if (referencedReportsPath.isNotEmpty()) {
+            logger.info("Inserting referenced reports (correlation ID $correlationId).")
+            insertReferencedReports(frameworkTemplate, referencedReportsPath, referencedReports)
+        }
+
         logger.info("Removing fields from the template where no data was provided (correlation ID $correlationId).")
         allDataPointsInTemplate.forEach {
             if (!dataPoints.contains(it.value)) {

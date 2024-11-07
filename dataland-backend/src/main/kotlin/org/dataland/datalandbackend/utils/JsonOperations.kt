@@ -238,11 +238,13 @@ object JsonOperations {
         targetPath: String,
         referencedReports: Map<String, CompanyReport>,
     ) {
-        val referencedReportsNode = navigateToNode(inputJsonNode, targetPath)
+        val insertLocation = targetPath.split(".").dropLast(1).joinToString(".")
+        val insertName = targetPath.split(".").last()
+        val referencedReportsNode = navigateToNode(inputJsonNode, insertLocation)
         if (referencedReports.isEmpty()) {
-            (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", getJsonNodeFromString("null"))
+            (referencedReportsNode as ObjectNode).set<JsonNode>(insertName, getJsonNodeFromString("null"))
         } else {
-            (referencedReportsNode as ObjectNode).set<JsonNode>("referencedReports", objectMapper.valueToTree(referencedReports))
+            (referencedReportsNode as ObjectNode).set<JsonNode>(insertName, objectMapper.valueToTree(referencedReports))
         }
     }
 }
