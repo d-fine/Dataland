@@ -15,4 +15,5 @@ object MessageType {
     const val SEND_TEMPLATE_EMAIL = "Send template E-Mail"
     const val PRIVATE_DATA_STORED = "Private Data Stored"
     const val PRIVATE_DATA_RECEIVED = "Private Data received"
+    const val QA_STATUS_CHANGED = "QA status changed"
 }

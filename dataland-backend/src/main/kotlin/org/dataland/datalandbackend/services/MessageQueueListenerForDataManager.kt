@@ -148,7 +148,7 @@ class MessageQueueListenerForDataManager(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
-                key = [RoutingKeyNames.QA_STATUS_CHANGE],
+                key = [RoutingKeyNames.DATA],
             ),
         ],
     )
@@ -158,11 +158,17 @@ class MessageQueueListenerForDataManager(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+        messageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
         val qaStatusChangeMessage = objectMapper.readValue(jsonString, QAStatusChangeMessage::class.java)
+
         val changedQaStatusDataId = qaStatusChangeMessage.changedQaStatusDataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
         val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
+
+        if (changedQaStatusDataId.isEmpty() || currentlyActiveDataId.isEmpty()) {
+            throw MessageQueueRejectException("At least one of the provided Data Ids is empty")
+        }
+
         messageQueueUtils.rejectMessageOnException {
             val changedQaStatusMetaInformation =
                 metaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId)

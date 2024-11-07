@@ -17,6 +17,7 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientE
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.QAStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -260,5 +261,39 @@ class DataManagerTest(
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet("i-exist-by-no-means", DataType("lksg"), "")
         }
+    }
+
+    @Test
+    fun `check a MessageQueueRejectException if we got the wrong message type to routing key `() {
+        // fill with code
+    }
+
+    @Test
+    fun `check a MessageQueueRejectException if one of the data ids is empty`() {
+        // generate some data in the database so that we can change active to inactive and change the status of a dataset
+    }
+
+    @Test
+    fun `check a AmqpRejectAndDontRequeueException if one of the data ids is empty`() {
+        val messageWithEmptyDataIDs =
+            objectMapper.writeValueAsString(
+                QAStatusChangeMessage(
+                    changedQaStatusDataId = "",
+                    updatedQaStatus = QaStatus.Accepted,
+                    currentlyActiveDataId = "1273091",
+                ),
+            )
+        val thrown =
+            assertThrows<AmqpRejectAndDontRequeueException> {
+                messageQueueListenerForDataManager.changeQaStatus(
+                    messageWithEmptyDataIDs,
+                    "",
+                    MessageType.QA_STATUS_CHANGED,
+                )
+            }
+        assertEquals(
+            "Message was rejected: At least one of the provided Data Ids is empty",
+            thrown.message,
+        )
     }
 }
