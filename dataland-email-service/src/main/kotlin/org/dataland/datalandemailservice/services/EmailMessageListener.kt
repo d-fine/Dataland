@@ -11,6 +11,8 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -127,6 +129,20 @@ class EmailMessageListener(
                     "A message from Dataland: Your ESG data are high on demand!",
                     "/html/dataset_requested_claim_ownership.ftl",
                     "/text/dataset_requested_claim_ownership.ftl"
+                )
+            is DataRequestAnswered ->
+                EmailBuilder(
+                    typedEmailData,
+                    "Your data request has been answered!",
+                    "/html/data_request_answered.ftl",
+                    "/text/data_request_answered.ftl"
+                )
+            is DataRequestClosed ->
+                EmailBuilder(
+                    typedEmailData,
+                    "Your data request has been closed!",
+                    "/html/data_request_closed.ftl",
+                    "/text/data_request_closed.ftl"
                 )
             is CompanyOwnershipClaimApproved ->
                 EmailBuilder(

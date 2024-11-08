@@ -7,6 +7,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -41,6 +43,16 @@ class EmailMessageListenerTest {
         "message", "firstName", "lastName"
     )
 
+    private val testDataRequestAnswered = DataRequestAnswered(
+        "companyId", "companyName", "dataType", "reportingPeriod", "creationDate",
+        "dataRequestId", 23, "dataTypeDescription"
+    )
+
+    private val testDataRequestClosed = DataRequestClosed(
+        "companyId", "companyName", "dataType", "reportingPeriod", "creationDate",
+        "dataRequestId", 23, "dataTypeDescription"
+    )
+
     private val testCompanyOwnershipClaimApproved = CompanyOwnershipClaimApproved(
         "companyId", "companyName", 10
     )
@@ -69,8 +81,9 @@ class EmailMessageListenerTest {
     )
 
     private val typedEmailTestData: List<TypedEmailData> = listOf(
-        testDatasetRequestedClaimOwnership, testAccessToDatasetRequested, testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement,
-        testAccessToDatasetGranted, testCompanyOwnershipClaimApproved
+        testDatasetRequestedClaimOwnership, testDataRequestAnswered, testDataRequestClosed, testAccessToDatasetRequested,
+        testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement, testAccessToDatasetGranted,
+        testCompanyOwnershipClaimApproved
     )
 
     private val recipientToContactMap = mapOf(

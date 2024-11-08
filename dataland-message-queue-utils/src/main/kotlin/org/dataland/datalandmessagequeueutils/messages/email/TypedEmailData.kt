@@ -103,6 +103,33 @@ data class CompanyOwnershipClaimApproved(
     override lateinit var baseUrl: String
 }
 
+data class DataRequestAnswered(
+    val companyId: String,
+    val companyName: String,
+    val dataType: String,
+    val reportingPeriod: String,
+    val creationDate: String,
+    val dataRequestId: String,
+    val closedInDays: Int,
+    val dataTypeDescription: String
+) : TypedEmailData(), InitializeBaseUrlLater {
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+data class DataRequestClosed(
+    val companyId: String,
+    val companyName: String,
+    val dataType: String,
+    val reportingPeriod: String,
+    val creationDate: String,
+    val dataRequestId: String,
+    val closedInDays: Int,
+    val dataTypeDescription: String
+) : TypedEmailData(), InitializeBaseUrlLater {
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
 
 /*data class KeyContentList(
     val textTitle: String,

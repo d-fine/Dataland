@@ -6,7 +6,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -98,5 +97,4 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
                 Assertions.assertEquals(RoutingKeyNames.EMAIL, arg5)
             }
     }
-
 }
