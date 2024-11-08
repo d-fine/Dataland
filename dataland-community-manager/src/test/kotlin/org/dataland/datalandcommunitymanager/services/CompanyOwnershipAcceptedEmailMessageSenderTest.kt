@@ -83,8 +83,8 @@ class CompanyOwnershipAcceptedEmailMessageSenderTest {
                 val arg3 = it.getArgument<String>(2)
                 val arg4 = it.getArgument<String>(3)
                 val arg5 = it.getArgument<String>(4)
-                Assertions.assertTrue(emailMessage.typedEmailData is CompanyOwnershipClaimApproved)
-                val companyOwnershipClaimApproved = emailMessage.typedEmailData as CompanyOwnershipClaimApproved
+                Assertions.assertTrue(emailMessage.typedEmailContent is CompanyOwnershipClaimApproved)
+                val companyOwnershipClaimApproved = emailMessage.typedEmailContent as CompanyOwnershipClaimApproved
                 Assertions.assertEquals(companyId, companyOwnershipClaimApproved.companyId)
                 Assertions.assertEquals(companyName, companyOwnershipClaimApproved.companyName)
                 Assertions.assertEquals(

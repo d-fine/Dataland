@@ -14,7 +14,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailData
+import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -80,7 +80,7 @@ class EmailMessageListenerTest {
         "reportingPeriod", "creationDate"
     )
 
-    private val typedEmailTestData: List<TypedEmailData> = listOf(
+    private val typedEmailTestData: List<TypedEmailContent> = listOf(
         testDatasetRequestedClaimOwnership, testDataRequestAnswered, testDataRequestClosed, testAccessToDatasetRequested,
         testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement, testAccessToDatasetGranted,
         testCompanyOwnershipClaimApproved
@@ -131,7 +131,7 @@ class EmailMessageListenerTest {
 
     @Test
     fun `test that every template has test data`() {
-        TypedEmailData::class.sealedSubclasses.forEach { subclass ->
+        TypedEmailContent::class.sealedSubclasses.forEach { subclass ->
             assertTrue(typedEmailTestData.any { subclass.isInstance(it) })
         }
     }

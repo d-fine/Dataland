@@ -317,8 +317,8 @@ class NotificationServiceTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertTrue(emailMessage.typedEmailData is SingleDatasetUploadedEngagement)
-            val singleDatasetsUploadedEngagement = emailMessage.typedEmailData as SingleDatasetUploadedEngagement
+            assertTrue(emailMessage.typedEmailContent is SingleDatasetUploadedEngagement)
+            val singleDatasetsUploadedEngagement = emailMessage.typedEmailContent as SingleDatasetUploadedEngagement
 
             assertTrue(emailMessage.toString().contains("emailAddress@"))
 
@@ -371,8 +371,8 @@ class NotificationServiceTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertTrue(emailMessage.typedEmailData is MultipleDatasetsUploadedEngagement)
-            val multipleDatasetsUploadedEngagement = emailMessage.typedEmailData as MultipleDatasetsUploadedEngagement
+            assertTrue(emailMessage.typedEmailContent is MultipleDatasetsUploadedEngagement)
+            val multipleDatasetsUploadedEngagement = emailMessage.typedEmailContent as MultipleDatasetsUploadedEngagement
             assertTrue(emailMessage.receiver.toString().contains("emailAddress@"))
 
             assertEquals(testCompanyInformation.companyName, multipleDatasetsUploadedEngagement.companyName)

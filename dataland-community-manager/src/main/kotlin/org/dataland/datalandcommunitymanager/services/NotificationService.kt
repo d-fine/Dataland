@@ -17,7 +17,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailData
+import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -152,7 +152,7 @@ class NotificationService
             notificationEmailType: NotificationEmailType,
             latestElementaryEvent: ElementaryEventEntity,
             unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        ): TypedEmailData =
+        ): TypedEmailContent =
             when (notificationEmailType) {
                 NotificationEmailType.Single ->
                     SingleDatasetUploadedEngagement(
@@ -187,12 +187,12 @@ class NotificationService
          * Sends messages to queue in order to make the email service send mails to all receivers.
          */
         fun sendEmailMessagesToQueue(
-            typedEmailData: TypedEmailData,
+            typedEmailContent: TypedEmailContent,
             emailReceivers: List<String>,
             correlationId: String,
         ) {
             emailReceivers.forEach { emailAddress ->
-                val message = EmailMessage(typedEmailData, listOf(EmailRecipient.EmailAddress(emailAddress)), emptyList(), emptyList())
+                val message = EmailMessage(typedEmailContent, listOf(EmailRecipient.EmailAddress(emailAddress)), emptyList(), emptyList())
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     objectMapper.writeValueAsString(message),
                     MessageType.SEND_EMAIL,

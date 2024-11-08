@@ -136,8 +136,8 @@ class SingleDataRequestEmailMessageSenderTest {
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertTrue(arg1.typedEmailData is DatasetRequestedClaimOwnership)
-            val emailData = arg1.typedEmailData as DatasetRequestedClaimOwnership
+            assertTrue(arg1.typedEmailContent is DatasetRequestedClaimOwnership)
+            val emailData = arg1.typedEmailContent as DatasetRequestedClaimOwnership
             assertEquals(listOf(EmailRecipient.EmailAddress(email = "alphabet@example.com")), arg1.receiver)
             assertEquals(datalandCompanyId, emailData.companyId)
             assertEquals(companyName, emailData.companyName)

@@ -14,7 +14,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailData
+import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -77,7 +77,7 @@ class DataRequestResponseEmailSenderTest {
         return companyDataControllerMock
     }
 
-    private fun getMockCloudEventMessageHandlerAndSetChecks(assertEmailData: (TypedEmailData) -> Unit): CloudEventMessageHandler {
+    private fun getMockCloudEventMessageHandlerAndSetChecks(assertEmailData: (TypedEmailContent) -> Unit): CloudEventMessageHandler {
         val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
@@ -86,7 +86,7 @@ class DataRequestResponseEmailSenderTest {
         ).then {
             val emailMessage = objectMapper.readValue(it.getArgument<String>(0), EmailMessage::class.java)
             assertEquals(listOf(EmailRecipient.UserId(userId)), emailMessage.receiver)
-            assertEmailData(emailMessage.typedEmailData)
+            assertEmailData(emailMessage.typedEmailContent)
             assertEquals(MessageType.SEND_EMAIL, it.getArgument<String>(1))
             assertEquals(correlationId, it.getArgument<String>(2))
             assertEquals(ExchangeName.SEND_EMAIL, it.getArgument<String>(3))
@@ -99,7 +99,7 @@ class DataRequestResponseEmailSenderTest {
         dataRequestId: String,
         dataType: String,
         dataTypeDescription: String,
-    ): (TypedEmailData) -> Unit =
+    ): (TypedEmailContent) -> Unit =
         { emailData ->
             assertTrue(emailData is DataRequestClosed)
             val dataRequestAnswered = emailData as DataRequestClosed
@@ -140,7 +140,7 @@ class DataRequestResponseEmailSenderTest {
         dataRequestId: String,
         dataType: String,
         dataTypeDescription: String,
-    ): (TypedEmailData) -> Unit =
+    ): (TypedEmailContent) -> Unit =
         { emailData ->
             assertTrue(emailData is DataRequestAnswered)
             val dataRequestAnswered = emailData as DataRequestAnswered

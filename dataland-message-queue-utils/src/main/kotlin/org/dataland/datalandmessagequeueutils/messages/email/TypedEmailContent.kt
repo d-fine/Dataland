@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = MultipleDatasetsUploadedEngagement::class, name = "MultipleDatasetsUploadedEngagement"),
     JsonSubTypes.Type(value = SingleDatasetUploadedEngagement::class, name = "SingleDatasetUploadedEngagement"),
 )
-sealed class TypedEmailData
+sealed class TypedEmailContent
 
 interface InitializeSubscriptionUuidLater {
     var subscriptionUuid: String
@@ -33,7 +33,7 @@ data class DatasetRequestedClaimOwnership(
     val reportingPeriods: List<String>,
     val message: String?,
     val firstName: String?,
-    val lastName: String?) : TypedEmailData(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
+    val lastName: String?) : TypedEmailContent(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
         @JsonIgnore
         override lateinit var subscriptionUuid: String
         @JsonIgnore
@@ -49,7 +49,7 @@ data class AccessToDatasetRequested(
     val requesterEmail: String?,
     val requesterFirstName: String?,
     val requesterLastName: String?,
-) : TypedEmailData(), InitializeBaseUrlLater {
+) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
 }
@@ -61,7 +61,7 @@ data class AccessToDatasetGranted(
     val dataTypeDescription: String,
     val reportingPeriod: String,
     val creationDate: String,
-) : TypedEmailData(), InitializeBaseUrlLater {
+) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
 }
@@ -71,7 +71,7 @@ data class SingleDatasetUploadedEngagement(
     val companyName: String,
     val dataType: String,
     val reportingPeriod: String
-) : TypedEmailData(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
+) : TypedEmailContent(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var subscriptionUuid: String
     @JsonIgnore
@@ -83,7 +83,7 @@ data class MultipleDatasetsUploadedEngagement(
     val companyName: String,
     val frameworkData: List<FrameworkData>,
     val numberOfDays: Long?
-) : TypedEmailData(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
+) : TypedEmailContent(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
     data class FrameworkData(
         val dataType: String,
         val reportingPeriods: List<String>
@@ -98,7 +98,7 @@ data class CompanyOwnershipClaimApproved(
     val companyId: String,
     val companyName: String,
     val numberOfOpenDataRequestsForCompany : Int
-) : TypedEmailData(), InitializeBaseUrlLater {
+) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
 }
@@ -112,7 +112,7 @@ data class DataRequestAnswered(
     val dataRequestId: String,
     val closedInDays: Int,
     val dataTypeDescription: String
-) : TypedEmailData(), InitializeBaseUrlLater {
+) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
 }
@@ -126,7 +126,7 @@ data class DataRequestClosed(
     val dataRequestId: String,
     val closedInDays: Int,
     val dataTypeDescription: String
-) : TypedEmailData(), InitializeBaseUrlLater {
+) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
 }

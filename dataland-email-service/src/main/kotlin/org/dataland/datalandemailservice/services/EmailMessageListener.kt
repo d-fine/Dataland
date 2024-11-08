@@ -20,7 +20,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.InitializeBaseUrlLa
 import org.dataland.datalandmessagequeueutils.messages.email.InitializeSubscriptionUuidLater
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailData
+import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -80,7 +80,7 @@ class EmailMessageListener(
 
         val message = objectMapper.readValue(jsonString, EmailMessage::class.java)
         logger.info(
-            "Received email message of type ${message.typedEmailData::class} with correlationId $correlationId.",
+            "Received email message of type ${message.typedEmailContent::class} with correlationId $correlationId.",
         )
 
         MessageQueueUtils.rejectMessageOnException {
@@ -99,8 +99,8 @@ class EmailMessageListener(
             }
 
             val sender = emailContactService.getSenderContact()
-            setLateInitVars(message.typedEmailData, receivers.allowed)
-            val email = getEmailBuilder(message.typedEmailData)
+            setLateInitVars(message.typedEmailContent, receivers.allowed)
+            val email = getEmailBuilder(message.typedEmailContent)
                 .build(sender, receivers.allowed.keys.toList(), cc.allowed.keys.toList(), bcc.allowed.keys.toList())
             emailSender.sendEmail(email)
         }
@@ -111,70 +111,70 @@ class EmailMessageListener(
             .flatMap { emailContactService.getContacts(it) }
             .let { emailSubscriptionTracker.subscribeContactsIfNeededAndFilter(it) }
 
-    private fun setLateInitVars(typedEmailData: TypedEmailData, receivers: Map<EmailContact, UUID>) {
-        if (typedEmailData is InitializeBaseUrlLater) {
-            typedEmailData.baseUrl = proxyPrimaryUrl
+    private fun setLateInitVars(typedEmailContent: TypedEmailContent, receivers: Map<EmailContact, UUID>) {
+        if (typedEmailContent is InitializeBaseUrlLater) {
+            typedEmailContent.baseUrl = proxyPrimaryUrl
         }
-        if (typedEmailData is InitializeSubscriptionUuidLater) {
+        if (typedEmailContent is InitializeSubscriptionUuidLater) {
             require(receivers.size == 1)
-            typedEmailData.subscriptionUuid = receivers.values.first().toString()
+            typedEmailContent.subscriptionUuid = receivers.values.first().toString()
         }
     }
 
-    private fun getEmailBuilder(typedEmailData: TypedEmailData): EmailBuilder =
-        when (typedEmailData) {
+    private fun getEmailBuilder(typedEmailContent: TypedEmailContent): EmailBuilder =
+        when (typedEmailContent) {
             is DatasetRequestedClaimOwnership ->
                 EmailBuilder(
-                    typedEmailData,
+                    typedEmailContent,
                     "A message from Dataland: Your ESG data are high on demand!",
                     "/html/dataset_requested_claim_ownership.ftl",
                     "/text/dataset_requested_claim_ownership.ftl"
                 )
             is DataRequestAnswered ->
                 EmailBuilder(
-                    typedEmailData,
+                    typedEmailContent,
                     "Your data request has been answered!",
                     "/html/data_request_answered.ftl",
                     "/text/data_request_answered.ftl"
                 )
             is DataRequestClosed ->
                 EmailBuilder(
-                    typedEmailData,
+                    typedEmailContent,
                     "Your data request has been closed!",
                     "/html/data_request_closed.ftl",
                     "/text/data_request_closed.ftl"
                 )
             is CompanyOwnershipClaimApproved ->
                 EmailBuilder(
-                    typedEmailData,
-                    "Your company ownership claim for ${typedEmailData.companyName}" + " is confirmed!",
+                    typedEmailContent,
+                    "Your company ownership claim for ${typedEmailContent.companyName}" + " is confirmed!",
                     "/html/company_ownership_claim_approved.ftl",
                     "/text/company_ownership_claim_approved.ftl"
                 )
             is AccessToDatasetRequested ->
                 EmailBuilder(
-                    typedEmailData,
+                    typedEmailContent,
                     "Access to your data has been requested on Dataland!",
                     "/html/access_to_dataset_requested.ftl",
                     "/text/access_to_dataset_requested.ftl"
                 )
             is SingleDatasetUploadedEngagement ->
                 EmailBuilder(
-                    typedEmailData,
-                    "New data for ${typedEmailData.companyName} on Dataland",
+                    typedEmailContent,
+                    "New data for ${typedEmailContent.companyName} on Dataland",
                     "/html/single_dataset_uploaded_engagement.ftl",
                     "/text/single_dataset_uploaded_engagement.ftl"
                 )
             is MultipleDatasetsUploadedEngagement ->
                 EmailBuilder(
-                    typedEmailData,
-                    "New data for ${typedEmailData.companyName} on Dataland",
+                    typedEmailContent,
+                    "New data for ${typedEmailContent.companyName} on Dataland",
                     "/html/multiple_datasets_uploaded_engagement.ftl",
                     "/text/multiple_datasets_uploaded_engagement.ftl"
                 )
             is AccessToDatasetGranted ->
                 EmailBuilder(
-                    typedEmailData,
+                    typedEmailContent,
                     "Your Dataland Access Request has been granted!",
                     "/html/access_to_dataset_granted.ftl",
                     "/text/access_to_dataset_granted.ftl"
