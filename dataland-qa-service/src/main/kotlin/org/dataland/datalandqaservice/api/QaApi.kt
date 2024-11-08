@@ -38,7 +38,7 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getInfoOnUnreviewedDatasets(
+    fun getInfoOnPendingDatasets(
         @RequestParam dataTypes: Set<DataTypeEnum>?,
         @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,
@@ -72,12 +72,12 @@ interface QaApi {
             "or hasRole('ROLE_ADMIN') " +
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
-    fun getQaReviewEventsByDataId(
+    fun getQaReviewsByDataId(
         @PathVariable("dataId") dataId: UUID,
     ): ResponseEntity<QaReviewResponse>
 
     /**
-     * Assigns a QA review status to an unreviewed dataset
+     * Changes the QA review status of a dataset
      * @param dataId the ID of the dataset of which to change the QA review status
      * @param qaStatus the QA review status to be assigned to a dataset
      * @param comment (optional) comment to explain the QA review status change
@@ -125,7 +125,7 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getNumberOfUnreviewedDatasets(
+    fun getNumberOfPendingDatasets(
         @RequestParam dataTypes: Set<DataTypeEnum>?,
         @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,

@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.model.QaStatus
 
 /**
  * A filter class used in the searching for unreviewed datasets which allows
@@ -10,6 +11,7 @@ data class QaSearchFilter(
     val reportingPeriods: Set<String>?,
     val companyIds: Set<String>?,
     val companyName: String?,
+    val qaStatuses: Set<QaStatus>?,
 ) {
     val shouldFilterByDataType: Boolean
         get() = dataTypes?.isNotEmpty() ?: false
@@ -31,4 +33,10 @@ data class QaSearchFilter(
 
     val shouldFilterByCompanyName: Boolean
         get() = companyName?.isNotEmpty() ?: false
+
+    val shouldFilterByQaStatus: Boolean
+        get() = qaStatuses?.isNotEmpty() ?: false
+
+    val preparedQaStatuses: List<QaStatus>
+        get() = qaStatuses?.toList() ?: emptyList()
 }

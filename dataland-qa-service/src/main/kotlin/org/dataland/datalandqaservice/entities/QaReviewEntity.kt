@@ -14,8 +14,8 @@ import java.util.UUID
  * The entity storing the information of a dataset which is gathered during the review or any update of the QA status
  */
 @Entity
-@Table(name = "dataset_qa_review_log")
-data class QaReviewLogEntity(
+@Table(name = "qa_review")
+data class QaReviewEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val eventId: UUID? = null,

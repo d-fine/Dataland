@@ -1,7 +1,7 @@
 package org.dataland.datalandqaservice.repositories
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewLogEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
@@ -12,11 +12,11 @@ import java.util.UUID
 /**
  * A JPA repository for accessing QA information of a dataset
  */
-interface QaReviewRepository : JpaRepository<QaReviewLogEntity, UUID> {
+interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     /**
      * Find QA information for a specific dataId.
      */
-    fun findByDataId(dataId: String): QaReviewLogEntity?
+    fun findByDataId(dataId: String): QaReviewEntity?
 
     /**
      * Deletes QA information for a specific dataId.
@@ -30,51 +30,55 @@ interface QaReviewRepository : JpaRepository<QaReviewLogEntity, UUID> {
         companyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
-    ): List<QaReviewLogEntity>?
+    ): List<QaReviewEntity>?
 
     /**
-     * A function for getting a list of dataset IDs with pending reviews in ascending order by reception time
+     * A function for getting a list of dataset IDs matching the filters in ascending order by timestamp
      */
     @Query(
         nativeQuery = true,
         value =
-            "SELECT status.data_id, status.company_id, status.company_name, status.framework, status.reporting_period, " +
-                "status.reception_time " +
-                "FROM review_queue status " +
+            "SELECT entry.data_id, entry.company_id, entry.company_name, entry.dataType, entry.reporting_period, " +
+                "entry.timestamp " +
+                "FROM qa_review entry " +
                 "WHERE " +
                 "(:#{#searchFilter.shouldFilterByDataType} = false " +
-                "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
+                "OR entry.data_type IN :#{#searchFilter.preparedDataTypes}) AND " +
                 "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-                "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
+                "OR entry.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
                 "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
-                ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
-                "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) " +
-                "ORDER BY status.reception_time ASC " +
+                ":#{#searchFilter.shouldFilterByCompanyId} = false) AND " +
+                "(:#{#searchFilter.shouldFilterByQaStatus} = false " +
+                "OR entry.qa_status IN :#{#searchFilter.preparedQaStatuses}) " +
+                "OR entry.company_id IN :#{#searchFilter.preparedCompanyIds}) " +
+                "ORDER BY entry.timestamp ASC " +
                 "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
-    fun getSortedPendingMetadataSet(
+    fun getSortedAndFilteredQaReviewMetadataSet(
         @Param("searchFilter") searchFilter: QaSearchFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<QaReviewResponse>
 
     /**
-     * This query counts the number of unreviewed datasets that matches the search fiter and returns this number.
+     * This query counts the number of datasets that matches the search fiter and returns this number.
      */
     @Query(
         nativeQuery = true,
         value =
-            "SELECT COUNT(*) FROM review_queue status " +
+            "SELECT COUNT(*) FROM qa_review entry " +
                 "WHERE " +
                 "(:#{#searchFilter.shouldFilterByDataType} = false " +
-                "OR status.framework IN :#{#searchFilter.preparedDataTypes}) AND " +
+                "OR entry.data_type IN :#{#searchFilter.preparedDataTypes}) AND " +
                 "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
-                "OR status.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
+                "OR entry.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND " +
                 "( (:#{#searchFilter.shouldFilterByCompanyName } = false AND " +
-                ":#{#searchFilter.shouldFilterByCompanyId} = false) " +
-                "OR status.company_id IN :#{#searchFilter.preparedCompanyIds}) ",
+                ":#{#searchFilter.shouldFilterByCompanyId} = false) AND " +
+                "(:#{#searchFilter.shouldFilterByQaStatus} = false " +
+                "OR entry.qa_status IN :#{#searchFilter.preparedQaStatuses}) " +
+                "OR entry.company_id IN :#{#searchFilter.preparedCompanyIds}) ",
     )
-    fun getNumberOfRequests(
+    fun getNumberOfFilteredQaReviews(
         @Param("searchFilter") searchFilter: QaSearchFilter,
     ): Int
 }

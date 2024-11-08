@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -23,12 +24,12 @@ class QaReviewManager(
     /**
      * The method returns a list of unreviewed datasets with corresponding information for the specified input params
      * @param dataTypes the datatype of the dataset
-     * @param reportingPeriods the reportingperiod of the dataset
+     * @param reportingPeriods the reportingPeriod of the dataset
      * @param companyName the company name connected to the dataset
      * @param chunkIndex the chunkIndex of the request
      * @param chunkSize the chunkSize of the request
      */
-    fun getInfoOnUnreviewedDatasets(
+    fun getInfoOnPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
@@ -36,12 +37,13 @@ class QaReviewManager(
         chunkIndex: Int,
     ): List<QaReviewResponse> {
         val offset = (chunkIndex) * (chunkSize)
-        return qaReviewRepository.getSortedPendingMetadataSet(
+        return qaReviewRepository.getSortedAndFilteredQaReviewMetadataSet(
             QaSearchFilter(
                 dataTypes = dataTypes,
                 reportingPeriods = reportingPeriods,
                 companyIds = getCompanyIdsForCompanyName(companyName),
                 companyName = companyName,
+                qaStatuses = setOf(QaStatus.Pending),
             ),
             resultOffset = offset,
             resultLimit = chunkSize,
@@ -50,19 +52,19 @@ class QaReviewManager(
 
     /**
      * This method returns the number of unreviewed datasets for a specific set of filters
-     * @param dataType the set of datatypes for which should be filtered
-     * @param reportingPeriod the set of reportingPeriods for which should be filtered
+     * @param dataTypes the set of datatypes for which should be filtered
+     * @param reportingPeriods the set of reportingPeriods for which should be filtered
      * @param companyName the companyName for which should be filtered
      */
-    fun getNumberOfUnreviewedDatasets(
+    fun getNumberOfPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
     ): Int =
-        qaReviewRepository.getNumberOfRequests(
+        qaReviewRepository.getNumberOfFilteredQaReviews(
             QaSearchFilter(
                 dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
-                companyIds = getCompanyIdsForCompanyName(companyName),
+                companyIds = getCompanyIdsForCompanyName(companyName), qaStatuses = setOf(QaStatus.Pending),
             ),
         )
 

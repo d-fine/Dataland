@@ -10,7 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.api.QaApi
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewLogEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.toDatasetQaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -38,16 +38,16 @@ class QaController(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Transactional
-    override fun getInfoOnUnreviewedDatasets(
+    override fun getInfoOnPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>> {
-        logger.info("Received request to respond with information about unreviewed datasets")
+        logger.info("Received request to respond with information about pending datasets")
         return ResponseEntity.ok(
-            qaReviewManager.getInfoOnUnreviewedDatasets(
+            qaReviewManager.getInfoOnPendingDatasets(
                 dataTypes = dataTypes, reportingPeriods = reportingPeriods,
                 companyName = companyName, chunkSize = chunkSize, chunkIndex = chunkIndex,
             ),
@@ -55,7 +55,7 @@ class QaController(
     }
 
     @Transactional
-    override fun getQaReviewEventsByDataId(dataId: UUID): ResponseEntity<QaReviewResponse> {
+    override fun getQaReviewsByDataId(dataId: UUID): ResponseEntity<QaReviewResponse> {
         logger.info(
             "Received request to respond with the review information " +
                 "of the dataset with identifier $dataId",
@@ -87,7 +87,7 @@ class QaController(
         val datasetQaReviewLogEntry = validateDataIdAndGetDataReviewStatus(dataId)
         logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId")
         datasetQaReviewRepository.save(
-            QaReviewLogEntity(
+            QaReviewEntity(
                 dataId = dataId,
                 companyId = datasetQaReviewLogEntry.companyId,
                 companyName = datasetQaReviewLogEntry.companyName,
@@ -141,7 +141,7 @@ class QaController(
      * @param dataId the ID of the data to validate
      * @returns the ReviewQueueEntity corresponding the dataId
      */
-    fun validateDataIdAndGetDataReviewStatus(dataId: String): QaReviewLogEntity =
+    fun validateDataIdAndGetDataReviewStatus(dataId: String): QaReviewEntity =
         datasetQaReviewRepository.findByDataId(dataId)
             ?: throw InvalidInputApiException(
                 "There is no reviewable dataset with ID $dataId.",
@@ -174,7 +174,7 @@ class QaController(
      * @param reportingPeriods the set of reportingPeriods by which to filter
      * @param companyName the companyName by which to filter
      */
-    override fun getNumberOfUnreviewedDatasets(
+    override fun getNumberOfPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
@@ -182,7 +182,7 @@ class QaController(
         logger.info("Received request to respond with number of unreviewed datasets")
 
         return ResponseEntity.ok(
-            qaReviewManager.getNumberOfUnreviewedDatasets(
+            qaReviewManager.getNumberOfPendingDatasets(
                 dataTypes = dataTypes,
                 reportingPeriods = reportingPeriods, companyName = companyName,
             ),

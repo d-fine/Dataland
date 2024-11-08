@@ -27,7 +27,7 @@
         ],
         "summary": "Get the QA review information of an uploaded dataset for a given id.",
         "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins and reviewer can get the review information for all datasets.",
-        "operationId": "getQaReviewEventsByDataId",
+        "operationId": "getQaReviewsByDataId",
         "parameters": [
           {
             "name": "dataId",
@@ -1225,7 +1225,7 @@
         ],
         "summary": "Get the number of unreviewed datasets based on filters.",
         "description": "Get the number of unreviewed datasets based on filters.",
-        "operationId": "getNumberOfUnreviewedDatasets",
+        "operationId": "getNumberOfPendingDatasets",
         "parameters": [
           {
             "name": "dataTypes",
@@ -1322,7 +1322,7 @@
         ],
         "summary": "Get relevant meta info on unreviewed datasets.",
         "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
-        "operationId": "getInfoOnUnreviewedDatasets",
+        "operationId": "getInfoOnPendingDatasets",
         "parameters": [
           {
             "name": "dataTypes",

@@ -13,7 +13,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewLogEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -129,7 +129,7 @@ class QaEventListenerQaService
             comment: String,
         ) {
             datasetQaReviewRepository.save(
-                QaReviewLogEntity(
+                QaReviewEntity(
                     dataId = dataId,
                     companyId = companyId,
                     companyName = companyName,
@@ -243,7 +243,7 @@ class QaEventListenerQaService
                         "Assigning quality status $validationResult and reviewerId $reviewerId to dataset with ID $dataId",
                     )
                     datasetQaReviewRepository.save(
-                        QaReviewLogEntity(
+                        QaReviewEntity(
                             dataId = dataId,
                             companyId = dataMetaInfo.companyId,
                             companyName = companyName,
