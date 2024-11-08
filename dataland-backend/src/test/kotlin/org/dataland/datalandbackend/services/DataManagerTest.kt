@@ -272,7 +272,7 @@ class DataManagerTest(
     fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
         val messageWithChangedQAStatus =
             objectMapper.writeValueAsString(
-                QAStatusChangeMessage(
+                QaStatusChangeMessage(
                     changedQaStatusDataId = "453545",
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = "1273091",
