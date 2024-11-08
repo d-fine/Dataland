@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -126,6 +127,13 @@ class EmailMessageListener(
                     "A message from Dataland: Your ESG data are high on demand!",
                     "/html/dataset_requested_claim_ownership.ftl",
                     "/text/dataset_requested_claim_ownership.ftl"
+                )
+            is CompanyOwnershipClaimApproved ->
+                EmailBuilder(
+                    typedEmailData,
+                    "Your company ownership claim for ${typedEmailData.companyName}" + " is confirmed!",
+                    "/html/company_ownership_claim_approved.ftl",
+                    "/text/company_ownership_claim_approved.ftl"
                 )
             is AccessToDatasetRequested ->
                 EmailBuilder(

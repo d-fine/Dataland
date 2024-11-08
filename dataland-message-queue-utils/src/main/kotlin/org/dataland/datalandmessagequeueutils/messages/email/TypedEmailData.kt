@@ -94,6 +94,16 @@ data class MultipleDatasetsUploadedEngagement(
     override lateinit var baseUrl: String
 }
 
+data class CompanyOwnershipClaimApproved(
+    val companyId: String,
+    val companyName: String,
+    val numberOfOpenDataRequestsForCompany : Int
+) : TypedEmailData(), InitializeBaseUrlLater {
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+
 /*data class KeyContentList(
     val textTitle: String,
     val htmlTitle: String,

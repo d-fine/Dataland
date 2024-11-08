@@ -6,6 +6,7 @@ import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -40,6 +41,10 @@ class EmailMessageListenerTest {
         "message", "firstName", "lastName"
     )
 
+    private val testCompanyOwnershipClaimApproved = CompanyOwnershipClaimApproved(
+        "companyId", "companyName", 10
+    )
+
     private val testAccessToDatasetRequested = AccessToDatasetRequested(
         "companyId", "companyName", "dataType", listOf("2020", "2023"),
         "message", "requesterEmail", "requesterFirstName", "requesterLastName"
@@ -65,7 +70,7 @@ class EmailMessageListenerTest {
 
     private val typedEmailTestData: List<TypedEmailData> = listOf(
         testDatasetRequestedClaimOwnership, testAccessToDatasetRequested, testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement,
-        testAccessToDatasetGranted
+        testAccessToDatasetGranted, testCompanyOwnershipClaimApproved
     )
 
     private val recipientToContactMap = mapOf(
