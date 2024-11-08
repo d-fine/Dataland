@@ -157,7 +157,7 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import { type GetInfoOnUnreviewedDatasetsDataTypesEnum, type ReviewQueueResponse } from '@clients/qaservice';
+import { type GetInfoOnPendingDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import router from '@/router';
 import { type DataTypeEnum } from '@clients/backend';
 
@@ -188,7 +188,7 @@ export default defineComponent({
     const footerContent = footerPage?.sections;
     return {
       apiClientProvider: new ApiClientProvider(this.getKeycloakPromise()),
-      displayDataOfPage: [] as ReviewQueueResponse[],
+      displayDataOfPage: [] as QaReviewResponse[],
       waitingForData: true,
       KEYCLOAK_ROLE_REVIEWER,
       currentChunkIndex: 0,
@@ -241,12 +241,12 @@ export default defineComponent({
     humanizeString: humanizeStringOrNumber,
     /**
      * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
-     * This is acceptable because both enums sahre the same origin (DataTypeEnum in backend).
+     * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
      * @param input is a value with type DataTypeEnum
      * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
      */
-    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
-      return input as GetInfoOnUnreviewedDatasetsDataTypesEnum;
+    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnPendingDatasetsDataTypesEnum {
+      return input as GetInfoOnPendingDatasetsDataTypesEnum;
     },
     /**
      * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
@@ -256,7 +256,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
 
-        const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>(
+        const selectedFrameworksAsSet = new Set<GetInfoOnPendingDatasetsDataTypesEnum>(
           this.selectedFrameworks.map((selectableItem) =>
             this.manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
           )
@@ -265,7 +265,7 @@ export default defineComponent({
           this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
         );
         const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
-        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets(
+        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnPendingDatasets(
           selectedFrameworksAsSet,
           reportingPeriodFilter,
           companyNameFilter,
@@ -274,7 +274,7 @@ export default defineComponent({
         );
         this.displayDataOfPage = response.data;
         this.totalRecords = (
-          await this.apiClientProvider.apiClients.qaController.getNumberOfUnreviewedDatasets(
+          await this.apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
             selectedFrameworksAsSet,
             reportingPeriodFilter,
             companyNameFilter
@@ -291,8 +291,8 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     goToQaViewPage(event: DataTableRowClickEvent) {
-      const qaDataObject = event.data as ReviewQueueResponse;
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
+      const qaDataObject = event.data as QaReviewResponse;
+      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.dataType}/${qaDataObject.dataId}`;
       return router.push(qaUri);
     },
 
