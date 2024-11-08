@@ -28,7 +28,7 @@ object JsonOperations {
      * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
      * @param jsonNode The JSON node
      * @param jsonPath The JSON path identifying the value
-     * @return The string representation of the value
+     * @return The string representation of the value or an empty string if the value is not found
      */
     fun getValueFromJsonNode(
         jsonNode: JsonNode,

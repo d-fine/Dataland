@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
 import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
+import org.dataland.datalandbackend.utils.JsonOperations.getValueFromJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.insertReferencedReports
 import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
@@ -236,5 +237,23 @@ class JsonOperationsTest {
         val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
 
         assertThrows<IllegalArgumentException> { insertReferencedReports(frameworkTemplate, targetPath, referencedReports) }
+    }
+
+    @Test
+    fun `check that the extraction of the values from a json node are as expected`() {
+        val jsonNode = getJsonNode(frameworkTemplate)
+        val expectedValues =
+            mapOf(
+                "category.subcategory.field.id" to "dataPoint",
+                "anotherCategory.field2.ref" to "reference",
+                "dummy" to "",
+                "does.not.exist" to "",
+                "category.subcategory.field" to "{\"id\":\"dataPoint\",\"ref\":\"reference\"}",
+            )
+
+        expectedValues.forEach { (key, value) ->
+            val extractedValue = getValueFromJsonNode(jsonNode, key)
+            assertEquals(value, extractedValue)
+        }
     }
 }
