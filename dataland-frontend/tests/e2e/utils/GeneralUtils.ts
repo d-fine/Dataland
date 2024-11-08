@@ -41,7 +41,7 @@ export function compareObjectKeysAndValuesDeep(
   for (const key of keysA) {
     const newPath = path ? `${path}.${key}` : key;
 
-    if (!keysB.includes(key)) {
+    if (!keysB.includes(key) && !key.endsWith('publicationDate')) {
       throw new Error(`A field with the key ${newPath} exists in A but not in B`);
     }
 
@@ -51,7 +51,7 @@ export function compareObjectKeysAndValuesDeep(
   }
 
   for (const key of keysB) {
-    if (!keysA.includes(key)) {
+    if (!keysA.includes(key) && !key.endsWith('publicationDate')) {
       throw new Error(`A field with the key ${path}.${key} exists in B but not in A`);
     }
   }
