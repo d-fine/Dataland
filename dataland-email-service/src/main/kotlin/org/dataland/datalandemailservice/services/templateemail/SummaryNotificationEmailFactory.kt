@@ -48,7 +48,7 @@ class SummaryNotificationEmailFactory(
         receiverEmail: String,
         properties: Map<String, String?>,
     ): Email {
-        val subscriptionUuid = emailSubscriptionTracker.addSubscription(receiverEmail).toString()
+        val subscriptionUuid = emailSubscriptionTracker.addSubscriptionIfNeededAndReturnUuid(receiverEmail).toString()
         val subscriptionProperty = mapOf(keys.subscriptionUuid to subscriptionUuid)
         return super.buildEmail(receiverEmail, properties + subscriptionProperty)
     }

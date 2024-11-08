@@ -27,7 +27,7 @@ class EmailSubscriptionTracker(
      * or the UUID of the newly created entity if no subscription existed.
      */
     @Transactional
-    fun addSubscription(emailAddress: String): UUID {
+    fun addSubscriptionIfNeededAndReturnUuid(emailAddress: String): UUID {
         val entity =
             emailSubscriptionRepository.findByEmailAddress(emailAddress)
                 ?: emailSubscriptionRepository.save(
@@ -41,19 +41,20 @@ class EmailSubscriptionTracker(
     }
 
     /**
-     * This function queries the email subscription repository to determine whether the
-     * provided email address is currently subscribed.
+     * This function queries the email subscription repository for the email address and checks the subscription status.
+     * If there is an entity, the value of isSubscribed is returned. Otherwise, true is returned.
+     * Since the repository acts as a blacklist, no subscription entity for the email address indicates that the email should be sent.
      *
      * @param emailAddress that should be checked
-     * @return Boolean which is `true` if the email is subscribed,
-     * `false` if it is not subscribed or if the email address
-     *  does not exist in the repository.
+     * @return `true` if the email is subscribed or no entity is found, false otherwise.
      */
     fun isEmailSubscribed(emailAddress: String): Boolean =
-        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: false
+        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
 
     /**
-     * This functions checks whether an email contact should be filtered or not.
+     * This function checks whether an email should be sent to an email contact.
+     * The email should be sent if the email address is subscribed and the email does not have the @example.com domain.
+     *
      * @param emailContact that should be checked
      * @return Boolean which is 'true' if the contact should be filtered and 'false' otherwise.
      */

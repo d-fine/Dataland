@@ -26,7 +26,7 @@ class NotificationEmailFactoriesTest {
     @BeforeEach
     fun setup() {
         Mockito
-            .`when`(emailSubscriptionTrackerMock.addSubscription(receiverEmail))
+            .`when`(emailSubscriptionTrackerMock.addSubscriptionIfNeededAndReturnUuid(receiverEmail))
             .thenReturn(mockUuid)
     }
 
