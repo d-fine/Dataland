@@ -1,6 +1,8 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -15,6 +17,7 @@ data class ReviewInformationEntity(
     @Id
     val dataId: String,
     val receptionTime: Long,
+    @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
     val reviewerKeycloakId: String,
     var message: String?,
