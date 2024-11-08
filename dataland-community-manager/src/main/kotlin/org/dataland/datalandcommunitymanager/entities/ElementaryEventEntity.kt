@@ -22,7 +22,6 @@ data class ElementaryEventEntity(
     @Enumerated(EnumType.STRING)
     val elementaryEventType: ElementaryEventType,
     val companyId: UUID,
-    @Enumerated(EnumType.STRING)
     val framework: DataTypeEnum,
     val reportingPeriod: String,
     val creationTimestamp: Long,
