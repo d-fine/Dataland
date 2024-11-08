@@ -24,6 +24,7 @@ import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from 
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import router from '@/router';
+import Tab from './Tab';
 
 export default defineComponent({
   name: 'DatasetsTabMenu',
@@ -110,11 +111,6 @@ export default defineComponent({
   },
 });
 
-interface Tab {
-  label: string;
-  route: string;
-  isVisible: boolean;
-}
 </script>
 
 <style>
