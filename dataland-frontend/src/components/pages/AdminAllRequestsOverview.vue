@@ -14,9 +14,18 @@
                 <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <InputText
                   data-test="email-searchbar"
-                  v-model="searchBarInput"
+                  v-model="searchBarInputEmail"
                   placeholder="Search by Requester"
                   class="w-12 pl-6 pr-6"
+                />
+              </span>
+              <span class="w-3 p-input-icon-left" style="margin: 15px">
+                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+                <InputText
+                    data-test="comment-searchbar"
+                    v-model="searchBarInputComment"
+                    placeholder="Search by Comment"
+                    class="w-12 pl-6 pr-6"
                 />
               </span>
               <FrameworkDataSearchDropdownFilter
@@ -201,6 +210,12 @@ import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus, retrieveAv
 import type { DataTypeEnum } from '@clients/backend';
 import router from '@/router';
 
+enum PriorityEnum {
+  NORMAL = "Normal",
+  HIGH = "High",
+  URGENT = "Urgent"
+}
+
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
   components: {
@@ -235,7 +250,8 @@ export default defineComponent({
       firstRowIndex: 0,
       currentDataRequests: [] as ExtendedStoredDataRequest[],
       footerContent,
-      searchBarInput: '',
+      searchBarInputEmail: '',
+      searchBarInputComment: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
@@ -282,8 +298,15 @@ export default defineComponent({
         this.getAllRequestsForFilters();
       }
     },
-    searchBarInput(newSearch: string) {
-      this.searchBarInput = newSearch;
+    selectedPriority() {
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (!this.waitingForData) {
+        this.getAllRequestsForFilters();
+      }
+    },
+    searchBarInputEmail(newSearch: string) {
+      this.searchBarInputEmail = newSearch;
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (this.timerId) {
@@ -291,6 +314,15 @@ export default defineComponent({
       }
       this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.debounceInMs);
     },
+    searchBarInputComment(newSearch: string) {
+      this.searchBarInputComment = newSearch;
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (this.timerId) {
+        clearTimeout(this.timerId);
+      }
+      this.timerId = setTimeout( () => this.getAllRequestsForFilters(), this.debounceInMs);
+    }
   },
   methods: {
     badgeClass,
@@ -311,12 +343,12 @@ export default defineComponent({
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
         this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
       );
-      const selectedPriorityAsSet = new Set<DataTypeEnum>(
+      const selectedPriorityAsSet = new Set<PriorityEnum>(
           this.selectedPriority.map((selectableItem) => selectableItem.priorityDataType)
       );
       try {
         if (this.getKeycloakPromise) {
-          const emailFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
+          const emailFilter = this.searchBarInputEmail === '' ? undefined : this.searchBarInputEmail;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.requestController.getDataRequests(
@@ -356,7 +388,9 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.selectedFrameworks = [];
       this.selectedRequestStatus = [];
-      this.searchBarInput = '';
+      this.selectedPriority = [];
+      this.searchBarInputEmail = '';
+      this.searchBarInputComment = '';
     },
 
     /**

@@ -1,6 +1,6 @@
 import { AccessStatus, RequestStatus } from '@clients/communitymanager';
-import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { type FrameworkSelectableItem, type SelectableItem, type PrioritySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { FRAMEWORKS_WITH_VIEW_PAGE, PRIORITY_ENUM } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 
@@ -66,3 +66,20 @@ export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
     };
   });
 }
+
+export function retrieveAvailablePriority(): Array<SelectableItem>{
+  return PRIORITY_ENUM.map((dataTypeEnum) => {
+    let displayName = humanizeStringOrNumber(dataTypeEnum);
+    const priorityDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
+    if (priorityDefinition) {
+      displayName = priorityDefinition.label;
+    }
+    return {
+      priorityDataType: dataTypeEnum,
+      displayName: displayName,
+      disabled: false,
+    };
+  });
+}
+
+
