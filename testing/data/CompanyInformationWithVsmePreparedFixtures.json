@@ -132,7 +132,8 @@
 							"page": "1179-1222",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": null
 						},
 						"comment": "bypass multi-byte protocol",
 						"quality": "Reported"
@@ -145,7 +146,8 @@
 							"page": "292",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "ROI",
+							"publicationDate": null
 						},
 						"comment": "copy mobile application",
 						"quality": "Reported"
@@ -156,7 +158,8 @@
 							"page": "175-649",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
+							"tagName": "e-markets",
+							"publicationDate": null
 						},
 						"comment": "override virtual program",
 						"quality": "Estimated"
@@ -167,7 +170,8 @@
 							"page": "1145-1293",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "architectures",
+							"publicationDate": null
 						},
 						"comment": "compress redundant sensor",
 						"quality": "Audited"
@@ -178,7 +182,8 @@
 							"page": "62-933",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
+							"tagName": "channels",
+							"publicationDate": null
 						},
 						"comment": "transmit optical circuit",
 						"quality": "NoDataFound"
@@ -298,7 +303,8 @@
 							"page": "122",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
+							"tagName": "applications",
+							"publicationDate": null
 						},
 						"comment": "program redundant pixel",
 						"quality": "Audited"
