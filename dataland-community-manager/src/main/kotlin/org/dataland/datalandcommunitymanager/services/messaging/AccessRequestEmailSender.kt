@@ -68,17 +68,19 @@ class AccessRequestEmailSender(
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
 
-        val emailData = AccessToDatasetGranted(
-            companyId = emailInformation.datalandCompanyId,
-            companyName = companyName,
-            dataType = emailInformation.dataType,
-            dataTypeDescription = emailInformation.dataTypeDescription,
-            reportingPeriod = emailInformation.reportingPeriod,
-            creationDate = dateFormat.format(emailInformation.creationTimestamp),
-        )
-        val message = EmailMessage(
-            emailData, listOf(EmailRecipient.UserId(emailInformation.userId)), emptyList(), emptyList()
-        )
+        val emailData =
+            AccessToDatasetGranted(
+                companyId = emailInformation.datalandCompanyId,
+                companyName = companyName,
+                dataType = emailInformation.dataType,
+                dataTypeDescription = emailInformation.dataTypeDescription,
+                reportingPeriod = emailInformation.reportingPeriod,
+                creationDate = dateFormat.format(emailInformation.creationTimestamp),
+            )
+        val message =
+            EmailMessage(
+                emailData, listOf(EmailRecipient.UserId(emailInformation.userId)), emptyList(), emptyList(),
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
             MessageType.SEND_EMAIL,

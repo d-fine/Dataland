@@ -17,7 +17,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
+import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -89,7 +91,6 @@ class NotificationServiceTest {
                 objectMapper,
                 notificationThresholdDays,
                 elementaryEventsThreshold,
-                testProxyPrimaryUrl,
             )
         `when`(metaDataControllerApiMock.getDataMetaInfo(anyString())).thenReturn(testDataMetaInformation)
         `when`(companyDataControllerApiMock.getCompanyInfo(testCompanyId.toString())).thenReturn(testCompanyInformation)
@@ -139,10 +140,10 @@ class NotificationServiceTest {
         )
     }
 
-    private fun parseJsonStringIntoTemplateEmailMessage(jsonString: String): TemplateEmailMessage =
+    private fun parseJsonStringIntoTemplateEmailMessage(jsonString: String): EmailMessage =
         notificationService.objectMapper.readValue(
             jsonString,
-            TemplateEmailMessage::class.java,
+            EmailMessage::class.java,
         )
 
     @Test
@@ -225,7 +226,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    fun `counting the days passed since the last notifiation event works as expected`() {
+    fun `counting the days passed since the last notification event works as expected`() {
         val expectedDaysPassed: Long = 12
         val notificationEvents = mutableListOf<NotificationEventEntity>()
         notificationEvents.add(createNotificationEventEntityForDataUploads(expectedDaysPassed))
@@ -263,23 +264,6 @@ class NotificationServiceTest {
                 ElementaryEventType.UploadEvent,
             ),
         )
-    }
-
-    @Test
-    fun `check if the conversion of frameworks and reporting periods to a single string works as expected`() {
-        val elementaryEvents = mutableListOf<ElementaryEventEntity>()
-        elementaryEvents.add(createUploadElementaryEventEntity(5, DataTypeEnum.heimathafen, "2021"))
-        elementaryEvents.add(createUploadElementaryEventEntity(6, DataTypeEnum.heimathafen, "2021"))
-        elementaryEvents.add(createUploadElementaryEventEntity(8, DataTypeEnum.heimathafen, "2023"))
-        elementaryEvents.add(createUploadElementaryEventEntity(12, DataTypeEnum.sfdr, "2024"))
-        elementaryEvents.add(createUploadElementaryEventEntity(15, DataTypeEnum.lksg, "2020"))
-
-        val expectedOutputString =
-            "Heimathafen: 2021, 2023<br>SFDR: 2024<br>LkSG: 2020"
-
-        val outputString = notificationService.createFrameworkAndYearStringFromElementaryEvents(elementaryEvents)
-
-        assertEquals(expectedOutputString, outputString)
     }
 
     @Test
@@ -327,25 +311,26 @@ class NotificationServiceTest {
                 anyString(),
             ),
         ).then {
-            val arg1 = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
+            val emailMessage = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
             val arg2 = it.getArgument<String>(1)
             val arg3 = it.getArgument<String>(2)
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertEquals(TemplateEmailMessage.Type.SingleNotification, arg1.emailTemplateType)
-            assertTrue(arg1.receiver.toString().contains("emailAddress@"))
+            assertTrue(emailMessage.typedEmailData is SingleDatasetUploadedEngagement)
+            val singleDatasetsUploadedEngagement = emailMessage.typedEmailData as SingleDatasetUploadedEngagement
 
-            assertEquals(testCompanyInformation.companyName, arg1.properties["companyName"])
-            assertEquals(testCompanyId.toString(), arg1.properties["companyId"])
-            assertEquals(readableFrameworkNameMapping.getValue(testDataType), arg1.properties["framework"])
-            assertEquals(testReportingPeriod, arg1.properties["year"])
-            assertEquals(testProxyPrimaryUrl, arg1.properties["baseUrl"])
+            assertTrue(emailMessage.toString().contains("emailAddress@"))
 
-            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
+            assertEquals(testCompanyInformation.companyName, singleDatasetsUploadedEngagement.companyName)
+            assertEquals(testCompanyId.toString(), singleDatasetsUploadedEngagement.companyId)
+            assertEquals(readableFrameworkNameMapping.getValue(testDataType), singleDatasetsUploadedEngagement.dataType)
+            assertEquals(testReportingPeriod, singleDatasetsUploadedEngagement.reportingPeriod)
+
+            assertEquals(MessageType.SEND_EMAIL, arg2)
             assertEquals(testCorrelationId, arg3)
             assertEquals(ExchangeName.SEND_EMAIL, arg4)
-            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
+            assertEquals(RoutingKeyNames.EMAIL, arg5)
         }
     }
 
@@ -358,8 +343,7 @@ class NotificationServiceTest {
         setTheReturnValueForNotificationEventRepoQuery(listOf(lastNotificationEvent))
         mockBuildingMessageAndSendingItToQueueForSingleMail()
         notificationService.sendEmailMessagesToQueue(
-            NotificationService.NotificationEmailType.Single,
-            notificationService.buildEmailProperties(
+            notificationService.buildEmailData(
                 testCompanyInformation.companyName,
                 NotificationService.NotificationEmailType.Single,
                 latestElementaryEvent,
@@ -381,25 +365,31 @@ class NotificationServiceTest {
                 anyString(),
             ),
         ).then {
-            val arg1 = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
+            val emailMessage = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
             val arg2 = it.getArgument<String>(1)
             val arg3 = it.getArgument<String>(2)
             val arg4 = it.getArgument<String>(3)
             val arg5 = it.getArgument<String>(4)
 
-            assertEquals(TemplateEmailMessage.Type.SummaryNotification, arg1.emailTemplateType)
-            assertTrue(arg1.receiver.toString().contains("emailAddress@"))
+            assertTrue(emailMessage.typedEmailData is MultipleDatasetsUploadedEngagement)
+            val multipleDatasetsUploadedEngagement = emailMessage.typedEmailData as MultipleDatasetsUploadedEngagement
+            assertTrue(emailMessage.receiver.toString().contains("emailAddress@"))
 
-            assertEquals(testCompanyInformation.companyName, arg1.properties["companyName"])
-            assertEquals(testCompanyId.toString(), arg1.properties["companyId"])
-            assertEquals("LkSG: 2020<br>SFDR: 2021<br>VSME: 2022", arg1.properties["frameworks"])
-            assertEquals(testProxyPrimaryUrl, arg1.properties["baseUrl"])
-            assertEquals("10", arg1.properties["numberOfDays"])
-
-            assertEquals(MessageType.SEND_TEMPLATE_EMAIL, arg2)
+            assertEquals(testCompanyInformation.companyName, multipleDatasetsUploadedEngagement.companyName)
+            assertEquals(testCompanyId.toString(), multipleDatasetsUploadedEngagement.companyId)
+            assertEquals(
+                listOf(
+                    MultipleDatasetsUploadedEngagement.FrameworkData("LkSG", listOf("2020")),
+                    MultipleDatasetsUploadedEngagement.FrameworkData("SFDR", listOf("2021")),
+                    MultipleDatasetsUploadedEngagement.FrameworkData("VSME", listOf("2022")),
+                ),
+                multipleDatasetsUploadedEngagement.frameworkData,
+            )
+            assertEquals(10, multipleDatasetsUploadedEngagement.numberOfDays)
+            assertEquals(MessageType.SEND_EMAIL, arg2)
             assertEquals(testCorrelationId, arg3)
             assertEquals(ExchangeName.SEND_EMAIL, arg4)
-            assertEquals(RoutingKeyNames.TEMPLATE_EMAIL, arg5)
+            assertEquals(RoutingKeyNames.EMAIL, arg5)
         }
     }
 
@@ -418,8 +408,7 @@ class NotificationServiceTest {
         setTheReturnValueForNotificationEventRepoQuery(listOf(lastNotificationEvent))
         mockBuildingMessageAndSendingItToQueueForSummaryMail()
         notificationService.sendEmailMessagesToQueue(
-            NotificationService.NotificationEmailType.Summary,
-            notificationService.buildEmailProperties(
+            notificationService.buildEmailData(
                 testCompanyInformation.companyName,
                 NotificationService.NotificationEmailType.Summary,
                 latestElementaryEvent,

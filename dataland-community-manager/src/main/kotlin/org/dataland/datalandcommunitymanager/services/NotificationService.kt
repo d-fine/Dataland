@@ -87,13 +87,13 @@ class NotificationService
                                 notificationEmailType,
                                 latestElementaryEvent,
                                 unprocessedElementaryEvents,
-                                )
+                            )
                         sendEmailMessagesToQueue(typedEmailData, emailReceivers, correlationId)
                         // TODO fix this later
-                        //NotificationServiceUtils.sendInternalMessageToQueue(
+                        // NotificationServiceUtils.sendInternalMessageToQueue(
                         //    objectMapper, cloudEventMessageHandler, emailReceivers,
                         //    notificationEmailType, emailProperties, correlationId,
-                        //)
+                        // )
                     }
                 }
         }
@@ -148,38 +148,40 @@ class NotificationService
          * TODO
          */
         fun buildEmailData(
-                companyName: String,
-                notificationEmailType: NotificationEmailType,
-                latestElementaryEvent: ElementaryEventEntity,
-                unprocessedElementaryEvents: List<ElementaryEventEntity>,
-            ) : TypedEmailData =
-                when (notificationEmailType) {
-                    NotificationEmailType.Single ->
-                        SingleDatasetUploadedEngagement(
-                            companyName = companyName,
-                            companyId = latestElementaryEvent.companyId.toString(),
-                            dataType = readableFrameworkNameMapping[latestElementaryEvent.framework] ?: "",
-                            reportingPeriod = latestElementaryEvent.reportingPeriod
-                        )
-                    NotificationEmailType.Summary -> {
-                        val frameworkData = unprocessedElementaryEvents
+            companyName: String,
+            notificationEmailType: NotificationEmailType,
+            latestElementaryEvent: ElementaryEventEntity,
+            unprocessedElementaryEvents: List<ElementaryEventEntity>,
+        ): TypedEmailData =
+            when (notificationEmailType) {
+                NotificationEmailType.Single ->
+                    SingleDatasetUploadedEngagement(
+                        companyName = companyName,
+                        companyId = latestElementaryEvent.companyId.toString(),
+                        dataType = readableFrameworkNameMapping[latestElementaryEvent.framework] ?: "",
+                        reportingPeriod = latestElementaryEvent.reportingPeriod,
+                    )
+                NotificationEmailType.Summary -> {
+                    val frameworkData =
+                        unprocessedElementaryEvents
                             .groupBy { it.framework }
                             .map { (framework, events) ->
                                 MultipleDatasetsUploadedEngagement.FrameworkData(
-                                    readableFrameworkNameMapping[framework] ?: "", events.map { it.reportingPeriod }
+                                    readableFrameworkNameMapping[framework] ?: "", events.map { it.reportingPeriod },
                                 )
                             }
 
-                        MultipleDatasetsUploadedEngagement(
-                            companyName = companyName,
-                            companyId = latestElementaryEvent.companyId.toString(),
-                            frameworkData = frameworkData,
-                            numberOfDays = getDaysPassedSinceLastNotificationEvent(
+                    MultipleDatasetsUploadedEngagement(
+                        companyName = companyName,
+                        companyId = latestElementaryEvent.companyId.toString(),
+                        frameworkData = frameworkData,
+                        numberOfDays =
+                            getDaysPassedSinceLastNotificationEvent(
                                 latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
-                            )
-                        )
-                    }
+                            ),
+                    )
                 }
+            }
 
         /**
          * Sends messages to queue in order to make the email service send mails to all receivers.

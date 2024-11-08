@@ -55,7 +55,6 @@ class PrivateDataUploadProcessorTest {
     @Test
     fun `unexpected action type leads to rejection exception`() {
         val unexpectedActionType = "unexpected action type"
-        val expectedActionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS
         val payload =
             JSONObject(
                 mapOf(
@@ -70,7 +69,7 @@ class PrivateDataUploadProcessorTest {
             }
 
         assertEquals(
-            "Message was rejected: Expected action type $expectedActionType, but was $unexpectedActionType.",
+            "Message was rejected: Message has type \"$unexpectedActionType\" but type \"Private Data received\" was expected",
             exception.message,
         )
     }
@@ -94,7 +93,7 @@ class PrivateDataUploadProcessorTest {
         assertDoesNotThrow {
             privateDataUploadProcessor.validateIncomingPayloadAndReturnDataId(
                 payload,
-                ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
+                MessageType.PRIVATE_DATA_RECEIVED,
             )
         }
 
