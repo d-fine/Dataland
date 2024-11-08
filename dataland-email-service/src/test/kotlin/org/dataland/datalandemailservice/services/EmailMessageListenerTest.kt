@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
@@ -57,8 +58,14 @@ class EmailMessageListenerTest {
         3,
     )
 
+    private val testAccessToDatasetGranted = AccessToDatasetGranted(
+        "companyId", "companyName", "dataType", "dataTypeDescription",
+        "reportingPeriod", "creationDate"
+    )
+
     private val typedEmailTestData: List<TypedEmailData> = listOf(
-        testDatasetRequestedClaimOwnership, testAccessToDatasetRequested, testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement
+        testDatasetRequestedClaimOwnership, testAccessToDatasetRequested, testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement,
+        testAccessToDatasetGranted
     )
 
     private val recipientToContactMap = mapOf(

@@ -8,6 +8,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
@@ -146,6 +147,13 @@ class EmailMessageListener(
                     "New data for ${typedEmailData.companyName} on Dataland",
                     "/html/multiple_datasets_uploaded_engagement.ftl",
                     "/text/multiple_datasets_uploaded_engagement.ftl"
+                )
+            is AccessToDatasetGranted ->
+                EmailBuilder(
+                    typedEmailData,
+                    "Your Dataland Access Request has been granted!",
+                    "/html/access_to_dataset_granted.ftl",
+                    "/text/access_to_dataset_granted.ftl"
                 )
         }
 

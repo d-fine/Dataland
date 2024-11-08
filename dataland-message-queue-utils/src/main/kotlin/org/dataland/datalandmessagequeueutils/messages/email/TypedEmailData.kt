@@ -54,6 +54,18 @@ data class AccessToDatasetRequested(
     override lateinit var baseUrl: String
 }
 
+data class AccessToDatasetGranted(
+    val companyId: String,
+    val companyName: String,
+    val dataType: String,
+    val dataTypeDescription: String,
+    val reportingPeriod: String,
+    val creationDate: String,
+) : TypedEmailData(), InitializeBaseUrlLater {
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
 data class SingleDatasetUploadedEngagement(
     val companyId: String,
     val companyName: String,
@@ -81,3 +93,22 @@ data class MultipleDatasetsUploadedEngagement(
     @JsonIgnore
     override lateinit var baseUrl: String
 }
+
+/*data class KeyContentList(
+    val textTitle: String,
+    val htmlTitle: String,
+    val content: List<Pair<String, Content>>
+) : TypedEmailData(), InitializeBaseUrlLater {
+    @JsonIgnore
+    override lateinit var baseUrl: String
+
+    sealed class Content
+
+    data class Text(
+        val value: String
+    )
+    data class Link(
+        val url: String,
+        val name: String
+    )
+}*/

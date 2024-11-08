@@ -10,9 +10,10 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
@@ -67,28 +68,23 @@ class AccessRequestEmailSender(
         val dateFormat = SimpleDateFormat("dd MMM yyyy, HH:mm")
         dateFormat.timeZone = TimeZone.getTimeZone("Europe/Berlin")
 
-        val properties =
-            mapOf(
-                "companyId" to emailInformation.datalandCompanyId,
-                "companyName" to companyName,
-                "dataType" to emailInformation.dataType,
-                "dataTypeDescription" to emailInformation.dataTypeDescription,
-                "reportingPeriod" to emailInformation.reportingPeriod,
-                "creationDate" to dateFormat.format(emailInformation.creationTimestamp),
-            )
-
-        val message =
-            TemplateEmailMessage(
-                emailTemplateType = TemplateEmailMessage.Type.DataAccessGranted,
-                receiver = TemplateEmailMessage.UserIdEmailRecipient(emailInformation.userId),
-                properties = properties,
-            )
+        val emailData = AccessToDatasetGranted(
+            companyId = emailInformation.datalandCompanyId,
+            companyName = companyName,
+            dataType = emailInformation.dataType,
+            dataTypeDescription = emailInformation.dataTypeDescription,
+            reportingPeriod = emailInformation.reportingPeriod,
+            creationDate = dateFormat.format(emailInformation.creationTimestamp),
+        )
+        val message = EmailMessage(
+            emailData, listOf(EmailRecipient.UserId(emailInformation.userId)), emptyList(), emptyList()
+        )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SEND_TEMPLATE_EMAIL,
+            MessageType.SEND_EMAIL,
             correlationId,
             ExchangeName.SEND_EMAIL,
-            RoutingKeyNames.TEMPLATE_EMAIL,
+            RoutingKeyNames.EMAIL,
         )
     }
 
