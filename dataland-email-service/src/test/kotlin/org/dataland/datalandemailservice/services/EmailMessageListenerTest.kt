@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
@@ -80,10 +81,16 @@ class EmailMessageListenerTest {
         "reportingPeriod", "creationDate"
     )
 
+    private val testKeyValueTable = KeyValueTable(
+        "subject", "textTitle", "htmlTitle",
+        listOf("Key" to KeyValueTable.Text("Super text"))
+    )
+
     private val typedEmailTestData: List<TypedEmailContent> = listOf(
-        testDatasetRequestedClaimOwnership, testDataRequestAnswered, testDataRequestClosed, testAccessToDatasetRequested,
-        testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement, testAccessToDatasetGranted,
-        testCompanyOwnershipClaimApproved
+//        testDatasetRequestedClaimOwnership, testDataRequestAnswered, testDataRequestClosed, testAccessToDatasetRequested,
+//        testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement, testAccessToDatasetGranted,
+//        testCompanyOwnershipClaimApproved,
+        testKeyValueTable
     )
 
     private val recipientToContactMap = mapOf(

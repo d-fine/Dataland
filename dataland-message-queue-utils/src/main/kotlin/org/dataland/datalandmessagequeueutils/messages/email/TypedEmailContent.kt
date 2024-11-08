@@ -12,8 +12,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 @JsonSubTypes(
     JsonSubTypes.Type(value = DatasetRequestedClaimOwnership::class, name = "DatasetRequestedClaimOwnership"),
     JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetRequested"),
-    JsonSubTypes.Type(value = MultipleDatasetsUploadedEngagement::class, name = "MultipleDatasetsUploadedEngagement"),
+    JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetGranted"),
     JsonSubTypes.Type(value = SingleDatasetUploadedEngagement::class, name = "SingleDatasetUploadedEngagement"),
+    JsonSubTypes.Type(value = MultipleDatasetsUploadedEngagement::class, name = "MultipleDatasetsUploadedEngagement"),
+    JsonSubTypes.Type(value = CompanyOwnershipClaimApproved::class, name = "CompanyOwnershipClaimApproved"),
+    JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),
+    JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),
+    JsonSubTypes.Type(value = DataRequestClosed::class, name = "DataRequestClosed"),
+    JsonSubTypes.Type(value = KeyValueTable::class, name = "KeyValueTable"),
 )
 sealed class TypedEmailContent
 
@@ -131,21 +137,31 @@ data class DataRequestClosed(
     override lateinit var baseUrl: String
 }
 
-/*data class KeyContentList(
+data class KeyValueTable(
+    val subject: String,
     val textTitle: String,
     val htmlTitle: String,
-    val content: List<Pair<String, Content>>
-) : TypedEmailData(), InitializeBaseUrlLater {
+    val table: List<Pair<String, Value>>
+) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
 
-    sealed class Content
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+    )
+    @JsonSubTypes.Type(
+        value = Text::class, name="Text"
+    )
+    sealed class Value {
+        abstract val macro_name: String
+    }
 
     data class Text(
         val value: String
-    )
-    data class Link(
-        val url: String,
-        val name: String
-    )
-}*/
+    ) : Value() {
+        @JsonIgnore
+        override val macro_name = "text_macro"
+    }
+}

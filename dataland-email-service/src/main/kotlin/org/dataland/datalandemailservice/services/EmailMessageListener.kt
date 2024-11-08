@@ -18,6 +18,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InitializeBaseUrlLater
 import org.dataland.datalandmessagequeueutils.messages.email.InitializeSubscriptionUuidLater
+import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
@@ -178,6 +179,13 @@ class EmailMessageListener(
                     "Your Dataland Access Request has been granted!",
                     "/html/access_to_dataset_granted.ftl",
                     "/text/access_to_dataset_granted.ftl"
+                )
+            is KeyValueTable ->
+                EmailBuilder(
+                    typedEmailContent,
+                    typedEmailContent.subject,
+                    "/html/key_value_table.ftl",
+                    "/text/key_value_table.ftl"
                 )
         }
 
