@@ -31,15 +31,26 @@
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                v-model="selectedRequestStatus"
-                ref="frameworkFilter"
-                :available-items="availableRequestStatus"
-                filter-name="Request Status"
-                data-test="request-status-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Request Status"
-                class="ml-3"
-                style="margin: 15px"
+                  v-model="selectedRequestStatus"
+                  ref="frameworkFilter"
+                  :available-items="availableRequestStatus"
+                  filter-name="Request Status"
+                  data-test="request-status-picker"
+                  filter-id="framework-filter"
+                  filter-placeholder="Search by Request Status"
+                  class="ml-3"
+                  style="margin: 15px"
+              />
+              <FrameworkDataSearchDropdownFilter
+                  v-model="selectedPriority"
+                  ref="frameworkFilter"
+                  :available-items="availablePriority"
+                  filter-name="Priority"
+                  data-test="request-priority-picker"
+                  filter-id="framework-filter"
+                  filter-placeholder="Search by Priority"
+                  class="ml-3"
+                  style="margin: 15px"
               />
               <div class="flex align-items-center">
                 <span
@@ -183,10 +194,10 @@ import {
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import type { FrameworkSelectableItem, SelectableItem, PrioritySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
-import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/utils/RequestsOverviewPageUtils';
+import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus, retrieveAvailablePriority } from '@/utils/RequestsOverviewPageUtils';
 import type { DataTypeEnum } from '@clients/backend';
 import router from '@/router';
 
@@ -229,6 +240,8 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
+      availablePriority: [] as Array<PrioritySelectableItem>,
+      selectedPriority: [] as Array<PrioritySelectableItem>,
       debounceInMs: 300,
       timerId: 0,
     };
@@ -236,6 +249,7 @@ export default defineComponent({
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableRequestStatus = retrieveAvailableRequestStatus();
+    this.availablePriority = retrieveAvailablePriority();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
   },
   computed: {
@@ -296,6 +310,9 @@ export default defineComponent({
       );
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
         this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
+      );
+      const selectedPriorityAsSet = new Set<DataTypeEnum>(
+          this.selectedPriority.map((selectableItem) => selectableItem.priorityDataType)
       );
       try {
         if (this.getKeycloakPromise) {
