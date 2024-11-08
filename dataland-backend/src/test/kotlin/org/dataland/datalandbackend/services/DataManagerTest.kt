@@ -264,18 +264,21 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check a MessageQueueRejectException if we got no data for currently active `() {
+    fun `check a MessageQueueRejectException if we got no data for currently active`() {
         // fill with code
     }
 
     @Test
     fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
+        val changedQaStatusDataId = "453545"
+        val updatedQaStatus = QaStatus.Accepted
+        val currentlyActiveDataId = "1273091"
         val messageWithChangedQAStatus =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    changedQaStatusDataId = "453545",
-                    updatedQaStatus = QaStatus.Accepted,
-                    currentlyActiveDataId = "1273091",
+                    changedQaStatusDataId,
+                    updatedQaStatus,
+                    currentlyActiveDataId,
                 ),
             )
         val thrown =
@@ -286,6 +289,10 @@ class DataManagerTest(
                     MessageType.QA_STATUS_CHANGED,
                 )
             }
+        assertEquals(
+            "No dataset with the id: $changedQaStatusDataId could be found in the data store.",
+            thrown.message,
+        )
     }
 
     @Test
