@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam
  * Defines the restful dataland-backend API regarding data point up and downloads.
  */
 
-@RequestMapping("/datapoints")
+@RequestMapping("/data-points")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DataPointApi {

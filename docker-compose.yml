@@ -501,6 +501,8 @@ services:
     restart: always
     profiles: [ "production", "testing", "development" ]
     image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_test:${DATALAND_SPECIFICATION_SERVICE_TEST_VERSION}}
+    expose:
+      - "8489"
     networks:
       - internal
     <<: *uncritical-constants-env
