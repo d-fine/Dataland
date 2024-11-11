@@ -10,8 +10,8 @@ import java.util.UUID
  * The database entity for storing data points
  */
 @Entity
-@Table(name = "datapoint_items")
-data class DatapointItem(
+@Table(name = "data point_items")
+data class DataPointItem(
     @Id
     @Column(name = "data_id")
     val id: String,
@@ -19,8 +19,8 @@ data class DatapointItem(
     val companyId: UUID,
     @Column(name = "reporting_period")
     val reportingPeriod: String,
-    @Column(name = "datapoint_specification")
-    val datapointSpecification: String,
+    @Column(name = "data_point_specification")
+    val dataPointSpecification: String,
     @Column(name = "data", columnDefinition = "TEXT")
     val data: String,
 )

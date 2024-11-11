@@ -5,9 +5,9 @@ import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataContr
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
-import org.dataland.datalandinternalstorage.entities.DatapointItem
+import org.dataland.datalandinternalstorage.entities.DataPointItem
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
-import org.dataland.datalandinternalstorage.repositories.DatapointItemRepository
+import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -42,7 +42,7 @@ import java.util.UUID
 @Component
 class DatabaseStringDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
-    @Autowired private var datapointItemRepository: DatapointItemRepository,
+    @Autowired private var dataPointItemRepository: DataPointItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
@@ -121,12 +121,12 @@ class DatabaseStringDataStore(
             val companyId = dataAsJSON.getString("companyId")
             val reportingPeriod = dataAsJSON.getString("reportingPeriod")
             val dataPointData = dataAsJSON.getString("data")
-            storeDatapointItemWithoutTransaction(
-                DatapointItem(
+            storeDataPointItemWithoutTransaction(
+                DataPointItem(
                     id = dataId,
                     companyId = UUID.fromString(companyId),
                     reportingPeriod = reportingPeriod,
-                    datapointSpecification = dataType,
+                    dataPointSpecification = dataType,
                     data = objectMapper.writeValueAsString(dataPointData),
                 ),
             )
@@ -144,8 +144,8 @@ class DatabaseStringDataStore(
      * @param dataPointItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeDatapointItemWithoutTransaction(dataPointItem: DatapointItem) {
-        datapointItemRepository.save(dataPointItem)
+    fun storeDataPointItemWithoutTransaction(dataPointItem: DataPointItem) {
+        dataPointItemRepository.save(dataPointItem)
     }
 
     /**
@@ -159,6 +159,50 @@ class DatabaseStringDataStore(
     }
 
     /**
+     * Selects data from the database either using the table for data points or the table for data sets
+     * @param dataId the ID of the data to be retrieved
+     * @param correlationId the correlation ID of the current user process
+     * @return the data as json string with ID dataId
+     */
+    fun selectData(
+        dataId: String,
+        correlationId: String,
+    ): String {
+        var data = ""
+
+        try {
+            data = selectDataSet(dataId, correlationId)
+        } catch (e: ResourceNotFoundApiException) {
+            logger.info("Data set with data ID: $dataId not found. Searching for data points Correlation ID: $correlationId.")
+        }
+
+        if (data.isNotEmpty()) {
+            return data
+        }
+
+        return selectDataPoint(dataId, correlationId)
+    }
+
+    /**
+     * Reads data point from a database
+     * @param dataId the ID of the data to be retrieved
+     * @return the data as json string with ID dataId
+     */
+    fun selectDataPoint(
+        dataId: String,
+        correlationId: String,
+    ): String =
+        dataPointItemRepository
+            .findById(dataId)
+            .orElseThrow {
+                logger.info("Data point with data ID: $dataId could not be found. Correlation ID: $correlationId.")
+                ResourceNotFoundApiException(
+                    "Data point not found",
+                    "No data point with the ID: $dataId could be found in the data store.",
+                )
+            }.data
+
+    /**
      * Reads data from a database
      * @param dataId the ID of the data to be retrieved
      * @return the data as json string with ID dataId
@@ -170,7 +214,7 @@ class DatabaseStringDataStore(
         dataItemRepository
             .findById(dataId)
             .orElseThrow {
-                logger.info("Data with data ID: $dataId could not be found. Correlation ID: $correlationId.")
+                logger.info("Dataset with data ID: $dataId could not be found. Correlation ID: $correlationId.")
                 ResourceNotFoundApiException(
                     "Dataset not found",
                     "No dataset with the ID: $dataId could be found in the data store.",

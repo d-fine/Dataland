@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
-import org.dataland.datalandinternalstorage.repositories.DatapointItemRepository
+import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.BeforeEach
@@ -18,7 +18,7 @@ import java.util.UUID
 
 class DatabaseStringDataStoreTest {
     val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
-    val mockDatapointItemRepository: DatapointItemRepository = mock(DatapointItemRepository::class.java)
+    val mockDataPointItemRepository: DataPointItemRepository = mock(DataPointItemRepository::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
     val mockTemporarilyCachedDataControllerApi: TemporarilyCachedDataControllerApi =
         mock(TemporarilyCachedDataControllerApi::class.java)
@@ -33,7 +33,7 @@ class DatabaseStringDataStoreTest {
         databaseStringDataStore =
             DatabaseStringDataStore(
                 mockDataItemRepository,
-                mockDatapointItemRepository,
+                mockDataPointItemRepository,
                 mockCloudEventMessageHandler,
                 mockTemporarilyCachedDataControllerApi,
                 objectMapper,
