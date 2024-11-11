@@ -39,28 +39,42 @@
                     <td style="text-align: right; width: 20px; padding: 0">
                     </td>
                 </tr>
-                <tr>
-                    <td rowspan="11">&nbsp;</td>
-                    <td style="height: 7px"></td>
-                    <td rowspan="11">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td style="font-weight: bold; font-size:19px">Framework: Reporting Periods</td>
-                </tr>
-                <tr>
-                    <td style="height: 20px">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>
-                        <#list frameworkData as framework>
-                            ${framework.dataType}: ${framework.reportingPeriods?join(", ")}
-                            <br>
-                        </#list>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="height: 20px"></td>
-                </tr>
+                <#list frameworkData as framework>
+                    <tr>
+                        <td rowspan="10">&nbsp;</td>
+                        <td style="height: 7px"></td>
+                        <td rowspan="10">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Framework</td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 5px; height: 5px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; font-size:19px">${framework.dataType}</td>
+                    </tr>
+                    <tr>
+                        <td style="height: 20px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Reporting year<#if framework.reportingPeriods?has_content>s</#if></td>
+                    </tr>
+                    <tr>
+                        <td style="font-size: 5px; height: 5px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; font-size:19px">${framework.reportingPeriods?join(", ")}</td>
+                    </tr>
+                    <#if !framework?is_last>
+                        <tr>
+                            <td style="border-bottom:1px solid #e3e3e3; height: 20px">&nbsp;</td>
+                        </tr>
+                    </#if>
+                    <tr>
+                        <td style="font-size: 5px; height: 13px">&nbsp;</td>
+                    </tr>
+                </#list>
                 </tbody>
             </table>
         </td>
