@@ -1,4 +1,5 @@
 import { type DataTypeEnum } from '@clients/backend';
+import { type RequestPriority} from "@clients/communitymanager";
 
 export interface SelectableItem {
   displayName: string;
@@ -12,11 +13,7 @@ export interface CountryCodeSelectableItem extends SelectableItem {
 export interface FrameworkSelectableItem extends SelectableItem {
   frameworkDataType: DataTypeEnum;
 }
-enum PriorityEnum {
-  NORMAL = "Normal",
-  HIGH = "High",
-  URGENT = "Urgent"
-}
+
 export interface PrioritySelectableItem extends SelectableItem {
-  priorityDataType: PriorityEnum;
+  priorityDataType: RequestPriority;
 }

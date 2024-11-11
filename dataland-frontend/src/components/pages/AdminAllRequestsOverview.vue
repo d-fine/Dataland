@@ -167,17 +167,17 @@
                     </div>
                   </template>
                 </Column>
-                <Column header="Priority" :sortable="false" field="priority">
+                <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
                   <template #body="slotProps">
-                    <div>
-                      priority-placeholder
+                    <div :class="priorityBadgeClass(slotProps.data.requestPriority)" style="display: inline-flex">
+                      {{ slotProps.data.requestPriority }}
                     </div>
                   </template>
                 </Column>
-                <Column header="Admin Comment" :sortable="false" field="adminComment">
+                <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
                   <template #body="slotProps">
                     <div>
-                      admin-comment-placeholder
+                      {{ slotProps.data.adminComment }}
                     </div>
                   </template>
                 </Column>
@@ -214,21 +214,16 @@ import {
   type ExtendedStoredDataRequest,
   type GetDataRequestsDataTypeEnum,
   type RequestStatus,
+  type RequestPriority,
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type { FrameworkSelectableItem, SelectableItem, PrioritySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import {accessStatusBadgeClass, badgeClass, priorityBadgeClass} from '@/utils/RequestUtils';
 import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus, retrieveAvailablePriority } from '@/utils/RequestsOverviewPageUtils';
 import type { DataTypeEnum } from '@clients/backend';
 import router from '@/router';
-
-enum PriorityEnum {
-  NORMAL = "Normal",
-  HIGH = "High",
-  URGENT = "Urgent"
-}
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
@@ -339,6 +334,7 @@ export default defineComponent({
     }
   },
   methods: {
+    priorityBadgeClass,
     badgeClass,
     accessStatusBadgeClass,
     frameworkHasSubTitle,
@@ -357,7 +353,7 @@ export default defineComponent({
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
         this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
       );
-      const selectedPriorityAsSet = new Set<PriorityEnum>(
+      const selectedPriorityAsSet = new Set<RequestPriority>(
           this.selectedPriority.map((selectableItem) => selectableItem.priorityDataType)
       );
       try {
