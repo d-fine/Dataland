@@ -83,6 +83,8 @@ class DataRequestQueryManagerTest {
             testReportingPeriod,
             setOf(RequestStatus.Open),
             null,
+            null,
+            null,
         )
 
     private val emailAddressSubstring = "beta"
@@ -95,6 +97,8 @@ class DataRequestQueryManagerTest {
             testCompanyId,
             testReportingPeriod,
             setOf(RequestStatus.Open),
+            null,
+            null,
             null,
         )
 

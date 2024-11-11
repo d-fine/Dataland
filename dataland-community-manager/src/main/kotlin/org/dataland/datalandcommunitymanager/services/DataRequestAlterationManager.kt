@@ -94,9 +94,15 @@ class DataRequestAlterationManager(
         val dataRequestEntities =
             dataRequestRepository.searchDataRequestEntity(
                 DataRequestsFilter(
-                    dataType = setOf(metaData.dataType), userId = null, emailAddress = null,
-                    requestStatus = setOf(RequestStatus.Open), accessStatus = null,
-                    reportingPeriod = metaData.reportingPeriod, datalandCompanyId = metaData.companyId,
+                    dataType = setOf(metaData.dataType),
+                    userId = null,
+                    emailAddress = null,
+                    datalandCompanyId = metaData.companyId,
+                    reportingPeriod = metaData.reportingPeriod,
+                    requestStatus = setOf(RequestStatus.Open),
+                    accessStatus = null,
+                    adminComment = null,
+                    requestPriority = null,
                 ),
             )
         dataRequestEntities.forEach {

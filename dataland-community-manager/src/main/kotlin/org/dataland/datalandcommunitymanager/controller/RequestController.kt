@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
@@ -78,8 +79,10 @@ class RequestController(
         dataType: Set<DataTypeEnum>?,
         userId: String?,
         emailAddress: String?,
+        adminComment: String?,
         requestStatus: Set<RequestStatus>?,
         accessStatus: Set<AccessStatus>?,
+        requestPriority: Set<RequestPriority>?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
         chunkSize: Int,
@@ -87,7 +90,15 @@ class RequestController(
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
         val filter =
             DataRequestsFilter(
-                dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+                dataType,
+                userId,
+                emailAddress,
+                datalandCompanyId,
+                reportingPeriod,
+                requestStatus,
+                accessStatus,
+                adminComment,
+                requestPriority,
             )
 
         val authenticationContext = DatalandAuthentication.fromContext()
@@ -112,14 +123,24 @@ class RequestController(
         dataType: Set<DataTypeEnum>?,
         userId: String?,
         emailAddress: String?,
+        adminComment: String?,
         requestStatus: Set<RequestStatus>?,
         accessStatus: Set<AccessStatus>?,
+        requestPriority: Set<RequestPriority>?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): ResponseEntity<Int> {
         val filter =
             DataRequestsFilter(
-                dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+                dataType,
+                userId,
+                emailAddress,
+                datalandCompanyId,
+                reportingPeriod,
+                requestStatus,
+                accessStatus,
+                adminComment,
+                requestPriority,
             )
 
         return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter))
