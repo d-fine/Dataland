@@ -167,6 +167,20 @@
                     </div>
                   </template>
                 </Column>
+                <Column header="Priority" :sortable="false" field="priority">
+                  <template #body="slotProps">
+                    <div>
+                      priority-placeholder
+                    </div>
+                  </template>
+                </Column>
+                <Column header="Admin Comment" :sortable="false" field="adminComment">
+                  <template #body="slotProps">
+                    <div>
+                      admin-comment-placeholder
+                    </div>
+                  </template>
+                </Column>
               </DataTable>
               <div v-if="!waitingForData && currentDataRequests.length == 0">
                 <div class="d-center-div text-center px-7 py-4">
