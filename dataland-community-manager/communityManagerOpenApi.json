@@ -705,6 +705,14 @@
             }
           },
           {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "requestStatus",
             "in": "query",
             "required": false,
@@ -967,6 +975,14 @@
           },
           {
             "name": "emailAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "adminComment",
             "in": "query",
             "required": false,
             "schema": {

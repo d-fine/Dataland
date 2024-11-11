@@ -67,7 +67,7 @@ export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
   });
 }
 
-export function retrieveAvailablePriority(): Array<SelectableItem>{
+export function retrieveAvailablePriority(): Array<PrioritySelectableItem>{
   return PRIORITY_ENUM.map((dataTypeEnum) => {
     let displayName = humanizeStringOrNumber(dataTypeEnum);
     const priorityDefinition = getFrontendFrameworkDefinition(dataTypeEnum);

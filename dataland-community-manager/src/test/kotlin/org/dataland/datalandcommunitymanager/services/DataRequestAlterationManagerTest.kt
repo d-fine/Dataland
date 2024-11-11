@@ -93,7 +93,7 @@ class DataRequestAlterationManagerTest {
                 searchFilter =
                     DataRequestsFilter(
                         setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
-                        setOf(RequestStatus.Open), null,
+                        setOf(RequestStatus.Open), null, null, null,
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)

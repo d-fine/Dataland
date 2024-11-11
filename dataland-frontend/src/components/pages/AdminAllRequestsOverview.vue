@@ -359,18 +359,25 @@ export default defineComponent({
       try {
         if (this.getKeycloakPromise) {
           const emailFilter = this.searchBarInputEmail === '' ? undefined : this.searchBarInputEmail;
+          const commentFilter = this.searchBarInputComment === '' ? undefined : this.searchBarInputComment;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.requestController.getDataRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
+              commentFilter,
               selectedRequestStatusesAsSet,
+              /*an dieser Stelle sollte eigentlich noch selectedPriorityAsSet eingefügt werden
+              * das sollte dann vom syntax so aussehen wie bei selected FrameworksAsSet,
+              * wie genau dieser Enum aus der SetDataRequests funktion erstellt wird, weiß ich noch nicht
+              * aber die Variable kann hier noch nicht eingefügt werden, solange in der Funktion hier im Frontend
+              * der Parameter noch nicht erkannt wird /generateOpenApiDocs und Build Clients hatte ich gemacht...*/
               undefined,
               undefined,
               undefined,
               this.datasetsPerPage,
-              this.currentChunkIndex
+              this.currentChunkIndex,
             )
           ).data;
           this.totalRecords = (
@@ -378,10 +385,12 @@ export default defineComponent({
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
+              commentFilter,
               selectedRequestStatusesAsSet,
+              /* selectedPriorityAsSet as Set<GetDataRequestsRequestPriority>, */
               undefined,
               undefined,
-              undefined
+              undefined,
             )
           ).data;
         }

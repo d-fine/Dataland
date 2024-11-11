@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 
@@ -17,6 +18,8 @@ data class DataRequestsFilter(
     val reportingPeriod: String?,
     val requestStatus: Set<RequestStatus>?,
     val accessStatus: Set<AccessStatus>?,
+    val adminComment: String?,
+    val requestPriority: Set<RequestPriority>?,
 ) {
     val shouldFilterByDataType: Boolean
         get() = dataType?.isNotEmpty() ?: false

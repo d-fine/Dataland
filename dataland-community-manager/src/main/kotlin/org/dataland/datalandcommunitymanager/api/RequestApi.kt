@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
@@ -190,8 +191,10 @@ interface RequestApi {
      * @param userId If set, only the requests from this user are returned
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  returned
+     * @param adminComment If set, only comments with this substring are returned
      * @param requestStatus If set, only the requests with a request status in requestStatus are returned
      * @param accessStatus If set, only the requests with an access status in accessStatus are returned
+     * @param requestPriority If set, only the requests with this priority are returned
      * @param reportingPeriod If set, only the requests with this reportingPeriod are returned
      * @param datalandCompanyId If set, only the requests for this company are returned
      * @param chunkSize Limits the number of returned requests
@@ -219,8 +222,10 @@ interface RequestApi {
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam userId: String?,
         @RequestParam emailAddress: String?,
+        @RequestParam adminComment: String?,
         @RequestParam requestStatus: Set<RequestStatus>?,
         @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam requestPriority: Set<RequestPriority>?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
         @RequestParam(defaultValue = "100") chunkSize: Int,
@@ -232,8 +237,10 @@ interface RequestApi {
      * @param userId If set, only the requests from this user are counted
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  counted
+     * @param adminComment If set, only comments with this substring are counted
      * @param requestStatus If set, only the requests with a request status in requestStatus are counted
      * @param accessStatus If set, only the requests with an access status in accessStatus are counted
+     * @param requestPriority If set, only the requests with this priority are counted
      * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
      * @param datalandCompanyId If set, only the requests for this company are counted
      * @return The number of requests that match the filter
@@ -259,8 +266,10 @@ interface RequestApi {
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam userId: String?,
         @RequestParam emailAddress: String?,
+        @RequestParam adminComment: String?,
         @RequestParam requestStatus: Set<RequestStatus>?,
         @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam requestPriority: Set<RequestPriority>?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<Int>
