@@ -72,13 +72,13 @@ class PublicDataUploadProcessor(
     ) {
         MessageQueueUtils.validateMessageType(messageType, this.messageType)
 
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(payload, objectMapper)
+
+        if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+            return
+        }
+
         MessageQueueUtils.rejectMessageOnException {
-            val qaCompletedMessage = objectMapper.readValue(payload, QaCompletedMessage::class.java)
-
-            if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
-                return@rejectMessageOnException
-            }
-
             super.processEvent(
                 createElementaryEventBasicInfo(
                     objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.identifier)),

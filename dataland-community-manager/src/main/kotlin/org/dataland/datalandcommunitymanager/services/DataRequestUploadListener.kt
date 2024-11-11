@@ -62,7 +62,7 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(jsonString, objectMapper)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")

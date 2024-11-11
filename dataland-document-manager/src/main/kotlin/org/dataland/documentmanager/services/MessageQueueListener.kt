@@ -109,7 +109,8 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
-        val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(jsonString, objectMapper)
+        val documentId = qaCompletedMessage.identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }

@@ -91,7 +91,8 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+
+            val message = MessageQueueUtils.readMessagePayload<ForwardedQaMessage>(messageAsJsonString, objectMapper)
 
             val comment = message.comment
             val dataId = message.identifier
@@ -165,7 +166,9 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val forwardedQaMessage = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+
+            val forwardedQaMessage = MessageQueueUtils.readMessagePayload<ForwardedQaMessage>(messageAsJsonString, objectMapper)
+
             val documentId = forwardedQaMessage.identifier
             if (documentId.isEmpty()) {
                 throw MessageQueueRejectException("Provided document ID is empty")
@@ -215,8 +218,10 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
+
             val persistAutomatedQaResultMessage =
-                objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
+                MessageQueueUtils.readMessagePayload<PersistAutomatedQaResultMessage>(messageAsJsonString, objectMapper)
+
             if (persistAutomatedQaResultMessage.resourceType == "data") {
                 val validationResult = persistAutomatedQaResultMessage.validationResult
                 val reviewerId = persistAutomatedQaResultMessage.reviewerId
