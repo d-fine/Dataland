@@ -34,7 +34,7 @@ class TypedEmailContentTest {
                     assertThat(emailContent.htmlContent).contains(keyword)
                     assertThat(emailContent.textContent).contains(keyword)
                 }
-                saveEmailContent(typedEmailContent::class.simpleName ?: UUID.randomUUID().toString(), emailContent)
+                saveEmailContent(typedEmailContent::class.simpleName ?: UUID.randomUUID().toString(), emailContent, skip = true)
             }
         }
     }
@@ -42,7 +42,9 @@ class TypedEmailContentTest {
     private fun saveEmailContent(
         name: String,
         emailContent: EmailContent,
+        skip: Boolean,
     ) {
+        if (skip) return
         val tmpDir = File("tmp")
         if (!tmpDir.exists()) tmpDir.mkdirs()
 
