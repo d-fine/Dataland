@@ -48,29 +48,30 @@ object TypedEmailContentTestData {
 
     val datasetRequestedClaimOwnershipKeywords = listOf(
         companyId, companyName, requesterEmail, dataTypeLabelA, reportingPeriodA,
-        reportingPeriodB, message, firstName, lastName, subscriptionUuid, baseUrl
+        reportingPeriodB, message, firstName, lastName, subscriptionUuid, baseUrl,
+        "REGISTER AND CLAIM OWNERSHIP"
     )
 
     val dataRequestAnswered = DataRequestAnswered(
-        companyId, companyName, dataTypeA, reportingPeriodA, creationDate, dataRequestId, numberOfDays, dataTypeLabelA
+        companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays,
     ).also {
         it.baseUrl = baseUrl
     }
 
     val dataRequestAnsweredKeywords = listOf(
-        companyId, companyName, dataTypeA, reportingPeriodA, creationDate, dataRequestId,
-        numberOfDays.toString(), dataTypeLabelA, baseUrl
+        companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays.toString(), baseUrl,
+        "Your data request has been answered.",
     )
 
     val dataRequestClosed = DataRequestClosed(
-        companyId, companyName, dataTypeA, reportingPeriodA, creationDate, dataRequestId, numberOfDays, dataTypeLabelA
+        companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays,
     ).also {
         it.baseUrl = baseUrl
     }
 
     val dataRequestClosedKeywords = listOf(
-        companyId, companyName, dataTypeA, reportingPeriodA, creationDate, dataRequestId,
-        numberOfDays.toString(), dataTypeLabelA, baseUrl
+        companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays.toString(), baseUrl,
+        "Your answered data request has been automatically closed as no action was taken within the last"
     )
 
     val companyOwnershipClaimApproved = CompanyOwnershipClaimApproved(
@@ -80,7 +81,8 @@ object TypedEmailContentTestData {
     }
 
     val companyOwnershipClaimApprovedKeywords = listOf(
-        companyId, companyName, numberOfOpenDataRequestForCompany.toString(), baseUrl
+        companyId, companyName, numberOfOpenDataRequestForCompany.toString(), baseUrl,
+        "You've successfully claimed company ownership for"
     )
 
     val accessToDatasetRequested = AccessToDatasetRequested(
@@ -92,7 +94,8 @@ object TypedEmailContentTestData {
 
     val accessToDatasetRequestedKeywords = listOf(
         companyId, companyName, dataTypeLabelA, reportingPeriodA, reportingPeriodB,
-        message, requesterEmail, firstName, lastName, baseUrl
+        message, requesterEmail, firstName, lastName, baseUrl,
+        "is requesting access to your data from"
     )
 
     val accessToDatasetGranted = AccessToDatasetGranted(
@@ -102,7 +105,8 @@ object TypedEmailContentTestData {
     }
 
     val accessToDatasetGrantedKeywords = listOf(
-        companyId, companyName, dataTypeA, dataTypeLabelA, reportingPeriodA, creationDate, baseUrl
+        companyId, companyName, dataTypeA, dataTypeLabelA, reportingPeriodA, creationDate, baseUrl,
+        "You have now access to the following dataset on Dataland"
     )
 
     val singleDatasetUploadedEngagement = SingleDatasetUploadedEngagement(
@@ -113,7 +117,11 @@ object TypedEmailContentTestData {
     }
 
     val singleDatasetUploadedEngagementKeywords = listOf(
-        companyId, companyName, dataTypeLabelA, reportingPeriodA, baseUrl, subscriptionUuid
+        companyId, dataTypeLabelA, reportingPeriodA, baseUrl, subscriptionUuid,
+        "We are Dataland, an open, neutral, and transparent data engagement platform.",
+        "One of our members has specifically requested data about your company.",
+        "A data provider within our network has created a dataset for your company, which is now accessible on Dataland:",
+        "CLAIM COMPANY OWNERSHIP"
     )
 
     val multipleDatasetsUploadedEngagement = MultipleDatasetsUploadedEngagement(
@@ -130,20 +138,38 @@ object TypedEmailContentTestData {
 
     val multipleDatasetsUploadedEngagementKeywords = listOf(
         companyId, companyName, dataTypeLabelA, reportingPeriodA, reportingPeriodB, dataTypeLabelB, reportinPeriodC,
-        numberOfDays.toString(), baseUrl, subscriptionUuid
+        numberOfDays.toString(), baseUrl, subscriptionUuid,
+        "CLAIM COMPANY OWNERSHIP"
     )
 
     val keyValueTable = KeyValueTable(
-        "subject", "textTitle", "htmlTitle",
+        "subject", "Email-Title", "Email-Title",
         listOf(
-            "Key1" to Value.Text("Value1"),
-            "Key2" to Value.RelativeLink("/example", "Example"),
-            "Key3" to Value.List(Value.Text("ValueA"), Value.Text("ValueB"), Value.RelativeLink("/test", "Test")))
+            "Key0" to Value.Text("ValueA"),
+            "Key1" to Value.RelativeLink("/example", "Link-TitleA"),
+            "Key2" to Value.List(Value.Text("TextA"), Value.Text("TextB"), Value.RelativeLink("/test", "Link-TitleB")),
+            "Key3" to Value.EmailAddressWithSubscriptionStatus("testA@example.com"),
+            "Key4" to Value.EmailAddressWithSubscriptionStatus("testB@example.com"),
+            "key5" to Value.List(Value.Text("ValueB"), Value.Text("ValueC"), Value.Text("ValueD"),
+                separator = "$", start = "@", end="=")
+        )
     ).also {
         it.baseUrl = baseUrl
+        (it.table[3].second as Value.EmailAddressWithSubscriptionStatus).subscribed = true
+        (it.table[4].second as Value.EmailAddressWithSubscriptionStatus).subscribed = false
     }
 
-    val keyValueTableKeywords = emptyList<String>() // TODO
+    val keyValueTableKeywords = listOf(
+        "Email-Title",
+        "testA@example.com (subscribed)",
+        "testB@example.com (unsubscribed)",
+        "@ValueB\$ValueC\$ValueD=",
+        "TextA, TextB",
+        "https://${baseUrl}/test",
+        "https://${baseUrl}/example",
+        "Link-TitleA",
+        "Link-TitleB"
+    )
 
     val contentToKeywordsMap: List<Pair<TypedEmailContent, List<String>>> =
         listOf(

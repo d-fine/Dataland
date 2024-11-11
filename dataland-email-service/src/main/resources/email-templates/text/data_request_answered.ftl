@@ -2,7 +2,7 @@ Great news!
 
 Your data request has been answered.
 Company: ${companyName}
-Framework: ${dataType}
+Framework: ${dataTypeLabel}
 Reporting period: ${reportingPeriod}
 Request created: ${creationDate}
 

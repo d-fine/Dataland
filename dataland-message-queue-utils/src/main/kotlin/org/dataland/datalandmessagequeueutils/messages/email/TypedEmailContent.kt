@@ -110,28 +110,24 @@ data class CompanyOwnershipClaimApproved(
 }
 
 data class DataRequestAnswered(
-    val companyId: String,
     val companyName: String,
-    val dataType: String,
+    val dataTypeLabel: String,
     val reportingPeriod: String,
     val creationDate: String,
     val dataRequestId: String,
     val closedInDays: Int,
-    val dataTypeLabel: String
 ) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
 }
 
 data class DataRequestClosed(
-    val companyId: String,
     val companyName: String,
-    val dataType: String,
+    val dataTypeLabel: String,
     val reportingPeriod: String,
     val creationDate: String,
     val dataRequestId: String,
     val closedInDays: Int,
-    val dataTypeLabel: String
 ) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -172,7 +168,12 @@ sealed class Value {
         val start: String = "",
         val end: String = ""
     ) : Value() {
-        constructor(vararg values: Value, separator: String = ", ") : this(values.toList(), separator)
+        constructor(
+            vararg values: Value,
+            separator: String = ", ",
+            start: String = "",
+            end: String = ""
+        ) : this(values.toList(), separator, start, end)
 
         @JsonIgnore
         override val macro_name = "list_macro"
@@ -193,6 +194,6 @@ sealed class Value {
         override val macro_name = "email_address_with_subscription_status"
 
         @JsonIgnore
-        var isSubscribed: Boolean = false // TODO mention that this variable is initialized later even if no lateinit due to kotlin restriction
+        var subscribed: Boolean = false // TODO mention that this variable is initialized later even if no lateinit due to kotlin restriction
     }
 }

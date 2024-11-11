@@ -1,5 +1,6 @@
 package org.dataland.datalandemailservice.email
 
+import org.assertj.core.api.AssertionsForClassTypes.assertThat
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -20,15 +21,15 @@ class TypedEmailContentTest {
     }
 
     @Test
-    fun `test that every template can be constructed without exception`() {
+    fun `test that every template can be constructed without exception and contains all keywords`() {
 
         TestData.contentToKeywordsMap.forEach { (typedEmailContent, keywords) ->
 
             assertDoesNotThrow {
                 val emailContent = typedEmailContent.build()
                 keywords.forEach { keyword ->
-//                    assertTrue(emailContent.textContent.contains(keyword)) TODO this is wrong
-//                    assertTrue(emailContent.htmlContent.contains(keyword)) // TODO this tests needs debugging
+                    assertThat(emailContent.htmlContent).contains(keyword)
+                    assertThat(emailContent.textContent).contains(keyword)
                 }
                 saveEmailContent(typedEmailContent::class.simpleName ?: UUID.randomUUID().toString(), emailContent)
             }

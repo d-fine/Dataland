@@ -1,15 +1,15 @@
+<#include "../general/format_first_and_last_name.ftl">
+
 Great News!
 Your data are in high demand on Dataland!
 
-<#if requesterFirstName?? || requesterLastName??>The user <#if requesterFirstName??>${requesterFirstName} </#if><#if requesterLastName??>${requesterLastName} </#if><#else>A user </#if> is requesting access to your data from ${companyName} on Dataland.
+<@formatFirstAndLastName requesterFirstName requesterLastName/> is requesting access to your data from ${companyName} on Dataland.
 
 The user is asking for your ${dataTypeLabel} data for the year<#if (reportingPeriods?size > 1)>s</#if>: ${reportingPeriods?join(", ")}.
 
 <#if requesterEmail??>
 You can contact the user with their Email-Address ${requesterEmail}.
 </#if>
-
-
 
 <#if message??>
     The user also sent the following message:

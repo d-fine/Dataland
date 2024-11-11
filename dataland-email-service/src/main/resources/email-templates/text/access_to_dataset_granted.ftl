@@ -1,6 +1,6 @@
 Great news!
 
-Access to the following dataset has been granted.
+You have now access to the following dataset on Dataland.
 Company: ${companyName}
 Framework: ${dataTypeLabel}
 Reporting period: ${reportingPeriod}

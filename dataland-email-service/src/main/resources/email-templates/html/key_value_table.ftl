@@ -1,23 +1,19 @@
 <#macro renderValue value>
     <#if value.macro_name == "text_macro">
-        ${value.value}
+        ${value.value}<#t>
     <#elseif value.macro_name == "link_macro">
-        <a href="https://${baseUrl}${value.href}">${value.title}</a>
+        <a href="https://${baseUrl}${value.href}">${value.title}</a><#t>
     <#elseif value.macro_name == 'list_macro'>
-        <@renderList value/>
+        ${value.start}<#t>
+        <#list value.values as subValue>
+            <@renderValue subValue/><#sep>${value.separator}</#sep><#t>
+        </#list>
+        ${value.end}<#t>
     <#elseif value.macro_name == 'email_address_with_subscription_status'>
-        value.emailAddress (<#if value.isSubscribed>subscribed<#else>unsubscribed</#if>)
+        ${value.emailAddress} (<#if value.subscribed>subscribed<#else>unsubscribed</#if>)<#t>
     <#else>
-        Error: Macro not found
+        Error: Macro not found<#t>
     </#if>
-</#macro>
-
-<#macro renderList value>
-    ${value.start}
-    <#list value.values as subValue>
-        <@renderValue subValue/><#sep>${value.separator}</#sep>
-    </#list>
-    ${value.end}
 </#macro>
 
 <html>

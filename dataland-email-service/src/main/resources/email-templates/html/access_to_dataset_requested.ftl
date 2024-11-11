@@ -1,5 +1,5 @@
 <#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
-
+<#include "../general/format_first_and_last_name.ftl">
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland!
-            <#if requesterFirstName?? || requesterLastName??>The user <#if requesterFirstName??>${requesterFirstName} </#if><#if requesterLastName??>${requesterLastName} </#if><#else>A user </#if>is requesting access to your data from ${companyName} on dataland.</td>
+            <@formatFirstAndLastName requesterFirstName requesterLastName/> is requesting access to your data from ${companyName} on dataland.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>

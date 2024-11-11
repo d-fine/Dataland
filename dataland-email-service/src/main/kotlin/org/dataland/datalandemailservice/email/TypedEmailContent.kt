@@ -33,7 +33,7 @@ fun Value.setLateInitVars() {
         is Value.List -> this.values.forEach { it.setLateInitVars() }
         is Value.RelativeLink -> { /*nothing to do*/ }
         is Value.Text -> { /*nothing to do*/ }
-        is Value.EmailAddressWithSubscriptionStatus -> this.isSubscribed = true // TODO fix this
+        is Value.EmailAddressWithSubscriptionStatus -> this.subscribed = true // TODO fix this
     }
 }
 

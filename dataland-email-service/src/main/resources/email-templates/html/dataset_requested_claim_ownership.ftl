@@ -1,5 +1,6 @@
 <#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
-
+<#include "../general/format_number_of_days.ftl">
+<#include "../general/format_first_and_last_name.ftl">
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,6 @@
 </head>
 <body style="background-color:#DADADA; height: 100%; margin: 0; padding: 0; width: 100%;">
 <#include "../general/header.ftl">
-
 <table style="background-color: #ffffff; width: 600px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; text-align: left; border-collapse: collapse; padding: 0; margin: 0">
     <tbody>
     <tr>
@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <td colspan="3">Exciting news! 📣<br>Your data are in high demand on Dataland!
-            <#if firstName?? || lastName??>The user <#if firstName??>${firstName} </#if><#if lastName??>${lastName} </#if><#else>A user </#if>is requesting data from ${companyName}.</td>
+            <@formatFirstAndLastName firstName lastName/> is requesting data from ${companyName}.</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 20px">&nbsp;</td>
