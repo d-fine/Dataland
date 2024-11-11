@@ -33,7 +33,7 @@ data class DataRequestEntity(
     var dataRequestStatusHistory: List<RequestStatusEntity>,
     var lastModifiedDate: Long,
     var requestPriority: RequestPriority,
-    var adminComment: String,
+    var adminComment: String?,
 ) {
     val requestStatus: RequestStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
@@ -56,7 +56,7 @@ data class DataRequestEntity(
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
         requestPriority = RequestPriority.Normal,
-        adminComment = "",
+        adminComment = null,
     )
 
     /**
