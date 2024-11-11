@@ -17,8 +17,7 @@ import org.springframework.http.ResponseEntity
 import java.util.UUID
 
 class EmailSubscriptionManagerTest {
-    private lateinit var emailSender: EmailSender
-    private lateinit var internalEmailBuilder: InternalEmailBuilder
+    private lateinit var emailMessageListener: EmailMessageListener
     private lateinit var emailSubscriptionManager: EmailSubscriptionManager
     private lateinit var emailSubscriptionRepository: EmailSubscriptionRepository
 
@@ -31,21 +30,18 @@ class EmailSubscriptionManagerTest {
 
     @BeforeEach
     fun setup() {
-        emailSender = mock(EmailSender::class.java)
-        internalEmailBuilder = mock(InternalEmailBuilder::class.java)
+        emailMessageListener = mock(EmailMessageListener::class.java)
         emailSubscriptionRepository = mock(EmailSubscriptionRepository::class.java)
 
         emailSubscriptionManager =
             EmailSubscriptionManager(
                 emailSubscriptionRepository,
-                emailSender,
-                internalEmailBuilder,
+                emailMessageListener
             )
 
         `when`(emailSubscriptionRepository.findByUuid(validUuid)).thenReturn(validEmailSubscriptionEntity)
         `when`(emailSubscriptionRepository.findByUuid(invalidUuid)).thenReturn(null)
-        `when`(internalEmailBuilder.buildInternalEmail(any())).thenReturn(mock())
-        doNothing().whenever(emailSender).filterReceiversAndSendEmail(any())
+        `when`(emailMessageListener.buildAndSendEmail(any())).thenReturn(mock())
     }
 
     @Test
@@ -53,7 +49,7 @@ class EmailSubscriptionManagerTest {
         val response: ResponseEntity<String> = emailSubscriptionManager.unsubscribeUuidAndInformStakeholders(validUuid)
 
         assertEquals("Successfully unsubscribed email address corresponding to UUID: $validUuid.", response.body)
-        verify(emailSender, times(1)).filterReceiversAndSendEmail(any())
+        verify(emailMessageListener, times(1)).buildAndSendEmail(any())
     }
 
     @Test
@@ -62,6 +58,6 @@ class EmailSubscriptionManagerTest {
             emailSubscriptionManager.unsubscribeUuidAndInformStakeholders(invalidUuid)
 
         assertEquals("There is no email address corresponding to UUID: $invalidUuid.", response.body)
-        verify(emailSender, times(0)).filterReceiversAndSendEmail(any())
+        verify(emailMessageListener, times(0)).buildAndSendEmail(any())
     }
 }

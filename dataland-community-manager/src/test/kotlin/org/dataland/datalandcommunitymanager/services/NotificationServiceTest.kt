@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -12,14 +11,7 @@ import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
-import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
+import org.dataland.datalandcommunitymanager.services.messaging.NotificationEmailSender
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -28,7 +20,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import java.time.Instant
@@ -66,29 +57,24 @@ class NotificationServiceTest {
             companyContactDetails = listOf("emailAddress@dummymail.de", "emailAddress@fakemailingfortest.de"),
         )
 
-    private val testProxyPrimaryUrl = "www.dummy.com"
-    private val testCorrelationId = UUID.randomUUID().toString()
-
     @BeforeAll
     fun setupNotificationService() {
         assertAssumptionsForTests()
 
-        val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
         val notificationEventRepository = mock(NotificationEventRepository::class.java)
         val elementaryEventRepository = mock(ElementaryEventRepository::class.java)
         val companyRolesManager = mock(CompanyRolesManager::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
         val companyDataControllerApiMock = mock(CompanyDataControllerApi::class.java)
-        val objectMapper = jacksonObjectMapper()
+        val notificationEmailSender = mock(NotificationEmailSender::class.java)
 
         notificationService =
             NotificationService(
-                cloudEventMessageHandlerMock,
                 notificationEventRepository,
                 elementaryEventRepository,
                 companyDataControllerApiMock,
+                notificationEmailSender,
                 companyRolesManager,
-                objectMapper,
                 notificationThresholdDays,
                 elementaryEventsThreshold,
             )
@@ -140,12 +126,6 @@ class NotificationServiceTest {
         )
     }
 
-    private fun parseJsonStringIntoTemplateEmailMessage(jsonString: String): EmailMessage =
-        notificationService.objectMapper.readValue(
-            jsonString,
-            EmailMessage::class.java,
-        )
-
     @Test
     fun `single mail if no notification event in last 30 days and one unprocessed elementary event`() {
         setTheReturnValueForNotificationEventRepoQuery(emptyList())
@@ -175,7 +155,7 @@ class NotificationServiceTest {
                 latestElementaryEvent,
                 unprocessedElementaryEvents,
             )
-        assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailType)
+        assertEquals(NotificationService.NotificationEmailType.Summary(400), notificationEmailType)
     }
 
     @Test
@@ -207,7 +187,7 @@ class NotificationServiceTest {
                 newLatestElementaryEvent,
                 unprocessedElementaryEvents,
             )
-        assertEquals(NotificationService.NotificationEmailType.Summary, notificationEmailTypeForTenElementaryEvents)
+        assertEquals(NotificationService.NotificationEmailType.Summary(29), notificationEmailTypeForTenElementaryEvents)
     }
 
     @Test
@@ -228,42 +208,20 @@ class NotificationServiceTest {
     @Test
     fun `counting the days passed since the last notification event works as expected`() {
         val expectedDaysPassed: Long = 12
-        val notificationEvents = mutableListOf<NotificationEventEntity>()
-        notificationEvents.add(createNotificationEventEntityForDataUploads(expectedDaysPassed))
-        notificationEvents.add(createNotificationEventEntityForDataUploads(29))
-        notificationEvents.add(createNotificationEventEntityForDataUploads(45))
-        setTheReturnValueForNotificationEventRepoQuery(notificationEvents)
-
+        val notificationEvent = createNotificationEventEntityForDataUploads(expectedDaysPassed)
         val daysPassedSinceLastNotificationEvent =
-            notificationService.getDaysPassedSinceLastNotificationEvent(testCompanyId, ElementaryEventType.UploadEvent)
+            notificationService.getDaysPassedSinceNotificationEvent(notificationEvent)
 
         assertEquals(expectedDaysPassed, daysPassedSinceLastNotificationEvent)
     }
 
     @Test
     fun `asserting that the check if last notification event is older than threshold works as expected`() {
-        val notificationEvents = mutableListOf<NotificationEventEntity>()
-        notificationEvents.add(createNotificationEventEntityForDataUploads(31))
-        notificationEvents.add(createNotificationEventEntityForDataUploads(32))
-        notificationEvents.add(createNotificationEventEntityForDataUploads(45))
-        setTheReturnValueForNotificationEventRepoQuery(notificationEvents)
+        val tooOldNotificationEvent = createNotificationEventEntityForDataUploads(31)
+        assertTrue(notificationService.isNotificationEventOlderThanThreshold(tooOldNotificationEvent))
 
-        assertTrue(
-            notificationService.isLastNotificationEventOlderThanThreshold(
-                testCompanyId,
-                ElementaryEventType.UploadEvent,
-            ),
-        )
-
-        notificationEvents.add(createNotificationEventEntityForDataUploads(30))
-        setTheReturnValueForNotificationEventRepoQuery(notificationEvents)
-
-        assertFalse(
-            notificationService.isLastNotificationEventOlderThanThreshold(
-                testCompanyId,
-                ElementaryEventType.UploadEvent,
-            ),
-        )
+        val tooYoungNotificationEvent = createNotificationEventEntityForDataUploads(30)
+        assertFalse(notificationService.isNotificationEventOlderThanThreshold(tooYoungNotificationEvent))
     }
 
     @Test
@@ -300,122 +258,4 @@ class NotificationServiceTest {
         notificationService.createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
     }
 
-    private fun mockBuildingMessageAndSendingItToQueueForSingleMail() {
-        Mockito.reset(notificationService.cloudEventMessageHandler)
-        `when`(
-            notificationService.cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-            ),
-        ).then {
-            val emailMessage = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
-            val arg2 = it.getArgument<String>(1)
-            val arg3 = it.getArgument<String>(2)
-            val arg4 = it.getArgument<String>(3)
-            val arg5 = it.getArgument<String>(4)
-
-            assertTrue(emailMessage.typedEmailContent is SingleDatasetUploadedEngagement)
-            val singleDatasetsUploadedEngagement = emailMessage.typedEmailContent as SingleDatasetUploadedEngagement
-
-            assertTrue(emailMessage.toString().contains("emailAddress@"))
-
-            assertEquals(testCompanyInformation.companyName, singleDatasetsUploadedEngagement.companyName)
-            assertEquals(testCompanyId.toString(), singleDatasetsUploadedEngagement.companyId)
-            assertEquals(readableFrameworkNameMapping.getValue(testDataType), singleDatasetsUploadedEngagement.dataType)
-            assertEquals(testReportingPeriod, singleDatasetsUploadedEngagement.reportingPeriod)
-
-            assertEquals(MessageType.SEND_EMAIL, arg2)
-            assertEquals(testCorrelationId, arg3)
-            assertEquals(ExchangeName.SEND_EMAIL, arg4)
-            assertEquals(RoutingKeyNames.EMAIL, arg5)
-        }
-    }
-
-    @Test
-    fun `sending a message to queue containing the single email info works as expected`() {
-        val latestElementaryEvent = createUploadElementaryEventEntity(10)
-        val unprocessedElementaryEvents = listOf(latestElementaryEvent)
-        val lastNotificationEvent = createNotificationEventEntityForDataUploads(10)
-
-        setTheReturnValueForNotificationEventRepoQuery(listOf(lastNotificationEvent))
-        mockBuildingMessageAndSendingItToQueueForSingleMail()
-        notificationService.sendEmailMessagesToQueue(
-            notificationService.buildEmailData(
-                testCompanyInformation.companyName,
-                NotificationService.NotificationEmailType.Single,
-                latestElementaryEvent,
-                unprocessedElementaryEvents,
-            ),
-            testCompanyInformation.companyContactDetails!!,
-            testCorrelationId,
-        )
-    }
-
-    private fun mockBuildingMessageAndSendingItToQueueForSummaryMail() {
-        Mockito.reset(notificationService.cloudEventMessageHandler)
-        `when`(
-            notificationService.cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-            ),
-        ).then {
-            val emailMessage = parseJsonStringIntoTemplateEmailMessage(it.getArgument(0))
-            val arg2 = it.getArgument<String>(1)
-            val arg3 = it.getArgument<String>(2)
-            val arg4 = it.getArgument<String>(3)
-            val arg5 = it.getArgument<String>(4)
-
-            assertTrue(emailMessage.typedEmailContent is MultipleDatasetsUploadedEngagement)
-            val multipleDatasetsUploadedEngagement = emailMessage.typedEmailContent as MultipleDatasetsUploadedEngagement
-            assertTrue(emailMessage.receiver.toString().contains("emailAddress@"))
-
-            assertEquals(testCompanyInformation.companyName, multipleDatasetsUploadedEngagement.companyName)
-            assertEquals(testCompanyId.toString(), multipleDatasetsUploadedEngagement.companyId)
-            assertEquals(
-                listOf(
-                    MultipleDatasetsUploadedEngagement.FrameworkData("LkSG", listOf("2020")),
-                    MultipleDatasetsUploadedEngagement.FrameworkData("SFDR", listOf("2021")),
-                    MultipleDatasetsUploadedEngagement.FrameworkData("VSME", listOf("2022")),
-                ),
-                multipleDatasetsUploadedEngagement.frameworkData,
-            )
-            assertEquals(10, multipleDatasetsUploadedEngagement.numberOfDays)
-            assertEquals(MessageType.SEND_EMAIL, arg2)
-            assertEquals(testCorrelationId, arg3)
-            assertEquals(ExchangeName.SEND_EMAIL, arg4)
-            assertEquals(RoutingKeyNames.EMAIL, arg5)
-        }
-    }
-
-    @Test
-    fun `validate that the output of the external email message sender is correctly built`() {
-        val latestElementaryEvent = createUploadElementaryEventEntity(10, DataTypeEnum.lksg, "2020")
-
-        val unprocessedElementaryEvents =
-            listOf(
-                latestElementaryEvent,
-                createUploadElementaryEventEntity(11, DataTypeEnum.sfdr, "2021"),
-                createUploadElementaryEventEntity(12, DataTypeEnum.vsme, "2022"),
-            )
-        val lastNotificationEvent = createNotificationEventEntityForDataUploads(10)
-
-        setTheReturnValueForNotificationEventRepoQuery(listOf(lastNotificationEvent))
-        mockBuildingMessageAndSendingItToQueueForSummaryMail()
-        notificationService.sendEmailMessagesToQueue(
-            notificationService.buildEmailData(
-                testCompanyInformation.companyName,
-                NotificationService.NotificationEmailType.Summary,
-                latestElementaryEvent,
-                unprocessedElementaryEvents,
-            ),
-            testCompanyInformation.companyContactDetails!!,
-            testCorrelationId,
-        )
-    }
 }

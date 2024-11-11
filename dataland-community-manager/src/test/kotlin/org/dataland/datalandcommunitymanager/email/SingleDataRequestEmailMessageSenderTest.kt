@@ -11,10 +11,11 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -28,6 +29,7 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
@@ -41,7 +43,6 @@ class SingleDataRequestEmailMessageSenderTest {
 
     private val companyName = "Test Inc."
     private val reportingPeriods = setOf("2022", "2023")
-    private val reportingPeriodsAsString = "2022, 2023"
     private val datalandCompanyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val correlationId = UUID.randomUUID().toString()
 
@@ -80,32 +81,26 @@ class SingleDataRequestEmailMessageSenderTest {
 
     private fun mockBuildingMessageAndSendingItToQueueForInternalMails() {
         `when`(
-            cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-            ),
-        ).then {
-            val arg1 = objectMapper.readValue(it.getArgument<String>(0), InternalEmailMessage::class.java)
-            val arg2 = it.getArgument<String>(1)
-            val arg3 = it.getArgument<String>(2)
-            val arg4 = it.getArgument<String>(3)
-            val arg5 = it.getArgument<String>(4)
+            cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
+        ).then { invocation ->
+            val emailMessage = objectMapper.readValue(invocation.getArgument<String>(0), EmailMessage::class.java)
+            assertTrue(emailMessage.typedEmailContent is KeyValueTable)
+            val keyValueTable = emailMessage.typedEmailContent as KeyValueTable
+            assertEquals("Dataland Single Data Request", keyValueTable.subject)
+            assertEquals("A single data request has been submitted", keyValueTable.textTitle)
+            assertEquals("Single Data Request", keyValueTable.htmlTitle)
 
-            assertEquals("Dataland Single Data Request", arg1.subject)
-            assertEquals("A single data request has been submitted", arg1.textTitle)
-            assertEquals("Single Data Request", arg1.htmlTitle)
-            assertEquals(authenticationMock.userDescription, arg1.properties.getValue("User"))
-            assertEquals("lksg", arg1.properties.getValue("Data Type"))
-            assertEquals(reportingPeriodsAsString, arg1.properties.getValue("Reporting Periods"))
-            assertEquals(datalandCompanyId, arg1.properties.getValue("Dataland Company ID"))
-            assertEquals(companyName, arg1.properties.getValue("Company Name"))
-            assertEquals(MessageType.SEND_INTERNAL_EMAIL, arg2)
-            assertEquals(correlationId, arg3)
-            assertEquals(ExchangeName.SEND_EMAIL, arg4)
-            assertEquals(RoutingKeyNames.INTERNAL_EMAIL, arg5)
+            val valueForKey: (String) -> Value? = { key -> keyValueTable.table.find { it.first == key }?.second }
+
+            assertEquals(Value.Text(authenticationMock.userDescription), valueForKey("User"))
+            assertEquals(Value.Text("lksg"), valueForKey("Data Type"))
+            assertEquals(Value.List(Value.Text("2022"), Value.Text("2023")), valueForKey("Reporting Periods"))
+            assertEquals(Value.Text(datalandCompanyId), valueForKey("Dataland Company ID"))
+            assertEquals(Value.Text(companyName), valueForKey("Company Name"))
+            assertEquals(MessageType.SEND_EMAIL, invocation.getArgument<String>(1))
+            assertEquals(correlationId, invocation.getArgument<String>(2))
+            assertEquals(ExchangeName.SEND_EMAIL, invocation.getArgument<String>(3))
+            assertEquals(RoutingKeyNames.EMAIL, invocation.getArgument<String>(4))
         }
     }
 
@@ -122,13 +117,7 @@ class SingleDataRequestEmailMessageSenderTest {
 
     private fun mockBuildingMessageAndSendingItToQueueForExternalMails() {
         `when`(
-            cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-                anyString(),
-            ),
+            cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
         ).then {
             val arg1 = objectMapper.readValue(it.getArgument<String>(0), EmailMessage::class.java)
             val arg2 = it.getArgument<String>(1)

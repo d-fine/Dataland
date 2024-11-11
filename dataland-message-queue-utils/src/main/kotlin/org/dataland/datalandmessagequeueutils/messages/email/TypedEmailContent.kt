@@ -145,23 +145,54 @@ data class KeyValueTable(
 ) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
+}
 
-    @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type"
-    )
-    @JsonSubTypes.Type(
-        value = Text::class, name="Text"
-    )
-    sealed class Value {
-        abstract val macro_name: String
-    }
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes(
+    JsonSubTypes.Type(value = Value.Text::class, name="Text"),
+    JsonSubTypes.Type(value = Value.List::class, name="List"),
+)
+sealed class Value {
+    abstract val macro_name: String
 
     data class Text(
         val value: String
     ) : Value() {
         @JsonIgnore
         override val macro_name = "text_macro"
+    }
+
+    data class List(
+        val values: kotlin.collections.List<Value>,
+        val separator: String = ", ",
+        val start: String = "",
+        val end: String = ""
+    ) : Value() {
+        constructor(vararg values: Value, separator: String = ", ") : this(values.toList(), separator)
+
+        @JsonIgnore
+        override val macro_name = "list_macro"
+    }
+
+    data class RelativeLink(
+        val href: String,
+        val title: String
+    ) : Value() {
+        @JsonIgnore
+        override val macro_name = "link_macro"
+    }
+
+    data class EmailAddressWithSubscriptionStatus(
+        val emailAddress: String
+    ) : Value() {
+        @JsonIgnore
+        override val macro_name = "email_address_with_subscription_status"
+
+        @JsonIgnore
+        var isSubscribed: Boolean = false // TODO mention that this variable is initialized later even if no lateinit due to kotlin restriction
     }
 }

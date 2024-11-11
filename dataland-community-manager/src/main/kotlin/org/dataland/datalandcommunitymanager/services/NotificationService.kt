@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
@@ -8,16 +7,7 @@ import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
-import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
-import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
+import org.dataland.datalandcommunitymanager.services.messaging.NotificationEmailSender
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -36,12 +26,11 @@ class NotificationService
     @Suppress("LongParameterList")
     @Autowired
     constructor(
-        val cloudEventMessageHandler: CloudEventMessageHandler,
         val notificationEventRepository: NotificationEventRepository,
         val elementaryEventRepository: ElementaryEventRepository,
         val companyDataControllerApi: CompanyDataControllerApi,
+        val notificationEmailSender: NotificationEmailSender,
         val companyRolesManager: CompanyRolesManager,
-        val objectMapper: ObjectMapper,
         @Value("\${dataland.community-manager.notification-threshold-days:30}")
         private val notificationThresholdDays: Int,
         @Value("\${dataland.community-manager.notification-elementaryevents-threshold:10}")
@@ -51,8 +40,15 @@ class NotificationService
 
         /**
          * Enum that contains all possible types of notification emails that might be triggered.
+         * TODO
          */
-        enum class NotificationEmailType { Single, Summary }
+        sealed class NotificationEmailType {
+            data object Single : NotificationEmailType()
+
+            data class Summary(
+                val daysSinceLastNotificationEmail: Long?
+            ) : NotificationEmailType()
+        }
 
         /**
          * Checks if notification event shall be created or not.
@@ -71,31 +67,23 @@ class NotificationService
                 )
             val companyInfo = companyDataControllerApi.getCompanyInfo(companyId.toString())
             val emailReceivers = companyInfo.companyContactDetails
-            determineNotificationEmailType(latestElementaryEvent, unprocessedElementaryEvents)
-                ?.let { notificationEmailType ->
-                    logger.info(
-                        "Requirements for notification event are met. " +
-                            "Creating notification event and sending notification emails. CorrelationId: $correlationId",
-                    )
+            val notificationEmailType =
+                determineNotificationEmailType(latestElementaryEvent, unprocessedElementaryEvents)
+                    ?: return
 
-                    createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
+            logger.info(
+                "Requirements for notification event are met. " +
+                        "Creating notification event and sending notification emails. CorrelationId: $correlationId",
+            )
 
-                    if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
-                        val typedEmailData =
-                            buildEmailData(
-                                companyInfo.companyName,
-                                notificationEmailType,
-                                latestElementaryEvent,
-                                unprocessedElementaryEvents,
-                            )
-                        sendEmailMessagesToQueue(typedEmailData, emailReceivers, correlationId)
-                        // TODO fix this later
-                        // NotificationServiceUtils.sendInternalMessageToQueue(
-                        //    objectMapper, cloudEventMessageHandler, emailReceivers,
-                        //    notificationEmailType, emailProperties, correlationId,
-                        // )
-                    }
-                }
+            createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
+
+            if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
+                notificationEmailSender.sendExternalAndInternalNotificationEmail(
+                    notificationEmailType, latestElementaryEvent, unprocessedElementaryEvents,
+                    companyInfo.companyName, emailReceivers, correlationId
+                )
+            }
         }
 
         /**
@@ -107,18 +95,21 @@ class NotificationService
             latestElementaryEvent: ElementaryEventEntity,
             unprocessedElementaryEvents: List<ElementaryEventEntity>,
         ): NotificationEmailType? {
-            val isLastNotificationEventOlderThanThreshold =
-                isLastNotificationEventOlderThanThreshold(
-                    latestElementaryEvent.companyId,
-                    latestElementaryEvent.elementaryEventType,
-                )
-
+            val lastNotificationEvent = getLastNotificationEventOrNull(
+                latestElementaryEvent.companyId,
+                latestElementaryEvent.elementaryEventType,
+            )
+            val isLastNotificationEventOlderThanThreshold = isNotificationEventOlderThanThreshold(
+                lastNotificationEvent
+            )
             return when {
                 isLastNotificationEventOlderThanThreshold && unprocessedElementaryEvents.size == 1 ->
                     NotificationEmailType.Single
                 isLastNotificationEventOlderThanThreshold ||
                     unprocessedElementaryEvents.size >= elementaryEventsThreshold ->
-                    NotificationEmailType.Summary
+                    NotificationEmailType.Summary(
+                        lastNotificationEvent?.let(::getDaysPassedSinceNotificationEvent)
+                    )
                 else -> null
             }
         }
@@ -145,65 +136,6 @@ class NotificationService
         }
 
         /**
-         * TODO
-         */
-        fun buildEmailData(
-            companyName: String,
-            notificationEmailType: NotificationEmailType,
-            latestElementaryEvent: ElementaryEventEntity,
-            unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        ): TypedEmailContent =
-            when (notificationEmailType) {
-                NotificationEmailType.Single ->
-                    SingleDatasetUploadedEngagement(
-                        companyName = companyName,
-                        companyId = latestElementaryEvent.companyId.toString(),
-                        dataType = readableFrameworkNameMapping[latestElementaryEvent.framework] ?: "",
-                        reportingPeriod = latestElementaryEvent.reportingPeriod,
-                    )
-                NotificationEmailType.Summary -> {
-                    val frameworkData =
-                        unprocessedElementaryEvents
-                            .groupBy { it.framework }
-                            .map { (framework, events) ->
-                                MultipleDatasetsUploadedEngagement.FrameworkData(
-                                    readableFrameworkNameMapping[framework] ?: "", events.map { it.reportingPeriod },
-                                )
-                            }
-
-                    MultipleDatasetsUploadedEngagement(
-                        companyName = companyName,
-                        companyId = latestElementaryEvent.companyId.toString(),
-                        frameworkData = frameworkData,
-                        numberOfDays =
-                            getDaysPassedSinceLastNotificationEvent(
-                                latestElementaryEvent.companyId, latestElementaryEvent.elementaryEventType,
-                            ),
-                    )
-                }
-            }
-
-        /**
-         * Sends messages to queue in order to make the email service send mails to all receivers.
-         */
-        fun sendEmailMessagesToQueue(
-            typedEmailContent: TypedEmailContent,
-            emailReceivers: List<String>,
-            correlationId: String,
-        ) {
-            emailReceivers.forEach { emailAddress ->
-                val message = EmailMessage(typedEmailContent, listOf(EmailRecipient.EmailAddress(emailAddress)), emptyList(), emptyList())
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    objectMapper.writeValueAsString(message),
-                    MessageType.SEND_EMAIL,
-                    correlationId,
-                    ExchangeName.SEND_EMAIL,
-                    RoutingKeyNames.EMAIL,
-                )
-            }
-        }
-
-        /**
          * Gets last notification event for a specific company and elementary event type
          * @param companyId for which a notification event might have happened
          * @param elementaryEventType of the elementary events for which the notification event was created
@@ -222,31 +154,25 @@ class NotificationService
         /**
          * Gets days passed since last notification event for a specific company. If there was no last notification
          * event, it returns "null".
-         * @param companyId for which a notification event might have happened
-         * @param elementaryEventType of the elementary events for which the notification event was created
+         * @param notificationEvent TODO
          * @return time passed in days, or null if there is no last notification event
          */
-        fun getDaysPassedSinceLastNotificationEvent(
-            companyId: UUID,
-            elementaryEventType: ElementaryEventType,
+        fun getDaysPassedSinceNotificationEvent(
+            notificationEvent: NotificationEventEntity,
         ): Long? =
-            getLastNotificationEventOrNull(companyId, elementaryEventType)?.let { lastNotificationEvent ->
-                Duration.between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now()).toDays()
-            }
+            Duration.between(Instant.ofEpochMilli(notificationEvent.creationTimestamp), Instant.now()).toDays()
 
         /**
          * Checks if last notification event for company is older than threshold in days
-         * @param companyId
+         * param notificationEvent TODO
          * @return if last notification event for company is older than threshold in days
          */
-        fun isLastNotificationEventOlderThanThreshold(
-            companyId: UUID,
-            elementaryEventType: ElementaryEventType,
+        fun isNotificationEventOlderThanThreshold(
+            notificationEvent: NotificationEventEntity?
         ): Boolean {
-            val lastNotificationEvent = getLastNotificationEventOrNull(companyId, elementaryEventType)
-            return lastNotificationEvent == null ||
+            return notificationEvent == null ||
                 Duration
-                    .between(Instant.ofEpochMilli(lastNotificationEvent.creationTimestamp), Instant.now())
+                    .between(Instant.ofEpochMilli(notificationEvent.creationTimestamp), Instant.now())
                     .toDays() > notificationThresholdDays
         }
 

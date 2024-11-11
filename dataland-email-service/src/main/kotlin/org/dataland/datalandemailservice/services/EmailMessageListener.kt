@@ -1,27 +1,16 @@
 package org.dataland.datalandemailservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandemailservice.email.EmailBuilder
-import org.dataland.datalandemailservice.email.EmailContact
+import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailSender
+import org.dataland.datalandemailservice.email.build
+import org.dataland.datalandemailservice.email.setLateInitVars
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
-import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.InitializeBaseUrlLater
-import org.dataland.datalandmessagequeueutils.messages.email.InitializeSubscriptionUuidLater
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
-import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -72,7 +61,7 @@ class EmailMessageListener(
             ),
         ],
     )
-    fun sendEmail(
+    fun handleSendEmailMessage(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
@@ -85,109 +74,35 @@ class EmailMessageListener(
         )
 
         MessageQueueUtils.rejectMessageOnException {
-            val receivers = resolveRecipients(message.receiver)
-            val cc = resolveRecipients(message.cc)
-            val bcc = resolveRecipients(message.bcc)
-
-            val blockedContacts = receivers.blocked + cc.blocked + bcc.blocked
-            if (blockedContacts.isNotEmpty()) {
-                logger.info("Will not send email to the following blocked contacts: $blockedContacts")
-            }
-
-            if (receivers.allowed.isEmpty() && cc.allowed.isEmpty() && bcc.allowed.isEmpty()) {
-                logger.info("No email was sent. After filtering the receivers none remained.")
-                return@rejectMessageOnException
-            }
-
-            val sender = emailContactService.getSenderContact()
-            setLateInitVars(message.typedEmailContent, receivers.allowed)
-            val email = getEmailBuilder(message.typedEmailContent)
-                .build(sender, receivers.allowed.keys.toList(), cc.allowed.keys.toList(), bcc.allowed.keys.toList())
-            emailSender.sendEmail(email)
+            buildAndSendEmail(message)
         }
+    }
+
+    fun buildAndSendEmail(emailMessage: EmailMessage) {
+        val receivers = resolveRecipients(emailMessage.receiver)
+        val cc = resolveRecipients(emailMessage.cc)
+        val bcc = resolveRecipients(emailMessage.bcc)
+
+        val blockedContacts = receivers.blocked + cc.blocked + bcc.blocked
+        if (blockedContacts.isNotEmpty()) {
+            logger.info("Will not send email to the following blocked contacts: $blockedContacts")
+        }
+
+        if (receivers.allowed.isEmpty() && cc.allowed.isEmpty() && bcc.allowed.isEmpty()) {
+            logger.info("No email was sent. After filtering the receivers none remained.")
+            return
+        }
+
+        val sender = emailContactService.getSenderContact()
+        emailMessage.typedEmailContent.setLateInitVars(receivers.allowed, proxyPrimaryUrl)
+        val content = emailMessage.typedEmailContent.build()
+        val email = Email(sender, receivers.allowed.keys.toList(), cc.allowed.keys.toList(), bcc.allowed.keys.toList(), content)
+        emailSender.sendEmail(email)
     }
 
     private fun resolveRecipients(recipients: List<EmailRecipient>): EmailSubscriptionTracker.FilteredContacts =
         recipients
             .flatMap { emailContactService.getContacts(it) }
             .let { emailSubscriptionTracker.subscribeContactsIfNeededAndFilter(it) }
-
-    private fun setLateInitVars(typedEmailContent: TypedEmailContent, receivers: Map<EmailContact, UUID>) {
-        if (typedEmailContent is InitializeBaseUrlLater) {
-            typedEmailContent.baseUrl = proxyPrimaryUrl
-        }
-        if (typedEmailContent is InitializeSubscriptionUuidLater) {
-            require(receivers.size == 1)
-            typedEmailContent.subscriptionUuid = receivers.values.first().toString()
-        }
-    }
-
-    private fun getEmailBuilder(typedEmailContent: TypedEmailContent): EmailBuilder =
-        when (typedEmailContent) {
-            is DatasetRequestedClaimOwnership ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "A message from Dataland: Your ESG data are high on demand!",
-                    "/html/dataset_requested_claim_ownership.ftl",
-                    "/text/dataset_requested_claim_ownership.ftl"
-                )
-            is DataRequestAnswered ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "Your data request has been answered!",
-                    "/html/data_request_answered.ftl",
-                    "/text/data_request_answered.ftl"
-                )
-            is DataRequestClosed ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "Your data request has been closed!",
-                    "/html/data_request_closed.ftl",
-                    "/text/data_request_closed.ftl"
-                )
-            is CompanyOwnershipClaimApproved ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "Your company ownership claim for ${typedEmailContent.companyName}" + " is confirmed!",
-                    "/html/company_ownership_claim_approved.ftl",
-                    "/text/company_ownership_claim_approved.ftl"
-                )
-            is AccessToDatasetRequested ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "Access to your data has been requested on Dataland!",
-                    "/html/access_to_dataset_requested.ftl",
-                    "/text/access_to_dataset_requested.ftl"
-                )
-            is SingleDatasetUploadedEngagement ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "New data for ${typedEmailContent.companyName} on Dataland",
-                    "/html/single_dataset_uploaded_engagement.ftl",
-                    "/text/single_dataset_uploaded_engagement.ftl"
-                )
-            is MultipleDatasetsUploadedEngagement ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "New data for ${typedEmailContent.companyName} on Dataland",
-                    "/html/multiple_datasets_uploaded_engagement.ftl",
-                    "/text/multiple_datasets_uploaded_engagement.ftl"
-                )
-            is AccessToDatasetGranted ->
-                EmailBuilder(
-                    typedEmailContent,
-                    "Your Dataland Access Request has been granted!",
-                    "/html/access_to_dataset_granted.ftl",
-                    "/text/access_to_dataset_granted.ftl"
-                )
-            is KeyValueTable ->
-                EmailBuilder(
-                    typedEmailContent,
-                    typedEmailContent.subject,
-                    "/html/key_value_table.ftl",
-                    "/text/key_value_table.ftl"
-                )
-        }
-
 
 }

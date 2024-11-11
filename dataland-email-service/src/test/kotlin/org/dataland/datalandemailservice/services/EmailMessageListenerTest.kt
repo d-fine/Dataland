@@ -1,8 +1,10 @@
 package org.dataland.datalandemailservice.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.email.EmailSender
+import org.dataland.datalandemailservice.email.TypedEmailContentTestData
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
 import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
@@ -16,17 +18,17 @@ import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
+import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.kotlin.any
-import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.io.File
 import java.util.*
 
 class EmailMessageListenerTest {
@@ -38,60 +40,6 @@ class EmailMessageListenerTest {
     private val proxyPrimaryUrl = "abc.example.com"
 
     private lateinit var emailMessageListener: EmailMessageListener
-
-    private val testDatasetRequestedClaimOwnership = DatasetRequestedClaimOwnership(
-        "companyId", "companyName", "requesterEmail", "dataType", listOf("2020", "2023"),
-        "message", "firstName", "lastName"
-    )
-
-    private val testDataRequestAnswered = DataRequestAnswered(
-        "companyId", "companyName", "dataType", "reportingPeriod", "creationDate",
-        "dataRequestId", 23, "dataTypeDescription"
-    )
-
-    private val testDataRequestClosed = DataRequestClosed(
-        "companyId", "companyName", "dataType", "reportingPeriod", "creationDate",
-        "dataRequestId", 23, "dataTypeDescription"
-    )
-
-    private val testCompanyOwnershipClaimApproved = CompanyOwnershipClaimApproved(
-        "companyId", "companyName", 10
-    )
-
-    private val testAccessToDatasetRequested = AccessToDatasetRequested(
-        "companyId", "companyName", "dataType", listOf("2020", "2023"),
-        "message", "requesterEmail", "requesterFirstName", "requesterLastName"
-    )
-
-    private val testSingleDatasetUploadedEngagement = SingleDatasetUploadedEngagement(
-        "companyId", "companyName", "dataType", "2023"
-    )
-
-    private val testMultipleDatasetsUploadedEngagement = MultipleDatasetsUploadedEngagement(
-        "companyId", "companyName",
-        listOf(
-            MultipleDatasetsUploadedEngagement.FrameworkData("dataTypeA", listOf("2020", "2021")),
-            MultipleDatasetsUploadedEngagement.FrameworkData("dataTypeB", listOf("2023"))
-            ),
-        3,
-    )
-
-    private val testAccessToDatasetGranted = AccessToDatasetGranted(
-        "companyId", "companyName", "dataType", "dataTypeDescription",
-        "reportingPeriod", "creationDate"
-    )
-
-    private val testKeyValueTable = KeyValueTable(
-        "subject", "textTitle", "htmlTitle",
-        listOf("Key" to KeyValueTable.Text("Super text"))
-    )
-
-    private val typedEmailTestData: List<TypedEmailContent> = listOf(
-//        testDatasetRequestedClaimOwnership, testDataRequestAnswered, testDataRequestClosed, testAccessToDatasetRequested,
-//        testSingleDatasetUploadedEngagement, testMultipleDatasetsUploadedEngagement, testAccessToDatasetGranted,
-//        testCompanyOwnershipClaimApproved,
-        testKeyValueTable
-    )
 
     private val recipientToContactMap = mapOf(
         EmailRecipient.EmailAddress("1@example.com") to EmailContact("1@example.com"),
@@ -137,41 +85,20 @@ class EmailMessageListenerTest {
     }
 
     @Test
-    fun `test that every template has test data`() {
-        TypedEmailContent::class.sealedSubclasses.forEach { subclass ->
-            assertTrue(typedEmailTestData.any { subclass.isInstance(it) })
-        }
-    }
-
-    @Test
-    fun `test that every template can be constructed without exception`() {
-        val receiver = listOf(recipientToContactMap.keys.first())
-        val cc = emptyList<EmailRecipient>()
-        val bcc = emptyList<EmailRecipient>()
-
-        doNothing().whenever(emailSender).sendEmail(any())
-
-        typedEmailTestData.forEach { testData ->
-            val jsonString = objectMapper.writeValueAsString(EmailMessage(testData, receiver, cc, bcc))
-            assertDoesNotThrow {
-                emailMessageListener.sendEmail(jsonString, MessageType.SEND_EMAIL, correlationId)
-            }
-        }
-    }
-
-    @Test
     fun `test that blocked contacts are no receiver`() {
+        // TODO brauchen wir den test noch, bzw den ganzen aufbau von den mocks, was kann man noch testen?
         val receiver = recipientToContactMap.keys.toList()
         val cc = recipientToContactMap.keys.toList()
         val bcc = recipientToContactMap.keys.toList()
 
         val allowed = listOf(EmailContact("1@example.com"), EmailContact("3@example.com"))
 
-        val jsonString = objectMapper.writeValueAsString(EmailMessage(testAccessToDatasetRequested, receiver, cc, bcc))
+        val typedEmailContent = TypedEmailContentTestData.accessToDatasetRequested
+        val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
 
         doNothing().whenever(emailSender).sendEmail(any())
 
-        emailMessageListener.sendEmail(jsonString, MessageType.SEND_EMAIL, correlationId)
+        emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
         verify(emailSender).sendEmail(argThat { email ->
             email.receivers == allowed && email.cc == allowed && email.bcc == allowed

@@ -1,8 +1,10 @@
 package org.dataland.datalandemailservice.services
 
-import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
-import org.dataland.datalandmessagequeueutils.messages.InternalEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -17,8 +19,7 @@ import java.util.UUID
 @Service
 class EmailSubscriptionManager(
     @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
-    @Autowired private val emailSender: EmailSender,
-    @Autowired private val internalEmailBuilder: InternalEmailBuilder,
+    @Autowired private val emailMessageListener: EmailMessageListener,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -33,9 +34,7 @@ class EmailSubscriptionManager(
         val emailSubscription = emailSubscriptionRepository.findByUuid(uuid)
 
         return if (emailSubscription != null) {
-            emailSubscriptionRepository.findByUuid(emailSubscription.uuid)?.let {
-                it.isSubscribed = false
-            }
+            emailSubscription.isSubscribed = false
             informStakeholdersOfUnsubscription(emailSubscription.emailAddress)
             val successMessage = "Successfully unsubscribed email address corresponding to UUID: $uuid."
             logger.info(successMessage)
@@ -55,13 +54,19 @@ class EmailSubscriptionManager(
      *
      */
     private fun informStakeholdersOfUnsubscription(unsubscribedEmailAddress: String) {
-        val unsubscriptionMessage =
-            InternalEmailMessage(
+        val emailMessage = EmailMessage(
+            KeyValueTable(
                 subject = "A user has unsubscribed from data uploads notifications",
                 textTitle = "A user has unsubscribed from data uploads notifications.",
                 htmlTitle = "A user has unsubscribed from data uploads notifications.",
-                properties = mapOf("Unsubscribed Email Address" to unsubscribedEmailAddress),
-            )
-        emailSender.filterReceiversAndSendEmail(internalEmailBuilder.buildInternalEmail(unsubscriptionMessage))
+                table = listOf(
+                    "Unsubscribed Email Address" to Value.Text(unsubscribedEmailAddress)
+                )
+            ),
+            listOf(EmailRecipient.Internal),
+            listOf(EmailRecipient.InternalCc),
+            emptyList()
+        )
+        emailMessageListener.buildAndSendEmail(emailMessage)
     }
 }
