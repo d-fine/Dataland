@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Service
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service
  * e.g. retrieving user information like email address
  */
 @Service("KeycloakUserService")
+@ConditionalOnProperty(name = ["dataland.keycloak.client-id"])
 class KeycloakUserService(
     @Autowired private val objectMapper: ObjectMapper,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
