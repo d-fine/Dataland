@@ -97,16 +97,13 @@ class DataRequestResponseEmailSenderTest {
 
     private fun assertClosedEmailData(
         dataRequestId: String,
-        dataType: String,
-        dataTypeDescription: String,
+        dataTypeLabel: String,
     ): (TypedEmailContent) -> Unit =
         { emailData ->
             assertTrue(emailData is DataRequestClosed)
             val dataRequestAnswered = emailData as DataRequestClosed
-            assertEquals(companyId, dataRequestAnswered.companyId)
             assertEquals(companyName, dataRequestAnswered.companyName)
-            assertEquals(dataType, dataRequestAnswered.dataType)
-            assertEquals(dataTypeDescription, dataRequestAnswered.dataTypeLabel)
+            assertEquals(dataTypeLabel, dataRequestAnswered.dataTypeLabel)
             assertEquals(reportingPeriod, dataRequestAnswered.reportingPeriod)
             assertEquals(creationTimestampAsDate, dataRequestAnswered.creationDate)
             assertEquals(dataRequestId, dataRequestAnswered.dataRequestId)
@@ -120,7 +117,7 @@ class DataRequestResponseEmailSenderTest {
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    assertClosedEmailData(dataRequestId, it.key, it.value),
+                    assertClosedEmailData(dataRequestId, it.value),
                 )
 
             val dataRequestClosedEmailMessageSender =
@@ -138,16 +135,13 @@ class DataRequestResponseEmailSenderTest {
 
     private fun assertAnsweredEmailData(
         dataRequestId: String,
-        dataType: String,
-        dataTypeDescription: String,
+        dataTypeLabel: String,
     ): (TypedEmailContent) -> Unit =
         { emailData ->
             assertTrue(emailData is DataRequestAnswered)
             val dataRequestAnswered = emailData as DataRequestAnswered
-            assertEquals(companyId, dataRequestAnswered.companyId)
             assertEquals(companyName, dataRequestAnswered.companyName)
-            assertEquals(dataType, dataRequestAnswered.dataType)
-            assertEquals(dataTypeDescription, dataRequestAnswered.dataTypeLabel)
+            assertEquals(dataTypeLabel, dataRequestAnswered.dataTypeLabel)
             assertEquals(reportingPeriod, dataRequestAnswered.reportingPeriod)
             assertEquals(creationTimestampAsDate, dataRequestAnswered.creationDate)
             assertEquals(dataRequestId, dataRequestAnswered.dataRequestId)
@@ -161,7 +155,7 @@ class DataRequestResponseEmailSenderTest {
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    assertAnsweredEmailData(dataRequestId, it.key, it.value),
+                    assertAnsweredEmailData(dataRequestId, it.value),
                 )
 
             val dataRequestClosedEmailMessageSender =

@@ -58,12 +58,10 @@ class DataRequestResponseEmailSender(
     ) {
         val dataRequestAnswered =
             DataRequestClosed(
-                companyId = dataRequestEntity.datalandCompanyId,
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
-                dataType = dataRequestEntity.dataType,
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 dataRequestId = dataRequestEntity.dataRequestId,
                 closedInDays = staleDaysThreshold.toInt(),
             )
@@ -91,12 +89,10 @@ class DataRequestResponseEmailSender(
     ) {
         val dataRequestAnswered =
             DataRequestAnswered(
-                companyId = dataRequestEntity.datalandCompanyId,
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
-                dataType = dataRequestEntity.dataType,
                 reportingPeriod = dataRequestEntity.reportingPeriod,
-                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
+                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
                 dataRequestId = dataRequestEntity.dataRequestId,
                 closedInDays = staleDaysThreshold.toInt(),
             )

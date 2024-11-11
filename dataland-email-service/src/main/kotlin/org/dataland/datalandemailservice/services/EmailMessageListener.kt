@@ -80,7 +80,7 @@ class EmailMessageListener(
     /**
      * This function builds an email and then sends the email.
      * @param emailMessage The email message specifies the receiver and the content of the email that should be sent.
-     *  This function also removes all receiver of the email that have unsubscribed.
+     *  This function removes all receiver of the email that have unsubscribed.
      */
     fun buildAndSendEmail(emailMessage: EmailMessage) {
         val receivers = resolveRecipients(emailMessage.receiver)
