@@ -119,7 +119,7 @@ class DataManager
         }
 
         /**
-         * Wrapper method to store a data set in the temporary store and send a message that public data was received
+         * Method to temporarily store a data set in a hash map and send a message to the storage_queue
          * @param dataId The id of the inserted data set
          * @param storableDataSet The data set to store
          * @param bypassQa Whether the data set should be sent to QA or not
@@ -132,44 +132,7 @@ class DataManager
             bypassQa: Boolean,
             correlationId: String,
         ) {
-            storeDataSetInTemporaryStore(dataId, storableDataSet, correlationId)
-            sendMessageThatPublicDataWasReceived(dataId, storableDataSet, bypassQa, correlationId)
-        }
-
-        /**
-         * Method to temporarily store a data set in a hash map
-         * @param dataId The id of the inserted data set
-         * @param storableDataSet The data set to store
-         * @param correlationId The correlation id of the request initiating the storing of data
-         * @return ID of the stored data set
-         */
-        fun storeDataSetInTemporaryStore(
-            dataId: String,
-            storableDataSet: StorableDataSet,
-            correlationId: String,
-        ) {
             publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
-            logger.info(
-                "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
-                    "for company ID '${storableDataSet.companyId}' in temporary storage. " +
-                    "Data ID '$dataId'. Correlation ID: '$correlationId'.",
-            )
-        }
-
-        /**
-         * Method to emit the event that public data was received
-         * @param dataId The id of the inserted data set
-         * @param storableDataSet The data set to store
-         * @param bypassQa Whether the data set should be sent to QA or not
-         * @param correlationId The correlation id of the request initiating the storing of data
-         * @return ID of the stored data set
-         */
-        fun sendMessageThatPublicDataWasReceived(
-            dataId: String,
-            storableDataSet: StorableDataSet,
-            bypassQa: Boolean,
-            correlationId: String,
-        ) {
             val payload =
                 JSONObject(
                     mapOf(
@@ -183,8 +146,8 @@ class DataManager
                 ExchangeName.REQUEST_RECEIVED,
             )
             logger.info(
-                "Send message to queue new public data was received of type '${storableDataSet.dataType}' " +
-                    "for company ID '${storableDataSet.companyId}' with " +
+                "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
+                    "for company ID '${storableDataSet.companyId}' in temporary storage. " +
                     "Data ID '$dataId'. Correlation ID: '$correlationId'.",
             )
         }

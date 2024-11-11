@@ -148,7 +148,7 @@ class DataPointManager(
 
         val dataSetId = IdUtils.generateUUID()
         dataManager.storeMetaDataFrom(dataSetId, uploadedDataSet, correlationId)
-        dataManager.sendMessageThatPublicDataWasReceived(dataSetId, uploadedDataSet, bypassQa, correlationId)
+        dataManager.storeDataSetInTemporaryStoreAndSendMessage(dataSetId, uploadedDataSet, bypassQa, correlationId)
 
         logger.info("Processing data set with id $dataSetId for framework ${uploadedDataSet.dataType}")
 

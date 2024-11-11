@@ -115,8 +115,7 @@ class DatabaseStringDataStore(
         val dataType = dataAsJSON.getString("dataType")
         val decodedDataTypeString = DataTypeEnum.decode(dataType)
 
-        // additional company information is stored on data point level, the data set as a whole is not stored
-        if (decodedDataTypeString != null && decodedDataTypeString != DataTypeEnum.additionalMinusCompanyMinusInformation) {
+        if (decodedDataTypeString != null) {
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(dataObject)))
         } else {
             val companyId = dataAsJSON.getString("companyId")
