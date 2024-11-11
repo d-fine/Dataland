@@ -78,7 +78,7 @@ class EmailSubscriptionTrackerTest(
     fun `validate that no entity is created for unsubscribed address`() {
         val entity = emailSubscriptionTracker.getOrAddSubscription(unsubscribedEmail)
 
-        assertEquals(unsubscribedEntity, entity.uuid)
+        assertEquals(unsubscribedEntity.uuid, entity.uuid)
         assertFalse(entity.isSubscribed)
         assertEquals(unsubscribedEmail, entity.emailAddress)
     }
