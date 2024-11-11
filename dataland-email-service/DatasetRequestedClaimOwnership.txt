@@ -1,9 +1,0 @@
-Greetings!
-
-You have been invited to provide data on Dataland.
-
-People are interested in EU Taxonomy for non-financial companies data from Banana Inc. for the years 2020, 2023.
-    User requester@example.com sent the following message:
-    Some message
-
-Register as a company owner on test.dataland.com/companies/4587dcde-98b2-487f-8a09-7e512af4499c
