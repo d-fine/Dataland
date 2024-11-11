@@ -1,0 +1,33 @@
+{
+  "companyId": "acceptedCompanyId",
+  "companyInformation": {
+    "companyName": "Kuki AG",
+    "headquarters": "Kuki City, Kuki Country",
+    "identifiers": {
+      "DUNS": ["123456789", "987654321"],
+      "LEI": ["5493001KJTIIGC8Y1R12"]
+    },
+    "countryCode": "DE",
+    "companyAlternativeNames": ["Kuki Corporation", "Kuki Ltd."],
+    "companyContactDetails": ["info@kuki.com", "+49 123 4567"],
+    "companyLegalForm": "AG",
+    "headquartersPostalCode": "12345",
+    "sector": "Information Technology",
+    "sectorCodeWz": "6201",
+    "isTeaserCompany": true,
+    "website": "https://www.kuki.com",
+    "parentCompanyLei": "2138001LEITDATA12345"
+  },
+  "dataRegisteredByDataland": [
+    {
+      "dataId": "acceptedDataId",
+      "companyId": "acceptedCompanyId",
+      "dataType": "sfdr",
+      "uploadTime": 1633024800000,
+      "reportingPeriod": "2023-Q4",
+      "currentlyActive": true,
+      "qaStatus": "Accepted",
+      "uploaderUserId": "user_123"
+    }
+  ]
+}

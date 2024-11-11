@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -36,11 +37,11 @@ class QaEventListenerQaServiceTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val testQaReviewRepository: QaReviewRepository,
-    @Autowired val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaEventListenerQaService: QaEventListenerQaService
+    lateinit var mockMetaDataControllerApi: MetaDataControllerApi
+    lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
     val dataId = "TestDataId"
     val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
@@ -53,7 +54,7 @@ class QaEventListenerQaServiceTest(
     ): String =
         JSONObject(
             mapOf(
-                "identifier" to identifier.toString(), "validationResult" to validationResult, "reviewerId" to AUTOMATED_QA,
+                "identifier" to identifier, "validationResult" to validationResult, "reviewerId" to AUTOMATED_QA,
                 "resourceType" to "data", "message" to message,
             ),
         ).toString()
@@ -61,14 +62,16 @@ class QaEventListenerQaServiceTest(
     @BeforeEach
     fun resetMocks() {
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+        mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
+        mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
                 objectMapper,
                 messageUtils,
                 testQaReviewRepository,
-                companyDataControllerApi,
-                metaDataControllerApi,
+                mockCompanyDataControllerApi,
+                mockMetaDataControllerApi,
             )
     }
 
@@ -130,27 +133,51 @@ class QaEventListenerQaServiceTest(
     }
 
     @Test
-    fun `check an that the automated qa result is stored correctly in the review history repository`() {
-        val acceptedData = "acceptedDataId"
-        val automatedQaAcceptedMessage = getPersistAutomatedQaResultMessage(acceptedData, QaStatus.Accepted, "accepted")
+    fun `check that the automated qa result is stored correctly in the review repository`() {
+        val acceptedStoredCompanyJSon = "json/services/StoredCompanyAccepted.json"
+        val acceptedStoredCompany = objectMapper.readValue(getJsonString(acceptedStoredCompanyJSon), StoredCompany::class.java)
+        val acceptedDataMetaInformation = acceptedStoredCompany.dataRegisteredByDataland[0]
+        val acceptedDataId = acceptedDataMetaInformation.dataId
+        `when`(
+            mockMetaDataControllerApi.getDataMetaInfo(
+                acceptedDataId,
+            ),
+        ).thenReturn(
+            acceptedDataMetaInformation,
+        )
+        `when`(mockCompanyDataControllerApi.getCompanyById(acceptedDataMetaInformation.companyId)).thenReturn(acceptedStoredCompany)
+        val automatedQaAcceptedMessage = getPersistAutomatedQaResultMessage(acceptedDataId, QaStatus.Accepted, "accepted")
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
             automatedQaAcceptedMessage, correlationId, MessageType.PERSIST_AUTOMATED_QA_RESULT,
         )
-        testQaReviewRepository.findByDataId(acceptedData)?.let {
+        testQaReviewRepository.findByDataId(acceptedDataId)?.let {
             Assertions.assertEquals(AUTOMATED_QA, it.reviewerId)
-            Assertions.assertEquals(acceptedData, it.dataId)
+            Assertions.assertEquals(acceptedDataId, it.dataId)
             Assertions.assertEquals(QaStatus.Accepted, it.qaStatus)
             Assertions.assertEquals("accepted", it.comment)
         }
 
-        val rejectedData = "rejectedDataId"
-        val automatedQaRejectedMessage = getPersistAutomatedQaResultMessage(rejectedData, QaStatus.Rejected, "rejected")
+        val rejectedStoredCompanyJSon = "json/services/StoredCompanyRejected.json"
+        val rejectedStoredCompany = objectMapper.readValue(getJsonString(rejectedStoredCompanyJSon), StoredCompany::class.java)
+        val rejectedDataMetaInformation = rejectedStoredCompany.dataRegisteredByDataland[0]
+        val rejectedDataId = rejectedDataMetaInformation.dataId
+
+        `when`(
+            mockMetaDataControllerApi.getDataMetaInfo(
+                rejectedDataId,
+            ),
+        ).thenReturn(
+            rejectedDataMetaInformation,
+        )
+        `when`(mockCompanyDataControllerApi.getCompanyById(rejectedDataMetaInformation.companyId)).thenReturn(rejectedStoredCompany)
+
+        val automatedQaRejectedMessage = getPersistAutomatedQaResultMessage(rejectedDataId, QaStatus.Rejected, "rejected")
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
             automatedQaRejectedMessage, correlationId, MessageType.PERSIST_AUTOMATED_QA_RESULT,
         )
-        testQaReviewRepository.findByDataId(rejectedData)?.let {
+        testQaReviewRepository.findByDataId(rejectedDataId)?.let {
             Assertions.assertEquals(AUTOMATED_QA, it.reviewerId)
-            Assertions.assertEquals(rejectedData, it.dataId)
+            Assertions.assertEquals(rejectedDataId, it.dataId)
             Assertions.assertEquals(QaStatus.Rejected, it.qaStatus)
             Assertions.assertEquals("rejected", it.comment)
         }
@@ -171,4 +198,11 @@ class QaEventListenerQaServiceTest(
         )
         Assertions.assertNull(testQaReviewRepository.findByDataId(dataId))
     }
+
+    private fun getJsonString(resourceFile: String): String =
+        objectMapper
+            .readTree(
+                this.javaClass.classLoader.getResourceAsStream(resourceFile)
+                    ?: throw IllegalArgumentException("Could not load the resource file"),
+            ).toString()
 }
