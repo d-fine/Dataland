@@ -115,7 +115,8 @@ class DatabaseStringDataStore(
         val dataType = dataAsJSON.getString("dataType")
         val decodedDataTypeString = DataTypeEnum.decode(dataType)
 
-        if (decodedDataTypeString != null) {
+        // additional company information is stored on data point level, the data set as a whole is not stored
+        if (decodedDataTypeString != null && decodedDataTypeString != DataTypeEnum.additionalMinusCompanyMinusInformation) {
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(dataObject)))
         } else {
             val companyId = dataAsJSON.getString("companyId")
@@ -138,19 +139,20 @@ class DatabaseStringDataStore(
     }
 
     /**
+     * Stores a Data Point Item while ensuring that there is no active transaction. This will guarantee that the data
      * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
      * is commited after exit of this method.
-     * @param dataItem the DataItem to be stored
+     * @param dataPointItem the DataItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun storeDatapointItemWithoutTransaction(datapointItem: DatapointItem) {
-        datapointItemRepository.save(datapointItem)
+    fun storeDatapointItemWithoutTransaction(dataPointItem: DatapointItem) {
+        datapointItemRepository.save(dataPointItem)
     }
 
     /**
-     * Stores a Data Point Item while ensuring that there is no active transaction. This will guarantee that the data
+     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
      * point is commited after exit of this method.
-     * @param datapointItem the DatapointItem to be stored
+     * @param dataItem the DatapointItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeDataItemWithoutTransaction(dataItem: DataItem) {
