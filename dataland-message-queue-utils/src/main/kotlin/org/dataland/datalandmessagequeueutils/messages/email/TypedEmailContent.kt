@@ -35,7 +35,7 @@ data class DatasetRequestedClaimOwnership(
     val companyId: String,
     val companyName: String,
     val requesterEmail: String,
-    val dataType: String,
+    val dataTypeLabel: String,
     val reportingPeriods: List<String>,
     val message: String?,
     val firstName: String?,
@@ -49,7 +49,7 @@ data class DatasetRequestedClaimOwnership(
 data class AccessToDatasetRequested(
     val companyId: String,
     val companyName: String,
-    val dataType: String,
+    val dataTypeLabel: String,
     val reportingPeriods: List<String>,
     val message: String?,
     val requesterEmail: String?,
@@ -64,7 +64,7 @@ data class AccessToDatasetGranted(
     val companyId: String,
     val companyName: String,
     val dataType: String,
-    val dataTypeDescription: String,
+    val dataTypeLabel: String,
     val reportingPeriod: String,
     val creationDate: String,
 ) : TypedEmailContent(), InitializeBaseUrlLater {
@@ -75,7 +75,7 @@ data class AccessToDatasetGranted(
 data class SingleDatasetUploadedEngagement(
     val companyId: String,
     val companyName: String,
-    val dataType: String,
+    val dataTypeLabel: String,
     val reportingPeriod: String
 ) : TypedEmailContent(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
     @JsonIgnore
@@ -91,7 +91,7 @@ data class MultipleDatasetsUploadedEngagement(
     val numberOfDays: Long?
 ) : TypedEmailContent(), InitializeSubscriptionUuidLater, InitializeBaseUrlLater {
     data class FrameworkData(
-        val dataType: String,
+        val dataTypeLabel: String,
         val reportingPeriods: List<String>
     )
     @JsonIgnore
@@ -117,7 +117,7 @@ data class DataRequestAnswered(
     val creationDate: String,
     val dataRequestId: String,
     val closedInDays: Int,
-    val dataTypeDescription: String
+    val dataTypeLabel: String
 ) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -131,7 +131,7 @@ data class DataRequestClosed(
     val creationDate: String,
     val dataRequestId: String,
     val closedInDays: Int,
-    val dataTypeDescription: String
+    val dataTypeLabel: String
 ) : TypedEmailContent(), InitializeBaseUrlLater {
     @JsonIgnore
     override lateinit var baseUrl: String

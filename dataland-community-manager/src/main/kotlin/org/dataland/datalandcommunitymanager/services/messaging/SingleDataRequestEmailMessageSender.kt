@@ -94,7 +94,7 @@ class SingleDataRequestEmailMessageSender(
                 requesterEmail = messageInformation.userAuthentication.username,
                 firstName = messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
                 lastName = messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
-                dataType = readableFrameworkNameMapping.getValue(messageInformation.dataType),
+                dataTypeLabel = readableFrameworkNameMapping.getValue(messageInformation.dataType),
                 reportingPeriods = messageInformation.reportingPeriods.toList().sorted(),
                 message = contactMessage.takeIf { !contactMessage.isNullOrBlank() },
             )

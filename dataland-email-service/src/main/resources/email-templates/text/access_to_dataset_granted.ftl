@@ -2,7 +2,7 @@ Great news!
 
 Access to the following dataset has been granted.
 Company: ${companyName}
-Framework: ${dataTypeDescription}
+Framework: ${dataTypeLabel}
 Reporting period: ${reportingPeriod}
 Request created: ${creationDate}
 

@@ -131,7 +131,7 @@ class SingleDataRequestEmailMessageSenderTest {
             assertEquals(datalandCompanyId, emailData.companyId)
             assertEquals(companyName, emailData.companyName)
             assertEquals(authenticationMock.username, emailData.requesterEmail)
-            assertEquals(readableFrameworkNameMapping.getValue(DataTypeEnum.p2p), emailData.dataType)
+            assertEquals(readableFrameworkNameMapping.getValue(DataTypeEnum.p2p), emailData.dataTypeLabel)
             assertEquals(reportingPeriods.toList().sorted(), emailData.reportingPeriods)
             assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", emailData.message)
             assertEquals(MessageType.SEND_EMAIL, arg2)

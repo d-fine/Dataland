@@ -49,7 +49,7 @@
                     <td style="font-size: 5px; height: 5px">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="font-weight: bold; font-size:19px">${dataType}</td>
+                    <td style="font-weight: bold; font-size:19px">${dataTypeLabel}</td>
                 </tr>
                 <tr>
                     <td style="height: 20px">&nbsp;</td>

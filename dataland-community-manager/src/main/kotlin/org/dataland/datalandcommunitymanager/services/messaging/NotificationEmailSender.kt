@@ -62,7 +62,7 @@ class NotificationEmailSender(
         val externalEmailContent = SingleDatasetUploadedEngagement(
             companyName = companyName,
             companyId = latestElementaryEvent.companyId.toString(),
-            dataType = readableFrameworkNameMapping[latestElementaryEvent.framework] ?: "",
+            dataTypeLabel = readableFrameworkNameMapping[latestElementaryEvent.framework] ?: "",
             reportingPeriod = latestElementaryEvent.reportingPeriod,
         )
 

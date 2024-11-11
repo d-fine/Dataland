@@ -73,7 +73,7 @@ class AccessRequestEmailSender(
                 companyId = emailInformation.datalandCompanyId,
                 companyName = companyName,
                 dataType = emailInformation.dataType,
-                dataTypeDescription = emailInformation.dataTypeDescription,
+                dataTypeLabel = emailInformation.dataTypeDescription,
                 reportingPeriod = emailInformation.reportingPeriod,
                 creationDate = dateFormat.format(emailInformation.creationTimestamp),
             )
@@ -133,7 +133,7 @@ class AccessRequestEmailSender(
             AccessToDatasetRequested(
                 companyId = emailInformation.datalandCompanyId,
                 companyName = companyName,
-                dataType = emailInformation.dataTypeDescription,
+                dataTypeLabel = emailInformation.dataTypeDescription,
                 reportingPeriods = emailInformation.reportingPeriods.toList().sorted(),
                 message = emailInformation.message.takeIf { it?.isNotBlank() ?: false },
                 requesterEmail = requester.email,

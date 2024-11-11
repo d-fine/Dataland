@@ -1,7 +1,7 @@
 Exciting news! 📣
 Data for ${companyName} has been uploaded to Dataland!
 
-Framework: ${dataType}
+Framework: ${dataTypeLabel}
 Reporting year: ${reportingPeriod}
 
 How to proceed?

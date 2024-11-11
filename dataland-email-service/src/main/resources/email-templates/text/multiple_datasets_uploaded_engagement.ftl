@@ -4,7 +4,7 @@ Exciting news! 📣
 Multiple datasets for ${companyName} have been uploaded to Dataland <@formatNumberOfDays numberOfDays/>.
 
 <#list frameworkData as framework>
-    ${framework.dataType}: ${framework.reportingPeriods?join(", ")}
+    ${framework.dataTypeLabel}: ${framework.reportingPeriods?join(", ")}
 </#list>
 
 How to proceed?

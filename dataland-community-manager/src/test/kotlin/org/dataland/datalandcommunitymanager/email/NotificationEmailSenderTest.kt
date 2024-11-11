@@ -78,7 +78,7 @@ class NotificationEmailSenderTest {
 
                 assertEquals(companyName, singleDatasetsUploadedEngagement.companyName)
                 assertEquals(companyId.toString(), singleDatasetsUploadedEngagement.companyId)
-                assertEquals(readableFrameworkNameMapping.getValue(dataType), singleDatasetsUploadedEngagement.dataType)
+                assertEquals(readableFrameworkNameMapping.getValue(dataType), singleDatasetsUploadedEngagement.dataTypeLabel)
                 assertEquals(reportingPeriod, singleDatasetsUploadedEngagement.reportingPeriod)
 
                 assertEquals(MessageType.SEND_EMAIL, it.getArgument<String>(1))

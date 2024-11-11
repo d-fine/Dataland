@@ -63,7 +63,7 @@ class DataRequestResponseEmailSender(
                 dataType = dataRequestEntity.dataType,
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-                dataTypeDescription = dataRequestEntity.getDataTypeDescription(),
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 dataRequestId = dataRequestEntity.dataRequestId,
                 closedInDays = staleDaysThreshold.toInt(),
             )
@@ -96,7 +96,7 @@ class DataRequestResponseEmailSender(
                 dataType = dataRequestEntity.dataType,
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-                dataTypeDescription = dataRequestEntity.getDataTypeDescription(),
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 dataRequestId = dataRequestEntity.dataRequestId,
                 closedInDays = staleDaysThreshold.toInt(),
             )
