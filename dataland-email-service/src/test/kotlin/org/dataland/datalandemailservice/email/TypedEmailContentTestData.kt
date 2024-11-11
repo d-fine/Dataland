@@ -11,125 +11,125 @@ import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUpl
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
-import java.util.*
+import java.util.UUID
 
 object TypedEmailContentTestData {
     val companyId = UUID.randomUUID().toString()
-    const val companyName = "Banana Inc."
-    const val numberOfOpenDataRequestForCompany = 10
+    const val COMPANY_NAME = "Banana Inc."
+    const val NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY = 10
 
-    const val requesterEmail = "requester@example.com"
-    const val dataTypeA = "eutaxonomy-non-financials"
-    const val dataTypeLabelA = "EU Taxonomy for non-financial companies"
-    const val dataTypeLabelB = "VSME"
-    const val reportingPeriodA = "2020"
-    const val reportingPeriodB = "2023"
-    const val reportinPeriodC = "2024"
+    const val REQUESTER_EMAIL = "requester@example.com"
+    const val DATA_TYPE_A = "eutaxonomy-non-financials"
+    const val DATA_TYPE_LABEL_A = "EU Taxonomy for non-financial companies"
+    const val DATA_TYPE_LABEL_B = "VSME"
+    const val REPORTING_PERIOD_A = "2020"
+    const val REPORTING_PERIOD_B = "2023"
+    const val REPORTIN_PERIOD_C = "2024"
 
-    const val message = "Some message"
-    const val firstName = "John"
-    const val lastName = "Doe"
+    const val MESSAGE = "Some message"
+    const val FIRST_NAME = "John"
+    const val LAST_NAME = "Doe"
     val subscriptionUuid = UUID.randomUUID().toString()
-    const val baseUrl = "test.dataland.com"
+    const val BASE_URL = "test.dataland.com"
 
-    const val creationDate = "October 5th"
+    const val CREATION_DATE = "October 5th"
     val dataRequestId = UUID.randomUUID().toString()
-    const val numberOfDays = 23
+    const val NUMBER_OF_DAYS = 23
 
     val datasetRequestedClaimOwnership =
         DatasetRequestedClaimOwnership(
-            companyId, companyName, requesterEmail, dataTypeLabelA, listOf(reportingPeriodA, reportingPeriodB),
-            message, firstName, lastName,
+            companyId, COMPANY_NAME, REQUESTER_EMAIL, DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B),
+            MESSAGE, FIRST_NAME, LAST_NAME,
         ).also {
             it.subscriptionUuid = subscriptionUuid
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
         }
 
     val datasetRequestedClaimOwnershipKeywords =
         listOf(
-            companyId, companyName, requesterEmail, dataTypeLabelA, reportingPeriodA,
-            reportingPeriodB, message, firstName, lastName, subscriptionUuid, baseUrl,
+            companyId, COMPANY_NAME, REQUESTER_EMAIL, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A,
+            REPORTING_PERIOD_B, MESSAGE, FIRST_NAME, LAST_NAME, subscriptionUuid, BASE_URL,
             "REGISTER AND CLAIM OWNERSHIP",
         )
 
     val dataRequestAnswered =
         DataRequestAnswered(
-            companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays,
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS,
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
         }
 
     val dataRequestAnsweredKeywords =
         listOf(
-            companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays.toString(), baseUrl,
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
             "Your data request has been answered.",
         )
 
     val dataRequestClosed =
         DataRequestClosed(
-            companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays,
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS,
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
         }
 
     val dataRequestClosedKeywords =
         listOf(
-            companyName, dataTypeLabelA, reportingPeriodA, creationDate, dataRequestId, numberOfDays.toString(), baseUrl,
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
             "Your answered data request has been automatically closed as no action was taken within the last",
         )
 
     val companyOwnershipClaimApproved =
         CompanyOwnershipClaimApproved(
-            companyId, companyName, numberOfOpenDataRequestForCompany,
+            companyId, COMPANY_NAME, NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY,
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
         }
 
     val companyOwnershipClaimApprovedKeywords =
         listOf(
-            companyId, companyName, numberOfOpenDataRequestForCompany.toString(), baseUrl,
+            companyId, COMPANY_NAME, NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY.toString(), BASE_URL,
             "You've successfully claimed company ownership for",
         )
 
     val accessToDatasetRequested =
         AccessToDatasetRequested(
-            companyId, companyName, dataTypeLabelA, listOf(reportingPeriodA, reportingPeriodB),
-            message, requesterEmail, firstName, lastName,
+            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B),
+            MESSAGE, REQUESTER_EMAIL, FIRST_NAME, LAST_NAME,
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
         }
 
     val accessToDatasetRequestedKeywords =
         listOf(
-            companyId, companyName, dataTypeLabelA, reportingPeriodA, reportingPeriodB,
-            message, requesterEmail, firstName, lastName, baseUrl,
+            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B,
+            MESSAGE, REQUESTER_EMAIL, FIRST_NAME, LAST_NAME, BASE_URL,
             "is requesting access to your data from",
         )
 
     val accessToDatasetGranted =
         AccessToDatasetGranted(
-            companyId, companyName, dataTypeA, dataTypeLabelA, reportingPeriodA, creationDate,
+            companyId, COMPANY_NAME, DATA_TYPE_A, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE,
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
         }
 
     val accessToDatasetGrantedKeywords =
         listOf(
-            companyId, companyName, dataTypeA, dataTypeLabelA, reportingPeriodA, creationDate, baseUrl,
+            companyId, COMPANY_NAME, DATA_TYPE_A, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, BASE_URL,
             "You have now access to the following dataset on Dataland",
         )
 
     val singleDatasetUploadedEngagement =
         SingleDatasetUploadedEngagement(
-            companyId, companyName, dataTypeLabelA, reportingPeriodA,
+            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A,
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
             it.subscriptionUuid = subscriptionUuid
         }
 
     val singleDatasetUploadedEngagementKeywords =
         listOf(
-            companyId, dataTypeLabelA, reportingPeriodA, baseUrl, subscriptionUuid,
+            companyId, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, BASE_URL, subscriptionUuid,
             "We are Dataland, an open, neutral, and transparent data engagement platform.",
             "One of our members has specifically requested data about your company.",
             "A data provider within our network has created a dataset for your company, which is now accessible on Dataland:",
@@ -138,21 +138,21 @@ object TypedEmailContentTestData {
 
     val multipleDatasetsUploadedEngagement =
         MultipleDatasetsUploadedEngagement(
-            companyId, companyName,
+            companyId, COMPANY_NAME,
             listOf(
-                MultipleDatasetsUploadedEngagement.FrameworkData(dataTypeLabelA, listOf(reportingPeriodA, reportingPeriodB)),
-                MultipleDatasetsUploadedEngagement.FrameworkData(dataTypeLabelB, listOf(reportinPeriodC)),
+                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
+                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTIN_PERIOD_C)),
             ),
-            numberOfDays.toLong(),
+            NUMBER_OF_DAYS.toLong(),
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
             it.subscriptionUuid = subscriptionUuid
         }
 
     val multipleDatasetsUploadedEngagementKeywords =
         listOf(
-            companyId, companyName, dataTypeLabelA, reportingPeriodA, reportingPeriodB, dataTypeLabelB, reportinPeriodC,
-            numberOfDays.toString(), baseUrl, subscriptionUuid,
+            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B, DATA_TYPE_LABEL_B, REPORTIN_PERIOD_C,
+            NUMBER_OF_DAYS.toString(), BASE_URL, subscriptionUuid,
             "CLAIM COMPANY OWNERSHIP",
         )
 
@@ -172,7 +172,7 @@ object TypedEmailContentTestData {
                     ),
             ),
         ).also {
-            it.baseUrl = baseUrl
+            it.baseUrl = BASE_URL
             (it.table[3].second as Value.EmailAddressWithSubscriptionStatus).subscribed = true
             (it.table[4].second as Value.EmailAddressWithSubscriptionStatus).subscribed = false
         }
@@ -184,8 +184,8 @@ object TypedEmailContentTestData {
             "testB@example.com (unsubscribed)",
             "@ValueB\$ValueC\$ValueD=",
             "TextA, TextB",
-            "https://$baseUrl/test",
-            "https://$baseUrl/example",
+            "https://$BASE_URL/test",
+            "https://$BASE_URL/example",
             "Link-TitleA",
             "Link-TitleB",
         )
