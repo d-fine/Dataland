@@ -93,14 +93,7 @@ abstract class DataController<T>(
         val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
 
-        val data: String
-        if (metaInfo.dataType == "additional-company-information") {
-            logger.info("Assemble data set from data points.")
-            data = dataPointManager.getDataSetFromId(dataId, metaInfo.dataType, correlationId)
-        } else {
-            logger.info("Retrieving the data set as a whole.")
-            data = dataManager.getPublicDataSet(dataId, dataType.toString(), correlationId).data
-        }
+        val data = getDataAsString(dataId, correlationId)
 
         val companyAssociatedData =
             CompanyAssociatedData(
@@ -112,6 +105,22 @@ abstract class DataController<T>(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
         )
         return ResponseEntity.ok(companyAssociatedData)
+    }
+
+    private fun getDataAsString(
+        dataId: String,
+        correlationId: String,
+    ): String {
+        val dataAsString: String
+        val dataTypeString = dataType.toString()
+        if (dataTypeString == "additional-company-information") {
+            logger.info("Assemble data set from data points.")
+            dataAsString = dataPointManager.getDataSetFromId(dataId, dataTypeString, correlationId)
+        } else {
+            logger.info("Retrieving the data set as a whole.")
+            dataAsString = dataManager.getPublicDataSet(dataId, dataTypeString, correlationId).data
+        }
+        return dataAsString
     }
 
     override fun getFrameworkDatasetsForCompany(
@@ -129,12 +138,8 @@ abstract class DataController<T>(
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
-            val dataAsString =
-                dataManager
-                    .getPublicDataSet(
-                        it.dataId, it.dataType,
-                        correlationId,
-                    ).data
+
+            val dataAsString = getDataAsString(it.dataId, correlationId)
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),
