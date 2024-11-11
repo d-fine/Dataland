@@ -16,42 +16,10 @@ import java.lang.StringBuilder
 @Component
 class EmailSender(
     @Autowired private val mailjetClient: MailjetClient,
-    @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    /**
-     *  Filters the receivers and CC addresses of the given email to exclude those with the "@example.com"
-     *  domain or those who are not subscribed, then sends the email via the Mailjet client based on the
-     *  filtered results.
-     *  @param email The email object that should be sent.
-     *  @return This method does not return any value.
-     */
-    fun filterReceiversAndSendEmail(email: Email) {
-        val filteredReceivers = email.receivers.filter(emailSubscriptionTracker::shouldSendToEmailContact)
-        val filteredCc = email.cc.filter(emailSubscriptionTracker::shouldSendToEmailContact)
-        val blockedReceivers = email.receivers.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
-        val blockedCc = email.cc.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
-        val blockedContacts = blockedReceivers + blockedCc
-        if (blockedContacts.isNotEmpty()) {
-            logger.info("Did not send email to the following blocked contacts: $blockedContacts")
-        }
-        if (filteredReceivers.isEmpty() && filteredCc.isEmpty()) {
-            logger.info("No email was sent. After filtering the receivers none remained.")
-            return
-        }
-        sendEmail(
-            Email(
-                email.sender,
-                filteredReceivers,
-                filteredCc,
-                emptyList(),
-                email.content,
-            ),
-        )
-    }
-
-    /** This method sends an email
+    /** This method sends an email. Note this function does not filter the email addresses.
      * @param email the email to send
      * @return a sending success indicator which is true if the sending was successful
      */

@@ -36,7 +36,7 @@ class EmailMessageListener(
     @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
 ) {
-    private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
+    private val logger = LoggerFactory.getLogger(EmailMessageListener::class.java)
 
     /**
      * Checks if a message object in the queue fits the expected RoutingKey and Internal Type

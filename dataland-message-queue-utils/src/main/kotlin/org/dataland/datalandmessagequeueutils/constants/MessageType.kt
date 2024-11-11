@@ -12,8 +12,6 @@ object MessageType {
     const val MANUAL_QA_REQUESTED = "Manual QA requested"
     const val PERSIST_AUTOMATED_QA_RESULT = "Persist automated QA result"
     const val SEND_EMAIL = "Send email"
-    const val SEND_INTERNAL_EMAIL = "Send internal E-Mail" // TODO DELETE
-    const val SEND_TEMPLATE_EMAIL = "Send template E-Mail" // TODO DELETE
     const val PRIVATE_DATA_STORED = "Private Data Stored"
     const val PRIVATE_DATA_RECEIVED = "Private Data received"
 }

@@ -191,7 +191,7 @@ sealed class Value {
         val emailAddress: String
     ) : Value() {
         @JsonIgnore
-        override val macro_name = "email_address_with_subscription_status"
+        override val macro_name = "email_address_with_subscription_status_macro"
 
         @JsonIgnore
         var subscribed: Boolean = false // TODO mention that this variable is initialized later even if no lateinit due to kotlin restriction

@@ -15,25 +15,6 @@ import java.util.UUID
 class EmailSubscriptionTracker(
     @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
 ) {
-    /**
-     * Inserts a new email subscription if one does not already exist and returns its UUID.
-     *
-     * First, this method checks if an email subscription exists for the given email address.
-     * If it does not exist, a new subscription is created with `isSubscribed` set to `true`.
-     * Second, the method returns the UUID of the subscription entity for the email address.
-     *
-     * @param emailAddress The email address to subscribe.
-     * @return The UUID of the active/inactive subscription,
-     * or the UUID of the newly created entity if no subscription existed.
-     *
-     * TODO can be removed
-     * TODO Also remove any blacklist mentioning
-     */
-    @Transactional
-    fun addSubscriptionIfNeededAndReturnUuid(emailAddress: String): UUID {
-        val entity = getOrAddSubscription(emailAddress)
-        return entity.uuid
-    }
 
     /**
      * TODO
@@ -81,20 +62,9 @@ class EmailSubscriptionTracker(
      *
      * @param emailAddress that should be checked
      * @return `true` if the email is subscribed or no entity is found, false otherwise.
-     *
+     * TODO change logic, such that entity is always created, also add Transactional
      */
     fun isEmailSubscribed(emailAddress: String): Boolean =
         emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
 
-    /**
-     * This function checks whether an email should be sent to an email contact.
-     * The email should be sent if the email address is subscribed and the email does not have the @example.com domain.
-     *
-     * @param emailContact that should be checked
-     * @return Boolean which is 'true' if the contact should be filtered and 'false' otherwise.
-     * TODO remove this function
-     */
-    fun shouldSendToEmailContact(emailContact: EmailContact): Boolean =
-        !emailContact.emailAddress.contains("@example.com") &&
-                isEmailSubscribed(emailContact.emailAddress)
 }

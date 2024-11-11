@@ -9,7 +9,7 @@
             <@renderValue subValue/><#sep>${value.separator}</#sep><#t>
         </#list>
         ${value.end}<#t>
-    <#elseif value.macro_name == 'email_address_with_subscription_status'>
+    <#elseif value.macro_name == 'email_address_with_subscription_status_macro'>
         ${value.emailAddress} (<#if value.subscribed>subscribed<#else>unsubscribed</#if>)<#t>
     <#else>
         Error: Macro not found<#t>
