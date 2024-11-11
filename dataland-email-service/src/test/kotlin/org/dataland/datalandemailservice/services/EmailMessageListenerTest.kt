@@ -1,34 +1,21 @@
 package org.dataland.datalandemailservice.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.dataland.datalandemailservice.email.Email
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.email.TypedEmailContentTestData
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetGranted
-import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequested
-import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
-import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
-import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
-import org.dataland.datalandmessagequeueutils.messages.email.Value
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.io.File
 import java.util.*
 
 class EmailMessageListenerTest {
@@ -85,15 +72,19 @@ class EmailMessageListenerTest {
     }
 
     @Test
-    fun `test that blocked contacts are no receiver`() {
-        // TODO brauchen wir den test noch, bzw den ganzen aufbau von den mocks, was kann man noch testen?
+    fun `test that correct email is send to correct contacts`() {
         val receiver = recipientToContactMap.keys.toList()
-        val cc = recipientToContactMap.keys.toList()
-        val bcc = recipientToContactMap.keys.toList()
+        val cc = listOf(EmailRecipient.EmailAddress("3@example.com"), EmailRecipient.UserId("User-a"))
+        val bcc = listOf(EmailRecipient.Internal, EmailRecipient.UserId("User-a"))
 
-        val allowed = listOf(EmailContact("1@example.com"), EmailContact("3@example.com"))
+        val allowedReceiver = listOf(EmailContact("1@example.com"), EmailContact("3@example.com"))
+        val allowedCc = listOf(EmailContact("3@example.com"))
 
         val typedEmailContent = TypedEmailContentTestData.accessToDatasetRequested
+        val keywords = TypedEmailContentTestData.accessToDatasetRequestedKeywords.toMutableList()
+        keywords.remove(TypedEmailContentTestData.baseUrl)
+        keywords.add(proxyPrimaryUrl)
+
         val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
 
         doNothing().whenever(emailSender).sendEmail(any())
@@ -101,7 +92,46 @@ class EmailMessageListenerTest {
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
         verify(emailSender).sendEmail(argThat { email ->
-            email.receivers == allowed && email.cc == allowed && email.bcc == allowed
+            email.sender == senderContact
+                    && email.receivers == allowedReceiver
+                    && email.cc == allowedCc
+                    && email.bcc.isEmpty()
+                    && keywords.all { keyword ->
+                        email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
+                    }
         })
     }
+
+    @Test
+    fun `test that correct email is send to correct contacts with correct subscription uuid`() {
+        val receiver = listOf(recipientToContactMap.keys.first())
+
+        val allowed = listOf(EmailContact("1@example.com"))
+
+        val typedEmailContent = TypedEmailContentTestData.singleDatasetUploadedEngagement
+        val keywords = TypedEmailContentTestData.singleDatasetUploadedEngagementKeywords.toMutableList()
+        keywords.remove(TypedEmailContentTestData.baseUrl)
+        keywords.add(proxyPrimaryUrl)
+        keywords.remove(TypedEmailContentTestData.subscriptionUuid)
+        keywords.add(contactToSubscriptionStatusMap[allowed.first()]!!.second.toString())
+
+        val jsonString = objectMapper.writeValueAsString(
+            EmailMessage(typedEmailContent, receiver, emptyList(), emptyList())
+        )
+
+        doNothing().whenever(emailSender).sendEmail(any())
+
+        emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
+
+        verify(emailSender).sendEmail(argThat { email ->
+            email.sender == senderContact
+                    && email.receivers == allowed
+                    && email.cc.isEmpty()
+                    && email.bcc.isEmpty()
+                    && keywords.all { keyword ->
+                email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
+            }
+        })
+    }
+
 }

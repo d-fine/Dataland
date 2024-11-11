@@ -82,7 +82,6 @@ class EmailSubscriptionTracker(
      * @param emailAddress that should be checked
      * @return `true` if the email is subscribed or no entity is found, false otherwise.
      *
-     * TODO remove this function
      */
     fun isEmailSubscribed(emailAddress: String): Boolean =
         emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
