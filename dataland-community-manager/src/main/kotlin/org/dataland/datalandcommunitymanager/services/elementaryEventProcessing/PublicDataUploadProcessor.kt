@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
@@ -10,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.Logger
@@ -70,29 +71,23 @@ class PublicDataUploadProcessor(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        val dataId = validateIncomingPayloadAndReturnDataId(payload, type)
-
-        super.processEvent(
-            createElementaryEventBasicInfo(
-                objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(dataId)),
-            ),
-            correlationId,
-            type,
-        )
-    }
-
-    override fun validateIncomingPayloadAndReturnDataId(
-        payload: String,
-        messageType: String,
-    ): String {
         messageUtils.validateMessageType(messageType, this.messageType)
 
-        val payloadJsonObject = JSONObject(payload)
+        messageUtils.rejectMessageOnException {
+            val qaCompletedMessage = objectMapper.readValue(payload, QaCompletedMessage::class.java)
 
-        return payloadJsonObject
-            .getString("identifier")
-            .takeIf { it.isNotEmpty() }
-            ?: throw MessageQueueRejectException("The identifier in the message payload is empty.")
+            if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+                return@rejectMessageOnException
+            }
+
+            super.processEvent(
+                createElementaryEventBasicInfo(
+                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.identifier)),
+                ),
+                correlationId,
+                type,
+            )
+        }
     }
 
     override fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {
