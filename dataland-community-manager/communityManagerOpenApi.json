@@ -1692,9 +1692,18 @@
           "Revoked"
         ]
       },
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Normal",
+          "High",
+          "Urgent"
+        ]
+      },
       "StoredDataRequest": {
         "required": [
           "accessStatus",
+          "adminComment",
           "creationTimestamp",
           "dataRequestId",
           "dataRequestStatusHistory",
@@ -1703,6 +1712,7 @@
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
+          "requestPriority",
           "requestStatus",
           "userId"
         ],
@@ -1751,6 +1761,12 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "adminComment": {
+            "type": "string"
           }
         }
       },
@@ -1800,6 +1816,7 @@
       "ExtendedStoredDataRequest": {
         "required": [
           "accessStatus",
+          "adminComment",
           "companyName",
           "creationTimestamp",
           "dataRequestId",
@@ -1807,6 +1824,7 @@
           "datalandCompanyId",
           "lastModifiedDate",
           "reportingPeriod",
+          "requestPriority",
           "requestStatus",
           "userId"
         ],
@@ -1846,6 +1864,12 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "adminComment": {
+            "type": "string"
           }
         }
       },

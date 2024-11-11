@@ -7,6 +7,7 @@ import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntit
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
@@ -139,6 +140,8 @@ class SingleDataRequestManagerTest {
                 messageHistory = mutableListOf(),
                 dataRequestStatusHistory = emptyList(),
                 userId = "user-id",
+                requestPriority = RequestPriority.Normal,
+                adminComment = "dummyAdminComment",
             )
         }
         `when`(utilsMock.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))

@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -50,6 +51,8 @@ class DataRequestTimeSchedulerTest {
                 messageHistory = emptyList(),
                 dataRequestStatusHistory = emptyList(),
                 lastModifiedDate = lastModifiedDate,
+                requestPriority = RequestPriority.Normal,
+                adminComment = "dummyAdminComment",
             )
         dataRequestEntity.dataRequestStatusHistory =
             listOf(

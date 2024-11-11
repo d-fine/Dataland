@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
@@ -31,6 +32,8 @@ data class DataRequestEntity(
     @OneToMany(mappedBy = "dataRequest")
     var dataRequestStatusHistory: List<RequestStatusEntity>,
     var lastModifiedDate: Long,
+    var requestPriority: RequestPriority,
+    var adminComment: String,
 ) {
     val requestStatus: RequestStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
@@ -52,6 +55,8 @@ data class DataRequestEntity(
         messageHistory = listOf(),
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
+        requestPriority = RequestPriority.Normal,
+        adminComment = "",
     )
 
     /**
@@ -94,6 +99,8 @@ data class DataRequestEntity(
             lastModifiedDate = lastModifiedDate,
             requestStatus = requestStatus,
             accessStatus = accessStatus,
+            requestPriority = requestPriority,
+            adminComment = adminComment,
         )
 
     /**

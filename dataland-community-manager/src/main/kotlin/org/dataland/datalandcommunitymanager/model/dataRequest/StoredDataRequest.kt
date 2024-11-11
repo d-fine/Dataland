@@ -12,6 +12,8 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
  * @param lastModifiedDate the date when the data request has been modified the last time
  * @param messageHistory a list of all message objects which were created during the life cycle
  * @param requestStatus the current status of the data request
+ * @param requestPriority the priority of the data request, which can only be set by admins and viewed by anyone.
+ * @param adminComment the admin comment, which can only be set and viewed by admins.
  */
 data class StoredDataRequest(
     val dataRequestId: String,
@@ -26,4 +28,6 @@ data class StoredDataRequest(
     val lastModifiedDate: Long,
     val requestStatus: RequestStatus,
     val accessStatus: AccessStatus,
+    val requestPriority: RequestPriority,
+    val adminComment: String,
 )
