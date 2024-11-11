@@ -3,10 +3,12 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.hibernate.annotations.Comment
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -18,6 +20,7 @@ import java.util.UUID
  * Implements utility functions that can be used e.g., in PRE_AUTHORIZE
  * for several authentication use-cases
  */
+@Suppress("TooManyFunctions")
 @Service("SecurityUtilsService")
 class SecurityUtilsService(
     @Autowired private val dataRequestRepository: DataRequestRepository,
@@ -143,6 +146,18 @@ class SecurityUtilsService(
     fun isNotTryingToPatchAccessStatus(accessStatusPatch: AccessStatus?): Boolean = accessStatusPatch == null
 
     /**
+     * Returns true if the user is not trying to patch the request priority or admin comment
+     * @param requestPriority the requestPriority of the patch
+     * @param adminComment the adminComment of the patch
+     *
+     */
+    @Transactional
+    fun isNotTryingToPatchRequestPriorityOrAdminComment(
+        requestPriority: RequestPriority?,
+        adminComment: Comment?,
+    ): Boolean = requestPriority == null && adminComment == null
+
+    /**
      * Returns true if the requesting user is company owner
      * @param requestId the requestId for which a company ownership check should be done
      */
@@ -182,5 +197,8 @@ class SecurityUtilsService(
         requestStatus: RequestStatus?,
         contacts: Set<String>?,
         message: String?,
-    ): Boolean = requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
+        requestPriority: RequestPriority?,
+        adminComment: Comment?,
+    ): Boolean =
+        requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank() && requestPriority == null && adminComment == null
 }

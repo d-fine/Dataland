@@ -161,6 +161,9 @@ class RequestController(
         accessStatus: AccessStatus?,
         contacts: Set<String>?,
         message: String?,
+        correlationId: String?,
+        requestPriority: RequestPriority?,
+        adminComment: String?,
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(
@@ -169,6 +172,9 @@ class RequestController(
                 accessStatus,
                 contacts,
                 message,
+                correlationId,
+                requestPriority,
+                adminComment,
             ),
         )
 }

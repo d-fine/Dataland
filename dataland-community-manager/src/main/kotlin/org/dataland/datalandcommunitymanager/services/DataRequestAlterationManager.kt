@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -36,8 +37,12 @@ class DataRequestAlterationManager(
      * Method to patch the status of a data request.
      * @param dataRequestId the id of the data request to patch
      * @param requestStatus the status to apply to the data request
+     * @param requestPriority the priority of the data request, which can only be set by admins and viewed by anyone.
+     * @param adminComment the admin comment, which can only be set and viewed by admins.
+     *
      * @return the updated data request object
      */
+    @Suppress("LongParameterList")
     @Transactional
     fun patchDataRequest(
         dataRequestId: String,
@@ -46,6 +51,8 @@ class DataRequestAlterationManager(
         contacts: Set<String>? = null,
         message: String? = null,
         correlationId: String? = null,
+        requestPriority: RequestPriority? = null,
+        adminComment: String? = null,
     ): StoredDataRequest {
         val dataRequestEntity =
             dataRequestRepository.findById(dataRequestId).getOrElse {
@@ -68,13 +75,31 @@ class DataRequestAlterationManager(
                 dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
             )
         }
+
         if (filteredContacts != null) {
             anyChanges = true
             utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
             this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
             dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
         }
+
+        val newRequestPriority = requestPriority ?: dataRequestEntity.requestPriority
+        if (newRequestPriority != dataRequestEntity.requestPriority) {
+            anyChanges = true
+            dataRequestEntity.requestPriority = newRequestPriority
+            dataRequestLogger.logMessageForPatchingRequestPriority(dataRequestEntity.dataRequestId, newRequestPriority)
+        }
+
+        // don't change modification time if only the admin comment is changed
+        val newAdminComment = adminComment ?: dataRequestEntity.adminComment
+        if (newAdminComment != dataRequestEntity.adminComment) {
+            dataRequestEntity.adminComment = newAdminComment
+            dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, newAdminComment)
+        }
+
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
+
+        // should we always send a mail? Do we need to send a mail if the request priority changes?
         requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
 
         return dataRequestEntity.toStoredDataRequest()

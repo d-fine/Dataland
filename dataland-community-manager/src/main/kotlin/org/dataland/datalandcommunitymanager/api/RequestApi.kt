@@ -153,7 +153,7 @@ interface RequestApi {
     /** Changes request status and message history of existing data request
      * @return the modified data request
      */
-
+    @Suppress("LongParameterList")
     @Operation(
         summary = "Updates a data request.",
         description = "Updates status and message history of data request given data request id.",
@@ -172,11 +172,12 @@ interface RequestApi {
             "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
             "@SecurityUtilsService.isNotTryingToPatchAccessStatus(#accessStatus) and " +
+            "@SecurityUtilsService.isNotTryingToPatchRequestPriorityOrAdminComment(#requestPriority, #adminComment) and " +
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
             "#dataRequestId, #requestStatus, #contacts,#message)" +
             ") or" +
             "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message) ",
+            "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message, #requestPriority, #adminComment) ",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
@@ -184,6 +185,9 @@ interface RequestApi {
         @RequestParam accessStatus: AccessStatus?,
         @RequestParam contacts: Set<String>?,
         @RequestParam message: String?,
+        @RequestParam correlationId: String?,
+        @RequestParam requestPriority: RequestPriority?,
+        @RequestParam adminComment: String?,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
