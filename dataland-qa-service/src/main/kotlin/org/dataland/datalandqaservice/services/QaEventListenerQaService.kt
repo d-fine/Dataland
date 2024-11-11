@@ -99,10 +99,10 @@ class QaEventListenerQaService
                 throw MessageQueueRejectException("Provided data ID is empty")
             }
 
-            val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
-            val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
-
             MessageQueueUtils.rejectMessageOnException {
+                val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+                val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+
                 logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
                 storeDatasetAsToBeReviewed(
                     dataId,

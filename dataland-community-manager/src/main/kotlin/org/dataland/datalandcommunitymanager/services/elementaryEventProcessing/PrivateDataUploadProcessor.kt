@@ -69,14 +69,22 @@ class PrivateDataUploadProcessor(
     ) {
         validateIncomingPayloadAndReturnDataId(payload, type)
 
-        super.processEvent(
-            createElementaryEventBasicInfo(payload),
-            correlationId,
-            type,
-        )
+        MessageQueueUtils.rejectMessageOnException {
+            super.processEvent(
+                createElementaryEventBasicInfo(payload),
+                correlationId,
+                type,
+            )
+        }
     }
 
-    override fun validateIncomingPayloadAndReturnDataId(
+    /**
+     * Validates the incoming Payloads and returns the dataId
+     * @param payload the Payload as a string
+     * @param messageType the type of the message
+     * @returns the dataId of the dataset
+     */
+    fun validateIncomingPayloadAndReturnDataId(
         payload: String,
         messageType: String,
     ): String {
