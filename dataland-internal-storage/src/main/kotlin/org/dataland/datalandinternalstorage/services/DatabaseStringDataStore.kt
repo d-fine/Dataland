@@ -172,15 +172,12 @@ class DatabaseStringDataStore(
 
         try {
             data = selectDataSet(dataId, correlationId)
-        } catch (e: ResourceNotFoundApiException) {
+        } catch (ignore: ResourceNotFoundApiException) {
             logger.info("Data set with data ID: $dataId not found. Searching for data points Correlation ID: $correlationId.")
+            data = selectDataPoint(dataId, correlationId)
         }
 
-        if (data.isNotEmpty()) {
-            return data
-        }
-
-        return selectDataPoint(dataId, correlationId)
+        return data
     }
 
     /**
