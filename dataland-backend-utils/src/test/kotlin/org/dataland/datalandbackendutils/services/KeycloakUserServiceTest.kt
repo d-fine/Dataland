@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.services
+package org.dataland.datalandbackendutils.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.Call
@@ -18,10 +18,10 @@ import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class KeycloakUserControllerApiServiceTest {
+class KeycloakUserServiceTest {
     private lateinit var objectMapper: ObjectMapper
     private lateinit var authenticatedOkHttpClient: OkHttpClient
-    private lateinit var service: KeycloakUserControllerApiService
+    private lateinit var service: KeycloakUserService
 
     private val keycloakBaseUrl = "http://fakeurl.com"
 
@@ -30,7 +30,7 @@ class KeycloakUserControllerApiServiceTest {
         MockitoAnnotations.openMocks(this)
         objectMapper = ObjectMapper()
         authenticatedOkHttpClient = mock<OkHttpClient>()
-        service = KeycloakUserControllerApiService(objectMapper, authenticatedOkHttpClient, keycloakBaseUrl)
+        service = KeycloakUserService(objectMapper, authenticatedOkHttpClient, keycloakBaseUrl)
     }
 
     private val firstUser = KeycloakUserInfo("test@example.com", "1", "John", "Doe")

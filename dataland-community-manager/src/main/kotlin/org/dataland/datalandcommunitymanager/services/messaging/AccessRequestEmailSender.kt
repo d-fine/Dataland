@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -25,7 +25,7 @@ import java.util.TimeZone
 @Service("AccessRequestEmailSender")
 class AccessRequestEmailSender(
     @Autowired private val companyRolesManager: CompanyRolesManager,
-    @Autowired private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+    @Autowired private val keycloakUserControllerApiService: KeycloakUserService,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyApi: CompanyDataControllerApi,

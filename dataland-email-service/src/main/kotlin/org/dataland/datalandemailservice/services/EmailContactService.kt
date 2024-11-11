@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
@@ -15,13 +16,11 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 /**
- * TODO
+ * Service used to convert EmailRecipient objects to EmailContact objects and also to retrieve the sender contact.
  * */
 @Service
 class EmailContactService(
-    @Autowired private val objectMapper: ObjectMapper,
-    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
+    @Autowired private val keycloakUserService: KeycloakUserService,
     @Value("\${dataland.notification.internal.receivers}") private val semicolonSeparatedInternalRecipients: String,
     @Value("\${dataland.notification.internal.cc}") private val semicolonSeparatedInternalCcRecipients: String,
     @Value("\${dataland.notification.sender.address}") private val senderEmail: String,
@@ -47,15 +46,20 @@ class EmailContactService(
         }
 
     /**
-     * TODO
+     * Retrieves a list of email contacts based on the specified recipient type.
+     *
+     * @param recipient The `EmailRecipient` specifying the type and details of the recipient.
+     * @return A list of `EmailContact` objects corresponding to the recipient.
+     * @throws IllegalArgumentException If the recipient is of type `EmailRecipient.UserId` and the user's email is `null`.
      */
     fun getContacts(recipient: EmailRecipient): List<EmailContact> {
         return when (recipient) {
             is EmailRecipient.EmailAddress ->
                 listOf(EmailContact(recipient.email))
             is EmailRecipient.UserId -> {
-                val keycloakUser = getUser(recipient.userId) ?: return emptyList()
-                val emailAddress = keycloakUser.email ?: return emptyList()
+                val keycloakUser = keycloakUserService.getUser(recipient.userId)
+                val emailAddress = keycloakUser.email ?:
+                    throw IllegalArgumentException("User with ${recipient.userId} found")
                 listOf(EmailContact(emailAddress, keycloakUser.firstName, keycloakUser.lastName))
             }
             is EmailRecipient.Internal ->
@@ -65,33 +69,11 @@ class EmailContactService(
         }
     }
 
+
+    /**
+     * Retrieves the email contact information use to send emails.
+     *
+     * @return An `EmailContact` representing the sender, containing the sender's email and name.
+     */
     fun getSenderContact(): EmailContact = EmailContact(senderEmail, lastName = senderName)
-
-    private fun getUser(userId: String): KeycloakUserInfo? {
-        // TODO this is just copy paste add should be somewhere else
-        // or retrieve old logic if sufficient
-        val request =
-            Request
-                .Builder()
-                .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
-                .build()
-        val response =
-            authenticatedOkHttpClient
-                .newCall(request)
-                .execute()
-                .body!!
-                .string()
-
-        try {
-            val user =
-                objectMapper.readValue(
-                    response,
-                    KeycloakUserInfo::class.java,
-                )
-            return user
-        } catch (e: JacksonException) {
-            logger.warn("Failed to parse response from Keycloak. userId $userId. Response $response, exception: $e")
-            return null
-        }
-    }
 }

@@ -1,8 +1,7 @@
 package org.dataland.datalandemailservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import okhttp3.OkHttpClient
-import org.dataland.datalandbackendutils.utils.getEmailAddress
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.services.templateemail.TemplateEmailFactory
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -18,8 +17,6 @@ import org.springframework.amqp.rabbit.annotation.Queue
 import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
@@ -33,8 +30,7 @@ class TemplateEmailMessageListener(
     @Autowired private val emailSender: EmailSender,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val templateEmailFactories: List<TemplateEmailFactory>,
-    @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
-    @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
+    @Autowired private val keycloakUserService: KeycloakUserService,
 ) {
     private val logger = LoggerFactory.getLogger(TemplateEmailMessageListener::class.java)
 
@@ -90,7 +86,7 @@ class TemplateEmailMessageListener(
             is TemplateEmailMessage.EmailAddressEmailRecipient ->
                 receiver.email
             is TemplateEmailMessage.UserIdEmailRecipient ->
-                getEmailAddress(authenticatedOkHttpClient, objectMapper, keycloakBaseUrl, receiver.userId)
+                keycloakUserService.getUser(receiver.userId).email ?: throw IllegalArgumentException("User not found")
         }
 
     private fun getMatchingEmailFactory(message: TemplateEmailMessage): TemplateEmailFactory =

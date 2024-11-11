@@ -1,4 +1,4 @@
-package org.dataland.datalandcommunitymanager.services
+package org.dataland.datalandbackendutils.services
 
 import com.fasterxml.jackson.core.JacksonException
 import com.fasterxml.jackson.core.type.TypeReference
@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service
  * Class to manage the clients interaction with keycloak,
  * e.g. retrieving user information like email address
  */
-@Service("KeycloakUserControllerApiService")
-class KeycloakUserControllerApiService(
+@Service("KeycloakUserService")
+class KeycloakUserService(
     @Autowired private val objectMapper: ObjectMapper,
     @Qualifier("AuthenticatedOkHttpClient") val authenticatedOkHttpClient: OkHttpClient,
     @Value("\${dataland.keycloak.base-url}") private val keycloakBaseUrl: String,
