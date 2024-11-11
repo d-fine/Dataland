@@ -11,13 +11,13 @@ data class EmailContact(
     val firstName: String? = null,
     val lastName: String? = null,
 ) {
-
-    val name: String? = when {
-        firstName != null && lastName != null -> "$firstName $lastName"
-        firstName != null -> firstName
-        lastName != null -> lastName
-        else -> null
-    }
+    val name: String? =
+        when {
+            firstName != null && lastName != null -> "$firstName $lastName"
+            firstName != null -> firstName
+            lastName != null -> lastName
+            else -> null
+        }
 
     /**
      * Converts a Dataland EmailContact object into a SendContact object of the mailjet client library
@@ -41,6 +41,7 @@ fun TransactionalEmail.TransactionalEmailBuilder.integrateReceiversIntoTransacti
 
 /**
  * Integrates the provided list of EmailContact objects as cc receivers into the build of a TransactionalEmail
+ * Note that incorporating an empty cc list into the TransactionalEmailBuilder is completely fine.
  */
 fun TransactionalEmail.TransactionalEmailBuilder.integrateCcIntoTransactionalEmailBuilder(
     ccReceivers: List<EmailContact>,
@@ -48,7 +49,7 @@ fun TransactionalEmail.TransactionalEmailBuilder.integrateCcIntoTransactionalEma
 
 /**
  * Integrates the provided list of EmailContact objects as bcc receivers into the build of a TransactionalEmail
- * TODO improve and add note that empty list for bcc (as well as cc) is totally fine
+ * Note that incorporating an empty bcc list into the TransactionalEmailBuilder is completely fine.
  */
 fun TransactionalEmail.TransactionalEmailBuilder.integrateBccIntoTransactionalEmailBuilder(
     bccReceivers: List<EmailContact>,

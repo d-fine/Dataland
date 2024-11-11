@@ -4,11 +4,9 @@ import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
-import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.lang.StringBuilder
 
 /**
  * A class that manages sending emails
@@ -37,23 +35,23 @@ class EmailSender(
     }
 
     private fun logEmail(email: Email) {
-        val emailLog = buildString {
-            append("Sending email with subject \"${email.content.subject}\"\n")
-            append("(sender: ${email.sender.emailAddress})\n")
-            append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
+        val emailLog =
+            buildString {
+                append("Sending email with subject \"${email.content.subject}\"\n")
+                append("(sender: ${email.sender.emailAddress})\n")
+                append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
 
-            if (email.cc.isNotEmpty()) {
-                append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
-            }
+                if (email.cc.isNotEmpty()) {
+                    append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
+                }
 
-            if (email.bcc.isNotEmpty()) {
-                append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
+                if (email.bcc.isNotEmpty()) {
+                    append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
+                }
             }
-        }
 
         logger.info(emailLog)
     }
-
 
     private fun convertListOfEmailContactsToJoinedString(emailContacts: List<EmailContact>): String =
         emailContacts.joinToString(", ") { emailContact ->

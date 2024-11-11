@@ -1,17 +1,11 @@
 package org.dataland.datalandemailservice.services
 
-import com.fasterxml.jackson.core.JacksonException
-import com.fasterxml.jackson.databind.ObjectMapper
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -38,8 +32,9 @@ class EmailContactService(
             } else {
                 logger.error(
                     "One email address provided by the Spring properties has a wrong format. " +
-                    "The following email address was parsed from that prop and caused this error: $emailAddress" +
-                    "This email address is ignored.")
+                        "The following email address was parsed from that prop and caused this error: $emailAddress" +
+                        "This email address is ignored.",
+                )
                 // TODO should the spring service shutdown??
                 null
             }
@@ -52,14 +47,15 @@ class EmailContactService(
      * @return A list of `EmailContact` objects corresponding to the recipient.
      * @throws IllegalArgumentException If the recipient is of type `EmailRecipient.UserId` and the user's email is `null`.
      */
-    fun getContacts(recipient: EmailRecipient): List<EmailContact> {
-        return when (recipient) {
+    fun getContacts(recipient: EmailRecipient): List<EmailContact> =
+        when (recipient) {
             is EmailRecipient.EmailAddress ->
                 listOf(EmailContact(recipient.email))
             is EmailRecipient.UserId -> {
                 val keycloakUser = keycloakUserService.getUser(recipient.userId)
-                val emailAddress = keycloakUser.email ?:
-                    throw IllegalArgumentException("User with ${recipient.userId} found")
+                val emailAddress =
+                    keycloakUser.email
+                        ?: throw IllegalArgumentException("User with ${recipient.userId} found")
                 listOf(EmailContact(emailAddress, keycloakUser.firstName, keycloakUser.lastName))
             }
             is EmailRecipient.Internal ->
@@ -67,8 +63,6 @@ class EmailContactService(
             is EmailRecipient.InternalCc ->
                 internalCcContacts
         }
-    }
-
 
     /**
      * Retrieves the email contact information use to send emails.

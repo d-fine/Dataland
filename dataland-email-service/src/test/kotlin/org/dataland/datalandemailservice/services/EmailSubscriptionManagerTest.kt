@@ -1,6 +1,5 @@
 package org.dataland.datalandemailservice.services
 
-import org.dataland.datalandemailservice.email.EmailSender
 import org.dataland.datalandemailservice.entities.EmailSubscriptionEntity
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -9,10 +8,8 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 import org.springframework.http.ResponseEntity
 import java.util.UUID
 
@@ -36,7 +33,7 @@ class EmailSubscriptionManagerTest {
         emailSubscriptionManager =
             EmailSubscriptionManager(
                 emailSubscriptionRepository,
-                emailMessageListener
+                emailMessageListener,
             )
 
         `when`(emailSubscriptionRepository.findByUuid(validUuid)).thenReturn(validEmailSubscriptionEntity)

@@ -23,10 +23,9 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
-import java.util.*
 
 /**
- * TODO
+ * A service that listens for send email messages. These emails are then build and send by the email-service.
  */
 @Service
 class EmailMessageListener(
@@ -39,8 +38,8 @@ class EmailMessageListener(
     private val logger = LoggerFactory.getLogger(EmailMessageListener::class.java)
 
     /**
-     * Checks if a message object in the queue fits the expected RoutingKey and Internal Type
-     * to process it as internal mail
+     * Checks if a message object in the queue fits the expected RoutingKey and EmailMessage Type
+     * to process it as an email.
      * @param jsonString the message object which should be sent out as a mail
      * @param type the type of the message
      */
@@ -48,14 +47,14 @@ class EmailMessageListener(
         bindings = [
             QueueBinding(
                 value =
-                Queue(
-                    "sendEmailService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
+                    Queue(
+                        "sendEmailService",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
                 exchange = Exchange(ExchangeName.SEND_EMAIL, declare = "false"),
                 key = [RoutingKeyNames.EMAIL],
             ),
@@ -78,6 +77,11 @@ class EmailMessageListener(
         }
     }
 
+    /**
+     * This function builds an email and then sends the email.
+     * @param emailMessage The email message specifies the receiver and the content of the email that should be sent.
+     *  This function also removes all receiver of the email that have unsubscribed.
+     */
     fun buildAndSendEmail(emailMessage: EmailMessage) {
         val receivers = resolveRecipients(emailMessage.receiver)
         val cc = resolveRecipients(emailMessage.cc)
@@ -94,7 +98,7 @@ class EmailMessageListener(
         }
 
         val sender = emailContactService.getSenderContact()
-        emailMessage.typedEmailContent.setLateInitVars(receivers.allowed, proxyPrimaryUrl)
+        emailMessage.typedEmailContent.setLateInitVars(receivers.allowed, proxyPrimaryUrl, emailSubscriptionTracker)
         val content = emailMessage.typedEmailContent.build()
         val email = Email(sender, receivers.allowed.keys.toList(), cc.allowed.keys.toList(), bcc.allowed.keys.toList(), content)
         emailSender.sendEmail(email)
@@ -104,5 +108,4 @@ class EmailMessageListener(
         recipients
             .flatMap { emailContactService.getContacts(it) }
             .let { emailSubscriptionTracker.subscribeContactsIfNeededAndFilter(it) }
-
 }

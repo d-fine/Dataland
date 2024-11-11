@@ -56,9 +56,9 @@ class BulkDataRequestEmailMessageSenderTest {
             Value.List(
                 Value.RelativeLink("/companies/AR8756188701,9856177321", "Company Name"),
                 Value.Text("(AR8756188701,9856177321)"),
-                separator = " "
+                separator = " ",
             ),
-            separator = ", "
+            separator = ", ",
         )
 
     private lateinit var bulkDataRequestEmailMessageSender: BulkDataRequestEmailMessageSender

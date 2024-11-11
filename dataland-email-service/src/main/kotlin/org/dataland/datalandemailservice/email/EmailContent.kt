@@ -12,14 +12,29 @@ data class EmailContent(
     val htmlContent: String,
 ) {
     companion object {
-        fun fromTemplates(subject: String, templateContext: Any, textTemplate: String, htmlTemplate: String): EmailContent =
+        /**
+         * Builds the EmailContent from a subject and freemarker templates.
+         * @param subject The subject of the email.
+         * @param templateContext The context used in the content creation process for the text and html template.
+         * @param textTemplate The name of the text template used to create the text content.
+         * @param htmlTemplate The name of the html template used to create the html content.
+         */
+        fun fromTemplates(
+            subject: String,
+            templateContext: Any,
+            textTemplate: String,
+            htmlTemplate: String,
+        ): EmailContent =
             EmailContent(
                 subject,
                 buildTemplate(templateContext, textTemplate),
-                buildTemplate(templateContext, htmlTemplate)
+                buildTemplate(templateContext, htmlTemplate),
             )
 
-        private fun buildTemplate(templateContext: Any, templateName: String): String {
+        private fun buildTemplate(
+            templateContext: Any,
+            templateName: String,
+        ): String {
             val freemarkerTemplate = FreeMarker.configuration.getTemplate(templateName)
 
             val writer = StringWriter()

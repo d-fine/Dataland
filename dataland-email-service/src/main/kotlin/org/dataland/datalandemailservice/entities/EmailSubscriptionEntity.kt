@@ -35,5 +35,9 @@ data class EmailSubscriptionEntity(
     @Column(name = "is_subscribed", nullable = false)
     var isSubscribed: Boolean,
 ) {
+    /**
+     * This function checks if the associated email addresses should receive an email.
+     * The email should be sent if the entity is subscribed and the email address does not contain "@example.com".
+     */
     fun shouldReceiveEmail(): Boolean = isSubscribed && !emailAddress.contains("@example.com")
 }

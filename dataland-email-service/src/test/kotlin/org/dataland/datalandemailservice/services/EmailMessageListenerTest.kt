@@ -16,33 +16,34 @@ import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import java.util.*
+import java.util.UUID
 
 class EmailMessageListenerTest {
-
     private lateinit var emailSender: EmailSender
-    private var objectMapper  = jacksonObjectMapper()
+    private var objectMapper = jacksonObjectMapper()
     private lateinit var emailContactService: EmailContactService
     private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
     private val proxyPrimaryUrl = "abc.example.com"
 
     private lateinit var emailMessageListener: EmailMessageListener
 
-    private val recipientToContactMap = mapOf(
-        EmailRecipient.EmailAddress("1@example.com") to EmailContact("1@example.com"),
-        EmailRecipient.Internal to EmailContact("2@example.com"),
-        EmailRecipient.EmailAddress("3@example.com") to EmailContact("3@example.com"),
-        EmailRecipient.UserId("User-a") to EmailContact("a@example.com"),
-    )
+    private val recipientToContactMap =
+        mapOf(
+            EmailRecipient.EmailAddress("1@example.com") to EmailContact("1@example.com"),
+            EmailRecipient.Internal to EmailContact("2@example.com"),
+            EmailRecipient.EmailAddress("3@example.com") to EmailContact("3@example.com"),
+            EmailRecipient.UserId("User-a") to EmailContact("a@example.com"),
+        )
 
     private val senderContact = EmailContact("sender@example.com")
 
-    private val contactToSubscriptionStatusMap = mapOf(
-        EmailContact("1@example.com") to Pair(true, UUID.randomUUID()),
-        EmailContact("2@example.com") to Pair(false, UUID.randomUUID()),
-        EmailContact("3@example.com") to Pair(true, UUID.randomUUID()),
-        EmailContact("a@example.com") to Pair(false, UUID.randomUUID()),
-    )
+    private val contactToSubscriptionStatusMap =
+        mapOf(
+            EmailContact("1@example.com") to Pair(true, UUID.randomUUID()),
+            EmailContact("2@example.com") to Pair(false, UUID.randomUUID()),
+            EmailContact("3@example.com") to Pair(true, UUID.randomUUID()),
+            EmailContact("a@example.com") to Pair(false, UUID.randomUUID()),
+        )
 
     private val correlationId = "correlationId"
 
@@ -62,13 +63,14 @@ class EmailMessageListenerTest {
             val (allowed, blocked) = contacts.partition { contactToSubscriptionStatusMap[it]!!.first }
             EmailSubscriptionTracker.FilteredContacts(
                 allowed.associateWith { contactToSubscriptionStatusMap[it]!!.second },
-                blocked
+                blocked,
             )
         }
 
-        emailMessageListener = EmailMessageListener(
-            emailSender, objectMapper, emailContactService, emailSubscriptionTracker, proxyPrimaryUrl
-        )
+        emailMessageListener =
+            EmailMessageListener(
+                emailSender, objectMapper, emailContactService, emailSubscriptionTracker, proxyPrimaryUrl,
+            )
     }
 
     @Test
@@ -91,15 +93,17 @@ class EmailMessageListenerTest {
 
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
-        verify(emailSender).sendEmail(argThat { email ->
-            email.sender == senderContact
-                    && email.receivers == allowedReceiver
-                    && email.cc == allowedCc
-                    && email.bcc.isEmpty()
-                    && keywords.all { keyword ->
+        verify(emailSender).sendEmail(
+            argThat { email ->
+                email.sender == senderContact &&
+                    email.receivers == allowedReceiver &&
+                    email.cc == allowedCc &&
+                    email.bcc.isEmpty() &&
+                    keywords.all { keyword ->
                         email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
                     }
-        })
+            },
+        )
     }
 
     @Test
@@ -115,23 +119,25 @@ class EmailMessageListenerTest {
         keywords.remove(TypedEmailContentTestData.subscriptionUuid)
         keywords.add(contactToSubscriptionStatusMap[allowed.first()]!!.second.toString())
 
-        val jsonString = objectMapper.writeValueAsString(
-            EmailMessage(typedEmailContent, receiver, emptyList(), emptyList())
-        )
+        val jsonString =
+            objectMapper.writeValueAsString(
+                EmailMessage(typedEmailContent, receiver, emptyList(), emptyList()),
+            )
 
         doNothing().whenever(emailSender).sendEmail(any())
 
         emailMessageListener.handleSendEmailMessage(jsonString, MessageType.SEND_EMAIL, correlationId)
 
-        verify(emailSender).sendEmail(argThat { email ->
-            email.sender == senderContact
-                    && email.receivers == allowed
-                    && email.cc.isEmpty()
-                    && email.bcc.isEmpty()
-                    && keywords.all { keyword ->
-                email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
-            }
-        })
+        verify(emailSender).sendEmail(
+            argThat { email ->
+                email.sender == senderContact &&
+                    email.receivers == allowed &&
+                    email.cc.isEmpty() &&
+                    email.bcc.isEmpty() &&
+                    keywords.all { keyword ->
+                        email.content.htmlContent.contains(keyword) && email.content.textContent.contains(keyword)
+                    }
+            },
+        )
     }
-
 }

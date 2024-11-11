@@ -257,5 +257,4 @@ class NotificationServiceTest {
 
         notificationService.createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
     }
-
 }

@@ -15,9 +15,10 @@ import java.util.UUID
 class EmailSubscriptionTracker(
     @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
 ) {
-
     /**
-     * TODO
+     * This functions checks if there is already and entity for an email address.
+     * If there is entity, this entity is returned.
+     * If there is no entity yet, an entity is created, saved, and then returned.
      * Important: This function should be called inside a Transactional block.
      */
     private fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
@@ -29,42 +30,53 @@ class EmailSubscriptionTracker(
                 ),
             )
 
+    /**
+     * A class that stores the return values of the [subscribeContactsIfNeededAndFilter] function.
+     * The class partition the contacts into allowed contacts, i.e. contacts that should receive an email, and
+     * blocked contacts, i.e. contacts that should not receive an email.
+     * Every allowed contact is associated with a subscription uuid, that can be used to unsubscribe the receiver.
+     */
     data class FilteredContacts(
         val allowed: Map<EmailContact, UUID>,
-        val blocked: List<EmailContact>
+        val blocked: List<EmailContact>,
     )
 
     /**
-     *
+     * This function does two things:
+     * First, it ensures that every contact in [contacts] has an associated entity in the repository.
+     * If there is no entity, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
+     * Second, the function partitions the contacts into allowed contacts and blocked contacts.
+     * @param contacts The list of [EmailContact] that should be processed.
+     * @return A [FilteredContacts] object that stores the allowed contacts and the blocked contacts.
      */
     @Transactional
     fun subscribeContactsIfNeededAndFilter(contacts: List<EmailContact>): FilteredContacts {
-        val (subscribedEntities, blockedEntities) = contacts
-            .map { it to getOrAddSubscription(it.emailAddress) }
-            .partition { (_, entity) -> entity.shouldReceiveEmail() }
+        val (subscribedEntities, blockedEntities) =
+            contacts
+                .map { it to getOrAddSubscription(it.emailAddress) }
+                .partition { (_, entity) -> entity.shouldReceiveEmail() }
 
-        val subscribedMap = subscribedEntities
-            .associate { (contact, entity) -> contact to entity.uuid }
+        val subscribedMap =
+            subscribedEntities
+                .associate { (contact, entity) -> contact to entity.uuid }
 
-        val blockedList = blockedEntities
-            .map { (contact, _) -> contact }
+        val blockedList =
+            blockedEntities
+                .map { (contact, _) -> contact }
 
         return FilteredContacts(
             allowed = subscribedMap,
-            blocked = blockedList
+            blocked = blockedList,
         )
     }
 
     /**
      * This function queries the email subscription repository for the email address and checks the subscription status.
-     * If there is an entity, the value of isSubscribed is returned. Otherwise, true is returned.
-     * Since the repository acts as a blacklist, no subscription entity for the email address indicates that the email should be sent.
-     *
+     * If there is no entity, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
+     * The function returns the subscription status of the entity.
      * @param emailAddress that should be checked
-     * @return `true` if the email is subscribed or no entity is found, false otherwise.
-     * TODO change logic, such that entity is always created, also add Transactional
+     * @return `true` if the email should be sent and `false` otherwise.
      */
-    fun isEmailSubscribed(emailAddress: String): Boolean =
-        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
-
+    @Transactional
+    fun shouldReceiveEmail(emailAddress: String): Boolean = getOrAddSubscription(emailAddress).shouldReceiveEmail()
 }

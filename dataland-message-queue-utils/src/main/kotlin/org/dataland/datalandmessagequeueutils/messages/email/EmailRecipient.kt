@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 
 /**
- * sealed class that either represents an email or a keycloak user
+ * sealed class that either represents an email, a keycloak user, the internal receivers or the internal cc receivers.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -42,6 +42,3 @@ sealed class EmailRecipient {
      */
     data object InternalCc : EmailRecipient()
 }
-
-
-

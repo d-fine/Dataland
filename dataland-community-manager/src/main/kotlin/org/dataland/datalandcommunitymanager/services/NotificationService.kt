@@ -39,14 +39,20 @@ class NotificationService
         private val logger = LoggerFactory.getLogger(this.javaClass)
 
         /**
-         * Enum that contains all possible types of notification emails that might be triggered.
-         * TODO
+         * An abstract base class for the different notification emails.
          */
         sealed class NotificationEmailType {
+            /**
+             * Type for the Notification Email that contains information about a single data upload.
+             */
             data object Single : NotificationEmailType()
 
+            /**
+             * Type for the Notification Email that contains information about multiple data uploads.
+             * This class holds the information when the last notification email has been sent.
+             */
             data class Summary(
-                val daysSinceLastNotificationEmail: Long?
+                val daysSinceLastNotificationEmail: Long?,
             ) : NotificationEmailType()
         }
 
@@ -73,7 +79,7 @@ class NotificationService
 
             logger.info(
                 "Requirements for notification event are met. " +
-                        "Creating notification event and sending notification emails. CorrelationId: $correlationId",
+                    "Creating notification event and sending notification emails. CorrelationId: $correlationId",
             )
 
             createNotificationEventAndReferenceIt(latestElementaryEvent, unprocessedElementaryEvents)
@@ -81,7 +87,7 @@ class NotificationService
             if (!hasCompanyOwner(companyId) && !emailReceivers.isNullOrEmpty()) {
                 notificationEmailSender.sendExternalAndInternalNotificationEmail(
                     notificationEmailType, latestElementaryEvent, unprocessedElementaryEvents,
-                    companyInfo.companyName, emailReceivers, correlationId
+                    companyInfo.companyName, emailReceivers, correlationId,
                 )
             }
         }
@@ -95,20 +101,22 @@ class NotificationService
             latestElementaryEvent: ElementaryEventEntity,
             unprocessedElementaryEvents: List<ElementaryEventEntity>,
         ): NotificationEmailType? {
-            val lastNotificationEvent = getLastNotificationEventOrNull(
-                latestElementaryEvent.companyId,
-                latestElementaryEvent.elementaryEventType,
-            )
-            val isLastNotificationEventOlderThanThreshold = isNotificationEventOlderThanThreshold(
-                lastNotificationEvent
-            )
+            val lastNotificationEvent =
+                getLastNotificationEventOrNull(
+                    latestElementaryEvent.companyId,
+                    latestElementaryEvent.elementaryEventType,
+                )
+            val isLastNotificationEventOlderThanThreshold =
+                isNotificationEventOlderThanThreshold(
+                    lastNotificationEvent,
+                )
             return when {
                 isLastNotificationEventOlderThanThreshold && unprocessedElementaryEvents.size == 1 ->
                     NotificationEmailType.Single
                 isLastNotificationEventOlderThanThreshold ||
                     unprocessedElementaryEvents.size >= elementaryEventsThreshold ->
                     NotificationEmailType.Summary(
-                        lastNotificationEvent?.let(::getDaysPassedSinceNotificationEvent)
+                        lastNotificationEvent?.let(::getDaysPassedSinceNotificationEvent),
                     )
                 else -> null
             }
@@ -152,29 +160,24 @@ class NotificationService
                 ).maxByOrNull { it.creationTimestamp }
 
         /**
-         * Gets days passed since last notification event for a specific company. If there was no last notification
-         * event, it returns "null".
-         * @param notificationEvent TODO
-         * @return time passed in days, or null if there is no last notification event
+         * Gets days passed since a notification event for a specific company.
+         * @param notificationEvent The notification event
+         * @return time passed in days
          */
-        fun getDaysPassedSinceNotificationEvent(
-            notificationEvent: NotificationEventEntity,
-        ): Long? =
+        fun getDaysPassedSinceNotificationEvent(notificationEvent: NotificationEventEntity): Long? =
             Duration.between(Instant.ofEpochMilli(notificationEvent.creationTimestamp), Instant.now()).toDays()
 
         /**
-         * Checks if last notification event for company is older than threshold in days
-         * param notificationEvent TODO
+         * Checks if a notification event is older than threshold in days. If no notification event is specified this
+         * function returns always null.
+         * @param notificationEvent The notification event or null
          * @return if last notification event for company is older than threshold in days
          */
-        fun isNotificationEventOlderThanThreshold(
-            notificationEvent: NotificationEventEntity?
-        ): Boolean {
-            return notificationEvent == null ||
+        fun isNotificationEventOlderThanThreshold(notificationEvent: NotificationEventEntity?): Boolean =
+            notificationEvent == null ||
                 Duration
                     .between(Instant.ofEpochMilli(notificationEvent.creationTimestamp), Instant.now())
                     .toDays() > notificationThresholdDays
-        }
 
         /**
          * checks if company has owner (if company has owner, notifications are created but not sent)

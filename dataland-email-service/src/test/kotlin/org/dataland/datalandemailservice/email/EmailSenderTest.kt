@@ -1,14 +1,5 @@
 package org.dataland.datalandemailservice.email
-import com.mailjet.client.MailjetClient
-import com.mailjet.client.MailjetResponse
-import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
-import org.mockito.kotlin.any
 import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
 
 class EmailSenderTest {
     // TODO what remains?
@@ -32,9 +23,9 @@ class EmailSenderTest {
         mockMailjetClient = mock(MailjetClient::class.java)
         `when`(mockMailjetClient.post(any())).thenReturn(MailjetResponse(200, "{}"))
         emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
-        `when`(emailSubscriptionTracker.isEmailSubscribed(subscribedEmailAddress)).thenReturn(true)
-        `when`(emailSubscriptionTracker.isEmailSubscribed(unsubscribedEmailAddress)).thenReturn(false)
-        `when`(emailSubscriptionTracker.isEmailSubscribed(missingEmailAddress)).thenReturn(false)
+        `when`(emailSubscriptionTracker.shouldReceiveEmail(subscribedEmailAddress)).thenReturn(true)
+        `when`(emailSubscriptionTracker.shouldReceiveEmail(unsubscribedEmailAddress)).thenReturn(false)
+        `when`(emailSubscriptionTracker.shouldReceiveEmail(missingEmailAddress)).thenReturn(false)
         `when`(emailSubscriptionTracker.shouldSendToEmailContact(subscribedEmailContact)).thenReturn(true)
         `when`(emailSubscriptionTracker.shouldSendToEmailContact(unsubscribedEmailContact)).thenReturn(false)
         `when`(emailSubscriptionTracker.shouldSendToEmailContact(missingEmailContact)).thenReturn(false)

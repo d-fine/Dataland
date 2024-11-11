@@ -25,11 +25,10 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class NotificationEmailSenderTest {
-
     private val correlationId = UUID.randomUUID().toString()
     private val companyId = UUID.randomUUID()
     private val companyName = "testCompany"
@@ -44,9 +43,10 @@ class NotificationEmailSenderTest {
     @BeforeEach
     fun setup() {
         cloudEventMessageHandler = mock<CloudEventMessageHandler>()
-        notificationEmailSender = NotificationEmailSender(
-            cloudEventMessageHandler, jacksonObjectMapper()
-        )
+        notificationEmailSender =
+            NotificationEmailSender(
+                cloudEventMessageHandler, jacksonObjectMapper(),
+            )
     }
 
     private fun parseJsonStringIntoEmailMessage(jsonString: String): EmailMessage =
@@ -55,18 +55,21 @@ class NotificationEmailSenderTest {
             EmailMessage::class.java,
         )
 
-    private fun initElementaryEvent(dataType: DataTypeEnum, reportingPeriod: String): ElementaryEventEntity =
+    private fun initElementaryEvent(
+        dataType: DataTypeEnum,
+        reportingPeriod: String,
+    ): ElementaryEventEntity =
         ElementaryEventEntity(
             elementaryEventType = ElementaryEventType.UploadEvent,
             companyId = companyId, framework = dataType,
             reportingPeriod = reportingPeriod, creationTimestamp = Instant.now().toEpochMilli(),
-            notificationEvent = null
+            notificationEvent = null,
         )
 
     private fun mockBuildingMessageAndSendingItToQueueForSingleMail() {
         `when`(
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                any(), any(), any(), any(), any()
+                any(), any(), any(), any(), any(),
             ),
         ).then {
             val emailMessage = parseJsonStringIntoEmailMessage(it.getArgument(0))
@@ -98,14 +101,14 @@ class NotificationEmailSenderTest {
         notificationEmailSender.sendExternalAndInternalNotificationEmail(
             NotificationService.NotificationEmailType.Single,
             latestElementaryEvent, emptyList(),
-            companyName, listOf(receiver), correlationId
+            companyName, listOf(receiver), correlationId,
         )
     }
 
     private fun mockBuildingMessageAndSendingItToQueueForSummaryMail() {
         `when`(
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                any(), any(), any(), any(), any()
+                any(), any(), any(), any(), any(),
             ),
         ).then {
             val emailMessage = parseJsonStringIntoEmailMessage(it.getArgument(0))
@@ -138,20 +141,20 @@ class NotificationEmailSenderTest {
     fun `check that external summary notification email is correctly send`() {
         mockBuildingMessageAndSendingItToQueueForSummaryMail()
 
-        val unprocessedElementaryEvents = listOf(
-            initElementaryEvent(DataTypeEnum.lksg, "2020"),
-            initElementaryEvent(DataTypeEnum.sfdr, "2021"),
-            initElementaryEvent(DataTypeEnum.vsme, "2022"),
-            initElementaryEvent(DataTypeEnum.sfdr, "2022"),
-        )
+        val unprocessedElementaryEvents =
+            listOf(
+                initElementaryEvent(DataTypeEnum.lksg, "2020"),
+                initElementaryEvent(DataTypeEnum.sfdr, "2021"),
+                initElementaryEvent(DataTypeEnum.vsme, "2022"),
+                initElementaryEvent(DataTypeEnum.sfdr, "2022"),
+            )
 
         val latestElementaryEvent = unprocessedElementaryEvents.last()
 
         notificationEmailSender.sendExternalAndInternalNotificationEmail(
             NotificationService.NotificationEmailType.Summary(daysSinceLastNotificationEvent),
             latestElementaryEvent, unprocessedElementaryEvents,
-            companyName, listOf(receiver), correlationId
+            companyName, listOf(receiver), correlationId,
         )
     }
-
 }

@@ -4,14 +4,16 @@ import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
 class EmailContactServiceTest {
-
     private lateinit var keycloakUserService: KeycloakUserService
 
     private val internalRecipients = "internal1@example.com;internal2@example.com"
@@ -28,13 +30,14 @@ class EmailContactServiceTest {
     @BeforeEach
     fun setUp() {
         keycloakUserService = mock()
-        emailContactService = EmailContactService(
-            keycloakUserService,
-            internalRecipients,
-            internalCcRecipients,
-            senderEmail,
-            senderName
-        )
+        emailContactService =
+            EmailContactService(
+                keycloakUserService,
+                internalRecipients,
+                internalCcRecipients,
+                senderEmail,
+                senderName,
+            )
     }
 
     @Test
@@ -87,5 +90,4 @@ class EmailContactServiceTest {
         assertNotNull(keycloakUser.email)
         assertEquals(listOf(EmailContact(keycloakUser.email!!, keycloakUser.firstName, keycloakUser.lastName)), result)
     }
-
 }
