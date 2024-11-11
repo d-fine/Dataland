@@ -67,7 +67,7 @@ class EmailMessageListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.SEND_EMAIL)
 
-        val message = objectMapper.readValue(jsonString, EmailMessage::class.java)
+        val message = MessageQueueUtils.readMessagePayload<EmailMessage>(jsonString, objectMapper)
         logger.info(
             "Received email message of type ${message.typedEmailContent::class} with correlationId $correlationId.",
         )
