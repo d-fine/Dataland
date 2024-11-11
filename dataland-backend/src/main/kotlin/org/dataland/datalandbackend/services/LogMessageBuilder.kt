@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.model.datapoints.StorableDataPoint
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.stereotype.Component
 
@@ -69,7 +69,7 @@ class LogMessageBuilder {
      */
     fun postDataPointMessage(
         userId: String,
-        uploadedDatapoint: UploadableDataPoint,
+        uploadedDatapoint: StorableDataPoint,
         bypassQa: Boolean,
         correlationId: String,
     ): String =

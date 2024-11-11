@@ -5,8 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.model.datapoints.StorableDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -47,7 +46,7 @@ interface DataPointApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postDataPoint(
         @Valid @RequestBody
-        uploadedDataPoint: UploadableDataPoint,
+        uploadedDataPoint: StorableDataPoint,
         @RequestParam(defaultValue = "false") bypassQa: Boolean,
     ): ResponseEntity<DataPointMetaInformation>
 
@@ -72,5 +71,5 @@ interface DataPointApi {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataPoint(
         @PathVariable dataId: String,
-    ): ResponseEntity<StorableDataSet>
+    ): ResponseEntity<StorableDataPoint>
 }

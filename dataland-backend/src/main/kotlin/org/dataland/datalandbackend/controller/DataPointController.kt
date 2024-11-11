@@ -1,8 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.DataPointApi
-import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.model.datapoints.StorableDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DataPointManager
@@ -25,7 +24,7 @@ class DataPointController(
     @Autowired val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {
     override fun postDataPoint(
-        uploadedDataPoint: UploadableDataPoint,
+        uploadedDataPoint: StorableDataPoint,
         bypassQa: Boolean,
     ): ResponseEntity<DataPointMetaInformation> {
         val currentUser = DatalandAuthentication.fromContext()
@@ -34,7 +33,7 @@ class DataPointController(
         return ResponseEntity.ok(dataPointManager.storeDataPoint(uploadedDataPoint, currentUser.userId, bypassQa, correlationId))
     }
 
-    override fun getDataPoint(dataId: String): ResponseEntity<StorableDataSet> {
+    override fun getDataPoint(dataId: String): ResponseEntity<StorableDataPoint> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         val correlationId = IdUtils.generateCorrelationId(metaInfo.company.companyId, dataId)
         return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, metaInfo.dataType, correlationId))

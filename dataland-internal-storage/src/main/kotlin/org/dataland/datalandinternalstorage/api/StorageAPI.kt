@@ -3,6 +3,7 @@ package org.dataland.datalandinternalstorage.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -59,4 +60,28 @@ interface StorageAPI {
         @PathVariable("blobId") blobId: String,
         correlationId: String,
     ): ResponseEntity<InputStreamResource>
+
+    /**
+     * A method to retrieve a single data point from the internal storage using the dataID
+     * @param dataId the ID of the data point stored in the internal storage which should be retrieved
+     * @param correlationId the correlation ID of the data get request
+     * @return ResponseEntity containing the selected data
+     */
+    @Operation(
+        summary = "Request data point by ID.",
+        description = "Requests data point by ID.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data point."),
+        ],
+    )
+    @GetMapping(
+        value = ["/data/data-points/{dataId}"],
+        produces = ["application/json"],
+    )
+    fun selectDataPointById(
+        @PathVariable("dataId") dataId: String,
+        correlationId: String,
+    ): ResponseEntity<StorableDataPoint>
 }

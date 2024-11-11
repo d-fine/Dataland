@@ -4,6 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import java.util.UUID
 
 /**
@@ -23,4 +24,16 @@ data class DataPointItem(
     val dataPointSpecification: String,
     @Column(name = "data", columnDefinition = "TEXT")
     val data: String,
-)
+) {
+    /**
+     * Converts the DataPointItem to a StorableDataPoint
+     * @return a StorableDataPoint object
+     */
+    fun toStorableDataPoint(): StorableDataPoint =
+        StorableDataPoint(
+            dataPointContent = data,
+            dataPointIdentifier = dataPointSpecification,
+            companyId = companyId,
+            reportingPeriod = reportingPeriod,
+        )
+}

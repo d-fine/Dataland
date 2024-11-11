@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.datapoints.UploadableDataPoint
+import org.dataland.datalandbackend.model.datapoints.StorableDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
@@ -19,6 +19,7 @@ import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
@@ -41,6 +42,7 @@ class DataPointManager(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val specificationManager: SpecificationControllerApi,
     @Autowired private val datasetDatapointRepository: DatasetDatapointRepository,
+    @Autowired private val storageClient: StorageControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -53,7 +55,7 @@ class DataPointManager(
      * @return the id of the stored data point
      */
     fun storeDataPoint(
-        uploadedDataPoint: UploadableDataPoint,
+        uploadedDataPoint: StorableDataPoint,
         uploaderUserId: String,
         bypassQa: Boolean,
         correlationId: String,
@@ -107,11 +109,17 @@ class DataPointManager(
         dataId: String,
         dataPointIdentifier: String,
         correlationId: String,
-    ): StorableDataSet {
+    ): StorableDataPoint {
         logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
         validateDataPointIdentifierExists(dataPointIdentifier)
-        val storedDataPoint = dataManager.getPublicDataSet(dataId, dataPointIdentifier, correlationId)
-        return storedDataPoint
+
+        val storedDataPoint = storageClient.selectDataPointById(dataId, correlationId)
+        return StorableDataPoint(
+            dataPointContent = storedDataPoint.dataPointContent,
+            dataPointIdentifier = storedDataPoint.dataPointIdentifier,
+            companyId = storedDataPoint.companyId,
+            reportingPeriod = storedDataPoint.reportingPeriod,
+        )
     }
 
     private fun validateDataPointIdentifierExists(dataPointIdentifier: String) {
@@ -175,7 +183,7 @@ class DataPointManager(
 
             createdDataIds +=
                 storeDataPoint(
-                    UploadableDataPoint(
+                    StorableDataPoint(
                         dataPointContent = objectMapper.writeValueAsString(contentJsonNode),
                         dataPointIdentifier = dataPointIdentifier,
                         companyId = companyId,
@@ -255,7 +263,7 @@ class DataPointManager(
                     "(correlation ID $correlationId)."
             }
             dataPoints.add(currentDataPoint)
-            val dataPointContent = retrieveDataPoint(dataId, currentDataPoint, correlationId).data
+            val dataPointContent = retrieveDataPoint(dataId, currentDataPoint, correlationId).dataPointContent
             val replacementValue = getJsonNodeFromString(dataPointContent)
             val companyReport = getCompanyReportFromDataSource(dataPointContent)
             if (companyReport != null) {
