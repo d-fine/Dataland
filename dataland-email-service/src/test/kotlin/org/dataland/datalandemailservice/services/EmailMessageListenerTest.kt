@@ -58,10 +58,10 @@ class EmailMessageListenerTest {
         `when`(emailContactService.getSenderContact()).thenReturn(senderContact)
 
         emailSubscriptionTracker = mock(EmailSubscriptionTracker::class.java)
-        `when`(emailSubscriptionTracker.subscribeContactsIfNeededAndFilter(any())).thenAnswer { invocation ->
+        `when`(emailSubscriptionTracker.subscribeContactsIfNeededAndPartition(any())).thenAnswer { invocation ->
             val contacts: List<EmailContact> = invocation.getArgument(0)
             val (allowed, blocked) = contacts.partition { contactToSubscriptionStatusMap[it]!!.first }
-            EmailSubscriptionTracker.FilteredContacts(
+            EmailSubscriptionTracker.PartitionedContacts(
                 allowed.associateWith { contactToSubscriptionStatusMap[it]!!.second },
                 blocked,
             )

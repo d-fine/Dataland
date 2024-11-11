@@ -21,7 +21,7 @@ class EmailSubscriptionTracker(
      * If there is no entity yet, an entity is created, saved, and then returned.
      * Important: This function should be called inside a Transactional block.
      */
-    private fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
+    fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
         emailSubscriptionRepository.findByEmailAddress(emailAddress)
             ?: emailSubscriptionRepository.save(
                 EmailSubscriptionEntity(
@@ -31,12 +31,12 @@ class EmailSubscriptionTracker(
             )
 
     /**
-     * A class that stores the return values of the [subscribeContactsIfNeededAndFilter] function.
+     * A class that stores the return values of the [subscribeContactsIfNeededAndPartition] function.
      * The class partition the contacts into allowed contacts, i.e. contacts that should receive an email, and
      * blocked contacts, i.e. contacts that should not receive an email.
      * Every allowed contact is associated with a subscription uuid, that can be used to unsubscribe the receiver.
      */
-    data class FilteredContacts(
+    data class PartitionedContacts(
         val allowed: Map<EmailContact, UUID>,
         val blocked: List<EmailContact>,
     )
@@ -47,10 +47,10 @@ class EmailSubscriptionTracker(
      * If there is no entity, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
      * Second, the function partitions the contacts into allowed contacts and blocked contacts.
      * @param contacts The list of [EmailContact] that should be processed.
-     * @return A [FilteredContacts] object that stores the allowed contacts and the blocked contacts.
+     * @return A [PartitionedContacts] object that stores the allowed contacts and the blocked contacts.
      */
     @Transactional
-    fun subscribeContactsIfNeededAndFilter(contacts: List<EmailContact>): FilteredContacts {
+    fun subscribeContactsIfNeededAndPartition(contacts: List<EmailContact>): PartitionedContacts {
         val (subscribedEntities, blockedEntities) =
             contacts
                 .map { it to getOrAddSubscription(it.emailAddress) }
@@ -64,7 +64,7 @@ class EmailSubscriptionTracker(
             blockedEntities
                 .map { (contact, _) -> contact }
 
-        return FilteredContacts(
+        return PartitionedContacts(
             allowed = subscribedMap,
             blocked = blockedList,
         )

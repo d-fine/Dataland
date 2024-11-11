@@ -104,8 +104,8 @@ class EmailMessageListener(
         emailSender.sendEmail(email)
     }
 
-    private fun resolveRecipients(recipients: List<EmailRecipient>): EmailSubscriptionTracker.FilteredContacts =
+    private fun resolveRecipients(recipients: List<EmailRecipient>): EmailSubscriptionTracker.PartitionedContacts =
         recipients
             .flatMap { emailContactService.getContacts(it) }
-            .let { emailSubscriptionTracker.subscribeContactsIfNeededAndFilter(it) }
+            .let { emailSubscriptionTracker.subscribeContactsIfNeededAndPartition(it) }
 }

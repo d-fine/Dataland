@@ -18,7 +18,7 @@ import java.util.UUID
 
 /**
  * This function initializes the remaining variables required to create the content of the emails.
- * This includes late init variables that are declared through an interface and also variables that
+ * This includes late init variables that are declared through an interface and also variables that are
  * only defined by a class.
  * @param receivers The receiver of the email. This variable is used to set the subscriptionUuid of the email content.
  *  Note that we can only set this variable if there is a single receiver. Otherwise, the subscriptionUuid is not unique.
