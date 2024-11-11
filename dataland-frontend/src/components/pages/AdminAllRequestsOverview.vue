@@ -14,9 +14,18 @@
                 <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <InputText
                   data-test="email-searchbar"
-                  v-model="searchBarInput"
+                  v-model="searchBarInputEmail"
                   placeholder="Search by Requester"
                   class="w-12 pl-6 pr-6"
+                />
+              </span>
+              <span class="w-3 p-input-icon-left" style="margin: 15px">
+                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+                <InputText
+                    data-test="comment-searchbar"
+                    v-model="searchBarInputComment"
+                    placeholder="Search by Comment"
+                    class="w-12 pl-6 pr-6"
                 />
               </span>
               <FrameworkDataSearchDropdownFilter
@@ -31,15 +40,26 @@
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                v-model="selectedRequestStatus"
-                ref="frameworkFilter"
-                :available-items="availableRequestStatus"
-                filter-name="Request Status"
-                data-test="request-status-picker"
-                filter-id="framework-filter"
-                filter-placeholder="Search by Request Status"
-                class="ml-3"
-                style="margin: 15px"
+                  v-model="selectedRequestStatus"
+                  ref="frameworkFilter"
+                  :available-items="availableRequestStatus"
+                  filter-name="Request Status"
+                  data-test="request-status-picker"
+                  filter-id="framework-filter"
+                  filter-placeholder="Search by Request Status"
+                  class="ml-3"
+                  style="margin: 15px"
+              />
+              <FrameworkDataSearchDropdownFilter
+                  v-model="selectedPriority"
+                  ref="frameworkFilter"
+                  :available-items="availablePriority"
+                  filter-name="Priority"
+                  data-test="request-priority-picker"
+                  filter-id="framework-filter"
+                  filter-placeholder="Search by Priority"
+                  class="ml-3"
+                  style="margin: 15px"
               />
               <div class="flex align-items-center">
                 <span
@@ -147,6 +167,20 @@
                     </div>
                   </template>
                 </Column>
+                <Column header="Priority" :sortable="false" field="priority">
+                  <template #body="slotProps">
+                    <div>
+                      priority-placeholder
+                    </div>
+                  </template>
+                </Column>
+                <Column header="Admin Comment" :sortable="false" field="adminComment">
+                  <template #body="slotProps">
+                    <div>
+                      admin-comment-placeholder
+                    </div>
+                  </template>
+                </Column>
               </DataTable>
               <div v-if="!waitingForData && currentDataRequests.length == 0">
                 <div class="d-center-div text-center px-7 py-4">
@@ -183,12 +217,18 @@ import {
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import type { FrameworkSelectableItem, SelectableItem, PrioritySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
-import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/utils/RequestsOverviewPageUtils';
+import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus, retrieveAvailablePriority } from '@/utils/RequestsOverviewPageUtils';
 import type { DataTypeEnum } from '@clients/backend';
 import router from '@/router';
+
+enum PriorityEnum {
+  NORMAL = "Normal",
+  HIGH = "High",
+  URGENT = "Urgent"
+}
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
@@ -224,11 +264,14 @@ export default defineComponent({
       firstRowIndex: 0,
       currentDataRequests: [] as ExtendedStoredDataRequest[],
       footerContent,
-      searchBarInput: '',
+      searchBarInputEmail: '',
+      searchBarInputComment: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
+      availablePriority: [] as Array<PrioritySelectableItem>,
+      selectedPriority: [] as Array<PrioritySelectableItem>,
       debounceInMs: 300,
       timerId: 0,
     };
@@ -236,6 +279,7 @@ export default defineComponent({
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableRequestStatus = retrieveAvailableRequestStatus();
+    this.availablePriority = retrieveAvailablePriority();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
   },
   computed: {
@@ -268,8 +312,15 @@ export default defineComponent({
         this.getAllRequestsForFilters();
       }
     },
-    searchBarInput(newSearch: string) {
-      this.searchBarInput = newSearch;
+    selectedPriority() {
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (!this.waitingForData) {
+        this.getAllRequestsForFilters();
+      }
+    },
+    searchBarInputEmail(newSearch: string) {
+      this.searchBarInputEmail = newSearch;
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (this.timerId) {
@@ -277,6 +328,15 @@ export default defineComponent({
       }
       this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.debounceInMs);
     },
+    searchBarInputComment(newSearch: string) {
+      this.searchBarInputComment = newSearch;
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
+      if (this.timerId) {
+        clearTimeout(this.timerId);
+      }
+      this.timerId = setTimeout( () => this.getAllRequestsForFilters(), this.debounceInMs);
+    }
   },
   methods: {
     badgeClass,
@@ -297,9 +357,12 @@ export default defineComponent({
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
         this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
       );
+      const selectedPriorityAsSet = new Set<PriorityEnum>(
+          this.selectedPriority.map((selectableItem) => selectableItem.priorityDataType)
+      );
       try {
         if (this.getKeycloakPromise) {
-          const emailFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
+          const emailFilter = this.searchBarInputEmail === '' ? undefined : this.searchBarInputEmail;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.requestController.getDataRequests(
@@ -339,7 +402,9 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.selectedFrameworks = [];
       this.selectedRequestStatus = [];
-      this.searchBarInput = '';
+      this.selectedPriority = [];
+      this.searchBarInputEmail = '';
+      this.searchBarInputComment = '';
     },
 
     /**
