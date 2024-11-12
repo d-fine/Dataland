@@ -1,5 +1,6 @@
 package org.dataland.datalandinternalstorage.entities
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
@@ -11,7 +12,7 @@ import java.util.UUID
  * The database entity for storing data points
  */
 @Entity
-@Table(name = "data point_items")
+@Table(name = "data_point_items")
 data class DataPointItem(
     @Id
     @Column(name = "data_id")
@@ -29,9 +30,9 @@ data class DataPointItem(
      * Converts the DataPointItem to a StorableDataPoint
      * @return a StorableDataPoint object
      */
-    fun toStorableDataPoint(): StorableDataPoint =
+    fun toStorableDataPoint(objectMapper: ObjectMapper): StorableDataPoint =
         StorableDataPoint(
-            dataPointContent = data,
+            dataPointContent = objectMapper.readValue(data, String::class.java),
             dataPointIdentifier = dataPointSpecification,
             companyId = companyId,
             reportingPeriod = reportingPeriod,
