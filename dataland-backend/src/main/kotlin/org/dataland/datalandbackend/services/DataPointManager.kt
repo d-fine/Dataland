@@ -154,6 +154,8 @@ class DataPointManager(
         val companyId = UUID.fromString(uploadedDataSet.companyId)
         val dataSetContent = getJsonNodeFromString(uploadedDataSet.data)
 
+        valideDataSet(expectedDataPoints, dataSetContent, correlationId)
+
         val dataSetId = IdUtils.generateUUID()
         dataManager.storeMetaDataFrom(dataSetId, uploadedDataSet, correlationId)
         dataManager.storeDataSetInTemporaryStoreAndSendMessage(dataSetId, uploadedDataSet, bypassQa, correlationId)
@@ -199,6 +201,20 @@ class DataPointManager(
         )
         logger.info("Completed processing data set (correlation ID: $correlationId).")
         return dataSetId
+    }
+
+    private fun valideDataSet(
+        expectedDataPoints: Map<String, String>,
+        dataSetContent: JsonNode,
+        correlationId: String,
+    ) {
+        expectedDataPoints.forEach {
+            val dataPointJsonPath = it.key
+            val dataPointIdentifier = it.value
+            val dataPointContent = getValueFromJsonNode(dataSetContent, dataPointJsonPath)
+            if (dataPointContent.isEmpty()) return@forEach
+            validateDataPoint(dataPointIdentifier, dataPointContent, correlationId)
+        }
     }
 
     private fun getFrameworkTemplate(framework: String): JsonNode =

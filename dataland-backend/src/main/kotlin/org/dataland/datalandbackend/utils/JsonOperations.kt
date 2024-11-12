@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -117,11 +118,15 @@ object JsonOperations {
         val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
         val violations = validator.validate(dataPointObject)
         if (violations.isNotEmpty()) {
-            var errorMessage = "Validation failed for data point of type $className (correlation ID: $correlationId): "
+            logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): $violations")
+            var errorMessage = "Validation failed for data point. "
             violations.forEach {
                 errorMessage += (it.message)
             }
-            throw IllegalArgumentException(errorMessage)
+            throw InvalidInputApiException(
+                summary = "Validation failed for data point.",
+                message = errorMessage,
+            )
         }
     }
 
