@@ -39,9 +39,9 @@ class TemporaryTables private constructor() {
                 "(:#{#searchFilter.shouldFilterByDatalandCompanyId} = false " +
                 "OR d.dataland_company_id = :#{#searchFilter.preparedDatalandCompanyId}) AND " +
                 "(:#{#searchFilter.shouldFilterByRequestPriority} = false " +
-                "OR d.request_priority = :#{#searchFilter.preparedRequestPriority}) AND " +
+                "OR d.request_priority IN :#{#searchFilter.preparedRequestPriority}) AND " +
                 "(:#{#searchFilter.shouldFilterByAdminComment} = false " +
-                "OR d.admin_comment IN :#{#searchFilter.preparedAdminCommentMatchingSearchSubstring})"
+                "OR d.admin_comment LIKE CONCAT('%', :#{#searchFilter.preparedAdminCommentMatchingSearchSubstring}, '%'))"
 
         // Append this clause at the end of TABLE_FILTERED to limit, offset and order the requests.
         const val TABLE_FILTERED_ORDER_AND_LIMIT =

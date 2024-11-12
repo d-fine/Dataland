@@ -159,10 +159,7 @@ class DataRequestQueryManager
                     it
                 }
 
-            val extendedStoredDataRequestsWithMailsAndAdminComments =
-                filter.setUpAdminCommentFilter(extendedStoredDataRequestsWithMails, filter.adminComment)
-
-            return extendedStoredDataRequestsWithMailsAndAdminComments
+            return extendedStoredDataRequestsWithMails
         }
 
         /**

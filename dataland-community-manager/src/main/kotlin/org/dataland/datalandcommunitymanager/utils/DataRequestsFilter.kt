@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
@@ -89,30 +88,8 @@ data class DataRequestsFilter(
     val shouldFilterByAdminComment: Boolean
         get() = adminComment?.isNotEmpty() ?: false
 
-    var adminCommentMatchingSearchSubstring: Set<String>? = null
-
-    /**
-     * This function should be called when the adminComment substring filter is not empty, i.e. if shouldFilterByAdminComment
-     * is true. The commentService is required to get the comments that contain the substring.
-     */
-    fun setUpAdminCommentFilter(
-        requests: List<ExtendedStoredDataRequest>,
-        searchSubstring: String?,
-    ): List<ExtendedStoredDataRequest> {
-        if (searchSubstring.isNullOrBlank()) return requests
-
-        return requests.filter { request ->
-            searchSubstring.let { request.adminComment?.contains(it, ignoreCase = true) } ?: false
-        }
-    }
-
-    val preparedAdminCommentMatchingSearchSubstring: List<String>
-        get() {
-            check(!shouldFilterByAdminComment || adminCommentMatchingSearchSubstring != null) {
-                "You need to call setupAdminCommentFilter(..) before querying by admin comment substring!"
-            }
-            return (adminCommentMatchingSearchSubstring?.toList() ?: emptyList())
-        }
+    val preparedAdminCommentMatchingSearchSubstring: String
+        get() = adminComment ?: ""
 
     val shouldFilterByRequestPriority: Boolean
         get() = requestPriority?.isNotEmpty() ?: false
