@@ -58,7 +58,7 @@
                         <td style="height: 20px">&nbsp;</td>
                     </tr>
                     <tr>
-                        <td>Reporting year<#if framework.reportingPeriods?has_content>s</#if></td>
+                        <td>Reporting year<#if (framework.reportingPeriods?size > 1)>s</#if></td>
                     </tr>
                     <tr>
                         <td style="font-size: 5px; height: 5px">&nbsp;</td>

@@ -9,7 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
@@ -42,8 +42,8 @@ class BulkDataRequestEmailMessageSender(
                 }.let(Value::List)
 
         val datalandAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication
-        val keyValueTable =
-            KeyValueTable(
+        val internalEmailContentTable =
+            InternalEmailContentTable(
                 "Dataland Bulk Data Request",
                 "A bulk data request has been submitted",
                 "Bulk Data Request",
@@ -58,7 +58,7 @@ class BulkDataRequestEmailMessageSender(
                 ),
             )
         val message =
-            EmailMessage(keyValueTable, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), emptyList())
+            EmailMessage(internalEmailContentTable, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), emptyList())
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
             MessageType.SEND_EMAIL,

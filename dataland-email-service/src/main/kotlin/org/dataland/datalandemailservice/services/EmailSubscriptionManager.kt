@@ -3,7 +3,7 @@ package org.dataland.datalandemailservice.services
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,7 +56,7 @@ class EmailSubscriptionManager(
     private fun informStakeholdersOfUnsubscription(unsubscribedEmailAddress: String) {
         val emailMessage =
             EmailMessage(
-                KeyValueTable(
+                InternalEmailContentTable(
                     subject = "A user has unsubscribed from data uploads notifications",
                     textTitle = "A user has unsubscribed from data uploads notifications.",
                     htmlTitle = "A user has unsubscribed from data uploads notifications.",

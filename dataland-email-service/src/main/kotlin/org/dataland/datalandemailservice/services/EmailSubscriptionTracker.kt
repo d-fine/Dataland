@@ -10,6 +10,7 @@ import java.util.UUID
 
 /**
  * Service responsible for managing email subscriptions.
+ * Note, that this service intentionally only works with EmailContact instead of plain email addresses to.
  */
 @Service
 class EmailSubscriptionTracker(
@@ -19,7 +20,8 @@ class EmailSubscriptionTracker(
      * This functions checks if there is already and entity for an email address.
      * If there is entity, this entity is returned.
      * If there is no entity yet, an entity is created, saved, and then returned.
-     * Important: This function should be called inside a Transactional block.
+     * Important: This function should be called inside a Transactional block. Do not use this function outside of
+     * this Service.
      */
     fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
         emailSubscriptionRepository.findByEmailAddress(emailAddress)
@@ -71,12 +73,12 @@ class EmailSubscriptionTracker(
     }
 
     /**
-     * This function queries the email subscription repository for the email address and checks the subscription status.
-     * If there is no entity, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
+     * This function queries the email subscription repository for a contact email address and checks the subscription status.
+     * If there is no entity with this email, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
      * The function returns the subscription status of the entity.
-     * @param emailAddress that should be checked
+     * @param contact that should be checked
      * @return `true` if the email should be sent and `false` otherwise.
      */
     @Transactional
-    fun shouldReceiveEmail(emailAddress: String): Boolean = getOrAddSubscription(emailAddress).shouldReceiveEmail()
+    fun shouldReceiveEmail(contact: EmailContact): Boolean = getOrAddSubscription(contact.emailAddress).shouldReceiveEmail()
 }

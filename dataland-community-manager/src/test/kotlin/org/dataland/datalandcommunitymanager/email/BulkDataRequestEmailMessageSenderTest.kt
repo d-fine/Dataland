@@ -12,7 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -92,14 +92,14 @@ class BulkDataRequestEmailMessageSenderTest {
                 cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
             ).thenAnswer { invocation ->
                 val emailMessage = objectMapper.readValue(invocation.getArgument<String>(0), EmailMessage::class.java)
-                Assertions.assertTrue(emailMessage.typedEmailContent is KeyValueTable)
-                val keyValueTable = emailMessage.typedEmailContent as KeyValueTable
+                Assertions.assertTrue(emailMessage.typedEmailContent is InternalEmailContentTable)
+                val internalEmailContentTable = emailMessage.typedEmailContent as InternalEmailContentTable
 
-                Assertions.assertEquals("Dataland Bulk Data Request", keyValueTable.subject)
-                Assertions.assertEquals("A bulk data request has been submitted", keyValueTable.textTitle)
-                Assertions.assertEquals("Bulk Data Request", keyValueTable.htmlTitle)
+                Assertions.assertEquals("Dataland Bulk Data Request", internalEmailContentTable.subject)
+                Assertions.assertEquals("A bulk data request has been submitted", internalEmailContentTable.textTitle)
+                Assertions.assertEquals("Bulk Data Request", internalEmailContentTable.htmlTitle)
 
-                val valueForKey: (String) -> Value? = { key -> keyValueTable.table.find { it.first == key }?.second }
+                val valueForKey: (String) -> Value? = { key -> internalEmailContentTable.table.find { it.first == key }?.second }
 
                 Assertions.assertEquals(Value.Text(authenticationMock.userDescription), valueForKey("User"))
                 Assertions.assertEquals(expectedReportingPeriods, valueForKey("Reporting Periods"))

@@ -13,7 +13,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -74,7 +74,7 @@ class NotificationEmailSenderTest {
         ).then {
             val emailMessage = parseJsonStringIntoEmailMessage(it.getArgument(0))
 
-            if (emailMessage.typedEmailContent !is KeyValueTable) {
+            if (emailMessage.typedEmailContent !is InternalEmailContentTable) {
                 assertEquals(emailMessage.receiver.first(), EmailRecipient.EmailAddress(receiver))
                 assertTrue(emailMessage.typedEmailContent is SingleDatasetUploadedEngagement)
                 val singleDatasetsUploadedEngagement = emailMessage.typedEmailContent as SingleDatasetUploadedEngagement
@@ -113,7 +113,7 @@ class NotificationEmailSenderTest {
         ).then {
             val emailMessage = parseJsonStringIntoEmailMessage(it.getArgument(0))
 
-            if (emailMessage.typedEmailContent !is KeyValueTable) {
+            if (emailMessage.typedEmailContent !is InternalEmailContentTable) {
                 assertEquals(emailMessage.receiver.first(), EmailRecipient.EmailAddress(receiver))
                 assertTrue(emailMessage.typedEmailContent is MultipleDatasetsUploadedEngagement)
                 val multipleDatasetsUploadedEngagement = emailMessage.typedEmailContent as MultipleDatasetsUploadedEngagement

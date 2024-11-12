@@ -6,7 +6,6 @@ import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -45,8 +44,7 @@ class EmailContactServiceTest {
         val senderContact = emailContactService.getSenderContact()
 
         assertEquals(senderEmail, senderContact.emailAddress)
-        assertNull(senderContact.firstName)
-        assertEquals(senderName, senderContact.lastName)
+        assertEquals(senderName, senderContact.name)
     }
 
     @Test
@@ -88,6 +86,6 @@ class EmailContactServiceTest {
         val result = emailContactService.getContacts(recipient)
 
         assertNotNull(keycloakUser.email)
-        assertEquals(listOf(EmailContact(keycloakUser.email!!, keycloakUser.firstName, keycloakUser.lastName)), result)
+        assertEquals(listOf(EmailContact(keycloakUser.email!!, null)), result)
     }
 }

@@ -14,7 +14,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -84,13 +84,13 @@ class SingleDataRequestEmailMessageSenderTest {
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()),
         ).then { invocation ->
             val emailMessage = objectMapper.readValue(invocation.getArgument<String>(0), EmailMessage::class.java)
-            assertTrue(emailMessage.typedEmailContent is KeyValueTable)
-            val keyValueTable = emailMessage.typedEmailContent as KeyValueTable
-            assertEquals("Dataland Single Data Request", keyValueTable.subject)
-            assertEquals("A single data request has been submitted", keyValueTable.textTitle)
-            assertEquals("Single Data Request", keyValueTable.htmlTitle)
+            assertTrue(emailMessage.typedEmailContent is InternalEmailContentTable)
+            val internalEmailContentTable = emailMessage.typedEmailContent as InternalEmailContentTable
+            assertEquals("Dataland Single Data Request", internalEmailContentTable.subject)
+            assertEquals("A single data request has been submitted", internalEmailContentTable.textTitle)
+            assertEquals("Single Data Request", internalEmailContentTable.htmlTitle)
 
-            val valueForKey: (String) -> Value? = { key -> keyValueTable.table.find { it.first == key }?.second }
+            val valueForKey: (String) -> Value? = { key -> internalEmailContentTable.table.find { it.first == key }?.second }
 
             assertEquals(Value.Text(authenticationMock.userDescription), valueForKey("User"))
             assertEquals(Value.Text("lksg"), valueForKey("Data Type"))

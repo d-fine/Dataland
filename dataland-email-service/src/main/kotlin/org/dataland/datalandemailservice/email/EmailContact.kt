@@ -4,20 +4,33 @@ import com.mailjet.client.transactional.SendContact
 import com.mailjet.client.transactional.TransactionalEmail
 
 /**
- * A class to represent an email contact
+ * A class to represent an email contact that is used inside the email-service.
+ * Do not use the primary constructor, use the [EmailContact.create] function.
+ * This function converts the email address to a lowercase format.
  */
 data class EmailContact(
     val emailAddress: String,
-    val firstName: String? = null,
-    val lastName: String? = null,
+    val name: String? = null,
 ) {
-    val name: String? =
-        when {
-            firstName != null && lastName != null -> "$firstName $lastName"
-            firstName != null -> firstName
-            lastName != null -> lastName
-            else -> null
+    init {
+        require(emailAddress == emailAddress.lowercase()) {
+            "Email address must be in lowercase. Provided: '$emailAddress'"
         }
+    }
+
+    companion object {
+        /**
+         * This function creates a [EmailContact] object and by converting the emailAddress into a lowercase format
+         * automatically ensures that the created [EmailContact] fulfills the requirements of the data class.
+         * @param emailAddress the emailAddress of the contact
+         * @param name the optional name of the contact
+         * @return the new [EmailContact] instance
+         */
+        fun create(
+            emailAddress: String,
+            name: String? = null,
+        ): EmailContact = EmailContact(emailAddress.lowercase(), name)
+    }
 
     /**
      * Converts a Dataland EmailContact object into a SendContact object of the mailjet client library

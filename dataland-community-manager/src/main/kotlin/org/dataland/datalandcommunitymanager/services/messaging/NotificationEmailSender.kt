@@ -11,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
@@ -82,7 +82,7 @@ class NotificationEmailSender(
             )
 
         val internalEmailContent =
-            KeyValueTable(
+            InternalEmailContentTable(
                 internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
                 listOf(
                     "Company" to
@@ -124,7 +124,7 @@ class NotificationEmailSender(
             )
 
         val internalEmailContent =
-            KeyValueTable(
+            InternalEmailContentTable(
                 internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
                 listOf(
                     "Company" to companyIdAndNameContent(externalEmailContent.companyId, externalEmailContent.companyName),

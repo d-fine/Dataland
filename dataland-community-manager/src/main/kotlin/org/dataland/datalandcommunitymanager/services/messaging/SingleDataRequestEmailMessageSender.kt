@@ -13,7 +13,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -47,8 +47,8 @@ class SingleDataRequestEmailMessageSender(
         correlationId: String,
     ) {
         val companyName = companyApi.getCompanyInfo(messageInformation.datalandCompanyId).companyName
-        val keyValueTable =
-            KeyValueTable(
+        val internalEmailContentTable =
+            InternalEmailContentTable(
                 "Dataland Single Data Request",
                 "A single data request has been submitted",
                 "Single Data Request",
@@ -65,7 +65,7 @@ class SingleDataRequestEmailMessageSender(
             )
         val message =
             EmailMessage(
-                keyValueTable, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), emptyList(),
+                internalEmailContentTable, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),

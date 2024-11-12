@@ -7,7 +7,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,8 +37,8 @@ class CompanyOwnershipRequestedEmailMessageSender(
         comment: String?,
         correlationId: String,
     ) {
-        val keyValueTable =
-            KeyValueTable(
+        val internalEmailContentTable =
+            InternalEmailContentTable(
                 "Dataland Company Ownership Request",
                 "A company ownership request has been submitted",
                 "Company Ownership Request",
@@ -53,7 +53,7 @@ class CompanyOwnershipRequestedEmailMessageSender(
                 ),
             )
         val message =
-            EmailMessage(keyValueTable, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), emptyList())
+            EmailMessage(internalEmailContentTable, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), emptyList())
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
             MessageType.SEND_EMAIL,

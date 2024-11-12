@@ -6,35 +6,38 @@ import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipCla
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
-import org.dataland.datalandmessagequeueutils.messages.email.KeyValueTable
+import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
+import org.junit.jupiter.api.extension.ExtensionContext
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.ArgumentsProvider
 import java.util.UUID
+import java.util.stream.Stream
 
-object TypedEmailContentTestData {
+class TypedEmailContentTestData : ArgumentsProvider {
+    companion object {
+        const val REQUESTER_EMAIL = "requester@example.com"
+        const val DATA_TYPE_A = "eutaxonomy-non-financials"
+        const val DATA_TYPE_LABEL_A = "EU Taxonomy for non-financial companies"
+        const val DATA_TYPE_LABEL_B = "VSME"
+        const val REPORTING_PERIOD_A = "2020"
+        const val REPORTING_PERIOD_B = "2023"
+        const val REPORTING_PERIOD_C = "2024"
+        const val COMPANY_NAME = "Banana Inc."
+        const val NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY = 10
+        const val MESSAGE = "Some message"
+        const val FIRST_NAME = "John"
+        const val LAST_NAME = "Doe"
+        const val BASE_URL = "test.dataland.com"
+        const val CREATION_DATE = "October 5th"
+        const val NUMBER_OF_DAYS = 23
+    }
+
     val companyId = UUID.randomUUID().toString()
-    const val COMPANY_NAME = "Banana Inc."
-    const val NUMBER_OF_OPEN_DATA_REQUEST_FOR_COMPANY = 10
-
-    const val REQUESTER_EMAIL = "requester@example.com"
-    const val DATA_TYPE_A = "eutaxonomy-non-financials"
-    const val DATA_TYPE_LABEL_A = "EU Taxonomy for non-financial companies"
-    const val DATA_TYPE_LABEL_B = "VSME"
-    const val REPORTING_PERIOD_A = "2020"
-    const val REPORTING_PERIOD_B = "2023"
-    const val REPORTIN_PERIOD_C = "2024"
-
-    const val MESSAGE = "Some message"
-    const val FIRST_NAME = "John"
-    const val LAST_NAME = "Doe"
     val subscriptionUuid = UUID.randomUUID().toString()
-    const val BASE_URL = "test.dataland.com"
-
-    const val CREATION_DATE = "October 5th"
     val dataRequestId = UUID.randomUUID().toString()
-    const val NUMBER_OF_DAYS = 23
 
     val datasetRequestedClaimOwnership =
         DatasetRequestedClaimOwnership(
@@ -141,7 +144,7 @@ object TypedEmailContentTestData {
             companyId, COMPANY_NAME,
             listOf(
                 MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_A, listOf(REPORTING_PERIOD_A, REPORTING_PERIOD_B)),
-                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTIN_PERIOD_C)),
+                MultipleDatasetsUploadedEngagement.FrameworkData(DATA_TYPE_LABEL_B, listOf(REPORTING_PERIOD_C)),
             ),
             NUMBER_OF_DAYS.toLong(),
         ).also {
@@ -151,13 +154,13 @@ object TypedEmailContentTestData {
 
     val multipleDatasetsUploadedEngagementKeywords =
         listOf(
-            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B, DATA_TYPE_LABEL_B, REPORTIN_PERIOD_C,
+            companyId, COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, REPORTING_PERIOD_B, DATA_TYPE_LABEL_B, REPORTING_PERIOD_C,
             NUMBER_OF_DAYS.toString(), BASE_URL, subscriptionUuid,
             "CLAIM COMPANY OWNERSHIP",
         )
 
-    val keyValueTable =
-        KeyValueTable(
+    val internalEmailContentTable =
+        InternalEmailContentTable(
             "subject", "Email-Title", "Email-Title",
             listOf(
                 "Key0" to Value.Text("ValueA"),
@@ -190,16 +193,16 @@ object TypedEmailContentTestData {
             "Link-TitleB",
         )
 
-    val contentToKeywordsMap: List<Pair<TypedEmailContent, List<String>>> =
-        listOf(
-            datasetRequestedClaimOwnership to datasetRequestedClaimOwnershipKeywords,
-            dataRequestAnswered to dataRequestAnsweredKeywords,
-            dataRequestClosed to dataRequestClosedKeywords,
-            companyOwnershipClaimApproved to companyOwnershipClaimApprovedKeywords,
-            accessToDatasetRequested to accessToDatasetRequestedKeywords,
-            accessToDatasetGranted to accessToDatasetGrantedKeywords,
-            singleDatasetUploadedEngagement to singleDatasetUploadedEngagementKeywords,
-            multipleDatasetsUploadedEngagement to multipleDatasetsUploadedEngagementKeywords,
-            keyValueTable to keyValueTableKeywords,
+    override fun provideArguments(p0: ExtensionContext?): Stream<out Arguments> =
+        Stream.of(
+            Arguments.of(datasetRequestedClaimOwnership, datasetRequestedClaimOwnershipKeywords),
+            Arguments.of(dataRequestAnswered, dataRequestAnsweredKeywords),
+            Arguments.of(dataRequestClosed, dataRequestClosedKeywords),
+            Arguments.of(companyOwnershipClaimApproved, companyOwnershipClaimApprovedKeywords),
+            Arguments.of(accessToDatasetRequested, accessToDatasetRequestedKeywords),
+            Arguments.of(accessToDatasetGranted, accessToDatasetGrantedKeywords),
+            Arguments.of(singleDatasetUploadedEngagement, singleDatasetUploadedEngagementKeywords),
+            Arguments.of(multipleDatasetsUploadedEngagement, multipleDatasetsUploadedEngagementKeywords),
+            Arguments.of(internalEmailContentTable, keyValueTableKeywords),
         )
 }

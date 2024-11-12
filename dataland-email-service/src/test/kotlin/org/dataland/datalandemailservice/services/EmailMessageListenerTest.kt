@@ -82,8 +82,9 @@ class EmailMessageListenerTest {
         val allowedReceiver = listOf(EmailContact("1@example.com"), EmailContact("3@example.com"))
         val allowedCc = listOf(EmailContact("3@example.com"))
 
-        val typedEmailContent = TypedEmailContentTestData.accessToDatasetRequested
-        val keywords = TypedEmailContentTestData.accessToDatasetRequestedKeywords.toMutableList()
+        val testData = TypedEmailContentTestData()
+        val typedEmailContent = testData.accessToDatasetRequested
+        val keywords = testData.accessToDatasetRequestedKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
         keywords.add(proxyPrimaryUrl)
 
@@ -112,11 +113,12 @@ class EmailMessageListenerTest {
 
         val allowed = listOf(EmailContact("1@example.com"))
 
-        val typedEmailContent = TypedEmailContentTestData.singleDatasetUploadedEngagement
-        val keywords = TypedEmailContentTestData.singleDatasetUploadedEngagementKeywords.toMutableList()
+        val testData = TypedEmailContentTestData()
+        val typedEmailContent = testData.singleDatasetUploadedEngagement
+        val keywords = testData.singleDatasetUploadedEngagementKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
         keywords.add(proxyPrimaryUrl)
-        keywords.remove(TypedEmailContentTestData.subscriptionUuid)
+        keywords.remove(testData.subscriptionUuid)
         keywords.add(contactToSubscriptionStatusMap[allowed.first()]!!.second.toString())
 
         val jsonString =

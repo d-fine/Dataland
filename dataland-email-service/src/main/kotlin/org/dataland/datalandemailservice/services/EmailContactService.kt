@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import kotlin.system.exitProcess
 
 /**
  * Service used to convert EmailRecipient objects to EmailContact objects and also to retrieve the sender contact.
@@ -26,17 +27,16 @@ class EmailContactService(
     private val internalCcContacts: List<EmailContact> = getEmailContactsFromString(semicolonSeparatedInternalCcRecipients)
 
     private fun getEmailContactsFromString(semicolonSeperatedEmailAddresses: String): List<EmailContact> =
-        semicolonSeperatedEmailAddresses.split(";").mapNotNull { emailAddress ->
+        semicolonSeperatedEmailAddresses.split(";").map { emailAddress ->
             if (emailAddress.isEmailAddress()) {
-                EmailContact(emailAddress)
+                EmailContact.create(emailAddress)
             } else {
                 logger.error(
                     "One email address provided by the Spring properties has a wrong format. " +
                         "The following email address was parsed from that prop and caused this error: $emailAddress" +
                         "This email address is ignored.",
                 )
-                // TODO should the spring service shutdown??
-                null
+                exitProcess(1)
             }
         }
 
@@ -50,13 +50,12 @@ class EmailContactService(
     fun getContacts(recipient: EmailRecipient): List<EmailContact> =
         when (recipient) {
             is EmailRecipient.EmailAddress ->
-                listOf(EmailContact(recipient.email))
+                listOf(EmailContact.create(recipient.email))
             is EmailRecipient.UserId -> {
-                val keycloakUser = keycloakUserService.getUser(recipient.userId)
                 val emailAddress =
-                    keycloakUser.email
+                    keycloakUserService.getUser(recipient.userId).email
                         ?: throw IllegalArgumentException("User with ${recipient.userId} found")
-                listOf(EmailContact(emailAddress, keycloakUser.firstName, keycloakUser.lastName))
+                listOf(EmailContact.create(emailAddress, null))
             }
             is EmailRecipient.Internal ->
                 internalContacts
@@ -69,5 +68,5 @@ class EmailContactService(
      *
      * @return An `EmailContact` representing the sender, containing the sender's email and name.
      */
-    fun getSenderContact(): EmailContact = EmailContact(senderEmail, lastName = senderName)
+    fun getSenderContact(): EmailContact = EmailContact.create(senderEmail, name = senderName)
 }
