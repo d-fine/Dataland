@@ -46,6 +46,8 @@ class JsonOperationsTest {
 
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
+    private val referencedReportsPath = "general.general.referencedReports"
+    private val fieldPath = "category.subcategory.field"
 
     private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
 
@@ -91,7 +93,7 @@ class JsonOperationsTest {
         val frameworkTemplate = getJsonNode(frameworkTemplate)
         val expectedResults =
             mapOf(
-                "category.subcategory.field" to "dataPoint",
+                fieldPath to "dataPoint",
                 "anotherCategory.field2" to "anotherDataPoint",
                 "anotherCategory.field3" to "yetAnotherDataPoint",
             )
@@ -106,8 +108,7 @@ class JsonOperationsTest {
         val replacementValue = getJsonNode(replacementValue)
         val expectedTemplate = getJsonNode(frameworkTemplateAfterReplacement)
 
-        val fieldName = "category.subcategory.field"
-        replaceFieldInTemplate(frameworkTemplate, fieldName, "", replacementValue)
+        replaceFieldInTemplate(frameworkTemplate, fieldPath, "", replacementValue)
         assertEquals(expectedTemplate, frameworkTemplate)
     }
 
@@ -135,7 +136,7 @@ class JsonOperationsTest {
     @Test
     fun `check that the extracted mapping is as expected`() {
         val inputNode = getJsonNode(frameworkWithReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(inputNode, "general.general.referencedReports")
+        val extracted = getFileReferenceToPublicationDateMapping(inputNode, referencedReportsPath)
         val expected =
             mapOf(
                 "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
@@ -147,7 +148,7 @@ class JsonOperationsTest {
     @Test
     fun `check that a framework without referenced reports yields an empty map`() {
         val inputNode = getJsonNode(frameworkWithoutReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(inputNode, "general.general.referencedReports")
+        val extracted = getFileReferenceToPublicationDateMapping(inputNode, referencedReportsPath)
         assertTrue(extracted.isEmpty())
     }
 
@@ -244,11 +245,11 @@ class JsonOperationsTest {
         val jsonNode = getJsonNode(frameworkTemplate)
         val expectedValues =
             mapOf(
-                "category.subcategory.field.id" to "dataPoint",
+                "$fieldPath.id" to "dataPoint",
                 "anotherCategory.field2.ref" to "reference",
                 "dummy" to "",
                 "does.not.exist" to "",
-                "category.subcategory.field" to "{\"id\":\"dataPoint\",\"ref\":\"reference\"}",
+                fieldPath to "{\"id\":\"dataPoint\",\"ref\":\"reference\"}",
             )
 
         expectedValues.forEach { (key, value) ->

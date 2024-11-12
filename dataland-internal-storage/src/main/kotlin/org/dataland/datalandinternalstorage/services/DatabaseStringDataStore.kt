@@ -179,7 +179,7 @@ class DatabaseStringDataStore(
                     )
                 }
 
-        return entry.toStorableDataPoint()
+        return entry.toStorableDataPoint(objectMapper)
     }
 
     /**

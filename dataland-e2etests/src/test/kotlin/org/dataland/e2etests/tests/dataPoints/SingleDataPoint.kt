@@ -19,15 +19,14 @@ class SingleDataPoint {
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData.getCompanyInformationWithoutIdentifiers(1)
 
     @Test
-    fun `up- and download a single data point`() {
+    fun `up and download a single data point`() {
         val jwtHelper = JwtAuthenticationHelper()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val storedCompanyInfos = CompanyDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND).postCompany(listOfOneCompanyInformation.first())
         val dataPointContent =
             """
-            "value": 0.5,
-            "currency": "USD"
+            {"value": 0.5, "currency": "USD"}
             """.trimIndent()
         val uploadableDataPoint =
             StorableDataPoint(
@@ -37,6 +36,7 @@ class SingleDataPoint {
                 reportingPeriod = "2022",
             )
         val dataPointId = dataPointControllerApi.postDataPoint(uploadableDataPoint, false).dataId
+        Thread.sleep(1000)
         val downloadedDataPoint = dataPointControllerApi.getDataPoint(dataPointId)
         assertEquals(uploadableDataPoint, downloadedDataPoint)
     }
