@@ -153,7 +153,6 @@ class QaController(
      * @param qaStatusChangeMessage QAStatusChangeMessage containing the dataId of the changed data set, the new QA
      * status and the dataId of the newly active dataset
      * @param correlationId the ID of the process
-     * @param comment optional message attached to the QA completion
      */
     fun sendQaStatusChangeMessage(
         qaStatusChangeMessage: QaStatusChangeMessage,

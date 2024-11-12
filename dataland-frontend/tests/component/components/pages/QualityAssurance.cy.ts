@@ -7,7 +7,7 @@ import {
   DataTypeEnum,
   type PathwaysToParisData,
 } from '@clients/backend';
-import { QaStatus, type QaReviewResponse } from '@clients/qaservice';
+import { type QaReviewResponse, type QaReviewResponseDataTypeEnum, QaStatus } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
@@ -67,7 +67,7 @@ describe('Component tests for the Quality Assurance page', () => {
     dataId: string,
     companyName: string,
     companyId: string,
-    framework: DataTypeEnum,
+    framework: QaReviewResponseDataTypeEnum,
     reportingPeriod: string,
     timestamp: number = Date.now()
   ): QaReviewResponse {
