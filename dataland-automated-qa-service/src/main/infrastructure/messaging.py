@@ -89,7 +89,7 @@ def _send_message(
     )
 
 
-def _send_qa_completed_message(
+def _send_qa_status_changed_message(
     channel: BlockingChannel,
     routing_key: str,
     resource_id: str,
@@ -101,7 +101,7 @@ def _send_qa_completed_message(
         channel=channel,
         exchange=p.mq_quality_assured_exchange,
         routing_key=routing_key,
-        message_type=p.mq_qa_completed_type,
+        message_type=p.mq_qa_status_changed_type,
         message=message_to_send,
         correlation_id=correlation_id,
     )
@@ -164,7 +164,7 @@ def process_qa_request(
             correlation_id,
             "bypass-qa",
         )
-        _send_qa_completed_message(channel, routing_key, resource.id, QaStatus.ACCEPTED, correlation_id)
+        _send_qa_status_changed_message(channel, routing_key, resource.id, QaStatus.ACCEPTED, correlation_id)
     else:
         logging.info(f"Evaluating {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
         try:
@@ -178,7 +178,7 @@ def process_qa_request(
                 correlation_id,
                 "automated-qa-service",
             )
-            _send_qa_completed_message(channel, routing_key, resource.id, validation_result, correlation_id)
+            _send_qa_status_changed_message(channel, routing_key, resource.id, validation_result, correlation_id)
         except AutomaticQaNotPossibleError as e:
             message_to_send = {"identifier": resource.id, "comment": e.comment}
             _send_message(

@@ -91,7 +91,7 @@ class PublicDataUploadProcessorTest {
         val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Rejected, "reviewerId", "message")
         val payload = objectMapper.writeValueAsString(qaCompletedMessage)
 
-        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_COMPLETED)
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_CHANGED)
 
         Mockito.verifyNoInteractions(elementaryEventRepositoryMock)
     }
@@ -101,7 +101,7 @@ class PublicDataUploadProcessorTest {
         val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Accepted, "reviewerId", "message")
         val payload = objectMapper.writeValueAsString(qaCompletedMessage)
 
-        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_COMPLETED)
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_CHANGED)
 
         verify(elementaryEventRepositoryMock, times(1)).saveAndFlush(any())
     }

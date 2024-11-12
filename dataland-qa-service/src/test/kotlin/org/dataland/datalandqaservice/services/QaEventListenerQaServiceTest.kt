@@ -98,7 +98,7 @@ class QaEventListenerQaServiceTest(
             )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QA_COMPLETED, correlationId, ExchangeName.DATA_QUALITY_ASSURED, RoutingKeyNames.DATA,
+                message, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED, RoutingKeyNames.DATA,
             ),
         ).thenThrow(
             AmqpException::class.java,

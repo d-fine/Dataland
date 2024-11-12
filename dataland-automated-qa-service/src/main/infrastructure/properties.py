@@ -23,6 +23,6 @@ mq_quality_assured_exchange = "dataQualityAssured"
 mq_correlation_id_header = "cloudEvents:id"
 mq_message_type_header = "cloudEvents:type"
 
-mq_qa_completed_type = "QA completed"
+mq_qa_status_changed_type = "QA status changed"
 mq_manual_qa_requested_type = "Manual QA requested"
 mq_persist_automated_qa_result = "Persist automated QA result"

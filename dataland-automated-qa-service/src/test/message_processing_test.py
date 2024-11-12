@@ -26,7 +26,7 @@ def mock_resource() -> Mock:
     return resource_mock
 
 
-def build_qa_completed_message_body(qa_result: QaStatus) -> bytes:
+def build_qa_status_changed_message_body(qa_result: QaStatus) -> bytes:
     message = {"identifier": "dummy-id", "validationResult": qa_result, "reviewerId": "automated-qa-service"}
     return json.dumps(message).encode("UTF-8")
 
@@ -40,8 +40,8 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_data_key,
             True,
             p.mq_quality_assured_exchange,
-            p.mq_qa_completed_type,
-            build_qa_completed_message_body(QaStatus.ACCEPTED),
+            p.mq_qa_status_changed_type,
+            build_qa_status_changed_message_body(QaStatus.ACCEPTED),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
 
@@ -60,8 +60,8 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_data_key,
             False,
             p.mq_quality_assured_exchange,
-            p.mq_qa_completed_type,
-            build_qa_completed_message_body(QaStatus.ACCEPTED),
+            p.mq_qa_status_changed_type,
+            build_qa_status_changed_message_body(QaStatus.ACCEPTED),
             lambda resource, correlation_id: QaStatus.ACCEPTED,  # noqa: ARG005
         )
 
@@ -70,8 +70,8 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_data_key,
             False,
             p.mq_quality_assured_exchange,
-            p.mq_qa_completed_type,
-            build_qa_completed_message_body(QaStatus.REJECTED),
+            p.mq_qa_status_changed_type,
+            build_qa_status_changed_message_body(QaStatus.REJECTED),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
 

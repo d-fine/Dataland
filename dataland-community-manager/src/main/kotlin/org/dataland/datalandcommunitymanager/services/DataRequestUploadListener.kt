@@ -34,7 +34,7 @@ class DataRequestUploadListener(
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered
      * @param jsonString the message describing the result of the completed QA process
      * @param type the type of the message
@@ -62,7 +62,7 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+        messageUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
@@ -79,7 +79,7 @@ class DataRequestUploadListener(
     }
 
     /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered and handles the update of the access status
      * @param dataId the dataId of the uploaded data
      * @param type the type of the message
