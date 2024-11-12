@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.IdUtils
@@ -53,6 +54,7 @@ class DataManagerTest(
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+    val mockMetaDataManager: DataMetaInformationManager = mock(DataMetaInformationManager::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
@@ -264,8 +266,67 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check a MessageQueueRejectException if we got no data for currently active`() {
-        // fill with code
+    fun `check an update of a QA status and the setting of the acitve dataset`() {
+        val updatedQaStatus = QaStatus.Accepted
+
+        // hier einmal die elegantere Lösung für die Objekte zum mocken
+        val changedQaStatusDataInfoJSon = "json/services/ChangedQaStatusDataInformation.json"
+        val changedQaStatusDataInfo =
+            objectMapper
+                .readValue(getJsonString(changedQaStatusDataInfoJSon), DataMetaInformationEntity::class.java)
+        val changedQaStatusDataId = changedQaStatusDataInfo.dataId
+        val currentlyActiveDataInfoJSon = "json/services/CurrentlyActiveDataInformation.json"
+        val currentlyActiveDataInfo =
+            objectMapper
+                .readValue(getJsonString(currentlyActiveDataInfoJSon), DataMetaInformationEntity::class.java)
+        val currentlyActiveDataId = currentlyActiveDataInfo.dataId
+
+        // die Variante aus Verzweiflung, weil ich nicht weiß wieso der Test failed. Verstehe aber auch nicht so ganz
+        // den Aufbau der Entities, weil die gegenseitig ineinander vorkommen.
+        val storedCompanyEntity =
+            StoredCompanyEntity(
+                "companyId", "companyName",
+                null, null, "AG", "Berlin",
+                "10961", "C", "B", mutableListOf(), "Lei",
+                mutableListOf(), "DE", false, null,
+            )
+        val dataMetaInformationEntityPending =
+            DataMetaInformationEntity(
+                changedQaStatusDataId, storedCompanyEntity, "sfdr",
+                "q123", 128739210, "2022", false, QaStatus.Pending,
+            )
+        val dataMetaInformationEntityActive =
+            DataMetaInformationEntity(
+                currentlyActiveDataId, storedCompanyEntity, "sfdr",
+                "q123", 128739210, "2022", true, QaStatus.Accepted,
+            )
+
+        val messageWithChangedQAStatus =
+            objectMapper.writeValueAsString(
+                QaStatusChangeMessage(
+                    changedQaStatusDataId,
+                    updatedQaStatus,
+                    currentlyActiveDataId,
+                ),
+            )
+        `when`(
+            mockMetaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId),
+        ).thenReturn(
+            dataMetaInformationEntityPending,
+        )
+        `when`(
+            mockMetaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId),
+        ).thenReturn(
+            dataMetaInformationEntityActive,
+        )
+
+        messageQueueListenerForDataManager.changeQaStatus(
+            messageWithChangedQAStatus,
+            "",
+            MessageType.QA_STATUS_CHANGED,
+        )
+
+        // assertions fehlen
     }
 
     @Test
@@ -318,4 +379,11 @@ class DataManagerTest(
             thrown.message,
         )
     }
+
+    private fun getJsonString(resourceFile: String): String =
+        objectMapper
+            .readTree(
+                this.javaClass.classLoader.getResourceAsStream(resourceFile)
+                    ?: throw IllegalArgumentException("Could not load the resource file"),
+            ).toString()
 }

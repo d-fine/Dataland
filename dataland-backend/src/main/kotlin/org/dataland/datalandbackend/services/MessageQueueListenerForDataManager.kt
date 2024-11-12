@@ -131,7 +131,7 @@ class MessageQueueListenerForDataManager(
 
     /**
      * Method that listens to the qa_queue and changes the qa status and the active data set after successful qa process
-     * @param jsonString the message describing the result of the completed QA process
+     * @param jsonString the message describing the changed QA status process
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -165,8 +165,11 @@ class MessageQueueListenerForDataManager(
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
         val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
 
-        if (changedQaStatusDataId.isEmpty() || currentlyActiveDataId.isEmpty()) {
-            throw MessageQueueRejectException("At least one of the provided Data Ids is empty")
+        if (changedQaStatusDataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID to changed qa status dataset is empty")
+        }
+        if (currentlyActiveDataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID to currently active dataset is empty")
         }
 
         messageQueueUtils.rejectMessageOnException {
