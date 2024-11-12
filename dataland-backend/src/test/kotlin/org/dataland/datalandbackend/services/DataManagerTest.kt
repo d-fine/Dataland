@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
-import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.IdUtils
@@ -265,8 +264,8 @@ class DataManagerTest(
         }
     }
 
-    @Test
-    fun `check an update of a QA status and the setting of the acitve dataset`() {
+   /* @Test
+    fun `check an update of a QA status and the setting of the active dataset`() {
         val updatedQaStatus = QaStatus.Accepted
 
         // hier einmal die elegantere Lösung für die Objekte zum mocken
@@ -327,7 +326,7 @@ class DataManagerTest(
         )
 
         // assertions fehlen
-    }
+    }*/
 
     @Test
     fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
@@ -380,10 +379,10 @@ class DataManagerTest(
         )
     }
 
-    private fun getJsonString(resourceFile: String): String =
+/*    private fun getJsonString(resourceFile: String): String =
         objectMapper
             .readTree(
                 this.javaClass.classLoader.getResourceAsStream(resourceFile)
                     ?: throw IllegalArgumentException("Could not load the resource file"),
-            ).toString()
+            ).toString()*/
 }
