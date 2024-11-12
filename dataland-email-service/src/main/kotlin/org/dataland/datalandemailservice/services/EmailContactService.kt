@@ -54,7 +54,7 @@ class EmailContactService(
             is EmailRecipient.UserId -> {
                 val emailAddress =
                     keycloakUserService.getUser(recipient.userId).email
-                        ?: throw IllegalArgumentException("User with ${recipient.userId} found")
+                        ?: throw IllegalArgumentException("User with ${recipient.userId} not found or has no email address")
                 listOf(EmailContact.create(emailAddress, null))
             }
             is EmailRecipient.Internal ->
