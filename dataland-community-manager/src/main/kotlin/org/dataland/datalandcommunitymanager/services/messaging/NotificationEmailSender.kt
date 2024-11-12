@@ -86,7 +86,7 @@ class NotificationEmailSender(
                 internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
                 listOf(
                     "Company" to
-                        companyIdAndNameContent(
+                        companyIdAndNameValue(
                             externalEmailContent.companyId,
                             externalEmailContent.companyName,
                         ),
@@ -127,7 +127,7 @@ class NotificationEmailSender(
             InternalEmailContentTable(
                 internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
                 listOf(
-                    "Company" to companyIdAndNameContent(externalEmailContent.companyId, externalEmailContent.companyName),
+                    "Company" to companyIdAndNameValue(externalEmailContent.companyId, externalEmailContent.companyName),
                     "Frameworks" to frameworkValue(frameworkData, externalEmailContent.companyId),
                     "Number of days since last notification" to Value.Text(externalEmailContent.numberOfDays?.toString() ?: "-"),
                     "Notification Email Type" to Value.Text("Summary"),
@@ -138,7 +138,7 @@ class NotificationEmailSender(
         return Pair(externalEmailContent, internalEmailContent)
     }
 
-    private fun companyIdAndNameContent(
+    private fun companyIdAndNameValue(
         companyId: String,
         companyName: String,
     ): Value =
