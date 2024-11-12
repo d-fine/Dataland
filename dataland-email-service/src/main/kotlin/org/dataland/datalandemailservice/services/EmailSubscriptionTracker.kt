@@ -33,14 +33,14 @@ class EmailSubscriptionTracker(
             )
 
     /**
-     * A class that stores the return values of the [subscribeContactsIfNeededAndPartition] function.
-     * The class partition the contacts into allowed contacts, i.e. contacts that should receive an email, and
+     * A class that stores the return values of the [subscribeContactsIfNeededAndPartition] method.
+     * The class stores a partition of the contacts into allowed contacts, i.e. contacts that should receive an email, and
      * blocked contacts, i.e. contacts that should not receive an email.
      * Every allowed contact is associated with a subscription uuid, that can be used to unsubscribe the receiver.
      */
     data class PartitionedContacts(
-        val allowed: Map<EmailContact, UUID>,
-        val blocked: List<EmailContact>,
+        val allowedContacts: Map<EmailContact, UUID>,
+        val blockedContacts: List<EmailContact>,
     )
 
     /**
@@ -49,26 +49,26 @@ class EmailSubscriptionTracker(
      * If there is no entity, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
      * Second, the function partitions the contacts into allowed contacts and blocked contacts.
      * @param contacts The list of [EmailContact] that should be processed.
-     * @return A [PartitionedContacts] object that stores the allowed contacts and the blocked contacts.
+     * @return An instance of [PartitionedContacts] that stores the allowed contacts and the blocked contacts.
      */
     @Transactional
     fun subscribeContactsIfNeededAndPartition(contacts: List<EmailContact>): PartitionedContacts {
-        val (subscribedEntities, blockedEntities) =
+        val (allowedEntities, blockedEntities) =
             contacts
                 .map { it to getOrAddSubscription(it.emailAddress) }
                 .partition { (_, entity) -> entity.shouldReceiveEmail() }
 
-        val subscribedMap =
-            subscribedEntities
+        val allowedContactsToSubscriptionUuid =
+            allowedEntities
                 .associate { (contact, entity) -> contact to entity.uuid }
 
-        val blockedList =
+        val blockedContacts =
             blockedEntities
                 .map { (contact, _) -> contact }
 
         return PartitionedContacts(
-            allowed = subscribedMap,
-            blocked = blockedList,
+            allowedContactsToSubscriptionUuid,
+            blockedContacts,
         )
     }
 

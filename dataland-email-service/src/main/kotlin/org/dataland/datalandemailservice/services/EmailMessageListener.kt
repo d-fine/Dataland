@@ -87,20 +87,25 @@ class EmailMessageListener(
         val cc = resolveRecipients(emailMessage.cc)
         val bcc = resolveRecipients(emailMessage.bcc)
 
-        val blockedContacts = receivers.blocked + cc.blocked + bcc.blocked
+        val blockedContacts = receivers.blockedContacts + cc.blockedContacts + bcc.blockedContacts
         if (blockedContacts.isNotEmpty()) {
             logger.info("Will not send email to the following blocked contacts: $blockedContacts")
         }
 
-        if (receivers.allowed.isEmpty() && cc.allowed.isEmpty() && bcc.allowed.isEmpty()) {
+        if (receivers.allowedContacts.isEmpty() && cc.allowedContacts.isEmpty() && bcc.allowedContacts.isEmpty()) {
             logger.info("No email was sent. After filtering the receivers none remained.")
             return
         }
 
         val sender = emailContactService.getSenderContact()
-        emailMessage.typedEmailContent.setLateInitVars(receivers.allowed, proxyPrimaryUrl, emailSubscriptionTracker)
+        emailMessage.typedEmailContent.setLateInitVars(receivers.allowedContacts, proxyPrimaryUrl, emailSubscriptionTracker)
         val content = emailMessage.typedEmailContent.build()
-        val email = Email(sender, receivers.allowed.keys.toList(), cc.allowed.keys.toList(), bcc.allowed.keys.toList(), content)
+        val email =
+            Email(
+                sender,
+                receivers.allowedContacts.keys.toList(), cc.allowedContacts.keys.toList(), bcc.allowedContacts.keys.toList(),
+                content,
+            )
         emailSender.sendEmail(email)
     }
 

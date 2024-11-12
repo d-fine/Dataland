@@ -102,15 +102,15 @@ class EmailSubscriptionTrackerTest(
         assertNotNull(unknownEntity)
         assertTrue(unknownEntity!!.isSubscribed)
 
-        assertEquals(1, partitionedContacts.blocked.size)
-        assertEquals(EmailContact(UNSUBSCRIBED_EMAIL), partitionedContacts.blocked.first())
+        assertEquals(1, partitionedContacts.blockedContacts.size)
+        assertEquals(EmailContact(UNSUBSCRIBED_EMAIL), partitionedContacts.blockedContacts.first())
 
         assertEquals(
             mapOf(
                 EmailContact(UNKNOWN_EMAIL) to unknownEntity.uuid,
                 EmailContact(SUBSCRIBED_EMAIL) to subscribedUuid,
             ),
-            partitionedContacts.allowed,
+            partitionedContacts.allowedContacts,
         )
     }
 
