@@ -79,7 +79,8 @@ class QaEventListenerQaServiceTest(
     fun `check an exception is thrown in reading out message from data stored queue when dataId is empty`() {
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
-                qaEventListenerQaService.addDataSetToQaReviewQueue(noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED)
+                qaEventListenerQaService
+                    .addDataSetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED)
             }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -104,7 +105,7 @@ class QaEventListenerQaServiceTest(
         )
         val dummyPayload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to true.toString())).toString()
         assertThrows<AmqpException> {
-            qaEventListenerQaService.addDataSetToQaReviewQueue(dummyPayload, correlationId, MessageType.DATA_STORED)
+            qaEventListenerQaService.addDataSetToQaReviewRepositoryWithStatusPending(dummyPayload, correlationId, MessageType.DATA_STORED)
         }
     }
 

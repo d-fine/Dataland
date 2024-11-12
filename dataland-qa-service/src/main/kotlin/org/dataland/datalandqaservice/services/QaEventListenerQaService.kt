@@ -84,7 +84,7 @@ class QaEventListenerQaService
             ],
         )
         @Transactional
-        fun addDataSetToQaReviewQueue(
+        fun addDataSetToQaReviewRepositoryWithStatusPending(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,

@@ -1,13 +1,11 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
@@ -37,54 +35,6 @@ class MessageQueueListenerForDataManager(
     @Autowired private val dataManager: DataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-
-    /**
-     * Method that listens to the qa_queue and updates the metadata information after successful qa process
-     * @param jsonString the message describing the result of the completed QA process
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value =
-                    Queue(
-                        "dataQualityAssuredBackendDataManager",
-                        arguments = [
-                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
-                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                            Argument(name = "defaultRequeueRejected", value = "false"),
-                        ],
-                    ),
-                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
-                key = [RoutingKeyNames.DATA],
-            ),
-        ],
-    )
-    @Transactional
-    fun updateMetaData(
-        @Payload jsonString: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-    ) {
-        messageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
-        val dataId = qaCompletedMessage.identifier
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        messageQueueUtils.rejectMessageOnException {
-            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaInformation.qaStatus = qaCompletedMessage.validationResult
-            if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
-                metaDataManager.setActiveDataset(metaInformation)
-            }
-            logger.info(
-                "Received quality assurance: ${qaCompletedMessage.validationResult} for data upload with DataId: " +
-                    "$dataId with Correlation Id: $correlationId",
-            )
-        }
-    }
 
     /**
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been

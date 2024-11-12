@@ -18,7 +18,6 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientE
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -192,24 +191,6 @@ class DataManagerTest(
                 uploaderUserId = "NOT_WHATS_EXPECTED",
             ),
         )
-
-    @Test
-    fun `check an exception is thrown in updating of meta data when dataId is empty`() {
-        val messageWithEmptyDataID =
-            objectMapper.writeValueAsString(
-                QaCompletedMessage(
-                    identifier = "",
-                    validationResult = QaStatus.Accepted,
-                    reviewerId = "",
-                    message = null,
-                ),
-            )
-        val thrown =
-            assertThrows<MessageQueueRejectException> {
-                messageQueueListenerForDataManager.updateMetaData(messageWithEmptyDataID, "", MessageType.QA_COMPLETED)
-            }
-        assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
-    }
 
     @Test
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
