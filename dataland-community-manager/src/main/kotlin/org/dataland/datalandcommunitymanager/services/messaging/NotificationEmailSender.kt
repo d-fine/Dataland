@@ -151,7 +151,11 @@ class NotificationEmailSender(
     private fun dataTypeLink(
         dataType: DataTypeEnum,
         companyId: String,
-    ): Value = Value.RelativeLink("/companies/$companyId/frameworks/${dataType.value}", dataType.name)
+    ): Value =
+        Value.RelativeLink(
+            "/companies/$companyId/frameworks/${dataType.value}",
+            readableFrameworkNameMapping[dataType] ?: dataType.name,
+        )
 
     private fun frameworkValue(
         frameworkData: Map<DataTypeEnum, List<String>>,

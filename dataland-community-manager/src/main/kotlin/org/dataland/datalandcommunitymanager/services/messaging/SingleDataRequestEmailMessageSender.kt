@@ -57,7 +57,8 @@ class SingleDataRequestEmailMessageSender(
                     "E-Mail" to Value.Text(messageInformation.userAuthentication.username),
                     "First Name" to Value.Text(messageInformation.userAuthentication.firstName),
                     "Last Name" to Value.Text(messageInformation.userAuthentication.lastName),
-                    "Data Type" to Value.Text(messageInformation.dataType.value),
+                    "Data Type" to
+                        Value.Text(readableFrameworkNameMapping[messageInformation.dataType] ?: messageInformation.dataType.value),
                     "Reporting Periods" to Value.List(messageInformation.reportingPeriods.sorted().map(Value::Text)),
                     "Dataland Company ID" to Value.Text(messageInformation.datalandCompanyId),
                     "Company Name" to Value.Text(companyName),
@@ -94,7 +95,7 @@ class SingleDataRequestEmailMessageSender(
                 requesterEmail = messageInformation.userAuthentication.username,
                 firstName = messageInformation.userAuthentication.firstName.takeIf { it.isNotBlank() },
                 lastName = messageInformation.userAuthentication.lastName.takeIf { it.isNotBlank() },
-                dataTypeLabel = readableFrameworkNameMapping.getValue(messageInformation.dataType),
+                dataTypeLabel = readableFrameworkNameMapping[messageInformation.dataType] ?: messageInformation.dataType.value,
                 reportingPeriods = messageInformation.reportingPeriods.toList().sorted(),
                 message = contactMessage.takeIf { !contactMessage.isNullOrBlank() },
             )
