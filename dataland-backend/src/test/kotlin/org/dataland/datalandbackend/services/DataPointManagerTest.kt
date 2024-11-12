@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.junit.jupiter.api.Test
@@ -15,7 +16,11 @@ class DataPointManagerTest {
     private val metaDataManager = mock(DataMetaInformationManager::class.java)
     private val specificationManager = mock(SpecificationControllerApi::class.java)
     private val datasetDatapointRepository = mock(DatasetDatapointRepository::class.java)
-    private val dataPointManager = DataPointManager(dataManager, metaDataManager, specificationManager, datasetDatapointRepository)
+    private val storageClient = mock(StorageControllerApi::class.java)
+    private val dataPointManager =
+        DataPointManager(
+            dataManager, metaDataManager, specificationManager, datasetDatapointRepository, storageClient,
+        )
 
     private val correlationId = "test-correlation-id"
 
