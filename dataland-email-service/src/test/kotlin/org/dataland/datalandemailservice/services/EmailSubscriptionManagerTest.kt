@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.springframework.http.ResponseEntity
@@ -38,7 +39,7 @@ class EmailSubscriptionManagerTest {
 
         `when`(emailSubscriptionRepository.findByUuid(validUuid)).thenReturn(validEmailSubscriptionEntity)
         `when`(emailSubscriptionRepository.findByUuid(invalidUuid)).thenReturn(null)
-        `when`(emailMessageListener.buildAndSendEmail(any())).thenReturn(mock())
+        doNothing().`when`(emailMessageListener).buildAndSendEmail(any())
     }
 
     @Test
