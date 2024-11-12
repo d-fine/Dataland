@@ -987,7 +987,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UploadableDataPoint"
+                "$ref": "#/components/schemas/StorableDataPoint"
               }
             }
           },
@@ -3249,7 +3249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StorableDataSet"
+                  "$ref": "#/components/schemas/StorableDataPoint"
                 }
               }
             }
@@ -17771,7 +17771,7 @@
           }
         }
       },
-      "UploadableDataPoint": {
+      "StorableDataPoint": {
         "required": [
           "companyId",
           "dataPointContent",
@@ -17957,38 +17957,6 @@
           "uploadTime": {
             "type": "integer",
             "format": "int64"
-          }
-        }
-      },
-      "StorableDataSet": {
-        "required": [
-          "companyId",
-          "data",
-          "dataType",
-          "reportingPeriod",
-          "uploadTime",
-          "uploaderUserId"
-        ],
-        "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "dataType": {
-            "type": "string"
-          },
-          "uploaderUserId": {
-            "type": "string"
-          },
-          "uploadTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "data": {
-            "type": "string"
           }
         }
       },
