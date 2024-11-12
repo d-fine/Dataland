@@ -2,7 +2,7 @@ package org.dataland.e2etests.tests.dataPoints
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
-import org.dataland.datalandbackend.openApiClient.model.UploadableDataPoint
+import org.dataland.datalandbackend.openApiClient.model.StorableDataPoint
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -30,14 +30,14 @@ class SingleDataPoint {
             "currency": "USD"
             """.trimIndent()
         val uploadableDataPoint =
-            UploadableDataPoint(
+            StorableDataPoint(
                 dataPointContent = dataPointContent,
                 dataPointIdentifier = "extendedCurrencyEquity",
                 companyId = UUID.fromString(storedCompanyInfos.companyId),
                 reportingPeriod = "2022",
             )
         val dataPointId = dataPointControllerApi.postDataPoint(uploadableDataPoint, false).dataId
-        val downloadedDataPoint = dataPointControllerApi.getDataPoint(dataPointId).data
-        assertEquals(dataPointContent, downloadedDataPoint)
+        val downloadedDataPoint = dataPointControllerApi.getDataPoint(dataPointId)
+        assertEquals(uploadableDataPoint, downloadedDataPoint)
     }
 }
