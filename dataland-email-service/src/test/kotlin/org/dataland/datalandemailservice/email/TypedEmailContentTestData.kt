@@ -33,6 +33,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
         const val BASE_URL = "test.dataland.com"
         const val CREATION_DATE = "October 5th"
         const val NUMBER_OF_DAYS = 23
+        const val EMAIL_TITLE = "Email-Title"
     }
 
     val companyId = UUID.randomUUID().toString()
@@ -161,7 +162,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     val internalEmailContentTable =
         InternalEmailContentTable(
-            "subject", "Email-Title", "Email-Title",
+            "subject", EMAIL_TITLE, EMAIL_TITLE,
             listOf(
                 "Key0" to Value.Text("ValueA"),
                 "Key1" to Value.RelativeLink("/example", "Link-TitleA"),
@@ -182,7 +183,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
 
     val keyValueTableKeywords =
         listOf(
-            "Email-Title",
+            EMAIL_TITLE,
             "testA@example.com (subscribed)",
             "testB@example.com (unsubscribed)",
             "@ValueB\$ValueC\$ValueD=",
