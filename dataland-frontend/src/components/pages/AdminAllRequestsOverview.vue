@@ -368,12 +368,8 @@ export default defineComponent({
               emailFilter,
               commentFilter,
               selectedRequestStatusesAsSet,
-              /*an dieser Stelle sollte eigentlich noch selectedPriorityAsSet eingefügt werden
-              * das sollte dann vom syntax so aussehen wie bei selected FrameworksAsSet,
-              * wie genau dieser Enum aus der SetDataRequests funktion erstellt wird, weiß ich noch nicht
-              * aber die Variable kann hier noch nicht eingefügt werden, solange in der Funktion hier im Frontend
-              * der Parameter noch nicht erkannt wird /generateOpenApiDocs und Build Clients hatte ich gemacht...*/
               undefined,
+              selectedPriorityAsSet,
               undefined,
               undefined,
               this.datasetsPerPage,
@@ -387,8 +383,8 @@ export default defineComponent({
               emailFilter,
               commentFilter,
               selectedRequestStatusesAsSet,
-              /* selectedPriorityAsSet as Set<GetDataRequestsRequestPriority>, */
               undefined,
+              selectedPriorityAsSet,
               undefined,
               undefined,
             )

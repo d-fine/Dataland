@@ -529,6 +529,30 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestPriority"
+            }
+          },
+          {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -733,6 +757,18 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestPriority"
               }
             }
           },
@@ -1010,6 +1046,18 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestPriority"
               }
             }
           },
@@ -1719,7 +1767,6 @@
       "StoredDataRequest": {
         "required": [
           "accessStatus",
-          "adminComment",
           "creationTimestamp",
           "dataRequestId",
           "dataRequestStatusHistory",
@@ -1832,7 +1879,6 @@
       "ExtendedStoredDataRequest": {
         "required": [
           "accessStatus",
-          "adminComment",
           "companyName",
           "creationTimestamp",
           "dataRequestId",
