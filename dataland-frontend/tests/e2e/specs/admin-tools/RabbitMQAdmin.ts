@@ -18,8 +18,6 @@ const queues = [
   'dataStoredBackendPrivateDataManager',
   'manualQaRequestedPersistAutomatedQaResult',
   'privateRequestReceivedEurodatDataStore',
-  'sendInternalEmailService',
-  'sendTemplateEmailService',
   'sendEmailService',
   'privateRequestReceivedCommunityManager',
   'qaReportDeleteDataRequestReceivedQueue',
