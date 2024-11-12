@@ -1,8 +1,6 @@
 import { DataTypeEnum } from '@clients/backend';
-import { RequestPriority} from "@clients/communitymanager";
 
 // - Available frameworks settings
-
 
 export const ALL_FRAMEWORKS_ORDERED = Object.values(DataTypeEnum);
 export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework == DataTypeEnum.Vsme);
@@ -39,4 +37,3 @@ export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export const NO_DATA_PROVIDED = 'No data provided';
 export const ONLY_AUXILIARY_DATA_PROVIDED = 'Only auxiliary data provided';
-export const PRIORITY_ENUM = Object.values(RequestPriority);

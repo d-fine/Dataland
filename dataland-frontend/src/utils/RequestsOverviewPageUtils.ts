@@ -1,6 +1,6 @@
-import { AccessStatus, RequestStatus } from '@clients/communitymanager';
-import { type FrameworkSelectableItem, type SelectableItem, type PrioritySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
-import { FRAMEWORKS_WITH_VIEW_PAGE, PRIORITY_ENUM } from '@/utils/Constants';
+import {AccessStatus, RequestPriority, RequestStatus} from '@clients/communitymanager';
+import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getFrontendFrameworkDefinition } from '@/frameworks/FrontendFrameworkRegistry';
 
@@ -67,19 +67,18 @@ export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
   });
 }
 
-export function retrieveAvailablePriority(): Array<PrioritySelectableItem>{
-  return PRIORITY_ENUM.map((dataTypeEnum) => {
-    let displayName = humanizeStringOrNumber(dataTypeEnum);
-    const priorityDefinition = getFrontendFrameworkDefinition(dataTypeEnum);
-    if (priorityDefinition) {
-      displayName = priorityDefinition.label;
-    }
+/**
+ * Gets list with all available request priorities
+ * @returns array of PrioritySelectableItem
+ */
+export function retrieveAvailablePriority(): Array<SelectableItem> {
+  return Object.values(RequestPriority).map((status) => {
     return {
-      priorityDataType: dataTypeEnum,
-      displayName: displayName,
+      displayName: status,
       disabled: false,
     };
   });
 }
+
 
 

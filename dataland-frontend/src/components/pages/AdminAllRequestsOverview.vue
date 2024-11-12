@@ -218,7 +218,7 @@ import {
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
-import type { FrameworkSelectableItem, SelectableItem, PrioritySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
+import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import {accessStatusBadgeClass, badgeClass, priorityBadgeClass} from '@/utils/RequestUtils';
 import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus, retrieveAvailablePriority } from '@/utils/RequestsOverviewPageUtils';
@@ -265,8 +265,8 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
-      availablePriority: [] as Array<PrioritySelectableItem>,
-      selectedPriority: [] as Array<PrioritySelectableItem>,
+      availablePriority: [] as Array<SelectableItem>,
+      selectedPriority: [] as Array<SelectableItem>,
       debounceInMs: 300,
       timerId: 0,
     };
@@ -354,7 +354,7 @@ export default defineComponent({
         this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
       );
       const selectedPriorityAsSet = new Set<RequestPriority>(
-          this.selectedPriority.map((selectableItem) => selectableItem.priorityDataType)
+          this.selectedPriority.map((selectableItem) => selectableItem.displayName as RequestPriority)
       );
       try {
         if (this.getKeycloakPromise) {
