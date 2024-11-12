@@ -72,13 +72,13 @@ function checkIfContentIsIdentical(
   };
   if (typeof valueA === 'object' && typeof valueB === 'object') {
     if (valueA === null || valueB === null) {
-      if (valueA !== valueB) {
+      if (valueA !== valueB && !newPath.endsWith('publicationDate')) {
         throwErrorBecauseOfFieldValue(newPath);
       }
     } else {
       compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
     }
-  } else if (valueA !== valueB) {
+  } else if (valueA !== valueB && !newPath.endsWith('publicationDate')) {
     throwErrorBecauseOfFieldValue(newPath);
   }
 }

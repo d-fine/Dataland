@@ -48,8 +48,16 @@ data class DataType
 
         override fun toString(): String = name
 
+        /**
+         * Checks if the datatype represents a valid framework
+         * @return true if the datatype is a framework
+         */
         fun isFramework(): Boolean = allowedDataTypes.contains(name)
 
+        /**
+         * Checks if the datatype represents a valid framework
+         * @throws InvalidInputApiException if the datatype is not a valid framework
+         */
         fun checkDataType() {
             if (!isFramework()) {
                 throw InvalidInputApiException(
