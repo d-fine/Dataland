@@ -23,6 +23,7 @@ import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
@@ -53,13 +54,12 @@ class DataManagerTest(
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-    val mockMetaDataManager: DataMetaInformationManager = mock(DataMetaInformationManager::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
     lateinit var messageQueueListenerForDataManager: MessageQueueListenerForDataManager
     val correlationId = IdUtils.generateUUID()
-    val dataUUId = "JustSomeUUID"
+    val dataUUID = "JustSomeUUID"
 
     @BeforeEach
     fun reset() {
@@ -230,7 +230,7 @@ class DataManagerTest(
         ).thenThrow(AmqpException::class.java)
         assertThrows<AmqpException> {
             spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
-                dataUUId, storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
+                dataUUID, storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
             )
         }
     }
@@ -264,70 +264,6 @@ class DataManagerTest(
         }
     }
 
-   /* @Test
-    fun `check an update of a QA status and the setting of the active dataset`() {
-        val updatedQaStatus = QaStatus.Accepted
-
-        // hier einmal die elegantere Lösung für die Objekte zum mocken
-        val changedQaStatusDataInfoJSon = "json/services/ChangedQaStatusDataInformation.json"
-        val changedQaStatusDataInfo =
-            objectMapper
-                .readValue(getJsonString(changedQaStatusDataInfoJSon), DataMetaInformationEntity::class.java)
-        val changedQaStatusDataId = changedQaStatusDataInfo.dataId
-        val currentlyActiveDataInfoJSon = "json/services/CurrentlyActiveDataInformation.json"
-        val currentlyActiveDataInfo =
-            objectMapper
-                .readValue(getJsonString(currentlyActiveDataInfoJSon), DataMetaInformationEntity::class.java)
-        val currentlyActiveDataId = currentlyActiveDataInfo.dataId
-
-        // die Variante aus Verzweiflung, weil ich nicht weiß wieso der Test failed. Verstehe aber auch nicht so ganz
-        // den Aufbau der Entities, weil die gegenseitig ineinander vorkommen.
-        val storedCompanyEntity =
-            StoredCompanyEntity(
-                "companyId", "companyName",
-                null, null, "AG", "Berlin",
-                "10961", "C", "B", mutableListOf(), "Lei",
-                mutableListOf(), "DE", false, null,
-            )
-        val dataMetaInformationEntityPending =
-            DataMetaInformationEntity(
-                changedQaStatusDataId, storedCompanyEntity, "sfdr",
-                "q123", 128739210, "2022", false, QaStatus.Pending,
-            )
-        val dataMetaInformationEntityActive =
-            DataMetaInformationEntity(
-                currentlyActiveDataId, storedCompanyEntity, "sfdr",
-                "q123", 128739210, "2022", true, QaStatus.Accepted,
-            )
-
-        val messageWithChangedQAStatus =
-            objectMapper.writeValueAsString(
-                QaStatusChangeMessage(
-                    changedQaStatusDataId,
-                    updatedQaStatus,
-                    currentlyActiveDataId,
-                ),
-            )
-        `when`(
-            mockMetaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId),
-        ).thenReturn(
-            dataMetaInformationEntityPending,
-        )
-        `when`(
-            mockMetaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId),
-        ).thenReturn(
-            dataMetaInformationEntityActive,
-        )
-
-        messageQueueListenerForDataManager.changeQaStatus(
-            messageWithChangedQAStatus,
-            "",
-            MessageType.QA_STATUS_CHANGED,
-        )
-
-        // assertions fehlen
-    }*/
-
     @Test
     fun `check a MessageQueueRejectException if there does not exist any data for given data Id`() {
         val changedQaStatusDataId = "453545"
@@ -356,7 +292,31 @@ class DataManagerTest(
     }
 
     @Test
-    fun `check an AmqpRejectAndDontRequeueException if one of the data ids is empty`() {
+    fun `test that AmqpRejectAndDontRequeueException is thrown if data id for new active dataset is empty`() {
+        val messageWithEmptyDataIDs =
+            objectMapper.writeValueAsString(
+                QaStatusChangeMessage(
+                    changedQaStatusDataId = "1273091",
+                    updatedQaStatus = QaStatus.Accepted,
+                    currentlyActiveDataId = "",
+                ),
+            )
+        val thrown =
+            assertThrows<AmqpRejectAndDontRequeueException> {
+                messageQueueListenerForDataManager.changeQaStatus(
+                    messageWithEmptyDataIDs,
+                    "",
+                    MessageType.QA_STATUS_CHANGED,
+                )
+            }
+        assertEquals(
+            "Message was rejected: Provided data ID to newly active dataset is empty",
+            thrown.message,
+        )
+    }
+
+    @Test
+    fun `test that AmqpRejectAndDontRequeueException is thrown if the data id for changed QA status is empty`() {
         val messageWithEmptyDataIDs =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
@@ -374,15 +334,32 @@ class DataManagerTest(
                 )
             }
         assertEquals(
-            "Message was rejected: At least one of the provided Data Ids is empty",
+            "Message was rejected: Provided data ID to change qa status dataset is empty",
             thrown.message,
         )
     }
 
-/*    private fun getJsonString(resourceFile: String): String =
-        objectMapper
-            .readTree(
-                this.javaClass.classLoader.getResourceAsStream(resourceFile)
-                    ?: throw IllegalArgumentException("Could not load the resource file"),
-            ).toString()*/
+    @Test
+    fun `test changing the QA status of an existing dataset to Accepted and making it active does not throw error`() {
+        val newQaStatus = QaStatus.Accepted
+        val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
+        val dataId =
+            dataManager.processDataStorageRequest(
+                storableDataSetForNonFinancials,
+                false,
+                correlationId,
+            )
+
+        val messageWithChangedQAStatus =
+            objectMapper.writeValueAsString(
+                QaStatusChangeMessage(
+                    dataId,
+                    newQaStatus,
+                    dataId,
+                ),
+            )
+        assertDoesNotThrow {
+            messageQueueListenerForDataManager.changeQaStatus(messageWithChangedQAStatus, "", MessageType.QA_STATUS_CHANGED)
+        }
+    }
 }

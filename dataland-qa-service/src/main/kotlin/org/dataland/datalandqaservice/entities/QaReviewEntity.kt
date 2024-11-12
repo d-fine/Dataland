@@ -19,22 +19,22 @@ data class QaReviewEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val eventId: UUID? = null,
-    @Column(name = "data_id")
+    @Column(name = "data_id", nullable = false)
     val dataId: String,
-    @Column(name = "company_id")
+    @Column(name = "company_id", nullable = false)
     val companyId: String,
-    @Column(name = "company_name")
+    @Column(name = "company_name", nullable = false)
     val companyName: String,
-    @Column(name = "data_type")
+    @Column(name = "data_type", nullable = false)
     val dataType: DataTypeEnum,
-    @Column(name = "reporting_period")
+    @Column(name = "reporting_period", nullable = false)
     val reportingPeriod: String,
-    @Column(name = "timestamp")
+    @Column(name = "timestamp", nullable = false)
     val timestamp: Long,
-    @Column(name = "qa_status")
+    @Column(name = "qa_status", nullable = false)
     var qaStatus: QaStatus,
-    @Column(name = "reviewer_id")
+    @Column(name = "reviewer_id", nullable = false)
     val reviewerId: String,
-    @Column(name = "comment", columnDefinition = "TEXT")
+    @Column(name = "comment", columnDefinition = "TEXT", nullable = true)
     val comment: String?,
 )

@@ -166,10 +166,10 @@ class MessageQueueListenerForDataManager(
         val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
 
         if (changedQaStatusDataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID to changed qa status dataset is empty")
+            throw MessageQueueRejectException("Provided data ID to change qa status dataset is empty")
         }
         if (currentlyActiveDataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID to currently active dataset is empty")
+            throw MessageQueueRejectException("Provided data ID to newly active dataset is empty")
         }
 
         messageQueueUtils.rejectMessageOnException {
