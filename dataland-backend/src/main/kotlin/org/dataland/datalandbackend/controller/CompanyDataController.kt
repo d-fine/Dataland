@@ -1,5 +1,4 @@
 package org.dataland.datalandbackend.controller
-import org.dataland.datalandbackend.annotations.DataTypesExtractor
 import org.dataland.datalandbackend.api.CompanyApi
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.CompanyIdentifierEntityId
@@ -17,7 +16,6 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -55,15 +53,8 @@ class CompanyDataController(
     }
 
     private fun checkDataTypes(dataTypes: Set<DataType>?) {
-        val allowedDataTypes = DataTypesExtractor().getAllDataTypes()
         dataTypes?.forEach {
-            val dataType = it.toString()
-            if (!allowedDataTypes.contains(dataType)) {
-                throw InvalidInputApiException(
-                    "$dataType is not a recognised dataType",
-                    "$dataType is not a valid dataType. Please consult the API Reference to find a list of allowed values",
-                )
-            }
+            it.checkDataType()
         }
     }
 

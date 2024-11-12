@@ -116,7 +116,9 @@ class CompanyQueryManager(
         viewingUser: DatalandAuthentication? = null,
     ): StoredCompany {
         val searchResult = getCompanyById(companyId)
-        return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel(viewingUser)
+        val filledCompany = fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel(viewingUser)
+        val onlyFrameworkData = filledCompany.dataRegisteredByDataland.filter { it.dataType.isFramework() }
+        return filledCompany.copy(dataRegisteredByDataland = onlyFrameworkData)
     }
 
     /**

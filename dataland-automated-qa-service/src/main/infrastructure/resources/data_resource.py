@@ -66,7 +66,7 @@ class DataResource(Resource):
             self.data = _get_data(data_type=self.meta_info.data_type, data_id=self.id, client=backend_client).data
         except ValueError as e:
             logging.info(f"Exception caught while retrieving metadata': {e}.")
-            self.data = _get_datapoint(data_id=self.id, client=backend_client)
+            #self.data = _get_datapoint(data_id=self.id, client=backend_client)
 
 
 def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient) -> any:

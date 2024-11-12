@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.model
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 import org.dataland.datalandbackend.annotations.DataTypesExtractor
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackend.annotations.DataType as DataTypeAnnotation
 
 /**
@@ -46,4 +47,15 @@ data class DataType
         }
 
         override fun toString(): String = name
+
+        fun isFramework(): Boolean = allowedDataTypes.contains(name)
+
+        fun checkDataType() {
+            if (!isFramework()) {
+                throw InvalidInputApiException(
+                    "$name is not a recognised dataType",
+                    "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values",
+                )
+            }
+        }
     }
