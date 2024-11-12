@@ -29,6 +29,10 @@ sequenceDiagram
     mq -) storage: Receive 'Public Data received'
     deactivate mq
     activate storage
+    storage ->> backend: Get Dataset from Temporary Storage
+    activate backend
+    backend -->> storage: Dataset
+    deactivate backend
     storage ->> storage: Store Dataset in Database
     storage --) mq: Send 'Data Stored'
     activate mq
