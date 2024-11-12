@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.utils.IdUtils
@@ -21,6 +22,7 @@ import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -339,16 +341,34 @@ class DataManagerTest(
         )
     }
 
-    @Test
-    fun `test changing the QA status of an existing dataset to Accepted and making it active does not throw error`() {
-        val newQaStatus = QaStatus.Accepted
-        val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
-        val dataId =
-            dataManager.processDataStorageRequest(
-                storableDataSetForNonFinancials,
-                false,
-                correlationId,
+    private fun createNewDataMetaInformationWithQaStatus(
+        dataId: String,
+        qaStatus: QaStatus,
+    ) {
+        val companyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(1).first()
+        val company: StoredCompanyEntity = companyAlterationManager.addCompany(companyInformation)
+
+        val datasetToBeUpdated =
+            DataMetaInformationEntity(
+                dataId = dataId,
+                company = company,
+                dataType = "sfdr",
+                uploadTime = Instant.now().toEpochMilli(),
+                uploaderUserId = "dummyUserId",
+                qaStatus = qaStatus,
+                reportingPeriod = "2023",
+                currentlyActive = false,
             )
+
+        this.dataMetaInformationManager.storeDataMetaInformation(datasetToBeUpdated)
+    }
+
+    @Test
+    fun `test changing the QA status of a pending dataset to Accepted and setting it to active`() {
+        val dataId = "someDataId"
+        val newQaStatus = QaStatus.Accepted
+
+        createNewDataMetaInformationWithQaStatus(dataId, QaStatus.Pending)
 
         val messageWithChangedQAStatus =
             objectMapper.writeValueAsString(
@@ -361,5 +381,40 @@ class DataManagerTest(
         assertDoesNotThrow {
             messageQueueListenerForDataManager.changeQaStatus(messageWithChangedQAStatus, "", MessageType.QA_STATUS_CHANGED)
         }
+
+        val updatedDataset = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+
+        assertEquals(QaStatus.Accepted, updatedDataset.qaStatus)
+        assertNotNull(updatedDataset.currentlyActive)
+        assertEquals(true, updatedDataset.currentlyActive)
+    }
+
+    @Test
+    fun `test rejecting an accepted dataset, setting it to inactive, and setting a second dataset to active`() {
+        val oldDataId = "oldDatasetDataId"
+        val newDataId = "newDatasetDataId"
+
+        createNewDataMetaInformationWithQaStatus(oldDataId, QaStatus.Accepted)
+        createNewDataMetaInformationWithQaStatus(newDataId, QaStatus.Accepted)
+
+        val messageWithChangedQAStatus =
+            objectMapper.writeValueAsString(
+                QaStatusChangeMessage(
+                    oldDataId,
+                    QaStatus.Rejected,
+                    newDataId,
+                ),
+            )
+        assertDoesNotThrow {
+            messageQueueListenerForDataManager.changeQaStatus(messageWithChangedQAStatus, "", MessageType.QA_STATUS_CHANGED)
+        }
+
+        val rejectedInactiveDataset = dataMetaInformationManager.getDataMetaInformationByDataId(oldDataId)
+        val acceptedActiveDataset = dataMetaInformationManager.getDataMetaInformationByDataId(newDataId)
+
+        assertEquals(QaStatus.Rejected, rejectedInactiveDataset.qaStatus)
+        assertEquals(false, rejectedInactiveDataset.currentlyActive)
+        assertEquals(QaStatus.Accepted, acceptedActiveDataset.qaStatus)
+        assertEquals(true, acceptedActiveDataset.currentlyActive)
     }
 }
