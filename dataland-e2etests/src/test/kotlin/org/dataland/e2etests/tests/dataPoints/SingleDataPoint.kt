@@ -19,7 +19,7 @@ class SingleDataPoint {
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData.getCompanyInformationWithoutIdentifiers(1)
 
     @Test
-    fun `up- and download a single data point`() {
+    fun `up and download a single data point`() {
         val jwtHelper = JwtAuthenticationHelper()
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
