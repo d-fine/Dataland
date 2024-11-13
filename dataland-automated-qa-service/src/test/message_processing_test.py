@@ -52,7 +52,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_data_key,
             False,
             p.mq_manual_qa_requested_exchange,
-            p.mq_automated_qa_complete_type,
+            p.mq_manual_qa_requested_type,
             build_qa_status_changed_message_body(QaStatus.ACCEPTED, False),
             lambda resource, correlation_id: QaStatus.ACCEPTED,  # noqa: ARG005
         )
@@ -62,7 +62,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_data_key,
             False,
             p.mq_manual_qa_requested_exchange,
-            p.mq_automated_qa_complete_type,
+            p.mq_manual_qa_requested_type,
             build_qa_status_changed_message_body(QaStatus.REJECTED, False),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )

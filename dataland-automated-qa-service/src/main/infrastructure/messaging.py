@@ -31,10 +31,10 @@ class AutomatedQaServiceMessage:
         :param bypass_qa: boolean
         :param comment: comment
         """
-        self.resource_id = resource_id
-        self.qa_status = qa_status
-        self.reviewer_id = reviewer_id
-        self.bypass_qa = bypass_qa
+        self.resourceId = resource_id
+        self.qaStatus = qa_status
+        self.reviewerId = reviewer_id
+        self.bypassQa = bypass_qa
         self.comment = comment
 
     def to_dict(self) -> dict:
@@ -42,7 +42,7 @@ class AutomatedQaServiceMessage:
         Returns object as dict
         :return: dict
         """
-        return {**vars(self), "qa_status": self.qa_status.value if self.qa_status else self.qa_status}
+        return {**vars(self), "qaStatus": self.qaStatus.value if self.qaStatus else self.qaStatus}
 
 
 def qa_data(channel: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body: bytes) -> None:
@@ -100,12 +100,12 @@ def _assert_status_is_valid_for_qa_completion(status: QaStatus) -> None:
 
 
 def _send_message(
-        channel: BlockingChannel,
-        exchange: str,
-        routing_key: str,
-        message_type: str,
-        message: dict,
-        correlation_id: str,
+    channel: BlockingChannel,
+    exchange: str,
+    routing_key: str,
+    message_type: str,
+    message: dict,
+    correlation_id: str,
 ) -> None:
     channel.basic_publish(
         exchange=exchange,
@@ -121,9 +121,37 @@ def _send_message(
     )
 
 
+def _send_automated_qa_complete_message(
+    channel: BlockingChannel,
+    routing_key: str,
+    resource_id: str,
+    qa_status: QaStatus | None,
+    reviewer_id: str,
+    correlation_id: str,
+    bypass_qa: bool,
+    comment: str = ""
+) -> None:
+    """
+    Function is used in case of bypassQA false: Automated QA Service sends message to inform Manual QA Service that
+    automated QA process is complete, and Manual QA process can begin.
+    Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_automated_qa_complete_type'
+    """
+    message = AutomatedQaServiceMessage(resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id,
+                                        bypass_qa=bypass_qa, comment=comment).to_dict()
+
+    _send_message(
+        channel=channel,
+        exchange=p.mq_manual_qa_requested_exchange,
+        routing_key=routing_key,
+        message_type=p.mq_manual_qa_requested_type,
+        message=message,
+        correlation_id=correlation_id,
+    )
+
+
+
 def _send_persist_automated_qa_result_message(
         channel: BlockingChannel,
-        routing_key: str,
         resource_id: str,
         qa_status: QaStatus,
         reviewer_id: str,
@@ -140,50 +168,22 @@ def _send_persist_automated_qa_result_message(
     _send_message(
         channel=channel,
         exchange=p.mq_manual_qa_requested_exchange,
-        routing_key=routing_key,
+        routing_key=p.mq_persist_automated_qa_result_key,
         message_type=p.mq_persist_automated_qa_result,
         message=message,
         correlation_id=correlation_id,
     )
 
 
-def _send_automated_qa_complete_message(
-        channel: BlockingChannel,
-        routing_key: str,
-        resource_id: str,
-        qa_status: QaStatus | None,
-        reviewer_id: str,
-        correlation_id: str,
-        bypass_qa: bool,
-        comment: str = ""
-) -> None:
-    """
-    Function is used in case of bypassQA false: Automated QA Service sends message to inform Manual QA Service that
-    automated QA process is complete, and Manual QA process can begin.
-    Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_automated_qa_complete_type'
-    """
-    message = AutomatedQaServiceMessage(resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id,
-                                        bypass_qa=bypass_qa, comment=comment).to_dict()
-
-    _send_message(
-        channel=channel,
-        exchange=p.mq_manual_qa_requested_exchange,
-        routing_key=routing_key,
-        message_type=p.mq_automated_qa_complete_type,
-        message=message,
-        correlation_id=correlation_id,
-    )
-
-
 def process_qa_request(
-        channel: BlockingChannel,
-        method: Basic.Deliver,
-        properties: BasicProperties,
-        routing_key: str,
-        resource_type: str,
-        bypass_qa: bool,
-        resource: Resource,
-        validate: Callable[[Resource, str], QaStatus],
+    channel: BlockingChannel,
+    method: Basic.Deliver,
+    properties: BasicProperties,
+    routing_key: str,
+    resource_type: str,
+    bypass_qa: bool,
+    resource: Resource,
+    validate: Callable[[Resource, str], QaStatus],
 ) -> None:
     """
     This method is a wrapper for the validation.
@@ -206,7 +206,6 @@ def process_qa_request(
         logging.info(f"Bypassing QA for {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
         _send_persist_automated_qa_result_message(
             channel=channel,
-            routing_key=routing_key,
             resource_id=resource.id,
             qa_status=QaStatus.ACCEPTED,
             reviewer_id="automated-qa-service",

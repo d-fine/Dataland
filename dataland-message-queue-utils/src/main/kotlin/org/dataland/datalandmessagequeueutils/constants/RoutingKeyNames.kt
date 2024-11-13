@@ -9,6 +9,7 @@ object RoutingKeyNames {
     const val DATA = "data"
     const val INTERNAL_EMAIL = "internalEmail"
     const val TEMPLATE_EMAIL = "templateEmail"
+    const val PERSIST_AUTOMATED_QA_RESULT = "persistAutomatedQaResult"
     const val META_DATA_PERSISTED = "metaDataPersisted"
     const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
 }

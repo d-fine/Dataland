@@ -29,4 +29,4 @@ def validate_document(resource: DocumentResource, correlation_id: str) -> QaStat
     :returns: the result of the review (must be either Accepted or Rejected)
     """
     logging.info(f"Auto-forwarding document with id {resource.id} to manual Qa. (Correlation ID: {correlation_id})")
-    raise AutomaticQaNotPossibleError("dummy implementation")
+    raise AutomaticQaNotPossibleError("Automatic QA not possible.")
