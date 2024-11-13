@@ -90,10 +90,9 @@ class PublicDataUploadProcessorTest {
     fun `do not create an elementary event when the dataset has been rejected`() {
         val qaCompletedMessage =
             AutomatedQaCompletedMessage(
-                dataId.toString(),
-                QaStatus.Rejected,
-                "reviewerId",
-                correlationId = "",
+                resourceId = dataId.toString(),
+                qaStatus = QaStatus.Rejected,
+                reviewerId = "reviewerId",
                 bypassQa = false,
                 comment = "message",
             )
@@ -108,11 +107,10 @@ class PublicDataUploadProcessorTest {
     fun `create an elementary event when the dataset has been approved`() {
         val qaCompletedMessage =
             AutomatedQaCompletedMessage(
-                dataId.toString(),
-                QaStatus.Accepted,
-                "reviewerId",
+                resourceId = dataId.toString(),
+                qaStatus = QaStatus.Accepted,
+                reviewerId = "reviewerId",
                 bypassQa = false,
-                correlationId = "",
                 comment = "message",
             )
         val payload = objectMapper.writeValueAsString(qaCompletedMessage)
