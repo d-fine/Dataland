@@ -95,7 +95,7 @@ function checkIfContentIsIdentical(
  */
 function ignoredValue(path: string, ignoreFields?: Array<string>): boolean {
   if (ignoreFields) {
-    return ignoreFields.some((field) => path.endsWith("."+field));
+    return ignoreFields.some((field) => path.endsWith('.' + field));
   }
-  return false
+  return false;
 }
