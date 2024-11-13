@@ -104,7 +104,7 @@ def _send_message(
         exchange: str,
         routing_key: str,
         message_type: str,
-        message: dict[str, str | QaStatus],
+        message: str,
         correlation_id: str,
 ) -> None:
     channel.basic_publish(
@@ -151,7 +151,7 @@ def _send_automated_qa_complete_message(
         channel: BlockingChannel,
         routing_key: str,
         resource_id: str,
-        qa_status: QaStatus,
+        qa_status: QaStatus | None,
         reviewer_id: str,
         correlation_id: str,
         bypass_qa: bool,

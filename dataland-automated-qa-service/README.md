@@ -1,9 +1,9 @@
 # Setup IntelliJ
 
-To make this subproject compatible with IntelliJ, there are a few steps to do:
+To make this subproject compatible with IntelliJ, there are a few steps to take:
 - Install the Jetbrains Python plugin for IntelliJ
 - Using `Ctrl + Shift + Alt + S` add the subproject as a submodule.
-Select a python interpreter and setup a venv.
+Select a python interpreter and set up a venv.
 - Before applying the changes, in the dependencies tab, also select your created Python interpreter.
 - Install the requirements listed in `./requirements.txt`. There should be an interactive banner when you open the file.
 
