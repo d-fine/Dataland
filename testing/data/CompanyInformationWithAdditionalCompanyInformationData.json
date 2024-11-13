@@ -107,7 +107,7 @@
 						},
 						"comment": "compress cross-platform microchip",
 						"quality": "Audited",
-						"currency": null
+						"currency": "QAR"
 					},
 					"evic": {
 						"value": 962349269.54,
@@ -359,7 +359,7 @@
 						},
 						"comment": "bypass 1080p capacitor",
 						"quality": "NoDataFound",
-						"currency": null
+						"currency": "ZWL"
 					},
 					"debt": {
 						"value": null,
@@ -372,7 +372,7 @@
 						},
 						"comment": "bypass haptic alarm",
 						"quality": "Audited",
-						"currency": null
+						"currency": "CRC"
 					},
 					"balanceSheetTotal": {
 						"value": 9645959993.36,
@@ -515,7 +515,7 @@
 						},
 						"comment": "compress open-source microchip",
 						"quality": "Estimated",
-						"currency": null
+						"currency": "TMT"
 					}
 				}
 			}
@@ -615,7 +615,7 @@
 						},
 						"comment": "navigate mobile driver",
 						"quality": "Incomplete",
-						"currency": null
+						"currency": "RSD"
 					},
 					"balanceSheetTotal": {
 						"value": 2692419725.93,
@@ -842,7 +842,7 @@
 						},
 						"comment": "index 1080p microchip",
 						"quality": "NoDataFound",
-						"currency": null
+						"currency": "ARS"
 					},
 					"debt": null,
 					"balanceSheetTotal": {
@@ -978,7 +978,7 @@
 						},
 						"comment": "quantify cross-platform interface",
 						"quality": "NoDataFound",
-						"currency": null
+						"currency": "DZD"
 					}
 				}
 			}
@@ -1381,7 +1381,7 @@
 						},
 						"comment": "index digital sensor",
 						"quality": "Reported",
-						"currency": null
+						"currency": "MRU"
 					},
 					"evic": {
 						"value": 2988300882.28,
@@ -1494,7 +1494,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": null
+						"currency": "BND"
 					},
 					"evic": null
 				}
@@ -1761,7 +1761,7 @@
 						},
 						"comment": "bypass 1080p hard drive",
 						"quality": "Incomplete",
-						"currency": null
+						"currency": "PEN"
 					},
 					"evic": {
 						"value": 651104243,
@@ -2231,7 +2231,7 @@
 						},
 						"comment": "quantify multi-byte transmitter",
 						"quality": null,
-						"currency": null
+						"currency": "KGS"
 					}
 				}
 			}
@@ -2331,7 +2331,7 @@
 						},
 						"comment": "reboot open-source microchip",
 						"quality": "Incomplete",
-						"currency": null
+						"currency": "AUD"
 					},
 					"debt": {
 						"value": 8375473483.47,
@@ -2687,7 +2687,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": null
+						"currency": "DOP"
 					},
 					"debt": {
 						"value": 219999807.88,
@@ -2811,7 +2811,7 @@
 						},
 						"comment": "input multi-byte sensor",
 						"quality": null,
-						"currency": null
+						"currency": "UYU"
 					},
 					"debt": null,
 					"balanceSheetTotal": {
@@ -2914,7 +2914,7 @@
 						},
 						"comment": "hack haptic feed",
 						"quality": "NoDataFound",
-						"currency": null
+						"currency": "SOS"
 					},
 					"debt": null,
 					"balanceSheetTotal": {
@@ -3495,7 +3495,7 @@
 						},
 						"comment": "generate cross-platform bus",
 						"quality": "Estimated",
-						"currency": null
+						"currency": "BZD"
 					},
 					"balanceSheetTotal": {
 						"value": 7770242469.85,
@@ -3521,7 +3521,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": null
+						"currency": "AUD"
 					}
 				}
 			}
@@ -3620,7 +3620,7 @@
 						},
 						"comment": "compress auxiliary alarm",
 						"quality": "Audited",
-						"currency": null
+						"currency": "EUR"
 					},
 					"evic": {
 						"value": 6877565183.68,
@@ -3747,7 +3747,7 @@
 						},
 						"comment": "calculate solid state microchip",
 						"quality": "Incomplete",
-						"currency": null
+						"currency": "CRC"
 					},
 					"evic": null
 				}
@@ -4389,7 +4389,7 @@
 						},
 						"comment": "compress redundant feed",
 						"quality": "Reported",
-						"currency": null
+						"currency": "JOD"
 					}
 				}
 			}
@@ -4480,7 +4480,7 @@
 						},
 						"comment": "navigate haptic driver",
 						"quality": "Incomplete",
-						"currency": null
+						"currency": "SLE"
 					},
 					"evic": {
 						"value": 7269560070.71,
@@ -4841,7 +4841,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": null
+						"currency": "TZS"
 					},
 					"debt": {
 						"value": 9719134510.97,
@@ -4862,7 +4862,7 @@
 						},
 						"comment": "program haptic bus",
 						"quality": "NoDataFound",
-						"currency": null
+						"currency": "KWD"
 					}
 				}
 			}
@@ -5074,7 +5074,7 @@
 						},
 						"comment": "bypass mobile transmitter",
 						"quality": "NoDataFound",
-						"currency": null
+						"currency": "SRD"
 					},
 					"balanceSheetTotal": {
 						"value": null,
@@ -5087,7 +5087,7 @@
 						},
 						"comment": "quantify mobile port",
 						"quality": "Reported",
-						"currency": null
+						"currency": "CVE"
 					},
 					"evic": {
 						"value": 6813253161.96,
@@ -5802,7 +5802,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": null
+						"currency": "MYR"
 					},
 					"balanceSheetTotal": {
 						"value": 5356211778.71,

@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
@@ -118,6 +119,15 @@ object JsonOperations {
     ) {
         val classForValidation = Class.forName(className).kotlin.java
         val validator = Validation.buildDefaultValidatorFactory().validator
+        try {
+            objectMapper.readValue(jsonData, classForValidation)
+        } catch (ex: UnrecognizedPropertyException) {
+            logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): ${ex.message}")
+            throw InvalidInputApiException(
+                summary = "Validation failed for data point.",
+                message = ex.message ?: "Validation failed due to unrecognized properties.",
+            )
+        }
         val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
         val violations = validator.validate(dataPointObject)
         if (violations.isNotEmpty()) {
