@@ -29,11 +29,13 @@ export function goToEditFormOfMostRecentDatasetForCompanyAndFramework(
  * @param objA the first object of the comparison
  * @param objB the second object of the comparison
  * @param path is the path of the current key of object A that is being compared to object B
+ * @param ignoreFields optional list of path endings to be ignored in the comparison
  */
 export function compareObjectKeysAndValuesDeep(
   objA: Record<string, object>,
   objB: Record<string, object>,
-  path = ''
+  path = '',
+  ignoreFields?: Array<string>
 ): void {
   const keysA = Object.keys(objA);
   const keysB = Object.keys(objB);
@@ -41,17 +43,17 @@ export function compareObjectKeysAndValuesDeep(
   for (const key of keysA) {
     const newPath = path ? `${path}.${key}` : key;
 
-    if (!keysB.includes(key) && !key.endsWith('publicationDate')) {
+    if (!keysB.includes(key) && !ignoredValue(key, ignoreFields)) {
       throw new Error(`A field with the key ${newPath} exists in A but not in B`);
     }
 
     const valueA = objA[key] as Record<string, object>;
     const valueB = objB[key] as Record<string, object>;
-    checkIfContentIsIdentical(valueA, valueB, newPath);
+    checkIfContentIsIdentical(valueA, valueB, newPath, ignoreFields);
   }
 
   for (const key of keysB) {
-    if (!keysA.includes(key) && !key.endsWith('publicationDate')) {
+    if (!keysA.includes(key) && !ignoredValue(key, ignoreFields)) {
       throw new Error(`A field with the key ${path}.${key} exists in B but not in A`);
     }
   }
@@ -61,24 +63,38 @@ export function compareObjectKeysAndValuesDeep(
  * @param valueA the first value of the comparison
  * @param valueB the second value of the comparison
  * @param newPath is the path of the current key of value A that is being compared to value B
+ * @param ignoreFields optional list of path endings to be ignored in the comparison
  */
 function checkIfContentIsIdentical(
   valueA: Record<string, object>,
   valueB: Record<string, object>,
-  newPath: string
+  newPath: string,
+  ignoreFields?: Array<string>
 ): void {
   const throwErrorBecauseOfFieldValue = (fieldPath: string): void => {
     throw new Error(`Field ${fieldPath} is not equal.`);
   };
   if (typeof valueA === 'object' && typeof valueB === 'object') {
     if (valueA === null || valueB === null) {
-      if (valueA !== valueB && !newPath.endsWith('publicationDate')) {
+      if (valueA !== valueB && !ignoredValue(newPath, ignoreFields)) {
         throwErrorBecauseOfFieldValue(newPath);
       }
     } else {
       compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
     }
-  } else if (valueA !== valueB && !newPath.endsWith('publicationDate')) {
+  } else if (valueA !== valueB && !ignoredValue(newPath, ignoreFields)) {
     throwErrorBecauseOfFieldValue(newPath);
   }
+}
+
+/**
+ * This method checks if a field should be ignored in the comparison, if no ignoreFields are provided it will return false
+ * @param path the path of the field
+ * @param ignoreFields optional list of path endings to be ignored in the comparison
+ */
+function ignoredValue(path: string, ignoreFields?: Array<string>): boolean {
+  if (ignoreFields) {
+    return ignoreFields.some((field) => path.endsWith("."+field));
+  }
+  return false
 }
