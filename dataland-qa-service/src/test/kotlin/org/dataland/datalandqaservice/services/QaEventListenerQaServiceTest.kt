@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -44,7 +45,16 @@ class QaEventListenerQaServiceTest(
     lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
     val dataId = "TestDataId"
-    val noIdPayload = JSONObject(mapOf("identifier" to "", "comment" to "test")).toString()
+    val noIdPayload =
+        objectMapper.writeValueAsString(
+            AutomatedQaCompletedMessage(
+                resourceId = "",
+                qaStatus = QaStatus.Accepted,
+                reviewerId = AUTOMATED_QA,
+                bypassQa = true,
+                comment = "test",
+            ),
+        )
     val correlationId = "correlationId"
 
     private fun getPersistAutomatedQaResultMessage(
@@ -83,9 +93,9 @@ class QaEventListenerQaServiceTest(
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService
-                    .addDataSetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.AUTOMATED_QA_COMPLETED)
+                    .addDatasetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.AUTOMATED_QA_COMPLETED)
             }
-        Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
+        Assertions.assertEquals("Message was rejected: Provided data ID is empty (correlationId: $correlationId)", thrown.message)
     }
 
     @Test
@@ -109,7 +119,7 @@ class QaEventListenerQaServiceTest(
         )
         val dummyPayload = JSONObject(mapOf("dataId" to dataId, "bypassQa" to true.toString())).toString()
         assertThrows<AmqpException> {
-            qaEventListenerQaService.addDataSetToQaReviewRepositoryWithStatusPending(dummyPayload, correlationId, MessageType.DATA_STORED)
+            qaEventListenerQaService.addDatasetToQaReviewRepositoryWithStatusPending(dummyPayload, correlationId, MessageType.DATA_STORED)
         }
     }
 
@@ -121,7 +131,7 @@ class QaEventListenerQaServiceTest(
                     noIdPayload, correlationId, MessageType.AUTOMATED_QA_COMPLETED,
                 )
             }
-        Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
+        Assertions.assertEquals("Message was rejected: Provided document ID is empty (correlationId: $correlationId)", thrown.message)
     }
 
     @Test
@@ -162,8 +172,8 @@ class QaEventListenerQaServiceTest(
             Assertions.assertEquals("accepted", it.comment)
         }
 
-        val rejectedStoredCompanyJSon = "json/services/StoredCompanyRejected.json"
-        val rejectedStoredCompany = objectMapper.readValue(getJsonString(rejectedStoredCompanyJSon), StoredCompany::class.java)
+        val rejectedStoredCompanyJson = "json/services/StoredCompanyRejected.json"
+        val rejectedStoredCompany = objectMapper.readValue(getJsonString(rejectedStoredCompanyJson), StoredCompany::class.java)
         val rejectedDataMetaInformation = rejectedStoredCompany.dataRegisteredByDataland[0]
         val rejectedDataId = rejectedDataMetaInformation.dataId
 
@@ -201,11 +211,23 @@ class QaEventListenerQaServiceTest(
                     bypassQa = false,
                 ),
             )
+        val acceptedStoredCompanyJson = "json/services/StoredCompanyAccepted.json"
+        val acceptedStoredCompany = objectMapper.readValue(getJsonString(acceptedStoredCompanyJson), StoredCompany::class.java)
+        val acceptedDataMetaInformation: DataMetaInformation = acceptedStoredCompany.dataRegisteredByDataland[0]
+        val acceptedDataId = acceptedDataMetaInformation.dataId
+
+        `when`(mockMetaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(acceptedDataMetaInformation)
+        `when`(mockCompanyDataControllerApi.getCompanyById(acceptedDataMetaInformation.companyId)).thenReturn(acceptedStoredCompany)
+
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
             persistAutomatedQaResultMessage, correlationId, MessageType.PERSIST_AUTOMATED_QA_RESULT,
         )
-        val qaReviewEntity = testQaReviewRepository.findByDataId(dataId)
-        Assertions.assertEquals(qaReviewEntity?.qaStatus, QaStatus.Accepted)
+
+        testQaReviewRepository.findByDataId(acceptedDataId)?.let {
+            Assertions.assertEquals(AUTOMATED_QA, it.reviewerId)
+            Assertions.assertEquals(acceptedDataId, it.dataId)
+            Assertions.assertEquals(QaStatus.Accepted, it.qaStatus)
+        }
     }
 
     private fun getJsonString(resourceFile: String): String =
