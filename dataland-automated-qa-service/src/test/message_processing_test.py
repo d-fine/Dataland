@@ -27,8 +27,8 @@ def mock_resource() -> Mock:
 
 
 def build_qa_status_changed_message_body(qa_result: QaStatus) -> bytes:
-    message = Automated_QA_Service_Message(
-        resourceId="dummy-id", qaStatus=qa_result, reviewerId="automated_qa_service", bypassQa=false
+    message = AutomatedQAServiceMessage(
+        resourceId="dummy-id", qaStatus=qa_result, reviewerId="automated_qa_service", bypassQa=False
     ).to_dict()
     return json.dumps(message).encode("UTF-8")
 
