@@ -91,6 +91,7 @@ function checkIfContentIsIdentical(
  * This method checks if a field should be ignored in the comparison, if no ignoreFields are provided it will return false
  * @param path the path of the field
  * @param ignoreFields optional list of path endings to be ignored in the comparison
+ * @returns true if the field should be ignored, false otherwise
  */
 function ignoredValue(path: string, ignoreFields?: Array<string>): boolean {
   if (ignoreFields) {
