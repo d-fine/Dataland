@@ -12,7 +12,7 @@ from main.validation.validate import validate_data, validate_document
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
 
 
-class Automated_QA_Service_Message:
+class AutomatedQaServiceMessage:
     """
     Class for message send to messageQueue by Automated QA Service
     """
@@ -22,15 +22,27 @@ class Automated_QA_Service_Message:
                  qa_status: QaStatus,
                  reviewer_id: str,
                  bypass_qa: bool = False,
-                 comment: str = ""):
+                 comment: str = "") -> None:
+        """
+        Class constructor
+        :param resource_id: data_id or document_id
+        :param qa_status: qa_status to be assigned; nullable
+        :param reviewer_id: reviewer_id
+        :param bypass_qa: boolean
+        :param comment: comment
+        """
         self.resource_id = resource_id
         self.qa_status = qa_status
         self.reviewer_id = reviewer_id
         self.bypass_qa = bypass_qa
         self.comment = comment
 
-    def to_dict(self):
-        return {**vars(self), 'qa_status': self.qa_status.value}
+    def to_dict(self) -> dict:
+        """
+        Returns object as dict
+        :return: dict
+        """
+        return {**vars(self), "qa_status": self.qa_status.value}
 
 
 def qa_data(channel: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body: bytes) -> None:
@@ -123,7 +135,7 @@ def _send_persist_automated_qa_result_message(
     the QA review as 'Accepted'
     Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_persist_automated_qa_result'
     """
-    message = str(Automated_QA_Service_Message(
+    message = str(AutomatedQaServiceMessage(
         resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa, ).to_dict())
     _send_message(
         channel=channel,
@@ -150,7 +162,7 @@ def _send_automated_qa_complete_message(
     automated QA process is complete, and Manual QA process can begin.
     Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_automated_qa_complete_type'
     """
-    message = str(Automated_QA_Service_Message(
+    message = str(AutomatedQaServiceMessage(
         resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa, comment=comment)
                   .to_dict())
     _send_message(
@@ -202,8 +214,8 @@ def process_qa_request(
             bypass_qa=True,
         )
     else:
-        logging.info(
-            f"Automatic QA Service evaluating {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
+        logging.info(f"Automatic QA Service evaluating {resource_type} with ID {resource.id}."
+                     f" (Correlation ID: {correlation_id})")
         try:
             validation_result = validate(resource, correlation_id)
             _assert_status_is_valid_for_qa_completion(validation_result)
@@ -222,7 +234,7 @@ def process_qa_request(
                 channel=channel,
                 routing_key=routing_key,
                 resource_id=resource.id,
-                qa_status=null,
+                qa_status=None,
                 reviewer_id="automated-qa-service",
                 correlation_id=correlation_id,
                 bypass_qa=False,
