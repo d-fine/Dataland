@@ -15,6 +15,9 @@ import java.time.LocalDate
 object JsonOperations {
     private val logger = LoggerFactory.getLogger(javaClass)
     private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
+    private const val PUBLICATION_DATE_FIELD = "publicationDate"
+    private const val FILE_REFERENCE_FIELD = "fileReference"
+    private const val DATA_SOURCE_FIELD = "dataSource"
 
     val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
@@ -136,7 +139,7 @@ object JsonOperations {
      * @return The company report or null if it could not be extracted
      */
     fun getCompanyReportFromDataSource(dataPointContent: String): CompanyReport? {
-        val dataSource = getJsonNodeFromString(dataPointContent).get("dataSource")
+        val dataSource = getJsonNodeFromString(dataPointContent).get(DATA_SOURCE_FIELD)
 
         if (dataSource == null || dataSource.isNull) {
             return null
@@ -173,8 +176,8 @@ object JsonOperations {
         while (fields.hasNext()) {
             val referencedReport = fields.next().value
             if (referencedReport is ObjectNode) {
-                val publicationDate = referencedReport.get("publicationDate")
-                val fileReference = referencedReport.get("fileReference")
+                val publicationDate = referencedReport.get(PUBLICATION_DATE_FIELD)
+                val fileReference = referencedReport.get(FILE_REFERENCE_FIELD)
                 if (publicationDate != null && publicationDate.isTextual) {
                     result[fileReference.asText()] = LocalDate.parse(publicationDate.asText())
                 }
@@ -218,10 +221,10 @@ object JsonOperations {
         fileReferenceToPublicationDate: Map<String, LocalDate>,
         currentNodeName: String,
     ) {
-        if (jsonNode.isObject && currentNodeName == "dataSource" && jsonNode.has("fileReference")) {
-            val fileReference = jsonNode.get("fileReference").asText()
+        if (jsonNode.isObject && currentNodeName == DATA_SOURCE_FIELD && jsonNode.has(FILE_REFERENCE_FIELD)) {
+            val fileReference = jsonNode.get(FILE_REFERENCE_FIELD).asText()
             if (fileReferenceToPublicationDate.containsKey(fileReference)) {
-                (jsonNode as ObjectNode).put("publicationDate", fileReferenceToPublicationDate[fileReference].toString())
+                (jsonNode as ObjectNode).put(PUBLICATION_DATE_FIELD, fileReferenceToPublicationDate[fileReference].toString())
             }
         } else {
             val fields = jsonNode.fields()
