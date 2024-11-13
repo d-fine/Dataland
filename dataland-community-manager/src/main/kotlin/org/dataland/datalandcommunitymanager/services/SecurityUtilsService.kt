@@ -139,23 +139,17 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns true if the user is not trying to patch the accessStatus
-     * @param accessStatusPatch the accessStatus of the patch
-     */
-    @Transactional
-    fun isNotTryingToPatchAccessStatus(accessStatusPatch: AccessStatus?): Boolean = accessStatusPatch == null
-
-    /**
-     * Returns true if the user is not trying to patch the request priority or admin comment
+     * Returns true if the user is not trying to patch the arguments
+     * @param accessStatus the accessStatus of the patch
      * @param requestPriority the requestPriority of the patch
      * @param adminComment the adminComment of the patch
      *
      */
-    @Transactional
-    fun isNotTryingToPatchRequestPriorityOrAdminComment(
+    fun isNotTryingToPatch(
+        accessStatus: AccessStatus?,
         requestPriority: RequestPriority?,
         adminComment: Comment?,
-    ): Boolean = requestPriority == null && adminComment == null
+    ): Boolean = accessStatus == null && requestPriority == null && adminComment == null
 
     /**
      * Returns true if the requesting user is company owner
@@ -192,13 +186,20 @@ class SecurityUtilsService(
      * @param requestStatus the request status of the patch request
      * @param contacts the contacts of the patch request
      * @param message the message of the patch request
+     * @param requestPriority the requestPriority of the patch
+     * @param adminComment the adminComment of the patch request
+     *
      */
-    fun areOnlyAuthorizedFieldsPatched(
+    fun isNotTryingToPatch(
         requestStatus: RequestStatus?,
         contacts: Set<String>?,
         message: String?,
         requestPriority: RequestPriority?,
         adminComment: Comment?,
     ): Boolean =
-        requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank() && requestPriority == null && adminComment == null
+        requestStatus == null &&
+            contacts.isNullOrEmpty() &&
+            message.isNullOrBlank() &&
+            requestPriority == null &&
+            adminComment == null
 }

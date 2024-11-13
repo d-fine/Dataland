@@ -171,13 +171,13 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or " +
             "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.isNotTryingToPatchAccessStatus(#accessStatus) and " +
-            "@SecurityUtilsService.isNotTryingToPatchRequestPriorityOrAdminComment(#requestPriority, #adminComment) and " +
+            "@SecurityUtilsService.isNotTryingToPatch(#accessStatus,#requestPriority, #adminComment) and " +
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
-            "#dataRequestId, #requestStatus, #contacts,#message)" +
+            "#dataRequestId, #requestStatus, #contacts, #message)" +
             ") or" +
             "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message, #requestPriority, #adminComment) ",
+            "@SecurityUtilsService.isNotTryingToPatch(" +
+            "#requestStatus, #contacts, #message, #requestPriority, #adminComment) ",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
