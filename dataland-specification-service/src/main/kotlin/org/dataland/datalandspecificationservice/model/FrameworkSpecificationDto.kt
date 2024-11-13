@@ -61,6 +61,15 @@ fun FrameworkSpecification.toDto(
 }
 
 /**
+ * Convert a framework specification to a simplified DTO.
+ */
+fun FrameworkSpecification.toSimpleDto(baseUrl: String): SimpleFrameworkSpecificationDto =
+    SimpleFrameworkSpecificationDto(
+        frameworkSpecification = this.getRef(baseUrl),
+        name = this.name,
+    )
+
+/**
  * A DTO for a framework specification.
  */
 data class FrameworkSpecificationDto(
@@ -69,4 +78,12 @@ data class FrameworkSpecificationDto(
     val businessDefinition: String,
     val schema: String,
     val referencedReportJsonPath: String?,
+)
+
+/**
+ * A simplified DTO for framework specification.
+ */
+data class SimpleFrameworkSpecificationDto(
+    val frameworkSpecification: IdWithRef,
+    val name: String,
 )

@@ -8,7 +8,9 @@ import org.dataland.datalandspecificationservice.api.SpecificationApi
 import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
 import org.dataland.datalandspecificationservice.model.DataPointTypeSpecificationDto
 import org.dataland.datalandspecificationservice.model.FrameworkSpecificationDto
+import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecificationDto
 import org.dataland.datalandspecificationservice.model.toDto
+import org.dataland.datalandspecificationservice.model.toSimpleDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
@@ -35,6 +37,19 @@ class SpecificationController(
                 "Data Point Type Specification with id $dataPointTypeSpecificationId not found",
                 "The data point type specification with the given id was not found in the database.",
             )
+
+    override fun doesFrameworkSpecificationExist(frameworkSpecificationId: String) {
+        if (!database.frameworkSpecifications.containsKey(frameworkSpecificationId)) {
+            throw ResourceNotFoundApiException(
+                "Framework Specification with id $frameworkSpecificationId not found",
+                "The framework specification with the given id was not found in the database.",
+            )
+        }
+    }
+
+    override fun listFrameworkSpecifications(): ResponseEntity<List<SimpleFrameworkSpecificationDto>> =
+        ResponseEntity
+            .ok(database.frameworkSpecifications.values.map { it.toSimpleDto(datalandPrimaryUrl) })
 
     override fun getFrameworkSpecification(frameworkSpecificationId: String): ResponseEntity<FrameworkSpecificationDto> {
         val frameworkSpecification =

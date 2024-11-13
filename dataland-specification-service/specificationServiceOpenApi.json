@@ -70,6 +70,97 @@
             }
           }
         }
+      },
+      "head": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Checks if a framework specification exists.",
+        "description": "Checks if a framework specification exists.",
+        "operationId": "doesFrameworkSpecificationExist",
+        "parameters": [
+          {
+            "name": "frameworkSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Framework is not known by dataland."
+          },
+          "200": {
+            "description": "Successfully checked that the framework is known by dataland."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/frameworks": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "List all framework specifications",
+        "description": "List all framework specifications",
+        "operationId": "listFrameworkSpecifications",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SimpleFrameworkSpecificationDto"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/data-points/{dataPointSpecificationId}": {
@@ -515,6 +606,36 @@
   },
   "components": {
     "schemas": {
+      "IdWithRef": {
+        "required": [
+          "id",
+          "ref"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          }
+        }
+      },
+      "SimpleFrameworkSpecificationDto": {
+        "required": [
+          "frameworkSpecification",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "frameworkSpecification": {
+            "$ref": "#/components/schemas/IdWithRef"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
       "FrameworkSpecificationDto": {
         "required": [
           "businessDefinition",
@@ -537,21 +658,6 @@
             "type": "string"
           },
           "referencedReportJsonPath": {
-            "type": "string"
-          }
-        }
-      },
-      "IdWithRef": {
-        "required": [
-          "id",
-          "ref"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "ref": {
             "type": "string"
           }
         }
