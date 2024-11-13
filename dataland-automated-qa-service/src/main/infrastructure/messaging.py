@@ -42,7 +42,7 @@ class AutomatedQaServiceMessage:
         Returns object as dict
         :return: dict
         """
-        return {**vars(self), "qa_status": self.qa_status.value}
+        return {**vars(self), "qa_status": self.qa_status.value if self.qa_status else self.qa_status}
 
 
 def qa_data(channel: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body: bytes) -> None:
@@ -104,7 +104,7 @@ def _send_message(
         exchange: str,
         routing_key: str,
         message_type: str,
-        message: str,
+        message: dict,
         correlation_id: str,
 ) -> None:
     channel.basic_publish(
@@ -135,8 +135,8 @@ def _send_persist_automated_qa_result_message(
     the QA review as 'Accepted'
     Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_persist_automated_qa_result'
     """
-    message = str(AutomatedQaServiceMessage(
-        resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa, ).to_dict())
+    message = AutomatedQaServiceMessage(resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id,
+                                        bypass_qa=bypass_qa, ).to_dict()
     _send_message(
         channel=channel,
         exchange=p.mq_manual_qa_requested_exchange,
@@ -162,9 +162,9 @@ def _send_automated_qa_complete_message(
     automated QA process is complete, and Manual QA process can begin.
     Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_automated_qa_complete_type'
     """
-    message = str(AutomatedQaServiceMessage(
-        resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa, comment=comment)
-                  .to_dict())
+    message = AutomatedQaServiceMessage(resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id,
+                                        bypass_qa=bypass_qa, comment=comment).to_dict()
+
     _send_message(
         channel=channel,
         exchange=p.mq_manual_qa_requested_exchange,

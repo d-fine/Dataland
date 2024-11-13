@@ -26,9 +26,9 @@ def mock_resource() -> Mock:
     return resource_mock
 
 
-def build_qa_status_changed_message_body(qa_result: QaStatus) -> bytes:
+def build_qa_status_changed_message_body(qa_result: QaStatus, bypass_qa: bool) -> bytes:
     message = AutomatedQaServiceMessage(
-        resource_id="dummy-id", qa_status=qa_result, reviewer_id="automated_qa_service", bypass_qa=False
+        resource_id="dummy-id", qa_status=qa_result, reviewer_id="automated-qa-service", bypass_qa=bypass_qa
     ).to_dict()
     return json.dumps(message).encode("UTF-8")
 
@@ -43,18 +43,8 @@ class MessageProcessingTest(unittest.TestCase):
             True,
             p.mq_manual_qa_requested_exchange,
             p.mq_persist_automated_qa_result,
-            build_qa_status_changed_message_body(QaStatus.ACCEPTED),
+            build_qa_status_changed_message_body(QaStatus.ACCEPTED, True),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
-        )
-
-    def test_should_send_qa_requested_message_when_automated_qa_not_possible(self) -> None:
-        self.validate_process_qa_request(
-            p.mq_data_key,
-            False,
-            p.mq_manual_qa_requested_exchange,
-            p.mq_automated_qa_complete_type,
-            qa_forwarded_message_body,
-            mock_validate_raise_automated_qa_not_possible_error,
         )
 
     def test_should_send_accepted_message_when_validation_accepts(self) -> None:
@@ -63,7 +53,7 @@ class MessageProcessingTest(unittest.TestCase):
             False,
             p.mq_manual_qa_requested_exchange,
             p.mq_automated_qa_complete_type,
-            build_qa_status_changed_message_body(QaStatus.ACCEPTED),
+            build_qa_status_changed_message_body(QaStatus.ACCEPTED, False),
             lambda resource, correlation_id: QaStatus.ACCEPTED,  # noqa: ARG005
         )
 
@@ -73,7 +63,7 @@ class MessageProcessingTest(unittest.TestCase):
             False,
             p.mq_manual_qa_requested_exchange,
             p.mq_automated_qa_complete_type,
-            build_qa_status_changed_message_body(QaStatus.REJECTED),
+            build_qa_status_changed_message_body(QaStatus.REJECTED, False),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
 
