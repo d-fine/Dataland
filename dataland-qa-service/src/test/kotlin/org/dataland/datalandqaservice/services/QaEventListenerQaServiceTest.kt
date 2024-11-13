@@ -10,7 +10,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.AutomatedQaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -48,16 +48,19 @@ class QaEventListenerQaServiceTest(
     val correlationId = "correlationId"
 
     private fun getPersistAutomatedQaResultMessage(
-        identifier: String,
-        validationResult: QaStatus,
+        resourceId: String,
+        qaStatus: QaStatus,
         message: String?,
     ): String =
-        JSONObject(
-            mapOf(
-                "identifier" to identifier, "validationResult" to validationResult, "reviewerId" to AUTOMATED_QA,
-                "resourceType" to "data", "message" to message,
+        objectMapper.writeValueAsString(
+            AutomatedQaCompletedMessage(
+                resourceId = resourceId,
+                qaStatus = qaStatus,
+                reviewerId = AUTOMATED_QA,
+                bypassQa = false,
+                comment = message,
             ),
-        ).toString()
+        )
 
     @BeforeEach
     fun resetMocks() {
@@ -80,7 +83,7 @@ class QaEventListenerQaServiceTest(
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService
-                    .addDataSetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED)
+                    .addDataSetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.AUTOMATED_QA_COMPLETED)
             }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
     }
@@ -89,11 +92,12 @@ class QaEventListenerQaServiceTest(
     fun `check that an exception is thrown when sending a success notification to message queue fails`() {
         val message =
             objectMapper.writeValueAsString(
-                QaCompletedMessage(
-                    identifier = dataId,
-                    validationResult = QaStatus.Accepted,
+                AutomatedQaCompletedMessage(
+                    resourceId = dataId,
+                    qaStatus = QaStatus.Accepted,
                     reviewerId = "someId",
-                    message = null,
+                    bypassQa = false,
+                    comment = null,
                 ),
             )
         `when`(
@@ -114,7 +118,7 @@ class QaEventListenerQaServiceTest(
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService.assureQualityOfDocument(
-                    noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED,
+                    noIdPayload, correlationId, MessageType.AUTOMATED_QA_COMPLETED,
                 )
             }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
@@ -130,7 +134,7 @@ class QaEventListenerQaServiceTest(
                     correlationId, MessageType.PERSIST_AUTOMATED_QA_RESULT,
                 )
             }
-        Assertions.assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
+        Assertions.assertEquals("Message was rejected: Provided data ID is empty (correlationId: correlationId)", thrown.message)
     }
 
     @Test
@@ -185,19 +189,23 @@ class QaEventListenerQaServiceTest(
     }
 
     @Test
-    fun `check an that only automated qa results are stored correctly in the QA review repository`() {
-        val dataId = "thisIdShouldntBeStored"
+    fun `check that a bypassQA=true result is stored correctly in the QA review repository`() {
+        val dataId = "thisIdIsStoredAsAccepted"
         val persistAutomatedQaResultMessage =
-            JSONObject(
-                mapOf(
-                    "identifier" to dataId, "validationResult" to QaStatus.Accepted, "reviewerId" to "someReviewerId",
-                    "resourceType" to "notData", "message" to "test message",
+            objectMapper.writeValueAsString(
+                AutomatedQaCompletedMessage(
+                    resourceId = dataId,
+                    qaStatus = QaStatus.Accepted,
+                    reviewerId = "someReviewerId",
+                    comment = "test message",
+                    bypassQa = false,
                 ),
-            ).toString()
+            )
         qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
             persistAutomatedQaResultMessage, correlationId, MessageType.PERSIST_AUTOMATED_QA_RESULT,
         )
-        Assertions.assertNull(testQaReviewRepository.findByDataId(dataId))
+        val qaReviewEntity = testQaReviewRepository.findByDataId(dataId)
+        Assertions.assertEquals(qaReviewEntity?.qaStatus, QaStatus.Accepted)
     }
 
     private fun getJsonString(resourceFile: String): String =

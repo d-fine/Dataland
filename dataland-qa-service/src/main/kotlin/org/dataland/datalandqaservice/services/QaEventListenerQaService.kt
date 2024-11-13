@@ -11,7 +11,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.AutomatedQaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -45,21 +46,6 @@ class QaEventListenerQaService
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
-        private val reviewerIdAutomatedQaService = "automated-qa-service"
-
-        private data class ForwardedQaMessage(
-            val identifier: String,
-            val comment: String,
-        )
-
-        private data class PersistAutomatedQaResultMessage(
-            val identifier: String,
-            val validationResult: QaStatus,
-            val reviewerId: String,
-            val resourceType: String,
-            val message: String?,
-        )
-
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
          * @param messageAsJsonString the message body as a json string
@@ -89,18 +75,18 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+            messageUtils.validateMessageType(type, MessageType.AUTOMATED_QA_COMPLETED)
+            val message = objectMapper.readValue(messageAsJsonString, AutomatedQaCompletedMessage::class.java)
 
-            val comment = message.comment
-            val dataId = message.identifier
+            val dataId = message.resourceId
             if (dataId.isEmpty()) {
-                throw MessageQueueRejectException("Provided data ID is empty")
+                throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
             }
 
             messageUtils.rejectMessageOnException {
                 val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
-                val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+                val companyName =
+                    companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
                 logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
                 storeDatasetWithQaStatusPending(
@@ -110,7 +96,7 @@ class QaEventListenerQaService
                     dataType = dataMetaInfo.dataType,
                     reportingPeriod = dataMetaInfo.reportingPeriod,
                     uploaderId = dataMetaInfo.uploaderUserId ?: "",
-                    comment,
+                    comment = message.comment,
                 )
             }
         }
@@ -126,7 +112,7 @@ class QaEventListenerQaService
             dataType: DataTypeEnum,
             reportingPeriod: String,
             uploaderId: String,
-            comment: String,
+            comment: String?,
         ) {
             datasetQaReviewRepository.save(
                 QaReviewEntity(
@@ -171,11 +157,11 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val forwardedQaMessage = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
-            val documentId = forwardedQaMessage.identifier
+            messageUtils.validateMessageType(type, MessageType.AUTOMATED_QA_COMPLETED)
+            val message = objectMapper.readValue(messageAsJsonString, AutomatedQaCompletedMessage::class.java)
+            val documentId = message.resourceId
             if (documentId.isEmpty()) {
-                throw MessageQueueRejectException("Provided document ID is empty")
+                throw MessageQueueRejectException("Provided document ID is empty (correlationId: $correlationId)")
             }
             messageUtils.rejectMessageOnException {
                 logger.info(
@@ -183,7 +169,11 @@ class QaEventListenerQaService
                 )
                 val messageToSend =
                     objectMapper.writeValueAsString(
-                        QaCompletedMessage(documentId, QaStatus.Accepted, reviewerIdAutomatedQaService, null),
+                        QaStatusChangeMessage(
+                            documentId,
+                            QaStatus.Accepted,
+                            documentId,
+                        ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                     messageToSend, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
@@ -193,7 +183,7 @@ class QaEventListenerQaService
         }
 
         /**
-         * Method to retrieve qa completed message and store the
+         * Method to retrieve bypassQA message and store the message in the review repository
          * @param messageAsJsonString the message body as json string
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
@@ -211,7 +201,7 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.MANUAL_QA_REQUESTED, declare = "false"),
-                    key = [RoutingKeyNames.PERSIST_AUTOMATED_QA_RESULT],
+                    key = [RoutingKeyNames.DATA],
                 ),
             ],
         )
@@ -223,39 +213,39 @@ class QaEventListenerQaService
         ) {
             messageUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
             val persistAutomatedQaResultMessage =
-                objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
-            if (persistAutomatedQaResultMessage.resourceType == "data") {
-                val validationResult = persistAutomatedQaResultMessage.validationResult
-                val reviewerId = persistAutomatedQaResultMessage.reviewerId
-                val dataId = persistAutomatedQaResultMessage.identifier
-                if (dataId.isEmpty()) {
-                    throw MessageQueueRejectException("Provided data ID is empty")
-                }
+                objectMapper.readValue(messageAsJsonString, AutomatedQaCompletedMessage::class.java)
 
-                val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
-                val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+            val dataId = persistAutomatedQaResultMessage.resourceId
+            if (dataId.isEmpty()) {
+                throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
+            }
 
-                messageUtils.rejectMessageOnException {
-                    logger.info(
-                        "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
-                    )
-                    logger.info(
-                        "Assigning quality status $validationResult and reviewerId $reviewerId to dataset with ID $dataId",
-                    )
-                    datasetQaReviewRepository.save(
-                        QaReviewEntity(
-                            dataId = dataId,
-                            companyId = dataMetaInfo.companyId,
-                            companyName = companyName,
-                            dataType = dataMetaInfo.dataType,
-                            reportingPeriod = dataMetaInfo.reportingPeriod,
-                            timestamp = Instant.now().toEpochMilli(),
-                            qaStatus = validationResult,
-                            reviewerId = reviewerId,
-                            comment = persistAutomatedQaResultMessage.message,
-                        ),
-                    )
-                }
+            val qaStatus = persistAutomatedQaResultMessage.qaStatus
+            val reviewerId = persistAutomatedQaResultMessage.reviewerId
+            val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+            val companyName =
+                companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+
+            messageUtils.rejectMessageOnException {
+                logger.info(
+                    "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
+                )
+                logger.info(
+                    "Assigning quality status $qaStatus and reviewerId $reviewerId to dataset with ID $dataId",
+                )
+                datasetQaReviewRepository.save(
+                    QaReviewEntity(
+                        dataId = dataId,
+                        companyId = dataMetaInfo.companyId,
+                        companyName = companyName,
+                        dataType = dataMetaInfo.dataType,
+                        reportingPeriod = dataMetaInfo.reportingPeriod,
+                        timestamp = Instant.now().toEpochMilli(),
+                        qaStatus = qaStatus ?: QaStatus.Accepted,
+                        reviewerId = reviewerId,
+                        comment = persistAutomatedQaResultMessage.comment,
+                    ),
+                )
             }
         }
     }

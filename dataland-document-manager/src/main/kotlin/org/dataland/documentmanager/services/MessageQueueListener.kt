@@ -1,13 +1,12 @@
 package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
@@ -109,16 +108,17 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QA_COMPLETED)
-        val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        messageUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        val message = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
+        val documentId = message.changedQaStatusDataId
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
         messageUtils.rejectMessageOnException {
             val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
-            metaInformation.qaStatus = QaStatus.Accepted
+            metaInformation.qaStatus = message.updatedQaStatus
             logger.info(
-                "Received quality assurance for document upload with document ID: " +
+                "Received quality status update for document upload with document ID: " +
                     "$documentId with Correlation ID: $correlationId",
             )
         }

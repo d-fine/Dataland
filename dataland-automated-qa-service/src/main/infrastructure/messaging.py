@@ -22,13 +22,11 @@ class Automated_QA_Service_Message:
                  qa_status: QaStatus,
                  reviewer_id: str,
                  bypass_qa: bool = False,
-                 correlation_id: str = "",
                  comment: str = ""):
         self.resource_id = resource_id
         self.qa_status = qa_status
         self.reviewer_id = reviewer_id
         self.bypass_qa = bypass_qa
-        self.correlation_id = correlation_id
         self.comment = comment
 
     def to_dict(self):
@@ -112,13 +110,13 @@ def _send_message(
 
 
 def _send_persist_automated_qa_result_message(
-    channel: BlockingChannel,
-    routing_key: str,
-    resource_id: str,
-    qa_status: QaStatus,
-    reviewer_id: str,
-    correlation_id: str,
-    bypass_qa: bool,
+        channel: BlockingChannel,
+        routing_key: str,
+        resource_id: str,
+        qa_status: QaStatus,
+        reviewer_id: str,
+        correlation_id: str,
+        bypass_qa: bool,
 ) -> None:
     """
     Function is used in case of bypassQA true: Automated QA Service sends message to Manual QA Service to simply store
@@ -126,8 +124,7 @@ def _send_persist_automated_qa_result_message(
     Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_persist_automated_qa_result'
     """
     message = str(Automated_QA_Service_Message(
-        resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa,
-        correlation_id=correlation_id).to_dict())
+        resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa, ).to_dict())
     _send_message(
         channel=channel,
         exchange=p.mq_manual_qa_requested_exchange,
@@ -154,8 +151,7 @@ def _send_automated_qa_complete_message(
     Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_automated_qa_complete_type'
     """
     message = str(Automated_QA_Service_Message(
-        resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa,
-        correlation_id=correlation_id, comment=comment)
+        resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id, bypass_qa=bypass_qa, comment=comment)
                   .to_dict())
     _send_message(
         channel=channel,

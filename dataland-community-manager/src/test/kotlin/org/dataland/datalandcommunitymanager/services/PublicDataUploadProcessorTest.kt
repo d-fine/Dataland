@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.Ele
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.AutomatedQaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -88,7 +88,15 @@ class PublicDataUploadProcessorTest {
 
     @Test
     fun `do not create an elementary event when the dataset has been rejected`() {
-        val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Rejected, "reviewerId", "message")
+        val qaCompletedMessage =
+            AutomatedQaCompletedMessage(
+                dataId.toString(),
+                QaStatus.Rejected,
+                "reviewerId",
+                correlationId = "",
+                bypassQa = false,
+                comment = "message",
+            )
         val payload = objectMapper.writeValueAsString(qaCompletedMessage)
 
         publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_CHANGED)
@@ -98,7 +106,15 @@ class PublicDataUploadProcessorTest {
 
     @Test
     fun `create an elementary event when the dataset has been approved`() {
-        val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Accepted, "reviewerId", "message")
+        val qaCompletedMessage =
+            AutomatedQaCompletedMessage(
+                dataId.toString(),
+                QaStatus.Accepted,
+                "reviewerId",
+                bypassQa = false,
+                correlationId = "",
+                comment = "message",
+            )
         val payload = objectMapper.writeValueAsString(qaCompletedMessage)
 
         publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_CHANGED)

@@ -11,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.AutomatedQaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.Logger
@@ -27,8 +27,8 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 
 /**
-* Defines the processing of public framework data upload events as elementary events
-*/
+ * Defines the processing of public framework data upload events as elementary events
+ */
 @Component
 class PublicDataUploadProcessor(
     @Autowired messageUtils: MessageQueueUtils,
@@ -74,15 +74,15 @@ class PublicDataUploadProcessor(
         messageUtils.validateMessageType(messageType, this.messageType)
 
         messageUtils.rejectMessageOnException {
-            val qaCompletedMessage = objectMapper.readValue(payload, QaCompletedMessage::class.java)
+            val qaCompletedMessage = objectMapper.readValue(payload, AutomatedQaCompletedMessage::class.java)
 
-            if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+            if (qaCompletedMessage.qaStatus != QaStatus.Accepted) {
                 return@rejectMessageOnException
             }
 
             super.processEvent(
                 createElementaryEventBasicInfo(
-                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.identifier)),
+                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.resourceId)),
                 ),
                 correlationId,
                 type,
