@@ -44,7 +44,7 @@ class ApiKeyManagerTest(
     }
 
     @Test
-    fun `check that never-expiring api keys are validated correctly`() {
+    fun `check that never expiring api keys are validated correctly`() {
         val apiKeyToCheck = createApiKeyWithExpiry(null)
         val responseMessage = testApiKeyManager.validateApiKey(apiKeyToCheck).validationMessage
         Assertions.assertEquals(
