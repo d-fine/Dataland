@@ -3,7 +3,7 @@ from typing import Callable
 
 import unittest
 from unittest.mock import Mock
-from main.infrastructure.messaging import process_qa_request, Automated_QA_Service_Message
+from main.infrastructure.messaging import process_qa_request, AutomatedQaServiceMessage
 from main.infrastructure.resources import Resource
 import main.infrastructure.properties as p
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
