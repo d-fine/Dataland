@@ -106,7 +106,7 @@
 						},
 						"comment": "hack wireless circuit",
 						"quality": null,
-						"currency": "UYU"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": 8092915038.58,
@@ -2138,7 +2138,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "TOP"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": null,
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
@@ -2175,7 +2175,7 @@
 						},
 						"comment": "generate digital alarm",
 						"quality": "Reported",
-						"currency": "KMF"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": 294795169.02,
@@ -2985,7 +2985,7 @@
 						"dataSource": null,
 						"comment": "input open-source transmitter",
 						"quality": "Incomplete",
-						"currency": "UZS"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": null,
@@ -2997,7 +2997,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "BRL"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 9.78,
@@ -4300,7 +4300,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "QAR"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": {
 						"value": 8781192949.98,
@@ -4838,7 +4838,7 @@
 						"dataSource": null,
 						"comment": "generate 1080p panel",
 						"quality": "Incomplete",
-						"currency": "SCR"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
 				},
@@ -7017,7 +7017,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "JPY"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -7278,7 +7278,7 @@
 						},
 						"comment": "index 1080p firewall",
 						"quality": "NoDataFound",
-						"currency": "PYG"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": null,
@@ -7290,7 +7290,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "GHS"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 1456463914.36,
@@ -7831,7 +7831,7 @@
 						},
 						"comment": "program 1080p bus",
 						"quality": "Estimated",
-						"currency": "CAD"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": null,
@@ -9465,7 +9465,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "GYD"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": null,
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
@@ -10683,7 +10683,7 @@
 						},
 						"comment": "reboot optical program",
 						"quality": "Incomplete",
-						"currency": "AWG"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": 5623026983.81,
@@ -10719,7 +10719,7 @@
 						},
 						"comment": "calculate haptic feed",
 						"quality": null,
-						"currency": "MRU"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": {
 						"value": 7857071019.25,
@@ -11691,7 +11691,7 @@
 						},
 						"comment": "connect optical transmitter",
 						"quality": "Estimated",
-						"currency": "MMK"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 1260684933.51,
@@ -12931,7 +12931,7 @@
 						},
 						"comment": "copy optical system",
 						"quality": "Reported",
-						"currency": "AUD"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": 5652204824.15,
@@ -13809,7 +13809,7 @@
 						},
 						"comment": "reboot optical bandwidth",
 						"quality": "Estimated",
-						"currency": "CVE"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -15010,7 +15010,7 @@
 						},
 						"comment": "connect redundant capacitor",
 						"quality": "Reported",
-						"currency": "ARS"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": 7944160732.44,
@@ -15581,7 +15581,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "AWG"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 3142285014.04,
@@ -16290,7 +16290,7 @@
 						"dataSource": null,
 						"comment": "copy primary interface",
 						"quality": "Estimated",
-						"currency": "THB"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": null,
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
@@ -17862,7 +17862,7 @@
 						},
 						"comment": "bypass digital card",
 						"quality": null,
-						"currency": "HNL"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 4058409151.62,
@@ -19126,7 +19126,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "XAF"
+						"currency": null
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -20000,7 +20000,7 @@
 						},
 						"comment": "override online matrix",
 						"quality": "Reported",
-						"currency": "LRD"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 9459309629.17,
@@ -21003,7 +21003,7 @@
 						},
 						"comment": "bypass auxiliary feed",
 						"quality": null,
-						"currency": "BAM"
+						"currency": null
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 2.68,
@@ -21342,7 +21342,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "BAM"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": 4778704135.68,
@@ -22272,7 +22272,7 @@
 						},
 						"comment": "transmit online application",
 						"quality": "Reported",
-						"currency": "KPW"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -24076,7 +24076,7 @@
 						},
 						"comment": "navigate 1080p bus",
 						"quality": "NoDataFound",
-						"currency": "SEK"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 1412035834.51,
@@ -24334,7 +24334,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "AED"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": null,
@@ -24346,7 +24346,7 @@
 						},
 						"comment": "override multi-byte capacitor",
 						"quality": "Reported",
-						"currency": "WST"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 3760348549.11,
@@ -24422,7 +24422,7 @@
 						},
 						"comment": "input 1080p matrix",
 						"quality": null,
-						"currency": "DOP"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 2538979661.18,
@@ -24670,7 +24670,7 @@
 						},
 						"comment": "reboot neural system",
 						"quality": "Estimated",
-						"currency": "IDR"
+						"currency": null
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": null,
@@ -25559,7 +25559,7 @@
 						},
 						"comment": "override primary card",
 						"quality": "NoDataFound",
-						"currency": "PYG"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": 7874502609.49,
@@ -26451,7 +26451,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "LBP"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": 1454728350.51,
@@ -27793,7 +27793,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "KHR"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds": {
 						"value": null,
@@ -27805,7 +27805,7 @@
 						},
 						"comment": "quantify multi-byte hard drive",
 						"quality": "Incomplete",
-						"currency": "PGK"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": null,
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": null
@@ -28451,7 +28451,7 @@
 						},
 						"comment": "reboot optical feed",
 						"quality": "Reported",
-						"currency": "STN"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 2113719445.18,
@@ -28767,7 +28767,7 @@
 						},
 						"comment": "bypass back-end alarm",
 						"quality": "NoDataFound",
-						"currency": "ZMW"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": null,
 					"proportionOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
@@ -28827,7 +28827,7 @@
 						},
 						"comment": "parse optical feed",
 						"quality": "Estimated",
-						"currency": "MWK"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -30099,7 +30099,7 @@
 						},
 						"comment": "program online transmitter",
 						"quality": null,
-						"currency": "GMD"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": 1614283365.19,
@@ -32290,7 +32290,7 @@
 						},
 						"comment": "input auxiliary program",
 						"quality": null,
-						"currency": "THB"
+						"currency": null
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -32866,7 +32866,7 @@
 						},
 						"comment": "transmit redundant pixel",
 						"quality": "NoDataFound",
-						"currency": "ARS"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -33190,7 +33190,7 @@
 						},
 						"comment": "program auxiliary microchip",
 						"quality": "Audited",
-						"currency": "DOP"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 9334420240.49,
@@ -36409,7 +36409,7 @@
 						},
 						"comment": "transmit 1080p interface",
 						"quality": "NoDataFound",
-						"currency": "BHD"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds": {
 						"value": 4724829599.73,
@@ -37311,7 +37311,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "AUD"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": null,
@@ -37323,7 +37323,7 @@
 						},
 						"comment": "calculate optical array",
 						"quality": "Audited",
-						"currency": "IDR"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 1207941349.13,
@@ -39397,7 +39397,7 @@
 						},
 						"comment": "bypass haptic transmitter",
 						"quality": "Incomplete",
-						"currency": "MVR"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": null,
@@ -39409,7 +39409,7 @@
 						},
 						"comment": "generate cross-platform matrix",
 						"quality": "Estimated",
-						"currency": "XCD"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 2091408292.76,
@@ -40686,7 +40686,7 @@
 						},
 						"comment": "program auxiliary monitor",
 						"quality": null,
-						"currency": "TOP"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": 1738558649.08,
@@ -41445,7 +41445,7 @@
 						},
 						"comment": "synthesize 1080p alarm",
 						"quality": "Reported",
-						"currency": "SYP"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": 5607087053.36,
@@ -42823,7 +42823,7 @@
 						},
 						"comment": "navigate primary microchip",
 						"quality": "Incomplete",
-						"currency": "BRL"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": 2565499809.57,
@@ -44391,7 +44391,7 @@
 						},
 						"comment": "calculate neural bandwidth",
 						"quality": "Estimated",
-						"currency": "AZN"
+						"currency": null
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 44.57,
@@ -45005,7 +45005,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "NGN"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": 6725943302.74,
@@ -46340,7 +46340,7 @@
 						"dataSource": null,
 						"comment": "generate mobile bandwidth",
 						"quality": null,
-						"currency": "TRY"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": null,
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
@@ -47132,7 +47132,7 @@
 						},
 						"comment": "generate open-source program",
 						"quality": "Estimated",
-						"currency": "BWP"
+						"currency": null
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -47667,7 +47667,7 @@
 						},
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "TOP"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -48191,7 +48191,7 @@
 						},
 						"comment": "hack 1080p driver",
 						"quality": null,
-						"currency": "BGN"
+						"currency": null
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": null,
@@ -49126,7 +49126,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "SDG"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds": {
 						"value": 6041006622.84,
@@ -49948,7 +49948,7 @@
 						},
 						"comment": "transmit neural port",
 						"quality": "Reported",
-						"currency": "VUV"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 5157763790.34,
@@ -50691,7 +50691,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "AWG"
+						"currency": null
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 28.25,
@@ -51243,7 +51243,7 @@
 						},
 						"comment": "bypass cross-platform monitor",
 						"quality": "NoDataFound",
-						"currency": "AUD"
+						"currency": null
 					},
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
 						"value": 7513763746.25,
@@ -53296,7 +53296,7 @@
 						},
 						"comment": "quantify open-source transmitter",
 						"quality": "Estimated",
-						"currency": "BMD"
+						"currency": null
 					},
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
 						"value": 446845046.24,
@@ -53877,7 +53877,7 @@
 						},
 						"comment": "compress cross-platform firewall",
 						"quality": null,
-						"currency": "RSD"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 77382312.15,
@@ -54145,7 +54145,7 @@
 						},
 						"comment": "copy primary hard drive",
 						"quality": null,
-						"currency": "HUF"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": null,
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
@@ -54158,7 +54158,7 @@
 						},
 						"comment": "parse neural bus",
 						"quality": "NoDataFound",
-						"currency": "MKD"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 44.83,
@@ -54879,7 +54879,7 @@
 						},
 						"comment": "reboot wireless panel",
 						"quality": "Reported",
-						"currency": "MDL"
+						"currency": null
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 57.93,
@@ -55041,7 +55041,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "SLE"
+						"currency": null
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 44.73,
@@ -55293,7 +55293,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "HUF"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": 1593533093.11,
@@ -57089,7 +57089,7 @@
 						},
 						"comment": "quantify solid state interface",
 						"quality": "Audited",
-						"currency": "TTD"
+						"currency": null
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 82.64,
@@ -58000,7 +58000,7 @@
 						"dataSource": null,
 						"comment": "compress multi-byte array",
 						"quality": null,
-						"currency": "XCD"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -59501,7 +59501,7 @@
 						},
 						"comment": "parse solid state protocol",
 						"quality": "NoDataFound",
-						"currency": "MVR"
+						"currency": null
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -60075,7 +60075,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "PYG"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
 				},
@@ -62401,7 +62401,7 @@
 						"dataSource": null,
 						"comment": "calculate 1080p microchip",
 						"quality": "NoDataFound",
-						"currency": "MNT"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 47.11,
@@ -62470,7 +62470,7 @@
 						},
 						"comment": "quantify online program",
 						"quality": "Estimated",
-						"currency": "GYD"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 9046362049.42,
@@ -62698,7 +62698,7 @@
 						},
 						"comment": "calculate auxiliary port",
 						"quality": "Incomplete",
-						"currency": "AWG"
+						"currency": null
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": null,
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned": {
@@ -63606,7 +63606,7 @@
 						},
 						"comment": "synthesize solid state pixel",
 						"quality": "NoDataFound",
-						"currency": "INR"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": 1526607163.25,
@@ -63654,7 +63654,7 @@
 						},
 						"comment": "connect primary firewall",
 						"quality": "Estimated",
-						"currency": "IDR"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": null
 				},
@@ -64159,7 +64159,7 @@
 						"dataSource": null,
 						"comment": "back up multi-byte protocol",
 						"quality": "Estimated",
-						"currency": "TND"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
 				},
@@ -64494,7 +64494,7 @@
 						},
 						"comment": "connect auxiliary matrix",
 						"quality": "NoDataFound",
-						"currency": "GMD"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
 				},
@@ -64973,7 +64973,7 @@
 						},
 						"comment": "synthesize wireless capacitor",
 						"quality": "NoDataFound",
-						"currency": "LKR"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": null,
@@ -65402,7 +65402,7 @@
 						},
 						"comment": "connect mobile port",
 						"quality": null,
-						"currency": "BRL"
+						"currency": null
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": null,
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
@@ -66212,7 +66212,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "AFN"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
 				},
@@ -66457,7 +66457,7 @@
 						"dataSource": null,
 						"comment": "index neural pixel",
 						"quality": "Estimated",
-						"currency": "CUP"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": 70.19,
@@ -66769,7 +66769,7 @@
 						},
 						"comment": "synthesize open-source protocol",
 						"quality": "NoDataFound",
-						"currency": "FKP"
+						"currency": null
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 4.01,
@@ -66996,7 +66996,7 @@
 						},
 						"comment": "parse solid state port",
 						"quality": "Estimated",
-						"currency": "BGN"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 59.08,
@@ -67763,7 +67763,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "UAH"
+						"currency": null
 					},
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
 						"value": 5029863466.04,
@@ -67787,7 +67787,7 @@
 						},
 						"comment": "copy 1080p application",
 						"quality": "Estimated",
-						"currency": "KRW"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": {
 						"value": 6340126201.98,
@@ -68617,7 +68617,7 @@
 						},
 						"comment": "synthesize solid state card",
 						"quality": "Reported",
-						"currency": "SGD"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": 7926490963.44,
@@ -68680,7 +68680,7 @@
 						},
 						"comment": "back up back-end bandwidth",
 						"quality": "NoDataFound",
-						"currency": "MOP"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": null
 				},
@@ -69280,7 +69280,7 @@
 						},
 						"comment": "input multi-byte bus",
 						"quality": null,
-						"currency": "WST"
+						"currency": null
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 40.3,
@@ -69850,7 +69850,7 @@
 						},
 						"comment": "navigate haptic bus",
 						"quality": "Reported",
-						"currency": "JOD"
+						"currency": null
 					},
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
 						"value": 8124227477.24,
@@ -70656,7 +70656,7 @@
 						},
 						"comment": "parse bluetooth circuit",
 						"quality": null,
-						"currency": "MRU"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 804408784.02,
@@ -70959,7 +70959,7 @@
 						},
 						"comment": "index solid state firewall",
 						"quality": null,
-						"currency": "RSD"
+						"currency": null
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 11.26,
@@ -71923,7 +71923,7 @@
 						},
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "FJD"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": null,
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
@@ -73149,7 +73149,7 @@
 						},
 						"comment": "bypass digital card",
 						"quality": "Audited",
-						"currency": "PGK"
+						"currency": null
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 54.59,
@@ -73507,7 +73507,7 @@
 						},
 						"comment": "navigate neural bus",
 						"quality": null,
-						"currency": "DZD"
+						"currency": null
 					},
 					"turnoverBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 63.06,
@@ -73719,7 +73719,7 @@
 						},
 						"comment": "parse digital feed",
 						"quality": "Incomplete",
-						"currency": "PYG"
+						"currency": null
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 13.5,
@@ -74930,7 +74930,7 @@
 						},
 						"comment": "hack auxiliary interface",
 						"quality": null,
-						"currency": "TZS"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": null,
@@ -75407,7 +75407,7 @@
 						},
 						"comment": "reboot multi-byte sensor",
 						"quality": "Incomplete",
-						"currency": "PAB"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": null,
@@ -78313,7 +78313,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "KRW"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": {
 						"value": 9453980799.3,
@@ -78337,7 +78337,7 @@
 						},
 						"comment": "calculate back-end array",
 						"quality": "Incomplete",
-						"currency": "AED"
+						"currency": null
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -78906,7 +78906,7 @@
 						},
 						"comment": "generate redundant card",
 						"quality": "Estimated",
-						"currency": "USD"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 7556876784.66,
@@ -81160,7 +81160,7 @@
 						},
 						"comment": "navigate cross-platform panel",
 						"quality": "Estimated",
-						"currency": "HKD"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": null,
@@ -83246,7 +83246,7 @@
 						},
 						"comment": "calculate haptic microchip",
 						"quality": "Estimated",
-						"currency": "RUB"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 8904572282.92,
@@ -83317,7 +83317,7 @@
 						},
 						"comment": "generate redundant matrix",
 						"quality": "Reported",
-						"currency": "TZS"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 5348637104.03,
@@ -85449,7 +85449,7 @@
 						},
 						"comment": "transmit redundant alarm",
 						"quality": "Estimated",
-						"currency": "COP"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 179421736.39,
@@ -86632,7 +86632,7 @@
 						},
 						"comment": "index open-source bus",
 						"quality": "Reported",
-						"currency": "EUR"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": null,
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
@@ -87491,7 +87491,7 @@
 						},
 						"comment": "parse primary capacitor",
 						"quality": "Incomplete",
-						"currency": "ISK"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": null,
@@ -87542,7 +87542,7 @@
 						},
 						"comment": "reboot online circuit",
 						"quality": "Reported",
-						"currency": "MYR"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -88653,7 +88653,7 @@
 						},
 						"comment": "parse bluetooth feed",
 						"quality": "Incomplete",
-						"currency": "SCR"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": 5160960687.79,
@@ -89545,7 +89545,7 @@
 						"dataSource": null,
 						"comment": "quantify bluetooth protocol",
 						"quality": null,
-						"currency": "LYD"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": 9495129662.1,
@@ -90747,7 +90747,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "IRR"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": null,
@@ -90759,7 +90759,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "FJD"
+						"currency": null
 					},
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
 						"value": 8958330706.23,
@@ -91601,7 +91601,7 @@
 						},
 						"comment": "back up solid state pixel",
 						"quality": "Incomplete",
-						"currency": "PYG"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
 						"value": null,
@@ -91613,7 +91613,7 @@
 						},
 						"comment": "reboot online microchip",
 						"quality": null,
-						"currency": "JPY"
+						"currency": null
 					},
 					"proportionOfAbsolutePremiumsOfTaxonomyAlignedActivities": {
 						"value": null,
@@ -92488,7 +92488,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "JMD"
+						"currency": null
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": null,
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationAligned": {
@@ -92829,7 +92829,7 @@
 						},
 						"comment": "copy online bandwidth",
 						"quality": null,
-						"currency": "USD"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": null,
@@ -92841,7 +92841,7 @@
 						},
 						"comment": "generate open-source system",
 						"quality": "Reported",
-						"currency": "KPW"
+						"currency": null
 					},
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
 						"value": 7127015367.15,
@@ -93764,7 +93764,7 @@
 						},
 						"comment": "navigate redundant panel",
 						"quality": "Audited",
-						"currency": "FKP"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -94172,7 +94172,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "ISK"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": null,
@@ -94919,7 +94919,7 @@
 						},
 						"comment": "back up primary capacitor",
 						"quality": null,
-						"currency": "GBP"
+						"currency": null
 					},
 					"totalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible": {
 						"value": null,
@@ -94931,7 +94931,7 @@
 						},
 						"comment": "quantify digital protocol",
 						"quality": "Audited",
-						"currency": "RWF"
+						"currency": null
 					},
 					"totalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned": {
 						"value": null,
@@ -94943,7 +94943,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "IRR"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds": null,
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreTransitional": {
@@ -94956,7 +94956,7 @@
 						},
 						"comment": "synthesize wireless transmitter",
 						"quality": null,
-						"currency": "KPW"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": {
 						"value": null,
@@ -94968,7 +94968,7 @@
 						},
 						"comment": "index virtual sensor",
 						"quality": "Audited",
-						"currency": "KHR"
+						"currency": null
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -95549,7 +95549,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "NZD"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -95870,7 +95870,7 @@
 						},
 						"comment": "generate primary program",
 						"quality": "Estimated",
-						"currency": "MZN"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -97737,7 +97737,7 @@
 						},
 						"comment": "synthesize cross-platform application",
 						"quality": "Incomplete",
-						"currency": "YER"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": null,
@@ -97749,7 +97749,7 @@
 						},
 						"comment": "synthesize 1080p capacitor",
 						"quality": "Audited",
-						"currency": "NGN"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -97970,7 +97970,7 @@
 						},
 						"comment": "bypass open-source bus",
 						"quality": null,
-						"currency": "MAD"
+						"currency": null
 					},
 					"totalOfAbsolutePremiumsOfTaxonomyEligibleButTaxonomyNonAlignedActivities": {
 						"value": 5461760135.37,
@@ -98507,7 +98507,7 @@
 						},
 						"comment": "hack digital microchip",
 						"quality": "Audited",
-						"currency": "MAD"
+						"currency": null
 					},
 					"capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 44.03,
@@ -99832,7 +99832,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "FKP"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 9405032368.38,
@@ -101471,7 +101471,7 @@
 						},
 						"comment": "program cross-platform alarm",
 						"quality": null,
-						"currency": "ARS"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreUseOfProceeds": {
 						"value": 6957628442.91,
@@ -101496,7 +101496,7 @@
 						},
 						"comment": "quantify virtual program",
 						"quality": "Audited",
-						"currency": "ZMW"
+						"currency": null
 					}
 				},
 				"turnoverBasedGreenAssetRatioStock": {
@@ -102107,7 +102107,7 @@
 						},
 						"comment": "parse auxiliary hard drive",
 						"quality": "Estimated",
-						"currency": "LRD"
+						"currency": null
 					}
 				},
 				"breakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBased": {
@@ -103269,7 +103269,7 @@
 						"dataSource": null,
 						"comment": "generate back-end panel",
 						"quality": null,
-						"currency": "KYD"
+						"currency": null
 					},
 					"capexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": 66.52,
@@ -103601,7 +103601,7 @@
 						},
 						"comment": "synthesize back-end hard drive",
 						"quality": "Estimated",
-						"currency": "LBP"
+						"currency": null
 					},
 					"totalAmountOfEnvironmentallySustainableAssetsWhichAreEnabling": null
 				},
@@ -104410,7 +104410,7 @@
 						},
 						"comment": "navigate haptic interface",
 						"quality": "Incomplete",
-						"currency": "MKD"
+						"currency": null
 					},
 					"weightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount": {
 						"value": 1385088150.85,
@@ -104708,7 +104708,7 @@
 						},
 						"comment": "connect cross-platform bus",
 						"quality": null,
-						"currency": "MUR"
+						"currency": null
 					},
 					"turnoverBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationEligible": {
 						"value": null,

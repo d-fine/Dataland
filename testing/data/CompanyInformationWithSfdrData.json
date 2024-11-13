@@ -963,7 +963,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "QAR"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": null,
 					"femaleBoardMembersSupervisoryBoard": null,
@@ -4232,7 +4232,7 @@
 						},
 						"comment": "quantify open-source sensor",
 						"quality": null,
-						"currency": "FJD"
+						"currency": null
 					},
 					"averageGrossHourlyEarningsFemaleEmployees": {
 						"value": 5090186789.17,
@@ -5269,7 +5269,7 @@
 						},
 						"comment": "transmit wireless bandwidth",
 						"quality": "NoDataFound",
-						"currency": "SGD"
+						"currency": null
 					},
 					"averageGrossHourlyEarningsFemaleEmployees": {
 						"value": 9500496196.57,
@@ -7604,7 +7604,7 @@
 						},
 						"comment": "program online capacitor",
 						"quality": "Audited",
-						"currency": "JOD"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": null,
 					"femaleBoardMembersSupervisoryBoard": {
@@ -12394,7 +12394,7 @@
 						},
 						"comment": "generate redundant protocol",
 						"quality": "NoDataFound",
-						"currency": "KGS"
+						"currency": null
 					}
 				}
 			}
@@ -14803,7 +14803,7 @@
 						"dataSource": null,
 						"comment": "program mobile capacitor",
 						"quality": "Incomplete",
-						"currency": "MUR"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": 24062.84,
@@ -15459,7 +15459,7 @@
 						},
 						"comment": "quantify neural program",
 						"quality": "Incomplete",
-						"currency": "CDF"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": {
 						"value": null,
@@ -15684,7 +15684,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "MWK"
+						"currency": null
 					}
 				}
 			}
@@ -16437,7 +16437,7 @@
 						},
 						"comment": "navigate online firewall",
 						"quality": "NoDataFound",
-						"currency": "LBP"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": {
 						"value": 21514.68,
@@ -18866,7 +18866,7 @@
 						},
 						"comment": "program virtual card",
 						"quality": null,
-						"currency": "ANG"
+						"currency": null
 					},
 					"totalRevenue": null,
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
@@ -21151,7 +21151,7 @@
 						},
 						"comment": "quantify back-end matrix",
 						"quality": null,
-						"currency": "KWD"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": 3662.54,
@@ -23501,7 +23501,7 @@
 						},
 						"comment": "input wireless microchip",
 						"quality": "NoDataFound",
-						"currency": "ISK"
+						"currency": null
 					},
 					"totalRevenue": {
 						"value": 3399569194.3,
@@ -24048,7 +24048,7 @@
 						},
 						"comment": "quantify auxiliary program",
 						"quality": "NoDataFound",
-						"currency": "RUB"
+						"currency": null
 					},
 					"averageGrossHourlyEarningsFemaleEmployees": null,
 					"unadjustedGenderPayGapInPercent": null,
@@ -25160,7 +25160,7 @@
 						},
 						"comment": "copy mobile program",
 						"quality": "Estimated",
-						"currency": "CDF"
+						"currency": null
 					},
 					"averageGrossHourlyEarningsFemaleEmployees": {
 						"value": 671845213.51,
@@ -25612,7 +25612,7 @@
 						},
 						"comment": "program redundant sensor",
 						"quality": "Audited",
-						"currency": "CUP"
+						"currency": null
 					},
 					"totalRevenue": {
 						"value": null,
@@ -25624,7 +25624,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "GHS"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": 70186.44,
@@ -26717,7 +26717,7 @@
 						},
 						"comment": "copy wireless bandwidth",
 						"quality": "NoDataFound",
-						"currency": "CLP"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": 11195.18,
@@ -28985,7 +28985,7 @@
 						},
 						"comment": "bypass back-end bus",
 						"quality": "Audited",
-						"currency": "MZN"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": null,
 					"ghgIntensityInTonnesPerMillionEURRevenue": {
@@ -30763,7 +30763,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "MNT"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": {
 						"value": 19131.62,
@@ -30993,7 +30993,7 @@
 						"dataSource": null,
 						"comment": "bypass optical interface",
 						"quality": "Incomplete",
-						"currency": "SCR"
+						"currency": null
 					}
 				}
 			}
@@ -31901,7 +31901,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "PGK"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": {
 						"value": 16322.97,
@@ -34384,7 +34384,7 @@
 						},
 						"comment": "index primary application",
 						"quality": "Incomplete",
-						"currency": "ISK"
+						"currency": null
 					},
 					"totalRevenue": {
 						"value": 9943331091.2,
@@ -35014,7 +35014,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "SYP"
+						"currency": null
 					},
 					"averageGrossHourlyEarningsFemaleEmployees": {
 						"value": 7035862146.88,
@@ -36558,7 +36558,7 @@
 						},
 						"comment": "connect cross-platform matrix",
 						"quality": "Reported",
-						"currency": "RWF"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": 79887.18,
@@ -37703,7 +37703,7 @@
 						},
 						"comment": "bypass wireless panel",
 						"quality": "Audited",
-						"currency": "CVE"
+						"currency": null
 					},
 					"totalRevenue": {
 						"value": null,
@@ -37715,7 +37715,7 @@
 						},
 						"comment": "input wireless port",
 						"quality": "Estimated",
-						"currency": "BGN"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": 63100.2,
@@ -38358,7 +38358,7 @@
 						},
 						"comment": "back up neural circuit",
 						"quality": "NoDataFound",
-						"currency": "STN"
+						"currency": null
 					},
 					"averageGrossHourlyEarningsFemaleEmployees": null,
 					"unadjustedGenderPayGapInPercent": {
@@ -41989,7 +41989,7 @@
 						},
 						"comment": "transmit multi-byte microchip",
 						"quality": "Audited",
-						"currency": "SCR"
+						"currency": null
 					}
 				}
 			}
@@ -42220,7 +42220,7 @@
 						},
 						"comment": "input open-source transmitter",
 						"quality": "Audited",
-						"currency": "IDR"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": 28294.8,
@@ -43055,7 +43055,7 @@
 						},
 						"comment": "hack cross-platform panel",
 						"quality": "NoDataFound",
-						"currency": "MGA"
+						"currency": null
 					}
 				}
 			}
@@ -44879,7 +44879,7 @@
 						},
 						"comment": "synthesize neural bandwidth",
 						"quality": "Estimated",
-						"currency": "KMF"
+						"currency": null
 					},
 					"averageGrossHourlyEarningsFemaleEmployees": null,
 					"unadjustedGenderPayGapInPercent": {
@@ -46399,7 +46399,7 @@
 						"dataSource": null,
 						"comment": "hack bluetooth transmitter",
 						"quality": null,
-						"currency": "ISK"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": null,
@@ -47082,7 +47082,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "TWD"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": {
 						"value": null,
@@ -48758,7 +48758,7 @@
 						"dataSource": null,
 						"comment": "bypass neural sensor",
 						"quality": "Estimated",
-						"currency": "CZK"
+						"currency": null
 					},
 					"totalRevenue": {
 						"value": 5195653613.19,
@@ -50700,7 +50700,7 @@
 						},
 						"comment": "bypass mobile bus",
 						"quality": "Reported",
-						"currency": "SAR"
+						"currency": null
 					},
 					"unadjustedGenderPayGapInPercent": {
 						"value": null,
@@ -51137,7 +51137,7 @@
 						"dataSource": null,
 						"comment": "override neural application",
 						"quality": "NoDataFound",
-						"currency": "MRU"
+						"currency": null
 					},
 					"carbonFootprintInTonnesPerMillionEURRevenue": {
 						"value": null,
@@ -52048,7 +52048,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "PYG"
+						"currency": null
 					}
 				}
 			}
@@ -53245,7 +53245,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "NoDataFound",
-						"currency": "BHD"
+						"currency": null
 					},
 					"totalRevenue": {
 						"value": 6201392489.02,

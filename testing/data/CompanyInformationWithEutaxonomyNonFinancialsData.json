@@ -646,7 +646,7 @@
 					},
 					"comment": "calculate digital protocol",
 					"quality": "Audited",
-					"currency": "BTN"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -1247,7 +1247,7 @@
 						},
 						"comment": "reboot solid state matrix",
 						"quality": "Estimated",
-						"currency": "CDF"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": null,
@@ -1692,7 +1692,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "PKR"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -2457,7 +2457,7 @@
 					},
 					"comment": "generate virtual matrix",
 					"quality": "Audited",
-					"currency": "JPY"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -4020,7 +4020,7 @@
 					},
 					"comment": "reboot bluetooth firewall",
 					"quality": "Incomplete",
-					"currency": "MNT"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -4367,7 +4367,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": null,
-						"currency": "SAR"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -4392,7 +4392,7 @@
 						},
 						"comment": "index 1080p array",
 						"quality": null,
-						"currency": "NGN"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": null,
@@ -4819,7 +4819,7 @@
 						},
 						"comment": "navigate haptic matrix",
 						"quality": "NoDataFound",
-						"currency": "TOP"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -5130,7 +5130,7 @@
 						},
 						"comment": "hack redundant capacitor",
 						"quality": "Incomplete",
-						"currency": "GBP"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -5519,7 +5519,7 @@
 						},
 						"comment": "input bluetooth alarm",
 						"quality": "Estimated",
-						"currency": "BHD"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -5851,7 +5851,7 @@
 						},
 						"comment": "hack open-source sensor",
 						"quality": "Audited",
-						"currency": "ZWL"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -6252,7 +6252,7 @@
 					},
 					"comment": "reboot mobile microchip",
 					"quality": "Reported",
-					"currency": "IDR"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -6588,7 +6588,7 @@
 						},
 						"comment": "index neural hard drive",
 						"quality": null,
-						"currency": "RUB"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -7157,7 +7157,7 @@
 					},
 					"comment": "index bluetooth transmitter",
 					"quality": "Reported",
-					"currency": "BMD"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -7419,7 +7419,7 @@
 					},
 					"comment": "synthesize haptic bus",
 					"quality": "Reported",
-					"currency": "NAD"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -7868,7 +7868,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "BHD"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -8156,7 +8156,7 @@
 					},
 					"comment": "index optical program",
 					"quality": "Reported",
-					"currency": "KES"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": null,
@@ -8852,7 +8852,7 @@
 						"dataSource": null,
 						"comment": "quantify haptic capacitor",
 						"quality": "NoDataFound",
-						"currency": "ETB"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -9237,7 +9237,7 @@
 					},
 					"comment": null,
 					"quality": null,
-					"currency": "GEL"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -9311,7 +9311,7 @@
 						},
 						"comment": "copy 1080p system",
 						"quality": "Estimated",
-						"currency": "HNL"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -9555,7 +9555,7 @@
 					"dataSource": null,
 					"comment": "compress redundant hard drive",
 					"quality": "Estimated",
-					"currency": "SEK"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": null,
@@ -9603,7 +9603,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "MOP"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -10055,7 +10055,7 @@
 						},
 						"comment": "connect neural protocol",
 						"quality": "Audited",
-						"currency": "NOK"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -10388,7 +10388,7 @@
 						},
 						"comment": "bypass virtual matrix",
 						"quality": "Estimated",
-						"currency": "MVR"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -11130,7 +11130,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "DJF"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -11429,7 +11429,7 @@
 					},
 					"comment": "connect cross-platform driver",
 					"quality": "Reported",
-					"currency": "FJD"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -11453,7 +11453,7 @@
 						},
 						"comment": "input haptic port",
 						"quality": "Audited",
-						"currency": "NPR"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -11478,7 +11478,7 @@
 						},
 						"comment": "connect solid state hard drive",
 						"quality": "Incomplete",
-						"currency": "BTN"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -11851,7 +11851,7 @@
 						},
 						"comment": "calculate bluetooth pixel",
 						"quality": "Reported",
-						"currency": "YER"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -12390,7 +12390,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "ZWL"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -13719,7 +13719,7 @@
 						},
 						"comment": "back up multi-byte alarm",
 						"quality": "Audited",
-						"currency": "SYP"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -13988,7 +13988,7 @@
 					},
 					"comment": "override bluetooth array",
 					"quality": "Estimated",
-					"currency": "NIO"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -14083,7 +14083,7 @@
 						},
 						"comment": "parse primary sensor",
 						"quality": null,
-						"currency": "USD"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": null,
@@ -15323,7 +15323,7 @@
 					},
 					"comment": "generate solid state program",
 					"quality": "NoDataFound",
-					"currency": "KHR"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -15829,7 +15829,7 @@
 						},
 						"comment": "reboot neural firewall",
 						"quality": "NoDataFound",
-						"currency": "BWP"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -16501,7 +16501,7 @@
 						},
 						"comment": "transmit redundant program",
 						"quality": "Audited",
-						"currency": "THB"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -17620,7 +17620,7 @@
 					},
 					"comment": "calculate redundant hard drive",
 					"quality": "Estimated",
-					"currency": "DKK"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -18377,7 +18377,7 @@
 						},
 						"comment": "compress haptic feed",
 						"quality": "Incomplete",
-						"currency": "BRL"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -18396,7 +18396,7 @@
 						},
 						"comment": "bypass wireless program",
 						"quality": "Audited",
-						"currency": "RUB"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -19019,7 +19019,7 @@
 						},
 						"comment": "bypass open-source interface",
 						"quality": "Estimated",
-						"currency": "AWG"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -19555,7 +19555,7 @@
 						},
 						"comment": "reboot back-end panel",
 						"quality": "NoDataFound",
-						"currency": "SLE"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -20582,7 +20582,7 @@
 					"dataSource": null,
 					"comment": null,
 					"quality": "Estimated",
-					"currency": "CLP"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -20943,7 +20943,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "UAH"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -21482,7 +21482,7 @@
 						},
 						"comment": "reboot solid state monitor",
 						"quality": null,
-						"currency": "LSL"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -21507,7 +21507,7 @@
 						},
 						"comment": "reboot online matrix",
 						"quality": "Reported",
-						"currency": "FJD"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -22908,7 +22908,7 @@
 						"dataSource": null,
 						"comment": "calculate auxiliary circuit",
 						"quality": null,
-						"currency": "SLE"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -23485,7 +23485,7 @@
 					},
 					"comment": "compress optical port",
 					"quality": null,
-					"currency": "SZL"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -23509,7 +23509,7 @@
 						},
 						"comment": null,
 						"quality": null,
-						"currency": "LYD"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -24046,7 +24046,7 @@
 						},
 						"comment": "back up open-source hard drive",
 						"quality": "Audited",
-						"currency": "HNL"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -24730,7 +24730,7 @@
 						},
 						"comment": "connect virtual microchip",
 						"quality": "Incomplete",
-						"currency": "IQD"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -26704,7 +26704,7 @@
 						},
 						"comment": "back up open-source matrix",
 						"quality": null,
-						"currency": "MZN"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -27217,7 +27217,7 @@
 						},
 						"comment": "transmit bluetooth array",
 						"quality": "Incomplete",
-						"currency": "VES"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -27688,7 +27688,7 @@
 						},
 						"comment": "index haptic bandwidth",
 						"quality": "Estimated",
-						"currency": "GHS"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -27713,7 +27713,7 @@
 						},
 						"comment": "reboot open-source sensor",
 						"quality": null,
-						"currency": "LSL"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -28620,7 +28620,7 @@
 					},
 					"comment": "compress cross-platform array",
 					"quality": "Reported",
-					"currency": "MKD"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -28658,7 +28658,7 @@
 						},
 						"comment": "compress open-source card",
 						"quality": "Reported",
-						"currency": "AWG"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -29647,7 +29647,7 @@
 					},
 					"comment": null,
 					"quality": "Estimated",
-					"currency": "THB"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -30337,7 +30337,7 @@
 						},
 						"comment": "back up haptic matrix",
 						"quality": "Incomplete",
-						"currency": "IQD"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -31312,7 +31312,7 @@
 						},
 						"comment": "bypass auxiliary bus",
 						"quality": "NoDataFound",
-						"currency": "XAF"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -31828,7 +31828,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "CHF"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -32268,7 +32268,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "SRD"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -32304,7 +32304,7 @@
 						},
 						"comment": "quantify bluetooth array",
 						"quality": "Incomplete",
-						"currency": "PHP"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": null,
@@ -32849,7 +32849,7 @@
 						},
 						"comment": "compress auxiliary capacitor",
 						"quality": "Incomplete",
-						"currency": "GNF"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": null,
@@ -33157,7 +33157,7 @@
 						},
 						"comment": "input cross-platform circuit",
 						"quality": "Incomplete",
-						"currency": "PYG"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -33722,7 +33722,7 @@
 						},
 						"comment": "bypass bluetooth transmitter",
 						"quality": "Audited",
-						"currency": "QAR"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -34165,7 +34165,7 @@
 					"dataSource": null,
 					"comment": "input solid state interface",
 					"quality": "NoDataFound",
-					"currency": "PKR"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -34242,7 +34242,7 @@
 						},
 						"comment": "bypass haptic matrix",
 						"quality": null,
-						"currency": "BIF"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -35002,7 +35002,7 @@
 						},
 						"comment": "connect bluetooth array",
 						"quality": "NoDataFound",
-						"currency": "MNT"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -35551,7 +35551,7 @@
 						},
 						"comment": "parse optical program",
 						"quality": null,
-						"currency": "CAD"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -35634,7 +35634,7 @@
 						},
 						"comment": "calculate primary alarm",
 						"quality": "Reported",
-						"currency": "BMD"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": null,
@@ -36328,7 +36328,7 @@
 					},
 					"comment": null,
 					"quality": "Reported",
-					"currency": "TJS"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -36352,7 +36352,7 @@
 						},
 						"comment": "copy mobile panel",
 						"quality": "Estimated",
-						"currency": "XPF"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -36693,7 +36693,7 @@
 						},
 						"comment": "generate primary program",
 						"quality": "Estimated",
-						"currency": "CUP"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -36718,7 +36718,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "SEK"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -36738,7 +36738,7 @@
 						},
 						"comment": "generate back-end alarm",
 						"quality": "Estimated",
-						"currency": "KGS"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -37054,7 +37054,7 @@
 					},
 					"comment": "navigate cross-platform panel",
 					"quality": "Audited",
-					"currency": "EGP"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": null,
@@ -37068,7 +37068,7 @@
 						},
 						"comment": "calculate auxiliary monitor",
 						"quality": null,
-						"currency": "BGN"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -37129,7 +37129,7 @@
 						},
 						"comment": "connect haptic matrix",
 						"quality": null,
-						"currency": "LSL"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -38360,7 +38360,7 @@
 						},
 						"comment": "index bluetooth capacitor",
 						"quality": "Incomplete",
-						"currency": "MRU"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -39754,7 +39754,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "GHS"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -39783,7 +39783,7 @@
 						},
 						"comment": "index mobile pixel",
 						"quality": "Reported",
-						"currency": "AOA"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -40181,7 +40181,7 @@
 						},
 						"comment": "bypass bluetooth alarm",
 						"quality": "Incomplete",
-						"currency": "DKK"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -40767,7 +40767,7 @@
 					},
 					"comment": "reboot cross-platform bandwidth",
 					"quality": "NoDataFound",
-					"currency": "HKD"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -41142,7 +41142,7 @@
 						},
 						"comment": "reboot haptic system",
 						"quality": "NoDataFound",
-						"currency": "ANG"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -41897,7 +41897,7 @@
 						},
 						"comment": "input digital feed",
 						"quality": null,
-						"currency": "KPW"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -41917,7 +41917,7 @@
 						"dataSource": null,
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "WST"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -43667,7 +43667,7 @@
 						},
 						"comment": "quantify redundant panel",
 						"quality": "Reported",
-						"currency": "CZK"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -45250,7 +45250,7 @@
 						},
 						"comment": "generate solid state matrix",
 						"quality": "Reported",
-						"currency": "TWD"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -46941,7 +46941,7 @@
 						},
 						"comment": null,
 						"quality": "Estimated",
-						"currency": "BND"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -47980,7 +47980,7 @@
 					},
 					"comment": "generate virtual sensor",
 					"quality": "Audited",
-					"currency": "HTG"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -48054,7 +48054,7 @@
 						},
 						"comment": "index solid state system",
 						"quality": "NoDataFound",
-						"currency": "MWK"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -49238,7 +49238,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "JOD"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": null,
@@ -50910,7 +50910,7 @@
 						},
 						"comment": "back up haptic matrix",
 						"quality": "Incomplete",
-						"currency": "HUF"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -52275,7 +52275,7 @@
 					"dataSource": null,
 					"comment": "transmit back-end feed",
 					"quality": "Incomplete",
-					"currency": "CLP"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -53194,7 +53194,7 @@
 						},
 						"comment": null,
 						"quality": "Incomplete",
-						"currency": "KES"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -53219,7 +53219,7 @@
 						},
 						"comment": "navigate online pixel",
 						"quality": "NoDataFound",
-						"currency": "BHD"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -53842,7 +53842,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "QAR"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -53877,7 +53877,7 @@
 						},
 						"comment": null,
 						"quality": "Reported",
-						"currency": "STN"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -54740,7 +54740,7 @@
 						},
 						"comment": "hack haptic bandwidth",
 						"quality": null,
-						"currency": "SSP"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": {
@@ -55125,7 +55125,7 @@
 						},
 						"comment": "parse 1080p program",
 						"quality": "Estimated",
-						"currency": "EGP"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentAligned": {
@@ -55441,7 +55441,7 @@
 						},
 						"comment": "back up solid state transmitter",
 						"quality": "Reported",
-						"currency": "LYD"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
@@ -56146,7 +56146,7 @@
 						},
 						"comment": "back up mobile bus",
 						"quality": "Estimated",
-						"currency": "AED"
+						"currency": null
 					}
 				},
 				"nonAlignedActivities": null,
@@ -56506,7 +56506,7 @@
 						},
 						"comment": "copy online matrix",
 						"quality": null,
-						"currency": "MUR"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -57834,7 +57834,7 @@
 						},
 						"comment": "back up solid state feed",
 						"quality": null,
-						"currency": "BAM"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -58420,7 +58420,7 @@
 						},
 						"comment": "generate back-end matrix",
 						"quality": "Estimated",
-						"currency": "GYD"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -58777,7 +58777,7 @@
 						},
 						"comment": "bypass optical capacitor",
 						"quality": "NoDataFound",
-						"currency": "CLP"
+						"currency": null
 					}
 				},
 				"eligibleShare": {
@@ -59168,7 +59168,7 @@
 						},
 						"comment": null,
 						"quality": "Audited",
-						"currency": "ZMW"
+						"currency": null
 					}
 				},
 				"nonAlignedShare": {
@@ -59958,7 +59958,7 @@
 					"dataSource": null,
 					"comment": "reboot multi-byte matrix",
 					"quality": "Incomplete",
-					"currency": "JPY"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": null,
@@ -60779,7 +60779,7 @@
 					},
 					"comment": "back up neural firewall",
 					"quality": "NoDataFound",
-					"currency": "BAM"
+					"currency": null
 				},
 				"nonEligibleShare": {
 					"relativeShareInPercent": {
@@ -60905,7 +60905,7 @@
 						},
 						"comment": "override primary transmitter",
 						"quality": "Incomplete",
-						"currency": "GIP"
+						"currency": null
 					}
 				},
 				"substantialContributionToClimateChangeMitigationInPercentEligible": {
