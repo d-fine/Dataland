@@ -50,8 +50,9 @@ abstract class DataController<T>(
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
 
+        val dataPointFrameworks = dataPointManager.getAllDataPointFrameworks()
         val dataIdOfPostedData: String
-        if (datasetToStore.dataType == "additional-company-information") {
+        if (dataPointFrameworks.contains(datasetToStore.dataType)) {
             logger.info("Breaking down the data.")
             dataIdOfPostedData = dataPointManager.processDataSet(datasetToStore, bypassQa, correlationId)
         } else {
@@ -113,7 +114,8 @@ abstract class DataController<T>(
     ): String {
         val dataAsString: String
         val dataTypeString = dataType.toString()
-        if (dataTypeString == "additional-company-information") {
+        val dataPointFrameworks = dataPointManager.getAllDataPointFrameworks()
+        if (dataPointFrameworks.contains(dataTypeString)) {
             logger.info("Assemble data set from data points.")
             dataAsString = dataPointManager.getDataSetFromId(dataId, dataTypeString, correlationId)
         } else {

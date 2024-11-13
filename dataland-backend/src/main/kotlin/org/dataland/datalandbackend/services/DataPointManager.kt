@@ -47,6 +47,12 @@ class DataPointManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
+     * Retrieves all data point frameworks from the specification service
+     * @return a list of the names of all data point frameworks
+     */
+    fun getAllDataPointFrameworks(): List<String> = specificationManager.listFrameworkSpecifications().map { it.name }
+
+    /**
      * Stores a single data point in the internal storage
      * @param uploadedDataPoint the data point to store
      * @param uploaderUserId the user id of the user who uploaded the data point
@@ -169,9 +175,7 @@ class DataPointManager(
             )
 
         val createdDataIds = mutableListOf<String>()
-        expectedDataPoints.forEach {
-            val dataPointJsonPath = it.key
-            val dataPointIdentifier = it.value
+        expectedDataPoints.forEach { (dataPointJsonPath, dataPointIdentifier) ->
             val dataPointContent = getValueFromJsonNode(dataSetContent, dataPointJsonPath)
             if (dataPointContent.isEmpty()) return@forEach
             val contentJsonNode = objectMapper.readTree(dataPointContent)
@@ -208,9 +212,7 @@ class DataPointManager(
         dataSetContent: JsonNode,
         correlationId: String,
     ) {
-        expectedDataPoints.forEach {
-            val dataPointJsonPath = it.key
-            val dataPointIdentifier = it.value
+        expectedDataPoints.forEach { (dataPointJsonPath, dataPointIdentifier) ->
             val dataPointContent = getValueFromJsonNode(dataSetContent, dataPointJsonPath)
             if (dataPointContent.isEmpty()) return@forEach
             validateDataPoint(dataPointIdentifier, dataPointContent, correlationId)
