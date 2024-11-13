@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
 import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -77,7 +78,7 @@ class JsonOperationsTest {
 
     @Test
     fun `check that invalid inputs are rejected`() {
-        assertThrows<IllegalArgumentException> {
+        assertThrows<InvalidInputApiException> {
             validateConsistency(getJsonString(invalidCurrencyDataPoint), validationClass, correlationId)
         }
     }
