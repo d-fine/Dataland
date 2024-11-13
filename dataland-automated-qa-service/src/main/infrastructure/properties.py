@@ -15,14 +15,12 @@ document_manager_api_url = "http://document-manager:8080/documents"
 
 mq_data_key = "data"
 mq_document_key = "document"
-mq_persist_automated_qa_result_key = "manualQaRequestedPersistAutomatedQaResult"
+
 mq_receiving_exchange = "itemStored"
 mq_manual_qa_requested_exchange = "manualQaRequested"
-mq_quality_assured_exchange = "dataQualityAssured"
 
 mq_correlation_id_header = "cloudEvents:id"
 mq_message_type_header = "cloudEvents:type"
 
-mq_qa_status_changed_type = "QA status changed"
-mq_manual_qa_requested_type = "Manual QA requested"
+mq_automated_qa_complete_type = "Automated QA complete"
 mq_persist_automated_qa_result = "Persist automated QA result"
