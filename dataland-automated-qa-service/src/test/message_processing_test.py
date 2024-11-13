@@ -3,7 +3,7 @@ from typing import Callable
 
 import unittest
 from unittest.mock import Mock
-from main.infrastructure.messaging import process_qa_request
+from main.infrastructure.messaging import process_qa_request, Automated_QA_Service_Message
 from main.infrastructure.resources import Resource
 import main.infrastructure.properties as p
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
@@ -27,7 +27,9 @@ def mock_resource() -> Mock:
 
 
 def build_qa_status_changed_message_body(qa_result: QaStatus) -> bytes:
-    message = {"identifier": "dummy-id", "validationResult": qa_result, "reviewerId": "automated-qa-service"}
+    message = Automated_QA_Service_Message(
+        resourceId="dummy-id", qaStatus=qa_result, reviewerId="automated_qa_service", bypassQa=false
+    ).to_dict()
     return json.dumps(message).encode("UTF-8")
 
 
@@ -39,8 +41,8 @@ class MessageProcessingTest(unittest.TestCase):
         self.validate_process_qa_request(
             p.mq_data_key,
             True,
-            p.mq_quality_assured_exchange,
-            p.mq_qa_status_changed_type,
+            p.mq_manual_qa_requested_exchange,
+            p.mq_persist_automated_qa_result,
             build_qa_status_changed_message_body(QaStatus.ACCEPTED),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
@@ -50,7 +52,7 @@ class MessageProcessingTest(unittest.TestCase):
             p.mq_data_key,
             False,
             p.mq_manual_qa_requested_exchange,
-            p.mq_manual_qa_requested_type,
+            p.mq_automated_qa_complete_type,
             qa_forwarded_message_body,
             mock_validate_raise_automated_qa_not_possible_error,
         )
@@ -59,8 +61,8 @@ class MessageProcessingTest(unittest.TestCase):
         self.validate_process_qa_request(
             p.mq_data_key,
             False,
-            p.mq_quality_assured_exchange,
-            p.mq_qa_status_changed_type,
+            p.mq_manual_qa_requested_exchange,
+            p.mq_automated_qa_complete_type,
             build_qa_status_changed_message_body(QaStatus.ACCEPTED),
             lambda resource, correlation_id: QaStatus.ACCEPTED,  # noqa: ARG005
         )
@@ -69,8 +71,8 @@ class MessageProcessingTest(unittest.TestCase):
         self.validate_process_qa_request(
             p.mq_data_key,
             False,
-            p.mq_quality_assured_exchange,
-            p.mq_qa_status_changed_type,
+            p.mq_manual_qa_requested_exchange,
+            p.mq_automated_qa_complete_type,
             build_qa_status_changed_message_body(QaStatus.REJECTED),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
