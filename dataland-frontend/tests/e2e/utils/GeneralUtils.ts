@@ -43,7 +43,7 @@ export function compareObjectKeysAndValuesDeep(
   for (const key of keysA) {
     const newPath = path ? `${path}.${key}` : key;
 
-    if (!keysB.includes(key) && !ignoredValue(key, ignoreFields)) {
+    if (!keysB.includes(key) && !ignoredValue(newPath, ignoreFields)) {
       throw new Error(`A field with the key ${newPath} exists in A but not in B`);
     }
 
@@ -53,7 +53,7 @@ export function compareObjectKeysAndValuesDeep(
   }
 
   for (const key of keysB) {
-    if (!keysA.includes(key) && !ignoredValue(key, ignoreFields)) {
+    if (!keysA.includes(key) && !ignoredValue(`${path}.${key}`, ignoreFields)) {
       throw new Error(`A field with the key ${path}.${key} exists in B but not in A`);
     }
   }

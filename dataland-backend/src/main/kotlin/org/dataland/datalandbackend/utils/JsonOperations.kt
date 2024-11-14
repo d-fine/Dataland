@@ -125,7 +125,8 @@ object JsonOperations {
             logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): ${ex.message}")
             throw InvalidInputApiException(
                 summary = "Validation failed for data point.",
-                message = ex.message ?: "Validation failed due to unrecognized properties.",
+                message = "Validation failed for data point due to ${ex.propertyName}. Known properties are ${ex.knownPropertyIds}.",
+                cause = ex,
             )
         }
         val dataPointObject = objectMapper.readValue(jsonData, classForValidation)

@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
@@ -71,7 +70,7 @@ class JsonOperationsTest {
 
     @Test
     fun `check that unrecognized properties are rejected`() {
-        assertThrows<UnrecognizedPropertyException> {
+        assertThrows<InvalidInputApiException> {
             validateConsistency(getJsonString(currencyDataPointWithUnknownProperty), validationClass, correlationId)
         }
     }
