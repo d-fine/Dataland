@@ -80,7 +80,7 @@ function checkIfContentIsIdentical(
         throwErrorBecauseOfFieldValue(newPath);
       }
     } else {
-      compareObjectKeysAndValuesDeep(valueA, valueB, newPath);
+      compareObjectKeysAndValuesDeep(valueA, valueB, newPath, ignoreFields);
     }
   } else if (valueA !== valueB && !ignoredValue(newPath, ignoreFields)) {
     throwErrorBecauseOfFieldValue(newPath);
