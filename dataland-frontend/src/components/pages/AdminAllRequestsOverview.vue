@@ -13,6 +13,7 @@
               <span class="w-3 p-input-icon-left" style="margin: 15px">
                 <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <InputText
+                  :disabled="waitingForData"
                   data-test="email-searchbar"
                   v-model="searchBarInputEmail"
                   placeholder="Search by Requester"
@@ -22,6 +23,7 @@
               <span class="w-3 p-input-icon-left" style="margin: 15px">
                 <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <InputText
+                    :disabled="waitingForData"
                     data-test="comment-searchbar"
                     v-model="searchBarInputComment"
                     placeholder="Search by Comment"
@@ -29,6 +31,7 @@
                 />
               </span>
               <FrameworkDataSearchDropdownFilter
+                :disabled="waitingForData"
                 v-model="selectedFrameworks"
                 ref="frameworkFilter"
                 :available-items="availableFrameworks"
@@ -40,6 +43,7 @@
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
+                  :disabled="waitingForData"
                   v-model="selectedRequestStatus"
                   ref="frameworkFilter"
                   :available-items="availableRequestStatus"
@@ -51,6 +55,7 @@
                   style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
+                  :disabled="waitingForData"
                   v-model="selectedPriority"
                   ref="frameworkFilter"
                   :available-items="availablePriority"
@@ -61,7 +66,7 @@
                   class="ml-3"
                   style="margin: 15px"
               />
-              <div class="flex align-items-center">
+              <span class="flex align-items-center">
                 <span
                   data-test="reset-filter"
                   style="margin: 15px"
@@ -69,10 +74,21 @@
                   @click="resetFilterAndSearchBar"
                   >RESET</span
                 >
-              </div>
-              <div class="flex align-items-center ml-auto" style="margin: 15px">
+              </span>
+            </span>
+            <span class="align-content-start flex items-center justify-start">
+              <PrimeButton
+                  :disabled="waitingForData"
+                  class="p-button-rounded border-none my-2 mx-3 pl-4 pr-4 pt-3 pb-3"
+                  :style="{ fontSize: '20px'}"
+                  name="trigger-filtering-requests"
+                  @click="getAllRequestsForFilters"
+              >
+                  Filter Requests
+              </PrimeButton>
+              <span class="flex align-items-center ml-auto" style="margin: 15px">
                 <span>{{ numberOfRequestsInformation }}</span>
-              </div>
+              </span>
             </span>
           </div>
 
@@ -224,10 +240,12 @@ import {accessStatusBadgeClass, badgeClass, priorityBadgeClass} from '@/utils/Re
 import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus, retrieveAvailablePriority } from '@/utils/RequestsOverviewPageUtils';
 import type { DataTypeEnum } from '@clients/backend';
 import router from '@/router';
+import PrimeButton from "primevue/button";
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
   components: {
+    PrimeButton,
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
     DatasetsTabMenu,
@@ -293,44 +311,25 @@ export default defineComponent({
   },
 
   watch: {
-    selectedFrameworks() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        this.getAllRequestsForFilters();
-      }
+    selectedFrameworks(newSelected) {
+      this.selectedFrameworks = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
     },
-    selectedRequestStatus() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        this.getAllRequestsForFilters();
-      }
+    selectedRequestStatus(newSelected) {
+      this.selectedRequestStatus = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
     },
-    selectedPriority() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        this.getAllRequestsForFilters();
-      }
+    selectedPriority(newSelected) {
+      this.selectedPriority = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
     },
     searchBarInputEmail(newSearch: string) {
       this.searchBarInputEmail = newSearch;
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (this.timerId) {
-        clearTimeout(this.timerId);
-      }
-      this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.debounceInMs);
+      this.setChunkAndFirstRowIndexToZero();
     },
     searchBarInputComment(newSearch: string) {
       this.searchBarInputComment = newSearch;
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (this.timerId) {
-        clearTimeout(this.timerId);
-      }
-      this.timerId = setTimeout( () => this.getAllRequestsForFilters(), this.debounceInMs);
+      this.setChunkAndFirstRowIndexToZero();
     }
   },
   methods: {
@@ -406,6 +405,7 @@ export default defineComponent({
       this.selectedPriority = [];
       this.searchBarInputEmail = '';
       this.searchBarInputComment = '';
+      this.getAllRequestsForFilters();
     },
 
     /**
@@ -429,6 +429,14 @@ export default defineComponent({
     onRowClick(event: DataTableRowClickEvent) {
       const requestIdOfClickedRow = event.data.dataRequestId;
       return router.push(`/requests/${requestIdOfClickedRow}`);
+    },
+
+    /**
+     * Sets the currentChunkIndex and firstRowIndex to Zero
+     */
+    setChunkAndFirstRowIndexToZero() {
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
     },
   },
 });
