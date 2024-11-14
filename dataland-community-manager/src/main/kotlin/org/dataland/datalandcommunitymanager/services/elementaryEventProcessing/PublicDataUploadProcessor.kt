@@ -11,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.Logger
@@ -74,15 +74,15 @@ class PublicDataUploadProcessor(
         messageUtils.validateMessageType(messageType, this.messageType)
 
         messageUtils.rejectMessageOnException {
-            val qaCompletedMessage = objectMapper.readValue(payload, ManualQaRequestedMessage::class.java)
+            val qaCompletedMessage = objectMapper.readValue(payload, QaStatusChangeMessage::class.java)
 
-            if (qaCompletedMessage.qaStatus != QaStatus.Accepted) {
+            if (qaCompletedMessage.updatedQaStatus != QaStatus.Accepted) {
                 return@rejectMessageOnException
             }
 
             super.processEvent(
                 createElementaryEventBasicInfo(
-                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.resourceId)),
+                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.changedQaStatusDataId)),
                 ),
                 correlationId,
                 type,

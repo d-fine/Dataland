@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.Ele
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -31,6 +31,7 @@ class PublicDataUploadProcessorTest {
     private lateinit var elementaryEventRepositoryMock: ElementaryEventRepository
 
     private var dataId = UUID.randomUUID()
+    private val activeDataId = UUID.randomUUID()
     private var companyId = UUID.randomUUID()
 
     @BeforeEach
@@ -89,12 +90,10 @@ class PublicDataUploadProcessorTest {
     @Test
     fun `do not create an elementary event when the dataset has been rejected`() {
         val qaCompletedMessage =
-            ManualQaRequestedMessage(
-                resourceId = dataId.toString(),
-                qaStatus = QaStatus.Rejected,
-                reviewerId = "reviewerId",
-                bypassQa = false,
-                comment = "message",
+            QaStatusChangeMessage(
+                changedQaStatusDataId = dataId.toString(),
+                updatedQaStatus = QaStatus.Rejected,
+                currentlyActiveDataId = activeDataId.toString(),
             )
         val payload = objectMapper.writeValueAsString(qaCompletedMessage)
 
@@ -106,12 +105,10 @@ class PublicDataUploadProcessorTest {
     @Test
     fun `create an elementary event when the dataset has been approved`() {
         val qaCompletedMessage =
-            ManualQaRequestedMessage(
-                resourceId = dataId.toString(),
-                qaStatus = QaStatus.Accepted,
-                reviewerId = "reviewerId",
-                bypassQa = false,
-                comment = "message",
+            QaStatusChangeMessage(
+                changedQaStatusDataId = dataId.toString(),
+                updatedQaStatus = QaStatus.Accepted,
+                currentlyActiveDataId = activeDataId.toString(),
             )
         val payload = objectMapper.writeValueAsString(qaCompletedMessage)
 

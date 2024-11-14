@@ -7,7 +7,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -63,13 +63,13 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         messageUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, ManualQaRequestedMessage::class.java)
-        val dataId = qaCompletedMessage.resourceId
+        val qaCompletedMessage = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
+        val dataId = qaCompletedMessage.changedQaStatusDataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info("Received data QA completed message for dataset with ID $dataId")
-        if (qaCompletedMessage.qaStatus != QaStatus.Accepted) {
+        if (qaCompletedMessage.updatedQaStatus != QaStatus.Accepted) {
             logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
             return
         }
