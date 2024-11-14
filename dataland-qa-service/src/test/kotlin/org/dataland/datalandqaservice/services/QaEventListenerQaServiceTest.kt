@@ -33,7 +33,10 @@ private const val AUTOMATED_QA = "automated-qa-service"
 
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@SpringBootTest(classes = [DatalandQaService::class])
+@SpringBootTest(
+    classes = [DatalandQaService::class],
+    properties = ["spring.profiles.active=nodb"],
+)
 class QaEventListenerQaServiceTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
