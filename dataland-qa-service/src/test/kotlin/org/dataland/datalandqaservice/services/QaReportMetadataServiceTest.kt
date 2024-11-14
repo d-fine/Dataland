@@ -34,7 +34,10 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@SpringBootTest(classes = [DatalandQaService::class])
+@SpringBootTest(
+    classes = [DatalandQaService::class],
+    properties = ["spring.profiles.active=nodb"],
+)
 class QaReportMetadataServiceTest(
     @Autowired private val qaReportMetadataService: QaReportMetadataService,
     @Autowired private val qaReportRepository: QaReportRepository,

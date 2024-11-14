@@ -37,6 +37,7 @@ import java.util.UUID
         DatalandQaService::class,
         NoBackendRequestQaReportConfiguration::class,
     ],
+    properties = ["spring.profiles.active=nodb"],
 )
 class QaReportControllerTest(
     @Autowired private val qaReportController: SfdrDataQaReportController,
