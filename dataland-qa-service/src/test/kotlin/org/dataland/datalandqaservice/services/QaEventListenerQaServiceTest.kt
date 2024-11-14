@@ -30,7 +30,10 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@SpringBootTest(classes = [DatalandQaService::class])
+@SpringBootTest(
+    classes = [DatalandQaService::class],
+    properties = ["spring.profiles.active=nodb"],
+)
 class QaEventListenerQaServiceTest(
     @Autowired final val objectMapper: ObjectMapper,
     @Autowired var messageUtils: MessageQueueUtils,
