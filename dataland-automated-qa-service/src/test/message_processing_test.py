@@ -39,7 +39,7 @@ qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Te
 class MessageProcessingTest(unittest.TestCase):
     def test_should_send_accepted_message_when_qa_should_be_bypassed(self) -> None:
         self.validate_process_qa_request(
-            p.mq_data_key,
+            p.mq_persist_automated_qa_result_key,
             True,
             p.mq_manual_qa_requested_exchange,
             p.mq_persist_automated_qa_result,
@@ -89,7 +89,10 @@ class MessageProcessingTest(unittest.TestCase):
         )
         arguments = channel_mock.basic_publish.call_args[1]
         self.assertEqual(expected_exchange, arguments["exchange"])
-        self.assertEqual(p.mq_data_key, arguments["routing_key"])
+        if bypass_qa:
+            self.assertEqual(p.mq_persist_automated_qa_result_key, arguments["routing_key"])
+        else:
+            self.assertEqual(p.mq_data_key, arguments["routing_key"])
         self.assertEqual(expected_message_body, arguments["body"])
         self.assertTrue(arguments["mandatory"])
         self.assertEqual(

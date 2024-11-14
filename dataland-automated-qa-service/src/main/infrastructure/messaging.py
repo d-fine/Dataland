@@ -107,6 +107,7 @@ def _send_message(
         message: dict,
         correlation_id: str,
 ) -> None:
+    print(f"Exchange: {exchange}, Routing_key: {routing_key}, Message_type: {message_type}.")
     channel.basic_publish(
         exchange=exchange,
         routing_key=routing_key,
@@ -136,7 +137,8 @@ def _send_persist_automated_qa_result_message(
     Message is sent to 'p.mq_manual_qa_requested_exchange' exchange with message type 'p.mq_persist_automated_qa_result'
     """
     message = AutomatedQaServiceMessage(resource_id=resource_id, qa_status=qa_status, reviewer_id=reviewer_id,
-                                        bypass_qa=bypass_qa, ).to_dict()
+                                        bypass_qa=bypass_qa).to_dict()
+
     _send_message(
         channel=channel,
         exchange=p.mq_manual_qa_requested_exchange,
@@ -206,7 +208,7 @@ def process_qa_request(
         logging.info(f"Bypassing QA for {resource_type} with ID {resource.id}. (Correlation ID: {correlation_id})")
         _send_persist_automated_qa_result_message(
             channel=channel,
-            routing_key=routing_key,
+            routing_key=p.mq_persist_automated_qa_result_key,
             resource_id=resource.id,
             qa_status=QaStatus.ACCEPTED,
             reviewer_id="automated-qa-service",

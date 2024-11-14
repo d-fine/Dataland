@@ -201,7 +201,7 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.MANUAL_QA_REQUESTED, declare = "false"),
-                    key = [RoutingKeyNames.DATA],
+                    key = [RoutingKeyNames.PERSIST_AUTOMATED_QA_RESULT],
                 ),
             ],
         )
