@@ -93,7 +93,7 @@ class QaEventListenerQaServiceTest(
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService
-                    .addDatasetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED)
+                    .addDatasetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.AUTOMATED_QA_COMPLETED)
             }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty (correlationId: $correlationId)", thrown.message)
     }
@@ -128,7 +128,7 @@ class QaEventListenerQaServiceTest(
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService.assureQualityOfDocument(
-                    noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED,
+                    noIdPayload, correlationId, MessageType.AUTOMATED_QA_COMPLETED,
                 )
             }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty (correlationId: $correlationId)", thrown.message)

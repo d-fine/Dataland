@@ -8,7 +8,7 @@ object MessageType {
     const val DATA_STORED = "Data stored"
     const val DOCUMENT_RECEIVED = "Document received"
     const val DOCUMENT_STORED = "Document stored"
-    const val MANUAL_QA_REQUESTED = "Manual QA requested"
+    const val AUTOMATED_QA_COMPLETED = "Automated QA complete"
     const val PERSIST_AUTOMATED_QA_RESULT = "Persist automated QA result"
     const val SEND_INTERNAL_EMAIL = "Send internal E-Mail"
     const val SEND_TEMPLATE_EMAIL = "Send template E-Mail"

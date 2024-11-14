@@ -75,8 +75,7 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            logger.info("AutomatedQaCompletedMessage received message be like $messageAsJsonString")
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            messageUtils.validateMessageType(type, MessageType.AUTOMATED_QA_COMPLETED)
             val message = objectMapper.readValue(messageAsJsonString, AutomatedQaCompletedMessage::class.java)
 
             val dataId = message.resourceId
@@ -158,7 +157,7 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            messageUtils.validateMessageType(type, MessageType.AUTOMATED_QA_COMPLETED)
             val message = objectMapper.readValue(messageAsJsonString, AutomatedQaCompletedMessage::class.java)
             val documentId = message.resourceId
             if (documentId.isEmpty()) {
@@ -202,7 +201,7 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.MANUAL_QA_REQUESTED, declare = "false"),
-                    key = [RoutingKeyNames.PERSIST_AUTOMATED_QA_RESULT],
+                    key = [RoutingKeyNames.DATA],
                 ),
             ],
         )
