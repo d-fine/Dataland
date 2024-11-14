@@ -205,12 +205,12 @@ class QaEventListenerQaService
             ],
         )
         @Transactional
-        fun addDataReviewFromAutomatedQaToReviewHistoryRepository(
+        fun addDatasetWithBypassQaTrueToQaReviewRepository(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
+            messageUtils.validateMessageType(type, MessageType.PERSIST_BYPASS_QA_RESULT)
             val message = objectMapper.readValue(messageAsJsonString, ManualQaRequestedMessage::class.java)
             val dataId = message.resourceId
             val bypassQa = message.bypassQa

@@ -75,7 +75,7 @@ class QaReportEventListenerService(
         messageUtils.rejectMessageOnException {
             if (actionType == ActionType.DELETE_DATA) {
                 reportManager.deleteAllQaReportsForDataId(dataId)
-                qaReviewRepository.deleteByDataId(dataId)
+                qaReviewRepository.deleteAllByDataId(dataId)
             }
         }
     }

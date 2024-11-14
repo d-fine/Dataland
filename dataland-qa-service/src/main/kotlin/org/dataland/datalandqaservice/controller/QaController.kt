@@ -3,7 +3,6 @@ package org.dataland.datalandqaservice.controller
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.api.QaApi
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -69,21 +68,8 @@ class QaController(
             "Received request from user $reviewerId to change the quality status of dataset with ID $dataId " +
                 "(correlationId: $correlationId)",
         )
-        val datasetQaReviewLogEntry = qaReviewManager.validateDataIdAndGetDataReviewStatus(dataId)
-        logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId")
-        val qaReviewEntity =
-            QaReviewEntity(
-                dataId = dataId,
-                companyId = datasetQaReviewLogEntry.companyId,
-                companyName = datasetQaReviewLogEntry.companyName,
-                dataType = datasetQaReviewLogEntry.dataType,
-                reportingPeriod = datasetQaReviewLogEntry.reportingPeriod,
-                timestamp = datasetQaReviewLogEntry.timestamp,
-                qaStatus = qaStatus,
-                reviewerId = reviewerId,
-                comment = comment,
-            )
-        qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(qaReviewEntity, correlationId)
+
+        qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(dataId, qaStatus, reviewerId, correlationId)
     }
 
     /**

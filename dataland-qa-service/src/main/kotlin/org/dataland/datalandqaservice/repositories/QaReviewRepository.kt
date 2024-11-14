@@ -14,14 +14,14 @@ import java.util.UUID
  */
 interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     /**
-     * Find QA information for a specific dataId.
+     * Find QA information for a specific dataId. Take first of all entries ordered by descending timestamp.
      */
-    fun findByDataId(dataId: String): QaReviewEntity?
+    fun findFirstByDataIdOrderByTimestampDesc(dataId: String): QaReviewEntity?
 
     /**
      * Deletes QA information for a specific dataId.
      */
-    fun deleteByDataId(dataId: String)
+    fun deleteAllByDataId(dataId: String)
 
     /**
      * Find QA Information based on companyId, dataType, and reportingPeriod
@@ -38,7 +38,7 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     @Query(
         nativeQuery = true,
         value =
-            "SELECT entry.data_id, entry.company_id, entry.company_name, entry.dataType, entry.reporting_period, " +
+            "SELECT entry.data_id, entry.company_id, entry.company_name, entry.data_type, entry.reporting_period, " +
                 "entry.timestamp " +
                 "FROM qa_review entry " +
                 "WHERE " +

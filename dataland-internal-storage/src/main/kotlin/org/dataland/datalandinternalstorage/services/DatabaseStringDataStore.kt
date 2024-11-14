@@ -111,7 +111,7 @@ class DatabaseStringDataStore(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )
 
-        val bypassQa = JSONObject(payload).getString("bypassQa").toBoolean()
+        val bypassQa = JSONObject(payload).getBoolean("bypassQa")
         val body =
             objectMapper.writeValueAsString(
                 ManualQaRequestedMessage(
@@ -121,11 +121,15 @@ class DatabaseStringDataStore(
             )
         if (bypassQa) {
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA_QA,
+                body,
+                MessageType.PERSIST_BYPASS_QA_RESULT,
+                correlationId,
+                ExchangeName.ITEM_STORED,
+                RoutingKeyNames.PERSIST_BYPASS_QA_RESULT,
             )
         } else {
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.PERSIST_BYPASS_QA_RESULT,
+                body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA_QA,
             )
         }
     }
