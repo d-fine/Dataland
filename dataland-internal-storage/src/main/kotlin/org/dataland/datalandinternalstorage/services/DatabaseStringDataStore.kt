@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -109,6 +110,24 @@ class DatabaseStringDataStore(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )
+
+        val bypassQa = JSONObject(payload).getString("bypassQa").toBoolean()
+        val body =
+            objectMapper.writeValueAsString(
+                ManualQaRequestedMessage(
+                    resourceId = dataId,
+                    bypassQa = bypassQa,
+                ),
+            )
+        if (bypassQa) {
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA_QA,
+            )
+        } else {
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.PERSIST_BYPASS_QA_RESULT,
+            )
+        }
     }
 
     /**

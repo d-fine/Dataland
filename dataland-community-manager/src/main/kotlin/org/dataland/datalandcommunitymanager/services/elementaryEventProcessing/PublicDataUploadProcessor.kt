@@ -11,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.AutomatedQaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.Logger
@@ -74,7 +74,7 @@ class PublicDataUploadProcessor(
         messageUtils.validateMessageType(messageType, this.messageType)
 
         messageUtils.rejectMessageOnException {
-            val qaCompletedMessage = objectMapper.readValue(payload, AutomatedQaCompletedMessage::class.java)
+            val qaCompletedMessage = objectMapper.readValue(payload, ManualQaRequestedMessage::class.java)
 
             if (qaCompletedMessage.qaStatus != QaStatus.Accepted) {
                 return@rejectMessageOnException

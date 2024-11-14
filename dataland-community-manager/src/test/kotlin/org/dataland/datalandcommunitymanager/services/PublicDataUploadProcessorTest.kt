@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.Ele
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.messages.AutomatedQaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -89,7 +89,7 @@ class PublicDataUploadProcessorTest {
     @Test
     fun `do not create an elementary event when the dataset has been rejected`() {
         val qaCompletedMessage =
-            AutomatedQaCompletedMessage(
+            ManualQaRequestedMessage(
                 resourceId = dataId.toString(),
                 qaStatus = QaStatus.Rejected,
                 reviewerId = "reviewerId",
@@ -106,7 +106,7 @@ class PublicDataUploadProcessorTest {
     @Test
     fun `create an elementary event when the dataset has been approved`() {
         val qaCompletedMessage =
-            AutomatedQaCompletedMessage(
+            ManualQaRequestedMessage(
                 resourceId = dataId.toString(),
                 qaStatus = QaStatus.Accepted,
                 reviewerId = "reviewerId",
