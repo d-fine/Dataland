@@ -405,6 +405,7 @@ export default defineComponent({
       this.selectedPriority = [];
       this.searchBarInputEmail = '';
       this.searchBarInputComment = '';
+      this.getAllRequestsForFilters();
     },
 
     /**
