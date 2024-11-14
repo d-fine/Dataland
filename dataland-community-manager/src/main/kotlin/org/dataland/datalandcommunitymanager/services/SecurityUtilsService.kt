@@ -156,7 +156,7 @@ class SecurityUtilsService(
      * @param requestId the requestId for which a company ownership check should be done
      */
     fun isUserCompanyOwnerForRequestId(requestId: String): Boolean {
-        val requestEntity = dataRequestQueryManager.getDataRequestById(requestId)
+        val requestEntity = dataRequestQueryManager.getDataRequestById(false, requestId)
         return isUserCompanyOwnerForCompanyId(requestEntity.datalandCompanyId)
     }
 

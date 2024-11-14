@@ -47,9 +47,15 @@ class RequestController(
             bulkDataRequestManager.processBulkDataRequest(bulkDataRequest),
         )
 
-    override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> =
-        ResponseEntity
-            .ok(dataRequestQueryManager.getDataRequestsForRequestingUser())
+    override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> {
+        val authenticationContext = DatalandAuthentication.fromContext()
+
+        return ResponseEntity
+            .ok(
+                dataRequestQueryManager.getDataRequestsForRequestingUser
+                    (authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN)),
+            )
+    }
 
     override fun getAggregatedDataRequests(
         identifierValue: String?,
@@ -71,9 +77,14 @@ class RequestController(
             singleDataRequestManager.processSingleDataRequest(singleDataRequest),
         )
 
-    override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
-        ResponseEntity
-            .ok(dataRequestQueryManager.getDataRequestById(dataRequestId.toString()))
+    override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> {
+        val authenticationContext = DatalandAuthentication.fromContext()
+        return ResponseEntity
+            .ok(
+                dataRequestQueryManager
+                    .getDataRequestById(authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN), dataRequestId.toString()),
+            )
+    }
 
     override fun getDataRequests(
         dataType: Set<DataTypeEnum>?,

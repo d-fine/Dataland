@@ -37,7 +37,7 @@ class DataRequestQueryManager
         /** This method retrieves all the data requests for the current user from the database and logs a message.
          * @returns all data requests for the current user
          */
-        fun getDataRequestsForRequestingUser(): List<ExtendedStoredDataRequest> {
+        fun getDataRequestsForRequestingUser(isUserAdmin: Boolean): List<ExtendedStoredDataRequest> {
             val currentUserId = DatalandAuthentication.fromContext().userId
             val retrievedStoredDataRequestEntitiesForUser =
                 dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
@@ -45,6 +45,9 @@ class DataRequestQueryManager
                 retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
                     convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity)
                 }
+            extendedStoredDataRequests.map {
+                it.adminComment.takeIf { isUserAdmin }
+            }
             dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
             return extendedStoredDataRequests
         }
@@ -105,11 +108,17 @@ class DataRequestQueryManager
          * @return the data request corresponding to the provided ID
          */
         @Transactional
-        fun getDataRequestById(dataRequestId: String): StoredDataRequest {
+        fun getDataRequestById(
+            isUserAdmin: Boolean,
+            dataRequestId: String,
+        ): StoredDataRequest {
             val dataRequestEntity =
                 dataRequestRepository.findById(dataRequestId).getOrElse {
                     throw DataRequestNotFoundApiException(dataRequestId)
                 }
+            if (!isUserAdmin) {
+                dataRequestEntity.adminComment = null
+            }
             val emailAddress = keycloakUserControllerApiService.getUser(dataRequestEntity.userId).email ?: ""
             return dataRequestEntity.toStoredDataRequest(emailAddress)
         }
@@ -139,6 +148,10 @@ class DataRequestQueryManager
                     .searchDataRequestEntity(
                         searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
                     ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
+
+            extendedStoredDataRequests.map {
+                it.adminComment.takeIf { isUserAdmin }
+            }
 
             val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
 
