@@ -32,4 +32,25 @@ class ExceptionForwarder {
             )
         }
     }
+
+    /**
+     * Catches a bad-request-client-exception due to a validation error of a data point and throws a custom exception
+     * which is known to the ExceptionHandler.
+     * @param response the response in the inter-microservice-request that has a client error
+     * @param statusCode the status code of the client error
+     * @param throwable the client error itself
+     */
+    fun catchDataPointValidationClassNotFoundClientException(
+        response: String,
+        statusCode: Int,
+        throwable: Throwable,
+    ) {
+        if (statusCode == HttpStatus.NOT_FOUND.value() && response.contains(DATAPOINT_VALIDATION_CLASS_NOT_FOUND_MESSAGE)) {
+            throw InvalidInputApiException(
+                summary = "Failed to retrieve validation class for data point.",
+                message = DATAPOINT_VALIDATION_CLASS_NOT_FOUND_MESSAGE,
+                cause = throwable,
+            )
+        }
+    }
 }

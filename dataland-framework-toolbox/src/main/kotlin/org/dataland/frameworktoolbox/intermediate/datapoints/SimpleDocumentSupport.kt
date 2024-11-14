@@ -11,6 +11,8 @@ import org.dataland.frameworktoolbox.utils.typescript.TypeScriptImport
  * Elements marked with SimpleDocumentSupport are converted to BaseDataPoints
  */
 data object SimpleDocumentSupport : DocumentSupport {
+    override fun getNamingPrefix(): String = "base"
+
     override fun getJvmTypeReference(
         innerType: TypeReference,
         nullable: Boolean,

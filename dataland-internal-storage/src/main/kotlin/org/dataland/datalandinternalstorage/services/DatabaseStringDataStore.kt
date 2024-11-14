@@ -2,9 +2,13 @@ package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
+import org.dataland.datalandinternalstorage.entities.DataPointItem
+import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
+import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -26,6 +30,7 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 /**
  * Simple implementation of a data store using a postgres database
@@ -38,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class DatabaseStringDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
+    @Autowired private var dataPointItemRepository: DataPointItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
@@ -103,22 +109,77 @@ class DatabaseStringDataStore(
         payload: String,
     ) {
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        val data = temporarilyCachedDataClient.getReceivedPublicData(dataId)
+        val dataObject = temporarilyCachedDataClient.getReceivedPublicData(dataId)
         logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-        storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
+
+        val dataAsJSON = JSONObject(dataObject)
+        val dataType = dataAsJSON.getString("dataType")
+        val decodedDataTypeString = DataTypeEnum.decode(dataType)
+
+        if (decodedDataTypeString != null) {
+            storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(dataObject)))
+        } else {
+            val companyId = dataAsJSON.getString("companyId")
+            val reportingPeriod = dataAsJSON.getString("reportingPeriod")
+            val dataPointData = dataAsJSON.getString("data")
+            storeDataPointItemWithoutTransaction(
+                DataPointItem(
+                    id = dataId,
+                    companyId = UUID.fromString(companyId),
+                    reportingPeriod = reportingPeriod,
+                    dataPointSpecification = dataType,
+                    data = objectMapper.writeValueAsString(dataPointData),
+                ),
+            )
+        }
+
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )
     }
 
     /**
+     * Stores a Data Point Item while ensuring that there is no active transaction. This will guarantee that the data
      * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
      * is commited after exit of this method.
-     * @param dataItem the DataItem to be stored
+     * @param dataPointItem the DataItem to be stored
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun storeDataPointItemWithoutTransaction(dataPointItem: DataPointItem) {
+        dataPointItemRepository.save(dataPointItem)
+    }
+
+    /**
+     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * point is commited after exit of this method.
+     * @param dataItem the DatapointItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeDataItemWithoutTransaction(dataItem: DataItem) {
         dataItemRepository.save(dataItem)
+    }
+
+    /**
+     * Reads data point from a database
+     * @param dataId the ID of the data to be retrieved
+     * @return the data as json string with ID dataId
+     */
+    fun selectDataPoint(
+        dataId: String,
+        correlationId: String,
+    ): StorableDataPoint {
+        val entry =
+            dataPointItemRepository
+                .findById(dataId)
+                .orElseThrow {
+                    logger.info("Data point with data ID: $dataId could not be found. Correlation ID: $correlationId.")
+                    ResourceNotFoundApiException(
+                        "Data point not found",
+                        "No data point with the ID: $dataId could be found in the data store.",
+                    )
+                }
+
+        return entry.toStorableDataPoint(objectMapper)
     }
 
     /**
@@ -133,7 +194,7 @@ class DatabaseStringDataStore(
         dataItemRepository
             .findById(dataId)
             .orElseThrow {
-                logger.info("Data with data ID: $dataId could not be found. Correlation ID: $correlationId.")
+                logger.info("Dataset with data ID: $dataId could not be found. Correlation ID: $correlationId.")
                 ResourceNotFoundApiException(
                     "Dataset not found",
                     "No dataset with the ID: $dataId could be found in the data store.",

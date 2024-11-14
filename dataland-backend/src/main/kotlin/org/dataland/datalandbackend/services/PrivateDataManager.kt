@@ -77,7 +77,7 @@ class PrivateDataManager(
         val storableDataSet =
             StorableDataSet(
                 companyId = companyAssociatedVsmeData.companyId,
-                dataType = DataType.of(VsmeData::class.java),
+                dataType = DataType.of(VsmeData::class.java).toString(),
                 uploaderUserId = userAuthentication.userId,
                 uploadTime = uploadTime,
                 reportingPeriod = companyAssociatedVsmeData.reportingPeriod,
@@ -300,7 +300,7 @@ class PrivateDataManager(
         objectMapper.readValue(
             dataManagerUtils
                 .getStorableDataset(
-                    dataId, DataType.of(VsmeData::class.java), correlationId,
+                    dataId, DataType.of(VsmeData::class.java).toString(), correlationId,
                     ::getJsonStringFromCacheOrExternalStorage,
                 ).data,
             VsmeData::class.java,

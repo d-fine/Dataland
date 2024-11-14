@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -62,11 +61,11 @@ class DataManagerUtils(
      */
     private fun assertActualAndExpectedDataTypeForIdMatch(
         dataId: String,
-        dataType: DataType,
+        dataType: String,
         dataMetaInformationEntity: DataMetaInformationEntity,
         correlationId: String,
     ) {
-        if (DataType.valueOf(dataMetaInformationEntity.dataType) != dataType) {
+        if (dataMetaInformationEntity.dataType != dataType) {
             throw InvalidInputApiException(
                 "Requested data $dataId not of type $dataType",
                 "The data with the id: $dataId is registered as type" +
@@ -117,7 +116,7 @@ class DataManagerUtils(
      */
     fun getStorableDataset(
         dataId: String,
-        dataType: DataType,
+        dataType: String,
         correlationId: String,
         datasetJsonStringGetter: (String, String)
         -> String,

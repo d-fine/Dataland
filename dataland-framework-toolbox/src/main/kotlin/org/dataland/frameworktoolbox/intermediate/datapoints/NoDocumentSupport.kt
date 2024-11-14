@@ -8,6 +8,8 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
  * Elements marked with NoDocumentSupport do not require any documentation / proof
  */
 data object NoDocumentSupport : DocumentSupport {
+    override fun getNamingPrefix(): String = "plain"
+
     override fun getQaJvmTypeReference(
         innerType: TypeReference,
         nullable: Boolean,

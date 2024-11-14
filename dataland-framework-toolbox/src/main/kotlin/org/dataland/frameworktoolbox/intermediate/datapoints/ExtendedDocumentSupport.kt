@@ -10,6 +10,8 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
  * Elements marked with ExtendedDocumentSupport are converted to ExtendedDataPoints
  */
 data object ExtendedDocumentSupport : DocumentSupport {
+    override fun getNamingPrefix(): String = "extended"
+
     override fun getJvmTypeReference(
         innerType: TypeReference,
         nullable: Boolean,

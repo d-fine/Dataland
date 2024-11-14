@@ -23,6 +23,11 @@ sealed interface DocumentSupport {
     }
 
     /**
+     * Calculate the naming prefix for a datapoint given the current DocumentSupport requirements
+     */
+    fun getNamingPrefix(): String
+
+    /**
      * Calculate the JVM type-reference for a datapoint of type innerType given the current DocumentSupport
      * requirements
      * @param innerType the type of the datapoint

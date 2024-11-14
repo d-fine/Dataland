@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.annotations
 
+import org.dataland.datalandbackend.model.DataType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -28,5 +29,11 @@ class DataTypesExtractorTest {
             expectedTypes.containsAll(dataTypes.toSet()),
             "Found $dataTypes instead of the expected $expectedTypes",
         )
+    }
+
+    @Test
+    fun `check if frameworks are correctly identified`() {
+        Assertions.assertFalse(DataType.valueOf("test").isFramework())
+        Assertions.assertTrue(DataType.valueOf("lksg").isFramework())
     }
 }

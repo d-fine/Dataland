@@ -1,0 +1,19 @@
+{
+  "id" : "extendedCurrency",
+  "name" : "General currency data point with an extended source",
+  "businessDefinition" : "Data point with an extended document reference as source, a currency represented by a string and a number as value. The currency has to conform to ISO 4217. Currency and value have to be both set or both null.",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint",
+  "example" : {
+    "value" : 100.5,
+    "currency" : "USD",
+    "quality" : "Reported",
+    "comment" : "The value is reported by the company.",
+    "dataSource" : {
+      "page" : "5-7",
+      "tagName" : "monetaryAmount",
+      "fileName" : "AnnualReport2020.pdf",
+      "fileReference" : "207c80dd75e923a88ff283d8bf97e346c735d2859e27bd702cf033feaef6de47"
+    },
+    "applicable" : true
+  }
+}

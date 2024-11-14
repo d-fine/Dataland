@@ -21,7 +21,7 @@ class EuTaxonomyFinancialsFramework :
         explanation = "Additional Taxonomy for Financials",
         File("./dataland-framework-toolbox/inputs/eu-taxonomy-financials/eu-taxonomy-financials.xlsx"),
         order = 1,
-        enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
+        enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.DataPointSpecifications),
     ) {
     override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
         addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)

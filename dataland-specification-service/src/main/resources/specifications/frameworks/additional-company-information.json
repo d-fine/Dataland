@@ -1,0 +1,20 @@
+{
+  "id" : "additional-company-information",
+  "name" : "Additional Company Information",
+  "businessDefinition" : "Additional Company Information",
+  "referencedReportJsonPath" : "general.general.referencedReports",
+  "schema" : {
+    "general" : {
+      "general" : {
+        "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
+        "fiscalYearEnd" : "extendedDateFiscalYearEnd"
+      },
+      "financialInformation" : {
+        "equity" : "extendedCurrencyEquity",
+        "debt" : "extendedCurrencyDebt",
+        "balanceSheetTotal" : "extendedCurrencyBalanceSheetTotal",
+        "evic" : "extendedCurrencyEvic"
+      }
+    }
+  }
+}

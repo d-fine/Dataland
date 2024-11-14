@@ -46,14 +46,24 @@ data class DataType
                 get() = allowedDataTypes.map { valueOf(it) }
         }
 
-        init {
-            if (!allowedDataTypes.contains(name)) {
+        override fun toString(): String = name
+
+        /**
+         * Checks if the datatype represents a valid framework
+         * @return true if the datatype is a framework
+         */
+        fun isFramework(): Boolean = allowedDataTypes.contains(name)
+
+        /**
+         * Checks if the datatype represents a valid framework
+         * @throws InvalidInputApiException if the datatype is not a valid framework
+         */
+        fun checkDataType() {
+            if (!isFramework()) {
                 throw InvalidInputApiException(
                     "$name is not a recognised dataType",
                     "$name is not a valid dataType. Please consult the API Reference to find a list of allowed values",
                 )
             }
         }
-
-        override fun toString(): String = name
     }

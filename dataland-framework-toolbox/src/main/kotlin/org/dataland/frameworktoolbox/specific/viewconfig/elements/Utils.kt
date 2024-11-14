@@ -38,6 +38,28 @@ fun ComponentBase.getTypescriptFieldAccessor(valueAccessor: Boolean = false): St
 }
 
 /**
+ * Generates a json path for a component
+ */
+fun ComponentBase.getJsonPath(): String {
+    val parentsSequence =
+        parents()
+            .toList()
+            .reversed()
+            .mapNotNull {
+                when (it) {
+                    is ComponentGroup -> it.identifier
+                    else -> null
+                }
+            }
+
+    return if (parentsSequence.isNotEmpty()) {
+        "${parentsSequence.joinToString(".")}.$identifier"
+    } else {
+        identifier
+    }
+}
+
+/**
  * Assuming standard kotlin-dataclass generation, this function generates a null-safe accessor
  * from the root dataset object to the field in Kotlin
  */

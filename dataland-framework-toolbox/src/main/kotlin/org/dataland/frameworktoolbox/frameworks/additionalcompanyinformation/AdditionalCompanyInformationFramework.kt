@@ -1,7 +1,11 @@
 package org.dataland.frameworktoolbox.frameworks.additionalcompanyinformation
 
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
-import org.dataland.frameworktoolbox.frameworks.InDevelopmentPavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
+import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -10,11 +14,27 @@ import java.io.File
  */
 @Component
 class AdditionalCompanyInformationFramework :
-    InDevelopmentPavedRoadFramework(
+    PavedRoadFramework(
         identifier = "additional-company-information",
         label = "Additional Company Information",
         explanation = "Additional Company Information",
         File("./dataland-framework-toolbox/inputs/additional-company-information/additional-company-information.xlsx"),
         order = 10,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
-    )
+    ) {
+    override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("general") {
+                edit<SingleSelectComponent>("fiscalYearDeviation") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "extendedEnumFiscalYearDeviation",
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

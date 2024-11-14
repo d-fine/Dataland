@@ -25,7 +25,7 @@ class LksgFramework :
         File("./dataland-framework-toolbox/inputs/lksg/lksg.xlsx"),
         order = 4,
         enabledFeatures =
-            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setSectionColorsAndExpansion(framework.root)

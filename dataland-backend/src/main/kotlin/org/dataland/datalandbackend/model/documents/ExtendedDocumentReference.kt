@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import org.dataland.datalandbackend.interfaces.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.validator.DocumentExists
 import org.dataland.datalandbackend.validator.PageRange
+import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -19,4 +20,15 @@ data class ExtendedDocumentReference(
     @field:NotBlank
     @field:DocumentExists
     override val fileReference: String,
-) : ExtendedDocumentReference
+    override val publicationDate: LocalDate? = null,
+) : ExtendedDocumentReference {
+    /**
+     * Converts this reference to a company report
+     */
+    fun toCompanyReport(): CompanyReport =
+        CompanyReport(
+            fileName = fileName,
+            fileReference = fileReference,
+            publicationDate = publicationDate,
+        )
+}

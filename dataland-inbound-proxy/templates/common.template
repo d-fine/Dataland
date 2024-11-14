@@ -54,6 +54,12 @@ location /email/ {
   include utils/emailServiceErrors.conf;
 }
 
+location /specifications/ {
+  proxy_pass http://specification-service:8489/specifications/;
+  include utils/proxy.conf;
+  include utils/specificationServiceErrors.conf;
+}
+
 location /images/ {
   root /var/www;
 }

@@ -1,6 +1,7 @@
 package org.dataland.datalandinternalstorage.controller
 
 import org.dataland.datalandinternalstorage.api.StorageAPI
+import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.services.DatabaseBlobDataStore
 import org.dataland.datalandinternalstorage.services.DatabaseStringDataStore
 import org.slf4j.LoggerFactory
@@ -30,6 +31,7 @@ class StorageController(
         correlationId: String,
     ): ResponseEntity<String> {
         logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
+
         return ResponseEntity.ok(stringDataStore.selectDataSet(dataId, correlationId))
     }
 
@@ -44,5 +46,13 @@ class StorageController(
             .ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .body(InputStreamResource(stream))
+    }
+
+    override fun selectDataPointById(
+        dataId: String,
+        correlationId: String,
+    ): ResponseEntity<StorableDataPoint> {
+        logger.info("Selecting data point from database with data ID: $dataId. Correlation ID: $correlationId.")
+        return ResponseEntity.ok(stringDataStore.selectDataPoint(dataId, correlationId))
     }
 }

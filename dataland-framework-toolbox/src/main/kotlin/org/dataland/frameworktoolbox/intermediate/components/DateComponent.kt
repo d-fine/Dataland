@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.basecomponents.Simp
 import org.dataland.frameworktoolbox.intermediate.datapoints.ExtendedDocumentSupport
 import org.dataland.frameworktoolbox.intermediate.datapoints.NoDocumentSupport
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -58,6 +59,14 @@ class DateComponent(
                 nullableFixtureExpression = "dataGenerator.randomFutureDate()",
                 nullable = isNullable,
             ),
+        )
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        specificationCategoryBuilder.addDefaultDatapointAndSpecification(
+            this,
+            "Date",
+            "${documentSupport.getNamingPrefix()}Date",
         )
     }
 }

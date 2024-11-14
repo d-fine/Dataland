@@ -1,0 +1,10 @@
+{
+  "id": "test-datapoint-type",
+  "name": "Testing...",
+  "businessDefinition": "Testing...",
+  "validatedBy": "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint",
+  "example": {
+    "testing": true
+  }
+}
+

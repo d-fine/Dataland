@@ -52,6 +52,12 @@ class CompanyDataController(
         )
     }
 
+    private fun checkDataTypes(dataTypes: Set<DataType>?) {
+        dataTypes?.forEach {
+            it.checkDataType()
+        }
+    }
+
     override fun getCompanies(
         searchString: String?,
         dataTypes: Set<DataType>?,
@@ -64,6 +70,7 @@ class CompanyDataController(
             "Received a request to get basic company information with searchString='$searchString'" +
                 ", dataTypes='$dataTypes', countryCodes='$countryCodes', sectors='$sectors'",
         )
+        checkDataTypes(dataTypes)
         return ResponseEntity.ok(
             companyQueryManager.getCompaniesInChunks(
                 StoredCompanySearchFilter(
