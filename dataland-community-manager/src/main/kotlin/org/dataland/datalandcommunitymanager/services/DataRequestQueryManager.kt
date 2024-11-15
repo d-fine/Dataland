@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
@@ -33,23 +34,27 @@ class DataRequestQueryManager
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val processingUtils: DataRequestProcessingUtils,
         private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+        private val dataRequestMasker: DataRequestMasker,
     ) {
         /** This method retrieves all the data requests for the current user from the database and logs a message.
          * @returns all data requests for the current user
          */
-        fun getDataRequestsForRequestingUser(isUserAdmin: Boolean): List<ExtendedStoredDataRequest> {
+        fun getDataRequestsForRequestingUser(): List<ExtendedStoredDataRequest> {
             val currentUserId = DatalandAuthentication.fromContext().userId
             val retrievedStoredDataRequestEntitiesForUser =
                 dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
+
             val extendedStoredDataRequests =
                 retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
                     convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity)
                 }
-            extendedStoredDataRequests.map {
-                it.adminComment.takeIf { isUserAdmin }
-            }
+
+            val extendedStoredDataRequestsFilteredAdminComment =
+                dataRequestMasker
+                    .hideAdminCommentForNonAdmins(extendedStoredDataRequests)
+
             dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-            return extendedStoredDataRequests
+            return extendedStoredDataRequestsFilteredAdminComment
         }
 
         /** This method retrieves an extended stored data request based on a data request entity
@@ -108,19 +113,18 @@ class DataRequestQueryManager
          * @return the data request corresponding to the provided ID
          */
         @Transactional
-        fun getDataRequestById(
-            isUserAdmin: Boolean,
-            dataRequestId: String,
-        ): StoredDataRequest {
+        fun getDataRequestById(dataRequestId: String): StoredDataRequest {
             val dataRequestEntity =
                 dataRequestRepository.findById(dataRequestId).getOrElse {
                     throw DataRequestNotFoundApiException(dataRequestId)
                 }
-            if (!isUserAdmin) {
-                dataRequestEntity.adminComment = null
-            }
+
             val emailAddress = keycloakUserControllerApiService.getUser(dataRequestEntity.userId).email ?: ""
-            return dataRequestEntity.toStoredDataRequest(emailAddress)
+            val storedDataRequest = dataRequestEntity.toStoredDataRequest(emailAddress)
+
+            val storedDataRequestsFilteredAdminComment = dataRequestMasker.hideAdminCommentForNonAdmins(storedDataRequest)
+
+            return storedDataRequestsFilteredAdminComment
         }
 
         /**
@@ -149,10 +153,6 @@ class DataRequestQueryManager
                         searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
                     ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
-            extendedStoredDataRequests.map {
-                it.adminComment.takeIf { isUserAdmin }
-            }
-
             val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
 
             val extendedStoredDataRequestsWithMails =
@@ -171,8 +171,11 @@ class DataRequestQueryManager
 
                     it
                 }
+            val extendedStoredDataRequestsFilteredAdminComment =
+                dataRequestMasker
+                    .hideAdminCommentForNonAdmins(extendedStoredDataRequestsWithMails)
 
-            return extendedStoredDataRequestsWithMails
+            return extendedStoredDataRequestsFilteredAdminComment
         }
 
         /**

@@ -30,7 +30,7 @@ data class ExtendedStoredDataRequest(
     val requestStatus: RequestStatus,
     val accessStatus: AccessStatus,
     val requestPriority: RequestPriority,
-    val adminComment: String?,
+    var adminComment: String?,
 ) {
     constructor(dataRequestEntity: DataRequestEntity, companyName: String, userEmailAddress: String?) : this(
         dataRequestEntity.dataRequestId,
