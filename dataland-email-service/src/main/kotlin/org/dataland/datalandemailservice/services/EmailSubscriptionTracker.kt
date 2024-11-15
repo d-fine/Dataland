@@ -9,8 +9,9 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
- * Service responsible for managing email subscriptions.
- * Note, that this service intentionally only works with EmailContact instead of plain email addresses to.
+ * Service responsible for managing the subscription status of [EmailContact] instances.
+ * Note, that this service intentionally only works with [EmailContact] instances instead of plain email addresses.
+ * This is due to the non-unique nature of email addresses, which is avoided by the [EmailContact] class.
  */
 @Service
 class EmailSubscriptionTracker(
