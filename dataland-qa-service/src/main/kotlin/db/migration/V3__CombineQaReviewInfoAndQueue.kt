@@ -26,7 +26,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             )
 
         while (queueResultSet.next()) {
-            val dataId = queueResultSet.getLong("data_id")
+            val dataId = queueResultSet.getString("data_id")
             val timestamp = queueResultSet.getLong("reception_time")
             val comment: String? = queueResultSet.getString("comment")
             val companyId = queueResultSet.getString("company_id")
@@ -34,7 +34,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             val dataType = queueResultSet.getString("framework")
             val reportingPeriod = queueResultSet.getString("reporting_period")
 
-            queueInsertStatement.setLong(1, dataId)
+            queueInsertStatement.setString(1, dataId)
             queueInsertStatement.setString(2, companyId)
             queueInsertStatement.setString(3, companyName)
             queueInsertStatement.setString(4, dataType)
@@ -64,7 +64,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
         val backendStoredCompanies = "BackendDb.Databases.backend.Schemas.public.Tables.stored_companies"
 
         while (informationResultSet.next()) {
-            val dataId = informationResultSet.getLong("data_id")
+            val dataId = informationResultSet.getString("data_id")
             val qaStatus = informationResultSet.getInt("qa_status")
             val timeStamp = informationResultSet.getLong("reception_time")
             val reviewerId = informationResultSet.getString("reviewer_keycloak_id")
@@ -75,7 +75,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
                 "SELECT data_type, reporting_period, company_id FROM $backendMetaData WHERE data_id = ?"
             val preparedMetaData = connection.prepareStatement(missingDataQuery)
 
-            preparedMetaData.setLong(1, dataId)
+            preparedMetaData.setString(1, dataId)
             val metaDataResultSet = preparedMetaData.executeQuery()
 
             var dataType: String = ""
@@ -100,7 +100,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
                 companyName = companyResultSet.getString("company_name")
             }
 
-            informationInsertStatement.setLong(1, dataId)
+            informationInsertStatement.setString(1, dataId)
             informationInsertStatement.setString(2, companyId)
             informationInsertStatement.setString(3, companyName)
             informationInsertStatement.setString(4, dataType)
