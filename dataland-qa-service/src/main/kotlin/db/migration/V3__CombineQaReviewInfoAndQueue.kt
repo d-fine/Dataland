@@ -60,8 +60,8 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             connection.prepareStatement(
                 "INSERT INTO qa_review (data_id, company_id, company_name, data_type, reporting_period, timestamp, qa_status, reviewer_id, comment) Values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             )
-        val backendMetaData = "BackendDb.Databases.backend.Schemas.public.Tables.data_meta_information"
-        val backendStoredCompanies = "BackendDb.Databases.backend.Schemas.public.Tables.stored_companies"
+        val backendMetaData = "public.data_meta_information"
+        val backendStoredCompanies = "public.stored_companies"
 
         while (informationResultSet.next()) {
             val dataId = informationResultSet.getString("data_id")
