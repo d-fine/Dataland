@@ -93,7 +93,7 @@ class SingleDataRequestEmailMessageSenderTest {
             val valueForKey: (String) -> Value? = { key -> internalEmailContentTable.table.find { it.first == key }?.second }
 
             assertEquals(Value.Text(authenticationMock.userDescription), valueForKey("User"))
-            assertEquals(Value.Text("lksg"), valueForKey("Data Type"))
+            assertEquals(Value.Text("LkSG"), valueForKey("Data Type"))
             assertEquals(Value.List(Value.Text("2022"), Value.Text("2023")), valueForKey("Reporting Periods"))
             assertEquals(Value.Text(datalandCompanyId), valueForKey("Dataland Company ID"))
             assertEquals(Value.Text(companyName), valueForKey("Company Name"))
