@@ -3,7 +3,7 @@ from typing import Callable
 
 import unittest
 from unittest.mock import Mock
-from main.infrastructure.messaging import process_qa_request, AutomatedQaServiceMessage
+from main.infrastructure.messaging import process_qa_request
 from main.infrastructure.resources import Resource
 import main.infrastructure.properties as p
 from dataland_backend_api_documentation_client.models.qa_status import QaStatus
@@ -26,10 +26,8 @@ def mock_resource() -> Mock:
     return resource_mock
 
 
-def build_qa_status_changed_message_body(qa_result: QaStatus, bypass_qa: bool) -> bytes:
-    message = AutomatedQaServiceMessage(
-        resource_id="dummy-id", qa_status=qa_result, reviewer_id="automated-qa-service", bypass_qa=bypass_qa
-    ).to_dict()
+def build_qa_completed_message_body(qa_result: QaStatus) -> bytes:
+    message = {"identifier": "dummy-id", "validationResult": qa_result, "reviewerId": "automated-qa-service"}
     return json.dumps(message).encode("UTF-8")
 
 
@@ -39,21 +37,31 @@ qa_forwarded_message_body = json.dumps({"identifier": "dummy-id", "comment": "Te
 class MessageProcessingTest(unittest.TestCase):
     def test_should_send_accepted_message_when_qa_should_be_bypassed(self) -> None:
         self.validate_process_qa_request(
-            p.mq_persist_automated_qa_result_key,
+            p.mq_data_key,
             True,
-            p.mq_manual_qa_requested_exchange,
-            p.mq_persist_automated_qa_result,
-            build_qa_status_changed_message_body(QaStatus.ACCEPTED, True),
+            p.mq_quality_assured_exchange,
+            p.mq_qa_completed_type,
+            build_qa_completed_message_body(QaStatus.ACCEPTED),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
+        )
+
+    def test_should_send_qa_requested_message_when_automated_qa_not_possible(self) -> None:
+        self.validate_process_qa_request(
+            p.mq_data_key,
+            False,
+            p.mq_manual_qa_requested_exchange,
+            p.mq_manual_qa_requested_type,
+            qa_forwarded_message_body,
+            mock_validate_raise_automated_qa_not_possible_error,
         )
 
     def test_should_send_accepted_message_when_validation_accepts(self) -> None:
         self.validate_process_qa_request(
             p.mq_data_key,
             False,
-            p.mq_manual_qa_requested_exchange,
-            p.mq_automated_qa_complete_type,
-            build_qa_status_changed_message_body(QaStatus.ACCEPTED, False),
+            p.mq_quality_assured_exchange,
+            p.mq_qa_completed_type,
+            build_qa_completed_message_body(QaStatus.ACCEPTED),
             lambda resource, correlation_id: QaStatus.ACCEPTED,  # noqa: ARG005
         )
 
@@ -61,9 +69,9 @@ class MessageProcessingTest(unittest.TestCase):
         self.validate_process_qa_request(
             p.mq_data_key,
             False,
-            p.mq_manual_qa_requested_exchange,
-            p.mq_automated_qa_complete_type,
-            build_qa_status_changed_message_body(QaStatus.REJECTED, False),
+            p.mq_quality_assured_exchange,
+            p.mq_qa_completed_type,
+            build_qa_completed_message_body(QaStatus.REJECTED),
             lambda resource, correlation_id: QaStatus.REJECTED,  # noqa: ARG005
         )
 
@@ -89,10 +97,7 @@ class MessageProcessingTest(unittest.TestCase):
         )
         arguments = channel_mock.basic_publish.call_args[1]
         self.assertEqual(expected_exchange, arguments["exchange"])
-        if bypass_qa:
-            self.assertEqual(p.mq_persist_automated_qa_result_key, arguments["routing_key"])
-        else:
-            self.assertEqual(p.mq_data_key, arguments["routing_key"])
+        self.assertEqual(p.mq_data_key, arguments["routing_key"])
         self.assertEqual(expected_message_body, arguments["body"])
         self.assertTrue(arguments["mandatory"])
         self.assertEqual(

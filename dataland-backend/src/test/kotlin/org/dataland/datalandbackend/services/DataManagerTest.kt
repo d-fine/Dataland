@@ -371,7 +371,7 @@ class DataManagerTest(
     }
 
     @Test
-    fun `test rejecting an accepted dataset, setting it to inactive, and setting a second dataset to active`() {
+    fun `test rejecting an accepted dataset and setting it to inactive and setting a second dataset to active`() {
         val oldDataId = "oldDatasetDataId"
         val newDataId = "newDatasetDataId"
 

@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -41,6 +42,7 @@ class QaEventListenerQaServiceTest(
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaEventListenerQaService: QaEventListenerQaService
+    lateinit var mockQaReviewManager: QaReviewManager
     lateinit var mockMetaDataControllerApi: MetaDataControllerApi
     lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
@@ -58,15 +60,16 @@ class QaEventListenerQaServiceTest(
     @BeforeEach
     fun resetMocks() {
         mockCloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+
         mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
+        mockQaReviewManager = mock(QaReviewManager::class.java)
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
                 objectMapper,
                 messageUtils,
-                testQaReviewRepository,
-                mockCompanyDataControllerApi,
+                mockQaReviewManager,
                 mockMetaDataControllerApi,
             )
     }
@@ -116,7 +119,7 @@ class QaEventListenerQaServiceTest(
     }
 
     @Test
-    fun `check that a bypassQA=true result is stored correctly in the QA review repository`() {
+    fun `check that a bypassQA result is stored correctly in the QA review repository`() {
         val dataId = "thisIdIsStoredAsAccepted"
         val persistBypassQaResultMessage = getPersistBypassQaResultMessage(dataId)
 
@@ -136,6 +139,7 @@ class QaEventListenerQaServiceTest(
             Assertions.assertEquals("", it.reviewerId)
             Assertions.assertEquals(acceptedDataId, it.dataId)
             Assertions.assertEquals(QaStatus.Accepted, it.qaStatus)
+            Assertions.assertEquals("Automatically QA approved", it.comment)
         }
     }
 
