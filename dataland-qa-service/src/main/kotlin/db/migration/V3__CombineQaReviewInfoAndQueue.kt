@@ -65,7 +65,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
 
         while (informationResultSet.next()) {
             val dataId = informationResultSet.getString("data_id")
-            val qaStatus = informationResultSet.getInt("qa_status")
+            val qaStatus = informationResultSet.getString("qa_status")
             val timeStamp = informationResultSet.getLong("reception_time")
             val reviewerId = informationResultSet.getString("reviewer_keycloak_id")
             val comment: String? = informationResultSet.getString("message")
@@ -106,7 +106,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             informationInsertStatement.setString(4, dataType)
             informationInsertStatement.setString(5, reportingPeriod)
             informationInsertStatement.setLong(6, timeStamp)
-            informationInsertStatement.setInt(7, qaStatus)
+            informationInsertStatement.setString(7, qaStatus)
             informationInsertStatement.setString(8, reviewerId)
             informationInsertStatement.setString(9, comment)
 
