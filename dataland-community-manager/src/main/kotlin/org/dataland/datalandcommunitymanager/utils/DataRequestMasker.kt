@@ -40,8 +40,10 @@ class DataRequestMasker {
      * @param storedDataRequest a single stored dataRequest
      * @returns the modified storedDataRequest
      */
-    fun hideAdminCommentForNonAdmins(storedDataRequest: StoredDataRequest): StoredDataRequest {
-        val modifiedStoredDataRequest = storedDataRequest.copy(adminComment = null)
-        return modifiedStoredDataRequest
-    }
+    fun hideAdminCommentForNonAdmins(storedDataRequest: StoredDataRequest): StoredDataRequest =
+        if (!isUserAdmin()) {
+            storedDataRequest.copy(adminComment = null)
+        } else {
+            storedDataRequest
+        }
 }
