@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -134,7 +133,7 @@ class DataRequestQueryManagerTest {
         ).thenReturn(listOf(keycloakUserBeta))
         `when`(dataRequestMasker.hideAdminCommentForNonAdmins(anyList()))
             .thenAnswer { invocation ->
-                invocation.arguments[0] as List<ExtendedStoredDataRequest>
+                invocation.arguments[0] as List<*>
             }
     }
 

@@ -182,13 +182,12 @@ class SecurityUtilsService(
         }
 
     /**
-     * This method checks that only access status of a request entity can be patched
+     * Returns true if user is not trying to patch any of the arguments
      * @param requestStatus the request status of the patch request
      * @param contacts the contacts of the patch request
      * @param message the message of the patch request
      * @param requestPriority the requestPriority of the patch
      * @param adminComment the adminComment of the patch request
-     *
      */
     fun isNotTryingToPatch(
         requestStatus: RequestStatus?,
@@ -196,10 +195,10 @@ class SecurityUtilsService(
         message: String?,
         requestPriority: RequestPriority?,
         adminComment: Comment?,
-    ): Boolean =
-        requestStatus == null &&
-            contacts.isNullOrEmpty() &&
-            message.isNullOrBlank() &&
-            requestPriority == null &&
-            adminComment == null
+    ): Boolean {
+        val isNotTryingToPatchStatusContactsMessage = requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
+        val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
+        val isNotTryingToPatchAnyArgument = isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
+        return isNotTryingToPatchAnyArgument
+    }
 }
