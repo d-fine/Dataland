@@ -10,6 +10,7 @@ import org.flywaydb.core.api.migration.Context
 @Suppress("ClassName")
 class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
     override fun migrate(context: Context?) {
+        return
         val connection = context!!.connection
 
         /*

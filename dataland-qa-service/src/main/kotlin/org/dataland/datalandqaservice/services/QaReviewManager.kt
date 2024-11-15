@@ -52,19 +52,21 @@ class QaReviewManager(
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
+        userIsAdmin: Boolean,
     ): List<QaReviewResponse> {
         val offset = (chunkIndex) * (chunkSize)
-        return qaReviewRepository.getSortedAndFilteredQaReviewMetadataSet(
-            QaSearchFilter(
-                dataTypes = dataTypes,
-                reportingPeriods = reportingPeriods,
-                companyIds = getCompanyIdsForCompanyName(companyName),
-                companyName = companyName,
-                qaStatuses = setOf(QaStatus.Pending),
-            ),
-            resultOffset = offset,
-            resultLimit = chunkSize,
-        )
+        return qaReviewRepository
+            .getSortedAndFilteredQaReviewMetadataSet(
+                QaSearchFilter(
+                    dataTypes = dataTypes,
+                    reportingPeriods = reportingPeriods,
+                    companyIds = getCompanyIdsForCompanyName(companyName),
+                    companyName = companyName,
+                    qaStatuses = setOf(QaStatus.Pending),
+                ),
+                resultOffset = offset,
+                resultLimit = chunkSize,
+            ).map { it.toDatasetQaReviewResponse(userIsAdmin) }
     }
 
     /**

@@ -2,7 +2,6 @@ package org.dataland.datalandqaservice.repositories
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -38,8 +37,8 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     @Query(
         nativeQuery = true,
         value =
-            "SELECT entry.data_id, entry.company_id, entry.company_name, entry.data_type, entry.reporting_period, " +
-                "entry.timestamp " +
+            "SELECT entry.event_id, entry.data_id, entry.company_id, entry.company_name, entry.data_type, entry.reporting_period, " +
+                "entry.timestamp, entry.qa_status, entry.reviewer_id, entry.comment " +
                 "FROM qa_review entry " +
                 "WHERE " +
                 "(:#{#searchFilter.shouldFilterByDataType} = false " +
@@ -58,7 +57,7 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
         @Param("searchFilter") searchFilter: QaSearchFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
-    ): List<QaReviewResponse>
+    ): List<QaReviewEntity>
 
     /**
      * This query counts the number of datasets that matches the search fiter and returns this number.

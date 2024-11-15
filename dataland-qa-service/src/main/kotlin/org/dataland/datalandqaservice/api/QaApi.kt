@@ -72,7 +72,7 @@ interface QaApi {
             "or hasRole('ROLE_ADMIN') " +
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
-    fun getQaReviewsByDataId(
+    fun getQaReviewResponseByDataId(
         @PathVariable("dataId") dataId: UUID,
     ): ResponseEntity<QaReviewResponse>
 

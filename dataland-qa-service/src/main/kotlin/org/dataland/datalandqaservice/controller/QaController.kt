@@ -33,16 +33,22 @@ class QaController(
         chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>> {
         logger.info("Received request to respond with information about pending datasets")
+        val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         return ResponseEntity.ok(
-            qaReviewManager.getInfoOnPendingDatasets(
-                dataTypes = dataTypes, reportingPeriods = reportingPeriods,
-                companyName = companyName, chunkSize = chunkSize, chunkIndex = chunkIndex,
-            ),
+            qaReviewManager
+                .getInfoOnPendingDatasets(
+                    dataTypes = dataTypes,
+                    reportingPeriods = reportingPeriods,
+                    companyName = companyName,
+                    chunkSize = chunkSize,
+                    chunkIndex = chunkIndex,
+                    userIsAdmin = userIsAdmin,
+                ),
         )
     }
 
     @Transactional
-    override fun getQaReviewsByDataId(dataId: UUID): ResponseEntity<QaReviewResponse> {
+    override fun getQaReviewResponseByDataId(dataId: UUID): ResponseEntity<QaReviewResponse> {
         logger.info(
             "Received request to respond with the review information " +
                 "of the dataset with identifier $dataId",
