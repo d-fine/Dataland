@@ -48,7 +48,7 @@ class DataRequestResponseEmailSender(
     }
 
     /**
-     * Method to informs user by mail that his request is closed.
+     * Method to informs the respective user by mail that his request is closed.
      * @param dataRequestEntity the dataRequestEntity
      * @param correlationId the correlation id
      */
@@ -56,7 +56,7 @@ class DataRequestResponseEmailSender(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        val dataRequestAnswered =
+        val dataRequestClosed =
             DataRequestClosed(
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
@@ -67,7 +67,7 @@ class DataRequestResponseEmailSender(
             )
         val message =
             EmailMessage(
-                dataRequestAnswered, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
+                dataRequestClosed, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
