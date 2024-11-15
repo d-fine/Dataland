@@ -330,7 +330,6 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
-      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
@@ -390,23 +389,6 @@ services:
         limits:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
-#  automated-qa-service:
-#    restart: always
-#    profiles: [ "production", "testing", "development" ]
-#    image: ${AUTOMATED_QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_automated_qa_service_test:${DATALAND_AUTOMATED_QA_SERVICE_TEST_VERSION}}
-#    networks:
-#      - internal
-#    expose:
-#      - "8080"
-#    environment:
-#      <<: *rabbit-mq-user-and-pass
-#      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-#      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
-#      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-#    depends_on:
-#      - qa-service
-#    extra_hosts:
-#      - "host.docker.internal:host-gateway"
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]

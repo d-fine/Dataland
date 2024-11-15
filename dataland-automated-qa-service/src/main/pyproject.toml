@@ -1,4 +1,0 @@
-[tool.ruff]
-
-extend = "../../pyproject.toml"
-lint.extend-select = ["D101", "D102", "D103", "D106", "D107", "D417", "D419"]
