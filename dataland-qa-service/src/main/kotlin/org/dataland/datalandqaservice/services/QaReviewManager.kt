@@ -21,6 +21,7 @@ import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -90,17 +91,39 @@ class QaReviewManager(
     fun getQaReviewResponseByDataId(
         dataId: UUID,
         userIsAdmin: Boolean,
-    ): QaReviewResponse? = qaReviewRepository.findByDataId(dataId.toString())?.toDatasetQaReviewResponse(userIsAdmin)
+    ): QaReviewResponse? =
+        qaReviewRepository
+            .findFirstByDataIdOrderByTimestampDesc(dataId.toString())
+            ?.toDatasetQaReviewResponse(userIsAdmin)
 
     /**
      * Saves QaReviewEntity to database and sends status change message to MessageQueue
-     * @param qaReviewEntity entity to save
+     * @param dataId dataId of dataset of which to change qaStatus
+     * @param qaStatus new qaStatus to be set
+     * @param reviewerId keycloakId of reviewer
      * @param correlationId
      */
     fun saveQaReviewEntityAndSendQaStatusChangeMessage(
-        qaReviewEntity: QaReviewEntity,
+        dataId: String,
+        qaStatus: QaStatus,
+        reviewerId: String,
         correlationId: String,
     ) {
+        val qaReviewEntityForDataId = this.validateDataIdAndGetDataReviewStatus(dataId)
+        logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId")
+        val qaReviewEntity =
+            QaReviewEntity(
+                dataId = dataId,
+                companyId = qaReviewEntityForDataId.companyId,
+                companyName = qaReviewEntityForDataId.companyName,
+                dataType = qaReviewEntityForDataId.dataType,
+                reportingPeriod = qaReviewEntityForDataId.reportingPeriod,
+                timestamp = Instant.now().toEpochMilli(),
+                qaStatus = qaStatus,
+                reviewerId = reviewerId,
+                comment = null,
+            )
+
         qaReviewRepository.save(qaReviewEntity)
 
         val qaStatusChangeMessage =
@@ -122,12 +145,12 @@ class QaReviewManager(
     }
 
     /**
-     * Validates that a dataset corresponding to a data ID needs to be reviewed
+     * Validates that a dataset corresponding to the dataId actually exists
      * @param dataId the ID of the data to validate
      * @returns the ReviewQueueEntity corresponding the dataId
      */
     fun validateDataIdAndGetDataReviewStatus(dataId: String): QaReviewEntity =
-        qaReviewRepository.findByDataId(dataId)
+        qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
             ?: throw InvalidInputApiException(
                 "There is no reviewable dataset with ID $dataId.",
                 "There is no reviewable dataset with ID $dataId.",

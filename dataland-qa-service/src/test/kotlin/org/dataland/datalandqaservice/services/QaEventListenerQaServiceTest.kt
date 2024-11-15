@@ -128,11 +128,11 @@ class QaEventListenerQaServiceTest(
         `when`(mockMetaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(acceptedDataMetaInformation)
         `when`(mockCompanyDataControllerApi.getCompanyById(acceptedDataMetaInformation.companyId)).thenReturn(acceptedStoredCompany)
 
-        qaEventListenerQaService.addDataReviewFromAutomatedQaToReviewHistoryRepository(
-            persistBypassQaResultMessage, correlationId, MessageType.PERSIST_AUTOMATED_QA_RESULT,
+        qaEventListenerQaService.addDatasetWithBypassQaTrueToQaReviewRepository(
+            persistBypassQaResultMessage, correlationId, MessageType.PERSIST_BYPASS_QA_RESULT,
         )
 
-        testQaReviewRepository.findByDataId(acceptedDataId)?.let {
+        testQaReviewRepository.findFirstByDataIdOrderByTimestampDesc(acceptedDataId)?.let {
             Assertions.assertEquals("", it.reviewerId)
             Assertions.assertEquals(acceptedDataId, it.dataId)
             Assertions.assertEquals(QaStatus.Accepted, it.qaStatus)
