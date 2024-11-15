@@ -2,11 +2,11 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -31,6 +31,7 @@ import java.util.UUID
 class QaReviewManager(
     @Autowired val qaReviewRepository: QaReviewRepository,
     @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired val metaDataControllerApi: MetaDataControllerApi,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var objectMapper: ObjectMapper,
     @Autowired val exceptionForwarder: ExceptionForwarder,
@@ -107,21 +108,25 @@ class QaReviewManager(
         dataId: String,
         qaStatus: QaStatus,
         reviewerId: String,
+        comment: String?,
         correlationId: String,
     ) {
-        val qaReviewEntityForDataId = this.validateDataIdAndGetDataReviewStatus(dataId)
+        val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
+        val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+
         logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId")
+
         val qaReviewEntity =
             QaReviewEntity(
                 dataId = dataId,
-                companyId = qaReviewEntityForDataId.companyId,
-                companyName = qaReviewEntityForDataId.companyName,
-                dataType = qaReviewEntityForDataId.dataType,
-                reportingPeriod = qaReviewEntityForDataId.reportingPeriod,
+                companyId = dataMetaInfo.companyId,
+                companyName = companyName,
+                dataType = dataMetaInfo.dataType,
+                reportingPeriod = dataMetaInfo.reportingPeriod,
                 timestamp = Instant.now().toEpochMilli(),
                 qaStatus = qaStatus,
                 reviewerId = reviewerId,
-                comment = null,
+                comment = comment,
             )
 
         qaReviewRepository.save(qaReviewEntity)
@@ -143,18 +148,6 @@ class QaReviewManager(
             correlationId = correlationId,
         )
     }
-
-    /**
-     * Validates that a dataset corresponding to the dataId actually exists
-     * @param dataId the ID of the data to validate
-     * @returns the ReviewQueueEntity corresponding the dataId
-     */
-    fun validateDataIdAndGetDataReviewStatus(dataId: String): QaReviewEntity =
-        qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
-            ?: throw InvalidInputApiException(
-                "There is no reviewable dataset with ID $dataId.",
-                "There is no reviewable dataset with ID $dataId.",
-            )
 
     /**
      * Sends the QA Status Change Message to MessageQueue

@@ -1,9 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -14,8 +12,7 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
-import org.dataland.datalandqaservice.repositories.QaReviewRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -27,7 +24,6 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 
 /**
  * Implementation of a QA Service reacting on the upload_queue and forwarding message to qa_queue
@@ -40,8 +36,7 @@ class QaEventListenerQaService
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired var objectMapper: ObjectMapper,
         @Autowired var messageUtils: MessageQueueUtils,
-        @Autowired val datasetQaReviewRepository: QaReviewRepository,
-        @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+        @Autowired val qaReviewManager: QaReviewManager,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -84,47 +79,15 @@ class QaEventListenerQaService
             }
 
             messageUtils.rejectMessageOnException {
-                val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
-                val companyName =
-                    companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
-
                 logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-                storeDatasetWithQaStatusPending(
+                qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
                     dataId = dataId,
-                    companyId = dataMetaInfo.companyId,
-                    companyName = companyName,
-                    dataType = dataMetaInfo.dataType,
-                    reportingPeriod = dataMetaInfo.reportingPeriod,
-                    uploaderId = dataMetaInfo.uploaderUserId ?: "",
+                    qaStatus = QaStatus.Pending,
+                    reviewerId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available",
+                    comment = null,
+                    correlationId = correlationId,
                 )
             }
-        }
-
-        /**
-         * Save new QaReviewLogEntity for new pending dataset in database
-         */
-        @Suppress("LongParameterList")
-        private fun storeDatasetWithQaStatusPending(
-            dataId: String,
-            companyId: String,
-            companyName: String,
-            dataType: DataTypeEnum,
-            reportingPeriod: String,
-            uploaderId: String,
-        ) {
-            datasetQaReviewRepository.save(
-                QaReviewEntity(
-                    dataId = dataId,
-                    companyId = companyId,
-                    companyName = companyName,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                    timestamp = Instant.now().toEpochMilli(),
-                    qaStatus = QaStatus.Pending,
-                    reviewerId = uploaderId,
-                    comment = null,
-                ),
-            )
         }
 
         /**
@@ -225,31 +188,19 @@ class QaEventListenerQaService
                 )
             }
 
-            val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
-            val reviewerId = dataMetaInfo.uploaderUserId ?: ""
-
-            val companyName =
-                companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
-
             messageUtils.rejectMessageOnException {
-                logger.info(
-                    "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
-                )
-                logger.info(
-                    "BypassQa: Assigning quality status ${QaStatus.Accepted} and reviewerId $reviewerId to dataset with ID $dataId",
-                )
-                datasetQaReviewRepository.save(
-                    QaReviewEntity(
-                        dataId = dataId,
-                        companyId = dataMetaInfo.companyId,
-                        companyName = companyName,
-                        dataType = dataMetaInfo.dataType,
-                        reportingPeriod = dataMetaInfo.reportingPeriod,
-                        timestamp = Instant.now().toEpochMilli(),
-                        qaStatus = QaStatus.Accepted,
-                        reviewerId = reviewerId,
-                        comment = null,
-                    ),
+                logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
+
+                val reviewerId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+
+                logger.info("BypassQa: Assigning quality status ${QaStatus.Accepted} and reviewerId $reviewerId to dataset with ID $dataId")
+
+                qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
+                    dataId = dataId,
+                    qaStatus = QaStatus.Accepted,
+                    reviewerId = reviewerId,
+                    comment = "Automatically QA approved.",
+                    correlationId = correlationId,
                 )
             }
         }

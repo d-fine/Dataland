@@ -37,6 +37,6 @@ data class QaSearchFilter(
     val shouldFilterByQaStatus: Boolean
         get() = qaStatuses?.isNotEmpty() ?: false
 
-    val preparedQaStatuses: List<QaStatus>
-        get() = qaStatuses?.toList() ?: emptyList()
+    val preparedQaStatuses: List<String>
+        get() = qaStatuses?.map { it.name } ?: emptyList()
 }

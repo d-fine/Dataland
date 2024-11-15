@@ -69,7 +69,13 @@ class QaController(
                 "(correlationId: $correlationId)",
         )
 
-        qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(dataId, qaStatus, reviewerId, correlationId)
+        qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
+            dataId = dataId,
+            qaStatus = qaStatus,
+            reviewerId = reviewerId,
+            comment = comment,
+            correlationId = correlationId,
+        )
     }
 
     /**
@@ -83,7 +89,7 @@ class QaController(
         reportingPeriods: Set<String>?,
         companyName: String?,
     ): ResponseEntity<Int> {
-        logger.info("Received request to respond with number of unreviewed datasets")
+        logger.info("Received request to respond with number of pending datasets")
 
         return ResponseEntity.ok(
             qaReviewManager.getNumberOfPendingDatasets(
