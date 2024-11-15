@@ -60,8 +60,6 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             connection.prepareStatement(
                 "INSERT INTO qa_review (data_id, company_id, company_name, data_type, reporting_period, timestamp, qa_status, reviewer_id, comment) Values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             )
-        val backendMetaData = "public.data_meta_information"
-        val backendStoredCompanies = "public.stored_companies"
 
         while (informationResultSet.next()) {
             val dataId = informationResultSet.getString("data_id")
@@ -72,7 +70,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
 
             // Get missing data for company Id, data type and reporting period form meta data tabel
             val missingDataQuery =
-                "SELECT data_type, reporting_period, company_id FROM $backendMetaData WHERE data_id = ?"
+                "SELECT data_type, reporting_period, company_id FROM data_meta_information WHERE data_id = ?"
             val preparedMetaData = connection.prepareStatement(missingDataQuery)
 
             preparedMetaData.setString(1, dataId)
@@ -90,7 +88,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             }
 
             // get missing data for company name from stored companies table
-            val companyNameQuery = "SELECT company_name FROM $backendStoredCompanies WHERE company_id = ?"
+            val companyNameQuery = "SELECT company_name FROM stored_companies WHERE company_id = ?"
             val preparedCompanyStatement = connection.prepareStatement(companyNameQuery)
 
             preparedCompanyStatement.setString(1, companyId)
