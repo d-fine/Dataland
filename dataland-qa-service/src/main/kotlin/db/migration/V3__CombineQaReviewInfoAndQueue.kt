@@ -76,10 +76,10 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             preparedMetaData.setString(1, dataId)
             val metaDataResultSet = preparedMetaData.executeQuery()
 
-            var dataType: String = ""
-            var reportingPeriod: String = ""
-            var companyId: String = ""
-            var companyName: String = ""
+            var dataType = ""
+            var reportingPeriod = ""
+            var companyId = ""
+            var companyName = ""
 
             if (metaDataResultSet.next()) {
                 dataType = metaDataResultSet.getString("data_type")
