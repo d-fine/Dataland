@@ -24,7 +24,7 @@ class EmailSubscriptionTracker(
      * Important: This function should be called inside a Transactional block. Do not use this function outside of
      * this Service.
      */
-    fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
+    private fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
         emailSubscriptionRepository.findByEmailAddress(emailAddress)
             ?: emailSubscriptionRepository.save(
                 EmailSubscriptionEntity(

@@ -8,6 +8,7 @@ import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepositor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -61,33 +62,29 @@ class EmailSubscriptionTrackerTest(
         emailSubscriptionRepository.save(unsubscribedEntity)
     }
 
-    @Test
-    fun `validate if a new subscription entity is created for an unknown email`() {
-        val entity = emailSubscriptionTracker.getOrAddSubscription(UNKNOWN_EMAIL)
-        val unknownEntity = emailSubscriptionRepository.findByEmailAddress(UNKNOWN_EMAIL)
+    @ParameterizedTest
+    @ValueSource(strings = [SUBSCRIBED_EMAIL_ALIAS, UNSUBSCRIBED_EMAIL_ALIAS])
+    fun `validate that no entity is created for known email address aliases`(emailAddress: String) {
+        val count = emailSubscriptionRepository.count()
+        emailSubscriptionTracker.shouldReceiveEmail(EmailContact.create(emailAddress))
+        assertNull(emailSubscriptionRepository.findByEmailAddress(emailAddress))
+        assertEquals(count, emailSubscriptionRepository.count())
+    }
 
-        assertNotNull(unknownEntity)
-        assertTrue(unknownEntity!!.isSubscribed)
-        assertEquals(UNKNOWN_EMAIL, unknownEntity.emailAddress)
-        assertEquals(entity.uuid, unknownEntity.uuid)
+    @ParameterizedTest
+    @ValueSource(strings = [SUBSCRIBED_EMAIL, UNSUBSCRIBED_EMAIL])
+    fun `validate that no entity is created for known email addresses`(emailAddress: String) {
+        val count = emailSubscriptionRepository.count()
+        emailSubscriptionTracker.shouldReceiveEmail(EmailContact.create(emailAddress))
+        assertEquals(count, emailSubscriptionRepository.count())
     }
 
     @Test
-    fun `validate that no entity is created for subscribed address`() {
-        val entity = emailSubscriptionTracker.getOrAddSubscription(SUBSCRIBED_EMAIL)
-
-        assertEquals(subscribedUuid, entity.uuid)
-        assertTrue(entity.isSubscribed)
-        assertEquals(SUBSCRIBED_EMAIL, entity.emailAddress)
-    }
-
-    @Test
-    fun `validate that no entity is created for unsubscribed address`() {
-        val entity = emailSubscriptionTracker.getOrAddSubscription(UNSUBSCRIBED_EMAIL)
-
-        assertEquals(unsubscribedEntity.uuid, entity.uuid)
-        assertFalse(entity.isSubscribed)
-        assertEquals(UNSUBSCRIBED_EMAIL, entity.emailAddress)
+    fun `validate that an entity is created for an unknown email address that is subscribed`() {
+        emailSubscriptionTracker.shouldReceiveEmail(EmailContact.create(UNKNOWN_EMAIL))
+        val entity = emailSubscriptionRepository.findByEmailAddress(UNKNOWN_EMAIL)
+        assertNotNull(entity)
+        assertTrue(entity?.isSubscribed ?: false)
     }
 
     @Test
@@ -95,7 +92,7 @@ class EmailSubscriptionTrackerTest(
         val partitionedContacts =
             emailSubscriptionTracker.subscribeContactsIfNeededAndPartition(
                 listOf(
-                    EmailContact(SUBSCRIBED_EMAIL), EmailContact(UNSUBSCRIBED_EMAIL), EmailContact(UNKNOWN_EMAIL),
+                    EmailContact.create(SUBSCRIBED_EMAIL), EmailContact.create(UNSUBSCRIBED_EMAIL), EmailContact.create(UNKNOWN_EMAIL),
                 ),
             )
         val unknownEntity = emailSubscriptionRepository.findByEmailAddress(UNKNOWN_EMAIL)
