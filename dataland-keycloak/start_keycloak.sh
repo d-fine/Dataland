@@ -3,8 +3,7 @@ set -eu
 
 mode=$1
 dataland_realm_folder=/opt/keycloak/datalandsecurity
-script_dir="$(dirname "$0")"
-cd $script_dir
+cd "$(dirname "$0")"
 
 if [[ "$mode" == initialize ]]; then
   echo "Initializing new keycloak realms"
@@ -12,7 +11,7 @@ if [[ "$mode" == initialize ]]; then
   cp /keycloak_users/datalandsecurity-users-*.json $dataland_realm_folder || echo "No importable users exist"
   rm $(grep -E -l '"username" : "data_(reader|uploader|reviewer|premium_user|admin)"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No technical users to be cleaned up"
   rm $(grep -E -l '"username" : "test_user.*@example.com"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No test users to be cleaned up"
-  rm $(grep -E -l '"username" : "service-account-dataland-(batch-manager|qa-service|community-manager|email-service|document-manager|backend|data-exporter)"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No service account users to be cleaned up"
+  rm $(grep -E -l '"username" : "service-account-dataland-[a-z-]+"' "$dataland_realm_folder"/datalandsecurity-users-*.json) || echo "No service account users to be cleaned up"
   cp /keycloak_realms/datalandsecurity-realm.json $dataland_realm_folder
   realm_file=$dataland_realm_folder/datalandsecurity-realm.json
   for variable in $(grep -oP '\$\{([A-Z_]+)\}' $realm_file | cut -d'{' -f2 | cut -d'}' -f1); do
