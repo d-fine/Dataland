@@ -22,6 +22,7 @@ import kotlin.jvm.optionals.getOrElse
 /**
  * Manages all alterations of data requests
  */
+@Suppress("LongParameterList")
 @Service
 class DataRequestAlterationManager(
     @Autowired private val dataRequestRepository: DataRequestRepository,
