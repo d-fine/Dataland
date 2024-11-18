@@ -46,8 +46,8 @@ class DataRequestAlterationManager(
      *
      * @return the updated data request object
      */
-    @Suppress("LongParameterList")
     @Transactional
+    @Suppress("LongParameterList")
     fun patchDataRequest(
         dataRequestId: String,
         requestStatus: RequestStatus? = null,

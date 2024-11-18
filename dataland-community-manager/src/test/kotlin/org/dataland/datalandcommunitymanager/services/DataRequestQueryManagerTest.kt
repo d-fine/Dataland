@@ -133,7 +133,7 @@ class DataRequestQueryManagerTest {
         ).thenReturn(listOf(keycloakUserBeta))
         `when`(dataRequestMasker.hideAdminCommentForNonAdmins(anyList()))
             .thenAnswer { invocation ->
-                invocation.arguments[0] as List<*>
+                invocation.arguments[0]
             }
     }
 
