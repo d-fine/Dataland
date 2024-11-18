@@ -279,7 +279,7 @@ class DataManagerTest(
         val messageWithEmptyDataIDs =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    changedQaStatusDataId = "1273091",
+                    dataId = "1273091",
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = "",
                 ),
@@ -303,7 +303,7 @@ class DataManagerTest(
         val messageWithEmptyDataIDs =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    changedQaStatusDataId = "",
+                    dataId = "",
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = "1273091",
                 ),

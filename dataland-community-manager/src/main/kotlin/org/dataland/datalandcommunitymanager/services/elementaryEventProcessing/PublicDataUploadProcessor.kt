@@ -82,7 +82,7 @@ class PublicDataUploadProcessor(
 
             super.processEvent(
                 createElementaryEventBasicInfo(
-                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.changedQaStatusDataId)),
+                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.dataId)),
                 ),
                 correlationId,
                 type,

@@ -24,7 +24,7 @@ data class QaReviewResponse(
  * Converts the DatasetQaReviewLogEntity into a DatasetQaReviewResponse which is used in a response for a GET Request.
  * The DatasetQaReviewResponse can optionally hide the reviewerId by setting showReviewerId to false.
  */
-fun QaReviewEntity.toDatasetQaReviewResponse(showReviewerId: Boolean = false) =
+fun QaReviewEntity.toQaReviewResponse(showReviewerId: Boolean = false) =
     QaReviewResponse(
         dataId = this.dataId,
         companyId = this.companyId,

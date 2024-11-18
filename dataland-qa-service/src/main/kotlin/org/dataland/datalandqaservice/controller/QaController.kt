@@ -6,7 +6,6 @@ import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -33,7 +32,6 @@ class QaController(
         chunkIndex: Int,
     ): ResponseEntity<List<QaReviewResponse>> {
         logger.info("Received request to respond with information about pending datasets")
-        val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         return ResponseEntity.ok(
             qaReviewManager
                 .getInfoOnPendingDatasets(
@@ -42,7 +40,6 @@ class QaController(
                     companyName = companyName,
                     chunkSize = chunkSize,
                     chunkIndex = chunkIndex,
-                    userIsAdmin = userIsAdmin,
                 ),
         )
     }
@@ -54,9 +51,8 @@ class QaController(
                 "of the dataset with identifier $dataId",
         )
 
-        val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         val datasetQaReviewResponse =
-            qaReviewManager.getQaReviewResponseByDataId(dataId, userIsAdmin)
+            qaReviewManager.getQaReviewResponseByDataId(dataId)
                 ?: return ResponseEntity.notFound().build()
 
         return ResponseEntity.ok(datasetQaReviewResponse)
@@ -98,10 +94,7 @@ class QaController(
         logger.info("Received request to respond with number of pending datasets")
 
         return ResponseEntity.ok(
-            qaReviewManager.getNumberOfPendingDatasets(
-                dataTypes = dataTypes,
-                reportingPeriods = reportingPeriods, companyName = companyName,
-            ),
+            qaReviewManager.getNumberOfPendingDatasets(dataTypes, reportingPeriods, companyName),
         )
     }
 }

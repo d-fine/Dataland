@@ -15,9 +15,11 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.toDatasetQaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.toQaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -52,9 +54,9 @@ class QaReviewManager(
         companyName: String?,
         chunkSize: Int,
         chunkIndex: Int,
-        userIsAdmin: Boolean,
     ): List<QaReviewResponse> {
         val offset = (chunkIndex) * (chunkSize)
+        val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         return qaReviewRepository
             .getSortedAndFilteredQaReviewMetadataSet(
                 QaSearchFilter(
@@ -66,7 +68,7 @@ class QaReviewManager(
                 ),
                 resultOffset = offset,
                 resultLimit = chunkSize,
-            ).map { it.toDatasetQaReviewResponse(userIsAdmin) }
+            ).map { it.toQaReviewResponse(userIsAdmin) }
     }
 
     /**
@@ -91,13 +93,12 @@ class QaReviewManager(
      * Retrieves from database a QaReviewEntity by its dataId
      * @param dataId: dataID
      */
-    fun getQaReviewResponseByDataId(
-        dataId: UUID,
-        userIsAdmin: Boolean,
-    ): QaReviewResponse? =
-        qaReviewRepository
+    fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
+        val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
+        return qaReviewRepository
             .findFirstByDataIdOrderByTimestampDesc(dataId.toString())
-            ?.toDatasetQaReviewResponse(userIsAdmin)
+            ?.toQaReviewResponse(userIsAdmin)
+    }
 
     /**
      * Saves QaReviewEntity to database and sends status change message to MessageQueue
@@ -131,11 +132,11 @@ class QaReviewManager(
                 comment = comment,
             )
 
-        qaReviewRepository.save(qaReviewEntity)
+        qaReviewRepository.saveAndFlush(qaReviewEntity)
 
         val qaStatusChangeMessage =
             QaStatusChangeMessage(
-                changedQaStatusDataId = qaReviewEntity.dataId,
+                dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId =
                     getDataIdOfCurrentlyActiveDataset(
@@ -161,7 +162,7 @@ class QaReviewManager(
         qaStatusChangeMessage: QaStatusChangeMessage,
         correlationId: String,
     ) {
-        logger.info("Send QA status change message to messageQueue.")
+        logger.info("Send QA status change message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
         val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(

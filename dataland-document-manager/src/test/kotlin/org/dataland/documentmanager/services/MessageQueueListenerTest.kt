@@ -53,7 +53,7 @@ class MessageQueueListenerTest(
         val messageWithEmptyDocumentID =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    changedQaStatusDataId = "",
+                    dataId = "",
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = "",
                 ),
@@ -71,7 +71,7 @@ class MessageQueueListenerTest(
         val message =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    changedQaStatusDataId = documentId,
+                    dataId = documentId,
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = documentId,
                 ),

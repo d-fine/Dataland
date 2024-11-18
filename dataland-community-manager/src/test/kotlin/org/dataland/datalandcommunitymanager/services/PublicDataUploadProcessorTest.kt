@@ -91,7 +91,7 @@ class PublicDataUploadProcessorTest {
     fun `do not create an elementary event when the dataset has been rejected`() {
         val qaCompletedMessage =
             QaStatusChangeMessage(
-                changedQaStatusDataId = dataId.toString(),
+                dataId = dataId.toString(),
                 updatedQaStatus = QaStatus.Rejected,
                 currentlyActiveDataId = activeDataId.toString(),
             )
@@ -106,7 +106,7 @@ class PublicDataUploadProcessorTest {
     fun `create an elementary event when the dataset has been approved`() {
         val qaCompletedMessage =
             QaStatusChangeMessage(
-                changedQaStatusDataId = dataId.toString(),
+                dataId = dataId.toString(),
                 updatedQaStatus = QaStatus.Accepted,
                 currentlyActiveDataId = activeDataId.toString(),
             )

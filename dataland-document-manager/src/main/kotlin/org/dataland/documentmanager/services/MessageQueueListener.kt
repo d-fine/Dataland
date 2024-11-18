@@ -110,7 +110,7 @@ class MessageQueueListener(
     ) {
         messageUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
         val message = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
-        val documentId = message.changedQaStatusDataId
+        val documentId = message.dataId
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }

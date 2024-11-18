@@ -64,7 +64,7 @@ class DataRequestUploadListener(
     ) {
         messageUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
         val qaCompletedMessage = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
-        val dataId = qaCompletedMessage.changedQaStatusDataId
+        val dataId = qaCompletedMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }

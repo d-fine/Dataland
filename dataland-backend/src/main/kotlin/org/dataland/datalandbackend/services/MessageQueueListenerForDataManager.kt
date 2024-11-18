@@ -80,7 +80,8 @@ class MessageQueueListenerForDataManager(
     }
 
     /**
-     * Method that listens to the qa_queue and changes the qa status and the active data set after successful qa process
+     * Method that listens to the messages from the QA service, modifies the qa status in the metadata accordingly,
+     * and updates which dataset is currently active after successful qa process
      * @param jsonString the message describing the changed QA status process
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
@@ -111,9 +112,14 @@ class MessageQueueListenerForDataManager(
         messageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
         val qaStatusChangeMessage = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
 
-        val changedQaStatusDataId = qaStatusChangeMessage.changedQaStatusDataId
+        val changedQaStatusDataId = qaStatusChangeMessage.dataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
         val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
+
+        logger.info(
+            "Received QA Status Change message for dataID $changedQaStatusDataId. New qaStatus is $updatedQaStatus," +
+                "new active dataId is $currentlyActiveDataId.",
+        )
 
         if (changedQaStatusDataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID to change qa status dataset is empty")
@@ -123,12 +129,10 @@ class MessageQueueListenerForDataManager(
         }
 
         messageQueueUtils.rejectMessageOnException {
-            val changedQaStatusMetaInformation =
-                metaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId)
-
+            val changedQaStatusMetaInformation = metaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId)
             changedQaStatusMetaInformation.qaStatus = updatedQaStatus
-            val currentlyActiveMetaInformation =
-                metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
+            metaDataManager.storeDataMetaInformation(changedQaStatusMetaInformation)
+            val currentlyActiveMetaInformation = metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
             metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
 
             logger.info(
