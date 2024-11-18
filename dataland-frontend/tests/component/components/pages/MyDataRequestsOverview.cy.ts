@@ -22,7 +22,7 @@ before(function () {
    * @param companyId to include in the data request
    * @param requestStatus to set in the data request
    * @param accessStatus to set in the data request
-   * @param requestPriority
+   * @param requestPriority to set in the data request
    * @returns an extended sorted data request object
    */
   function buildExtendedStoredDataRequest(
