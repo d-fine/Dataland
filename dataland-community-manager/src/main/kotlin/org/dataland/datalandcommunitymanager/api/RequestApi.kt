@@ -185,7 +185,6 @@ interface RequestApi {
         @RequestParam accessStatus: AccessStatus?,
         @RequestParam contacts: Set<String>?,
         @RequestParam message: String?,
-        @RequestParam correlationId: String?,
         @RequestParam requestPriority: RequestPriority?,
         @RequestParam adminComment: String?,
     ): ResponseEntity<StoredDataRequest>

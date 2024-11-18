@@ -41,7 +41,6 @@ class DataRequestAlterationManager(
      * @param accessStatus the access status to patch
      * @param contacts the contacts to patch
      * @param message the message to patch
-     * @param correlationId the correlationId
      * @param requestPriority the priority of the data request, which can only be set by admins and viewed by anyone.
      * @param adminComment the admin comment, which can only be set and viewed by admins.
      *
