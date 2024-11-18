@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.hibernate.annotations.Comment
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -178,7 +177,7 @@ class SecurityUtilsService(
     fun isNotTryingToPatch(
         accessStatus: AccessStatus?,
         requestPriority: RequestPriority?,
-        adminComment: Comment?,
+        adminComment: String?,
     ): Boolean = accessStatus == null && requestPriority == null && adminComment == null
 
     /**
@@ -194,7 +193,7 @@ class SecurityUtilsService(
         contacts: Set<String>?,
         message: String?,
         requestPriority: RequestPriority?,
-        adminComment: Comment?,
+        adminComment: String?,
     ): Boolean {
         val isNotTryingToPatchStatusContactsMessage = requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
         val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
