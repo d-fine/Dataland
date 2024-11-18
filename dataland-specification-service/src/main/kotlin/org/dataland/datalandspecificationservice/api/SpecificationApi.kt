@@ -33,8 +33,8 @@ interface SpecificationApi {
     ): ResponseEntity<FrameworkSpecificationDto>
 
     /**
-     * A method to check if a companyId is valid
-     * @param companyId the identifier
+     * A method to check if a framework is valid
+     * @param frameworkSpecificationId the identifier
      */
     @Operation(
         summary = "Checks if a framework specification exists.",
@@ -61,7 +61,7 @@ interface SpecificationApi {
     )
 
     /**
-     * Get the framework specification for a given id
+     * Get the list of simple framework specifications
      */
     @Operation(
         summary = "List all framework specifications",
