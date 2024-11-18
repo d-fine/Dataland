@@ -531,14 +531,6 @@
             }
           },
           {
-            "name": "correlationId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "requestPriority",
             "in": "query",
             "required": false,

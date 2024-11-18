@@ -164,7 +164,6 @@ class RequestController(
         accessStatus: AccessStatus?,
         contacts: Set<String>?,
         message: String?,
-        correlationId: String?,
         requestPriority: RequestPriority?,
         adminComment: String?,
     ): ResponseEntity<StoredDataRequest> =
@@ -175,7 +174,7 @@ class RequestController(
                 accessStatus,
                 contacts,
                 message,
-                correlationId,
+                correlationId = null,
                 requestPriority,
                 adminComment,
             ),
