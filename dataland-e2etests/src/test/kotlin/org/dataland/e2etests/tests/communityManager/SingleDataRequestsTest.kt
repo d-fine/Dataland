@@ -4,7 +4,6 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
-import org.dataland.communitymanager.openApiClient.model.RequestPriority
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -16,9 +15,6 @@ import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.assertAdminCommentForDataRequestId
-import org.dataland.e2etests.utils.communityManager.assertPriorityForDataRequestId
-import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.communityManager.causeClientExceptionBySingleDataRequest
 import org.dataland.e2etests.utils.communityManager.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForNonUniqueIdentifiersInSingleRequest
@@ -30,9 +26,6 @@ import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.communityManager.getMessageHistoryOfRequest
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.communityManager.patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated
-import org.dataland.e2etests.utils.communityManager.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
-import org.dataland.e2etests.utils.communityManager.patchDataRequestPriorityAndAssertLastModifiedUpdated
 import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForReportingPeriodAndUpdateStatus
 import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
@@ -47,7 +40,6 @@ import org.junit.jupiter.api.assertThrows
 import java.time.Instant
 import java.util.UUID
 
-@Suppress("kotlin:S104")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestsTest {
     val apiAccessor = ApiAccessor()
@@ -301,96 +293,6 @@ class SingleDataRequestsTest {
             messageHistory[0].contacts,
             "The contact list in the message history of the stored data request is not as expected.",
         )
-    }
-
-    @Test
-    fun `post a single data request and check if patching it changes its status accordingly`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-        assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Resolved)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
-    }
-
-    @Test
-    fun `post a single data request and validate that patching the admin comment does not update the last modified date`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        val testAdminComment = "test"
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-        assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
-        assertAdminCommentForDataRequestId(dataRequestId, null)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated(dataRequestId, testAdminComment)
-    }
-
-    @Test
-    fun `post a single data request and validate that patching the request priority updates the last modified date`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        val testRequestPriority = RequestPriority.High
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-        assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
-        assertAdminCommentForDataRequestId(dataRequestId, null)
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestPriorityAndAssertLastModifiedUpdated(dataRequestId, testRequestPriority)
-    }
-
-    @Test
-    fun `validate that patching the admin comment as normal user is forbidden`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        val testAdminComment = "test"
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
-        val clientException =
-            assertThrows<ClientException> {
-                requestControllerApi.patchDataRequest(dataRequestId, adminComment = testAdminComment)
-            }
-        assertEquals(clientErrorMessage403, clientException.message)
-    }
-
-    @Test
-    fun `validate that patching the request priority as normal user is forbidden`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        val testRequestPriority = RequestPriority.High
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
-        val clientException =
-            assertThrows<ClientException> {
-                requestControllerApi.patchDataRequest(dataRequestId, requestPriority = testRequestPriority)
-            }
-        assertEquals(clientErrorMessage403, clientException.message)
     }
 
     @Test
