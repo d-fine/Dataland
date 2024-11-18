@@ -20,8 +20,8 @@ data class EmailContact(
 
     companion object {
         /**
-         * This function creates a [EmailContact] object and by converting the emailAddress into a lowercase format
-         * automatically ensures that the created [EmailContact] fulfills the requirements of the data class.
+         * This function creates an [EmailContact] instance and, by converting the emailAddress to lower case,
+         * automatically ensures that the created [EmailContact] satisfies the requirements of the data class.
          * @param emailAddress the emailAddress of the contact
          * @param name the optional name of the contact
          * @return the new [EmailContact] instance
