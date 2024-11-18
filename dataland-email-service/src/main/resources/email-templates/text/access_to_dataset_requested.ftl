@@ -12,8 +12,8 @@ You can contact the user with their Email-Address ${requesterEmail}.
 </#if>
 
 <#if message??>
-    The user also sent the following message:
-    ${message}.
+The user also sent the following message:
+${message}.
 </#if>
 
 You can verify the access request and grant access to your data on Dataland:
