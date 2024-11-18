@@ -134,7 +134,7 @@ class QaEventListenerQaService
                         QaStatusChangeMessage(
                             documentId,
                             QaStatus.Accepted,
-                            documentId,
+                            null,
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(

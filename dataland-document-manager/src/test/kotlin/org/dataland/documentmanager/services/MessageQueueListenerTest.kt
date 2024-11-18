@@ -73,7 +73,7 @@ class MessageQueueListenerTest(
                 QaStatusChangeMessage(
                     dataId = documentId,
                     updatedQaStatus = QaStatus.Accepted,
-                    currentlyActiveDataId = documentId,
+                    currentlyActiveDataId = null,
                 ),
             )
 

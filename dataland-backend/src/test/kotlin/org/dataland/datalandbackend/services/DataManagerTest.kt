@@ -275,27 +275,23 @@ class DataManagerTest(
     }
 
     @Test
-    fun `test that AmqpRejectAndDontRequeueException is thrown if data id for new active dataset is empty`() {
-        val messageWithEmptyDataIDs =
+    fun `test that data id for new active dataset can be empty`() {
+        val messageWithEmptyCurrentlyActiveDataId =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
                     dataId = "1273091",
                     updatedQaStatus = QaStatus.Accepted,
-                    currentlyActiveDataId = "",
+                    currentlyActiveDataId = null,
                 ),
             )
-        val thrown =
-            assertThrows<AmqpRejectAndDontRequeueException> {
-                messageQueueListenerForDataManager.changeQaStatus(
-                    messageWithEmptyDataIDs,
-                    "",
-                    MessageType.QA_STATUS_CHANGED,
-                )
-            }
-        assertEquals(
-            "Message was rejected: Provided data ID to newly active dataset is empty",
-            thrown.message,
-        )
+
+        assertDoesNotThrow {
+            messageQueueListenerForDataManager.changeQaStatus(
+                messageWithEmptyCurrentlyActiveDataId,
+                "",
+                MessageType.QA_STATUS_CHANGED,
+            )
+        }
     }
 
     @Test
@@ -360,7 +356,11 @@ class DataManagerTest(
                 ),
             )
         assertDoesNotThrow {
-            messageQueueListenerForDataManager.changeQaStatus(messageWithChangedQAStatus, "", MessageType.QA_STATUS_CHANGED)
+            messageQueueListenerForDataManager.changeQaStatus(
+                messageWithChangedQAStatus,
+                "",
+                MessageType.QA_STATUS_CHANGED,
+            )
         }
 
         val updatedDataset = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
@@ -387,7 +387,11 @@ class DataManagerTest(
                 ),
             )
         assertDoesNotThrow {
-            messageQueueListenerForDataManager.changeQaStatus(messageWithChangedQAStatus, "", MessageType.QA_STATUS_CHANGED)
+            messageQueueListenerForDataManager.changeQaStatus(
+                messageWithChangedQAStatus,
+                "",
+                MessageType.QA_STATUS_CHANGED,
+            )
         }
 
         val rejectedInactiveDataset = dataMetaInformationManager.getDataMetaInformationByDataId(oldDataId)

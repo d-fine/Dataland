@@ -12,5 +12,5 @@ import org.dataland.datalandbackendutils.model.QaStatus
 data class QaStatusChangeMessage(
     val dataId: String,
     val updatedQaStatus: QaStatus,
-    val currentlyActiveDataId: String,
+    val currentlyActiveDataId: String?,
 )

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional
  * @param metaDataManager service for managing metadata
  * @param messageQueueUtils contains utils to be used to handle messages for the message queue
  * @param dataManager the dataManager service for public data
-*/
+ */
 @Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -117,29 +117,31 @@ class MessageQueueListenerForDataManager(
         val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
 
         logger.info(
-            "Received QA Status Change message for dataID $changedQaStatusDataId. New qaStatus is $updatedQaStatus," +
-                "new active dataId is $currentlyActiveDataId.",
+            "Received QA Status Change message for dataID $changedQaStatusDataId. New qaStatus is $updatedQaStatus. " +
+                "(correlationId: $correlationId)",
         )
 
         if (changedQaStatusDataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID to change qa status dataset is empty")
-        }
-        if (currentlyActiveDataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID to newly active dataset is empty")
         }
 
         messageQueueUtils.rejectMessageOnException {
             val changedQaStatusMetaInformation = metaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId)
             changedQaStatusMetaInformation.qaStatus = updatedQaStatus
             metaDataManager.storeDataMetaInformation(changedQaStatusMetaInformation)
-            val currentlyActiveMetaInformation = metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
-            metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
 
-            logger.info(
-                "Received quality assurance: ${qaStatusChangeMessage.updatedQaStatus} for data upload with DataId: " +
-                    "$changedQaStatusDataId  and set currently active dataset with DataId $currentlyActiveDataId" +
-                    "on true with Correlation Id: $correlationId",
-            )
+            if (currentlyActiveDataId.isNullOrEmpty()) {
+                logger.info(
+                    "No active dataset for companyId ${changedQaStatusMetaInformation.company.companyId}, " +
+                        "dataType ${changedQaStatusMetaInformation.dataType}, and " +
+                        "reportingPeriod ${changedQaStatusMetaInformation.reportingPeriod} exists.",
+                )
+            } else {
+                val currentlyActiveMetaInformation =
+                    metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
+                metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
+                logger.info("Dataset with dataId $currentlyActiveDataId has been set to active.")
+            }
         }
     }
 }

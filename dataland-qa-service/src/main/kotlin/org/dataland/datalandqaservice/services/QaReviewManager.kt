@@ -139,7 +139,7 @@ class QaReviewManager(
                 dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId =
-                    getDataIdOfCurrentlyActiveDataset(
+                    this.getDataIdOfCurrentlyActiveDataset(
                         qaReviewEntity.companyId,
                         qaReviewEntity.dataType,
                         qaReviewEntity.reportingPeriod,
@@ -182,12 +182,12 @@ class QaReviewManager(
         companyId: String,
         dataType: DataTypeEnum,
         reportingPeriod: String,
-    ): String =
+    ): String? =
         qaReviewRepository
             .findByCompanyIdAndDataTypeAndReportingPeriod(companyId, dataType, reportingPeriod)
             ?.filter { it.qaStatus == QaStatus.Accepted }
             ?.maxByOrNull { it.timestamp }
-            ?.dataId ?: ""
+            ?.dataId
 
     private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
         var companyIds = emptySet<String>()
