@@ -47,7 +47,7 @@ class DataRequestAlterationManager(
      * @return the updated data request object
      */
     @Transactional
-    @Suppress("LongParameterList")
+    @Suppress("kotlin:S107")
     fun patchDataRequest(
         dataRequestId: String,
         requestStatus: RequestStatus? = null,
