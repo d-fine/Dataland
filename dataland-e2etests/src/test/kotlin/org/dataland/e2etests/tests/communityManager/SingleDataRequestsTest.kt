@@ -47,6 +47,7 @@ import org.junit.jupiter.api.assertThrows
 import java.time.Instant
 import java.util.UUID
 
+@Suppress("kotlin:S104")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataRequestsTest {
     val apiAccessor = ApiAccessor()
@@ -54,6 +55,7 @@ class SingleDataRequestsTest {
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     private val maxRequestsForUser = 10
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+    private val clientErrorMessage403 = "Client error : 403 "
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
@@ -318,7 +320,7 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request and validate that patching the admin comment doesn't update the last modified date`() {
+    fun `post a single data request and validate that patching the admin comment does not update the last modified date`() {
         val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val testAdminComment = "test"
@@ -368,7 +370,7 @@ class SingleDataRequestsTest {
             assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(dataRequestId, adminComment = testAdminComment)
             }
-        assertEquals("Client error : 403 ", clientException.message)
+        assertEquals(clientErrorMessage403, clientException.message)
     }
 
     @Test
@@ -388,7 +390,7 @@ class SingleDataRequestsTest {
             assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(dataRequestId, requestPriority = testRequestPriority)
             }
-        assertEquals("Client error : 403 ", clientException.message)
+        assertEquals(clientErrorMessage403, clientException.message)
     }
 
     @Test
@@ -399,7 +401,7 @@ class SingleDataRequestsTest {
             assertThrows<ClientException> {
                 requestControllerApi.getDataRequests()
             }
-        assertEquals("Client error : 403 ", clientException.message)
+        assertEquals(clientErrorMessage403, clientException.message)
     }
 
     @Test
