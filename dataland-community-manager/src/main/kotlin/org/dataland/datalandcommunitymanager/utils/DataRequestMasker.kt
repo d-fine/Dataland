@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service
 @Service
 class DataRequestMasker {
     /** This method checks if a user is an admin
-     * @returns True if user is an admin, else otherwise
+     * @returns True if user is an admin, else false
      */
     fun isUserAdmin(): Boolean {
         val authenticationContext = DatalandAuthentication.fromContext()
         return authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN)
     }
 
-    /** This method hides the admin comment for non admins.
+    /** This method hides the admin comment for non admins
      * @param extendedStoredDataRequests list of extendedStoredDataRequests to check
-     * @returns all data requests with modified admin comment
+     * @returns all data requests with hidden admin comment if requester is not an admin
      */
     fun hideAdminCommentForNonAdmins(extendedStoredDataRequests: List<ExtendedStoredDataRequest>): List<ExtendedStoredDataRequest> {
         val modifiedExtendedStoredDataRequests =
@@ -36,9 +36,9 @@ class DataRequestMasker {
         return modifiedExtendedStoredDataRequests
     }
 
-    /** This method hides the admin comment for non admins.
+    /** This method hides the admin comment for non admins
      * @param storedDataRequest a single stored dataRequest
-     * @returns the modified storedDataRequest
+     * @returns the request with hidden admin comment if requester is not an admin
      */
     fun hideAdminCommentForNonAdmins(storedDataRequest: StoredDataRequest): StoredDataRequest =
         if (!isUserAdmin()) {

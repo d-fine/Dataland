@@ -139,7 +139,7 @@ class DataRequestLogger {
     }
 
     /**
-     * Logs an appropriate message when the admin comment of the  request priority is updated
+     * Logs an appropriate message when the admin comment of the request priority is updated
      */
     fun logMessageForPatchingAdminComment(
         dataRequestId: String,

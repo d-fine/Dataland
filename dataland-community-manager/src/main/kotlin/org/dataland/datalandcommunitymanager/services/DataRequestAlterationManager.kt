@@ -35,14 +35,14 @@ class DataRequestAlterationManager(
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
-     * Method to patch a data request.
+     * Method to patch a data request
      * @param dataRequestId the id of the data request to patch
      * @param requestStatus the request status to patch
      * @param accessStatus the access status to patch
      * @param contacts the contacts to patch
      * @param message the message to patch
-     * @param requestPriority the priority of the data request, which can only be set by admins and viewed by anyone.
-     * @param adminComment the admin comment, which can only be set and viewed by admins.
+     * @param requestPriority the priority of the data request
+     * @param adminComment the admin comment of the data request
      *
      * @return the updated data request object
      */

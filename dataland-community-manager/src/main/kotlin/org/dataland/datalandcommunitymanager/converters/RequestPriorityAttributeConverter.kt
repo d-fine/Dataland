@@ -5,8 +5,8 @@ import jakarta.persistence.Converter
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 
 /**
- *  This converter is used for database entities to convert the Request Priority enum to strings when saving to the database.
- *  and to convert the string to the DataType when loading data from the database.
+ *  This converter is used for database entities to convert the Request Priority enum to strings when saving to
+ *  the database and to convert the string to the DataType when loading data from the database.
  */
 @Converter(autoApply = true)
 class RequestPriorityAttributeConverter : AttributeConverter<RequestPriority, String> {

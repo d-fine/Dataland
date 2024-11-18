@@ -14,8 +14,8 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
  * @param lastModifiedDate the date when the data request has been modified the last time
  * @param requestStatus the current status of the data request
  * @param accessStatus the current access status of the data request
- * @param requestPriority the priority of the data request, which can only be set by admins and viewed by anyone.
- * @param adminComment the admin comment, which can only be set and viewed by admins.
+ * @param requestPriority the priority of the data request
+ * @param adminComment the admin comment of the data request
  */
 data class ExtendedStoredDataRequest(
     val dataRequestId: String,

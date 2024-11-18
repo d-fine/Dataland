@@ -150,7 +150,14 @@ interface RequestApi {
         @PathVariable dataRequestId: UUID,
     ): ResponseEntity<StoredDataRequest>
 
-    /** Changes request status and message history of existing data request
+    /** A method to patch an existing data request
+     * @param dataRequestId The request id of the data request to patch
+     * @param requestStatus The new request status to set
+     * @param accessStatus The new access status to set
+     * @param contacts The new contacts to set
+     * @param message The new message to set
+     * @param requestPriority The new request priority to set
+     * @param adminComment The new admin comment to set
      * @return the modified data request
      */
     @Suppress("LongParameterList")

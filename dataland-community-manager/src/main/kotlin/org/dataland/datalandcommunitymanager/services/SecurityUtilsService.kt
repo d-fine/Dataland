@@ -139,19 +139,6 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns true if the user is not trying to patch the arguments
-     * @param accessStatus the accessStatus of the patch
-     * @param requestPriority the requestPriority of the patch
-     * @param adminComment the adminComment of the patch
-     *
-     */
-    fun isNotTryingToPatch(
-        accessStatus: AccessStatus?,
-        requestPriority: RequestPriority?,
-        adminComment: Comment?,
-    ): Boolean = accessStatus == null && requestPriority == null && adminComment == null
-
-    /**
      * Returns true if the requesting user is company owner
      * @param requestId the requestId for which a company ownership check should be done
      */
@@ -180,6 +167,19 @@ class SecurityUtilsService(
                 false
             }
         }
+
+    /**
+     * Returns true if the user is not trying to patch the arguments
+     * @param accessStatus the accessStatus of the patch
+     * @param requestPriority the requestPriority of the patch
+     * @param adminComment the adminComment of the patch
+     *
+     */
+    fun isNotTryingToPatch(
+        accessStatus: AccessStatus?,
+        requestPriority: RequestPriority?,
+        adminComment: Comment?,
+    ): Boolean = accessStatus == null && requestPriority == null && adminComment == null
 
     /**
      * Returns true if user is not trying to patch any of the arguments
