@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -15,6 +16,8 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anySet
@@ -77,6 +80,8 @@ class DataRequestAlterationManagerTest {
             message = "test message",
             creationTimestamp = Instant.now().toEpochMilli(),
         )
+
+    private val dummyAdminComment = "test comment"
 
     private fun mockRepos() {
         dataRequestRepository = mock(DataRequestRepository::class.java)
@@ -238,5 +243,49 @@ class DataRequestAlterationManagerTest {
                 any(), any(),
                 any(), any(),
             )
+    }
+
+    @Test
+    fun `validate that no email is sent when the request priority and admin comment are patched`() {
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestStatus = null,
+            accessStatus = null,
+            message = null,
+            contacts = null,
+            requestPriority = RequestPriority.Low,
+            adminComment = "test",
+        )
+
+        verify(requestEmailManager, times(0))
+            .sendSingleDataRequestEmail(
+                any(), anySet(), anyString(),
+            )
+    }
+
+    @Test
+    fun `validate that modification time remains unchanged when only the admin comment is patched`() {
+        val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
+
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            adminComment = dummyAdminComment,
+        )
+
+        assertEquals(originalModificationTime, dummyDataRequestEntity.lastModifiedDate)
+        assertEquals(dummyAdminComment, dummyDataRequestEntity.adminComment)
+    }
+
+    @Test
+    fun `validate that modification time changes if the request priority is patched`() {
+        val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
+
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestPriority = RequestPriority.High,
+        )
+
+        assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
+        assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
     }
 }

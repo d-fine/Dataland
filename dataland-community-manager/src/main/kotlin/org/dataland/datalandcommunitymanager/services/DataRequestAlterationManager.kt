@@ -102,6 +102,7 @@ class DataRequestAlterationManager(
             dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, newAdminComment)
         }
 
+        // should the last modified date be changed if request priority is changed?
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
         // should we always send a mail? Do we need to send a mail if the request priority changes?
