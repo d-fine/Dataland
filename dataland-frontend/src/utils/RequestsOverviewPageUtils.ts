@@ -1,4 +1,4 @@
-import {AccessStatus, RequestPriority, RequestStatus} from '@clients/communitymanager';
+import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -79,6 +79,3 @@ export function retrieveAvailablePriority(): Array<SelectableItem> {
     };
   });
 }
-
-
-
