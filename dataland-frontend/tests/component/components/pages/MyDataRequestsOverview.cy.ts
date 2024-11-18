@@ -1,4 +1,9 @@
-import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import {
+  AccessStatus,
+  type ExtendedStoredDataRequest,
+  RequestPriority,
+  RequestStatus,
+} from '@clients/communitymanager';
 import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
@@ -17,6 +22,7 @@ before(function () {
    * @param companyId to include in the data request
    * @param requestStatus to set in the data request
    * @param accessStatus to set in the data request
+   * @param requestPriority
    * @returns an extended sorted data request object
    */
   function buildExtendedStoredDataRequest(
@@ -25,7 +31,8 @@ before(function () {
     companyName: string,
     companyId: string,
     requestStatus: RequestStatus,
-    accessStatus: AccessStatus
+    accessStatus: AccessStatus,
+    requestPriority: RequestPriority
   ): ExtendedStoredDataRequest {
     return {
       dataRequestId: dummyRequestId,
@@ -38,6 +45,7 @@ before(function () {
       lastModifiedDate: 1709204495770,
       requestStatus: requestStatus,
       accessStatus: accessStatus,
+      requestPriority: requestPriority,
     };
   }
 
@@ -48,7 +56,8 @@ before(function () {
       'companyAnswered',
       'compA',
       RequestStatus.Answered,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Normal
     )
   );
 
@@ -59,7 +68,8 @@ before(function () {
       'companyNotAnsweredSfdr',
       'someId',
       RequestStatus.Open,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Normal
     )
   );
 
@@ -70,7 +80,8 @@ before(function () {
       'z-company-that-will-always-be-sorted-to-bottom',
       'someId',
       RequestStatus.Resolved,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Normal
     )
   );
 
@@ -81,7 +92,8 @@ before(function () {
       'companyNotAnsweredEU',
       'someId',
       RequestStatus.Open,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Normal
     )
   );
 
@@ -92,7 +104,8 @@ before(function () {
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
       RequestStatus.Answered,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Normal
     )
   );
 });
