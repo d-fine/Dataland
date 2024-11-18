@@ -24,8 +24,8 @@ describe('Component test for the admin-requests-overview page', () => {
    * @param framework for which data has been requested
    * @param requestStatus of the data request
    * @param accessStatus of the data request
-   * @param adminComment
-   * @param requestPriority
+   * @param adminComment of the data request
+   * @param requestPriority of the data request
    * @returns the generated ExtendedStoredDataRequest
    */
   function generateExtendedStoredDataRequest(
