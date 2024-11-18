@@ -30,7 +30,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
         const val MESSAGE = "Some message"
         const val FIRST_NAME = "John"
         const val LAST_NAME = "Doe"
-        const val BASE_URL = "test.dataland.com"
+        const val BASE_URL = "https://test.dataland.com"
         const val CREATION_DATE = "October 5th"
         const val NUMBER_OF_DAYS = 23
         const val EMAIL_TITLE = "Email-Title"
@@ -188,8 +188,8 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "testB@example.com (unsubscribed)",
             "@ValueB\$ValueC\$ValueD=",
             "TextA, TextB",
-            "https://$BASE_URL/test",
-            "https://$BASE_URL/example",
+            "$BASE_URL/test",
+            "$BASE_URL/example",
             "Link-TitleA",
             "Link-TitleB",
         )

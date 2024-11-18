@@ -79,7 +79,7 @@ class TypedEmailContentTest {
 
         content.setLateInitVars(receiver, proxyPrimaryUrl, emailSubscriptionTracker)
 
-        assertEquals(content.baseUrl, proxyPrimaryUrl)
+        assertEquals(content.baseUrl, "https://$proxyPrimaryUrl")
         assertEquals(content.subscriptionUuid, subscriptionUuid.toString())
     }
 

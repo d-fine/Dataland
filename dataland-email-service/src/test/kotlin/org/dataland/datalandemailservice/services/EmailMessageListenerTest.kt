@@ -105,7 +105,7 @@ class EmailMessageListenerTest {
         val typedEmailContent = testData.accessToDatasetRequested
         val keywords = testData.accessToDatasetRequestedKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
-        keywords.add(proxyPrimaryUrl)
+        keywords.add("https://$proxyPrimaryUrl")
 
         val jsonString = objectMapper.writeValueAsString(EmailMessage(typedEmailContent, receiver, cc, bcc))
 
@@ -133,7 +133,7 @@ class EmailMessageListenerTest {
 
         val keywords = testData.singleDatasetUploadedEngagementKeywords.toMutableList()
         keywords.remove(TypedEmailContentTestData.BASE_URL)
-        keywords.add(proxyPrimaryUrl)
+        keywords.add("https://$proxyPrimaryUrl")
         keywords.remove(testData.subscriptionUuid)
         contactToSubscriptionStatusMap[receiverContact]
         keywords.add(contactToSubscriptionStatusMap[receiverContact]?.second.toString())
