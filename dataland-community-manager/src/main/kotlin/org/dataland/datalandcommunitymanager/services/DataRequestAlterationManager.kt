@@ -94,17 +94,14 @@ class DataRequestAlterationManager(
             dataRequestLogger.logMessageForPatchingRequestPriority(dataRequestEntity.dataRequestId, newRequestPriority)
         }
 
-        // don't change modification time if only the admin comment is changed
         val newAdminComment = adminComment ?: dataRequestEntity.adminComment
         if (newAdminComment != dataRequestEntity.adminComment) {
             dataRequestEntity.adminComment = newAdminComment
             dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, newAdminComment)
         }
 
-        // should the last modified date be changed if request priority is changed?
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-        // should we always send a mail? Do we need to send a mail if the request priority changes?
         requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
 
         return dataRequestEntity.toStoredDataRequest()
