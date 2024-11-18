@@ -7,8 +7,8 @@ import java.util.UUID
 
 /**
  * Repository interface for accessing and managing EmailSubscriptionEntity data.
- * Note that this repository represents a blacklist, i.e. only email addresses that have an entity
- * with is_subscribed=false will not receive any other email from the email service.
+ * Every email address that is passed to the email-service is saved in the repository and should have an entity.
+ * Per default new entities have an active subscription status, i.e. are subscribed.
  */
 @Repository
 interface EmailSubscriptionRepository : JpaRepository<EmailSubscriptionEntity, UUID> {

@@ -2,13 +2,18 @@ package org.dataland.datalandemailservice.services
 
 import jakarta.transaction.Transactional
 import org.dataland.datalandemailservice.DatalandEmailService
+import org.dataland.datalandemailservice.email.EmailContact
 import org.dataland.datalandemailservice.entities.EmailSubscriptionEntity
 import org.dataland.datalandemailservice.repositories.EmailSubscriptionRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -26,21 +31,26 @@ class EmailSubscriptionTrackerTest(
     final val subscribedUuid = UUID.randomUUID()
     final val unsubscribedUuid = UUID.randomUUID()
 
-    final val unknownEmail = "unknown@mail.com"
-    final val subscribedEmail = "subscriber@mail.com"
-    final val unsubscribedEmail = "unsubscriber@mail.com"
+    companion object {
+        const val UNKNOWN_EMAIL = "unknown@mail.com"
+        const val UNKNOWN_EMAIL_ALIAS = "uNknOwN@MaiL.coM"
+        const val SUBSCRIBED_EMAIL = "subscriber@mail.com"
+        const val SUBSCRIBED_EMAIL_ALIAS = "SubscRiber@mail.COM"
+        const val UNSUBSCRIBED_EMAIL = "unsubscriber@mail.com"
+        const val UNSUBSCRIBED_EMAIL_ALIAS = "UNSUBSCRIBER@MAIL.com"
+    }
 
     val subscribedEntity =
         EmailSubscriptionEntity(
             uuid = subscribedUuid,
-            emailAddress = subscribedEmail,
+            emailAddress = SUBSCRIBED_EMAIL,
             isSubscribed = true,
         )
 
     val unsubscribedEntity =
         EmailSubscriptionEntity(
             uuid = unsubscribedUuid,
-            emailAddress = unsubscribedEmail,
+            emailAddress = UNSUBSCRIBED_EMAIL,
             isSubscribed = false,
         )
 
@@ -52,52 +62,66 @@ class EmailSubscriptionTrackerTest(
         emailSubscriptionRepository.save(unsubscribedEntity)
     }
 
-    @Test
-    fun `validate if a new subscription entity is created for an unknown email`() {
-        val uuid = emailSubscriptionTracker.addSubscriptionIfNeededAndReturnUuid(unknownEmail)
-        val newEntity = emailSubscriptionRepository.findByEmailAddress(unknownEmail)
-        if (newEntity != null) {
-            assertTrue(newEntity.isSubscribed, "The email subscription should be unsubscribed.")
-            assertEquals(unknownEmail, newEntity.emailAddress)
-            assertEquals(uuid, newEntity.uuid)
-        } else {
-            error("The new subscription entity should not be null.")
-        }
+    @ParameterizedTest
+    @ValueSource(strings = [SUBSCRIBED_EMAIL_ALIAS, UNSUBSCRIBED_EMAIL_ALIAS])
+    fun `validate that no entity is created for known email address aliases`(emailAddress: String) {
+        val count = emailSubscriptionRepository.count()
+        emailSubscriptionTracker.shouldReceiveEmail(EmailContact.create(emailAddress))
+        assertNull(emailSubscriptionRepository.findByEmailAddress(emailAddress))
+        assertEquals(count, emailSubscriptionRepository.count())
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = [SUBSCRIBED_EMAIL, UNSUBSCRIBED_EMAIL])
+    fun `validate that no entity is created for known email addresses`(emailAddress: String) {
+        val count = emailSubscriptionRepository.count()
+        emailSubscriptionTracker.shouldReceiveEmail(EmailContact.create(emailAddress))
+        assertEquals(count, emailSubscriptionRepository.count())
     }
 
     @Test
-    fun `validate that the uuid is returned for a subscribed email`() {
-        val uuid = emailSubscriptionTracker.addSubscriptionIfNeededAndReturnUuid(subscribedEmail)
-        assertEquals(subscribedUuid, uuid)
+    fun `validate that an entity is created for an unknown email address that is subscribed`() {
+        emailSubscriptionTracker.shouldReceiveEmail(EmailContact.create(UNKNOWN_EMAIL))
+        val entity = emailSubscriptionRepository.findByEmailAddress(UNKNOWN_EMAIL)
+        assertNotNull(entity)
+        assertTrue(entity?.isSubscribed ?: false)
     }
 
     @Test
-    fun `validate that a uuid is returned for an unsubscribed email address`() {
-        val uuid = emailSubscriptionTracker.addSubscriptionIfNeededAndReturnUuid(unsubscribedEmail)
-        assertEquals(unsubscribedUuid, uuid)
+    fun `validate that contacts are partition correctly`() {
+        val partitionedContacts =
+            emailSubscriptionTracker.subscribeContactsIfNeededAndPartition(
+                listOf(
+                    EmailContact.create(SUBSCRIBED_EMAIL), EmailContact.create(UNSUBSCRIBED_EMAIL), EmailContact.create(UNKNOWN_EMAIL),
+                ),
+            )
+        val unknownEntity = emailSubscriptionRepository.findByEmailAddress(UNKNOWN_EMAIL)
+        assertNotNull(unknownEntity)
+        assertTrue(unknownEntity!!.isSubscribed)
+
+        assertEquals(1, partitionedContacts.blockedContacts.size)
+        assertEquals(EmailContact(UNSUBSCRIBED_EMAIL), partitionedContacts.blockedContacts.first())
+
+        assertEquals(
+            mapOf(
+                EmailContact(UNKNOWN_EMAIL) to unknownEntity.uuid,
+                EmailContact(SUBSCRIBED_EMAIL) to subscribedUuid,
+            ),
+            partitionedContacts.allowedContacts,
+        )
     }
 
-    @Test
-    fun `validate that a uuid is returned for a unknown email address`() {
-        val uuid = emailSubscriptionTracker.addSubscriptionIfNeededAndReturnUuid(unknownEmail)
-        val uuidString = uuid.toString()
-        val convertedUuid = UUID.fromString(uuidString)
-
-        assertEquals(uuid, convertedUuid)
+    @ParameterizedTest
+    @ValueSource(strings = [SUBSCRIBED_EMAIL, SUBSCRIBED_EMAIL_ALIAS, UNKNOWN_EMAIL, UNKNOWN_EMAIL_ALIAS])
+    fun `validate that subscribed and unknown emails should receive email`(email: String) {
+        val emailContact = EmailContact.create(email)
+        assertTrue(emailSubscriptionTracker.shouldReceiveEmail(emailContact))
     }
 
-    @Test
-    fun `validate that a subscribed email address is identified as subscribed`() {
-        assertTrue(emailSubscriptionTracker.isEmailSubscribed(subscribedEmail))
-    }
-
-    @Test
-    fun `validate that a unsubscribed email address is not identified as subscribed`() {
-        assertFalse(emailSubscriptionTracker.isEmailSubscribed(unsubscribedEmail))
-    }
-
-    @Test
-    fun `validate that an unknown email address is not identified as subscribed`() {
-        assertTrue(emailSubscriptionTracker.isEmailSubscribed(unknownEmail))
+    @ParameterizedTest
+    @ValueSource(strings = [UNSUBSCRIBED_EMAIL, UNSUBSCRIBED_EMAIL_ALIAS, "ceo@example.com"])
+    fun `validate that unsubscribed emails and emails with example domain should not receive email`(email: String) {
+        val emailContact = EmailContact.create(email)
+        assertFalse(emailSubscriptionTracker.shouldReceiveEmail(emailContact))
     }
 }

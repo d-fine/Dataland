@@ -4,11 +4,9 @@ import com.mailjet.client.MailjetClient
 import com.mailjet.client.errors.MailjetException
 import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
-import org.dataland.datalandemailservice.services.EmailSubscriptionTracker
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.lang.StringBuilder
 
 /**
  * A class that manages sending emails
@@ -16,45 +14,14 @@ import java.lang.StringBuilder
 @Component
 class EmailSender(
     @Autowired private val mailjetClient: MailjetClient,
-    @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    /**
-     *  Filters the receivers and CC addresses of the given email to exclude those with the "@example.com"
-     *  domain or those who are not subscribed, then sends the email via the Mailjet client based on the
-     *  filtered results.
-     *  @param email The email object that should be sent.
-     *  @return This method does not return any value.
-     */
-    fun filterReceiversAndSendEmail(email: Email) {
-        val filteredReceivers = email.receivers.filter(emailSubscriptionTracker::shouldSendToEmailContact)
-        val filteredCc = email.cc?.filter(emailSubscriptionTracker::shouldSendToEmailContact)
-        val blockedReceivers = email.receivers.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
-        val blockedCc = email.cc?.filterNot(emailSubscriptionTracker::shouldSendToEmailContact)
-        val blockedContacts = blockedReceivers + blockedCc
-        if (blockedContacts.isNotEmpty()) {
-            logger.info("Did not send email to the following blocked contacts: $blockedContacts")
-        }
-        if (filteredReceivers.isEmpty() && filteredCc.isNullOrEmpty()) {
-            logger.info("No email was sent. After filtering the receivers none remained.")
-            return
-        }
-        sendEmail(
-            Email(
-                email.sender,
-                filteredReceivers,
-                filteredCc,
-                email.content,
-            ),
-        )
-    }
-
-    /** This method sends an email
+    /** This method sends an email. Note this function does not filter the email addresses.
      * @param email the email to send
      * @return a sending success indicator which is true if the sending was successful
      */
-    private fun sendEmail(email: Email) {
+    fun sendEmail(email: Email) {
         try {
             logEmail(email)
             val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
@@ -69,15 +36,20 @@ class EmailSender(
 
     private fun logEmail(email: Email) {
         val emailLog =
-            StringBuilder()
-                .append("Sending email with subject \"${email.content.subject}\"\n")
-                .append("(sender: ${email.sender.emailAddress})\n")
-                .append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
-                .apply {
-                    if (!email.cc.isNullOrEmpty()) {
-                        append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
-                    }
-                }.toString()
+            buildString {
+                append("Sending email with subject \"${email.content.subject}\"\n")
+                append("(sender: ${email.sender.emailAddress})\n")
+                append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
+
+                if (email.cc.isNotEmpty()) {
+                    append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
+                }
+
+                if (email.bcc.isNotEmpty()) {
+                    append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
+                }
+            }
+
         logger.info(emailLog)
     }
 

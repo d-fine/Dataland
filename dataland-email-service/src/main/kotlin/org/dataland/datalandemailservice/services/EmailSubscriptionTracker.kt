@@ -9,56 +9,77 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
- * Service responsible for managing email subscriptions.
+ * Service responsible for managing the subscription status of [EmailContact] instances.
+ * Note, that this service intentionally only works with [EmailContact] instances instead of plain email addresses.
+ * This is due to the non-unique nature of email addresses, which is avoided by the [EmailContact] class.
  */
 @Service
 class EmailSubscriptionTracker(
     @Autowired private val emailSubscriptionRepository: EmailSubscriptionRepository,
 ) {
     /**
-     * Inserts a new email subscription if one does not already exist and returns its UUID.
-     *
-     * First, this method checks if an email subscription exists for the given email address.
-     * If it does not exist, a new subscription is created with `isSubscribed` set to `true`.
-     * Second, the method returns the UUID of the subscription entity for the email address.
-     *
-     * @param emailAddress The email address to subscribe.
-     * @return The UUID of the active/inactive subscription,
-     * or the UUID of the newly created entity if no subscription existed.
+     * This functions checks if there is already and entity for an email address.
+     * If there is entity, this entity is returned.
+     * If there is no entity yet, an entity is created, saved, and then returned.
+     * Important: This function should be called inside a Transactional block. Do not use this function outside of
+     * this Service.
+     */
+    private fun getOrAddSubscription(emailAddress: String): EmailSubscriptionEntity =
+        emailSubscriptionRepository.findByEmailAddress(emailAddress)
+            ?: emailSubscriptionRepository.save(
+                EmailSubscriptionEntity(
+                    emailAddress = emailAddress,
+                    isSubscribed = true,
+                ),
+            )
+
+    /**
+     * A class that stores the return values of the [subscribeContactsIfNeededAndPartition] method.
+     * The class stores a partition of the contacts into allowed contacts, i.e. contacts that should receive an email, and
+     * blocked contacts, i.e. contacts that should not receive an email.
+     * Every allowed contact is associated with a subscription uuid, that can be used to unsubscribe the receiver.
+     */
+    data class PartitionedContacts(
+        val allowedContacts: Map<EmailContact, UUID>,
+        val blockedContacts: List<EmailContact>,
+    )
+
+    /**
+     * This function does two things:
+     * First, it ensures that every contact in [contacts] has an associated entity in the repository.
+     * If there is no entity, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
+     * Second, the function partitions the contacts into allowed contacts and blocked contacts.
+     * @param contacts The list of [EmailContact] that should be processed.
+     * @return An instance of [PartitionedContacts] that stores the allowed contacts and the blocked contacts.
      */
     @Transactional
-    fun addSubscriptionIfNeededAndReturnUuid(emailAddress: String): UUID {
-        val entity =
-            emailSubscriptionRepository.findByEmailAddress(emailAddress)
-                ?: emailSubscriptionRepository.save(
-                    EmailSubscriptionEntity(
-                        emailAddress = emailAddress,
-                        isSubscribed = true,
-                    ),
-                )
+    fun subscribeContactsIfNeededAndPartition(contacts: List<EmailContact>): PartitionedContacts {
+        val (allowedEntities, blockedEntities) =
+            contacts
+                .map { it to getOrAddSubscription(it.emailAddress) }
+                .partition { (_, entity) -> entity.shouldReceiveEmail() }
 
-        return entity.uuid
+        val allowedContactsToSubscriptionUuid =
+            allowedEntities
+                .associate { (contact, entity) -> contact to entity.uuid }
+
+        val blockedContacts =
+            blockedEntities
+                .map { (contact, _) -> contact }
+
+        return PartitionedContacts(
+            allowedContactsToSubscriptionUuid,
+            blockedContacts,
+        )
     }
 
     /**
-     * This function queries the email subscription repository for the email address and checks the subscription status.
-     * If there is an entity, the value of isSubscribed is returned. Otherwise, true is returned.
-     * Since the repository acts as a blacklist, no subscription entity for the email address indicates that the email should be sent.
-     *
-     * @param emailAddress that should be checked
-     * @return `true` if the email is subscribed or no entity is found, false otherwise.
+     * This function queries the email subscription repository for a contact email address and checks the subscription status.
+     * If there is no entity with this email, an entity is created with [EmailSubscriptionEntity.isSubscribed] set to true.
+     * The function returns the subscription status of the entity.
+     * @param contact that should be checked
+     * @return `true` if the email should be sent and `false` otherwise.
      */
-    fun isEmailSubscribed(emailAddress: String): Boolean =
-        emailSubscriptionRepository.findByEmailAddress(emailAddress)?.isSubscribed ?: true
-
-    /**
-     * This function checks whether an email should be sent to an email contact.
-     * The email should be sent if the email address is subscribed and the email does not have the @example.com domain.
-     *
-     * @param emailContact that should be checked
-     * @return Boolean which is 'true' if the contact should be filtered and 'false' otherwise.
-     */
-    fun shouldSendToEmailContact(emailContact: EmailContact): Boolean =
-        !emailContact.emailAddress.contains("@example.com") &&
-            isEmailSubscribed(emailContact.emailAddress)
+    @Transactional
+    fun shouldReceiveEmail(contact: EmailContact): Boolean = getOrAddSubscription(contact.emailAddress).shouldReceiveEmail()
 }
