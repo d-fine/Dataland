@@ -68,7 +68,7 @@ data class DatasetRequestedClaimOwnership(
 ) : TypedEmailContent(),
     InitializeSubscriptionUuidLater,
     InitializeBaseUrlLater {
-    override val subject = "A message from Dataland: Your ESG data are high on demand!"
+    override val subject = "A message from Dataland: Your data are high on demand!"
     override val textTemplate = "/text/dataset_requested_claim_ownership.ftl"
     override val htmlTemplate = "/html/dataset_requested_claim_ownership.ftl"
 
