@@ -199,7 +199,8 @@ describe('Component test for the admin-requests-overview page', () => {
       'fetchEmailFilteredNumberOfRequests'
     );
 
-    cy.get(`input[data-test="email-searchbar"]`).type(mailSearchTerm).type('{enter}');
+    cy.get(`input[data-test="email-searchbar"]`).type(mailSearchTerm);
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailDelta);
@@ -224,6 +225,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
@@ -247,6 +249,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
     cy.get(`div[data-test="request-status-picker"]`).click();
     cy.get(`li[aria-label="${requestStatusToFilterFor}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
   }
@@ -268,7 +271,8 @@ describe('Component test for the admin-requests-overview page', () => {
     ).as('fetchFrameworkFilteredNumberOfRequests');
 
     cy.get(`div[data-test="request-priority-picker"]`).click();
-    cy.get(`li[aria-label="${'VeryHigh'}"]`).click();
+    cy.get(`li[aria-label="${priorityToFilterFor}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
@@ -281,14 +285,15 @@ describe('Component test for the admin-requests-overview page', () => {
     const mockResponse = [mockRequests[1], mockRequests[3]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
-      `**/community/requests?comment=${commentSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
+      `**/community/requests?adminComment=${commentSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
       mockResponse
     ).as('fetchCommentFilteredRequests');
-    cy.intercept(`**/community/requests/numberOfRequests?comment=last`, expectedNumberOfRequests.toString()).as(
+    cy.intercept(`**/community/requests/numberOfRequests?adminComment=last`, expectedNumberOfRequests.toString()).as(
       'fetchCommentFilteredNumberOfRequests'
     );
 
-    cy.get(`input[data-test="comment-searchbar"]`).type(commentSearchTerm).type('{enter}');
+    cy.get(`input[data-test="comment-searchbar"]`).type(commentSearchTerm);
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
     assertEmailAddressExistsInSearchResults(mailDelta);
@@ -314,6 +319,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
@@ -332,6 +338,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const frameworkHumanReadableName = humanizeStringOrNumber(DataTypeEnum.Sfdr);
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
     cy.get(`input[data-test="email-searchbar"]`).clear().type('{enter}');
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);

@@ -23,11 +23,11 @@
               <span class="w-3 p-input-icon-left" style="margin: 15px">
                 <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <InputText
-                    :disabled="waitingForData"
-                    data-test="comment-searchbar"
-                    v-model="searchBarInputComment"
-                    placeholder="Search by Comment"
-                    class="w-12 pl-6 pr-6"
+                  :disabled="waitingForData"
+                  data-test="comment-searchbar"
+                  v-model="searchBarInputComment"
+                  placeholder="Search by Comment"
+                  class="w-12 pl-6 pr-6"
                 />
               </span>
               <FrameworkDataSearchDropdownFilter
@@ -43,28 +43,28 @@
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                  :disabled="waitingForData"
-                  v-model="selectedRequestStatus"
-                  ref="frameworkFilter"
-                  :available-items="availableRequestStatus"
-                  filter-name="Request Status"
-                  data-test="request-status-picker"
-                  filter-id="framework-filter"
-                  filter-placeholder="Search by Request Status"
-                  class="ml-3"
-                  style="margin: 15px"
+                :disabled="waitingForData"
+                v-model="selectedRequestStatus"
+                ref="frameworkFilter"
+                :available-items="availableRequestStatus"
+                filter-name="Request Status"
+                data-test="request-status-picker"
+                filter-id="framework-filter"
+                filter-placeholder="Search by Request Status"
+                class="ml-3"
+                style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
-                  :disabled="waitingForData"
-                  v-model="selectedPriority"
-                  ref="frameworkFilter"
-                  :available-items="availablePriority"
-                  filter-name="Priority"
-                  data-test="request-priority-picker"
-                  filter-id="framework-filter"
-                  filter-placeholder="Search by Priority"
-                  class="ml-3"
-                  style="margin: 15px"
+                :disabled="waitingForData"
+                v-model="selectedPriority"
+                ref="frameworkFilter"
+                :available-items="availablePriority"
+                filter-name="Priority"
+                data-test="request-priority-picker"
+                filter-id="framework-filter"
+                filter-placeholder="Search by Priority"
+                class="ml-3"
+                style="margin: 15px"
               />
               <span class="flex align-items-center">
                 <span
@@ -78,13 +78,14 @@
             </span>
             <span class="align-content-start flex items-center justify-start">
               <PrimeButton
-                  :disabled="waitingForData"
-                  class="p-button-rounded border-none my-2 mx-3 pl-4 pr-4 pt-3 pb-3"
-                  :style="{ fontSize: '20px'}"
-                  name="trigger-filtering-requests"
-                  @click="getAllRequestsForFilters"
+                :disabled="waitingForData"
+                class="p-button-rounded border-none my-2 mx-3 pl-4 pr-4 pt-3 pb-3"
+                :style="{ fontSize: '20px' }"
+                name="trigger-filtering-requests"
+                data-test="trigger-filtering-requests"
+                @click="getAllRequestsForFilters"
               >
-                  Filter Requests
+                Filter Requests
               </PrimeButton>
               <span class="flex align-items-center ml-auto" style="margin: 15px">
                 <span>{{ numberOfRequestsInformation }}</span>
@@ -236,11 +237,15 @@ import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import {accessStatusBadgeClass, badgeClass, priorityBadgeClass} from '@/utils/RequestUtils';
-import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus, retrieveAvailablePriority } from '@/utils/RequestsOverviewPageUtils';
+import { accessStatusBadgeClass, badgeClass, priorityBadgeClass } from '@/utils/RequestUtils';
+import {
+  retrieveAvailableFrameworks,
+  retrieveAvailableRequestStatus,
+  retrieveAvailablePriority,
+} from '@/utils/RequestsOverviewPageUtils';
 import type { DataTypeEnum } from '@clients/backend';
 import router from '@/router';
-import PrimeButton from "primevue/button";
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
@@ -285,8 +290,6 @@ export default defineComponent({
       selectedRequestStatus: [] as Array<SelectableItem>,
       availablePriority: [] as Array<SelectableItem>,
       selectedPriority: [] as Array<SelectableItem>,
-      debounceInMs: 300,
-      timerId: 0,
     };
   },
   mounted() {
@@ -330,7 +333,7 @@ export default defineComponent({
     searchBarInputComment(newSearch: string) {
       this.searchBarInputComment = newSearch;
       this.setChunkAndFirstRowIndexToZero();
-    }
+    },
   },
   methods: {
     priorityBadgeClass,
@@ -353,7 +356,7 @@ export default defineComponent({
         this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
       );
       const selectedPriorityAsSet = new Set<RequestPriority>(
-          this.selectedPriority.map((selectableItem) => selectableItem.displayName as RequestPriority)
+        this.selectedPriority.map((selectableItem) => selectableItem.displayName as RequestPriority)
       );
       try {
         if (this.getKeycloakPromise) {
@@ -372,7 +375,7 @@ export default defineComponent({
               undefined,
               undefined,
               this.datasetsPerPage,
-              this.currentChunkIndex,
+              this.currentChunkIndex
             )
           ).data;
           this.totalRecords = (
@@ -385,7 +388,7 @@ export default defineComponent({
               undefined,
               selectedPriorityAsSet,
               undefined,
-              undefined,
+              undefined
             )
           ).data;
         }
