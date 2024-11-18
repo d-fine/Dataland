@@ -60,7 +60,7 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     ): List<QaReviewEntity>
 
     /**
-     * This query counts the number of datasets that matches the search fiter and returns this number.
+     * This query counts the number of datasets that matches the search filter and returns this number.
      */
     @Query(
         nativeQuery = true,
