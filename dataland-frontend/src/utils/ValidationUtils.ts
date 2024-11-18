@@ -86,3 +86,15 @@ export function validatePageNumber(node: FormKitNode): boolean {
     return false;
   }
 }
+
+// This RegEx should be kept consistent with the regex used in the backend and defined by EmailUtils.kt
+const emailAddressRegex = /^[a-zA-Z0-9_.!+-]+@([a-zA-Z0-9-]+\.){1,2}[a-zA-Z]{2,}$/;
+
+/**
+ * Checks if an email address is valid using a regex
+ * @param emailAddress the email string to check
+ * @returns true if the email is valid, false otherwise
+ */
+export function isEmailAddressValid(emailAddress: string): boolean {
+  return emailAddressRegex.test(emailAddress.toLowerCase());
+}
