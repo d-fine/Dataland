@@ -12,5 +12,3 @@ export interface CountryCodeSelectableItem extends SelectableItem {
 export interface FrameworkSelectableItem extends SelectableItem {
   frameworkDataType: DataTypeEnum;
 }
-
-
