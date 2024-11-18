@@ -25,7 +25,7 @@ fun TypedEmailContent.setLateInitVars(
     emailSubscriptionTracker: EmailSubscriptionTracker,
 ) {
     if (this is InitializeBaseUrlLater) {
-        this.baseUrl = proxyPrimaryUrl
+        this.baseUrl = "https://$proxyPrimaryUrl"
     }
     if (this is InitializeSubscriptionUuidLater) {
         require(receivers.size == 1)

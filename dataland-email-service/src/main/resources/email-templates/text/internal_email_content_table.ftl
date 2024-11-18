@@ -2,7 +2,7 @@
     <#if value.macroName == "text_macro">
         ${value.value}<#t>
     <#elseif value.macroName == "link_macro">
-        ${value.title}[https://${baseUrl}${value.href}]<#t>
+        ${value.title}[${baseUrl}${value.href}]<#t>
     <#elseif value.macroName == 'list_macro'>
         ${value.start}<#t>
         <#list value.values as element>
