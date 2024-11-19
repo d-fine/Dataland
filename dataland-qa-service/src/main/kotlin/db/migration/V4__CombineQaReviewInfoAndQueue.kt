@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:filename")
+
 package db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
@@ -10,7 +12,7 @@ import java.sql.PreparedStatement
  */
 
 @Suppress("ClassName")
-class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
+class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         // waiting two minutes before running script to ensure backend is running
         val waitingTimeMs: Long = 120000L
@@ -38,7 +40,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
 
         while (queueResultSet.next()) {
             val dataId = queueResultSet.getString("data_id")
-            val timeStamp = queueResultSet.getLong("reception_time")
+            val timestamp = queueResultSet.getLong("reception_time")
             val comment: String? = queueResultSet.getString("comment")
             val companyId = queueResultSet.getString("company_id")
             val companyName = queueResultSet.getString("company_name")
@@ -52,7 +54,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
                     companyName = companyName,
                     dataType = dataType,
                     reportingPeriod = reportingPeriod,
-                    timeStamp = timeStamp,
+                    timestamp = timestamp,
                     comment = comment,
                     commentIndex = 7,
                 )
@@ -81,7 +83,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
         while (informationResultSet.next()) {
             val dataId = informationResultSet.getString("data_id")
             val qaStatus = informationResultSet.getString("qa_status")
-            val timeStamp = informationResultSet.getLong("reception_time")
+            val timestamp = informationResultSet.getLong("reception_time")
             val reviewerId = informationResultSet.getString("reviewer_keycloak_id")
             val comment: String? = informationResultSet.getString("message")
 
@@ -122,7 +124,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
                     companyName = companyName,
                     dataType = dataType,
                     reportingPeriod = reportingPeriod,
-                    timeStamp = timeStamp,
+                    timestamp = timestamp,
                     qaStatus = qaStatus,
                     reviewerId = reviewerId,
                     comment = comment,
@@ -150,7 +152,7 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
         statement.setString(dataObject.companyNameIndex, dataObject.companyName)
         statement.setString(dataObject.dataTypeIndex, dataObject.dataType)
         statement.setString(dataObject.reportingPeriodIndex, dataObject.reportingPeriod)
-        statement.setLong(dataObject.timeStampIndex, dataObject.timeStamp)
+        statement.setLong(dataObject.timeStampIndex, dataObject.timestamp)
         statement.setString(dataObject.commentIndex, dataObject.comment)
 
         if (dataObject.qaStatus != "") {
@@ -172,7 +174,7 @@ data class Data(
     val companyName: String,
     val dataType: String,
     val reportingPeriod: String,
-    val timeStamp: Long,
+    val timestamp: Long,
     val qaStatus: String = "",
     val reviewerId: String = "",
     val comment: String?,
