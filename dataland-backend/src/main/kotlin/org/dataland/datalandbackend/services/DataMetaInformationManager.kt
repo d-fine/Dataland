@@ -2,8 +2,10 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
+import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
+import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -18,6 +20,7 @@ import java.util.UUID
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
 ) {
     /**
      * Method to associate data information with a specific company
@@ -25,6 +28,12 @@ class DataMetaInformationManager(
      */
     fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
         dataMetaInformationRepositoryInterface.save(dataMetaInformation)
+
+    /**
+     * Method to store data point meta information
+     */
+    fun storeDataPointMetaInformation(dataPointMetaInformation: DataPointMetaInformationEntity): DataPointMetaInformationEntity =
+        dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
 
     /**
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
