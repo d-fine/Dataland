@@ -19,7 +19,6 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -73,7 +72,7 @@ class DataManagerTest(
         messageQueueListenerForDataManager =
             MessageQueueListenerForDataManager(
                 objectMapper, dataMetaInformationManager,
-                MessageQueueUtils(), dataManager,
+                dataManager,
             )
     }
 

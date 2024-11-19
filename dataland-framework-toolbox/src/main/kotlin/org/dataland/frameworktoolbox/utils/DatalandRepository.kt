@@ -13,6 +13,9 @@ class DatalandRepository(
     val backendKotlinSrc: Path
         get() = path / "dataland-backend" / "src" / "main" / "kotlin"
 
+    val specificationDatabasePath: Path
+        get() = path / "dataland-specification-service" / "src" / "main" / "resources" / "specifications"
+
     val qaKotlinSrc: Path
         get() = path / "dataland-qa-service" / "src" / "main" / "kotlin"
 

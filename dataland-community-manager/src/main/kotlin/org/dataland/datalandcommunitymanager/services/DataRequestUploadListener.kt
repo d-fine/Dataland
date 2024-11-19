@@ -27,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("DataRequestUpdater")
 class DataRequestUploadListener(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
@@ -62,18 +61,18 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
-        val dataId = qaCompletedMessage.dataId
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info("Received data QA completed message for dataset with ID $dataId")
-        if (qaCompletedMessage.updatedQaStatus != QaStatus.Accepted) {
+        if (qaStatusChangeMessage.updatedQaStatus != QaStatus.Accepted) {
             logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
             return
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
         }
     }
@@ -107,13 +106,13 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
+        MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
         val payloadJsonObject = JSONObject(payload)
         val dataId = payloadJsonObject.getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
         }
     }

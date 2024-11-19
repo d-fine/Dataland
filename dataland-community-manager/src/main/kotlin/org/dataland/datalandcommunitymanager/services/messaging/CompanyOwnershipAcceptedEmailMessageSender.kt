@@ -7,7 +7,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -34,24 +36,24 @@ class CompanyOwnershipAcceptedEmailMessageSender(
         companyName: String,
         correlationId: String,
     ) {
-        val properties =
-            mapOf(
-                "companyId" to datalandCompanyId,
-                "companyName" to companyName,
-                "numberOfOpenDataRequestsForCompany" to getNumberOfOpenDataRequestsForCompany(datalandCompanyId).toString(),
+        val emailData =
+            CompanyOwnershipClaimApproved(
+                companyId = datalandCompanyId,
+                companyName = companyName,
+                numberOfOpenDataRequestsForCompany = getNumberOfOpenDataRequestsForCompany(datalandCompanyId),
             )
         val message =
-            TemplateEmailMessage(
-                TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
-                TemplateEmailMessage.UserIdEmailRecipient(newCompanyOwnerId),
-                properties,
+            EmailMessage(
+                emailData,
+                listOf(EmailRecipient.UserId(newCompanyOwnerId)),
+                emptyList(), emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SEND_TEMPLATE_EMAIL,
+            MessageType.SEND_EMAIL,
             correlationId,
             ExchangeName.SEND_EMAIL,
-            RoutingKeyNames.TEMPLATE_EMAIL,
+            RoutingKeyNames.EMAIL,
         )
     }
 

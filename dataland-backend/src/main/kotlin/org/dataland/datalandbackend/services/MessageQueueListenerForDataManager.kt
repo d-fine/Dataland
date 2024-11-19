@@ -24,60 +24,15 @@ import org.springframework.transaction.annotation.Transactional
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param metaDataManager service for managing metadata
- * @param messageQueueUtils contains utils to be used to handle messages for the message queue
  * @param dataManager the dataManager service for public data
  */
 @Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val dataManager: DataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-
-    /**
-     * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
-     * stored in the persisted database. Further it logs success notification associated containing dataId and
-     * correlationId
-     * @param dataId the ID of the dataset to that was stored
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
-     */
-    @RabbitListener(
-        bindings = [
-            QueueBinding(
-                value =
-                    Queue(
-                        "dataStoredBackendDataManager",
-                        arguments = [
-                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
-                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                            Argument(name = "defaultRequeueRejected", value = "false"),
-                        ],
-                    ),
-                exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
-                key = [RoutingKeyNames.DATA],
-            ),
-        ],
-    )
-    fun removeStoredItemFromTemporaryStore(
-        @Payload dataId: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-    ) {
-        messageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        logger.info(
-            "Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: " +
-                "$correlationId.",
-        )
-        messageQueueUtils.rejectMessageOnException {
-            dataManager.removeDataSetFromInMemoryStore(dataId)
-        }
-    }
 
     /**
      * Method that listens to the messages from the QA service, modifies the qa status in the metadata accordingly,
@@ -109,8 +64,9 @@ class MessageQueueListenerForDataManager(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
-        val qaStatusChangeMessage = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
 
         val changedQaStatusDataId = qaStatusChangeMessage.dataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
@@ -125,7 +81,7 @@ class MessageQueueListenerForDataManager(
             throw MessageQueueRejectException("Provided data ID to change qa status dataset is empty")
         }
 
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val changedQaStatusMetaInformation = metaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId)
             changedQaStatusMetaInformation.qaStatus = updatedQaStatus
             metaDataManager.storeDataMetaInformation(changedQaStatusMetaInformation)
@@ -142,6 +98,49 @@ class MessageQueueListenerForDataManager(
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
                 logger.info("Dataset with dataId $currentlyActiveDataId has been set to active.")
             }
+        }
+    }
+
+    /**
+     * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
+     * stored in the persisted database. Further it logs success notification associated containing dataId and
+     * correlationId
+     * @param dataId the ID of the dataset to that was stored
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        "dataStoredBackendDataManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                key = [RoutingKeyNames.DATA],
+            ),
+        ],
+    )
+    fun removeStoredItemFromTemporaryStore(
+        @Payload dataId: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
+        if (dataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID is empty")
+        }
+        logger.info(
+            "Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: " +
+                "$correlationId.",
+        )
+        MessageQueueUtils.rejectMessageOnException {
+            dataManager.removeDataSetFromInMemoryStore(dataId)
         }
     }
 }

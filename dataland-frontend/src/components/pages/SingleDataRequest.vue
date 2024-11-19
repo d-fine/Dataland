@@ -236,6 +236,7 @@ import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSet
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import SingleSelectFormElement from '@/components/forms/parts/elements/basic/SingleSelectFormElement.vue';
 import router from '@/router';
+import { isEmailAddressValid } from '@/utils/ValidationUtils';
 
 export default defineComponent({
   name: 'SingleDataRequest',
@@ -350,7 +351,7 @@ export default defineComponent({
      * @returns true if the provided emails are all valid (therefor also if there are none), false otherwise
      */
     areContactsValid(): boolean {
-      return this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact));
+      return this.selectedContacts.every((selectedContact) => isEmailAddressValid(selectedContact));
     },
 
     /**
@@ -359,17 +360,6 @@ export default defineComponent({
     handleContactsUpdate(): void {
       this.displayContactsNotValidError = false;
       void this.$nextTick(() => this.updateMessageVisibility());
-    },
-
-    /**
-     * Checks if an email string is a valid email using regex
-     * @param email the email string to check
-     * @returns true if the email is valid, false otherwise
-     */
-    isValidEmail(email: string): boolean {
-      // This RegEx should be kept consistent with the validation rules used by the community service in the backend
-      const regex = /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+\.){1,2}[a-zA-Z]{2,}$/;
-      return regex.test(email);
     },
 
     /**

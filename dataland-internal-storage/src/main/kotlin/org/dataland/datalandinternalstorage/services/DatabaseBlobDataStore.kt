@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional
 class DatabaseBlobDataStore(
     @Autowired private val blobItemRepository: BlobItemRepository,
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val temporarilyCachedDocumentClient: StreamingTemporarilyCachedDocumentControllerApi,
     @Autowired val objectMapper: ObjectMapper,
 ) {
@@ -65,11 +64,11 @@ class DatabaseBlobDataStore(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DOCUMENT_RECEIVED)
+        MessageQueueUtils.validateMessageType(type, MessageType.DOCUMENT_RECEIVED)
         if (blobId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             logger.info("Received BlobId $blobId and CorrelationId: $correlationId")
             val resource = temporarilyCachedDocumentClient.getReceivedData(blobId)
             storeBlobToDatabase(blobId, resource.readBytes())

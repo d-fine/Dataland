@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Component
 class MessageQueueListener(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private var objectMapper: ObjectMapper,
@@ -66,7 +65,7 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DOCUMENT_STORED)
+        MessageQueueUtils.validateMessageType(type, MessageType.DOCUMENT_STORED)
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -74,7 +73,7 @@ class MessageQueueListener(
         logger.info(
             "Document with ID $documentId was successfully stored. Correlation ID: $correlationId.",
         )
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
         }
     }
@@ -108,13 +107,13 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
-        val message = objectMapper.readValue(jsonString, QaStatusChangeMessage::class.java)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        val message = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
         val documentId = message.dataId
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
             metaInformation.qaStatus = message.updatedQaStatus
             logger.info(

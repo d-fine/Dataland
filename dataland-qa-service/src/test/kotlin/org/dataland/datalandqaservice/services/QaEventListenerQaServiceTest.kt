@@ -12,7 +12,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -38,7 +37,6 @@ import org.springframework.boot.test.context.SpringBootTest
 )
 class QaEventListenerQaServiceTest(
     @Autowired final val objectMapper: ObjectMapper,
-    @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val testQaReviewRepository: QaReviewRepository,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
@@ -74,7 +72,6 @@ class QaEventListenerQaServiceTest(
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
                 objectMapper,
-                messageUtils,
                 mockQaReviewManager,
                 mockQaReportManager,
                 mockMetaDataControllerApi,

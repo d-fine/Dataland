@@ -7,7 +7,6 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
@@ -41,7 +40,6 @@ class MessageQueueListenerTest(
         mockDocumentMetaInfoRepository = mock(DocumentMetaInfoRepository::class.java)
         messageQueueListener =
             MessageQueueListener(
-                messageUtils = MessageQueueUtils(),
                 objectMapper = objectMapper,
                 documentMetaInfoRepository = mockDocumentMetaInfoRepository,
                 inMemoryDocumentStore = inMemoryDocumentStore,

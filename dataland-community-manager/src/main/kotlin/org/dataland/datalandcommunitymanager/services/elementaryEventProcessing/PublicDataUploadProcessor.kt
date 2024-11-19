@@ -31,12 +31,11 @@ import org.springframework.stereotype.Component
  */
 @Component
 class PublicDataUploadProcessor(
-    @Autowired messageUtils: MessageQueueUtils,
     @Autowired notificationService: NotificationService,
     @Autowired elementaryEventRepository: ElementaryEventRepository,
     @Autowired objectMapper: ObjectMapper,
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
-) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
+) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
     override val elementaryEventType = ElementaryEventType.UploadEvent
     override val messageType = MessageType.QA_STATUS_CHANGED
     override val actionType = null
@@ -71,15 +70,13 @@ class PublicDataUploadProcessor(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(messageType, this.messageType)
+        MessageQueueUtils.validateMessageType(messageType, this.messageType)
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
+        if (qaCompletedMessage.updatedQaStatus != QaStatus.Accepted) {
+            return
+        }
 
-        messageUtils.rejectMessageOnException {
-            val qaCompletedMessage = objectMapper.readValue(payload, QaStatusChangeMessage::class.java)
-
-            if (qaCompletedMessage.updatedQaStatus != QaStatus.Accepted) {
-                return@rejectMessageOnException
-            }
-
+        MessageQueueUtils.rejectMessageOnException {
             super.processEvent(
                 createElementaryEventBasicInfo(
                     objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.dataId)),

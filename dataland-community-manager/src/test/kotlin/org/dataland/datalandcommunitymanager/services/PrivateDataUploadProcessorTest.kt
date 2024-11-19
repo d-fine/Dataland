@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -23,14 +22,12 @@ class PrivateDataUploadProcessorTest {
 
     @BeforeEach
     fun setup() {
-        val messageUtilsMock = mock(MessageQueueUtils::class.java)
         val notificationServiceMock = mock(NotificationService::class.java)
         val elementaryEventRepositoryMock = mock(ElementaryEventRepository::class.java)
         val objectMapper = jacksonObjectMapper()
 
         privateDataUploadProcessor =
             PrivateDataUploadProcessor(
-                messageUtilsMock,
                 notificationServiceMock,
                 elementaryEventRepositoryMock,
                 objectMapper,
@@ -58,7 +55,6 @@ class PrivateDataUploadProcessorTest {
     @Test
     fun `unexpected action type leads to rejection exception`() {
         val unexpectedActionType = "unexpected action type"
-        val expectedActionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS
         val payload =
             JSONObject(
                 mapOf(
@@ -73,7 +69,7 @@ class PrivateDataUploadProcessorTest {
             }
 
         assertEquals(
-            "Message was rejected: Expected action type $expectedActionType, but was $unexpectedActionType.",
+            "Message was rejected: Message has type \"$unexpectedActionType\" but type \"Private Data received\" was expected",
             exception.message,
         )
     }
@@ -97,7 +93,7 @@ class PrivateDataUploadProcessorTest {
         assertDoesNotThrow {
             privateDataUploadProcessor.validateIncomingPayloadAndReturnDataId(
                 payload,
-                ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS,
+                MessageType.PRIVATE_DATA_RECEIVED,
             )
         }
 

@@ -38,7 +38,6 @@ class QaEventListenerQaService
     constructor(
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired var objectMapper: ObjectMapper,
-        @Autowired var messageUtils: MessageQueueUtils,
         @Autowired val qaReviewManager: QaReviewManager,
         @Autowired val qaReportManager: QaReportManager,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,
@@ -74,8 +73,8 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = objectMapper.readValue(messageAsJsonString, ManualQaRequestedMessage::class.java)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
 
             val dataId = message.resourceId
             val bypassQa: Boolean? = message.bypassQa
@@ -83,7 +82,7 @@ class QaEventListenerQaService
                 throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
             }
 
-            messageUtils.rejectMessageOnException {
+            MessageQueueUtils.rejectMessageOnException {
                 logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
                 val reviewerId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
                 val qaStatus: QaStatus
@@ -139,14 +138,14 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = objectMapper.readValue(messageAsJsonString, ManualQaRequestedMessage::class.java)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
             val documentId = message.resourceId
 
             if (documentId.isEmpty()) {
                 throw MessageQueueRejectException("Provided document ID is empty (correlationId: $correlationId)")
             }
-            messageUtils.rejectMessageOnException {
+            MessageQueueUtils.rejectMessageOnException {
                 logger.info(
                     "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
                 )
@@ -195,8 +194,8 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = objectMapper.readValue(messageAsJsonString, ManualQaRequestedMessage::class.java)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
 
             val dataId = message.resourceId
             val bypassQa = message.bypassQa
@@ -207,7 +206,7 @@ class QaEventListenerQaService
                 throw MessageQueueRejectException("BypassQa should be set to null when deleting QA information.")
             }
 
-            messageUtils.rejectMessageOnException {
+            MessageQueueUtils.rejectMessageOnException {
                 qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
                 qaReviewManager.deleteAllByDataId(dataId, correlationId)
             }
