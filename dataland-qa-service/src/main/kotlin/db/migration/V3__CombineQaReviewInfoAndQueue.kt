@@ -2,6 +2,8 @@ package db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
+import java.sql.Connection
+import java.sql.PreparedStatement
 
 /**
  * This class migrates the QaService ReviewInformation Table and ReviewQueue Table into a new combined QaReviewEntity Table
@@ -10,12 +12,19 @@ import org.flywaydb.core.api.migration.Context
 @Suppress("ClassName")
 class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        return
+        // waiting two minutes before running script to ensure backend is running
+        val waitingTimeMs: Long = 120000L
+        Thread.sleep(waitingTimeMs)
         val connection = context!!.connection
 
-        /*
-         * Migration of qa-queue data into new qa_review table (no data for qa_status or qa_reviewer)
-         */
+        migrateQueueData(connection)
+        migrateInformationData(connection)
+    }
+
+    /**
+     * Migration of qa-queue data into new qa_review table (no data for qa_status or qa_reviewer)
+     */
+    private fun migrateQueueData(connection: Connection) {
         val queueResultSet =
             connection.createStatement().executeQuery(
                 "SELECT data_id, reception_time, comment, company_id, company_name, framework, reporting_period FROM review_queue",
@@ -23,35 +32,41 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
 
         val queueInsertStatement =
             connection.prepareStatement(
-                "INSERT INTO qa_review (data_id, company_id, company_name, data_type, reporting_period, timestamp, comment) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO qa_review (data_id, company_id, company_name, data_type, reporting_period, timestamp, comment)" +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?)",
             )
 
         while (queueResultSet.next()) {
             val dataId = queueResultSet.getString("data_id")
-            val timestamp = queueResultSet.getLong("reception_time")
+            val timeStamp = queueResultSet.getLong("reception_time")
             val comment: String? = queueResultSet.getString("comment")
             val companyId = queueResultSet.getString("company_id")
             val companyName = queueResultSet.getString("company_name")
             val dataType = queueResultSet.getString("framework")
             val reportingPeriod = queueResultSet.getString("reporting_period")
 
-            queueInsertStatement.setString(1, dataId)
-            queueInsertStatement.setString(2, companyId)
-            queueInsertStatement.setString(3, companyName)
-            queueInsertStatement.setString(4, dataType)
-            queueInsertStatement.setString(5, reportingPeriod)
-            queueInsertStatement.setLong(6, timestamp)
-            queueInsertStatement.setString(7, comment)
-
-            queueInsertStatement.executeUpdate()
+            val queueData =
+                Data(
+                    dataId = dataId,
+                    companyId = companyId,
+                    companyName = companyName,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    timeStamp = timeStamp,
+                    comment = comment,
+                    commentIndex = 7,
+                )
+            insertData(queueInsertStatement, queueData)
         }
 
         queueResultSet.close()
         queueInsertStatement.close()
+    }
 
-        /*
-         * Migration of qa-information data into new qa_review table (missing data is added from meta_data in backend)
-         */
+    /**
+     * Migration of qa-information data into new qa_review table (missing data is added from meta_data in backend)
+     */
+    private fun migrateInformationData(connection: Connection) {
         val informationResultSet =
             connection.createStatement().executeQuery(
                 "SELECT data_id, qa_status, reception_time, reviewer_keycloak_id, message FROM review_information",
@@ -59,7 +74,8 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
 
         val informationInsertStatement =
             connection.prepareStatement(
-                "INSERT INTO qa_review (data_id, company_id, company_name, data_type, reporting_period, timestamp, qa_status, reviewer_id, comment) Values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO qa_review (data_id, company_id, company_name, data_type,reporting_period, timestamp," +
+                    " qa_status, reviewer_id, comment) Values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             )
 
         while (informationResultSet.next()) {
@@ -99,25 +115,75 @@ class V3__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
                 companyName = companyResultSet.getString("company_name")
             }
 
-            informationInsertStatement.setString(1, dataId)
-            informationInsertStatement.setString(2, companyId)
-            informationInsertStatement.setString(3, companyName)
-            informationInsertStatement.setString(4, dataType)
-            informationInsertStatement.setString(5, reportingPeriod)
-            informationInsertStatement.setLong(6, timeStamp)
-            informationInsertStatement.setString(7, qaStatus)
-            informationInsertStatement.setString(8, reviewerId)
-            informationInsertStatement.setString(9, comment)
-
-            informationInsertStatement.executeUpdate()
+            val informationData =
+                Data(
+                    dataId = dataId,
+                    companyId = companyId,
+                    companyName = companyName,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    timeStamp = timeStamp,
+                    qaStatus = qaStatus,
+                    reviewerId = reviewerId,
+                    comment = comment,
+                )
+            insertData(informationInsertStatement, informationData)
 
             companyResultSet.close()
             preparedCompanyStatement.close()
             metaDataResultSet.close()
             preparedMetaData.close()
         }
-
         informationInsertStatement.close()
         informationResultSet.close()
     }
+
+    /**
+     * inserts Data from the db tables into the prepareStatement and stores them into the new table
+     */
+    private fun insertData(
+        statement: PreparedStatement,
+        dataObject: Data,
+    ) {
+        statement.setString(dataObject.dataIdIndex, dataObject.dataId)
+        statement.setString(dataObject.companyIdIndex, dataObject.companyId)
+        statement.setString(dataObject.companyNameIndex, dataObject.companyName)
+        statement.setString(dataObject.dataTypeIndex, dataObject.dataType)
+        statement.setString(dataObject.reportingPeriodIndex, dataObject.reportingPeriod)
+        statement.setLong(dataObject.timeStampIndex, dataObject.timeStamp)
+        statement.setString(dataObject.commentIndex, dataObject.comment)
+
+        if (dataObject.qaStatus != "") {
+            statement.setString(dataObject.qaStatusIndex, dataObject.qaStatus)
+        }
+        if (dataObject.reviewerId != "") {
+            statement.setString(dataObject.reviewerIdIndex, dataObject.reviewerId)
+        }
+        statement.executeUpdate()
+    }
 }
+
+/**
+ * Data Object to store the retrieved data
+ */
+data class Data(
+    val dataId: String,
+    val companyId: String,
+    val companyName: String,
+    val dataType: String,
+    val reportingPeriod: String,
+    val timeStamp: Long,
+    val qaStatus: String = "",
+    val reviewerId: String = "",
+    val comment: String?,
+    // indices of values in the insertStatements
+    val dataIdIndex: Int = 1,
+    val companyIdIndex: Int = 2,
+    val companyNameIndex: Int = 3,
+    val dataTypeIndex: Int = 4,
+    val reportingPeriodIndex: Int = 5,
+    val timeStampIndex: Int = 6,
+    val qaStatusIndex: Int = 7,
+    val reviewerIdIndex: Int = 8,
+    val commentIndex: Int = 9,
+)
