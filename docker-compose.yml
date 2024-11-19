@@ -498,6 +498,17 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  specification-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_test:${DATALAND_SPECIFICATION_SERVICE_TEST_VERSION}}
+    expose:
+      - "8489"
+    networks:
+      - internal
+    <<: *uncritical-constants-env
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]

@@ -11,6 +11,7 @@ import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
@@ -73,6 +74,11 @@ open class ComponentBase(
      * of this specific component isntance
      */
     var fixtureGeneratorGenerator: ((sectionBuilder: FixtureSectionBuilder) -> Unit)? = null
+
+    /**
+     * The specificationGenerator allows users to overwrite the Specification generation
+     */
+    var specificationGenerator: ((categoryBuilder: CategoryBuilder) -> Unit)? = null
 
     /**
      * True iff this component is optional / accepts null values
@@ -214,4 +220,17 @@ open class ComponentBase(
         } else {
             emptyList()
         }
+
+    /**
+     * Build the specification for this component
+     */
+    fun generateSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultSpecification(specificationCategoryBuilder)
+    }
+
+    /**
+     * Build the specification for this component using the default generator
+     */
+    open fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder): Unit =
+        throw NotImplementedError("This component did not implement specification generation.")
 }

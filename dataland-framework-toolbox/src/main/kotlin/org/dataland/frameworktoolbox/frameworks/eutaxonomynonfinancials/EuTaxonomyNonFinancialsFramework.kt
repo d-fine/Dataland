@@ -24,7 +24,8 @@ class EuTaxonomyNonFinancialsFramework :
         ),
         order = 2,
         enabledFeatures =
-            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage),
+            FrameworkGenerationFeatures
+                .allExcept(FrameworkGenerationFeatures.UploadPage, FrameworkGenerationFeatures.DataPointSpecifications),
     ) {
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
