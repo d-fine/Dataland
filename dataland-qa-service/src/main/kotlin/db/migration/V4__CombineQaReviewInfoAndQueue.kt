@@ -14,7 +14,9 @@ import java.sql.PreparedStatement
 @Suppress("ClassName")
 class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
     override fun migrate(context: Context?) {
+        return
         // waiting two minutes before running script to ensure backend is running
+        @Suppress("MagicNumber")
         val waitingTimeMs: Long = 120000L
         Thread.sleep(waitingTimeMs)
         val connection = context!!.connection
