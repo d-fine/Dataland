@@ -39,7 +39,6 @@ class QaEventListenerQaService
     constructor(
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired var objectMapper: ObjectMapper,
-        @Autowired var messageUtils: MessageQueueUtils,
         @Autowired val reviewQueueRepository: ReviewQueueRepository,
         @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
         @Autowired val companyDataControllerApi: CompanyDataControllerApi,
@@ -91,8 +90,9 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+
+            val message = MessageQueueUtils.readMessagePayload<ForwardedQaMessage>(messageAsJsonString, objectMapper)
 
             val comment = message.comment
             val dataId = message.identifier
@@ -100,7 +100,7 @@ class QaEventListenerQaService
                 throw MessageQueueRejectException("Provided data ID is empty")
             }
 
-            messageUtils.rejectMessageOnException {
+            MessageQueueUtils.rejectMessageOnException {
                 val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
                 val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
@@ -165,13 +165,15 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val forwardedQaMessage = objectMapper.readValue(messageAsJsonString, ForwardedQaMessage::class.java)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+
+            val forwardedQaMessage = MessageQueueUtils.readMessagePayload<ForwardedQaMessage>(messageAsJsonString, objectMapper)
+
             val documentId = forwardedQaMessage.identifier
             if (documentId.isEmpty()) {
                 throw MessageQueueRejectException("Provided document ID is empty")
             }
-            messageUtils.rejectMessageOnException {
+            MessageQueueUtils.rejectMessageOnException {
                 logger.info(
                     "Received document with Hash: $documentId on QA message queue with Correlation Id: $correlationId",
                 )
@@ -215,9 +217,11 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
+            MessageQueueUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
+
             val persistAutomatedQaResultMessage =
-                objectMapper.readValue(messageAsJsonString, PersistAutomatedQaResultMessage::class.java)
+                MessageQueueUtils.readMessagePayload<PersistAutomatedQaResultMessage>(messageAsJsonString, objectMapper)
+
             if (persistAutomatedQaResultMessage.resourceType == "data") {
                 val validationResult = persistAutomatedQaResultMessage.validationResult
                 val reviewerId = persistAutomatedQaResultMessage.reviewerId
@@ -226,7 +230,7 @@ class QaEventListenerQaService
                     throw MessageQueueRejectException("Provided data ID is empty")
                 }
 
-                messageUtils.rejectMessageOnException {
+                MessageQueueUtils.rejectMessageOnException {
                     logger.info(
                         "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
                     )

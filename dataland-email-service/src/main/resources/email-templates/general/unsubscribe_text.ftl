@@ -1,0 +1,1 @@
+If you wish to unsubscribe, please click open ${baseUrl}/unsubscribe/${subscriptionUuid}.

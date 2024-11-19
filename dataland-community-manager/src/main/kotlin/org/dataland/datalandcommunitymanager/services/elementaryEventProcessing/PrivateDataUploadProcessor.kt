@@ -29,11 +29,10 @@ import org.springframework.stereotype.Component
  */
 @Component("PrivateDataUploadProcessor")
 class PrivateDataUploadProcessor(
-    @Autowired messageUtils: MessageQueueUtils,
     @Autowired notificationService: NotificationService,
     @Autowired elementaryEventRepository: ElementaryEventRepository,
     @Autowired objectMapper: ObjectMapper,
-) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
+) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
     override var elementaryEventType = ElementaryEventType.UploadEvent
     override var messageType = MessageType.PRIVATE_DATA_RECEIVED
     override var actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS
@@ -70,7 +69,7 @@ class PrivateDataUploadProcessor(
     ) {
         validateIncomingPayloadAndReturnDataId(payload, type)
 
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             super.processEvent(
                 createElementaryEventBasicInfo(payload),
                 correlationId,
@@ -89,7 +88,7 @@ class PrivateDataUploadProcessor(
         payload: String,
         messageType: String,
     ): String {
-        messageUtils.validateMessageType(messageType, this.messageType)
+        MessageQueueUtils.validateMessageType(messageType, this.messageType)
 
         val payloadJsonObject = JSONObject(payload)
 

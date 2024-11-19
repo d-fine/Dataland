@@ -8,7 +8,6 @@ import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.Ele
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -19,7 +18,6 @@ import java.time.Instant
  */
 @Component
 abstract class BaseEventProcessor(
-    @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val notificationService: NotificationService,
     @Autowired val elementaryEventRepository: ElementaryEventRepository,
     @Autowired val objectMapper: ObjectMapper,

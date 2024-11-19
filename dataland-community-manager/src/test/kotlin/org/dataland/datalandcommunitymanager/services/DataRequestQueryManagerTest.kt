@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -30,7 +31,7 @@ class DataRequestQueryManagerTest {
     private lateinit var dataRequestRepository: DataRequestRepository
     private lateinit var companyDataControllerApi: CompanyDataControllerApi
     private lateinit var processingUtils: DataRequestProcessingUtils
-    private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
+    private lateinit var keycloakUserControllerApiService: KeycloakUserService
     private lateinit var dataRequestMasker: DataRequestMasker
     private val dataRequestLogger = mock(DataRequestLogger::class.java)
 
@@ -121,7 +122,7 @@ class DataRequestQueryManagerTest {
             dataRequestRepository.searchDataRequestEntity(eq(filterWithEmailAddressBeta), anyOrNull(), anyOrNull()),
         ).thenReturn(listOf(dataRequestEntityBeta))
 
-        keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
+        keycloakUserControllerApiService = mock(KeycloakUserService::class.java)
         `when`(
             keycloakUserControllerApiService.getUser(keycloakUserAlpha.userId),
         ).thenReturn(keycloakUserAlpha)

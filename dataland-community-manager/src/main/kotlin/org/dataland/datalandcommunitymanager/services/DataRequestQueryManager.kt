@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -33,7 +34,7 @@ class DataRequestQueryManager
         private val dataRequestLogger: DataRequestLogger,
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val processingUtils: DataRequestProcessingUtils,
-        private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+        private val keycloakUserControllerApiService: KeycloakUserService,
         private val dataRequestMasker: DataRequestMasker,
     ) {
         /** This method retrieves all the data requests for the current user from the database and logs a message.

@@ -421,6 +421,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
+      QA_SERVICE_MIGRATION_BASELINE_VERSION: ${QA_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
     depends_on:
       - qa-service-db
@@ -497,6 +498,17 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  specification-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_test:${DATALAND_SPECIFICATION_SERVICE_TEST_VERSION}}
+    expose:
+      - "8489"
+    networks:
+      - internal
+    <<: *uncritical-constants-env
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]

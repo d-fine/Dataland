@@ -1,10 +1,10 @@
 package org.dataland.datalandcommunitymanager.utils
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.datalandcommunitymanager.services.KeycloakUserControllerApiService
 
 /**
  * A filter class used in the searchDataRequestEntity-Method which allows
@@ -42,7 +42,7 @@ data class DataRequestsFilter(
      * This function should be called when the email address filter is not empty, i.e. if shouldFilterByEmailAddress
      * is true. The keycloakUserControllerApiService is required to get the user ids for the email addresses.
      */
-    fun setupEmailAddressFilter(keycloakUserControllerApiService: KeycloakUserControllerApiService): List<KeycloakUserInfo> {
+    fun setupEmailAddressFilter(keycloakUserControllerApiService: KeycloakUserService): List<KeycloakUserInfo> {
         val userInfoList =
             emailAddress
                 ?.takeIf { shouldFilterByEmailAddress }
