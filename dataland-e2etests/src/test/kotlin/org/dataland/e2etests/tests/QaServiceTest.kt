@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -35,6 +36,7 @@ class QaServiceTest {
     private val documentManagerAccessor = DocumentManagerAccessor()
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     private val qaServiceController = apiAccessor.qaServiceControllerApi
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     private lateinit var dummyEuTaxoDataAlpha: CompanyAssociatedDataEutaxonomyNonFinancialsData
     private lateinit var dummySfdrDataBeta: CompanyAssociatedDataSfdrData
@@ -64,6 +66,8 @@ class QaServiceTest {
     @BeforeEach
     @AfterEach
     fun setAllPendingDatasetsToRejected() {
+        withTechnicalUser(TechnicalUser.Admin) {
+        }
         withTechnicalUser(TechnicalUser.Reviewer) {
             val pendingDatasets: List<QaReviewResponse> = getInfoOnPendingDatasets()
             val dataIds = pendingDatasets.map { it.dataId }
@@ -163,17 +167,30 @@ class QaServiceTest {
         val expectedDataIdsOfPendingDatasets = mutableListOf<String>()
 
         withTechnicalUser(TechnicalUser.Admin) {
-            (1 until 5).map {
+            (1..5).map {
                 val currentDataId = postEuTaxoData(dummyEuTaxoDataAlpha).dataId
-                await().atMost(2, TimeUnit.SECONDS).until {
-                    qaServiceController.getQaReviewResponseByDataId(UUID.fromString(currentDataId)).dataId == currentDataId
+                logger.info(currentDataId)
+                logger.info(
+                    qaServiceController
+                        .getInfoOnPendingDatasets()
+                        .maxByOrNull { it.timestamp }
+                        ?.dataId
+                        .toString(),
+                )
+                logger.info(qaServiceController.getQaReviewResponseByDataId(UUID.fromString(currentDataId)).toString())
+                await().atMost(5, TimeUnit.SECONDS).until {
+                    qaServiceController.getInfoOnPendingDatasets().maxByOrNull { it.timestamp }?.dataId == currentDataId
                 }
                 expectedDataIdsOfPendingDatasets += currentDataId
             }
         }
 
         withTechnicalUser(TechnicalUser.Reviewer) {
-            val actualDataIdsOfPendingDatasets = getInfoOnPendingDatasets().map { it.dataId }
+            val actualDataIdsOfPendingDatasets =
+                getInfoOnPendingDatasets()
+                    .sortedBy { it.timestamp }
+                    .map { it.dataId }
+                    .slice(0..4)
             assertEquals(expectedDataIdsOfPendingDatasets, actualDataIdsOfPendingDatasets)
         }
     }

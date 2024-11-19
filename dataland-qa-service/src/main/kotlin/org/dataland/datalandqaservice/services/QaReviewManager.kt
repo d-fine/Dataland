@@ -153,6 +153,19 @@ class QaReviewManager(
     }
 
     /**
+     * Delete all QA Review information from repository
+     * @param dataId All QA review information with dataId is deleted
+     * @param correlationId correlation Id
+     */
+    fun deleteAllByDataId(
+        dataId: String,
+        correlationId: String,
+    ) {
+        logger.info("Deleting all QA information associated with dataId $dataId (correlationId: $correlationId)")
+        this.qaReviewRepository.deleteAllByDataId(dataId)
+    }
+
+    /**
      * Sends the QA Status Change Message to MessageQueue
      * @param qaStatusChangeMessage QAStatusChangeMessage containing the dataId of the changed data set, the new QA
      * status and the dataId of the newly active dataset

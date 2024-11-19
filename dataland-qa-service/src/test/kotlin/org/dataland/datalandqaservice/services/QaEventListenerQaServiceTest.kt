@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
 import org.junit.jupiter.api.Assertions
@@ -43,17 +44,21 @@ class QaEventListenerQaServiceTest(
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaEventListenerQaService: QaEventListenerQaService
     lateinit var mockQaReviewManager: QaReviewManager
+    lateinit var mockQaReportManager: QaReportManager
     lateinit var mockMetaDataControllerApi: MetaDataControllerApi
     lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
     val dataId = "TestDataId"
     val correlationId = "correlationId"
 
-    private fun getPersistBypassQaResultMessage(resourceId: String): String =
+    private fun getManualQaRequestedMessage(
+        resourceId: String,
+        bypassQa: Boolean? = null,
+    ): String =
         objectMapper.writeValueAsString(
             ManualQaRequestedMessage(
                 resourceId = resourceId,
-                bypassQa = true,
+                bypassQa = bypassQa,
             ),
         )
 
@@ -64,23 +69,25 @@ class QaEventListenerQaServiceTest(
         mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockQaReviewManager = mock(QaReviewManager::class.java)
+        mockQaReportManager = mock(QaReportManager::class.java)
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
                 objectMapper,
                 messageUtils,
                 mockQaReviewManager,
+                mockQaReportManager,
                 mockMetaDataControllerApi,
             )
     }
 
     @Test
     fun `check that an exception is thrown in reading out message from data stored queue when dataId is empty`() {
-        val noIdPayload = getPersistBypassQaResultMessage("")
+        val noIdPayload = getManualQaRequestedMessage("")
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService
-                    .addDatasetToQaReviewRepositoryWithStatusPending(noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED)
+                    .addDatasetToQaReviewRepository(noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED)
             }
         Assertions.assertEquals("Message was rejected: Provided data ID is empty (correlationId: $correlationId)", thrown.message)
     }
@@ -102,13 +109,13 @@ class QaEventListenerQaServiceTest(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            qaEventListenerQaService.addDatasetToQaReviewRepositoryWithStatusPending(message, correlationId, MessageType.DATA_STORED)
+            qaEventListenerQaService.addDatasetToQaReviewRepository(message, correlationId, MessageType.DATA_STORED)
         }
     }
 
     @Test
     fun `check that an exception is thrown in reading out message from document stored queue when documentId is empty`() {
-        val noIdPayload = getPersistBypassQaResultMessage("")
+        val noIdPayload = getManualQaRequestedMessage("")
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService.assureQualityOfDocument(
@@ -121,7 +128,7 @@ class QaEventListenerQaServiceTest(
     @Test
     fun `check that a bypassQA result is stored correctly in the QA review repository`() {
         val dataId = "thisIdIsStoredAsAccepted"
-        val persistBypassQaResultMessage = getPersistBypassQaResultMessage(dataId)
+        val manualQaRequestedMessage = getManualQaRequestedMessage(resourceId = dataId, bypassQa = true)
 
         val acceptedStoredCompanyJson = "json/services/StoredCompanyAccepted.json"
         val acceptedStoredCompany = objectMapper.readValue(getJsonString(acceptedStoredCompanyJson), StoredCompany::class.java)
@@ -131,8 +138,8 @@ class QaEventListenerQaServiceTest(
         `when`(mockMetaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(acceptedDataMetaInformation)
         `when`(mockCompanyDataControllerApi.getCompanyById(acceptedDataMetaInformation.companyId)).thenReturn(acceptedStoredCompany)
 
-        qaEventListenerQaService.addDatasetWithBypassQaTrueToQaReviewRepository(
-            persistBypassQaResultMessage, correlationId, MessageType.PERSIST_BYPASS_QA_RESULT,
+        qaEventListenerQaService.addDatasetToQaReviewRepository(
+            manualQaRequestedMessage, correlationId, MessageType.MANUAL_QA_REQUESTED,
         )
 
         testQaReviewRepository.findFirstByDataIdOrderByTimestampDesc(acceptedDataId)?.let {

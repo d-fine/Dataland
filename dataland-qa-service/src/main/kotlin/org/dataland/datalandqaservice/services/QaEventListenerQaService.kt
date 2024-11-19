@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -26,7 +27,9 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 /**
- * Implementation of a QA Service reacting on the upload_queue and forwarding message to qa_queue
+ * The QA Service's MessageListener Service. Listens to messages (usually) sent be the internal storage after a dataset
+ * has been stored or if a dataset has been deleted. Calls, depending on the data event (storing, deletion), the
+ * corresponding methods of the QaReviewManager and QaReportManager
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
@@ -37,6 +40,7 @@ class QaEventListenerQaService
         @Autowired var objectMapper: ObjectMapper,
         @Autowired var messageUtils: MessageQueueUtils,
         @Autowired val qaReviewManager: QaReviewManager,
+        @Autowired val qaReportManager: QaReportManager,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -65,7 +69,7 @@ class QaEventListenerQaService
             ],
         )
         @Transactional
-        fun addDatasetToQaReviewRepositoryWithStatusPending(
+        fun addDatasetToQaReviewRepository(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
@@ -74,17 +78,34 @@ class QaEventListenerQaService
             val message = objectMapper.readValue(messageAsJsonString, ManualQaRequestedMessage::class.java)
 
             val dataId = message.resourceId
+            val bypassQa: Boolean? = message.bypassQa
             if (dataId.isEmpty()) {
                 throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
             }
 
             messageUtils.rejectMessageOnException {
-                logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
+                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
+                val reviewerId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+                val qaStatus: QaStatus
+                var comment: String? = null
+
+                when (bypassQa) {
+                    true -> {
+                        qaStatus = QaStatus.Accepted
+                        comment = "Automatically QA approved."
+                    }
+                    false -> qaStatus = QaStatus.Pending
+                    null -> throw MessageQueueRejectException(
+                        "BypassQa is not set; message should not end up here" +
+                            " (correlationId: $correlationId)",
+                    )
+                }
+
                 qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
                     dataId = dataId,
-                    qaStatus = QaStatus.Pending,
-                    reviewerId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available",
-                    comment = null,
+                    qaStatus = qaStatus,
+                    reviewerId = reviewerId,
+                    comment = comment,
                     correlationId = correlationId,
                 )
             }
@@ -145,8 +166,9 @@ class QaEventListenerQaService
         }
 
         /**
-         * Method to retrieve bypassQA message and store the message in the review repository
-         * @param messageAsJsonString the message body as json string
+         * Method that listens to the ItemStored Exchange for potential data deletion messages and deletes the corresponding
+         * QA reports accordingly
+         * @param payload the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
          */
@@ -155,7 +177,7 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            "itemStoredPersistBypassQaResultQaService",
+                            "itemStoredDeleteQaInfoQaService",
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -163,45 +185,31 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
-                    key = [RoutingKeyNames.PERSIST_BYPASS_QA_RESULT],
+                    key = [RoutingKeyNames.DELETE_QA_INFO],
                 ),
             ],
         )
         @Transactional
-        fun addDatasetWithBypassQaTrueToQaReviewRepository(
+        fun deleteQaInformationForDeletedDataId(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            messageUtils.validateMessageType(type, MessageType.PERSIST_BYPASS_QA_RESULT)
+            messageUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
             val message = objectMapper.readValue(messageAsJsonString, ManualQaRequestedMessage::class.java)
+
             val dataId = message.resourceId
             val bypassQa = message.bypassQa
-
             if (dataId.isEmpty()) {
                 throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
             }
-            if (bypassQa == null || !bypassQa) {
-                throw MessageQueueRejectException(
-                    "'BypassQa' is not true; this message should not end up here. " +
-                        "(correlationId: $correlationId)",
-                )
+            if (bypassQa != null) {
+                throw MessageQueueRejectException("BypassQa should be set to null when deleting QA information.")
             }
 
             messageUtils.rejectMessageOnException {
-                logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-
-                val reviewerId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
-
-                logger.info("BypassQa: Assigning quality status ${QaStatus.Accepted} and reviewerId $reviewerId to dataset with ID $dataId")
-
-                qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
-                    dataId = dataId,
-                    qaStatus = QaStatus.Accepted,
-                    reviewerId = reviewerId,
-                    comment = "Automatically QA approved.",
-                    correlationId = correlationId,
-                )
+                qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
+                qaReviewManager.deleteAllByDataId(dataId, correlationId)
             }
         }
     }

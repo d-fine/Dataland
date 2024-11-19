@@ -158,7 +158,11 @@ class QaReportManager(
      * Deletes all QA reports for a specific dataId.
      */
     @Transactional
-    fun deleteAllQaReportsForDataId(dataId: String) {
+    fun deleteAllQaReportsForDataId(
+        dataId: String,
+        correlationId: String,
+    ) {
+        logger.info("Deleting all QA reports associated with dataId $dataId (correlationId: $correlationId)")
         qaReportRepository.deleteAllByDataId(dataId)
     }
 

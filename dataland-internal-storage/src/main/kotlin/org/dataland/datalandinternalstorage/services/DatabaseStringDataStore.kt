@@ -86,7 +86,7 @@ class DatabaseStringDataStore(
                 persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
             }
             if (actionType == ActionType.DELETE_DATA) {
-                deleteDataItemWithoutTransaction(dataId, correlationId)
+                deleteDataItemWithoutTransactionAndSendMessage(dataId, correlationId)
             }
         }
     }
@@ -119,19 +119,9 @@ class DatabaseStringDataStore(
                     bypassQa = bypassQa,
                 ),
             )
-        if (bypassQa) {
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body,
-                MessageType.PERSIST_BYPASS_QA_RESULT,
-                correlationId,
-                ExchangeName.ITEM_STORED,
-                RoutingKeyNames.PERSIST_BYPASS_QA_RESULT,
-            )
-        } else {
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA_QA,
-            )
-        }
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA_QA,
+        )
     }
 
     /**
@@ -170,12 +160,24 @@ class DatabaseStringDataStore(
      * @param correlationId the correlationId ot the current user process
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun deleteDataItemWithoutTransaction(
+    fun deleteDataItemWithoutTransactionAndSendMessage(
         dataId: String,
         correlationId: String,
     ) {
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
         logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
         dataItemRepository.deleteById(dataId)
+
+        val body =
+            objectMapper.writeValueAsString(
+                ManualQaRequestedMessage(
+                    resourceId = dataId,
+                    bypassQa = null,
+                ),
+            )
+        logger.info("Sending message to QA service to delete qa information on data ID $dataId (correlationID: $correlationId).")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DELETE_QA_INFO,
+        )
     }
 }
