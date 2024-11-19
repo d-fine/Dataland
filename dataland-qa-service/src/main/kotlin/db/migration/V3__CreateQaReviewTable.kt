@@ -13,8 +13,8 @@ class V3__CreateQaReviewTable : BaseJavaMigration() {
                 "compnay_name varchar(255) NOT NULL, " +
                 "data_type varchar(255) NOT NULL, " +
                 "reporting_period varchar(255) NOT NULL, " +
-                "timestamp varchar(255) NOT NULL, " +
-                "qa_status smallint NOT NULL, " +
+                "timestamp smallint NOT NULL, " +
+                "qa_status varchar(255) NOT NULL, " +
                 "reviewer_id varchar(255) NOT NULL, " +
                 "comment varchar(255), " +
                 "PRIMARY KEY (data_id)" +
