@@ -37,7 +37,7 @@ class SingleDataPoint {
             )
         val dataPointId = dataPointControllerApi.postDataPoint(uploadedDataPoint, false).dataId
         Thread.sleep(1000)
-        val downloadedDataPoint = dataPointControllerApi.getDataPoint(dataPointId.toString())
+        val downloadedDataPoint = dataPointControllerApi.getDataPoint(dataPointId)
         assertEquals(uploadedDataPoint, downloadedDataPoint)
     }
 }
