@@ -84,7 +84,7 @@ class DataPointManager(
         logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
         dataPointValidator.validateDataPointIdentifierExists(dataPointIdentifier)
 
-        val storedDataPoint = storageClient.selectDataPointById(dataId.toString(), correlationId)
+        val storedDataPoint = storageClient.selectDataPointById(dataId, correlationId)
         return UploadedDataPoint(
             dataPointContent = storedDataPoint.dataPointContent,
             dataPointIdentifier = storedDataPoint.dataPointIdentifier,
