@@ -1,7 +1,7 @@
 package org.dataland.datalandmessagequeueutils.constants
 
 /**
- * Constants to be used as exchanges in rabbitmq.
+ * Constants to be used as routing keys in rabbitmq.
  */
 
 object RoutingKeyNames {
