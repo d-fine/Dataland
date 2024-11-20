@@ -20,7 +20,6 @@ import java.util.UUID
 data class RequestStatusEntity(
     @Id
     val statusHistoryId: String,
-    @Enumerated(EnumType.STRING)
     val requestStatus: RequestStatus,
     @Enumerated(EnumType.STRING)
     val accessStatus: AccessStatus,
