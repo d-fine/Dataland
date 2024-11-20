@@ -4,38 +4,48 @@ package db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
+import org.springframework.beans.factory.annotation.Value
 import java.sql.Connection
+import java.sql.DriverManager
 import java.sql.PreparedStatement
+
+@Value("\${dataland.backend.base-url}")
+lateinit var backendUrl: String
+
+@Value("\${spring.backend.db.username}")
+lateinit var userName: String
+
+@Value("\${spring.backend.db.password}")
+lateinit var password: String
 
 /**
  * This class migrates the QaService ReviewInformation Table and ReviewQueue Table into a new combined QaReviewEntity Table
  */
-
 @Suppress("ClassName")
 class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
     override fun migrate(context: Context?) {
-        return
         // waiting two minutes before running script to ensure backend is running
         @Suppress("MagicNumber")
-        val waitingTimeMs: Long = 120000L
+        val waitingTimeMs = 120000L
         Thread.sleep(waitingTimeMs)
-        val connection = context!!.connection
+        val targetConnection = context!!.connection
+        val backendConnection = DriverManager.getConnection(backendUrl, userName, password)
 
-        migrateQueueData(connection)
-        migrateInformationData(connection)
+        migrateQueueData(targetConnection)
+        migrateInformationData(targetConnection, backendConnection)
     }
 
     /**
      * Migration of qa-queue data into new qa_review table (no data for qa_status or qa_reviewer)
      */
-    private fun migrateQueueData(connection: Connection) {
+    private fun migrateQueueData(targetConnection: Connection) {
         val queueResultSet =
-            connection.createStatement().executeQuery(
+            targetConnection.createStatement().executeQuery(
                 "SELECT data_id, reception_time, comment, company_id, company_name, framework, reporting_period FROM review_queue",
             )
 
         val queueInsertStatement =
-            connection.prepareStatement(
+            targetConnection.prepareStatement(
                 "INSERT INTO qa_review (data_id, company_id, company_name, data_type, reporting_period, timestamp, comment)" +
                     " VALUES (?, ?, ?, ?, ?, ?, ?)",
             )
@@ -70,14 +80,17 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
     /**
      * Migration of qa-information data into new qa_review table (missing data is added from meta_data in backend)
      */
-    private fun migrateInformationData(connection: Connection) {
+    private fun migrateInformationData(
+        targetConnection: Connection,
+        backendConnection: Connection,
+    ) {
         val informationResultSet =
-            connection.createStatement().executeQuery(
+            targetConnection.createStatement().executeQuery(
                 "SELECT data_id, qa_status, reception_time, reviewer_keycloak_id, message FROM review_information",
             )
 
         val informationInsertStatement =
-            connection.prepareStatement(
+            targetConnection.prepareStatement(
                 "INSERT INTO qa_review (data_id, company_id, company_name, data_type,reporting_period, timestamp," +
                     " qa_status, reviewer_id, comment) Values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             )
@@ -89,10 +102,10 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
             val reviewerId = informationResultSet.getString("reviewer_keycloak_id")
             val comment: String? = informationResultSet.getString("message")
 
-            // Get missing data for company Id, data type and reporting period form meta data tabel
+            // Get missing data for company Id, data type and reporting period form meta_data table
             val missingDataQuery =
                 "SELECT data_type, reporting_period, company_id FROM data_meta_information WHERE data_id = ?"
-            val preparedMetaData = connection.prepareStatement(missingDataQuery)
+            val preparedMetaData = backendConnection.prepareStatement(missingDataQuery)
 
             preparedMetaData.setString(1, dataId)
             val metaDataResultSet = preparedMetaData.executeQuery()
@@ -108,9 +121,9 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
                 companyId = metaDataResultSet.getString("company_id")
             }
 
-            // get missing data for company name from stored companies table
+            // get missing data for company name from stored_companies table
             val companyNameQuery = "SELECT company_name FROM stored_companies WHERE company_id = ?"
-            val preparedCompanyStatement = connection.prepareStatement(companyNameQuery)
+            val preparedCompanyStatement = backendConnection.prepareStatement(companyNameQuery)
 
             preparedCompanyStatement.setString(1, companyId)
             val companyResultSet = preparedCompanyStatement.executeQuery()
