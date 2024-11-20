@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -36,7 +35,6 @@ class QaServiceTest {
     private val documentManagerAccessor = DocumentManagerAccessor()
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
     private val qaServiceController = apiAccessor.qaServiceControllerApi
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     private lateinit var dummyEuTaxoDataAlpha: CompanyAssociatedDataEutaxonomyNonFinancialsData
     private lateinit var dummySfdrDataBeta: CompanyAssociatedDataSfdrData
@@ -66,15 +64,12 @@ class QaServiceTest {
     @BeforeEach
     @AfterEach
     fun setAllPendingDatasetsToRejected() {
-        withTechnicalUser(TechnicalUser.Admin) {
-        }
         withTechnicalUser(TechnicalUser.Reviewer) {
-            val pendingDatasets: List<QaReviewResponse> = getInfoOnPendingDatasets()
-            val dataIds = pendingDatasets.map { it.dataId }
-            dataIds.forEach { changeQaStatus(it, QaServiceQaStatus.Rejected) }
-
+            while (getNumberOfPendingDatasets() > 0) {
+                getInfoOnPendingDatasets().forEach { changeQaStatus(it.dataId, QaServiceQaStatus.Rejected) }
+            }
             await().atMost(2, TimeUnit.SECONDS).until {
-                dataIds.all { getLatestQaReviewEntryForDataId(it).qaStatus == QaServiceQaStatus.Rejected }
+                getNumberOfPendingDatasets() == 0 && getInfoOnPendingDatasets().isEmpty()
             }
         }
     }
@@ -169,28 +164,15 @@ class QaServiceTest {
         withTechnicalUser(TechnicalUser.Admin) {
             (1..5).map {
                 val currentDataId = postEuTaxoData(dummyEuTaxoDataAlpha).dataId
-                logger.info(currentDataId)
-                logger.info(
-                    qaServiceController
-                        .getInfoOnPendingDatasets()
-                        .maxByOrNull { it.timestamp }
-                        ?.dataId
-                        .toString(),
-                )
-                logger.info(qaServiceController.getQaReviewResponseByDataId(UUID.fromString(currentDataId)).toString())
-                await().atMost(5, TimeUnit.SECONDS).until {
-                    qaServiceController.getInfoOnPendingDatasets().maxByOrNull { it.timestamp }?.dataId == currentDataId
+                await().atMost(2, TimeUnit.SECONDS).until {
+                    getInfoOnPendingDatasets().map { it.dataId }.lastOrNull() == currentDataId
                 }
                 expectedDataIdsOfPendingDatasets += currentDataId
             }
         }
 
         withTechnicalUser(TechnicalUser.Reviewer) {
-            val actualDataIdsOfPendingDatasets =
-                getInfoOnPendingDatasets()
-                    .sortedBy { it.timestamp }
-                    .map { it.dataId }
-                    .slice(0..4)
+            val actualDataIdsOfPendingDatasets = getInfoOnPendingDatasets().map { it.dataId }
             assertEquals(expectedDataIdsOfPendingDatasets, actualDataIdsOfPendingDatasets)
         }
     }
@@ -303,17 +285,17 @@ class QaServiceTest {
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds = getInfoOnPendingDatasets(reportingPeriod = repPeriodAlpha).map { it.dataId }
                 unreviewedDataIds.firstOrNull() == dataIdAlpha &&
-                    getNumberOfUnreviewedDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
+                    getNumberOfPendingDatasets(reportingPeriodFilter = repPeriodAlpha) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds = getInfoOnPendingDatasets(dataType = getPendingSfdrType).map { it.dataId }
                 unreviewedDataIds.firstOrNull() == dataIdBeta &&
-                    getNumberOfUnreviewedDatasets(dataTypeFilter = getNumberPendingSfdrType) == 1
+                    getNumberOfPendingDatasets(dataTypeFilter = getNumberPendingSfdrType) == 1
             }
             await().atMost(2, TimeUnit.SECONDS).until {
                 val unreviewedDataIds = getInfoOnPendingDatasets(dataType = getPendingSfdrType).map { it.dataId }
                 unreviewedDataIds.firstOrNull() == dataIdBeta &&
-                    getNumberOfUnreviewedDatasets(companyNameFilter = "Beta-Company-") == 1
+                    getNumberOfPendingDatasets(companyNameFilter = "Beta-Company-") == 1
             }
         }
     }
@@ -373,9 +355,6 @@ class QaServiceTest {
         await().atMost(2, TimeUnit.SECONDS).until { getDataMetaInfo(dataId).qaStatus == expectedQaStatus }
     }
 
-    private fun getLatestQaReviewEntryForDataId(dataId: String): QaReviewResponse =
-        qaServiceController.getQaReviewResponseByDataId(UUID.fromString(dataId))
-
     private fun getInfoOnPendingDatasets(
         companyName: String? = null,
         reportingPeriod: String? = null,
@@ -387,7 +366,7 @@ class QaServiceTest {
             companyName = companyName,
         )
 
-    private fun getNumberOfUnreviewedDatasets(
+    private fun getNumberOfPendingDatasets(
         companyNameFilter: String? = null,
         reportingPeriodFilter: String? = null,
         dataTypeFilter: QaControllerApi.DataTypesGetNumberOfPendingDatasets? = null,

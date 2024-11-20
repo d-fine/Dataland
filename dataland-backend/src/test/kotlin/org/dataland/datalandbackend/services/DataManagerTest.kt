@@ -275,10 +275,16 @@ class DataManagerTest(
 
     @Test
     fun `test that data id for new active dataset can be empty`() {
+        val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
+            addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
+        val dataId =
+            dataManager.processDataStorageRequest(
+                storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
+            )
         val messageWithEmptyCurrentlyActiveDataId =
             objectMapper.writeValueAsString(
                 QaStatusChangeMessage(
-                    dataId = "1273091",
+                    dataId = dataId,
                     updatedQaStatus = QaStatus.Accepted,
                     currentlyActiveDataId = null,
                 ),
