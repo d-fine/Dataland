@@ -10,20 +10,20 @@ import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.util.UUID
 
-@Value("\${spring.backend.url}")
-lateinit var backendUrl: String
-
-@Value("\${spring.backend.db.username}")
-lateinit var userName: String
-
-@Value("\${spring.backend.db.password}")
-lateinit var password: String
-
 /**
  * This class migrates the QaService ReviewInformation Table and ReviewQueue Table into a new combined QaReviewEntity Table
  */
 @Suppress("ClassName")
 class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
+    @Value("\${spring.backend.url}")
+    lateinit var backendUrl: String
+
+    @Value("\${spring.backend.db.username}")
+    lateinit var userName: String
+
+    @Value("\${spring.backend.db.password}")
+    lateinit var password: String
+
     override fun migrate(context: Context?) {
         // waiting two minutes before running script to ensure backend is running
         @Suppress("MagicNumber")
