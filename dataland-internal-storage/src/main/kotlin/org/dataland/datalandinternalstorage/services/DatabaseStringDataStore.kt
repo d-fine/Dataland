@@ -124,10 +124,11 @@ class DatabaseStringDataStore(
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         MessageQueueUtils.rejectMessageOnException {
             val dataUploadPayload = MessageQueueUtils.readMessagePayload<DataUploadPayload>(payload, objectMapper)
-            val dataId = dataUploadPayload.dataId
-            val dataPointString = retrieveData(dataId.toString(), correlationId)
+            val dataId = dataUploadPayload.dataId.toString()
+            val dataPointString = retrieveData(dataId, correlationId)
 
             val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
+            logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
             storeDataPointItemWithoutTransaction(
                 DataPointItem(
                     dataId = dataId,
@@ -145,7 +146,7 @@ class DatabaseStringDataStore(
         dataId: String,
         correlationId: String,
     ): String {
-        logger.info("Retrieving data for DataID $dataId. CorrelationId: $correlationId")
+        logger.info("Retrieving data for DataID $dataId from the backend. CorrelationId: $correlationId")
         return temporarilyCachedDataClient.getReceivedPublicData(dataId)
     }
 
@@ -153,6 +154,7 @@ class DatabaseStringDataStore(
         payload: String,
         correlationId: String,
     ) {
+        logger.info("Publishing storage event to the message queue. CorrelationId: $correlationId")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )

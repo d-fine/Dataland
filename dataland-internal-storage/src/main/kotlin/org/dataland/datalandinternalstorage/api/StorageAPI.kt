@@ -8,6 +8,7 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import java.util.UUID
 
 /**
  * Defines the restful internal storage API.
@@ -62,7 +63,7 @@ interface StorageAPI {
     ): ResponseEntity<InputStreamResource>
 
     /**
-     * A method to retrieve a single data point from the internal storage using the dataID
+     * A method to retrieve a single data point from the internal storage using the [dataId]
      * @param dataId the ID of the data point stored in the internal storage which should be retrieved
      * @param correlationId the correlation ID of the data get request
      * @return ResponseEntity containing the selected data
@@ -81,7 +82,7 @@ interface StorageAPI {
         produces = ["application/json"],
     )
     fun selectDataPointById(
-        @PathVariable("dataId") dataId: String,
+        @PathVariable("dataId") dataId: UUID,
         correlationId: String,
     ): ResponseEntity<StorableDataPoint>
 }

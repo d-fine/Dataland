@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.UUID
 
 /**
  * Defines the restful dataland-backend API regarding data point up and downloads.
@@ -70,6 +71,6 @@ interface DataPointApi {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getDataPoint(
-        @PathVariable dataId: String,
+        @PathVariable dataId: UUID,
     ): ResponseEntity<UploadedDataPoint>
 }

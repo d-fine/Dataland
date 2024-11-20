@@ -78,6 +78,19 @@ class DataMetaInformationManager(
         }
 
     /**
+     * Method to make the data manager get meta info about one specific data point
+     * @param dataId filters the requested meta info to one specific data ID
+     * @return meta info about data behind the dataId
+     */
+    fun getDataPointMetaInformationByDataId(dataId: UUID): DataPointMetaInformationEntity =
+        dataPointMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
+            ResourceNotFoundApiException(
+                "Data point not found",
+                "No data point with the id: $dataId could be found in the data store.",
+            )
+        }
+
+    /**
      * Method to make the data manager search for meta info
      * @param companyId if not empty, it filters the requested meta info to a specific company
      * @param dataType if not empty, it filters the requested meta info to a specific data type

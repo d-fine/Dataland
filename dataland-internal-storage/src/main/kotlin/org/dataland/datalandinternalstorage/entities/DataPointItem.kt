@@ -17,7 +17,7 @@ import java.util.UUID
 data class DataPointItem(
     @Id
     @Column(name = "data_id")
-    val dataId: UUID,
+    val dataId: String,
     @Column(name = "company_id")
     override val companyId: UUID,
     @Column(name = "reporting_period")

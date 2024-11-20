@@ -11,15 +11,18 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 /**
- * Controller for the company metadata endpoints
- * @param dataMetaInformationManager service for handling data meta information
+ * Controller for data points
+ * @param dataPointMetaInformationManager service for handling data point meta information
+ * @param dataPointManager service for handling data points
+ * @param logMessageBuilder service for building log messages
  */
 
 @RestController
 class DataPointController(
-    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired var dataPointMetaInformationManager: DataMetaInformationManager,
     @Autowired val dataPointManager: DataPointManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {
@@ -33,9 +36,9 @@ class DataPointController(
         return ResponseEntity.ok(dataPointManager.processDataPoint(uploadedDataPoint, uploaderId, bypassQa, correlationId))
     }
 
-    override fun getDataPoint(dataId: String): ResponseEntity<UploadedDataPoint> {
-        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        val correlationId = IdUtils.generateCorrelationId(metaInfo.company.companyId, dataId)
-        return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, metaInfo.dataType, correlationId))
+    override fun getDataPoint(dataId: UUID): ResponseEntity<UploadedDataPoint> {
+        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataId)
+        val correlationId = IdUtils.generateCorrelationId(metaInfo.companyId.toString(), dataId.toString())
+        return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, metaInfo.dataPointIdentifier, correlationId))
     }
 }

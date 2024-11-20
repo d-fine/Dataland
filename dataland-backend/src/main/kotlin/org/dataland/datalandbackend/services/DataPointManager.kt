@@ -77,14 +77,14 @@ class DataPointManager(
      * @return the data point in form of a StorableDataSet
      */
     fun retrieveDataPoint(
-        dataId: String,
+        dataId: UUID,
         dataPointIdentifier: String,
         correlationId: String,
     ): UploadedDataPoint {
         logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
         dataPointValidator.validateDataPointIdentifierExists(dataPointIdentifier)
 
-        val storedDataPoint = storageClient.selectDataPointById(dataId, correlationId)
+        val storedDataPoint = storageClient.selectDataPointById(dataId.toString(), correlationId)
         return UploadedDataPoint(
             dataPointContent = storedDataPoint.dataPointContent,
             dataPointIdentifier = storedDataPoint.dataPointIdentifier,

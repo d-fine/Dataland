@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RestController
 import java.io.ByteArrayInputStream
+import java.util.UUID
 
 /**
  * Implementation of Storage Controller
@@ -48,10 +49,10 @@ class StorageController(
     }
 
     override fun selectDataPointById(
-        dataId: String,
+        dataId: UUID,
         correlationId: String,
     ): ResponseEntity<StorableDataPoint> {
         logger.info("Selecting data point from database with data ID: $dataId. Correlation ID: $correlationId.")
-        return ResponseEntity.ok(stringDataStore.selectDataPoint(dataId, correlationId))
+        return ResponseEntity.ok(stringDataStore.selectDataPoint(dataId.toString(), correlationId))
     }
 }
