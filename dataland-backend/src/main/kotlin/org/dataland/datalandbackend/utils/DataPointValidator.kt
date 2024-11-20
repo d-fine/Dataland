@@ -22,7 +22,6 @@ class DataPointValidator(
     @Autowired private val specificationClient: SpecificationControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    // val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
     /**
      * Validates a single data point by casting it to the correct class and running the validations
