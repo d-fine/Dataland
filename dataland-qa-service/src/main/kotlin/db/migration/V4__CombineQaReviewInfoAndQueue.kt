@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Value
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.PreparedStatement
+import java.util.UUID
 
-@Value("\${dataland.backend.base-url}")
+@Value("\${spring.backend.url}")
 lateinit var backendUrl: String
 
 @Value("\${spring.backend.db.username}")
@@ -46,8 +47,8 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
 
         val queueInsertStatement =
             targetConnection.prepareStatement(
-                "INSERT INTO qa_review (data_id, company_id, company_name, data_type, reporting_period, timestamp, comment)" +
-                    " VALUES (?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO qa_review (event_id, data_id, company_id, company_name, data_type, reporting_period, timestamp," +
+                    " qa_status, reviewer_id, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             )
 
         while (queueResultSet.next()) {
@@ -68,7 +69,6 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
                     reportingPeriod = reportingPeriod,
                     timestamp = timestamp,
                     comment = comment,
-                    commentIndex = 7,
                 )
             insertData(queueInsertStatement, queueData)
         }
@@ -91,8 +91,8 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
 
         val informationInsertStatement =
             targetConnection.prepareStatement(
-                "INSERT INTO qa_review (data_id, company_id, company_name, data_type,reporting_period, timestamp," +
-                    " qa_status, reviewer_id, comment) Values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO qa_review (event_id, data_id, company_id, company_name, data_type,reporting_period, timestamp," +
+                    " qa_status, reviewer_id, comment) Values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             )
 
         while (informationResultSet.next()) {
@@ -162,6 +162,7 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
         statement: PreparedStatement,
         dataObject: Data,
     ) {
+        statement.setString(dataObject.eventIdIndex, dataObject.eventId)
         statement.setString(dataObject.dataIdIndex, dataObject.dataId)
         statement.setString(dataObject.companyIdIndex, dataObject.companyId)
         statement.setString(dataObject.companyNameIndex, dataObject.companyName)
@@ -184,23 +185,25 @@ class V4__CombineQaReviewInfoAndQueue : BaseJavaMigration() {
  * Data Object to store the retrieved data
  */
 data class Data(
+    val eventId: String = UUID.randomUUID().toString(),
     val dataId: String,
     val companyId: String,
     val companyName: String,
     val dataType: String,
     val reportingPeriod: String,
     val timestamp: Long,
-    val qaStatus: String = "",
+    val qaStatus: String = "Pending",
     val reviewerId: String = "",
     val comment: String?,
     // indices of values in the insertStatements
-    val dataIdIndex: Int = 1,
-    val companyIdIndex: Int = 2,
-    val companyNameIndex: Int = 3,
-    val dataTypeIndex: Int = 4,
-    val reportingPeriodIndex: Int = 5,
-    val timeStampIndex: Int = 6,
-    val qaStatusIndex: Int = 7,
-    val reviewerIdIndex: Int = 8,
-    val commentIndex: Int = 9,
+    val eventIdIndex: Int = 1,
+    val dataIdIndex: Int = 2,
+    val companyIdIndex: Int = 3,
+    val companyNameIndex: Int = 4,
+    val dataTypeIndex: Int = 5,
+    val reportingPeriodIndex: Int = 6,
+    val timeStampIndex: Int = 7,
+    val qaStatusIndex: Int = 8,
+    val reviewerIdIndex: Int = 9,
+    val commentIndex: Int = 10,
 )

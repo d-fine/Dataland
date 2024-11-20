@@ -11,7 +11,7 @@ class V3__CreateQaReviewTable : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "CREATE TABLE qa_review (" +
-                "event_id varchar(255) NOT NULL, " +
+                "event_id varchar(255) NOT NULL PRIMARY KEY DEFAULT (UUID()), " +
                 "data_id varchar(255) NOT NULL, " +
                 "company_id varchar(255) NOT NULL, " +
                 "company_name varchar(255) NOT NULL, " +
@@ -20,8 +20,7 @@ class V3__CreateQaReviewTable : BaseJavaMigration() {
                 "timestamp smallint NOT NULL, " +
                 "qa_status varchar(255) NOT NULL, " +
                 "reviewer_id varchar(255) NOT NULL, " +
-                "comment varchar(255), " +
-                "PRIMARY KEY (event_id)" +
+                "comment varchar(255)," +
                 ")",
         )
     }
