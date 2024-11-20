@@ -11,16 +11,15 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 
 /**
- * Implementation of a data manager for Dataland including metadata storages
+ * Component that bundles the message queue interactions of the data pint manager
+ * @param cloudEventMessageHandler cloud event message handler used for sending messages to the message queue
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param metaDataManager service for managing metadata
 */
 
 @Component("MessageQueueInteractionForDataPoints")
 class MessageQueueInteractionForDataPoints(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val metaDataManager: DataMetaInformationManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
