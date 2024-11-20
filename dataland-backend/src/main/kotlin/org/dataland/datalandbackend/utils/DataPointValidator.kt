@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component
  * @param specificationClient the specification client to use for fetching specifications
  */
 
-@Component("DataPointManager")
+@Component("DataPointValidator")
 class DataPointValidator(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val specificationClient: SpecificationControllerApi,
