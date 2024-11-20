@@ -964,6 +964,77 @@
         ]
       }
     },
+    "/data-points": {
+      "post": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Upload new data point.",
+        "description": "The uploaded data point is added to the data store, the generated data id is returned.",
+        "operationId": "postDataPoint",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadedDataPoint"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -3119,6 +3190,66 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationAdditionalCompanyInformationData"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/{dataId}": {
+      "get": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Retrieve data points by ID.",
+        "description": "A data point identified by its ID is retrieved.",
+        "operationId": "getDataPoint",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadedDataPoint"
                 }
               }
             }
@@ -17627,6 +17758,72 @@
                 "$ref": "#/components/schemas/ExtendedDocumentReference"
               }
             ]
+          }
+        }
+      },
+      "UploadedDataPoint": {
+        "required": [
+          "companyId",
+          "dataPointContent",
+          "dataPointIdentifier",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointContent": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointMetaInformation": {
+        "required": [
+          "companyId",
+          "currentlyActive",
+          "dataId",
+          "dataPointIdentifier",
+          "qaStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "uploaderUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currentlyActive": {
+            "type": "boolean"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
           }
         }
       },
