@@ -24,7 +24,7 @@ import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER } from 
 import type Keycloak from 'keycloak-js';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import router from '@/router';
-import type Tab from './Tab';
+import type Tab from '@/components/general/Tab';
 
 export default defineComponent({
   name: 'DatasetsTabMenu',
