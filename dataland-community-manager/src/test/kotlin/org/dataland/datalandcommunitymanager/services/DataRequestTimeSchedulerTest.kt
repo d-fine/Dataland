@@ -24,8 +24,8 @@ import java.util.UUID
 
 class DataRequestTimeSchedulerTest {
     private val testUtils = TestUtils()
-    private lateinit var alterationManager: DataRequestAlterationManager
-    private lateinit var dataRequestRepository: DataRequestRepository
+    private lateinit var mockDataRequestAlterationManager: DataRequestAlterationManager
+    private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var dataRequestTimeScheduler: DataRequestTimeScheduler
     private val dataRequestIdStaleAndAnswered = UUID.randomUUID().toString()
     private val dummyDataRequestId = "dummyDataRequestId"
@@ -70,16 +70,16 @@ class DataRequestTimeSchedulerTest {
     @BeforeEach
     fun setUpDataRequestTimeScheduler() {
         testUtils.mockSecurityContext()
-        alterationManager = mock(DataRequestAlterationManager::class.java)
+        mockDataRequestAlterationManager = mock(DataRequestAlterationManager::class.java)
         `when`(
-            alterationManager
+            mockDataRequestAlterationManager
                 .patchDataRequest(dataRequestIdStaleAndAnswered, RequestStatus.Closed),
         ).thenReturn(null)
-        dataRequestRepository = mock(DataRequestRepository::class.java)
+        mockDataRequestRepository = mock(DataRequestRepository::class.java)
         dataRequestTimeScheduler =
             DataRequestTimeScheduler(
-                alterationManager,
-                dataRequestRepository,
+                mockDataRequestAlterationManager,
+                mockDataRequestRepository,
                 staleDaysThreshold,
             )
     }
@@ -87,7 +87,7 @@ class DataRequestTimeSchedulerTest {
     @Test
     fun `validate that two stale and answered data requests are patched`() {
         `when`(
-            dataRequestRepository.searchDataRequestEntity(
+            mockDataRequestRepository.searchDataRequestEntity(
                 any(DataRequestsFilter::class.java),
                 eq(100), eq(0),
             ),
@@ -104,7 +104,7 @@ class DataRequestTimeSchedulerTest {
             ),
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
-        verify(alterationManager, times(2))
+        verify(mockDataRequestAlterationManager, times(2))
             .patchDataRequest(
                 dataRequestIdStaleAndAnswered, RequestStatus.Closed,
             )
@@ -112,7 +112,7 @@ class DataRequestTimeSchedulerTest {
 
     @Test
     fun `validate that recently modified data request are not patched`() {
-        reset(dataRequestRepository)
+        reset(mockDataRequestRepository)
         val dataRequestEntities = mutableListOf<DataRequestEntity>()
         for (status in RequestStatus.entries) {
             val dataRequestEntity =
@@ -123,7 +123,7 @@ class DataRequestTimeSchedulerTest {
             dataRequestEntities.add(dataRequestEntity)
         }
         `when`(
-            dataRequestRepository.searchDataRequestEntity(
+            mockDataRequestRepository.searchDataRequestEntity(
                 any(DataRequestsFilter::class.java),
                 eq(100), eq(0),
             ),
@@ -132,6 +132,6 @@ class DataRequestTimeSchedulerTest {
         )
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
 
-        verifyNoInteractions(alterationManager)
+        verifyNoInteractions(mockDataRequestAlterationManager)
     }
 }

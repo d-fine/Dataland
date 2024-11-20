@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -130,7 +129,6 @@ class DataRequestQueryManager
 
         /**
          * Method to get all data requests based on filters.
-         * @param isUserAdmin whether the requesting user is an admin
          * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
          * @param filter the search filter containing relevant search parameters
          * @param chunkIndex the index of the chunked results which should be returned
@@ -139,7 +137,6 @@ class DataRequestQueryManager
          */
         @Transactional
         fun getDataRequests(
-            isUserAdmin: Boolean,
             ownedCompanyIdsByUser: List<String>,
             filter: DataRequestsFilter,
             chunkIndex: Int?,
@@ -147,34 +144,18 @@ class DataRequestQueryManager
         ): List<ExtendedStoredDataRequest>? {
             val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
 
-            val usersMatchingEmailFilter = filter.setupEmailAddressFilter(keycloakUserControllerApiService)
             val extendedStoredDataRequests =
                 dataRequestRepository
                     .searchDataRequestEntity(
                         searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
                     ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
-            val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
-
             val extendedStoredDataRequestsWithMails =
-                extendedStoredDataRequests.map {
-                    val allowedToSeeEmailAddress =
-                        isUserAdmin ||
-                            (
-                                ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
-                                    it.accessStatus != AccessStatus.Public
-                            )
-
-                    it.userEmailAddress =
-                        it.userId
-                            .takeIf { allowedToSeeEmailAddress }
-                            ?.let { userIdsToEmails.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
-
-                    it
-                }
+                dataRequestMasker.addEmailAddressIfAllowedToSee(
+                    extendedStoredDataRequests, ownedCompanyIdsByUser, filter,
+                )
             val extendedStoredDataRequestsFilteredAdminComment =
-                dataRequestMasker
-                    .hideAdminCommentForNonAdmins(extendedStoredDataRequestsWithMails)
+                dataRequestMasker.hideAdminCommentForNonAdmins(extendedStoredDataRequestsWithMails)
 
             return extendedStoredDataRequestsFilteredAdminComment
         }

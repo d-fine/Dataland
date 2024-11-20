@@ -197,7 +197,6 @@ class SecurityUtilsService(
     ): Boolean {
         val isNotTryingToPatchStatusContactsMessage = requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
         val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
-        val isNotTryingToPatchAnyArgument = isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
-        return isNotTryingToPatchAnyArgument
+        return isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
     }
 }

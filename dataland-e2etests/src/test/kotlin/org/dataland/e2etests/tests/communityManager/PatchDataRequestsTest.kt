@@ -19,6 +19,7 @@ import org.dataland.e2etests.utils.communityManager.patchDataRequestPriorityAndA
 import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -30,16 +31,22 @@ class PatchDataRequestsTest {
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     private val clientErrorMessage403 = "Client error : 403 "
+    private var timestampBeforeSingleRequest: Long = 0
+    private var dataRequestId: UUID = UUID.randomUUID()
 
-    @Test
-    fun `post a single data request and check if patching it changes its status accordingly`() {
+    @BeforeEach
+    fun setup() {
         val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+        this.timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         postStandardSingleDataRequest(companyId)
-        val dataRequestId =
+        this.dataRequestId =
             UUID.fromString(
                 getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
             )
+    }
+
+    @Test
+    fun `post a single data request and check if patching it changes its status accordingly`() {
         assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
@@ -49,51 +56,26 @@ class PatchDataRequestsTest {
 
     @Test
     fun `post a single data request and validate that patching the admin comment does not update the last modified date`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val testAdminComment = "test"
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
         assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
         assertAdminCommentForDataRequestId(dataRequestId, null)
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated(dataRequestId, testAdminComment)
     }
 
     @Test
     fun `post a single data request and validate that patching the request priority updates the last modified date`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val testRequestPriority = RequestPriority.High
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
         assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
         assertAdminCommentForDataRequestId(dataRequestId, null)
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestPriorityAndAssertLastModifiedUpdated(dataRequestId, testRequestPriority)
     }
 
     @Test
     fun `validate that patching the admin comment as a normal user is forbidden`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val testAdminComment = "test"
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
         val clientException =
             assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(dataRequestId, adminComment = testAdminComment)
@@ -103,17 +85,8 @@ class PatchDataRequestsTest {
 
     @Test
     fun `validate that patching the request priority as a normal user is forbidden`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         val testRequestPriority = RequestPriority.High
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-
         val clientException =
             assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(dataRequestId, requestPriority = testRequestPriority)

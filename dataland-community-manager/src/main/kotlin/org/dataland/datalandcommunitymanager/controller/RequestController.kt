@@ -21,7 +21,6 @@ import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -48,8 +47,9 @@ class RequestController(
         )
 
     override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> =
-        ResponseEntity
-            .ok(dataRequestQueryManager.getDataRequestsForRequestingUser())
+        ResponseEntity.ok(
+            dataRequestQueryManager.getDataRequestsForRequestingUser(),
+        )
 
     override fun getAggregatedDataRequests(
         identifierValue: String?,
@@ -72,11 +72,9 @@ class RequestController(
         )
 
     override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
-        ResponseEntity
-            .ok(
-                dataRequestQueryManager
-                    .getDataRequestById(dataRequestId.toString()),
-            )
+        ResponseEntity.ok(
+            dataRequestQueryManager.getDataRequestById(dataRequestId.toString()),
+        )
 
     override fun getDataRequests(
         dataType: Set<DataTypeEnum>?,
@@ -113,7 +111,6 @@ class RequestController(
 
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
-                authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN),
                 ownedCompanyIdsByUser,
                 filter,
                 chunkIndex,
