@@ -7,18 +7,18 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NoSourcesAvailable
+import org.dataland.datalandbackend.model.metainformation.NonSourcable
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.util.UUID
 
 /**
- * The database entity for storing the history on datasets where no sources are avalaible
+ * The database entity for storing the history on non-sourcable datasets
  */
 @Entity
 @Table(
-    name = "no_sources_are_available",
+    name = "non_sourcable",
 )
-data class NoSourcesAvailableEntity(
+data class NonSourcableEntity(
     @Id
     @Column(name = "event_Id", nullable = false, updatable = false)
     val eventId: UUID = UUID.randomUUID(),
@@ -28,20 +28,20 @@ data class NoSourcesAvailableEntity(
     var dataType: String,
     @Column(name = "reporting_period", nullable = false)
     var reportingPeriod: String,
-    @Column(name = "no_sources_available", nullable = true)
-    var noSourcesAvailable: Boolean,
+    @Column(name = "non_sourcable", nullable = true)
+    var nonSourcable: Boolean,
     @Column(name = "reason", nullable = true)
     var reason: String,
     @Column(name = "creation_time", nullable = false)
     var creationTime: Long,
-) : ApiModelConversion<NoSourcesAvailable> {
-    override fun toApiModel(viewingUser: DatalandAuthentication?): NoSourcesAvailable =
-        NoSourcesAvailable(
+) : ApiModelConversion<NonSourcable> {
+    override fun toApiModel(viewingUser: DatalandAuthentication?): NonSourcable =
+        NonSourcable(
             eventId = eventId,
             companyId = company.companyId,
             dataType = DataType.valueOf(dataType),
             reportingPeriod = reportingPeriod,
-            noSourcesAvailable = noSourcesAvailable,
+            nonSourcable = nonSourcable,
             reason = reason,
             creationTime = creationTime,
         )
