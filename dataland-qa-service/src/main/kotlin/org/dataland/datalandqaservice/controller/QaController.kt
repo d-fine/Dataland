@@ -74,7 +74,7 @@ class QaController(
         qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
             dataId = dataId,
             qaStatus = qaStatus,
-            reviewerId = reviewerId,
+            triggeringUserId = reviewerId,
             comment = comment,
             correlationId = correlationId,
         )

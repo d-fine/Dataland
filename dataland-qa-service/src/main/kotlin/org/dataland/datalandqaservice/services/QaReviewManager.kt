@@ -104,13 +104,13 @@ class QaReviewManager(
      * Saves QaReviewEntity to database and sends status change message to MessageQueue
      * @param dataId dataId of dataset of which to change qaStatus
      * @param qaStatus new qaStatus to be set
-     * @param reviewerId keycloakId of reviewer
+     * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
      * @param correlationId
      */
     fun saveQaReviewEntityAndSendQaStatusChangeMessage(
         dataId: String,
         qaStatus: QaStatus,
-        reviewerId: String,
+        triggeringUserId: String,
         comment: String?,
         correlationId: String,
     ) {
@@ -124,11 +124,11 @@ class QaReviewManager(
                 dataId = dataId,
                 companyId = dataMetaInfo.companyId,
                 companyName = companyName,
-                dataType = dataMetaInfo.dataType,
+                dataType = dataMetaInfo.dataType.value,
                 reportingPeriod = dataMetaInfo.reportingPeriod,
                 timestamp = Instant.now().toEpochMilli(),
                 qaStatus = qaStatus,
-                reviewerId = reviewerId,
+                triggeringUserId = triggeringUserId,
                 comment = comment,
             )
 
@@ -193,7 +193,7 @@ class QaReviewManager(
      */
     private fun getDataIdOfCurrentlyActiveDataset(
         companyId: String,
-        dataType: DataTypeEnum,
+        dataType: String,
         reportingPeriod: String,
     ): String? =
         qaReviewRepository

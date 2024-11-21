@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import java.util.UUID
 
@@ -26,7 +25,7 @@ data class QaReviewEntity(
     @Column(name = "company_name", nullable = false)
     val companyName: String,
     @Column(name = "data_type", nullable = false)
-    val dataType: DataTypeEnum,
+    val dataType: String,
     @Column(name = "reporting_period", nullable = false)
     val reportingPeriod: String,
     @Column(name = "timestamp", nullable = false)
@@ -34,7 +33,7 @@ data class QaReviewEntity(
     @Column(name = "qa_status", nullable = false)
     var qaStatus: QaStatus,
     @Column(name = "reviewer_id", nullable = false)
-    val reviewerId: String,
+    val triggeringUserId: String,
     @Column(name = "comment", columnDefinition = "TEXT", nullable = true)
     val comment: String?,
 )

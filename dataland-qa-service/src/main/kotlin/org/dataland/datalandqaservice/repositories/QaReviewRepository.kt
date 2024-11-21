@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.repositories
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
@@ -27,7 +26,7 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
      */
     fun findByCompanyIdAndDataTypeAndReportingPeriod(
         companyId: String,
-        dataType: DataTypeEnum,
+        dataType: String,
         reportingPeriod: String,
     ): List<QaReviewEntity>?
 

@@ -10,8 +10,8 @@ import org.flywaydb.core.api.migration.Context
 class V3__CreateQaReviewTable : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
-            "CREATE TABLE qa_review (" +
-                "event_id varchar(255) NOT NULL PRIMARY KEY DEFAULT (UUID()), " +
+            "CREATE TABLE IF NOT EXISTS qa_review (" +
+                "event_id varchar(255) NOT NULL , " +
                 "data_id varchar(255) NOT NULL, " +
                 "company_id varchar(255) NOT NULL, " +
                 "company_name varchar(255) NOT NULL, " +
@@ -19,8 +19,9 @@ class V3__CreateQaReviewTable : BaseJavaMigration() {
                 "reporting_period varchar(255) NOT NULL, " +
                 "timestamp smallint NOT NULL, " +
                 "qa_status varchar(255) NOT NULL, " +
-                "reviewer_id varchar(255) NOT NULL, " +
-                "comment varchar(255)," +
+                "triggeringUserId varchar(255) NOT NULL, " +
+                "comment varchar(255), " +
+                "PRIMARY KEY (event_id)" +
                 ")",
         )
     }

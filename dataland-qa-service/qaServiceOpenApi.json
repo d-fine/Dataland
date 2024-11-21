@@ -5426,19 +5426,7 @@
             "type": "string"
           },
           "dataType": {
-            "type": "string",
-            "enum": [
-              "eutaxonomy-financials",
-              "eutaxonomy-non-financials",
-              "nuclear-and-gas",
-              "lksg",
-              "p2p",
-              "sfdr",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
-            ]
+            "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
@@ -5453,7 +5441,7 @@
           "comment": {
             "type": "string"
           },
-          "reviewerId": {
+          "triggeringUserId": {
             "type": "string"
           }
         }

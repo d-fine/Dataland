@@ -84,7 +84,7 @@ class QaEventListenerQaService
 
             MessageQueueUtils.rejectMessageOnException {
                 logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
-                val reviewerId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+                val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
                 val qaStatus: QaStatus
                 var comment: String? = null
 
@@ -103,7 +103,7 @@ class QaEventListenerQaService
                 qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
                     dataId = dataId,
                     qaStatus = qaStatus,
-                    reviewerId = reviewerId,
+                    triggeringUserId = triggeringUserId,
                     comment = comment,
                     correlationId = correlationId,
                 )

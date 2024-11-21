@@ -140,7 +140,7 @@ class QaEventListenerQaServiceTest(
         )
 
         testQaReviewRepository.findFirstByDataIdOrderByTimestampDesc(acceptedDataId)?.let {
-            Assertions.assertEquals("", it.reviewerId)
+            Assertions.assertEquals("", it.triggeringUserId)
             Assertions.assertEquals(acceptedDataId, it.dataId)
             Assertions.assertEquals(QaStatus.Accepted, it.qaStatus)
             Assertions.assertEquals("Automatically QA approved", it.comment)
