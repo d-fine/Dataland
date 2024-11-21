@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.db.migration
+package db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -11,29 +11,29 @@ class V3__CreateQaTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
             "CREATE TABLE IF NOT EXISTS qa_review (" +
-                "event_id varchar(255) NOT NULL , " +
-                "data_id varchar(255) NOT NULL, " +
-                "company_id varchar(255) NOT NULL, " +
-                "company_name varchar(255) NOT NULL, " +
-                "framework varchar(255) NOT NULL, " +
-                "reporting_period varchar(255) NOT NULL, " +
+                "event_id UUID NOT NULL DEFAULT gen_random_uuid() , " +
+                "data_id VARCHAR(255) NOT NULL, " +
+                "company_id VARCHAR(255) NOT NULL, " +
+                "company_name VARCHAR(255) NOT NULL, " +
+                "data_type VARCHAR(255) NOT NULL, " +
+                "reporting_period VARCHAR(255) NOT NULL, " +
                 "timestamp smallint NOT NULL, " +
-                "qa_status varchar(255) NOT NULL, " +
-                "triggeringUserId varchar(255) NOT NULL, " +
-                "comment varchar(255), " +
+                "qa_status VARCHAR(255) NOT NULL, " +
+                "triggering_user_id VARCHAR(255) NOT NULL, " +
+                "comment VARCHAR(255), " +
                 "PRIMARY KEY (event_id)" +
                 ")",
         )
 
         context.connection.createStatement().execute(
             "CREATE TABLE IF NOT EXISTS review_queue (" +
-                "data_id varchar(255) NOT NULL, " +
+                "data_id VARCHAR(255) NOT NULL, " +
                 "reception_time smallint NOT NULL, " +
                 "comment text, " +
-                "company_id varchar(255) NOT NULL, " +
-                "company_name varchar(255) NOT NULL," +
-                "framework varchar(255) NOT NULL, " +
-                "reporting_period varchar(255) NOT NULL, " +
+                "company_id VARCHAR(255) NOT NULL, " +
+                "company_name VARCHAR(255) NOT NULL," +
+                "framework VARCHAR(255) NOT NULL, " +
+                "reporting_period VARCHAR(255) NOT NULL, " +
                 "PRIMARY KEY (data_id)" +
                 ")",
         )

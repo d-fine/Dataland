@@ -32,7 +32,7 @@ data class QaReviewEntity(
     val timestamp: Long,
     @Column(name = "qa_status", nullable = false)
     var qaStatus: QaStatus,
-    @Column(name = "reviewer_id", nullable = false)
+    @Column(name = "triggering_user_id", nullable = false)
     val triggeringUserId: String,
     @Column(name = "comment", columnDefinition = "TEXT", nullable = true)
     val comment: String?,

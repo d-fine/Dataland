@@ -34,8 +34,8 @@ class V4__MigrateQaQueueToQaReview : BaseJavaMigration() {
 
         val queueInsertStatement =
             targetConnection.prepareStatement(
-                "INSERT INTO qa_review (event_id, data_id, company_id, company_name, framework, reporting_period, timestamp," +
-                    " qa_status, triggeringUserId, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO qa_review (event_id, data_id, company_id, company_name, data_type, reporting_period, timestamp," +
+                    " qa_status, triggering_user_id, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             )
 
         while (queueResultSet.next()) {
@@ -43,7 +43,7 @@ class V4__MigrateQaQueueToQaReview : BaseJavaMigration() {
             val dataId = queueResultSet.getString("data_id")
             val companyId = queueResultSet.getString("company_id")
             val companyName = queueResultSet.getString("company_name")
-            val framework = queueResultSet.getString("framework")
+            val dataType = queueResultSet.getString("framework")
             val reportingPeriod = queueResultSet.getString("reporting_period")
             val timestamp = queueResultSet.getLong("reception_time")
             val qaStatus = "Pending"
@@ -55,7 +55,7 @@ class V4__MigrateQaQueueToQaReview : BaseJavaMigration() {
             queueInsertStatement.setString(index++, dataId)
             queueInsertStatement.setString(index++, companyId)
             queueInsertStatement.setString(index++, companyName)
-            queueInsertStatement.setString(index++, framework)
+            queueInsertStatement.setString(index++, dataType)
             queueInsertStatement.setString(index++, reportingPeriod)
             queueInsertStatement.setLong(index++, timestamp)
             queueInsertStatement.setString(index++, qaStatus)
