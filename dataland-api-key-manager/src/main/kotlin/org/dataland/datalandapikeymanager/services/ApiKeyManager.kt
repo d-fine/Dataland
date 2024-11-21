@@ -90,7 +90,7 @@ class ApiKeyManager(
     }
 
     private fun isApiKeyExpired(expiryDateOfApiKey: Long?): Boolean =
-        (expiryDateOfApiKey ?: Instant.now().toEpochMilli()) < Instant.now().toEpochMilli()
+        expiryDateOfApiKey != null && expiryDateOfApiKey < Instant.now().toEpochMilli()
 
     /**
      * A method that generates an API key which is valid for the specified number of days

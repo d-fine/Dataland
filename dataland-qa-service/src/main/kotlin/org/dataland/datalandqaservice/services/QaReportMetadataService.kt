@@ -2,7 +2,10 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
@@ -20,6 +23,7 @@ class QaReportMetadataService(
     @Autowired private val companyController: CompanyDataControllerApi,
     @Autowired private val qaReportRepository: QaReportRepository,
     @Autowired val metadataController: MetaDataControllerApi,
+    @Autowired val exceptionForwarder: ExceptionForwarder,
 ) {
     /**
      * Method to search all data and the connected meta information associated with a data set.
@@ -68,7 +72,19 @@ class QaReportMetadataService(
             .toEpochMilli()
 
     private fun getCompanyIdFromCompanyIdentifier(companyIdentifier: String): String? {
-        val matchingCompanyIdsAndNamesOnDataland = companyController.getCompaniesBySearchString(companyIdentifier)
+        val matchingCompanyIdsAndNamesOnDataland =
+            try {
+                companyController.getCompaniesBySearchString(companyIdentifier)
+            } catch (clientException: ClientException) {
+                val responseBody = (clientException.response as ClientError<*>).body.toString()
+                exceptionForwarder.catchSearchStringTooShortClientException(
+                    responseBody,
+                    clientException.statusCode,
+                    clientException,
+                )
+                throw clientException
+            }
+
         return when (matchingCompanyIdsAndNamesOnDataland.size) {
             0 -> null
             1 -> matchingCompanyIdsAndNamesOnDataland[0].companyId

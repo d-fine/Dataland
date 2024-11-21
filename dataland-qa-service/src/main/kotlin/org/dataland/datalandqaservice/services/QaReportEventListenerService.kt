@@ -23,12 +23,10 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * Service class for listening to the QA report deletion requests
- * @param messageUtils utils for handling of messages
  * @param reportManager service for managing QA reports
  */
 @Service
 class QaReportEventListenerService(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val reportManager: QaReportManager,
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
     @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
@@ -65,7 +63,7 @@ class QaReportEventListenerService(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         val payloadJson = JSONObject(payload)
         val dataId = payloadJson.getString("dataId")
         val actionType = payloadJson.getString("actionType")
@@ -74,7 +72,7 @@ class QaReportEventListenerService(
         }
 
         logger.info("Deleting all QA Reports associated with data id $dataId. CorrelationId: $correlationId")
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             if (actionType == ActionType.DELETE_DATA) {
                 reportManager.deleteAllQaReportsForDataId(dataId)
                 reviewQueueRepository.deleteByDataId(dataId)

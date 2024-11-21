@@ -23,9 +23,9 @@ class EsgDatenkatalogFramework :
             "Der ESG Datenkatalog für Großunternehmen ist ein ESG-Fragebogen des " +
                 "Gesamtverbands der Versicherer und des Bundesverbands Öffentlicher Banken",
         File("./dataland-framework-toolbox/inputs/esg-datenkatalog/esg-datenkatalog.xlsx"),
-        order = 7,
+        order = 8,
         enabledFeatures =
-            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
     ) {
     private fun setGroupsThatAreExpandedOnPageLoad(framework: Framework) {
         framework.root.edit<ComponentGroup>("allgemein") {

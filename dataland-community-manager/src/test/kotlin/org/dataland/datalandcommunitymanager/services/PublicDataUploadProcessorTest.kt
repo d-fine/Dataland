@@ -2,83 +2,71 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import java.util.UUID
 
 class PublicDataUploadProcessorTest {
     private lateinit var publicDataUploadProcessor: PublicDataUploadProcessor
 
+    private val objectMapper = jacksonObjectMapper()
+
+    private lateinit var elementaryEventRepositoryMock: ElementaryEventRepository
+
+    private var dataId = UUID.randomUUID()
+    private var companyId = UUID.randomUUID()
+
     @BeforeEach
     fun setup() {
-        val messageUtilsMock = mock(MessageQueueUtils::class.java)
         val notificationServiceMock = mock(NotificationService::class.java)
-        val elementaryEventRepositoryMock = mock(ElementaryEventRepository::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
-        val objectMapper = jacksonObjectMapper()
+
+        elementaryEventRepositoryMock = mock(ElementaryEventRepository::class.java)
+        `when`(elementaryEventRepositoryMock.saveAndFlush(any())).then { invocation -> invocation.arguments[0] }
+
+        `when`(metaDataControllerApiMock.getDataMetaInfo(any()))
+            .thenReturn(
+                DataMetaInformation(
+                    dataId.toString(), companyId.toString(), DataTypeEnum.heimathafen, 0, "2022", false,
+                    org.dataland.datalandbackend.openApiClient.model.QaStatus.Pending, null,
+                ),
+            )
 
         publicDataUploadProcessor =
             PublicDataUploadProcessor(
-                messageUtilsMock,
                 notificationServiceMock,
                 elementaryEventRepositoryMock,
                 objectMapper,
                 metaDataControllerApiMock,
             )
-    }
 
-    @Test
-    fun `empty identifier leads to rejection exception`() {
-        val payload =
-            JSONObject(
-                mapOf("identifier" to ""),
-            ).toString()
-
-        val exception =
-            assertThrows<MessageQueueRejectException> {
-                publicDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.QA_COMPLETED)
-            }
-
-        assertEquals("Message was rejected: The identifier in the message payload is empty.", exception.message)
-    }
-
-    @Test
-    fun `non empty dataId leads to valid return of dataId`() {
-        val dummyId = "123"
-        val payload =
-            JSONObject(
-                mapOf("identifier" to dummyId),
-            ).toString()
-
-        val dataId =
-            assertDoesNotThrow {
-                publicDataUploadProcessor.validateIncomingPayloadAndReturnDataId(payload, MessageType.QA_COMPLETED)
-            }
-
-        assertEquals(dummyId, dataId)
+        publicDataUploadProcessor.notificationFeatureFlagAsString = "true"
     }
 
     @Test
     fun `create valid elementaryEventBasicInfo`() {
-        val dummyCompanyId = UUID.randomUUID()
         val dummyReportingPeriod = "2022"
         val jsonString =
             JSONObject(
                 mapOf(
-                    "dataId" to "abc",
-                    "companyId" to dummyCompanyId,
+                    "dataId" to dataId,
+                    "companyId" to companyId,
                     "dataType" to DataTypeEnum.heimathafen.toString(),
                     "reportingPeriod" to dummyReportingPeriod,
                 ),
@@ -87,11 +75,31 @@ class PublicDataUploadProcessorTest {
         val actualElementaryEventBasicInfo = publicDataUploadProcessor.createElementaryEventBasicInfo(jsonString)
         val expectedElementaryEventBasicInfo =
             ElementaryEventBasicInfo(
-                companyId = dummyCompanyId,
+                companyId = companyId,
                 framework = DataTypeEnum.heimathafen,
                 reportingPeriod = dummyReportingPeriod,
             )
 
         assertEquals(expectedElementaryEventBasicInfo, actualElementaryEventBasicInfo)
+    }
+
+    @Test
+    fun `do not create an elementary event when the dataset has been rejected`() {
+        val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Rejected, "reviewerId", "message")
+        val payload = objectMapper.writeValueAsString(qaCompletedMessage)
+
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_COMPLETED)
+
+        Mockito.verifyNoInteractions(elementaryEventRepositoryMock)
+    }
+
+    @Test
+    fun `create an elementary event when the dataset has been approved`() {
+        val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Accepted, "reviewerId", "message")
+        val payload = objectMapper.writeValueAsString(qaCompletedMessage)
+
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_COMPLETED)
+
+        verify(elementaryEventRepositoryMock, times(1)).saveAndFlush(any())
     }
 }

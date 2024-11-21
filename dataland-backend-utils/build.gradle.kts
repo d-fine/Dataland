@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.bcprov.jdk15on)
     implementation(libs.mailjet.client)
     testImplementation(Spring.boot.test)
+    testImplementation(libs.mockito.kotlin)
 }
 
 tasks.test {

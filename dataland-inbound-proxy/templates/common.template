@@ -1,7 +1,15 @@
+location @errorPage {
+  ssi on;
+  ssi_types application/json;
+  internal;
+  root /var/www/html/error_documents;
+  try_files /json_errors.json =500;
+}
+
 location /api-keys/ {
   proxy_pass http://api-key-manager:8080/api-keys/;
   include utils/proxy.conf;
-  include utils/apiKeysErrors.conf;
+  include utils/errorsAsJson.conf;
 }
 
 location /api/internal/ {
@@ -12,14 +20,14 @@ location /api/ {
   client_max_body_size ${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}M;
   proxy_pass ${BACKEND_URL};
   include utils/proxy.conf;
-  include utils/apiErrors.conf;
+  include utils/errorsAsJson.conf;
 }
 
 location /documents/ {
   client_max_body_size ${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES}M;
   proxy_pass http://document-manager:8080/documents/;
   include utils/proxy.conf;
-  include utils/documentsErrors.conf;
+  include utils/errorsAsJson.conf;
 }
 
 location /documents/internal/ {
@@ -39,13 +47,25 @@ location /external-storage/actuator/health {
 location /qa/ {
   proxy_pass http://qa-service:8080/qa/;
   include utils/proxy.conf;
-  include utils/qaErrors.conf;
+  include utils/errorsAsJson.conf;
 }
 
 location /community/ {
   proxy_pass http://community-manager:8080/community/;
   include utils/proxy.conf;
-  include utils/communityManagerErrors.conf;
+  include utils/errorsAsJson.conf;
+}
+
+location /email/ {
+  proxy_pass http://email-service:8080/email/;
+  include utils/proxy.conf;
+  include utils/errorsAsJson.conf;
+}
+
+location /specifications/ {
+  proxy_pass http://specification-service:8489/specifications/;
+  include utils/proxy.conf;
+  include utils/errorsAsJson.conf;
 }
 
 location /images/ {
