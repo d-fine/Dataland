@@ -150,8 +150,8 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 
 json = "org.json:json:20240303"
 
-spring-context = "org.springframework:spring-context:6.1.14"
-spring-test = "org.springframework:spring-test:6.1.14"
+spring-context = "org.springframework:spring-context:6.1.15"
+spring-test = "org.springframework:spring-test:6.1.15"
 
 spring-boot = "org.springframework.boot:spring-boot:3.3.5"
 
