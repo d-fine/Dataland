@@ -89,7 +89,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -124,7 +124,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -159,7 +159,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -251,7 +251,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -268,7 +268,7 @@ services:
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -432,7 +432,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -486,7 +486,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
