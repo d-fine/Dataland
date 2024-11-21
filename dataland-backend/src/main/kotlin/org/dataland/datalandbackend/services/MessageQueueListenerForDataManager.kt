@@ -68,30 +68,37 @@ class MessageQueueListenerForDataManager(
 
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
 
-        val changedQaStatusDataId = qaStatusChangeMessage.dataId
+        val updatedDataId = qaStatusChangeMessage.dataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
         val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
 
         logger.info(
-            "Received QA Status Change message for dataID $changedQaStatusDataId. New qaStatus is $updatedQaStatus. " +
+            "Received QA Status Change message for dataID $updatedDataId. New qaStatus is $updatedQaStatus. " +
                 "(correlationId: $correlationId)",
         )
 
-        if (changedQaStatusDataId.isEmpty()) {
+        if (updatedDataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID to change qa status dataset is empty")
         }
 
         MessageQueueUtils.rejectMessageOnException {
-            val changedQaStatusMetaInformation = metaDataManager.getDataMetaInformationByDataId(changedQaStatusDataId)
-            changedQaStatusMetaInformation.qaStatus = updatedQaStatus
-            metaDataManager.storeDataMetaInformation(changedQaStatusMetaInformation)
+            val updatedDataMetaInformation = metaDataManager.getDataMetaInformationByDataId(updatedDataId)
+            updatedDataMetaInformation.qaStatus = updatedQaStatus
+            metaDataManager.storeDataMetaInformation(updatedDataMetaInformation)
 
             if (currentlyActiveDataId.isNullOrEmpty()) {
                 logger.info(
-                    "No active dataset for companyId ${changedQaStatusMetaInformation.company.companyId}, " +
-                        "dataType ${changedQaStatusMetaInformation.dataType}, and " +
-                        "reportingPeriod ${changedQaStatusMetaInformation.reportingPeriod} exists.",
+                    "No active dataset passed for companyId ${updatedDataMetaInformation.company.companyId}, " +
+                        "dataType ${updatedDataMetaInformation.dataType}, and " +
+                        "reportingPeriod ${updatedDataMetaInformation.reportingPeriod}. Setting currently active" +
+                        "dataset to inactive.",
                 )
+                metaDataManager
+                    .setCurrentlyActiveDatasetInactive(
+                        updatedDataMetaInformation.company,
+                        updatedDataMetaInformation.dataType,
+                        updatedDataMetaInformation.reportingPeriod,
+                    )
             } else {
                 val currentlyActiveMetaInformation =
                     metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)

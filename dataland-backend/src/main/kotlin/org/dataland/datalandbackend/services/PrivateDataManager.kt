@@ -250,8 +250,13 @@ class PrivateDataManager(
         logger.info(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
-        val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
-        metaDataManager.setNewDatasetActiveAndOldDatasetInactive(dataMetaInfoEntityForDataId!!)
+        val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]!!
+        metaDataManager.setCurrentlyActiveDatasetInactive(
+            dataMetaInfoEntityForDataId.company,
+            dataMetaInfoEntityForDataId.dataType,
+            dataMetaInfoEntityForDataId.reportingPeriod,
+        )
+        dataMetaInfoEntityForDataId.currentlyActive = true
         return metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
     }
 
