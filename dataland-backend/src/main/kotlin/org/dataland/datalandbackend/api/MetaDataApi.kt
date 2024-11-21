@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.model.metainformation.NonSourcableData
+import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -87,7 +87,7 @@ interface MetaDataApi {
     ): ResponseEntity<DataMetaInformation>
 
     /**
-     * A method to retrieve meta info about a non sourcable data set
+     * A method to retrieve meta info about a non sourceable data set
      * @param companyId if set, filters the requested meta info to a specific company.
      * @param dataType if set, filters the requested meta info to a specific data type.
      * @param showOnlyActive if set to true or empty, only metadata of QA reports are returned that are active.
@@ -98,7 +98,7 @@ interface MetaDataApi {
      * @return the DataMetaInformation for the specified data set
      */
     @Operation(
-        summary = "Look up meta info about a non sourcable data set.",
+        summary = "Look up meta info about a non sourceable data set.",
         description =
             "Meta info about a specific data set registered by Dataland " +
                 "and identified by its data ID is retrieved.",
@@ -109,22 +109,22 @@ interface MetaDataApi {
         ],
     )
     @GetMapping(
-        value = ["/nonSourcable"],
+        value = ["/nonSourceable"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
-    fun getNonSourcableDatasets(
+    fun getNonSourceableDatasets(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
         @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
         @RequestParam reportingPeriod: String? = null,
         @RequestParam uploaderUserIds: Set<UUID>? = null,
         @RequestParam qaStatus: QaStatus? = null,
-    ): ResponseEntity<NonSourcableData>
+    ): ResponseEntity<NonSourceableData>
 
     /**
      * A method to save information on the sourceability of a specific data set.
-     * @param nonSourcableData includes the information on the sourceability of a specific data set.
+     * @param nonSourceableData includes the information on the sourceability of a specific data set.
      */
     @Operation(
         summary = "Add a data set with information on sourceability.",
@@ -136,38 +136,38 @@ interface MetaDataApi {
         ],
     )
     @PostMapping(
-        value = ["/nonSourcable"],
+        value = ["/nonSourceable"],
         produces = ["application/json"],
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun postNonSourcableDataSet(
+    fun postNonSourceableDataSet(
         @Valid @RequestBody
-        nonSourcableData: NonSourcableData,
+        nonSourceableData: NonSourceableData,
     )
 
     /**
-     * A method to check if a dataset is non-sourcable
+     * A method to check if a dataset is non-sourceable
      * @param companyId the company identifier
      * @param dataType the data type
      * @param reportingPeriod the reporting period
      */
     @Operation(
-        summary = "Checks that a data set is non sourcable.",
-        description = "Checks that a specific data set is non sourcable.",
+        summary = "Checks that a data set is non sourceable.",
+        description = "Checks that a specific data set is non sourceable.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked that data set is non-sourcable."),
-            ApiResponse(responseCode = "404", description = "Successfully checked that data set is sourcable."),
+            ApiResponse(responseCode = "200", description = "Successfully checked that data set is non-sourceable."),
+            ApiResponse(responseCode = "404", description = "Successfully checked that data set is sourceable."),
         ],
     )
     @RequestMapping(
         method = [RequestMethod.HEAD],
-        value = ["/nonSourcable/{companyId}/{dataType}/{reportingPeriod}"],
+        value = ["/nonSourceable/{companyId}/{dataType}/{reportingPeriod}"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun isDataNonSourcable(
+    fun isDataNonSourceable(
         @PathVariable("companyId") companyId: String,
         @PathVariable("dataType") dataType: DataType,
         @PathVariable("reportingPeriod") reportingPeriod: String,

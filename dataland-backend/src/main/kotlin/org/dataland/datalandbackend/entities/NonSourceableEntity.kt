@@ -7,18 +7,18 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NonSourcableData
+import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.util.UUID
 
 /**
- * The database entity for storing the history on non-sourcable datasets
+ * The database entity for storing the history on non-sourceable datasets
  */
 @Entity
 @Table(
-    name = "non_sourcable",
+    name = "non_sourceable",
 )
-data class NonSourcableEntity(
+data class NonSourceableEntity(
     @Id
     @Column(name = "event_Id", nullable = false, updatable = false)
     val eventId: UUID = UUID.randomUUID(),
@@ -28,20 +28,20 @@ data class NonSourcableEntity(
     var dataType: String,
     @Column(name = "reporting_period", nullable = false)
     var reportingPeriod: String,
-    @Column(name = "non_sourcable", nullable = true)
-    var nonSourcable: Boolean,
+    @Column(name = "non_sourceable", nullable = true)
+    var nonSourceable: Boolean,
     @Column(name = "reason", nullable = true)
     var reason: String,
     @Column(name = "creation_time", nullable = false)
     var creationTime: Long,
-) : ApiModelConversion<NonSourcableData> {
-    override fun toApiModel(viewingUser: DatalandAuthentication?): NonSourcableData =
-        NonSourcableData(
+) : ApiModelConversion<NonSourceableData> {
+    override fun toApiModel(viewingUser: DatalandAuthentication?): NonSourceableData =
+        NonSourceableData(
             eventId = eventId,
             companyId = company.companyId,
             dataType = DataType.valueOf(dataType),
             reportingPeriod = reportingPeriod,
-            nonSourcable = nonSourcable,
+            nonSourceable = nonSourceable,
             reason = reason,
             creationTime = creationTime,
         )

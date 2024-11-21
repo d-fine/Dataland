@@ -11,11 +11,11 @@ import java.util.UUID
  * @param companyId unique identifier to identify the company the data is associated with
  * @param dataType type of the data
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
- * @param nonSourcable true if there is no source available
+ * @param nonSourceable true if there is no source available
  * @param reason reason why there is no source available
  * @param creationTime is a timestamp for the creation of this event
  */
-data class NonSourcableData(
+data class NonSourceableData(
     @field:JsonProperty(required = true)
     val eventId: UUID,
     @field:JsonProperty(required = true)
@@ -24,7 +24,7 @@ data class NonSourcableData(
     val dataType: DataType,
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
-    val nonSourcable: Boolean,
+    val nonSourceable: Boolean,
     @field:JsonProperty(required = true)
     val reason: String,
     @field:JsonProperty(required = true)
