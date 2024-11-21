@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -53,5 +54,28 @@ class MetaDataController(
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
+    }
+
+    override fun getNonSourceableDatasets(
+        companyId: String?,
+        dataType: DataType?,
+        showOnlyActive: Boolean,
+        reportingPeriod: String?,
+        uploaderUserIds: Set<UUID>?,
+        qaStatus: QaStatus?,
+    ): ResponseEntity<NonSourceableData> {
+        // implement functionality
+    }
+
+    override fun postNonSourceableDataSet(nonSourceableData: NonSourceableData) {
+        // implement functionality
+    }
+
+    override fun isDataNonSourceable(
+        companyId: String,
+        dataType: DataType,
+        reportingPeriod: String,
+    ) {
+        // implement functionality
     }
 }
