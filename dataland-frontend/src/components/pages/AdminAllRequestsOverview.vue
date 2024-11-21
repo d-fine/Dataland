@@ -187,7 +187,7 @@
                 <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
                   <template #body="slotProps">
                     <div :class="priorityBadgeClass(slotProps.data.requestPriority)" style="display: inline-flex">
-                      {{ slotProps.data.requestPriority }}
+                      {{ convertCamelCaseToWordsWithSpaces(slotProps.data.requestPriority) }}
                     </div>
                   </template>
                 </Column>
@@ -224,7 +224,12 @@ import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import {
+  convertCamelCaseToWordsWithSpaces,
+  frameworkHasSubTitle,
+  getFrameworkSubtitle,
+  getFrameworkTitle,
+} from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import {
@@ -336,6 +341,7 @@ export default defineComponent({
     },
   },
   methods: {
+    convertCamelCaseToWordsWithSpaces,
     priorityBadgeClass,
     badgeClass,
     accessStatusBadgeClass,
