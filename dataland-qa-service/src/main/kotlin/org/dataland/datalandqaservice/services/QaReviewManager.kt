@@ -124,7 +124,7 @@ class QaReviewManager(
                 dataId = dataId,
                 companyId = dataMetaInfo.companyId,
                 companyName = companyName,
-                dataType = dataMetaInfo.dataType.value,
+                framework = dataMetaInfo.dataType.value,
                 reportingPeriod = dataMetaInfo.reportingPeriod,
                 timestamp = Instant.now().toEpochMilli(),
                 qaStatus = qaStatus,
@@ -141,7 +141,7 @@ class QaReviewManager(
                 currentlyActiveDataId =
                     this.getDataIdOfCurrentlyActiveDataset(
                         qaReviewEntity.companyId,
-                        qaReviewEntity.dataType,
+                        qaReviewEntity.framework,
                         qaReviewEntity.reportingPeriod,
                     ),
             )
@@ -197,7 +197,7 @@ class QaReviewManager(
         reportingPeriod: String,
     ): String? =
         qaReviewRepository
-            .findByCompanyIdAndDataTypeAndReportingPeriod(companyId, dataType, reportingPeriod)
+            .findByCompanyIdAndFrameworkAndReportingPeriod(companyId, dataType, reportingPeriod)
             ?.filter { it.qaStatus == QaStatus.Accepted }
             ?.maxByOrNull { it.timestamp }
             ?.dataId

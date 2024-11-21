@@ -22,11 +22,11 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     fun deleteAllByDataId(dataId: String)
 
     /**
-     * Find QA Information based on companyId, dataType, and reportingPeriod
+     * Find QA Information based on companyId, framework, and reportingPeriod
      */
-    fun findByCompanyIdAndDataTypeAndReportingPeriod(
+    fun findByCompanyIdAndFrameworkAndReportingPeriod(
         companyId: String,
-        dataType: String,
+        framework: String,
         reportingPeriod: String,
     ): List<QaReviewEntity>?
 

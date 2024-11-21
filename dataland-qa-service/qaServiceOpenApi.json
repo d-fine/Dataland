@@ -5409,7 +5409,7 @@
           "companyId",
           "companyName",
           "dataId",
-          "dataType",
+          "framework",
           "qaStatus",
           "reportingPeriod",
           "timestamp"
@@ -5425,7 +5425,7 @@
           "companyName": {
             "type": "string"
           },
-          "dataType": {
+          "framework": {
             "type": "string"
           },
           "reportingPeriod": {

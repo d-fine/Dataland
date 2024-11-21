@@ -76,7 +76,7 @@ describe('Component tests for the Quality Assurance page', () => {
       timestamp: timestamp,
       companyName: companyName,
       companyId: companyId,
-      dataType: framework,
+      framework: framework,
       reportingPeriod: reportingPeriod,
       qaStatus: QaStatus.Pending,
     };

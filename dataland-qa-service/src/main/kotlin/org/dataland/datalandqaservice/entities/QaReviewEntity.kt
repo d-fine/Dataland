@@ -25,7 +25,7 @@ data class QaReviewEntity(
     @Column(name = "company_name", nullable = false)
     val companyName: String,
     @Column(name = "data_type", nullable = false)
-    val dataType: String,
+    val framework: String,
     @Column(name = "reporting_period", nullable = false)
     val reportingPeriod: String,
     @Column(name = "timestamp", nullable = false)

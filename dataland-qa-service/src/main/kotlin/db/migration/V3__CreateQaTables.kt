@@ -1,22 +1,27 @@
-package db.migration
+package org.dataland.datalandqaservice.db.migration
 
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script handles the creation of the initial databases
+ * This migration script handles the creation of the QA review database
  */
 @Suppress("ClassName")
-class V1_1__CreateQaTables : BaseJavaMigration() {
+class V3__CreateQaTables : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
-            "CREATE TABLE IF NOT EXISTS review_information (" +
+            "CREATE TABLE IF NOT EXISTS qa_review (" +
+                "event_id varchar(255) NOT NULL , " +
                 "data_id varchar(255) NOT NULL, " +
-                "reception_time smallint NOT NULL, " +
-                "qa_status smallint NOT NULL, " +
-                "reviewer_keycloak_id varchar(255) NOT NULL, " +
-                "message varchar(255), " +
-                "PRIMARY KEY (data_id)" +
+                "company_id varchar(255) NOT NULL, " +
+                "company_name varchar(255) NOT NULL, " +
+                "framework varchar(255) NOT NULL, " +
+                "reporting_period varchar(255) NOT NULL, " +
+                "timestamp smallint NOT NULL, " +
+                "qa_status varchar(255) NOT NULL, " +
+                "triggeringUserId varchar(255) NOT NULL, " +
+                "comment varchar(255), " +
+                "PRIMARY KEY (event_id)" +
                 ")",
         )
 

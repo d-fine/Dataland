@@ -292,7 +292,7 @@ export default defineComponent({
      */
     goToQaViewPage(event: DataTableRowClickEvent) {
       const qaDataObject = event.data as QaReviewResponse;
-      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.dataType}/${qaDataObject.dataId}`;
+      const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
       return router.push(qaUri);
     },
 
