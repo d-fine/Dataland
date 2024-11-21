@@ -11,6 +11,7 @@ import org.json.JSONObject
  * This migration script updates the existing SFDR datasets, more specifically it sets the full dataSource objects to
  * null whenever the corresponding fileReferences are given by an empty string
  */
+@Suppress("ClassName")
 class V13__MigrateBlankFileReferencesInSfdr : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
@@ -20,7 +21,10 @@ class V13__MigrateBlankFileReferencesInSfdr : BaseJavaMigration() {
         )
     }
 
-    private fun checkForBlankFileReferenceAndIterateFurther(dataset: JSONObject, objectName: String) {
+    private fun checkForBlankFileReferenceAndIterateFurther(
+        dataset: JSONObject,
+        objectName: String,
+    ) {
         val obj = dataset.getOrJavaNull(objectName)
         if (obj !== null && obj is JSONObject) {
             val dataSource = obj.getOrJavaNull("dataSource") as JSONObject?

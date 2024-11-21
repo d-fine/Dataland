@@ -14,13 +14,13 @@ class LksgProcurementCategoriesComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : LksgSimpleCustomComponentBase(
-    identifier = identifier,
-    parent = parent,
-    viewFormattingFunctionName = "formatLksgProcurementCategoriesForDisplay",
-    uploadComponentName = "ProcurementCategoriesFormField",
-    guaranteedFixtureExpression = "dataGenerator.generateProcurementCategories()",
-    randomFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateProcurementCategories())",
-) {
+        identifier = identifier,
+        parent = parent,
+        viewFormattingFunctionName = "formatLksgProcurementCategoriesForDisplay",
+        uploadComponentName = "ProcurementCategoriesFormField",
+        guaranteedFixtureExpression = "dataGenerator.generateProcurementCategories()",
+        randomFixtureExpression = "dataGenerator.valueOrNull(dataGenerator.generateProcurementCategories())",
+    ) {
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         dataClassBuilder.addProperty(
@@ -42,7 +42,7 @@ class LksgProcurementCategoriesComponent(
                 Annotation(
                     fullyQualifiedName = "io.swagger.v3.oas.annotations.media.Schema",
                     rawParameterSpec =
-                    "example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE",
+                        "example = JsonExampleFormattingConstants.PROCUREMENT_CATEGORIES_DEFAULT_VALUE",
                     applicationTargetPrefix = "field",
                     additionalImports = setOf("org.dataland.datalandbackend.utils.JsonExampleFormattingConstants"),
                 ),

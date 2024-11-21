@@ -11,32 +11,40 @@ import org.junit.jupiter.api.Test
 class NullableIfNotRequiredOpenApiCustomizerTest {
     @Test
     fun `check if the open api config is transformed as expected`() {
-        val openApi = OpenAPI()
-            .components(
-                Components().schemas(
-                    mapOf(
-                        "schema1" to Schema<Any>().also {
-                            it.properties = mutableMapOf<String, Schema<Any>>(
-                                "prop1" to Schema<Any>().also { it.type = "number" },
-                                "prop2" to Schema<Any>().also { it.`$ref` = "#/components/schemas/schema2" },
-                            )
-                        },
-                        "schema2" to Schema<Any>().also {
-                            it.required = listOf("prop3")
-                            it.properties = mutableMapOf<String, Schema<Any>>(
-                                "prop3" to Schema<Any>().also { it.type = "string" },
-                            )
-                        },
+        val openApi =
+            OpenAPI()
+                .components(
+                    Components().schemas(
+                        mapOf(
+                            "schema1" to
+                                Schema<Any>().also {
+                                    it.properties =
+                                        mutableMapOf<String, Schema<Any>>(
+                                            "prop1" to Schema<Any>().also { it.type = "number" },
+                                            "prop2" to Schema<Any>().also { it.`$ref` = "#/components/schemas/schema2" },
+                                        )
+                                },
+                            "schema2" to
+                                Schema<Any>().also {
+                                    it.required = listOf("prop3")
+                                    it.properties =
+                                        mutableMapOf<String, Schema<Any>>(
+                                            "prop3" to Schema<Any>().also { it.type = "string" },
+                                        )
+                                },
+                        ),
                     ),
-                ),
-            )
+                )
         assertOpenApiFormat(openApi, null)
         val customizer = NullableIfNotRequiredOpenApiCustomizer()
         customizer.customise(openApi)
         assertOpenApiFormat(openApi, true)
     }
 
-    private fun assertOpenApiFormat(openApi: OpenAPI, nullableShouldBe: Boolean?) {
+    private fun assertOpenApiFormat(
+        openApi: OpenAPI,
+        nullableShouldBe: Boolean?,
+    ) {
         assertEquals(openApi.components.schemas.size, 2)
         val schemas = openApi.components.schemas
         val schema1 = schemas.getValue("schema1")

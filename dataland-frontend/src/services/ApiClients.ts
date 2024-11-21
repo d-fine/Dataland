@@ -15,6 +15,7 @@ import { type FrameworkDataTypes } from '@/utils/api/FrameworkDataTypes';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { getUnifiedFrameworkDataControllerFromConfiguration } from '@/utils/api/FrameworkApiClient';
 import * as backendApis from '@clients/backend/api';
+import { EmailControllerApi } from '@clients/emailservice';
 
 interface ApiBackendClients {
   actuator: backendApis.ActuatorApiInterface;
@@ -29,6 +30,7 @@ interface ApiClients {
   requestController: RequestControllerApiInterface;
   companyRolesController: CompanyRolesControllerApiInterface;
   qaController: QaControllerApi;
+  emailController: EmailControllerApi;
 }
 
 type ApiClientConstructor<T> = new (
@@ -63,7 +65,9 @@ export class ApiClientProvider {
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => {
+        return Promise.reject(new Error(error.message || 'Unknown error occurred'));
+      }
     );
   }
 
@@ -84,6 +88,7 @@ export class ApiClientProvider {
       requestController: this.getClientFactory('/community')(RequestControllerApi),
       companyRolesController: this.getClientFactory('/community')(CompanyRolesControllerApi),
       qaController: this.getClientFactory('/qa')(QaControllerApi),
+      emailController: this.getClientFactory('/email')(EmailControllerApi),
     };
   }
 

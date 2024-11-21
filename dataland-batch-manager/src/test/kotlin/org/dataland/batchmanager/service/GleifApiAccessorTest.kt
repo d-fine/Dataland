@@ -30,7 +30,6 @@ import java.net.SocketException
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GleifApiAccessorTest {
-
     lateinit var mockFileUtils: MockedStatic<FileUtils>
 
     val mockHttpClient: OkHttpClient = mock(OkHttpClient::class.java)

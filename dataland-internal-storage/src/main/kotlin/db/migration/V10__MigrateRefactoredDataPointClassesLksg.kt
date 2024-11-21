@@ -10,6 +10,7 @@ import org.json.JSONObject
 /**
  * Performs the migration of the refactored data point classes for the lksg framework
  */
+@Suppress("ClassName")
 class V10__MigrateRefactoredDataPointClassesLksg : BaseJavaMigration() {
     /**
      * Performs the migration of the refactored data point classes for lksg data
@@ -22,10 +23,11 @@ class V10__MigrateRefactoredDataPointClassesLksg : BaseJavaMigration() {
         )
     }
 
-    private val oldToNewFieldNamesForDataSource = mapOf(
-        "name" to "fileName",
-        "reference" to "fileReference",
-    )
+    private val oldToNewFieldNamesForDataSource =
+        mapOf(
+            "name" to "fileName",
+            "reference" to "fileReference",
+        )
 
     /**
      * Migrates the refactored Data Point Classes for the Lksg framework
@@ -38,7 +40,10 @@ class V10__MigrateRefactoredDataPointClassesLksg : BaseJavaMigration() {
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
     }
 
-    private fun recurseThroughDataToDataSource(dataObject: JSONObject, targetKey: String) {
+    private fun recurseThroughDataToDataSource(
+        dataObject: JSONObject,
+        targetKey: String,
+    ) {
         for (key in dataObject.keys()) {
             if (dataObject.getOrJavaNull(key) !is JSONObject) {
                 continue

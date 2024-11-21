@@ -5,6 +5,7 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
@@ -18,8 +19,9 @@ class ComponentGroup(
     identifier: String,
     parent: FieldNodeParent,
     private val componentGroupApi: ComponentGroupApiImpl = ComponentGroupApiImpl(),
-) : ComponentBase(identifier, parent), FieldNodeParent, ComponentGroupApi by componentGroupApi {
-
+) : ComponentBase(identifier, parent),
+    FieldNodeParent,
+    ComponentGroupApi by componentGroupApi {
     var viewPageLabelBadgeColor: LabelBadgeColor? = null
     var uploadPageLabelBadgeColor: LabelBadgeColor? = null
     var viewPageExpandOnPageLoad: Boolean = true
@@ -28,14 +30,17 @@ class ComponentGroup(
 
     override var isNullable: Boolean
         get() = super.isNullable && nestedChildren.all { it.isNullable }
-        set(value) { super.isNullable = value }
+        set(value) {
+            super.isNullable = value
+        }
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
-        val groupClass = groupPackage.addClass(
-            camelCaseComponentIdentifier,
-            "The data-model for the ${identifier.capitalizeEn()} section",
-        )
+        val groupClass =
+            groupPackage.addClass(
+                camelCaseComponentIdentifier,
+                "The data-model for the ${identifier.capitalizeEn()} section",
+            )
 
         children.forEach {
             it.generateDataModel(groupClass)
@@ -50,10 +55,11 @@ class ComponentGroup(
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
         val groupPackage = dataClassBuilder.parentPackage.addPackage(identifier)
-        val groupClass = groupPackage.addClass(
-            camelCaseComponentIdentifier,
-            "The QA-model for the ${identifier.capitalizeEn()} section",
-        )
+        val groupClass =
+            groupPackage.addClass(
+                camelCaseComponentIdentifier,
+                "The QA-model for the ${identifier.capitalizeEn()} section",
+            )
 
         children.forEach {
             it.generateQaModel(groupClass)
@@ -77,12 +83,13 @@ class ComponentGroup(
         require(!localLabel.isNullOrBlank()) {
             "You must specify a label for the group $identifier to generate a view configuration"
         }
-        val containerSection = sectionConfigBuilder.addSection(
-            label = localLabel,
-            labelBadgeColor = viewPageLabelBadgeColor,
-            expandOnPageLoad = viewPageExpandOnPageLoad,
-            shouldDisplay = FrameworkBooleanLambda.TRUE,
-        )
+        val containerSection =
+            sectionConfigBuilder.addSection(
+                label = localLabel,
+                labelBadgeColor = viewPageLabelBadgeColor,
+                expandOnPageLoad = viewPageExpandOnPageLoad,
+                shouldDisplay = FrameworkBooleanLambda.TRUE,
+            )
 
         children.forEach {
             it.generateViewConfig(containerSection)
@@ -94,15 +101,27 @@ class ComponentGroup(
         require(!localLabel.isNullOrBlank()) {
             "You must specify a label for the group $identifier to generate a view configuration"
         }
-        val containerSection = uploadCategoryBuilder.addSubcategory(
-            identifier = identifier,
-            label = localLabel,
-            labelBadgeColor = uploadPageLabelBadgeColor,
-            shouldDisplay = FrameworkBooleanLambda.TRUE,
-        )
+        val containerSection =
+            uploadCategoryBuilder.addSubcategory(
+                identifier = identifier,
+                label = localLabel,
+                labelBadgeColor = uploadPageLabelBadgeColor,
+                shouldDisplay = FrameworkBooleanLambda.TRUE,
+            )
 
         children.forEach {
             it.generateUploadConfig(containerSection)
+        }
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        val containerCategory =
+            specificationCategoryBuilder.addCategory(
+                identifier = identifier,
+            )
+
+        children.forEach {
+            it.generateSpecification(containerCategory)
         }
     }
 

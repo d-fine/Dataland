@@ -9,11 +9,12 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 interface FieldNodeParent {
     val children: Sequence<ComponentBase>
     val nestedChildren: Sequence<ComponentBase>
-        get() = children.flatMap {
-            if (it is FieldNodeParent) {
-                listOf(it) + it.nestedChildren
-            } else {
-                listOf(it)
+        get() =
+            children.flatMap {
+                if (it is FieldNodeParent) {
+                    listOf(it) + it.nestedChildren
+                } else {
+                    listOf(it)
+                }
             }
-        }
 }

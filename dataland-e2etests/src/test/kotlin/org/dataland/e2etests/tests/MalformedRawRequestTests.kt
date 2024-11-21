@@ -22,15 +22,19 @@ class MalformedRawRequestTests {
     @Test
     fun `sending a request to a non existent endpoint should yield a 404 response`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("this-endpoint-does-not-exist")
-            .build()
-        val request = Request.Builder()
-            .url(endpointUrl)
-            .get()
-            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
-            .build()
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("this-endpoint-does-not-exist")
+                .build()
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .get()
+                .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
 
         val response = client.newCall(request).execute()
         assertEquals(404, response.code)
@@ -39,15 +43,19 @@ class MalformedRawRequestTests {
     @Test
     fun `sending a request with missing properties should result in a 400 response`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("companies")
-            .build()
-        val request = Request.Builder()
-            .url(endpointUrl)
-            .post("{}".toRequestBody(jsonMediaType))
-            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
-            .build()
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("companies")
+                .build()
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .post("{}".toRequestBody(jsonMediaType))
+                .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body!!.string()
@@ -58,25 +66,27 @@ class MalformedRawRequestTests {
     @Test
     fun `sending a request with additional non requested json properties should result in a 400 response`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("data")
-            .addPathSegment("eutaxonomy-non-financials")
-            .build()
-        val request = Request.Builder()
-            .url(endpointUrl)
-            .post(
-                (
-                    "{\"companyId\": \"doesntexist\", " +
-                        "\"data\": {\"reportingPeriod\": \"2022\", " +
-                        "\"fiscalYearDeviation\": \"NoDeviation\", " +
-                        "\"fiscalYearEnd\": \"2022-12-31\", " +
-                        "\"numberOfEmployees\": \"100\"}}"
-                    )
-                    .toRequestBody(jsonMediaType),
-            )
-            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
-            .build()
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("data")
+                .addPathSegment("eutaxonomy-non-financials")
+                .build()
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .post(
+                    (
+                        "{\"companyId\": \"doesntexist\", " +
+                            "\"data\": {\"reportingPeriod\": \"2022\", " +
+                            "\"fiscalYearDeviation\": \"NoDeviation\", " +
+                            "\"fiscalYearEnd\": \"2022-12-31\", " +
+                            "\"numberOfEmployees\": \"100\"}}"
+                    ).toRequestBody(jsonMediaType),
+                ).addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body!!.string()
@@ -87,15 +97,19 @@ class MalformedRawRequestTests {
     @Test
     fun `sending a request with a non implemented request method results in a 405 error`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("companies")
-            .build()
-        val request = Request.Builder()
-            .url(endpointUrl)
-            .put(EMPTY_REQUEST)
-            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
-            .build()
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("companies")
+                .build()
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .put(EMPTY_REQUEST)
+                .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
 
         val response = client.newCall(request).execute()
         assertEquals(405, response.code)
@@ -104,15 +118,19 @@ class MalformedRawRequestTests {
     @Test
     fun `sending a funny request results in a 400 error`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("companies")
-            .build()
-        val request = Request.Builder()
-            .url(endpointUrl)
-            .method("LINK", EMPTY_REQUEST)
-            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
-            .build()
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("companies")
+                .build()
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .method("LINK", EMPTY_REQUEST)
+                .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body!!.string()
@@ -123,15 +141,19 @@ class MalformedRawRequestTests {
     @Test
     fun `test that the stacktrace is present in the local development environment but not in the production build`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("this-endpoint-does-not-exist")
-            .build()
-        val request = Request.Builder()
-            .url(endpointUrl)
-            .get()
-            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
-            .build()
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("this-endpoint-does-not-exist")
+                .build()
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .get()
+                .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body!!.string()
@@ -144,16 +166,20 @@ class MalformedRawRequestTests {
     @Test
     fun `sending a request with a malformed dataType should result in a 400 error`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        val endpointUrl = BASE_PATH_TO_DATALAND_BACKEND
-            .toHttpUrl().newBuilder()
-            .addPathSegment("companies")
-            .addQueryParameter("dataTypes", "this-datatype-does-not-exist")
-            .build()
-        val request = Request.Builder()
-            .url(endpointUrl)
-            .get()
-            .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
-            .build()
+        val endpointUrl =
+            BASE_PATH_TO_DATALAND_BACKEND
+                .toHttpUrl()
+                .newBuilder()
+                .addPathSegment("companies")
+                .addQueryParameter("dataTypes", "this-datatype-does-not-exist")
+                .build()
+        val request =
+            Request
+                .Builder()
+                .url(endpointUrl)
+                .get()
+                .addHeader("Authorization", "Bearer ${ApiClient.accessToken}")
+                .build()
 
         val response = client.newCall(request).execute()
         val responseBodyString = response.body!!.string()

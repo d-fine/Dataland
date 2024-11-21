@@ -8,8 +8,6 @@ import java.math.BigDecimal
 */
 data class P2pAmmoniaDecarbonisation(
     val energyMixInPercent: BigDecimal? = null,
-
     val ccsTechnologyAdoptionInPercent: BigDecimal? = null,
-
     val electrificationInPercent: BigDecimal? = null,
 )

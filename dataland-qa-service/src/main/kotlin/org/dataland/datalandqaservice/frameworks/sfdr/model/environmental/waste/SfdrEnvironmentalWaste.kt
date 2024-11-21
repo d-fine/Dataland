@@ -11,8 +11,6 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 data class SfdrEnvironmentalWaste(
     @field:Valid()
     val hazardousAndRadioactiveWasteInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
     @field:Valid()
     val nonRecycledWasteInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-
 )

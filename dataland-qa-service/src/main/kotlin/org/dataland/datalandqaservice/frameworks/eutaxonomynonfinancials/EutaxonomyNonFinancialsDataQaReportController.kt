@@ -25,30 +25,30 @@ class EutaxonomyNonFinancialsDataQaReportController(
     @Autowired qaReportManager: QaReportManager,
     @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<EutaxonomyNonFinancialsData>(
-    objectMapper = objectMapper,
-    qaReportManager = qaReportManager,
-    qaReportSecurityPolicy = qaReportSecurityPolicy,
-    clazz = EutaxonomyNonFinancialsData::class.java,
-    dataType = "eutaxonomy-non-financials",
-) {
+        objectMapper = objectMapper,
+        qaReportManager = qaReportManager,
+        qaReportSecurityPolicy = qaReportSecurityPolicy,
+        clazz = EutaxonomyNonFinancialsData::class.java,
+        dataType = "eutaxonomy-non-financials",
+    ) {
     @Operation(operationId = "postEutaxonomyNonFinancialsDataQaReport")
     override fun postQaReport(
         dataId: String,
         qaReport: EutaxonomyNonFinancialsData,
-    ): ResponseEntity<QaReportMetaInformation> {
-        return super.postQaReport(dataId, qaReport)
-    }
+    ): ResponseEntity<QaReportMetaInformation> = super.postQaReport(dataId, qaReport)
 
     @Operation(operationId = "getEutaxonomyNonFinancialsDataQaReport")
     override fun getQaReport(
         dataId: String,
         qaReportId: String,
-    ): ResponseEntity<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>> {
-        return super.getQaReport(dataId, qaReportId)
-    }
+    ): ResponseEntity<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>> = super.getQaReport(dataId, qaReportId)
 
     @Operation(operationId = "setEutaxonomyNonFinancialsDataQaReportStatus")
-    override fun setQaReportStatus(dataId: String, qaReportId: String, statusPatch: QaReportStatusPatch) {
+    override fun setQaReportStatus(
+        dataId: String,
+        qaReportId: String,
+        statusPatch: QaReportStatusPatch,
+    ) {
         super.setQaReportStatus(dataId, qaReportId, statusPatch)
     }
 
@@ -57,7 +57,7 @@ class EutaxonomyNonFinancialsDataQaReportController(
         dataId: String,
         showInactive: Boolean?,
         reporterUserId: String?,
-    ): ResponseEntity<List<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>>> {
-        return super.getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
-    }
+    ): ResponseEntity<List<QaReportWithMetaInformation<EutaxonomyNonFinancialsData>>> =
+        super
+            .getAllQaReportsForDataset(dataId, showInactive, reporterUserId)
 }

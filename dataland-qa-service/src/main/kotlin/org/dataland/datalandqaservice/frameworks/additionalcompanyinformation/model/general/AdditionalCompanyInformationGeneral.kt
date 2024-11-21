@@ -13,8 +13,6 @@ import org.dataland.datalandqaservice.frameworks.additionalcompanyinformation.mo
 data class AdditionalCompanyInformationGeneral(
     @field:Valid()
     val general: AdditionalCompanyInformationGeneralGeneral? = null,
-
     @field:Valid()
     val financialInformation: AdditionalCompanyInformationGeneralFinancialInformation? = null,
-
 )

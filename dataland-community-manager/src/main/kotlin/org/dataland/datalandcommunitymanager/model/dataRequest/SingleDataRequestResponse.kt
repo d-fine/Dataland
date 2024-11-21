@@ -12,13 +12,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class SingleDataRequestResponse(
     @field:JsonProperty(required = true)
     val message: String,
-
     @field:JsonProperty(required = true)
     val reportingPeriodsOfStoredDataRequests: List<String>,
-
     @field:JsonProperty(required = true)
     val reportingPeriodsOfDuplicateDataRequests: List<String>,
-
     @field:JsonProperty(required = true)
     val reportingPeriodsOfStoredAccessRequests: List<String>,
 )

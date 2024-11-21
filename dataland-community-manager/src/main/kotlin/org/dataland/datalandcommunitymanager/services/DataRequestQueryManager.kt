@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -25,143 +26,148 @@ import kotlin.jvm.optionals.getOrElse
  */
 @Service
 class DataRequestQueryManager
-@Suppress("LongParameterList")
-@Autowired
-constructor(
-    private val dataRequestRepository: DataRequestRepository,
-    private val dataRequestLogger: DataRequestLogger,
-    private val companyDataControllerApi: CompanyDataControllerApi,
-    private val processingUtils: DataRequestProcessingUtils,
-    private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
-) {
-
-    /** This method retrieves all the data requests for the current user from the database and logs a message.
-     * @returns all data requests for the current user
-     */
-    fun getDataRequestsForRequestingUser(): List<ExtendedStoredDataRequest> {
-        val currentUserId = DatalandAuthentication.fromContext().userId
-        val retrievedStoredDataRequestEntitiesForUser =
-            dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
-        val extendedStoredDataRequests = retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
-            convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity)
+    @Suppress("LongParameterList")
+    @Autowired
+    constructor(
+        private val dataRequestRepository: DataRequestRepository,
+        private val dataRequestLogger: DataRequestLogger,
+        private val companyDataControllerApi: CompanyDataControllerApi,
+        private val processingUtils: DataRequestProcessingUtils,
+        private val keycloakUserControllerApiService: KeycloakUserService,
+    ) {
+        /** This method retrieves all the data requests for the current user from the database and logs a message.
+         * @returns all data requests for the current user
+         */
+        fun getDataRequestsForRequestingUser(): List<ExtendedStoredDataRequest> {
+            val currentUserId = DatalandAuthentication.fromContext().userId
+            val retrievedStoredDataRequestEntitiesForUser =
+                dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
+            val extendedStoredDataRequests =
+                retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
+                    convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity)
+                }
+            dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
+            return extendedStoredDataRequests
         }
-        dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-        return extendedStoredDataRequests
-    }
 
-    /** This method retrieves an extended stored data request based on a data request entity
-     * @param dataRequestEntity dataland data request entity
-     * @returns extended stored data request
-     */
-    private fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity):
-        ExtendedStoredDataRequest {
-        val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
-        return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
-    }
-
-    /** This method triggers a query to get aggregated data requests.
-     * @param identifierValue can be used to filter via substring matching
-     * @param dataTypes can be used to filter on frameworks
-     * @param reportingPeriod can be used to filter on reporting periods
-     * @param status can be used to filter on request status
-     * @returns aggregated data requests
-     */
-    fun getAggregatedDataRequests(
-        identifierValue: String?,
-        dataTypes: Set<DataTypeEnum>?,
-        reportingPeriod: String?,
-        status: RequestStatus?,
-    ): List<AggregatedDataRequest> {
-        val dataTypesFilterForQuery = if (dataTypes != null && dataTypes.isEmpty()) {
-            null
-        } else {
-            dataTypes?.map { it.value }?.toSet()
+        /** This method retrieves an extended stored data request based on a data request entity
+         * @param dataRequestEntity dataland data request entity
+         * @returns extended stored data request
+         */
+        private fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
+            val companyInformation = companyDataControllerApi.getCompanyInfo(dataRequestEntity.datalandCompanyId)
+            return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
         }
-        val aggregatedDataRequestEntities =
-            dataRequestRepository.getAggregatedDataRequests(
-                GetAggregatedRequestsSearchFilter(
-                    dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
-                    reportingPeriodFilter = reportingPeriod,
-                    requestStatus = status?.name ?: "",
-                    datalandCompanyIdFilter = identifierValue,
-                ),
-            )
-        val aggregatedDataRequests = aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
-            AggregatedDataRequest(
-                processingUtils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
-                aggregatedDataRequestEntity.reportingPeriod,
-                aggregatedDataRequestEntity.datalandCompanyId,
-                aggregatedDataRequestEntity.requestStatus,
-                aggregatedDataRequestEntity.count,
-            )
-        }
-        return aggregatedDataRequests
-    }
 
-    /**
-     * Method to retrieve a data request by its ID
-     * @param dataRequestId the ID of the data request to retrieve
-     * @return the data request corresponding to the provided ID
-     */
-    @Transactional
-    fun getDataRequestById(dataRequestId: String): StoredDataRequest {
-        val dataRequestEntity = dataRequestRepository.findById(dataRequestId).getOrElse {
-            throw DataRequestNotFoundApiException(dataRequestId)
-        }
-        val emailAddress = keycloakUserControllerApiService.getUser(dataRequestEntity.userId).email ?: ""
-        return dataRequestEntity.toStoredDataRequest(emailAddress)
-    }
-
-    /**
-     * Method to get all data requests based on filters.
-     * @param isUserAdmin whether the requesting user is an admin
-     * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
-     * @param filter the search filter containing relevant search parameters
-     * @param chunkIndex the index of the chunked results which should be returned
-     * @param chunkSize the size of entries per chunk which should be returned
-     * @return all filtered data requests
-     */
-    @Transactional
-    fun getDataRequests(
-        isUserAdmin: Boolean,
-        ownedCompanyIdsByUser: List<String>,
-        filter: DataRequestsFilter,
-        chunkIndex: Int?,
-        chunkSize: Int?,
-    ): List<ExtendedStoredDataRequest>? {
-        val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
-
-        val usersMatchingEmailFilter = filter.setupEmailAddressFilter(keycloakUserControllerApiService)
-        val extendedStoredDataRequests = dataRequestRepository.searchDataRequestEntity(
-            searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
-        ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
-
-        val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
-
-        val extendedStoredDataRequestsWithMails = extendedStoredDataRequests.map {
-            val allowedToSeeEmailAddress = isUserAdmin ||
-                (
-                    ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
-                        it.accessStatus != AccessStatus.Public
+        /** This method triggers a query to get aggregated data requests.
+         * @param identifierValue can be used to filter via substring matching
+         * @param dataTypes can be used to filter on frameworks
+         * @param reportingPeriod can be used to filter on reporting periods
+         * @param status can be used to filter on request status
+         * @returns aggregated data requests
+         */
+        fun getAggregatedDataRequests(
+            identifierValue: String?,
+            dataTypes: Set<DataTypeEnum>?,
+            reportingPeriod: String?,
+            status: RequestStatus?,
+        ): List<AggregatedDataRequest> {
+            val dataTypesFilterForQuery =
+                if (dataTypes != null && dataTypes.isEmpty()) {
+                    null
+                } else {
+                    dataTypes?.map { it.value }?.toSet()
+                }
+            val aggregatedDataRequestEntities =
+                dataRequestRepository.getAggregatedDataRequests(
+                    GetAggregatedRequestsSearchFilter(
+                        dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
+                        reportingPeriodFilter = reportingPeriod,
+                        requestStatus = status?.name ?: "",
+                        datalandCompanyIdFilter = identifierValue,
+                    ),
+                )
+            val aggregatedDataRequests =
+                aggregatedDataRequestEntities.map { aggregatedDataRequestEntity ->
+                    AggregatedDataRequest(
+                        processingUtils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
+                        aggregatedDataRequestEntity.reportingPeriod,
+                        aggregatedDataRequestEntity.datalandCompanyId,
+                        aggregatedDataRequestEntity.requestStatus,
+                        aggregatedDataRequestEntity.count,
                     )
-
-            it.userEmailAddress = it.userId
-                .takeIf { allowedToSeeEmailAddress }
-                ?.let { userIdsToEmails.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
-
-            it
+                }
+            return aggregatedDataRequests
         }
-        return extendedStoredDataRequestsWithMails
-    }
 
-    /**
-     * Returns the number of requests for a specific filter.
-     */
-    @Transactional
-    fun getNumberOfDataRequests(
-        filter: DataRequestsFilter,
-    ): Int {
-        filter.setupEmailAddressFilter(keycloakUserControllerApiService)
-        return dataRequestRepository.getNumberOfRequests(filter)
+        /**
+         * Method to retrieve a data request by its ID
+         * @param dataRequestId the ID of the data request to retrieve
+         * @return the data request corresponding to the provided ID
+         */
+        @Transactional
+        fun getDataRequestById(dataRequestId: String): StoredDataRequest {
+            val dataRequestEntity =
+                dataRequestRepository.findById(dataRequestId).getOrElse {
+                    throw DataRequestNotFoundApiException(dataRequestId)
+                }
+            val emailAddress = keycloakUserControllerApiService.getUser(dataRequestEntity.userId).email ?: ""
+            return dataRequestEntity.toStoredDataRequest(emailAddress)
+        }
+
+        /**
+         * Method to get all data requests based on filters.
+         * @param isUserAdmin whether the requesting user is an admin
+         * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
+         * @param filter the search filter containing relevant search parameters
+         * @param chunkIndex the index of the chunked results which should be returned
+         * @param chunkSize the size of entries per chunk which should be returned
+         * @return all filtered data requests
+         */
+        @Transactional
+        fun getDataRequests(
+            isUserAdmin: Boolean,
+            ownedCompanyIdsByUser: List<String>,
+            filter: DataRequestsFilter,
+            chunkIndex: Int?,
+            chunkSize: Int?,
+        ): List<ExtendedStoredDataRequest>? {
+            val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
+
+            val usersMatchingEmailFilter = filter.setupEmailAddressFilter(keycloakUserControllerApiService)
+            val extendedStoredDataRequests =
+                dataRequestRepository
+                    .searchDataRequestEntity(
+                        searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
+                    ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
+
+            val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
+
+            val extendedStoredDataRequestsWithMails =
+                extendedStoredDataRequests.map {
+                    val allowedToSeeEmailAddress =
+                        isUserAdmin ||
+                            (
+                                ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
+                                    it.accessStatus != AccessStatus.Public
+                            )
+
+                    it.userEmailAddress =
+                        it.userId
+                            .takeIf { allowedToSeeEmailAddress }
+                            ?.let { userIdsToEmails.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
+
+                    it
+                }
+            return extendedStoredDataRequestsWithMails
+        }
+
+        /**
+         * Returns the number of requests for a specific filter.
+         */
+        @Transactional
+        fun getNumberOfDataRequests(filter: DataRequestsFilter): Int {
+            filter.setupEmailAddressFilter(keycloakUserControllerApiService)
+            return dataRequestRepository.getNumberOfRequests(filter)
+        }
     }
-}

@@ -16,12 +16,9 @@
                     <p>Select the company for which you would like to add a new dataset.</p>
                   </div>
                   <div class="col-9 d-card">
-                    <div class="mb-3">
-                      <span>Type at least 3 characters to search for companies on Dataland:</span>
-                    </div>
                     <CompaniesOnlySearchBar
                       @select-company="pushToChooseFrameworkForDataUploadPageForItem"
-                      class="w-12"
+                      wrapper-class-additions="w-full"
                     />
                     <div v-if="isAdmin" class="mt-6">
                       <span>Can't find the company? </span>
@@ -72,6 +69,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { type CompanyIdAndName } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
+import router from '@/router';
 
 export default defineComponent({
   name: 'ChooseCompany',
@@ -127,7 +125,7 @@ export default defineComponent({
      */
     handleCompanyCreated(companyId: string) {
       setTimeout(() => {
-        void this.$router.push(`/companies/${companyId}/frameworks/upload`);
+        void router.push(`/companies/${companyId}/frameworks/upload`);
       }, TIME_DELAY_BETWEEN_SUBMIT_AND_NEXT_ACTION_IN_MS);
     },
 
@@ -136,7 +134,7 @@ export default defineComponent({
      * @param selectedCompany the company selected through by the search bar
      */
     async pushToChooseFrameworkForDataUploadPageForItem(selectedCompany: CompanyIdAndName) {
-      await this.$router.push(`/companies/${selectedCompany.companyId}/frameworks/upload`);
+      await router.push(`/companies/${selectedCompany.companyId}/frameworks/upload`);
     },
   },
 });

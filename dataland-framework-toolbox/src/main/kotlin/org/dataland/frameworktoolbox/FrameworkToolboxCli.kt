@@ -12,7 +12,6 @@ import java.nio.file.Path
  * An Entrypoint for the Framework Toolbox Command-Line-Interface
  */
 class FrameworkToolboxCli {
-
     private val context = AnnotationConfigApplicationContext(SpringConfig::class.java)
     private val allPavedRoadFrameworks = context.getBeansOfType<PavedRoadFramework>().values.toList()
 

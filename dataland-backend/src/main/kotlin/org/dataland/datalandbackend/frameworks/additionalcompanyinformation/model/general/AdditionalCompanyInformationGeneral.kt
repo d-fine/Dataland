@@ -13,8 +13,6 @@ import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mode
 data class AdditionalCompanyInformationGeneral(
     @field:Valid()
     val general: AdditionalCompanyInformationGeneralGeneral? = null,
-
     @field:Valid()
     val financialInformation: AdditionalCompanyInformationGeneralFinancialInformation? = null,
-
 )

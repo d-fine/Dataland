@@ -18,7 +18,11 @@ node {
 }
 
 val backendOpenApiFile = "${project.rootDir}/dataland-backend/backendOpenApi.json"
-val backendClientOutputDir = layout.buildDirectory.dir("clients/backend").get().toString()
+val backendClientOutputDir =
+    layout.buildDirectory
+        .dir("clients/backend")
+        .get()
+        .toString()
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     dependsOn("generateClients")
@@ -36,6 +40,7 @@ tasks.register("generateClients") {
     dependsOn("generateDocumentManagerClient")
     dependsOn("generateQaServiceClient")
     dependsOn("generateCommunityManagerClient")
+    dependsOn("generateEmailServiceClient")
 }
 
 tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
@@ -66,7 +71,12 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.apikeymanager"
     input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/apikeymanager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/apikeymanager")
+            .get()
+            .toString(),
+    )
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -89,7 +99,12 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.documentmanager"
     input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/documentmanager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/documentmanager")
+            .get()
+            .toString(),
+    )
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -111,7 +126,12 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.qaservice"
     input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/qaservice").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/qaservice")
+            .get()
+            .toString(),
+    )
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -134,7 +154,12 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     group = "clients"
     val destinationPackage = "org.dataland.datalandfrontend.openApiClient.communitymanager"
     input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/communitymanager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/communitymanager")
+            .get()
+            .toString(),
+    )
     modelPackage.set("$destinationPackage.model")
     apiPackage.set("$destinationPackage.api")
     packageName.set(destinationPackage)
@@ -144,6 +169,29 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
             "removeEnumValuePrefix" to false,
         ),
     )
+    configOptions.set(
+        mapOf(
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+}
+
+tasks.register("generateEmailServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the email service."
+    group = "clients"
+    val destinationPackage = "org.dataland.datalandfrontend.openApiClient.emailservice"
+    input = project.file("${project.rootDir}/dataland-email-service/emailServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/emailservice")
+            .get()
+            .toString(),
+    )
+    modelPackage.set("$destinationPackage.model")
+    apiPackage.set("$destinationPackage.api")
+    packageName.set(destinationPackage)
+    generatorName.set("typescript-axios")
     configOptions.set(
         mapOf(
             "withInterfaces" to "true",

@@ -14,14 +14,18 @@ sealed interface DocumentSupport {
         /**
          * Obtain a DocumentSupport implementation from a TemplateDocumentSupport instance from the template CSV
          */
-        fun fromTemplate(templateDocumentSupport: TemplateDocumentSupport): DocumentSupport {
-            return when (templateDocumentSupport) {
+        fun fromTemplate(templateDocumentSupport: TemplateDocumentSupport): DocumentSupport =
+            when (templateDocumentSupport) {
                 TemplateDocumentSupport.None -> NoDocumentSupport
                 TemplateDocumentSupport.Simple -> SimpleDocumentSupport
                 TemplateDocumentSupport.Extended -> ExtendedDocumentSupport
             }
-        }
     }
+
+    /**
+     * Calculate the naming prefix for a datapoint given the current DocumentSupport requirements
+     */
+    fun getNamingPrefix(): String
 
     /**
      * Calculate the JVM type-reference for a datapoint of type innerType given the current DocumentSupport
@@ -29,7 +33,10 @@ sealed interface DocumentSupport {
      * @param innerType the type of the datapoint
      * @param nullable true iff the datapoint should be nullable
      */
-    fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference
+    fun getJvmTypeReference(
+        innerType: TypeReference,
+        nullable: Boolean,
+    ): TypeReference
 
     /**
      * Calculate the JVM type-reference for a QA-DataPoint of type innerType given the current DocumentSupport
@@ -37,7 +44,10 @@ sealed interface DocumentSupport {
      * @param innerType the type of the datapoint
      * @param nullable true iff the datapoint should be nullable
      */
-    fun getQaJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference?
+    fun getQaJvmTypeReference(
+        innerType: TypeReference,
+        nullable: Boolean,
+    ): TypeReference?
 
     /**
      * Calculate a list of annotations that must be applied to JVM-types in the backend using this
@@ -63,7 +73,10 @@ sealed interface DocumentSupport {
      * @param dataPointAccessor a TS-Accessor to the containing datapoint
      * @param nullable true iff the datapoint is nullable
      */
-    fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String
+    fun getDataAccessor(
+        dataPointAccessor: String,
+        nullable: Boolean,
+    ): String
 
     /**
      * Calculate a Fixture-Expression for generating the value of a datapoint with the current DocumentSupport
@@ -72,5 +85,9 @@ sealed interface DocumentSupport {
      * @param fixtureExpression a fixture expression that generates a non-nullable value for the data-element
      * @param nullable true iff the datapoint is nullable
      */
-    fun getFixtureExpression(nullableFixtureExpression: String, fixtureExpression: String, nullable: Boolean): String
+    fun getFixtureExpression(
+        nullableFixtureExpression: String,
+        fixtureExpression: String,
+        nullable: Boolean,
+    ): String
 }

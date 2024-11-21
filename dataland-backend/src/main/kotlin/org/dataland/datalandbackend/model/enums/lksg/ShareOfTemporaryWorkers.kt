@@ -9,5 +9,8 @@ import io.swagger.v3.oas.annotations.media.Schema
     enumAsRef = true,
 )
 enum class ShareOfTemporaryWorkers {
-    Smaller10, Between10And25, Between25And50, Greater50
+    Smaller10,
+    Between10And25,
+    Between25And50,
+    Greater50,
 }

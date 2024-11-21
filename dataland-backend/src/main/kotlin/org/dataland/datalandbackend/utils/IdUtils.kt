@@ -8,7 +8,6 @@ import java.util.UUID
  * A class to help with id generation
  */
 object IdUtils {
-
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
 
@@ -23,7 +22,10 @@ object IdUtils {
      * with a companyId and/or dataId
      * @returns the correlationId
      */
-    fun generateCorrelationId(companyId: String?, dataId: String?): String {
+    fun generateCorrelationId(
+        companyId: String?,
+        dataId: String?,
+    ): String {
         val correlationId = generateUUID()
         logger.info(
             logMessageBuilder.generateCorrelationIdMessage(

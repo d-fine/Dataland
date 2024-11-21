@@ -14,10 +14,11 @@ fun DataClassBuilder.addQaPropertyWithDocumentSupport(
     type: TypeReference,
     annotations: List<Annotation> = emptyList(),
 ) {
-    val qaJvmTypeReference = documentSupport.getQaJvmTypeReference(
-        type,
-        type.nullable,
-    )
+    val qaJvmTypeReference =
+        documentSupport.getQaJvmTypeReference(
+            type,
+            type.nullable,
+        )
 
     if (qaJvmTypeReference != null) {
         addProperty(

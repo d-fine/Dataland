@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component
  */
 @Order(0)
 @Component
-class WarningComponentFactory(@Autowired val diagnostic: DiagnosticManager) : TemplateComponentFactory {
+class WarningComponentFactory(
+    @Autowired val diagnostic: DiagnosticManager,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = true
 
     override fun generateComponent(

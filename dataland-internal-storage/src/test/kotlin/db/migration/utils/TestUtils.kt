@@ -11,17 +11,18 @@ class TestUtils {
         migratedDataFileLocation: String,
         migration: (input: DataTableEntity) -> Unit,
     ) {
-        val originalDataEntity = DataTableEntity.fromJsonObject(
-            mockDataId,
-            dataType,
-            JsonUtils.readJsonFromResourcesFile(oldDataFileLocation),
-
-        )
-        val expectedDataEntity = DataTableEntity.fromJsonObject(
-            mockDataId,
-            dataType,
-            JsonUtils.readJsonFromResourcesFile(migratedDataFileLocation),
-        )
+        val originalDataEntity =
+            DataTableEntity.fromJsonObject(
+                mockDataId,
+                dataType,
+                JsonUtils.readJsonFromResourcesFile(oldDataFileLocation),
+            )
+        val expectedDataEntity =
+            DataTableEntity.fromJsonObject(
+                mockDataId,
+                dataType,
+                JsonUtils.readJsonFromResourcesFile(migratedDataFileLocation),
+            )
         migration(originalDataEntity)
         Assertions.assertEquals(expectedDataEntity, originalDataEntity)
     }

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 /**
  * A REST controller for the QA reports metadata API.
@@ -24,8 +24,8 @@ class QaReportsMetadataController(
         minUploadDate: LocalDate?,
         maxUploadDate: LocalDate?,
         companyIdentifier: String?,
-    ): ResponseEntity<List<DataAndQaReportMetadata>> {
-        return ResponseEntity.ok(
+    ): ResponseEntity<List<DataAndQaReportMetadata>> =
+        ResponseEntity.ok(
             qaReportMetadataService
                 .searchDataAndQaReportMetadata(
                     uploaderUserIds,
@@ -36,5 +36,4 @@ class QaReportsMetadataController(
                     companyIdentifier,
                 ),
         )
-    }
 }

@@ -7,20 +7,20 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class RelationshipExtractorTest {
-
-    private var finalMap = mutableMapOf(
-        "abcd" to "ghij",
-        "bcde" to "defg",
-        "defg" to "ghij",
-        "jklm" to "hklm",
-        "aa" to "bb",
-        "bb" to "cc",
-        "cc" to "aa",
-        "aaa" to "bbb",
-        "bbb" to "aaa",
-        "xx" to "yy",
-        "hh" to "jj",
-    )
+    private var finalMap =
+        mutableMapOf(
+            "abcd" to "ghij",
+            "bcde" to "defg",
+            "defg" to "ghij",
+            "jklm" to "hklm",
+            "aa" to "bb",
+            "bb" to "cc",
+            "cc" to "aa",
+            "aaa" to "bbb",
+            "bbb" to "aaa",
+            "xx" to "yy",
+            "hh" to "jj",
+        )
 
     private val testFileContent =
 """Relationship.StartNode.NodeID,Relationship.EndNode.NodeID,Relationship.RelationshipType

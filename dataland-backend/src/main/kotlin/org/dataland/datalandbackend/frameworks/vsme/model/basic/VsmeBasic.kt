@@ -28,38 +28,25 @@ import org.dataland.datalandbackend.frameworks.vsme.model.basic.workforceRenumer
 data class VsmeBasic(
     @field:Valid()
     val basisForPreparation: VsmeBasicBasisForPreparation? = null,
-
     @field:Valid()
-    val practicesForTransitioningTowardsAMoreSustainableEconomy:
-    VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy? = null,
-
+    val practicesForTransitioningTowardsAMoreSustainableEconomy: VsmeBasicPracticesForTransitioningTowardsAMoreSustainableEconomy? = null,
     @field:Valid()
     val energyAndGreenhousGasEmissions: VsmeBasicEnergyAndGreenhousGasEmissions? = null,
-
     @field:Valid()
     val pollutionOfAirWaterSoil: VsmeBasicPollutionOfAirWaterSoil? = null,
-
     @field:Valid()
     val biodiversity: VsmeBasicBiodiversity? = null,
-
     @field:Valid()
     val water: VsmeBasicWater? = null,
-
     @field:Valid()
     val resourceUseCircularEconomyAndWasteManagement: VsmeBasicResourceUseCircularEconomyAndWasteManagement? = null,
-
     @field:Valid()
     val workforceGeneralCharacteristics: VsmeBasicWorkforceGeneralCharacteristics? = null,
-
     @field:Valid()
     val workforceHealthAndSafety: VsmeBasicWorkforceHealthAndSafety? = null,
-
     @field:Valid()
-    val workforceRenumerationCollectiveBargainingAndTraining:
-    VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining? = null,
-
+    val workforceRenumerationCollectiveBargainingAndTraining: VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining? = null,
     @field:Valid()
     val workersInTheValueChainAffectedCommunitiesConsumersAndEndUsers:
-    VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers? = null,
-
+        VsmeBasicWorkersInTheValueChainAffectedCommunitiesConsumersAndEndUsers? = null,
 )

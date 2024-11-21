@@ -6,5 +6,4 @@ package org.dataland.datalandbackend.frameworks.heimathafen.model.environmental.
  */
 data class HeimathafenEnvironmentalSfdr(
     val methodikZurMessungEinesSignifikantenBeitragsZuEinemUmweltziel: String? = null,
-
 )

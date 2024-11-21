@@ -26,16 +26,16 @@ open class MultiSelectComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     var options: Set<SelectionOption> = mutableSetOf()
     val enumName = "${identifier.capitalizeEn()}Options"
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
-        val enum = dataClassBuilder.parentPackage.addEnum(
-            name = enumName,
-            options = options,
-            comment = "Enum class for the multi-select-field $identifier",
-        )
+        val enum =
+            dataClassBuilder.parentPackage.addEnum(
+                name = enumName,
+                options = options,
+                comment = "Enum class for the multi-select-field $identifier",
+            )
         dataClassBuilder.addPropertyWithDocumentSupport(
             documentSupport,
             identifier,
@@ -74,10 +74,11 @@ open class MultiSelectComponent(
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         uploadCategoryBuilder.addStandardUploadConfigCell(
-            frameworkUploadOptions = FrameworkUploadOptions(
-                body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
-                imports = null,
-            ),
+            frameworkUploadOptions =
+                FrameworkUploadOptions(
+                    body = generateTsCodeForOptionsOfSelectionFormFields(this.options),
+                    imports = null,
+                ),
             component = this,
             uploadComponentName = "MultiSelectFormField",
         )
@@ -92,20 +93,20 @@ open class MultiSelectComponent(
                 nullableFixtureExpression = "dataGenerator.valueOrNull(pickSubsetOfElements($formattedString))",
                 nullable = isNullable,
             ),
-            imports = setOf(
-                TypeScriptImport(
-                    "pickSubsetOfElements",
-                    "@e2e/fixtures/FixtureUtils",
+            imports =
+                setOf(
+                    TypeScriptImport(
+                        "pickSubsetOfElements",
+                        "@e2e/fixtures/FixtureUtils",
+                    ),
                 ),
-            ),
         )
     }
 
-    private fun generateReturnStatement(): String {
-        return "return formatListOfStringsForDatatable(" +
+    private fun generateReturnStatement(): String =
+        "return formatListOfStringsForDatatable(" +
             "${getTypescriptFieldAccessor()}?.map(it => \n" +
             "   getOriginalNameFromTechnicalName(it, mappings)), " +
             "'${escapeEcmaScript(label)}'" +
             ")"
-    }
 }

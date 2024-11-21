@@ -11,6 +11,7 @@ import org.dataland.frameworktoolbox.intermediate.group.TopLevelComponentGroup
 import org.dataland.frameworktoolbox.intermediate.logic.FrameworkConditional
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getKotlinFieldAccessor
@@ -29,7 +30,6 @@ open class ComponentBase(
     var identifier: String,
     override var parent: FieldNodeParent,
 ) : TreeNode<FieldNodeParent> {
-
     /**
      * The label of a component is a human-readable short title describing the component
      */
@@ -76,6 +76,11 @@ open class ComponentBase(
     var fixtureGeneratorGenerator: ((sectionBuilder: FixtureSectionBuilder) -> Unit)? = null
 
     /**
+     * The specificationGenerator allows users to overwrite the Specification generation
+     */
+    var specificationGenerator: ((categoryBuilder: CategoryBuilder) -> Unit)? = null
+
+    /**
      * True iff this component is optional / accepts null values
      */
     open var isNullable: Boolean = true
@@ -85,7 +90,9 @@ open class ComponentBase(
      */
     var isRequired: Boolean
         get() = !isNullable
-        set(value) { isNullable = !value }
+        set(value) {
+            isNullable = !value
+        }
 
     /**
      * A logical condition that decides whether this component is available / shown to users
@@ -100,18 +107,19 @@ open class ComponentBase(
     /**
      * Obtain a list of all parents of this node until the root node
      */
-    fun parents(): Sequence<FieldNodeParent> = sequence {
-        var currentNode: Any? = parent
-        while (currentNode is FieldNodeParent) {
-            yield(currentNode)
+    fun parents(): Sequence<FieldNodeParent> =
+        sequence {
+            var currentNode: Any? = parent
+            while (currentNode is FieldNodeParent) {
+                yield(currentNode)
 
-            if (currentNode is TreeNode<*>) {
-                currentNode = currentNode.parent
-            } else {
-                break
+                if (currentNode is TreeNode<*>) {
+                    currentNode = currentNode.parent
+                } else {
+                    break
+                }
             }
         }
-    }
 
     val camelCaseComponentIdentifier: String
         get() {
@@ -131,24 +139,21 @@ open class ComponentBase(
      * Build this component instance into the provided Kotlin DataClass using the default
      * generator
      */
-    open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
+    open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder): Unit =
         throw IllegalStateException("This component did not implement Data model generation.")
-    }
 
     /**
      * Build this component instance into the provided Kotlin DataClass
      */
-    fun generateDataModel(dataClassBuilder: DataClassBuilder) {
-        return dataModelGenerator?.let { it(dataClassBuilder) } ?: generateDefaultDataModel(dataClassBuilder)
-    }
+    fun generateDataModel(dataClassBuilder: DataClassBuilder) =
+        dataModelGenerator?.let { it(dataClassBuilder) } ?: generateDefaultDataModel(dataClassBuilder)
 
     /**
      * Build this component instance into the provided Kotlin DataClass using the default
      * generator
      */
-    open fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
+    open fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder): Unit =
         throw IllegalStateException("This component did not implement QA model generation.")
-    }
 
     /**
      * Build this component instance into the provided Kotlin DataClass
@@ -171,55 +176,61 @@ open class ComponentBase(
      * Build this component instance into the provided view-section configuration
      * using the default generator for this component
      */
-    open fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
+    open fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder): Unit =
         throw NotImplementedError("This component did not implement view config conversion.")
-    }
 
     /**
      * Build this component instance into the provided upload-section configuration
      * using the default generator for this component
      */
-    open fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
+    open fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder): Unit =
         throw NotImplementedError("This component did not implement upload config conversion.")
-    }
 
     /**
      * Build this component instance into the provided view-section configuration
      */
-    fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
-        return viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
-    }
+    fun generateViewConfig(sectionConfigBuilder: SectionConfigBuilder) =
+        viewConfigGenerator?.let { it(sectionConfigBuilder) } ?: generateDefaultViewConfig(sectionConfigBuilder)
 
     /**
      * Build this component instance into the provided upload-section configuration
      */
-    fun generateUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        return uploadConfigGenerator?.let { it(uploadCategoryBuilder) }
+    fun generateUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) =
+        uploadConfigGenerator?.let { it(uploadCategoryBuilder) }
             ?: generateDefaultUploadConfig(uploadCategoryBuilder)
-    }
 
     /**
      * Build the fixture code generation for this component using the default generator
      */
-    open fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
+    open fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder): Unit =
         throw NotImplementedError("This component did not implement fixture code-generation.")
-    }
 
     /**
      * Build the fixture code generation for this component
      */
-    fun generateFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
-        return fixtureGeneratorGenerator?.let { it(sectionBuilder) } ?: generateDefaultFixtureGenerator(sectionBuilder)
-    }
+    fun generateFixtureGenerator(sectionBuilder: FixtureSectionBuilder) =
+        fixtureGeneratorGenerator?.let { it(sectionBuilder) } ?: generateDefaultFixtureGenerator(sectionBuilder)
 
     /**
      * Returns the list of extended document references of the component
      */
-    open fun getExtendedDocumentReference(): List<String> {
-        return if (documentSupport == ExtendedDocumentSupport) {
+    open fun getExtendedDocumentReference(): List<String> =
+        if (documentSupport == ExtendedDocumentSupport) {
             listOf("${this.getKotlinFieldAccessor()}?.dataSource?.fileReference")
         } else {
             emptyList()
         }
+
+    /**
+     * Build the specification for this component
+     */
+    fun generateSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        specificationGenerator?.let { it(specificationCategoryBuilder) } ?: generateDefaultSpecification(specificationCategoryBuilder)
     }
+
+    /**
+     * Build the specification for this component using the default generator
+     */
+    open fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder): Unit =
+        throw NotImplementedError("This component did not implement specification generation.")
 }

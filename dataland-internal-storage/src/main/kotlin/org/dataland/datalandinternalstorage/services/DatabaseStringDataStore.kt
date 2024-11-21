@@ -26,13 +26,13 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+
 /**
  * Simple implementation of a data store using a postgres database
  * @param dataItemRepository the repository for data items
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param temporarilyCachedDataClient the service for retrieving data from the temporary storage
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
- * @param messageUtils utils for handling of messages
  */
 @Component
 class DatabaseStringDataStore(
@@ -40,7 +40,6 @@ class DatabaseStringDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
-    @Autowired var messageUtils: MessageQueueUtils,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -54,35 +53,36 @@ class DatabaseStringDataStore(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "requestReceivedInternalStorageDatabaseDataStore",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.RequestReceived, declare = "false"),
+                value =
+                    Queue(
+                        "requestReceivedInternalStorageDatabaseDataStore",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.REQUEST_RECEIVED, declare = "false"),
                 key = [""],
             ),
         ],
     )
     fun distributeIncomingRequests(
         @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
+        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         val dataId = JSONObject(payload).getString("dataId")
         val actionType = JSONObject(payload).getString("actionType")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
         }
-        messageUtils.rejectMessageOnException {
-            if (actionType == ActionType.StorePublicData) {
+        MessageQueueUtils.rejectMessageOnException {
+            if (actionType == ActionType.STORE_PUBLIC_DATA) {
                 persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
             }
-            if (actionType == ActionType.DeleteData) {
+            if (actionType == ActionType.DELETE_DATA) {
                 deleteDataItemWithoutTransaction(dataId, correlationId)
             }
         }
@@ -95,13 +95,17 @@ class DatabaseStringDataStore(
      * @param correlationId the correlation ID of the current user process
      * @param dataId the dataId of the dataset to be stored
      */
-    fun persistentlyStoreDataAndSendMessage(dataId: String, correlationId: String, payload: String) {
+    fun persistentlyStoreDataAndSendMessage(
+        dataId: String,
+        correlationId: String,
+        payload: String,
+    ) {
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
         val data = temporarilyCachedDataClient.getReceivedPublicData(dataId)
         logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
         storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DataStored, correlationId, ExchangeName.ItemStored, RoutingKeyNames.data,
+            payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )
     }
 
@@ -120,15 +124,19 @@ class DatabaseStringDataStore(
      * @param dataId the ID of the data to be retrieved
      * @return the data as json string with ID dataId
      */
-    fun selectDataSet(dataId: String, correlationId: String): String {
-        return dataItemRepository.findById(dataId).orElseThrow {
-            logger.info("Data with data ID: $dataId could not be found. Correlation ID: $correlationId.")
-            ResourceNotFoundApiException(
-                "Dataset not found",
-                "No dataset with the ID: $dataId could be found in the data store.",
-            )
-        }.data
-    }
+    fun selectDataSet(
+        dataId: String,
+        correlationId: String,
+    ): String =
+        dataItemRepository
+            .findById(dataId)
+            .orElseThrow {
+                logger.info("Data with data ID: $dataId could not be found. Correlation ID: $correlationId.")
+                ResourceNotFoundApiException(
+                    "Dataset not found",
+                    "No dataset with the ID: $dataId could be found in the data store.",
+                )
+            }.data
 
     /**
      * Deletes a Data Item while ensuring that there is no active transaction. This will guarantee that the write
@@ -137,7 +145,10 @@ class DatabaseStringDataStore(
      * @param correlationId the correlationId ot the current user process
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun deleteDataItemWithoutTransaction(dataId: String, correlationId: String) {
+    fun deleteDataItemWithoutTransaction(
+        dataId: String,
+        correlationId: String,
+    ) {
         logger.info("Received DataID $dataId and CorrelationId: $correlationId")
         logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
         dataItemRepository.deleteById(dataId)

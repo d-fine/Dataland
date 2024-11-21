@@ -20,7 +20,5 @@ class ApiClients(
     @Bean
     fun getCompanyRolesControllerApi(
         @Qualifier("AuthenticatedOkHttpClient") authenticatedOkHttpClient: OkHttpClient,
-    ): CompanyRolesControllerApi {
-        return CompanyRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
-    }
+    ): CompanyRolesControllerApi = CompanyRolesControllerApi(communityManagerBaseUrl, authenticatedOkHttpClient)
 }

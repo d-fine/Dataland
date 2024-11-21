@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.File
-import java.util.*
+import java.util.Locale
 import java.util.concurrent.ForkJoinPool
 import java.util.stream.StreamSupport
 import kotlin.time.Duration
@@ -56,12 +56,14 @@ class NorthdataDataIngestor(
 
         val uploadThreadPool = ForkJoinPool(UPLOAD_THREAD_POOL_SIZE)
         try {
-            uploadThreadPool.submit {
-                StreamSupport.stream(northDataIterable.spliterator(), true)
-                    .forEach {
-                        filterAndTriggerUpload(it)
-                    }
-            }.get()
+            uploadThreadPool
+                .submit {
+                    StreamSupport
+                        .stream(northDataIterable.spliterator(), true)
+                        .forEach {
+                            filterAndTriggerUpload(it)
+                        }
+                }.get()
         } finally {
             uploadThreadPool.shutdown()
         }
@@ -74,23 +76,23 @@ class NorthdataDataIngestor(
     @Synchronized
     fun processNorthdataFile(downloadFile: (file: File) -> Unit) {
         val zipFile = File("/NorthdataTestData.zip")
-        val duration = measureTime {
-            try {
-                downloadFile(zipFile)
-                updateCompaniesFromNorthDataFile(zipFile)
-            } finally {
-                logger.error("Not deleting $zipFile now, remember to change this.")
+        val duration =
+            measureTime {
+                try {
+                    downloadFile(zipFile)
+                    updateCompaniesFromNorthDataFile(zipFile)
+                } finally {
+                    logger.error("Not deleting $zipFile now, remember to change this.")
+                }
             }
-        }
         logger.info("Finished processing of Northdata file $zipFile in ${formatExecutionTime(duration)}.")
     }
 
-    private fun formatExecutionTime(duration: Duration): String {
-        return duration
+    private fun formatExecutionTime(duration: Duration): String =
+        duration
             .toComponents { hours, minutes, seconds, _ ->
                 String.format(
                     Locale.getDefault(), "%02dh %02dm %02ds", hours, minutes, seconds,
                 )
             }
-    }
 }

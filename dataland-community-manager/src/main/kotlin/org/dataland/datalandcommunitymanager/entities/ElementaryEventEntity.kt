@@ -19,19 +19,12 @@ import java.util.UUID
 data class ElementaryEventEntity(
     @Id
     val elementaryEventId: UUID = UUID.randomUUID(),
-
     @Enumerated(EnumType.STRING)
     val elementaryEventType: ElementaryEventType,
-
     val companyId: UUID,
-
-    @Enumerated(EnumType.STRING)
     val framework: DataTypeEnum,
-
     val reportingPeriod: String,
-
     val creationTimestamp: Long,
-
     @ManyToOne(optional = true)
     @JoinColumn(name = "notification_event_id")
     var notificationEvent: NotificationEventEntity?,

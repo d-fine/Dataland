@@ -10,8 +10,6 @@ import java.math.BigDecimal
 data class LksgProcurementCategory(
     @field:JsonProperty(required = true)
     val procuredProductTypesAndServicesNaceCodes: List<String>,
-
     val numberOfSuppliersPerCountryCode: Map<String, Int?>?,
-
     val shareOfTotalProcurementInPercent: BigDecimal?,
 )

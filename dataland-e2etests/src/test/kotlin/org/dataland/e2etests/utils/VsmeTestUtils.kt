@@ -12,7 +12,6 @@ import java.io.File
 import java.time.LocalDate
 
 class VsmeTestUtils {
-
     val apiAccessor = ApiAccessor()
 
     fun postVsmeDataset(
@@ -28,31 +27,41 @@ class VsmeTestUtils {
         )
     }
 
-    fun setReferencedReports(dataset: VsmeData, fileInfoToSetAsReport: FileInfos?): VsmeData {
-        val newReferencedReports = fileInfoToSetAsReport?.let {
-            mapOf(
-                it.fileName to CompanyReport(
-                    fileReference = it.fileReference,
-                    fileName = it.fileName,
-                    publicationDate = LocalDate.now(),
-                ),
-            )
-        }
+    fun setReferencedReports(
+        dataset: VsmeData,
+        fileInfoToSetAsReport: FileInfos?,
+    ): VsmeData {
+        val newReferencedReports =
+            fileInfoToSetAsReport?.let {
+                mapOf(
+                    it.fileName to
+                        CompanyReport(
+                            fileReference = it.fileReference,
+                            fileName = it.fileName,
+                            publicationDate = LocalDate.now(),
+                        ),
+                )
+            }
         return dataset.copy(
-            basic = dataset.basic?.copy(
-                basisForPreparation = dataset.basic?.basisForPreparation?.copy(
-                    referencedReports = newReferencedReports,
+            basic =
+                dataset.basic?.copy(
+                    basisForPreparation =
+                        dataset.basic?.basisForPreparation?.copy(
+                            referencedReports = newReferencedReports,
+                        ),
                 ),
-            ),
         )
     }
-    fun setSingleDataVsmeRequest(companyId: String, reportingPeriods: Set<String>): SingleDataRequest {
-        return SingleDataRequest(
+
+    fun setSingleDataVsmeRequest(
+        companyId: String,
+        reportingPeriods: Set<String>,
+    ): SingleDataRequest =
+        SingleDataRequest(
             companyIdentifier = companyId,
             dataType = SingleDataRequest.DataType.vsme,
             reportingPeriods = reportingPeriods,
             contacts = setOf("someContact@example.com"),
             message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
         )
-    }
 }

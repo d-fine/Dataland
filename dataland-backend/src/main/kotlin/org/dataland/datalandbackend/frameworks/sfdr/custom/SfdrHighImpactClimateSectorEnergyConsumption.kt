@@ -9,6 +9,5 @@ import java.math.BigDecimal
  */
 data class SfdrHighImpactClimateSectorEnergyConsumption(
     val highImpactClimateSectorEnergyConsumptionInGWh: ExtendedDataPoint<BigDecimal>? = null,
-
     val highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue: ExtendedDataPoint<BigDecimal>? = null,
 )

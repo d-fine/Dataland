@@ -1,4 +1,4 @@
-FROM nginx:1.27.1@sha256:135fbc7ed19c8f644ddf678e68292e678696908451dad7ee2fd4e0cf861f4b6f
+FROM nginx:1.27.2@sha256:28402db69fec7c17e179ea87882667f1e054391138f77ffaf0c3eb388efc3ffb
 
 COPY ./dataland-inbound-admin-proxy/nginx.conf /etc/nginx/nginx.conf
 

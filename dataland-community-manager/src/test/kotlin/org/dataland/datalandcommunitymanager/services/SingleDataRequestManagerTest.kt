@@ -38,7 +38,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class SingleDataRequestManagerTest {
-
     private lateinit var singleDataRequestManagerMock: SingleDataRequestManager
     private lateinit var dataRequestRepositoryMock: DataRequestRepository
     private lateinit var singleDataRequestEmailMessageSenderMock: SingleDataRequestEmailMessageSender
@@ -54,13 +53,14 @@ class SingleDataRequestManagerTest {
     private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
     private val maxRequestsForUser = 10
 
-    private val sampleRequest = SingleDataRequest(
-        companyIdentifier = companyIdRegexSafeCompanyId,
-        dataType = DataTypeEnum.lksg,
-        reportingPeriods = setOf("1969"),
-        contacts = setOf("testContact@example.com"),
-        message = "Test message for non-premium user quota test",
-    )
+    private val sampleRequest =
+        SingleDataRequest(
+            companyIdentifier = companyIdRegexSafeCompanyId,
+            dataType = DataTypeEnum.lksg,
+            reportingPeriods = setOf("1969"),
+            contacts = setOf("testContact@example.com"),
+            message = "Test message for non-premium user quota test",
+        )
     private val testUtils = TestUtils()
 
     @BeforeEach
@@ -74,18 +74,19 @@ class SingleDataRequestManagerTest {
         accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         companyRolesManager = mock(CompanyRolesManager::class.java)
         dataAccessManager = mock(DataAccessManager::class.java)
-        singleDataRequestManagerMock = SingleDataRequestManager(
-            dataRequestLogger = mock(DataRequestLogger::class.java),
-            dataRequestRepository = dataRequestRepositoryMock,
-            companyIdValidator = mockCompanyIdValidator,
-            singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
-            utils = utilsMock,
-            dataAccessManager = dataAccessManager,
-            accessRequestEmailSender = accessRequestEmailSender,
-            securityUtilsService = securityUtilsServiceMock,
-            companyRolesManager = companyRolesManager,
-            maxRequestsForUser,
-        )
+        singleDataRequestManagerMock =
+            SingleDataRequestManager(
+                dataRequestLogger = mock(DataRequestLogger::class.java),
+                dataRequestRepository = dataRequestRepositoryMock,
+                companyIdValidator = mockCompanyIdValidator,
+                singleDataRequestEmailMessageSender = singleDataRequestEmailMessageSenderMock,
+                utils = utilsMock,
+                dataAccessManager = dataAccessManager,
+                accessRequestEmailSender = accessRequestEmailSender,
+                securityUtilsService = securityUtilsServiceMock,
+                companyRolesManager = companyRolesManager,
+                maxRequestsForUser,
+            )
 
         val mockSecurityContext = createSecurityContextMock()
         SecurityContextHolder.setContext(mockSecurityContext)
@@ -93,11 +94,12 @@ class SingleDataRequestManagerTest {
 
     private fun createSecurityContextMock(): SecurityContext {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@bigplayer.com",
-            "1234-221-1111elf",
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "requester@bigplayer.com",
+                "1234-221-1111elf",
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         return mockSecurityContext
@@ -187,11 +189,12 @@ class SingleDataRequestManagerTest {
 
     @Test
     fun `send single data requests as premium user and verify that the quota is not applied`() {
-        authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "requester@example.com",
-            "1234-221-1111zwoelf",
-            setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
-        )
+        authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "requester@example.com",
+                "1234-221-1111zwoelf",
+                setOf(DatalandRealmRole.ROLE_PREMIUM_USER),
+            )
         testUtils.mockSecurityContext()
         for (i in 1..maxRequestsForUser + 1) {
             val passedRequest = sampleRequest.copy(reportingPeriods = setOf(i.toString()))
@@ -205,13 +208,14 @@ class SingleDataRequestManagerTest {
         expectedInternalMessagesSent: Int,
         expectedExternalMessagesSent: Int,
     ) {
-        val request = SingleDataRequest(
-            companyIdentifier = companyIdRegexSafeCompanyId,
-            dataType = DataTypeEnum.lksg,
-            reportingPeriods = setOf("1969"),
-            contacts = contacts,
-            message = message,
-        )
+        val request =
+            SingleDataRequest(
+                companyIdentifier = companyIdRegexSafeCompanyId,
+                dataType = DataTypeEnum.lksg,
+                reportingPeriods = setOf("1969"),
+                contacts = contacts,
+                message = message,
+            )
         singleDataRequestManagerMock.processSingleDataRequest(
             request,
         )
@@ -237,10 +241,11 @@ class SingleDataRequestManagerTest {
         val userId = "1234-221-1111elf"
         val contacts = setOf(MessageEntity.COMPANY_OWNER_KEYWORD)
         val message = "MESSAGE"
-        val request = SingleDataRequest(
-            companyIdentifier = companyIdRegexSafeCompanyId, dataType = DataTypeEnum.vsme,
-            reportingPeriods = setOf(reportingPeriod), contacts = contacts, message = message,
-        )
+        val request =
+            SingleDataRequest(
+                companyIdentifier = companyIdRegexSafeCompanyId, dataType = DataTypeEnum.vsme,
+                reportingPeriods = setOf(reportingPeriod), contacts = contacts, message = message,
+            )
 
         `when`(
             companyRolesManager

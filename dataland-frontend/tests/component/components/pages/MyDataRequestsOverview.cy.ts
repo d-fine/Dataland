@@ -2,6 +2,7 @@ import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@cl
 import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
+import router from '@/router';
 
 const mockDataRequests: ExtendedStoredDataRequest[] = [];
 const expectedHeaders = ['COMPANY', 'REPORTING PERIOD', 'FRAMEWORK', 'REQUESTED', 'LAST UPDATED', 'STATUS'];
@@ -86,7 +87,7 @@ before(function () {
 
   mockDataRequests.push(
     buildExtendedStoredDataRequest(
-      DataTypeEnum.EsgQuestionnaire,
+      DataTypeEnum.EsgDatenkatalog,
       '1021',
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
@@ -132,6 +133,7 @@ describe('Component tests for the data requests search page', function (): void 
     }).as('UserRequests');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
+      router: router,
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-table"]').should('not.exist');
       cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
@@ -202,6 +204,7 @@ describe('Component tests for the data requests search page', function (): void 
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
+      router: router,
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-searchbar"]')
         .should('exist')
@@ -227,7 +230,7 @@ describe('Component tests for the data requests search page', function (): void 
       'Pathways to Paris',
       'for financial companies',
       'for non-financial companies',
-      'ESG Questionnaire',
+      'ESG Datenkatalog',
       'für Corporate Schuldscheindarlehen',
     ];
 
@@ -259,6 +262,7 @@ describe('Component tests for the data requests search page', function (): void 
     }).as('UserRequests');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
+      router: router,
     }).then((mounted) => {
       cy.get('[data-test="requested-Datasets-table"]').within(() => {
         cy.get('tr:last').click();

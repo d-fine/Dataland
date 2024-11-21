@@ -188,6 +188,7 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
 import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/utils/RequestsOverviewPageUtils';
 import type { DataTypeEnum } from '@clients/backend';
+import router from '@/router';
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
@@ -361,7 +362,7 @@ export default defineComponent({
      */
     onRowClick(event: DataTableRowClickEvent) {
       const requestIdOfClickedRow = event.data.dataRequestId;
-      return this.$router.push(`/requests/${requestIdOfClickedRow}`);
+      return router.push(`/requests/${requestIdOfClickedRow}`);
     },
   },
 });

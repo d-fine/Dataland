@@ -16,6 +16,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.servlet.NoHandlerFoundException
 import java.lang.StringBuilder
 
@@ -29,9 +30,14 @@ class KnownErrorControllerAdvice(
     private val trace: Boolean,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private fun prepareResponse(error: ErrorDetails, exception: Exception): ResponseEntity<ErrorResponse> {
+
+    private fun prepareResponse(
+        error: ErrorDetails,
+        exception: Exception,
+    ): ResponseEntity<ErrorResponse> {
         val returnedError = if (trace) error.copy(stackTrace = ExceptionUtils.getStackTrace(exception)) else error
-        return ResponseEntity.status(error.httpStatus)
+        return ResponseEntity
+            .status(error.httpStatus)
             .contentType(MediaType.APPLICATION_JSON)
             .body(
                 ErrorResponse(
@@ -44,8 +50,8 @@ class KnownErrorControllerAdvice(
      * Handles HttpMessageNotReadbleException errors. These occur i.e. when the request body cannot be parsed
      */
     @ExceptionHandler(HttpMessageNotReadableException::class)
-    fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> {
-        return prepareResponse(
+    fun handleHttpMessageNotReadableException(ex: HttpMessageNotReadableException): ResponseEntity<ErrorResponse> =
+        prepareResponse(
             ErrorDetails(
                 errorType = "message-not-readable",
                 summary = "Message not readable",
@@ -54,33 +60,30 @@ class KnownErrorControllerAdvice(
             ),
             ex,
         )
-    }
 
     /**
      * Handles AccessDeniedException errors. These occur i.e. if the user does not have permissions to perform an action
      */
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException::class)
-    fun handleAccessDeniedException(
-        ex: org.springframework.security.access.AccessDeniedException,
-    ): ResponseEntity<ErrorResponse> {
-        return prepareResponse(
+    fun handleAccessDeniedException(ex: org.springframework.security.access.AccessDeniedException): ResponseEntity<ErrorResponse> =
+        prepareResponse(
             ErrorDetails(
                 errorType = "access-denied",
                 summary = "Access Denied",
-                message = "Access to this resource has been denied. " +
-                    "Please contact support if you believe this to be an error",
+                message =
+                    "Access to this resource has been denied. " +
+                        "Please contact support if you believe this to be an error",
                 httpStatus = HttpStatus.FORBIDDEN,
             ),
             ex,
         )
-    }
 
     /**
      * Handles NoHandlerFoundException errors (aka 404-errors)
      */
     @ExceptionHandler(NoHandlerFoundException::class)
-    fun handleNoHandlerFoundException(ex: NoHandlerFoundException): ResponseEntity<ErrorResponse> {
-        return prepareResponse(
+    fun handleNoHandlerFoundException(ex: NoHandlerFoundException): ResponseEntity<ErrorResponse> =
+        prepareResponse(
             ErrorDetails(
                 errorType = "route-not-found",
                 summary = "Route not found",
@@ -89,25 +92,24 @@ class KnownErrorControllerAdvice(
             ),
             ex,
         )
-    }
 
     /**
      * Handles HttpRequestMethodNotSupportedException errors. These occur whenever someone calls an endpoint
      * with a non-implemented HTTP-Method
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
-    fun handleMethodNotSupportException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> {
-        return prepareResponse(
+    fun handleMethodNotSupportException(ex: HttpRequestMethodNotSupportedException): ResponseEntity<ErrorResponse> =
+        prepareResponse(
             ErrorDetails(
                 errorType = "method-not-allowed",
                 summary = "Method ${ex.method} not allowed.",
-                message = "The HTTP-Method ${ex.method} is not allowed. Please refer to the API documentation " +
-                    "for a list of supported HTTP methods",
+                message =
+                    "The HTTP-Method ${ex.method} is not allowed. Please refer to the API documentation " +
+                        "for a list of supported HTTP methods",
                 httpStatus = HttpStatus.METHOD_NOT_ALLOWED,
             ),
             ex,
         )
-    }
 
     /**
      * Handles SingleApiException errors. These occur whenever custom dataland-exceptions are thrown
@@ -137,6 +139,28 @@ class KnownErrorControllerAdvice(
                 errorType = "bad-input",
                 summary = "Invalid input",
                 message = stringBuilder.toString(),
+                httpStatus = HttpStatus.BAD_REQUEST,
+            ),
+            ex,
+        )
+    }
+
+    /**
+     * Handles HandlerMethodValidationExceptions. These occur whenever the input of a method is not valid
+     */
+    @ExceptionHandler(HandlerMethodValidationException::class)
+    fun handleMethodValidationException(ex: HandlerMethodValidationException): ResponseEntity<ErrorResponse> {
+        val errorMessages =
+            ex.allValidationResults
+                .flatMap { it.resolvableErrors }
+                .joinToString(", ") { resolvable ->
+                    resolvable.defaultMessage ?: "Invalid parameter"
+                }
+        return prepareResponse(
+            ErrorDetails(
+                errorType = "bad-input",
+                summary = "Invalid input",
+                message = errorMessages,
                 httpStatus = HttpStatus.BAD_REQUEST,
             ),
             ex,

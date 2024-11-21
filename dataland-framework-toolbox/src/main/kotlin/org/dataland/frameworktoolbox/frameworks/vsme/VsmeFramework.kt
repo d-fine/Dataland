@@ -18,31 +18,40 @@ import java.io.File
  * Definition of the VSME framework
  */
 @Component
-class VsmeFramework : PavedRoadFramework(
-    identifier = "vsme",
-    label = "VSME",
-    explanation = "Voluntary small and medium-sized enterprises questionnaire",
-    File("./dataland-framework-toolbox/inputs/vsme/vsme.xlsx"),
-    order = 6,
-    isPrivateFramework = true,
-    enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
-) {
-    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return VsmeComponentGenerationUtils()
-    }
+class VsmeFramework :
+    PavedRoadFramework(
+        identifier = "vsme",
+        label = "VSME",
+        explanation = "Voluntary small and medium-sized enterprises questionnaire",
+        File("./dataland-framework-toolbox/inputs/vsme/vsme.xlsx"),
+        order = 7,
+        isPrivateFramework = true,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.QaModel,
+                FrameworkGenerationFeatures.DataPointSpecifications,
+            ),
+    ) {
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils = VsmeComponentGenerationUtils()
+
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
-        val fieldsToAddDependency = arrayOf(
-            "grossPayMaleInEuro", "grossPayFemaleInEuro", "totalWorkHoursMale",
-            "totalWorkHoursFemale", "averageWorkHoursMale", "averageWorkHoursFemale",
-            "averageHourlyPayMaleInEuroPerHour",
-            "averageHourlyPayFemaleInEuroPerHour", "payGap",
-        )
+        val fieldsToAddDependency =
+            arrayOf(
+                "grossPayMaleInEuro", "grossPayFemaleInEuro", "totalWorkHoursMale",
+                "totalWorkHoursFemale", "averageWorkHoursMale", "averageWorkHoursFemale",
+                "averageHourlyPayMaleInEuroPerHour",
+                "averageHourlyPayFemaleInEuroPerHour", "payGap",
+            )
 
         framework.root.edit<ComponentGroup>("basic") {
-            val numberOfEmployeesInHeadCount = this.get<ComponentGroup>("workforceGeneralCharacteristics")
-                .get<NumberBaseComponent>("numberOfEmployeesInHeadcount")
-            val numberEmployeesFullTime = this.get<ComponentGroup>("workforceGeneralCharacteristics")
-                .get<NumberBaseComponent>("numberOfEmployeesInFte")
+            val numberOfEmployeesInHeadCount =
+                this
+                    .get<ComponentGroup>("workforceGeneralCharacteristics")
+                    .get<NumberBaseComponent>("numberOfEmployeesInHeadcount")
+            val numberEmployeesFullTime =
+                this
+                    .get<ComponentGroup>("workforceGeneralCharacteristics")
+                    .get<NumberBaseComponent>("numberOfEmployeesInFte")
             edit<ComponentGroup>("workforceRenumerationCollectiveBargainingAndTraining") {
                 edit<SingleSelectComponent>("payGapBasis") {
                     setDependency(this, numberOfEmployeesInHeadCount, numberEmployeesFullTime)
@@ -61,9 +70,10 @@ class VsmeFramework : PavedRoadFramework(
         firstDependencyComponent2: NumberBaseComponent,
         secondDependencyComponent: NumberBaseComponent,
     ) {
-        component.availableIf = DependsOnComponentCustomValue(
-            firstDependencyComponent2,
-            secondDependencyComponent,
-        )
+        component.availableIf =
+            DependsOnComponentCustomValue(
+                firstDependencyComponent2,
+                secondDependencyComponent,
+            )
     }
 }

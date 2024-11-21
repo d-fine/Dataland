@@ -9,14 +9,15 @@ import org.dataland.frameworktoolbox.template.components.TemplateComponentFactor
 import org.dataland.frameworktoolbox.template.model.TemplateRow
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
 /**
  * Generates the SiteAndArea component
  */
 @Component
-class VsmeSiteAndAreaComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) :
-    TemplateComponentFactory {
-    override fun canGenerateComponent(row: TemplateRow): Boolean =
-        row.component == "Vsme Site And Area"
+class VsmeSiteAndAreaComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Vsme Site And Area"
 
     override fun generateComponent(
         row: TemplateRow,

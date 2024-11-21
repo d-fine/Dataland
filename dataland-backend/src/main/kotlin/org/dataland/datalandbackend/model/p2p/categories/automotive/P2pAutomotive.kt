@@ -10,8 +10,6 @@ import org.dataland.datalandbackend.model.p2p.categories.automotive.subcategorie
 */
 data class P2pAutomotive(
     val energy: P2pAutomotiveEnergy? = null,
-
     val technologyValueCreation: P2pAutomotiveTechnologyValueCreation? = null,
-
     val materials: P2pAutomotiveMaterials? = null,
 )

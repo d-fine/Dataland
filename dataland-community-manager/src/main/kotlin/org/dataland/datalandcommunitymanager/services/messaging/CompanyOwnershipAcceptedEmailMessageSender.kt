@@ -7,7 +7,9 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -34,22 +36,24 @@ class CompanyOwnershipAcceptedEmailMessageSender(
         companyName: String,
         correlationId: String,
     ) {
-        val properties = mapOf(
-            "companyId" to datalandCompanyId,
-            "companyName" to companyName,
-            "numberOfOpenDataRequestsForCompany" to getNumberOfOpenDataRequestsForCompany(datalandCompanyId).toString(),
-        )
-        val message = TemplateEmailMessage(
-            TemplateEmailMessage.Type.SuccessfullyClaimedOwnership,
-            TemplateEmailMessage.UserIdEmailRecipient(newCompanyOwnerId),
-            properties,
-        )
+        val emailData =
+            CompanyOwnershipClaimApproved(
+                companyId = datalandCompanyId,
+                companyName = companyName,
+                numberOfOpenDataRequestsForCompany = getNumberOfOpenDataRequestsForCompany(datalandCompanyId),
+            )
+        val message =
+            EmailMessage(
+                emailData,
+                listOf(EmailRecipient.UserId(newCompanyOwnerId)),
+                emptyList(), emptyList(),
+            )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SendTemplateEmail,
+            MessageType.SEND_EMAIL,
             correlationId,
-            ExchangeName.SendEmail,
-            RoutingKeyNames.templateEmail,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.EMAIL,
         )
     }
 
@@ -58,12 +62,13 @@ class CompanyOwnershipAcceptedEmailMessageSender(
      * @param datalandCompanyId of the company to count the open data requests for
      * @return the number of opened data requests
      */
-    fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int {
-        return dataRequestQueryManager.getAggregatedDataRequests(
-            identifierValue = datalandCompanyId,
-            dataTypes = null,
-            reportingPeriod = null,
-            status = RequestStatus.Open,
-        ).filter { it.count > 0 }.size
-    }
+    fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int =
+        dataRequestQueryManager
+            .getAggregatedDataRequests(
+                identifierValue = datalandCompanyId,
+                dataTypes = null,
+                reportingPeriod = null,
+                status = RequestStatus.Open,
+            ).filter { it.count > 0 }
+            .size
 }

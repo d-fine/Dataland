@@ -47,24 +47,24 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-        MOST_RECENT_STATUS_CHANGE +
-            "SELECT " +
-            "dr.data_type AS dataType, " +
-            "dr.reporting_period AS reportingPeriod, " +
-            "dr.dataland_company_id AS datalandCompanyId, " +
-            "st.request_status AS requestStatus, " +
-            "COUNT(dr.user_id) AS count " +
-            "FROM data_requests dr " +
-            "JOIN status_table st ON dr.data_request_id = st.request_id " +
-            "WHERE (:#{#searchFilter.dataTypeFilterLength} = 0 " +
-            "OR dr.data_type IN :#{#searchFilter.dataTypeFilter} ) " +
-            "AND (:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
-            "OR dr.reporting_period = :#{#searchFilter.reportingPeriodFilter}) " +
-            "AND (:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
-            "OR dr.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
-            "AND (:#{#searchFilter.requestStatusLength} = 0 " +
-            "OR st.request_status = :#{#searchFilter.requestStatus} ) " +
-            "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, st.request_status ",
+            MOST_RECENT_STATUS_CHANGE +
+                "SELECT " +
+                "dr.data_type AS dataType, " +
+                "dr.reporting_period AS reportingPeriod, " +
+                "dr.dataland_company_id AS datalandCompanyId, " +
+                "st.request_status AS requestStatus, " +
+                "COUNT(dr.user_id) AS count " +
+                "FROM data_requests dr " +
+                "JOIN status_table st ON dr.data_request_id = st.request_id " +
+                "WHERE (:#{#searchFilter.dataTypeFilterLength} = 0 " +
+                "OR dr.data_type IN :#{#searchFilter.dataTypeFilter} ) " +
+                "AND (:#{#searchFilter.reportingPeriodFilterLength} = 0 " +
+                "OR dr.reporting_period = :#{#searchFilter.reportingPeriodFilter}) " +
+                "AND (:#{#searchFilter.datalandCompanyIdFilterLength} = 0 " +
+                "OR dr.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
+                "AND (:#{#searchFilter.requestStatusLength} = 0 " +
+                "OR st.request_status = :#{#searchFilter.requestStatus} ) " +
+                "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, st.request_status ",
     )
     fun getAggregatedDataRequests(
         @Param("searchFilter") searchFilter: GetAggregatedRequestsSearchFilter,
@@ -80,11 +80,11 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = TemporaryTables.TABLE_FILTERED +
-            TemporaryTables.TABLE_FILTERED_ORDER_AND_LIMIT + TemporaryTables.TABLE_FILTERED_END +
-            "SELECT d.* FROM data_requests d " +
-            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
-
+        value =
+            TemporaryTables.TABLE_FILTERED +
+                TemporaryTables.TABLE_FILTERED_ORDER_AND_LIMIT + TemporaryTables.TABLE_FILTERED_END +
+                "SELECT d.* FROM data_requests d " +
+                "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
     )
     fun searchDataRequestEntity(
         @Param("searchFilter") searchFilter: DataRequestsFilter,
@@ -97,11 +97,14 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     @Query(
         nativeQuery = true,
-        value = TemporaryTables.TABLE_FILTERED + TemporaryTables.TABLE_FILTERED_END +
-            "SELECT COUNT(*) FROM data_requests d " +
-            "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
+        value =
+            TemporaryTables.TABLE_FILTERED + TemporaryTables.TABLE_FILTERED_END +
+                "SELECT COUNT(*) FROM data_requests d " +
+                "JOIN filtered_table ON filtered_table.data_request_id = d.data_request_id ",
     )
-    fun getNumberOfRequests(@Param("searchFilter") searchFilter: DataRequestsFilter): Int
+    fun getNumberOfRequests(
+        @Param("searchFilter") searchFilter: DataRequestsFilter,
+    ): Int
 
     /**
      * Fetches data request entities together with the associated status history
@@ -113,9 +116,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
             "LEFT JOIN FETCH d.dataRequestStatusHistory " +
             "WHERE d IN :dataRequests",
     )
-    fun fetchStatusHistory(
-        dataRequests: List<DataRequestEntity>,
-    ): List<DataRequestEntity>
+    fun fetchStatusHistory(dataRequests: List<DataRequestEntity>): List<DataRequestEntity>
 
     /** This method counts the number of data requests that a user
      * has performed from a specified timestamp.

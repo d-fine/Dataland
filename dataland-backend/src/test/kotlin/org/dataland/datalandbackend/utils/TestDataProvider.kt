@@ -9,7 +9,9 @@ import org.dataland.datalandbackend.model.enums.company.IdentifierType
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.File
 
-class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
+class TestDataProvider(
+    @Autowired var objectMapper: ObjectMapper,
+) {
     private val jsonFile = File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsData.json")
     private val testCompanyInformationWithEutaxonomyNonFinancialsData =
         objectMapper.readValue(
@@ -17,23 +19,20 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
             object : TypeReference<List<CompanyInformationWithData<EutaxonomyNonFinancialsData>>>() {},
         )
 
-    fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> {
-        return testCompanyInformationWithEutaxonomyNonFinancialsData.slice(
-            0 until requiredQuantity,
-        ).map { it.companyInformation }
-    }
+    fun getCompanyInformation(requiredQuantity: Int): List<CompanyInformation> =
+        testCompanyInformationWithEutaxonomyNonFinancialsData
+            .slice(
+                0 until requiredQuantity,
+            ).map { it.companyInformation }
 
-    fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> {
-        return getCompanyInformation(requiredQuantity)
+    fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> =
+        getCompanyInformation(requiredQuantity)
             .map { it.copy(identifiers = IdentifierType.entries.associateWith { emptyList() }) }
-    }
 
-    fun getEuTaxonomyNonFinancialsDataset(): EutaxonomyNonFinancialsData {
-        return testCompanyInformationWithEutaxonomyNonFinancialsData.first().t
-    }
+    fun getEuTaxonomyNonFinancialsDataset(): EutaxonomyNonFinancialsData = testCompanyInformationWithEutaxonomyNonFinancialsData.first().t
 
-    fun getEmptyStoredCompanyEntity(): StoredCompanyEntity {
-        return StoredCompanyEntity(
+    fun getEmptyStoredCompanyEntity(): StoredCompanyEntity =
+        StoredCompanyEntity(
             "",
             "",
             null,
@@ -50,5 +49,4 @@ class TestDataProvider(@Autowired var objectMapper: ObjectMapper) {
             false,
             null,
         )
-    }
 }

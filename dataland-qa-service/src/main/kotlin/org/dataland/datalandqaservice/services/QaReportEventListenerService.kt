@@ -23,17 +23,14 @@ import org.springframework.transaction.annotation.Transactional
 
 /**
  * Service class for listening to the QA report deletion requests
- * @param messageUtils utils for handling of messages
  * @param reportManager service for managing QA reports
  */
 @Service
 class QaReportEventListenerService(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val reportManager: QaReportManager,
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
     @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
 ) {
-
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
@@ -46,15 +43,16 @@ class QaReportEventListenerService(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "qaReportDeleteDataRequestReceivedQueue",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.RequestReceived, declare = "false"),
+                value =
+                    Queue(
+                        "qaReportDeleteDataRequestReceivedQueue",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.REQUEST_RECEIVED, declare = "false"),
                 key = [""],
             ),
         ],
@@ -62,10 +60,10 @@ class QaReportEventListenerService(
     @Transactional
     fun distributeIncomingRequests(
         @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PublicDataReceived)
+        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         val payloadJson = JSONObject(payload)
         val dataId = payloadJson.getString("dataId")
         val actionType = payloadJson.getString("actionType")
@@ -74,8 +72,8 @@ class QaReportEventListenerService(
         }
 
         logger.info("Deleting all QA Reports associated with data id $dataId. CorrelationId: $correlationId")
-        messageUtils.rejectMessageOnException {
-            if (actionType == ActionType.DeleteData) {
+        MessageQueueUtils.rejectMessageOnException {
+            if (actionType == ActionType.DELETE_DATA) {
                 reportManager.deleteAllQaReportsForDataId(dataId)
                 reviewQueueRepository.deleteByDataId(dataId)
                 reviewHistoryRepository.deleteByDataId(dataId)

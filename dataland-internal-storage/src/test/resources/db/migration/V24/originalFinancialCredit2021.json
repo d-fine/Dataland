@@ -1,0 +1,122 @@
+{
+  "assurance": {
+    "dataSource": null,
+    "provider": null,
+    "value": "None"
+  },
+  "creditInstitutionKpis": {
+    "greenAssetRatioInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": null,
+      "value": null
+    },
+    "interbankLoansInPercent": {
+      "comment": null,
+      "dataSource": {
+        "fileName": "FR0000045072_IntegratedReport",
+        "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+        "page": "111",
+        "tagName": null
+      },
+      "quality": "Reported",
+      "value": 1
+    },
+    "tradingPortfolioAndInterbankLoansInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": null,
+      "value": null
+    },
+    "tradingPortfolioInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": null,
+      "value": null
+    }
+  },
+  "eligibilityKpis": {
+    "CreditInstitution": {
+      "banksAndIssuersInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "FR0000045072_IntegratedReport",
+          "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+          "page": "111",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 18
+      },
+      "derivativesInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "FR0000045072_IntegratedReport",
+          "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+          "page": "111",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 1
+      },
+      "investmentNonNfrdInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "FR0000045072_IntegratedReport",
+          "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+          "page": "111",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 12
+      },
+      "taxonomyEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "FR0000045072_IntegratedReport",
+          "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+          "page": "111",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 27
+      },
+      "taxonomyNonEligibleActivityInPercent": {
+        "comment": null,
+        "dataSource": {
+          "fileName": "FR0000045072_IntegratedReport",
+          "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+          "page": "111",
+          "tagName": null
+        },
+        "quality": "Reported",
+        "value": 48
+      }
+    }
+  },
+  "euTaxonomyActivityLevelReporting": null,
+  "financialServicesTypes": [
+    "CreditInstitution"
+  ],
+  "fiscalYearDeviation": "NoDeviation",
+  "fiscalYearEnd": null,
+  "insuranceKpis": {
+    "taxonomyEligibleNonLifeInsuranceActivitiesInPercent": {
+      "comment": null,
+      "dataSource": null,
+      "quality": null,
+      "value": null
+    }
+  },
+  "investmentFirmKpis": null,
+  "nfrdMandatory": "No",
+  "numberOfEmployees": 75975,
+  "referencedReports": {
+    "FR0000045072_IntegratedReport": {
+      "fileName": "FR0000045072_IntegratedReport",
+      "fileReference": "efaa4d4642bb9d7bfc1fbe317e0e3d537c45218910f22fc143c69e80e8d60d23",
+      "publicationDate": null
+    }
+  },
+  "scopeOfEntities": null
+}

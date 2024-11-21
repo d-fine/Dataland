@@ -17,35 +17,39 @@ import java.math.BigInteger
  * This migration script updates the old version eutaxonomy for non financials datasets to the new version
  * and the new version is integrated into the old datatype
  */
+@Suppress("ClassName")
 class V8__MigratePercentages : BaseJavaMigration() {
     companion object {
-        private const val percentageMultiplier = 100
-        private val euTaxonomyNonFinancialsFinancialShareFields = listOf(
-            "nonEligibleShare",
-            "eligibleShare",
-            "nonAlignedShare",
-            "alignedShare",
-        )
-        val euTaxonomyNonFinancialsPercentageFields = listOf(
-            "substantialContributionToClimateChangeMitigationInPercent",
-            "substantialContributionToClimateChangeAdaptionInPercent",
-            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
-            "substantialContributionToTransitionToACircularEconomyInPercent",
-            "substantialContributionToPollutionPreventionAndControlInPercent",
-            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
-            "enablingShareInPercent",
-            "transitionalShareInPercent",
-        )
+        private const val PERCENTAGE_MULTIPLIER = 100
+        private val euTaxonomyNonFinancialsFinancialShareFields =
+            listOf(
+                "nonEligibleShare",
+                "eligibleShare",
+                "nonAlignedShare",
+                "alignedShare",
+            )
+        val euTaxonomyNonFinancialsPercentageFields =
+            listOf(
+                "substantialContributionToClimateChangeMitigationInPercent",
+                "substantialContributionToClimateChangeAdaptionInPercent",
+                "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+                "substantialContributionToTransitionToACircularEconomyInPercent",
+                "substantialContributionToPollutionPreventionAndControlInPercent",
+                "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+                "enablingShareInPercent",
+                "transitionalShareInPercent",
+            )
     }
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun migrate(context: Context?) {
-        val migrationScriptMapping = mapOf(
-            "eutaxonomy-financials" to this::migrateEuTaxonomyFinancials,
-            "eutaxonomy-non-financials" to this::migrateEuTaxonomyNonFinancials,
-            "lksg" to this::migrateLksg,
-        )
+        val migrationScriptMapping =
+            mapOf(
+                "eutaxonomy-financials" to this::migrateEuTaxonomyFinancials,
+                "eutaxonomy-non-financials" to this::migrateEuTaxonomyNonFinancials,
+                "lksg" to this::migrateLksg,
+            )
         migrationScriptMapping.forEach {
             migrateCompanyAssociatedDataOfDatatype(
                 context,
@@ -55,7 +59,10 @@ class V8__MigratePercentages : BaseJavaMigration() {
         }
     }
 
-    private fun migrateDataset(dataTableEntity: DataTableEntity, migrationScript: (JSONObject) -> Unit) {
+    private fun migrateDataset(
+        dataTableEntity: DataTableEntity,
+        migrationScript: (JSONObject) -> Unit,
+    ) {
         val dataObject = JSONObject(dataTableEntity.companyAssociatedData.getString("data"))
         migrationScript(dataObject)
         dataTableEntity.companyAssociatedData.put("data", dataObject.toString())
@@ -71,18 +78,19 @@ class V8__MigratePercentages : BaseJavaMigration() {
     }
 
     private fun transformToPercentage(decimal: Number): BigDecimal {
-        val transformedValue = (
-            when (decimal) {
-                is Int -> BigDecimal(decimal)
-                is Long -> BigDecimal(decimal)
-                is BigInteger -> BigDecimal(decimal)
-                is BigDecimal -> decimal
-                else -> throw NumberFormatException(
-                    "Unexpected value: $decimal of data type: ${decimal::class.java.name}",
-                )
-            }
-            ) * BigDecimal(percentageMultiplier)
-        if (transformedValue < BigDecimal(0) || transformedValue > BigDecimal(percentageMultiplier)) {
+        val transformedValue =
+            (
+                when (decimal) {
+                    is Int -> BigDecimal(decimal)
+                    is Long -> BigDecimal(decimal)
+                    is BigInteger -> BigDecimal(decimal)
+                    is BigDecimal -> decimal
+                    else -> throw NumberFormatException(
+                        "Unexpected value: $decimal of data type: ${decimal::class.java.name}",
+                    )
+                }
+            ) * BigDecimal(PERCENTAGE_MULTIPLIER)
+        if (transformedValue < BigDecimal(0) || transformedValue > BigDecimal(PERCENTAGE_MULTIPLIER)) {
             logger.warn("Unexpected percentage: $transformedValue lies not between 0 and 100.")
         }
         return transformedValue
@@ -93,9 +101,10 @@ class V8__MigratePercentages : BaseJavaMigration() {
      */
     fun migrateEuTaxonomyFinancials(dataTableEntity: DataTableEntity) {
         migrateDataset(dataTableEntity) { dataObject ->
-            val financialServiceTypesWithPercentageDataPointsOnly = listOf(
-                "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
-            )
+            val financialServiceTypesWithPercentageDataPointsOnly =
+                listOf(
+                    "creditInstitutionKpis", "investmentFirmKpis", "insuranceKpis",
+                )
             financialServiceTypesWithPercentageDataPointsOnly.forEach { financialServiceType ->
                 val financialServiceKpis =
                     (dataObject.getOrJavaNull(financialServiceType) ?: return@forEach) as JSONObject
@@ -146,21 +155,28 @@ class V8__MigratePercentages : BaseJavaMigration() {
         }
     }
 
-    private fun migrateNonAlignedActivities(migrationHelper: MigrationHelper, activities: JSONArray) {
+    private fun migrateNonAlignedActivities(
+        migrationHelper: MigrationHelper,
+        activities: JSONArray,
+    ) {
         activities.forEach { activity ->
             migrateFinancialShare(migrationHelper, activity as JSONObject, "share")
         }
     }
 
-    private fun migrateAlignedActivities(migrationHelper: MigrationHelper, activities: JSONArray) {
-        val percentageFields = listOf(
-            "substantialContributionToClimateChangeMitigationInPercent",
-            "substantialContributionToClimateChangeAdaptionInPercent",
-            "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
-            "substantialContributionToTransitionToACircularEconomyInPercent",
-            "substantialContributionToPollutionPreventionAndControlInPercent",
-            "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
-        )
+    private fun migrateAlignedActivities(
+        migrationHelper: MigrationHelper,
+        activities: JSONArray,
+    ) {
+        val percentageFields =
+            listOf(
+                "substantialContributionToClimateChangeMitigationInPercent",
+                "substantialContributionToClimateChangeAdaptionInPercent",
+                "substantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercent",
+                "substantialContributionToTransitionToACircularEconomyInPercent",
+                "substantialContributionToPollutionPreventionAndControlInPercent",
+                "substantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercent",
+            )
         activities.forEach { activity ->
             migrateFinancialShare(migrationHelper, activity as JSONObject, "share")
             percentageFields.forEach { fieldName ->
@@ -184,7 +200,7 @@ class V8__MigratePercentages : BaseJavaMigration() {
         (
             (dataObject.getOrJavaNull("social") as JSONObject?)
                 ?.getOrJsonNull("disregardForFreedomOfAssociation") as JSONObject?
-            )?.also {
+        )?.also {
             migrationHelper.migrateValueFromToAndQueueForRemoval(
                 it,
                 "employeeRepresentation",
@@ -201,20 +217,18 @@ class V8__MigratePercentages : BaseJavaMigration() {
             (
                 (dataObject.getOrJavaNull("general") as JSONObject?)
                     ?.getOrJavaNull("productionSpecificOwnOperations") as JSONObject?
+            )?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?
+        )?.also { procurementCategories ->
+            (procurementCategories).keys().forEach { procurementCategoryKey ->
+                migrationHelper.migrateValueFromToAndQueueForRemoval(
+                    (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach)
+                        as JSONObject,
+                    "percentageOfTotalProcurement",
+                    "shareOfTotalProcurementInPercent",
+                    ::transformToPercentage,
                 )
-                ?.getOrJavaNull("productsServicesCategoriesPurchased") as JSONObject?
-            )
-            ?.also { procurementCategories ->
-                (procurementCategories).keys().forEach { procurementCategoryKey ->
-                    migrationHelper.migrateValueFromToAndQueueForRemoval(
-                        (procurementCategories.getOrJavaNull(procurementCategoryKey) ?: return@forEach)
-                            as JSONObject,
-                        "percentageOfTotalProcurement",
-                        "shareOfTotalProcurementInPercent",
-                        ::transformToPercentage,
-                    )
-                }
             }
+        }
         migrationHelper.removeQueuedFields()
     }
 }

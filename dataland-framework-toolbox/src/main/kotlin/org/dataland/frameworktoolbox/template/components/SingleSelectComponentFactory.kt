@@ -13,12 +13,14 @@ import org.springframework.stereotype.Component
  * Generates SingleSelectComponents from rows with the component "Single-Select Dropdown"
  */
 @Component
-class SingleSelectComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
-
-    private val nameMap = mapOf(
-        "Single-Select Dropdown" to SingleSelectComponent.UploadMode.Dropdown,
-        "Single-Select Radio Button" to SingleSelectComponent.UploadMode.RadioButtons,
-    )
+class SingleSelectComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
+    private val nameMap =
+        mapOf(
+            "Single-Select Dropdown" to SingleSelectComponent.UploadMode.Dropdown,
+            "Single-Select Radio Button" to SingleSelectComponent.UploadMode.RadioButtons,
+        )
 
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component in nameMap.keys
 

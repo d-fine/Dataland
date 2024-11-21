@@ -14,21 +14,16 @@ import org.springframework.http.HttpStatus
  */
 data class ErrorDetails(
     val errorType: String,
-
     val summary: String,
-
     val message: String,
-
     @JsonProperty("httpStatus")
     @JsonSerialize(using = HttpStatusIntegerSerializer::class)
     @Schema(type = "number")
     val httpStatus: HttpStatus,
-
     @Hidden
     @JsonProperty("stackTrace")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     val stackTrace: String? = null,
-
     @JsonProperty("metaInformation")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     val metaInformation: Any? = null,

@@ -11,17 +11,11 @@ import java.math.BigDecimal
 */
 data class P2pLivestockFarmingAnimalFeed(
     val ownFeedInPercent: BigDecimal? = null,
-
     @field:Valid
     val externalFeedCertification: BaseDataPoint<YesNo>? = null,
-
     val originOfExternalFeed: String? = null,
-
     val excessNitrogenInKilogramsPerHectare: BigDecimal? = null,
-
     val cropRotation: BigDecimal? = null,
-
     val climateFriendlyProteinProductionInPercent: BigDecimal? = null,
-
     val greenFodderInPercent: BigDecimal? = null,
 )

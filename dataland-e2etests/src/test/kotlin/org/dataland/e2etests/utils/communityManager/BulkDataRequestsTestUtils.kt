@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.assertThrows
 import org.slf4j.LoggerFactory
-import java.util.*
+import java.util.UUID
 
 private val jwtHelper = JwtAuthenticationHelper()
 private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
@@ -49,13 +49,14 @@ fun causeClientExceptionByBulkDataRequest(
     dataTypes: Set<BulkDataRequest.DataTypes>,
     reportingPeriods: Set<String>,
 ): ClientException {
-    val clientException = assertThrows<ClientException> {
-        requestControllerApi.postBulkDataRequest(
-            BulkDataRequest(
-                identifiers, dataTypes, reportingPeriods,
-            ),
-        )
-    }
+    val clientException =
+        assertThrows<ClientException> {
+            requestControllerApi.postBulkDataRequest(
+                BulkDataRequest(
+                    identifiers, dataTypes, reportingPeriods,
+                ),
+            )
+        }
     return clientException
 }
 
@@ -71,9 +72,10 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
                 "emptiness is called.",
         )
     } else {
-        val clientException = causeClientExceptionByBulkDataRequest(
-            identifiers, dataTypes, reportingPeriods,
-        )
+        val clientException =
+            causeClientExceptionByBulkDataRequest(
+                identifiers, dataTypes, reportingPeriods,
+            )
         check400ClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
@@ -89,8 +91,8 @@ private fun errorMessageForEmptyInputConfigurations(
     identifiers: Set<String>,
     dataTypes: Set<BulkDataRequest.DataTypes>,
     reportingPeriods: Set<String>,
-): String {
-    return when {
+): String =
+    when {
         identifiers.isEmpty() && dataTypes.isEmpty() && reportingPeriods.isEmpty() ->
             "All " +
                 "provided lists are empty."
@@ -111,7 +113,6 @@ private fun errorMessageForEmptyInputConfigurations(
         dataTypes.isEmpty() -> "The list of frameworks is empty."
         else -> "The list of reporting periods is empty."
     }
-}
 
 fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
     check400ClientExceptionErrorMessage(clientException)

@@ -8,8 +8,6 @@ package org.dataland.datalandcommunitymanager.model.dataRequest
  */
 data class StoredDataRequestStatusObject(
     val status: RequestStatus,
-
     val creationTimestamp: Long,
-
     val accessStatus: AccessStatus,
 )

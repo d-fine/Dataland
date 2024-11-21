@@ -21,8 +21,9 @@ import java.lang.IllegalStateException
  * Generates a DatalandApiKeyAuthentication upon successful validation of the Api-Key
  * via the token introspection endpoint
  */
-class ApiKeyAuthenticationProvider(val apiKeyManagerBaseUrl: String) : AuthenticationProvider {
-
+class ApiKeyAuthenticationProvider(
+    val apiKeyManagerBaseUrl: String,
+) : AuthenticationProvider {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun authenticate(authentication: Authentication): DatalandApiKeyAuthentication? {
@@ -47,8 +48,8 @@ class ApiKeyAuthenticationProvider(val apiKeyManagerBaseUrl: String) : Authentic
         return DatalandApiKeyAuthentication(apiKey, apiKeyMetaInfo)
     }
 
-    private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo {
-        return catchApiExceptionsAndConvertToInternalAuthExceptions {
+    private fun validateApiKeyViaEndpoint(customToken: String): ApiKeyMetaInfo =
+        catchApiExceptionsAndConvertToInternalAuthExceptions {
             logger.trace("Sending API-Token to API-Token-Service for introspection")
             val apiKeyMetaInfo = ApiKeyControllerApi(basePath = apiKeyManagerBaseUrl).validateApiKey(customToken)
             logger.trace("Received API-Key Meta-Information {}", apiKeyMetaInfo)
@@ -58,10 +59,9 @@ class ApiKeyAuthenticationProvider(val apiKeyManagerBaseUrl: String) : Authentic
             }
             apiKeyMetaInfo
         }
-    }
 
-    private fun <T> catchApiExceptionsAndConvertToInternalAuthExceptions(authFunction: () -> T): T {
-        return try {
+    private fun <T> catchApiExceptionsAndConvertToInternalAuthExceptions(authFunction: () -> T): T =
+        try {
             authFunction()
         } catch (ex: IllegalStateException) {
             throwInternalAuthExceptionBasedOn(ex)
@@ -74,14 +74,11 @@ class ApiKeyAuthenticationProvider(val apiKeyManagerBaseUrl: String) : Authentic
         } catch (ex: ServerException) {
             throwInternalAuthExceptionBasedOn(ex)
         }
-    }
 
     private fun <T> throwInternalAuthExceptionBasedOn(ex: Exception): T {
         val validationServiceCouldNotBeQueriedText = "API-KEY Validation Service could not be queried"
         throw InternalAuthenticationServiceException(validationServiceCouldNotBeQueriedText, ex)
     }
 
-    override fun supports(authentication: Class<*>): Boolean {
-        return BearerTokenAuthenticationToken::class.java.isAssignableFrom(authentication)
-    }
+    override fun supports(authentication: Class<*>): Boolean = BearerTokenAuthenticationToken::class.java.isAssignableFrom(authentication)
 }

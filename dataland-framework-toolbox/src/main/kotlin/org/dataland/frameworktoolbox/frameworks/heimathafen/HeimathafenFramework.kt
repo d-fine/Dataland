@@ -14,18 +14,17 @@ import java.io.File
  * Definition of the Heimathafen Framework
  */
 @Component
-class HeimathafenFramework : PavedRoadFramework(
-    identifier = "heimathafen",
-    label = "Heimathafen",
-    explanation = "Das Heimathafen Framework",
-    File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
-    order = 8,
-    enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
-) {
-    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return ComponentGenerationUtilsForGermanFrameworks()
-    }
+class HeimathafenFramework :
+    PavedRoadFramework(
+        identifier = "heimathafen",
+        label = "Heimathafen",
+        explanation = "Das Heimathafen Framework",
+        File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
+        order = 9,
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
+    ) {
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtilsForGermanFrameworks()
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("general") {

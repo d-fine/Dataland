@@ -21,7 +21,10 @@ class MigrationHelper {
      * @param fieldHolder the object that holds the field to remove
      * @param fieldName the name of the field to remove
      */
-    fun queueFieldForRemoval(fieldHolder: JSONObject, fieldName: String) {
+    fun queueFieldForRemoval(
+        fieldHolder: JSONObject,
+        fieldName: String,
+    ) {
         fieldsToRemove.add(FieldToRemove(fieldHolder, fieldName))
     }
 
@@ -138,8 +141,9 @@ class MigrationHelper {
         parentCategoryOfReferencedReports: JSONObject,
         fieldNamesToMigrate: Map<String, String>,
     ) {
-        val referencedReportsObject = parentCategoryOfReferencedReports
-            .getOrJavaNull("referencedReports") ?: return
+        val referencedReportsObject =
+            parentCategoryOfReferencedReports
+                .getOrJavaNull("referencedReports") ?: return
         referencedReportsObject as JSONObject
         iterateThroughReferencedReports(referencedReportsObject, fieldNamesToMigrate)
     }
@@ -211,8 +215,11 @@ class MigrationHelper {
      * This function reads the fileReference hash from referenced reports in order to store it
      * in the "DataSource" Object.
      */
-    private fun getFileReferenceFromReferencedReports(fileName: String, dataObject: JSONObject, framework: String):
-        String {
+    private fun getFileReferenceFromReferencedReports(
+        fileName: String,
+        dataObject: JSONObject,
+        framework: String,
+    ): String {
         if (fileName != "") {
             var parentObject = dataObject
             if (framework == "euTaxonomyNonFinancials") {
@@ -241,8 +248,10 @@ class MigrationHelper {
      */
     private fun iterateThroughReferencedReports(
         referencedReportsObject: JSONObject,
-        fieldNamesToMigrate: Map<String,
-            String,>,
+        fieldNamesToMigrate: Map<
+            String,
+            String,
+        >,
     ) {
         for (key in referencedReportsObject.keys()) {
             fieldNamesToMigrate.forEach {

@@ -25,8 +25,11 @@ open class NumberBaseComponent(
     /**
      * Returns a FormKit validation rule for a number to be in the specified range
      */
-    fun getMinMaxValidationRule(minimumValue: Long?, maximumValue: Long?): String? {
-        return when {
+    fun getMinMaxValidationRule(
+        minimumValue: Long?,
+        maximumValue: Long?,
+    ): String? =
+        when {
             minimumValue != null && maximumValue != null -> {
                 "between:$minimumValue,$maximumValue"
             }
@@ -40,12 +43,14 @@ open class NumberBaseComponent(
                 null
             }
         }
-    }
 
     /**
      * Returns a list of datamodel annotations to enforce the minimum and maximum value constraints
      */
-    fun getMinMaxDatamodelAnnotations(minimumValue: Long?, maximumValue: Long?): List<Annotation> {
+    fun getMinMaxDatamodelAnnotations(
+        minimumValue: Long?,
+        maximumValue: Long?,
+    ): List<Annotation> {
         val annotations = mutableListOf<Annotation>()
 
         if (minimumValue != null || maximumValue != null) {
@@ -58,8 +63,11 @@ open class NumberBaseComponent(
     /**
      * Returns the parameter list for the fake fixture generation to respect minimum and maximum bounds
      */
-    fun getFakeFixtureMinMaxRangeParameterSpec(minimumValue: Long?, maximumValue: Long?): String {
-        return when {
+    fun getFakeFixtureMinMaxRangeParameterSpec(
+        minimumValue: Long?,
+        maximumValue: Long?,
+    ): String =
+        when {
             minimumValue != null && maximumValue != null -> {
                 "$minimumValue, $maximumValue"
             }
@@ -73,7 +81,6 @@ open class NumberBaseComponent(
                 ""
             }
         }
-    }
 
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(

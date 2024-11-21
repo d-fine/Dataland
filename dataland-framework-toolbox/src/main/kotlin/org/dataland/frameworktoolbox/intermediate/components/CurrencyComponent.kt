@@ -9,6 +9,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotat
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.getBackendClientTypeReference
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.getTypescriptFieldAccessor
@@ -22,7 +23,6 @@ class CurrencyComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
-
     var minimumValue: Long? = null
     var maximumValue: Long? = null
 
@@ -39,10 +39,11 @@ class CurrencyComponent(
 
     override fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
-        val backendCurrencyDatapoint = TypeReference(
-            "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint",
-            isNullable,
-        )
+        val backendCurrencyDatapoint =
+            TypeReference(
+                "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint",
+                isNullable,
+            )
         dataClassBuilder.addProperty(
             identifier,
             TypeReference(
@@ -80,21 +81,32 @@ class CurrencyComponent(
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = "CurrencyDataPointFormField",
+            validation = getMinMaxValidationRule(minimumValue, maximumValue),
         )
     }
 
     override fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder) {
         requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         val rangeParameterSpecification = getFakeFixtureMinMaxRangeParameterSpec(minimumValue, maximumValue)
-        val expression = if (isRequired) {
-            "dataGenerator.guaranteedCurrencyDataPoint($rangeParameterSpecification)"
-        } else {
-            "dataGenerator.randomCurrencyDataPoint($rangeParameterSpecification)"
-        }
+        val expression =
+            if (isRequired) {
+                "dataGenerator.guaranteedCurrencyDataPoint($rangeParameterSpecification)"
+            } else {
+                "dataGenerator.randomCurrencyDataPoint($rangeParameterSpecification)"
+            }
 
         sectionBuilder.addAtomicExpression(
             identifier,
             expression,
+        )
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        specificationCategoryBuilder.addDefaultDatapointAndSpecification(
+            this,
+            "Currency",
+            "${documentSupport.getNamingPrefix()}Currency",
         )
     }
 }

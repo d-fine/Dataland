@@ -1,8 +1,8 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
-  type CompanyAssociatedDataEuTaxonomyDataForFinancials,
+  type CompanyAssociatedDataEutaxonomyFinancialsData,
   DataTypeEnum,
-  type EuTaxonomyDataForFinancials,
+  type EutaxonomyFinancialsData,
 } from '@clients/backend';
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from '@sharedUtils/ConstantsForPdfs';
 import { type FixtureData } from '@sharedUtils/Fixtures';
@@ -14,11 +14,11 @@ import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from './General
  * @returns the first eutaxonomy-financials dataset from the fake fixtures
  */
 export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.Chainable<
-  FixtureData<EuTaxonomyDataForFinancials>
+  FixtureData<EutaxonomyFinancialsData>
 > {
-  return cy.fixture('CompanyInformationWithEuTaxonomyDataForFinancials').then(function (jsonContent) {
-    const companiesWithEuTaxonomyDataForFinancials = jsonContent as Array<FixtureData<EuTaxonomyDataForFinancials>>;
-    return companiesWithEuTaxonomyDataForFinancials[0];
+  return cy.fixture('CompanyInformationWithEutaxonomyFinancialsData').then(function (jsonContent) {
+    const companiesWithEuTaxonomyFinancialsData = jsonContent as Array<FixtureData<EutaxonomyFinancialsData>>;
+    return companiesWithEuTaxonomyFinancialsData[0];
   });
 }
 
@@ -31,7 +31,8 @@ export function gotoEditForm(companyId: string, expectIncludedFile: boolean): vo
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
     (interception) => {
       const referencedReports = assertDefined(
-        (interception?.response?.body as CompanyAssociatedDataEuTaxonomyDataForFinancials)?.data?.referencedReports
+        (interception?.response?.body as CompanyAssociatedDataEutaxonomyFinancialsData)?.data?.general?.general
+          ?.referencedReports
       );
       expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
       expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);

@@ -30,7 +30,7 @@
     "axios": "^1.6.8",
     "currency-codes": "^2.1.0",
     "i18n-iso-countries": "^7.11.1",
-    "keycloak-js": "^24.0.0",
+    "keycloak-js": "^25.0.0",
     "material-icons": "^1.13.12",
     "pinia": "^2.1.7",
     "pinia-shared-state": "^0.5.1",
@@ -55,7 +55,7 @@
     "@vue/tsconfig": "0.5.1",
     "cypress": "12.11.0",
     "depcheck": "1.4.7",
-    "dompurify": "3.1.6",
+    "dompurify": "3.1.7",
     "eslint": "8.57.1",
     "eslint-plugin-cypress": "3.5.0",
     "eslint-plugin-jsdoc": "48.11.0",
@@ -67,13 +67,13 @@
     "npm-check-updates": "16.14.20",
     "otplib": "12.0.1",
     "prettier": "3.3.3",
-    "sass": "1.79.1",
+    "sass": "1.80.3",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.4.5",
-    "vite": "5.2.10",
+    "vite": "5.2.14",
     "vite-plugin-istanbul": "6.0.2",
-    "vue-markdown-render": "^2.2.1",
-    "vue-tsc": "2.0.21"
+    "vue-markdown-render": "2.2.1",
+    "vue-tsc": "2.1.6"
   }
 }

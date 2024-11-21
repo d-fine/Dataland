@@ -19,26 +19,19 @@ data class QaReportEntity(
     @Id
     @Column(name = "qa_report_id")
     val qaReportId: String,
-
     @Column(name = "qa_report", columnDefinition = "TEXT", nullable = false)
     var qaReport: String,
-
     @Column(name = "data_id", nullable = false)
     var dataId: String,
-
     @Column(name = "data_type", nullable = false)
     var dataType: String,
-
     @Column(name = "reporter_user_id", nullable = false)
     var reporterUserId: String,
-
     @Column(name = "upload_time", nullable = false)
     var uploadTime: Long,
-
     @Column(name = "active", nullable = false)
     var active: Boolean,
 ) {
-
     /**
      * Method to convert the QA report entity to a model containing the report and its meta information
      * @param objectMapper the object mapper to use for deserialization
@@ -58,8 +51,8 @@ data class QaReportEntity(
     /**
      * Method to convert the QA report entity to a model containing only the meta information of the report
      */
-    fun toMetaInformationApiModel(): QaReportMetaInformation {
-        return QaReportMetaInformation(
+    fun toMetaInformationApiModel(): QaReportMetaInformation =
+        QaReportMetaInformation(
             dataId = dataId,
             qaReportId = qaReportId,
             reporterUserId = reporterUserId,
@@ -67,5 +60,4 @@ data class QaReportEntity(
             dataType = dataType,
             active = active,
         )
-    }
 }

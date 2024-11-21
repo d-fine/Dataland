@@ -44,7 +44,7 @@ if (testGroupingDisabled || cypressTestGroup === 2) {
   require('./eu-taxonomy-non-financials');
   require('./p2p');
   require('./vsme');
-  require('./esg-questionnaire');
+  require('./esg-datenkatalog');
   require('./company-ownership');
 }
 
@@ -56,6 +56,7 @@ if (testGroupingDisabled || cypressTestGroup === 3) {
   require('./user-authentication');
   require('./admin-tools');
   require('./additional-company-information');
+  require('./nuclear-and-gas');
 }
 
 if (testGroupingDisabled || cypressTestGroup === 4) {

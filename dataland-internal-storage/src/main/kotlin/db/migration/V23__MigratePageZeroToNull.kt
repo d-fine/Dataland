@@ -11,14 +11,15 @@ import org.slf4j.LoggerFactory
  * This migration script updates all datasets where the page field is smaller or equal to 0,
  * setting the value to NULL. It also converts valid page integers into strings.
  */
+@Suppress("ClassName")
 class V23__MigratePageZeroToNull : BaseJavaMigration() {
-
-    private val frameworksToMigrate = listOf(
-        "eutaxonomy-non-financials",
-        "eutaxonomy-financials",
-        "sfdr",
-        "additional-company-information",
-    )
+    private val frameworksToMigrate =
+        listOf(
+            "eutaxonomy-non-financials",
+            "eutaxonomy-financials",
+            "sfdr",
+            "additional-company-information",
+        )
 
     private val logger = LoggerFactory.getLogger("Migration V23")
 

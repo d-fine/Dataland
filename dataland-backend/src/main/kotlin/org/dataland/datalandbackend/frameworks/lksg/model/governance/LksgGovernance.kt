@@ -16,14 +16,10 @@ import org.dataland.datalandbackend.frameworks.lksg.model.governance.riskManagem
 data class LksgGovernance(
     @field:Valid()
     val riskManagementOwnOperations: LksgGovernanceRiskManagementOwnOperations? = null,
-
     @field:Valid()
     val grievanceMechanismOwnOperations: LksgGovernanceGrievanceMechanismOwnOperations? = null,
-
     @field:Valid()
     val certificationsPoliciesAndResponsibilities: LksgGovernanceCertificationsPoliciesAndResponsibilities? = null,
-
     @field:Valid()
     val generalViolations: LksgGovernanceGeneralViolations? = null,
-
 )

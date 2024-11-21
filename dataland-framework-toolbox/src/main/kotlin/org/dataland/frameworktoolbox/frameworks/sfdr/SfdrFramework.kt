@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.sfdr
 
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -14,16 +15,16 @@ import java.io.File
  * Definition of the SFDR framework
  */
 @Component
-class SfdrFramework : PavedRoadFramework(
-    identifier = "sfdr",
-    label = "SFDR",
-    explanation = "Sustainability Finance Disclosure Regulation",
-    File("./dataland-framework-toolbox/inputs/sfdr/sfdr.xlsx"),
-    order = 5,
-) {
-    override fun getComponentGenerationUtils(): ComponentGenerationUtils {
-        return SfdrComponentGenerationUtils()
-    }
+class SfdrFramework :
+    PavedRoadFramework(
+        identifier = "sfdr",
+        label = "SFDR",
+        explanation = "Sustainability Finance Disclosure Regulation",
+        File("./dataland-framework-toolbox/inputs/sfdr/sfdr.xlsx"),
+        order = 6,
+        enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.DataPointSpecifications),
+    ) {
+    override fun getComponentGenerationUtils(): ComponentGenerationUtils = SfdrComponentGenerationUtils()
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setSectionColorsAndExpansion(framework.root)

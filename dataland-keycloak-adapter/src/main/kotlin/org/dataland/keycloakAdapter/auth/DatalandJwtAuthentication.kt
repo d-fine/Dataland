@@ -7,7 +7,9 @@ import org.springframework.security.oauth2.jwt.Jwt
 /**
  * This authentication class represents a successful authentication via a Keycloak-Issued JWT token.
  */
-class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication() {
+class DatalandJwtAuthentication(
+    private val jwt: Jwt,
+) : DatalandAuthentication() {
     override val userId: String
         get() = jwt.subject
 
@@ -25,9 +27,7 @@ class DatalandJwtAuthentication(private val jwt: Jwt) : DatalandAuthentication()
         return realmRoles?.map { SimpleGrantedAuthority(it as String) } ?: listOf()
     }
 
-    override fun getCredentials(): String {
-        return jwt.tokenValue
-    }
+    override fun getCredentials(): String = jwt.tokenValue
 
     val userDescription: String
         get() = "User $username (Keycloak ID: $userId)"

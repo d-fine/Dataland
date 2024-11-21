@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable
  * Defines the restful internal storage API.
  */
 interface StorageAPI {
-
     /**
      * A method to retrieve data from the internal storage using the dataID
      * @param dataId the ID of the data stored in the internal storage which should be retrieved
@@ -32,7 +31,10 @@ interface StorageAPI {
         value = ["/data/{dataId}"],
         produces = ["application/json"],
     )
-    fun selectDataById(@PathVariable("dataId") dataId: String, correlationId: String): ResponseEntity<String>
+    fun selectDataById(
+        @PathVariable("dataId") dataId: String,
+        correlationId: String,
+    ): ResponseEntity<String>
 
     /**
      * A method to retrieve blobs from the internal storage using the blobs ID

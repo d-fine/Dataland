@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 /**
  * Defines the restful dataland QAReports Metadata API
@@ -33,9 +33,10 @@ interface QaReportsMetadataApi {
      */
     @Operation(
         summary = "Get metadata of QA reports based on filters.",
-        description = "Get metadata of QA reports based on filters." +
-            "Users can search for QA reports posted within a specific time frame, posted by specific uploaders," +
-            "for QA reports with a specific QA status, or for active QA reports only. The filters can be combined.",
+        description =
+            "Get metadata of QA reports based on filters." +
+                "Users can search for QA reports posted within a specific time frame, posted by specific uploaders," +
+                "for QA reports with a specific QA status, or for active QA reports only. The filters can be combined.",
     )
     @ApiResponses(
         value = [

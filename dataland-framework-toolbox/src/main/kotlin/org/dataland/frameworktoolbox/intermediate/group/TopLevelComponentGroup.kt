@@ -12,7 +12,9 @@ import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 class TopLevelComponentGroup(
     override val parent: Framework,
     private val componentGroupApi: ComponentGroupApiImpl = ComponentGroupApiImpl(),
-) : TreeNode<Framework>, FieldNodeParent, ComponentGroupApi by componentGroupApi {
+) : TreeNode<Framework>,
+    FieldNodeParent,
+    ComponentGroupApi by componentGroupApi {
     override val children: Sequence<ComponentBase> by componentGroupApi::children
 
     init {

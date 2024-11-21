@@ -9,51 +9,27 @@ import java.math.BigDecimal
  */
 data class VsmeBasicWorkforceRenumerationCollectiveBargainingAndTraining(
     val numberOfMinimumWageEmployeesInFte: BigDecimal? = null,
-
     val numberOfMinimumWageEmployeesInHeadcount: BigDecimal? = null,
-
     val percentageOfMinimumWageEmployees: BigDecimal? = null,
-
     val majorityOfMinimumWageEmployees: YesNo? = null,
-
     val entryLevelWageInEuro: BigDecimal? = null,
-
     val minimumWageInEuro: BigDecimal? = null,
-
     val wageRatio: BigDecimal? = null,
-
     val payGapBasis: VsmeBasicWorkforcerenumerationcollectivebargainingandtrainingPayGapBasisOptions? = null,
-
     val grossPayMaleInEuro: BigDecimal? = null,
-
     val grossPayFemaleInEuro: BigDecimal? = null,
-
     val totalWorkHoursMale: BigDecimal? = null,
-
     val totalWorkHoursFemale: BigDecimal? = null,
-
     val averageWorkHoursMale: BigDecimal? = null,
-
     val averageWorkHoursFemale: BigDecimal? = null,
-
     val averageHourlyPayMaleInEuroPerHour: BigDecimal? = null,
-
     val averageHourlyPayFemaleInEuroPerHour: BigDecimal? = null,
-
     val payGap: BigDecimal? = null,
-
     val numberBargainingAgreementsInFte: BigDecimal? = null,
-
     val numberBargainingAgreementsInHeadcount: BigDecimal? = null,
-
     val ratioBargainingAgreement: BigDecimal? = null,
-
     val totalTrainingHoursMale: BigDecimal? = null,
-
     val totalTrainingHoursFemale: BigDecimal? = null,
-
     val averageTrainingHoursMale: BigDecimal? = null,
-
     val averageTrainingHoursFemale: BigDecimal? = null,
-
 )

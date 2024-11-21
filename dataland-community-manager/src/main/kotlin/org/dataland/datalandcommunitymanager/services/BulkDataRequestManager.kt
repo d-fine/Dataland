@@ -11,7 +11,7 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.UUID
 
 /**
  * Implementation of a request manager service for all operations concerning the processing of bulk data requests
@@ -76,8 +76,8 @@ class BulkDataRequestManager(
         identifiers: Set<String>,
         frameworks: Set<DataTypeEnum>,
         reportingPeriods: Set<String>,
-    ): String {
-        return when {
+    ): String =
+        when {
             identifiers.isEmpty() && frameworks.isEmpty() && reportingPeriods.isEmpty() ->
                 "All " +
                     "provided lists are empty."
@@ -98,16 +98,16 @@ class BulkDataRequestManager(
             frameworks.isEmpty() -> "The list of frameworks is empty."
             else -> "The list of reporting periods is empty."
         }
-    }
 
     private fun assureValidityOfRequests(bulkDataRequest: BulkDataRequest) {
         val identifiers = bulkDataRequest.companyIdentifiers
         val frameworks = bulkDataRequest.dataTypes
         val reportingPeriods = bulkDataRequest.reportingPeriods
         if (identifiers.isEmpty() || frameworks.isEmpty() || reportingPeriods.isEmpty()) {
-            val errorMessage = errorMessageForEmptyInputConfigurations(
-                identifiers, frameworks, reportingPeriods,
-            )
+            val errorMessage =
+                errorMessageForEmptyInputConfigurations(
+                    identifiers, frameworks, reportingPeriods,
+                )
             throw InvalidInputApiException(
                 "No empty lists are allowed as input for bulk data request.",
                 errorMessage,
@@ -118,8 +118,8 @@ class BulkDataRequestManager(
     private fun buildResponseMessageForBulkDataRequest(
         totalNumberOfRequestedCompanyIdentifiers: Int,
         numberOfRejectedCompanyIdentifiers: Int,
-    ): String {
-        return when (numberOfRejectedCompanyIdentifiers) {
+    ): String =
+        when (numberOfRejectedCompanyIdentifiers) {
             0 -> "All of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
             1 ->
                 "One of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers was rejected " +
@@ -130,22 +130,21 @@ class BulkDataRequestManager(
                     "company identifiers were rejected because they could not be uniquely matched with existing " +
                     "companies on Dataland."
         }
-    }
 
     private fun buildResponseForBulkDataRequest(
         bulkDataRequest: BulkDataRequest,
         rejectedCompanyIdentifiers: List<String>,
         acceptedCompanyIdentifiers: List<String>,
-    ): BulkDataRequestResponse {
-        return BulkDataRequestResponse(
-            message = buildResponseMessageForBulkDataRequest(
-                bulkDataRequest.companyIdentifiers.size,
-                rejectedCompanyIdentifiers.size,
-            ),
+    ): BulkDataRequestResponse =
+        BulkDataRequestResponse(
+            message =
+                buildResponseMessageForBulkDataRequest(
+                    bulkDataRequest.companyIdentifiers.size,
+                    rejectedCompanyIdentifiers.size,
+                ),
             acceptedCompanyIdentifiers = acceptedCompanyIdentifiers,
             rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,
         )
-    }
 
     private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
@@ -162,8 +161,9 @@ class BulkDataRequestManager(
 
     private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
         val summary = "All provided company identifiers are not unique or could not be recognized."
-        val message = "The company identifiers you provided could not be uniquely matched with an existing " +
-            "company on dataland"
+        val message =
+            "The company identifiers you provided could not be uniquely matched with an existing " +
+                "company on dataland"
         throw InvalidInputApiException(
             summary,
             message,

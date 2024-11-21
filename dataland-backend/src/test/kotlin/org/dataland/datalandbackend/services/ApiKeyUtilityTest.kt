@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class ApiKeyUtilityTest {
-
     private val apiKeyUtility = ApiKeyUtility()
 
     private val testKeycloakUserId = "c5ef10b1-de23-4a01-9005-e62ea226ee83"
@@ -17,15 +16,22 @@ class ApiKeyUtilityTest {
     private val testApiKeySecret = "da030a8c290f43a022bdb3da59f6ee4d7b5e290997fbdb3a22f1a7ce5a1a51c87f7666a3476a950b"
     private val testApiKeyCrc32Value = "465063745"
 
-    private fun getCrc(keycloakUserIdBase64Encoded: String, apiKeySecret: String): String {
+    private fun getCrc(
+        keycloakUserIdBase64Encoded: String,
+        apiKeySecret: String,
+    ): String {
         val parsedApiKeyWithoutCrc32Value = keycloakUserIdBase64Encoded + "_" + apiKeySecret
 
-        return EncodingUtils.calculateCrc32Value(
-            parsedApiKeyWithoutCrc32Value.toByteArray(),
-        ).toString()
+        return EncodingUtils
+            .calculateCrc32Value(
+                parsedApiKeyWithoutCrc32Value.toByteArray(),
+            ).toString()
     }
 
-    private fun parseBrokenApiKeyAndAssertThrownMessage(brokenApiKey: String, expectedMessage: String) {
+    private fun parseBrokenApiKeyAndAssertThrownMessage(
+        brokenApiKey: String,
+        expectedMessage: String,
+    ) {
         val thrown = assertThrows<InvalidInputApiException> { apiKeyUtility.parseApiKey(brokenApiKey) }
         assertEquals(expectedMessage, thrown.message)
     }
@@ -34,10 +40,11 @@ class ApiKeyUtilityTest {
     fun `check if correct api key can be parsed`() {
         val apiKey = testApiKeyBase64EncodedKeycloakUserId + "_" + testApiKeySecret + "_" + testApiKeyCrc32Value
         val parsedApiKey = apiKeyUtility.parseApiKey(apiKey)
-        val expectedParsedApiKey = ParsedApiKey(
-            testKeycloakUserId,
-            testApiKeySecret,
-        )
+        val expectedParsedApiKey =
+            ParsedApiKey(
+                testKeycloakUserId,
+                testApiKeySecret,
+            )
         assertEquals(expectedParsedApiKey, parsedApiKey)
     }
 

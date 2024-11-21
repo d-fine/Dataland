@@ -14,7 +14,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataA
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportMetadataService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -28,12 +29,15 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@SpringBootTest(classes = [DatalandQaService::class])
+@SpringBootTest(
+    classes = [DatalandQaService::class],
+    properties = ["spring.profiles.active=nodb"],
+)
 class QaReportMetadataServiceTest(
     @Autowired private val qaReportMetadataService: QaReportMetadataService,
     @Autowired private val qaReportRepository: QaReportRepository,
@@ -50,141 +54,6 @@ class QaReportMetadataServiceTest(
     val companyId = "companyId"
     val dataId1 = "dataId1"
     val dataId2 = "dataId2"
-
-    @Test
-    fun `check that non unique company ids throw an exception`() {
-        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(
-            CompanyIdAndName("1", companyId),
-            CompanyIdAndName("2", "2"),
-        )
-        Mockito
-            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
-            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
-        val thrown = assertThrows<InvalidInputApiException> {
-            qaReportMetadataService.searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
-        }
-        Assertions.assertEquals(
-            "Multiple companies have been found for the identifier you specified. " +
-                "Please specify a unique company identifier.",
-            thrown.message,
-        )
-    }
-
-    @Test
-    fun `check that an empty list is returned when searching for non existing company`() {
-        val result: List<DataAndQaReportMetadata> =
-            qaReportMetadataService
-                .searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
-        Assertions.assertTrue(result.isEmpty())
-    }
-
-    @Test
-    fun `search active reports without additional filter`() {
-        val dataMetaInformation: List<DataMetaInformation> = listOf(
-            DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-            DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-        )
-        Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
-            .thenReturn(dataMetaInformation)
-        val result: List<DataAndQaReportMetadata> =
-            qaReportMetadataService
-                .searchDataAndQaReportMetadata(null, true, null, null, null, null)
-        Assertions.assertEquals(2, result.size)
-    }
-
-    @Test
-    fun `search by userId`() {
-        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(CompanyIdAndName("1", companyId))
-        Mockito
-            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
-            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
-        val dataMetaInformation: List<DataMetaInformation> = listOf(
-            DataMetaInformation(
-                dataId1,
-                companyId,
-                DataTypeEnum.sfdr,
-                1,
-                "test",
-                true,
-                QaStatus.Accepted,
-                reporterId1.toString(),
-            ),
-        )
-        Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, setOf<UUID>(reporterId1), null))
-            .thenReturn(dataMetaInformation)
-        val result: List<DataAndQaReportMetadata> =
-            qaReportMetadataService
-                .searchDataAndQaReportMetadata(setOf<UUID>(reporterId1), true, null, null, null, null)
-        Assertions.assertEquals(1, result.size)
-        Assertions.assertEquals(reporterId1.toString(), result[0].dataMetadata.uploaderUserId)
-    }
-
-    @Test
-    fun `search only inactive cases`() {
-        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(CompanyIdAndName("1", companyId))
-        Mockito
-            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
-            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
-        val dataMetaInformation: List<DataMetaInformation> = emptyList()
-        Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, setOf<UUID>(reporterId1), null))
-            .thenReturn(dataMetaInformation)
-        val result: List<DataAndQaReportMetadata> =
-            qaReportMetadataService
-                .searchDataAndQaReportMetadata(null, false, null, null, null, null)
-        Assertions.assertTrue(result.isEmpty())
-    }
-
-    @Test
-    fun `search closed date range`() {
-        val dataMetaInformation: List<DataMetaInformation> = listOf(
-            DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-            DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-        )
-        Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
-            .thenReturn(dataMetaInformation)
-        val result: List<DataAndQaReportMetadata> =
-            qaReportMetadataService
-                .searchDataAndQaReportMetadata(
-                    null,
-                    true,
-                    null,
-                    LocalDate.now().minusDays(8),
-                    LocalDate.now().plusDays(2),
-                    null,
-                )
-        Assertions.assertEquals(2, result.size)
-    }
-
-    @Test
-    fun `search semi open date ranges`() {
-        val dataMetaInformation: List<DataMetaInformation> = listOf(
-            DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-            DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-        )
-        Mockito
-            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
-            .thenReturn(dataMetaInformation)
-
-        val resultOnlyStart: List<DataAndQaReportMetadata> =
-            qaReportMetadataService
-                .searchDataAndQaReportMetadata(
-                    null, true, null, LocalDate.now().minusDays(3), null, null,
-                )
-        Assertions.assertEquals(1, resultOnlyStart.size)
-        Assertions.assertEquals(dataId1, resultOnlyStart[0].qaReportMetadata.dataId)
-
-        val resultOnlyEnd: List<DataAndQaReportMetadata> =
-            qaReportMetadataService
-                .searchDataAndQaReportMetadata(
-                    null, true, null, null, LocalDate.now().minusDays(3), null,
-                )
-        Assertions.assertEquals(1, resultOnlyEnd.size)
-        Assertions.assertEquals(dataId2, resultOnlyEnd[0].qaReportMetadata.dataId)
-    }
 
     @BeforeAll
     fun insertTestData() {
@@ -211,5 +80,146 @@ class QaReportMetadataServiceTest(
                 active = true,
             ),
         )
+    }
+
+    @Test
+    fun `check that non unique company ids throw an exception`() {
+        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> =
+            listOf(
+                CompanyIdAndName("1", companyId),
+                CompanyIdAndName("2", "2"),
+            )
+        Mockito
+            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
+            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
+        val thrown =
+            assertThrows<InvalidInputApiException> {
+                qaReportMetadataService.searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
+            }
+        assertEquals(
+            "Multiple companies have been found for the identifier you specified. " +
+                "Please specify a unique company identifier.",
+            thrown.message,
+        )
+    }
+
+    @Test
+    fun `check that an empty list is returned when searching for non existing company`() {
+        val result: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(null, true, null, null, null, companyIdentifier)
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `search active reports without additional filter`() {
+        val dataMetaInformation: List<DataMetaInformation> =
+            listOf(
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+            )
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
+            .thenReturn(dataMetaInformation)
+        val result: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(null, true, null, null, null, null)
+        assertEquals(2, result.size)
+    }
+
+    @Test
+    fun `search by userId`() {
+        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(CompanyIdAndName("1", companyId))
+        Mockito
+            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
+            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
+        val dataMetaInformation: List<DataMetaInformation> =
+            listOf(
+                DataMetaInformation(
+                    dataId1,
+                    companyId,
+                    DataTypeEnum.sfdr,
+                    1,
+                    "test",
+                    true,
+                    QaStatus.Accepted,
+                    reporterId1.toString(),
+                ),
+            )
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, setOf<UUID>(reporterId1), null))
+            .thenReturn(dataMetaInformation)
+        val result: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(setOf<UUID>(reporterId1), true, null, null, null, null)
+        assertEquals(1, result.size)
+        assertEquals(reporterId1.toString(), result[0].dataMetadata.uploaderUserId)
+    }
+
+    @Test
+    fun `search only inactive cases`() {
+        val matchingCompanyIdsAndNamesOnDataland: List<CompanyIdAndName> = listOf(CompanyIdAndName("1", companyId))
+        Mockito
+            .`when`(companyController.getCompaniesBySearchString(companyIdentifier))
+            .thenReturn(matchingCompanyIdsAndNamesOnDataland)
+        val dataMetaInformation: List<DataMetaInformation> = emptyList()
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, setOf<UUID>(reporterId1), null))
+            .thenReturn(dataMetaInformation)
+        val result: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(null, false, null, null, null, null)
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `search closed date range`() {
+        val dataMetaInformation: List<DataMetaInformation> =
+            listOf(
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+            )
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
+            .thenReturn(dataMetaInformation)
+        val result: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(
+                    null,
+                    true,
+                    null,
+                    LocalDate.now().minusDays(8),
+                    LocalDate.now().plusDays(2),
+                    null,
+                )
+        assertEquals(2, result.size)
+    }
+
+    @Test
+    fun `search semi open date ranges`() {
+        val dataMetaInformation: List<DataMetaInformation> =
+            listOf(
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+            )
+        Mockito
+            .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
+            .thenReturn(dataMetaInformation)
+
+        val resultOnlyStart: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(
+                    null, true, null, LocalDate.now().minusDays(3), null, null,
+                )
+        assertEquals(1, resultOnlyStart.size)
+        assertEquals(dataId1, resultOnlyStart[0].qaReportMetadata.dataId)
+
+        val resultOnlyEnd: List<DataAndQaReportMetadata> =
+            qaReportMetadataService
+                .searchDataAndQaReportMetadata(
+                    null, true, null, null, LocalDate.now().minusDays(3), null,
+                )
+        assertEquals(1, resultOnlyEnd.size)
+        assertEquals(dataId2, resultOnlyEnd[0].qaReportMetadata.dataId)
     }
 }

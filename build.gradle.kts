@@ -81,7 +81,10 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            layout.buildDirectory.dir("reports/jacoco/test/jacocoTestReport.xml").get().asFile,
+            layout.buildDirectory
+                .dir("reports/jacoco/test/jacocoTestReport.xml")
+                .get()
+                .asFile,
         )
         property("sonar.qualitygate.wait", true)
         property("sonar.javascript.lcov.reportPaths", fileTree("$projectDir/fe-coverage").files)
@@ -103,27 +106,34 @@ sonar {
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
         property(
             "sonar.cpd.exclusions",
-
             // frontend
             "dataland-frontend/src/components/forms/parts/elements/derived/NaceCodeTree.ts," +
                 "dataland-frontend/src/components/forms/parts/elements/derived/ActivityTree.ts," +
                 "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-non-financials/" +
                 "EutaxonomyNonFinancialsDataFixtures.ts," +
+                "dataland-frontend/tests/e2e/fixtures/frameworks/eutaxonomy-financials/" +
+                "EutaxonomyFinancialsDataFixtures.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
+                "NuclearAndGasActivityNames.ts," +
                 // frontend configs
                 "dataland-frontend/src/components/resources/frameworkDataSearch/euTaxonomy/configMLDT/" +
                 "configForEutaxonomyFinancialsMLDT.ts," +
                 "dataland-frontend/src/frameworks/additional-company-information/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/esg-questionnaire/ViewConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-datenkatalog/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/ViewConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/ViewConfig.ts," +
-                "dataland-frontend/src/frameworks/esg-questionnaire/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/esg-datenkatalog/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/heimathafen/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/sfdr/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/vsme/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/lksg/UploadConfig.ts," +
+                "dataland-frontend/src/frameworks/eutaxonomy-financials/UploadConfig.ts," +
                 "dataland-frontend/src/frameworks/custom/EuTaxoNonFinancialsStaticUploadConfig.ts," +
                 "dataland-frontend/src/components/resources/frameworkDataSearch/p2p/P2pDataModel.ts," +
+                "dataland-frontend/src/components/resources/frameworkDataSearch/nuclearAndGas/" +
+                "NuclearAndGasTooltipMapping.ts," +
                 "dataland-frontend/tests/component/utils/LinkExtraction.cy.ts," +
+                "dataland-frontend/src/frameworks/nuclear-and-gas/UploadConfig.ts," +
                 // backend
                 "dataland-backend/src/main/kotlin/db/migration/V1_1__CreateBackendTables.kt," +
 
@@ -133,11 +143,18 @@ sonar {
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
                 "LksgGeneralViolationAssessmentsComponent.kt," +
                 "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/lksg/custom/" +
-                "LksgGeneralViolationAssessmentsComponent.kt",
+                "LksgGeneralViolationAssessmentsComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                "custom/NuclearAndGasAlignedNumeratorComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                "custom/NuclearAndGasEligibleButNotAlignedComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                "custom/NuclearAndGasNonEligibleComponent.kt," +
+                "dataland-framework-toolbox/src/main/kotlin/org/dataland/frameworktoolbox/frameworks/nuclearandgas/" +
+                "custom/NuclearAndGasAlignedDenominatorComponent.kt",
         )
         property(
             "sonar.exclusions",
-
             // frontend components
             "dataland-frontend/src/components/general/SlideShow.vue," +
                 "dataland-frontend/src/components/pages/AboutPage.vue," +
@@ -189,6 +206,7 @@ detekt {
     baseline = file("$projectDir/config/baseline.xml")
     val detektFileTree = fileTree("$projectDir")
     detektFileTree.exclude("**/build/**").exclude("**/node_modules/**").exclude(".gradle")
+    detektFileTree.exclude("**/ReferencedReportsListValidator.kt")
     source.setFrom(detektFileTree)
 }
 

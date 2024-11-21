@@ -11,35 +11,24 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
 data class SfdrEnvironmentalBiodiversity(
     @field:Valid()
     val primaryForestAndWoodedLandOfNativeSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val protectedAreasExposure: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val rareOrEndangeredEcosystemsExposure: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val highlyBiodiverseGrasslandExposure: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val manufactureOfAgrochemicalPesticidesProducts: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val landDegradationDesertificationSoilSealingExposure: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val sustainableAgriculturePolicy: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val sustainableOceansAndSeasPolicy: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val threatenedSpeciesExposure: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val biodiversityProtectionPolicy: ExtendedDataPoint<YesNo?>? = null,
-
     @field:Valid()
     val deforestationPolicy: ExtendedDataPoint<YesNo?>? = null,
-
 )

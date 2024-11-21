@@ -1,0 +1,785 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Dataland Specification Service API documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/specifications"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Actuator",
+      "description": "Monitor and interact",
+      "externalDocs": {
+        "description": "Spring Boot Actuator Web API Documentation",
+        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
+      }
+    }
+  ],
+  "paths": {
+    "/frameworks/{frameworkSpecificationId}": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Get the framework specification for a given id.",
+        "description": "Get the framework specification for a given id.",
+        "operationId": "getFrameworkSpecification",
+        "parameters": [
+          {
+            "name": "frameworkSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrameworkSpecificationDto"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "head": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Checks if a framework specification exists.",
+        "description": "Checks if a framework specification exists.",
+        "operationId": "doesFrameworkSpecificationExist",
+        "parameters": [
+          {
+            "name": "frameworkSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Framework is not known by dataland."
+          },
+          "200": {
+            "description": "Successfully checked that the framework is known by dataland."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/frameworks": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "List all framework specifications",
+        "description": "List all framework specifications",
+        "operationId": "listFrameworkSpecifications",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SimpleFrameworkSpecificationDto"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data-points/{dataPointSpecificationId}": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Get the data point specification for a given id.",
+        "description": "Get the data point specification for a given id.",
+        "operationId": "getDataPointSpecification",
+        "parameters": [
+          {
+            "name": "dataPointSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointSpecificationDto"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data-points/{dataPointSpecificationId}/validated-by": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Get the kotlin class that validates the data point.",
+        "description": "Get the kotlin class that validates the data point.",
+        "operationId": "getKotlinClassValidatingTheDataPoint",
+        "parameters": [
+          {
+            "name": "dataPointSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data-point-types/{dataPointTypeSpecificationId}": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Get the data type specification for a given id.",
+        "description": "Get the data type specification for a given id.",
+        "operationId": "getDataPointTypeSpecification",
+        "parameters": [
+          {
+            "name": "dataPointTypeSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointTypeSpecificationDto"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data-point-types/{dataPointTypeSpecificationId}/validated-by": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Get the kotlin class that validates the data point type.",
+        "description": "Get the kotlin class that validates the data point type.",
+        "operationId": "getKotlinClassValidatingTheDataPointType",
+        "parameters": [
+          {
+            "name": "dataPointTypeSpecificationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator root web endpoint",
+        "operationId": "links",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "$ref": "#/components/schemas/Link"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/info": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027info\u0027",
+        "operationId": "info",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health\u0027",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/actuator/health/**": {
+      "get": {
+        "tags": [
+          "Actuator"
+        ],
+        "summary": "Actuator web endpoint \u0027health-path\u0027",
+        "operationId": "health-path",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/vnd.spring-boot.actuator.v3+json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              },
+              "application/vnd.spring-boot.actuator.v2+json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "IdWithRef": {
+        "required": [
+          "id",
+          "ref"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          }
+        }
+      },
+      "SimpleFrameworkSpecificationDto": {
+        "required": [
+          "frameworkSpecification",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "frameworkSpecification": {
+            "$ref": "#/components/schemas/IdWithRef"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "FrameworkSpecificationDto": {
+        "required": [
+          "businessDefinition",
+          "frameworkSpecification",
+          "name",
+          "schema"
+        ],
+        "type": "object",
+        "properties": {
+          "frameworkSpecification": {
+            "$ref": "#/components/schemas/IdWithRef"
+          },
+          "name": {
+            "type": "string"
+          },
+          "businessDefinition": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "string"
+          },
+          "referencedReportJsonPath": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointSpecificationDto": {
+        "required": [
+          "businessDefinition",
+          "dataPointSpecification",
+          "name",
+          "usedBy",
+          "validatedBy"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointSpecification": {
+            "$ref": "#/components/schemas/IdWithRef"
+          },
+          "name": {
+            "type": "string"
+          },
+          "businessDefinition": {
+            "type": "string"
+          },
+          "validatedBy": {
+            "$ref": "#/components/schemas/IdWithRef"
+          },
+          "usedBy": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdWithRef"
+            }
+          }
+        }
+      },
+      "DataPointTypeSpecificationDto": {
+        "required": [
+          "businessDefinition",
+          "dataPointTypeSpecification",
+          "example",
+          "name",
+          "usedBy",
+          "validatedBy"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointTypeSpecification": {
+            "$ref": "#/components/schemas/IdWithRef"
+          },
+          "name": {
+            "type": "string"
+          },
+          "businessDefinition": {
+            "type": "string"
+          },
+          "validatedBy": {
+            "type": "string"
+          },
+          "example": {
+            "$ref": "#/components/schemas/JsonNode"
+          },
+          "usedBy": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdWithRef"
+            }
+          }
+        }
+      },
+      "JsonNode": {
+        "type": "object"
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "templated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorDetails": {
+        "required": [
+          "errorType",
+          "httpStatus",
+          "message",
+          "summary"
+        ],
+        "type": "object",
+        "properties": {
+          "errorType": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "httpStatus": {
+            "type": "number"
+          },
+          "metaInformation": {
+            "type": "object"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "required": [
+          "errors"
+        ],
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetails"
+            }
+          }
+        }
+      }
+    }
+  }
+}

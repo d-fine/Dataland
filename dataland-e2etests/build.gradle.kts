@@ -42,7 +42,12 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     group = "clients"
     val backendClientDestinationPackage = "org.dataland.datalandbackend.openApiClient"
     input = project.file("${project.rootDir}/dataland-backend/backendOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/backend").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/backend")
+            .get()
+            .toString(),
+    )
     packageName.set(backendClientDestinationPackage)
     modelPackage.set("$backendClientDestinationPackage.model")
     apiPackage.set("$backendClientDestinationPackage.api")
@@ -66,7 +71,12 @@ tasks.register("generateQaServiceClient", org.openapitools.generator.gradle.plug
     group = "clients"
     val qaServiceClientDestinationPackage = "org.dataland.datalandqaservice.openApiClient"
     input = project.file("${project.rootDir}/dataland-qa-service/qaServiceOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/qa-service").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/qa-service")
+            .get()
+            .toString(),
+    )
     packageName.set(qaServiceClientDestinationPackage)
     modelPackage.set("$qaServiceClientDestinationPackage.model")
     apiPackage.set("$qaServiceClientDestinationPackage.api")
@@ -89,7 +99,12 @@ tasks.register("generateApiKeyManagerClient", org.openapitools.generator.gradle.
     group = "clients"
     val apiKeyManagerClientDestinationPackage = "org.dataland.datalandapikeymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-api-key-manager/apiKeyManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/api-key-manager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/api-key-manager")
+            .get()
+            .toString(),
+    )
     packageName.set(apiKeyManagerClientDestinationPackage)
     modelPackage.set("$apiKeyManagerClientDestinationPackage.model")
     apiPackage.set("$apiKeyManagerClientDestinationPackage.api")
@@ -108,7 +123,12 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     group = "clients"
     val documentManagerClientDestinationPackage = "org.dataland.documentmanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-document-manager/documentManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/document-manager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/document-manager")
+            .get()
+            .toString(),
+    )
     packageName.set(documentManagerClientDestinationPackage)
     modelPackage.set("$documentManagerClientDestinationPackage.model")
     apiPackage.set("$documentManagerClientDestinationPackage.api")
@@ -127,7 +147,12 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.communitymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/community-manager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/community-manager")
+            .get()
+            .toString(),
+    )
     packageName.set(communityManagerClientDestinationPackage)
     modelPackage.set("$communityManagerClientDestinationPackage.model")
     apiPackage.set("$communityManagerClientDestinationPackage.api")

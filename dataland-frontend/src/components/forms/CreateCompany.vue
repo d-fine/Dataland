@@ -231,6 +231,7 @@ import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadForm
 import { AxiosError } from 'axios';
 import { type FormKitNode } from '@formkit/core';
 import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
+import { reset } from '@formkit/core';
 
 export default defineComponent({
   name: 'CreateCompany',
@@ -381,7 +382,7 @@ export default defineComponent({
           const response = await companyDataControllerApi.postCompany(company);
           const newCompanyId = response.data.companyId;
           this.$emit('companyCreated', newCompanyId);
-          this.$formkit.reset('createCompanyForm');
+          reset('createCompanyForm');
           this.companyAlternativeNames = new Array<string>();
           this.message = 'New company has the ID: ' + newCompanyId;
           this.uploadSucceded = true;

@@ -8,6 +8,6 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 class DataRequestNotFoundApiException(
     requestId: String,
 ) : ResourceNotFoundApiException(
-    "Data request not found",
-    "Dataland does not know the Data request ID $requestId",
-)
+        "Data request not found",
+        "Dataland does not know the Data request ID $requestId",
+    )

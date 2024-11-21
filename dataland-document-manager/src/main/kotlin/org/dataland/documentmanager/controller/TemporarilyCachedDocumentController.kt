@@ -19,12 +19,15 @@ class TemporarilyCachedDocumentController(
     @Autowired private val inMemoryStore: InMemoryDocumentStore,
 ) : TemporarilyCachedDocumentApi {
     override fun getReceivedData(hash: String): ResponseEntity<InputStreamResource> {
-        val blob = inMemoryStore.retrieveDataFromMemoryStore(hash)
-            ?: throw ResourceNotFoundApiException(
-                "Blob for hash \"$hash\" not found in temporary storage",
-                "Dataland does not know the file identified by \"$hash\"",
-            )
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM)
+        val blob =
+            inMemoryStore.retrieveDataFromMemoryStore(hash)
+                ?: throw ResourceNotFoundApiException(
+                    "Blob for hash \"$hash\" not found in temporary storage",
+                    "Dataland does not know the file identified by \"$hash\"",
+                )
+        return ResponseEntity
+            .ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .body(InputStreamResource(ByteArrayInputStream(blob)))
     }
 }

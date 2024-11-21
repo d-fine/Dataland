@@ -8,7 +8,10 @@ import kotlin.io.path.div
 /**
  * An interface class for running EsLint and Prettier on a pre-determined set of files
  */
-class EsLintPrettierRunner(val repository: DatalandRepository, val files: List<Path>) {
+class EsLintPrettierRunner(
+    val repository: DatalandRepository,
+    val files: List<Path>,
+) {
     companion object {
         private const val ESLINT_TIMEOUT = 60L
         private const val PRETTIER_TIMEOUT = 60L
@@ -50,11 +53,12 @@ class EsLintPrettierRunner(val repository: DatalandRepository, val files: List<P
             "You must call EsLint with at least one file to run it on."
         }
 
-        val npxCommand = if (System.getProperty("os.name").contains("windows", true)) {
-            "npx.cmd"
-        } else {
-            "npx"
-        }
+        val npxCommand =
+            if (System.getProperty("os.name").contains("windows", true)) {
+                "npx.cmd"
+            } else {
+                "npx"
+            }
 
         runPrettier(npxCommand)
         runEslint(npxCommand)

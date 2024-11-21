@@ -12,10 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class CompanyRoleAssignment(
     @field:JsonProperty(required = true)
     val companyRole: CompanyRole,
-
     @field:JsonProperty(required = true)
     val companyId: String,
-
     @field:JsonProperty(required = true)
     val userId: String,
 )

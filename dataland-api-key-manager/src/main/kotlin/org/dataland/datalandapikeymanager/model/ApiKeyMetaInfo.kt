@@ -15,16 +15,12 @@ import org.dataland.datalandapikeymanager.entities.ApiKeyEntity
 data class ApiKeyMetaInfo(
     @field:JsonProperty(required = false)
     val keycloakUserId: String? = null,
-
     @field:JsonProperty(required = false)
     val keycloakRoles: List<String>? = null,
-
     @field:JsonProperty(required = false)
     val expiryDate: Long? = null,
-
     @field:JsonProperty(required = false)
     val active: Boolean? = null,
-
     @field:JsonProperty(required = false)
     val validationMessage: String? = null,
 ) {

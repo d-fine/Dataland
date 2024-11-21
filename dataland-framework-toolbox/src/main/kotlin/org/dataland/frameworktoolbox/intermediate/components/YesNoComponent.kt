@@ -19,7 +19,6 @@ class YesNoComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : SimpleKotlinBackedBaseComponent(identifier, parent, "org.dataland.datalandbackend.model.enums.commons.YesNo") {
-
     override fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder) {
         sectionConfigBuilder.addStandardCellWithValueGetterFactory(
             this,
@@ -39,12 +38,13 @@ class YesNoComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponentNameToUse = when (documentSupport) {
-            is NoDocumentSupport -> "YesNoFormField"
-            is SimpleDocumentSupport -> "YesNoBaseDataPointFormField"
-            is ExtendedDocumentSupport -> "YesNoExtendedDataPointFormField"
-            else -> throw IllegalArgumentException("YesNoComponent does not support document support '$documentSupport")
-        }
+        val uploadComponentNameToUse =
+            when (documentSupport) {
+                is NoDocumentSupport -> "YesNoFormField"
+                is SimpleDocumentSupport -> "YesNoBaseDataPointFormField"
+                is ExtendedDocumentSupport -> "YesNoExtendedDataPointFormField"
+                else -> throw IllegalArgumentException("YesNoComponent does not support document support '$documentSupport")
+            }
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,
             uploadComponentName = uploadComponentNameToUse,

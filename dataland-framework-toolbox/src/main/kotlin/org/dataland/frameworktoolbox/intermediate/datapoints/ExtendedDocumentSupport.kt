@@ -10,47 +10,51 @@ import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDis
  * Elements marked with ExtendedDocumentSupport are converted to ExtendedDataPoints
  */
 data object ExtendedDocumentSupport : DocumentSupport {
-    override fun getJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference {
-        return TypeReference(
+    override fun getNamingPrefix(): String = "extended"
+
+    override fun getJvmTypeReference(
+        innerType: TypeReference,
+        nullable: Boolean,
+    ): TypeReference =
+        TypeReference(
             "org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint",
             nullable,
             listOf(innerType),
         )
-    }
 
-    override fun getQaJvmTypeReference(innerType: TypeReference, nullable: Boolean): TypeReference {
-        return TypeReference(
+    override fun getQaJvmTypeReference(
+        innerType: TypeReference,
+        nullable: Boolean,
+    ): TypeReference =
+        TypeReference(
             "org.dataland.datalandqaservice.model.reports.QaReportDataPoint",
             true,
             listOf(getJvmTypeReference(innerType, nullable).getBackendClientTypeReference()),
         )
-    }
 
     override fun getFrameworkDisplayValueLambda(
         innerLambda: FrameworkDisplayValueLambda,
         fieldLabel: String?,
         dataPointAccessor: String,
-    ): FrameworkDisplayValueLambda {
-        return SimpleDocumentSupport.getFrameworkDisplayValueLambda(innerLambda, fieldLabel, dataPointAccessor)
-    }
+    ): FrameworkDisplayValueLambda = SimpleDocumentSupport.getFrameworkDisplayValueLambda(innerLambda, fieldLabel, dataPointAccessor)
 
-    override fun getDataAccessor(dataPointAccessor: String, nullable: Boolean): String {
-        return SimpleDocumentSupport.getDataAccessor(dataPointAccessor, nullable)
-    }
+    override fun getDataAccessor(
+        dataPointAccessor: String,
+        nullable: Boolean,
+    ): String =
+        SimpleDocumentSupport
+            .getDataAccessor(dataPointAccessor, nullable)
 
     override fun getFixtureExpression(
         nullableFixtureExpression: String,
         fixtureExpression: String,
         nullable: Boolean,
-    ): String {
-        return if (nullable) {
+    ): String =
+        if (nullable) {
             "dataGenerator.randomExtendedDataPoint($nullableFixtureExpression)"
         } else {
             "dataGenerator.guaranteedExtendedDataPoint($fixtureExpression)"
         }
-    }
 
-    override fun getJvmAnnotations(): List<Annotation> {
-        return listOf(ValidAnnotation)
-    }
+    override fun getJvmAnnotations(): List<Annotation> = listOf(ValidAnnotation)
 }

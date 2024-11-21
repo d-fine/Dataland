@@ -13,8 +13,11 @@ from dataland_backend_api_documentation_client.api.meta_data_controller.get_data
     sync as get_data_meta_info,
 )
 
-from dataland_backend_api_documentation_client.models.company_associated_data_eu_taxonomy_data_for_financials import (
-    CompanyAssociatedDataEuTaxonomyDataForFinancials,
+from dataland_backend_api_documentation_client.models.company_associated_data_nuclear_and_gas_data import (
+    CompanyAssociatedDataNuclearAndGasData,
+)
+from dataland_backend_api_documentation_client.models.company_associated_data_eutaxonomy_financials_data import (
+    CompanyAssociatedDataEutaxonomyFinancialsData,
 )
 from dataland_backend_api_documentation_client.models.company_associated_data_eutaxonomy_non_financials_data import (
     CompanyAssociatedDataEutaxonomyNonFinancialsData,
@@ -31,8 +34,8 @@ from dataland_backend_api_documentation_client.models.company_associated_data_pa
 from dataland_backend_api_documentation_client.models.company_associated_data_vsme_data import (
     CompanyAssociatedDataVsmeData,
 )
-from dataland_backend_api_documentation_client.models.company_associated_data_esg_questionnaire_data import (
-    CompanyAssociatedDataEsgQuestionnaireData,
+from dataland_backend_api_documentation_client.models.company_associated_data_esg_datenkatalog_data import (
+    CompanyAssociatedDataEsgDatenkatalogData,
 )
 from dataland_backend_api_documentation_client.models.company_associated_data_heimathafen_data import (
     CompanyAssociatedDataHeimathafenData,
@@ -64,13 +67,14 @@ class DataResource(Resource):
 
 def _get_data(data_type: DataTypeEnum, data_id: str, client: AuthenticatedClient) -> any:
     type_to_company_associated_data = {
-        DataTypeEnum.EUTAXONOMY_FINANCIALS: CompanyAssociatedDataEuTaxonomyDataForFinancials,
+        DataTypeEnum.NUCLEAR_AND_GAS: CompanyAssociatedDataNuclearAndGasData,
+        DataTypeEnum.EUTAXONOMY_FINANCIALS: CompanyAssociatedDataEutaxonomyFinancialsData,
         DataTypeEnum.EUTAXONOMY_NON_FINANCIALS: CompanyAssociatedDataEutaxonomyNonFinancialsData,
         DataTypeEnum.LKSG: CompanyAssociatedDataLksgData,
         DataTypeEnum.SFDR: CompanyAssociatedDataSfdrData,
         DataTypeEnum.P2P: CompanyAssociatedDataPathwaysToParisData,
         DataTypeEnum.VSME: CompanyAssociatedDataVsmeData,
-        DataTypeEnum.ESG_QUESTIONNAIRE: CompanyAssociatedDataEsgQuestionnaireData,
+        DataTypeEnum.ESG_DATENKATALOG: CompanyAssociatedDataEsgDatenkatalogData,
         DataTypeEnum.HEIMATHAFEN: CompanyAssociatedDataHeimathafenData,
         DataTypeEnum.ADDITIONAL_COMPANY_INFORMATION: CompanyAssociatedDataAdditionalCompanyInformationData
     }

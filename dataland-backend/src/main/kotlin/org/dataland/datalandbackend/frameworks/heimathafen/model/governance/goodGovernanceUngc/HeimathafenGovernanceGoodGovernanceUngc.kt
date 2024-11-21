@@ -10,12 +10,8 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class HeimathafenGovernanceGoodGovernanceUngc(
     val beruecksichtigungDesUngc: YesNo? = null,
-
     val wennNeinBitteBegruenden: String? = null,
-
     val beruecksichtigungDerUngcBeschreibung: String? = null,
-
     @field:Valid()
     val verwendeteQuellen: List<BaseDataPoint<String>>? = null,
-
 )

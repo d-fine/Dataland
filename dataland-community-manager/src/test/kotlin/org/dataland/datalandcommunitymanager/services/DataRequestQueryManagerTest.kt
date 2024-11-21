@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -21,33 +22,34 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.eq
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 class DataRequestQueryManagerTest {
-
     private lateinit var dataRequestQueryManager: DataRequestQueryManager
     private lateinit var dataRequestRepository: DataRequestRepository
     private lateinit var companyDataControllerApi: CompanyDataControllerApi
     private lateinit var processingUtils: DataRequestProcessingUtils
-    private lateinit var keycloakUserControllerApiService: KeycloakUserControllerApiService
+    private lateinit var keycloakUserControllerApiService: KeycloakUserService
     private val dataRequestLogger = mock(DataRequestLogger::class.java)
 
     private val testCompanyId = UUID.randomUUID().toString()
     private val testReportingPeriod = "2024"
-    private val testCompanyInformation = CompanyInformation(
-        companyName = "Dummy Company",
-        headquarters = "Berlin",
-        identifiers = emptyMap(),
-        countryCode = "DE",
-        companyContactDetails = listOf("test@dummy.de"),
-    )
+    private val testCompanyInformation =
+        CompanyInformation(
+            companyName = "Dummy Company",
+            headquarters = "Berlin",
+            identifiers = emptyMap(),
+            countryCode = "DE",
+            companyContactDetails = listOf("test@dummy.de"),
+        )
 
-    private val keycloakUserAlpha = KeycloakUserInfo(
-        email = "alpha@fakemail.de",
-        userId = UUID.randomUUID().toString(),
-        firstName = "Michael",
-        lastName = "Smith",
-    )
+    private val keycloakUserAlpha =
+        KeycloakUserInfo(
+            email = "alpha@fakemail.de",
+            userId = UUID.randomUUID().toString(),
+            firstName = "Michael",
+            lastName = "Smith",
+        )
     private val dataRequestEntityAlpha =
         DataRequestEntity(
             userId = keycloakUserAlpha.userId,
@@ -57,12 +59,13 @@ class DataRequestQueryManagerTest {
             datalandCompanyId = testCompanyId,
         )
 
-    private val keycloakUserBeta = KeycloakUserInfo(
-        email = "beta@fakemail.de",
-        userId = UUID.randomUUID().toString(),
-        firstName = "Lisa",
-        lastName = "Jackson",
-    )
+    private val keycloakUserBeta =
+        KeycloakUserInfo(
+            email = "beta@fakemail.de",
+            userId = UUID.randomUUID().toString(),
+            firstName = "Lisa",
+            lastName = "Jackson",
+        )
     private val dataRequestEntityBeta =
         DataRequestEntity(
             userId = keycloakUserBeta.userId,
@@ -72,27 +75,29 @@ class DataRequestQueryManagerTest {
             datalandCompanyId = testCompanyId,
         )
 
-    private val filterWithoutEmailAddress = DataRequestsFilter(
-        setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
-        null,
-        null,
-        testCompanyId,
-        testReportingPeriod,
-        setOf(RequestStatus.Open),
-        null,
-    )
+    private val filterWithoutEmailAddress =
+        DataRequestsFilter(
+            setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            null,
+            null,
+            testCompanyId,
+            testReportingPeriod,
+            setOf(RequestStatus.Open),
+            null,
+        )
 
     private val emailAddressSubstring = "beta"
 
-    private val filterWithEmailAddressBeta = DataRequestsFilter(
-        setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
-        null,
-        emailAddressSubstring,
-        testCompanyId,
-        testReportingPeriod,
-        setOf(RequestStatus.Open),
-        null,
-    )
+    private val filterWithEmailAddressBeta =
+        DataRequestsFilter(
+            setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            null,
+            emailAddressSubstring,
+            testCompanyId,
+            testReportingPeriod,
+            setOf(RequestStatus.Open),
+            null,
+        )
 
     private fun setupMocks() {
         processingUtils = mock(DataRequestProcessingUtils::class.java)
@@ -104,49 +109,46 @@ class DataRequestQueryManagerTest {
         dataRequestRepository = mock(DataRequestRepository::class.java)
         `when`(
             dataRequestRepository.searchDataRequestEntity(eq(filterWithoutEmailAddress), anyOrNull(), anyOrNull()),
-        )
-            .thenReturn(listOf(dataRequestEntityAlpha, dataRequestEntityBeta))
+        ).thenReturn(listOf(dataRequestEntityAlpha, dataRequestEntityBeta))
         `when`(
             dataRequestRepository.searchDataRequestEntity(eq(filterWithEmailAddressBeta), anyOrNull(), anyOrNull()),
-        )
-            .thenReturn(listOf(dataRequestEntityBeta))
+        ).thenReturn(listOf(dataRequestEntityBeta))
 
-        keycloakUserControllerApiService = mock(KeycloakUserControllerApiService::class.java)
+        keycloakUserControllerApiService = mock(KeycloakUserService::class.java)
         `when`(
             keycloakUserControllerApiService.getUser(keycloakUserAlpha.userId),
-        )
-            .thenReturn(keycloakUserAlpha)
+        ).thenReturn(keycloakUserAlpha)
         `when`(
             keycloakUserControllerApiService.getUser(keycloakUserBeta.userId),
-        )
-            .thenReturn(keycloakUserBeta)
+        ).thenReturn(keycloakUserBeta)
         `when`(
             keycloakUserControllerApiService.searchUsers(emailAddressSubstring),
-        )
-            .thenReturn(listOf(keycloakUserBeta))
+        ).thenReturn(listOf(keycloakUserBeta))
     }
 
     @BeforeEach
     fun setupDataRequestQueryManager() {
         setupMocks()
-        dataRequestQueryManager = DataRequestQueryManager(
-            dataRequestRepository = dataRequestRepository,
-            dataRequestLogger = dataRequestLogger,
-            companyDataControllerApi = companyDataControllerApi,
-            processingUtils = processingUtils,
-            keycloakUserControllerApiService = keycloakUserControllerApiService,
-        )
+        dataRequestQueryManager =
+            DataRequestQueryManager(
+                dataRequestRepository = dataRequestRepository,
+                dataRequestLogger = dataRequestLogger,
+                companyDataControllerApi = companyDataControllerApi,
+                processingUtils = processingUtils,
+                keycloakUserControllerApiService = keycloakUserControllerApiService,
+            )
     }
 
     @Test
     fun `simulate getDataRequests call without email filter `() {
-        val queryResults = dataRequestQueryManager.getDataRequests(
-            true,
-            emptyList(),
-            filterWithoutEmailAddress,
-            null,
-            null,
-        )
+        val queryResults =
+            dataRequestQueryManager.getDataRequests(
+                true,
+                emptyList(),
+                filterWithoutEmailAddress,
+                null,
+                null,
+            )
 
         verify(keycloakUserControllerApiService, times(0)).searchUsers(anyString())
         verify(keycloakUserControllerApiService, times(1)).getUser(keycloakUserAlpha.userId)
@@ -158,13 +160,14 @@ class DataRequestQueryManagerTest {
 
     @Test
     fun `simulate getDataRequests call with email filter `() {
-        val queryResults = dataRequestQueryManager.getDataRequests(
-            true,
-            emptyList(),
-            filterWithEmailAddressBeta,
-            null,
-            null,
-        )
+        val queryResults =
+            dataRequestQueryManager.getDataRequests(
+                true,
+                emptyList(),
+                filterWithEmailAddressBeta,
+                null,
+                null,
+            )
 
         verify(keycloakUserControllerApiService, times(1)).searchUsers(emailAddressSubstring)
         verify(keycloakUserControllerApiService, times(0)).getUser(anyString())

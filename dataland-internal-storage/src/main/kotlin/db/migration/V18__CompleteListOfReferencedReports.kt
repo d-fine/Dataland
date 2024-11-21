@@ -12,13 +12,14 @@ import org.slf4j.LoggerFactory
  * This migration script completes the list of referenced reports
  * with all reports referenced in ExtendedDataPoints.
  */
+@Suppress("ClassName")
 class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
-
-    private val frameworksToMigrate = listOf(
-        "eutaxonomy-non-financials",
-        "eutaxonomy-financials",
-        "sfdr",
-    )
+    private val frameworksToMigrate =
+        listOf(
+            "eutaxonomy-non-financials",
+            "eutaxonomy-financials",
+            "sfdr",
+        )
 
     private val logger = LoggerFactory.getLogger("Migration V18")
 
@@ -36,7 +37,10 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
     /**
      * Migrates the referencedReports to the new desired structure
      */
-    fun migrateReferencedReports(dataTableEntity: DataTableEntity, framework: String) {
+    fun migrateReferencedReports(
+        dataTableEntity: DataTableEntity,
+        framework: String,
+    ) {
         val dataset = dataTableEntity.dataJsonObject
         val dataPoints = findAllDataPoints(dataset)
 
@@ -55,11 +59,15 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
         return if (dataSource !== null && dataSource.has("fileName") && dataSource.has("fileReference")) {
             listOf(dataSource)
         } else {
-            jsonObject.keys().asSequence().mapNotNull { key ->
-                jsonObject.optJSONObject(key)?.let { subJsonObject ->
-                    findAllDataPoints(subJsonObject)
-                }
-            }.flatten().toList()
+            jsonObject
+                .keys()
+                .asSequence()
+                .mapNotNull { key ->
+                    jsonObject.optJSONObject(key)?.let { subJsonObject ->
+                        findAllDataPoints(subJsonObject)
+                    }
+                }.flatten()
+                .toList()
         }
     }
 
@@ -67,47 +75,62 @@ class V18__CompleteListOfReferencedReports : BaseJavaMigration() {
      * Gets the referencedReports based on the framework
      * If the object is null we insert a new object and return this object
      */
-    private fun getOrInsertReferencedReports(dataset: JSONObject, framework: String): JSONObject {
-        fun getOrInsertJSONObject(jsonObject: JSONObject, key: String): JSONObject {
+    private fun getOrInsertReferencedReports(
+        dataset: JSONObject,
+        framework: String,
+    ): JSONObject {
+        fun getOrInsertJSONObject(
+            jsonObject: JSONObject,
+            key: String,
+        ): JSONObject {
             if (jsonObject.optJSONObject(key) == null) {
                 jsonObject.put(key, JSONObject())
             }
             return jsonObject.getJSONObject(key)
         }
 
-        val referencedReports: JSONObject = when (framework) {
-            "eutaxonomy-non-financials" -> {
-                val general = dataset.optJSONObject("general")
-                getOrInsertJSONObject(general, "referencedReports")
-            }
+        val referencedReports: JSONObject =
+            when (framework) {
+                "eutaxonomy-non-financials" -> {
+                    val general = dataset.optJSONObject("general")
+                    getOrInsertJSONObject(general, "referencedReports")
+                }
 
-            "eutaxonomy-financials" -> {
-                getOrInsertJSONObject(dataset, "referencedReports")
-            }
+                "eutaxonomy-financials" -> {
+                    getOrInsertJSONObject(dataset, "referencedReports")
+                }
 
-            "sfdr" -> {
-                val general = dataset.optJSONObject("general")
-                val generalGeneral = general.optJSONObject("general")
-                getOrInsertJSONObject(generalGeneral, "referencedReports")
+                "sfdr" -> {
+                    val general = dataset.optJSONObject("general")
+                    val generalGeneral = general.optJSONObject("general")
+                    getOrInsertJSONObject(generalGeneral, "referencedReports")
+                }
+                else -> {
+                    JSONObject()
+                }
             }
-            else -> {
-                JSONObject()
-            }
-        }
         return referencedReports
     }
 
-    private fun updateReferencedReports(referencedReports: JSONObject, dataPoints: List<JSONObject>) {
-        val referencedReportsFileReferences = referencedReports.keys().asSequence().map { key ->
-            val nestedObject = referencedReports.getJSONObject(key)
-            Pair(nestedObject.getString("fileReference"), nestedObject)
-        }.toMap()
+    private fun updateReferencedReports(
+        referencedReports: JSONObject,
+        dataPoints: List<JSONObject>,
+    ) {
+        val referencedReportsFileReferences =
+            referencedReports
+                .keys()
+                .asSequence()
+                .map { key ->
+                    val nestedObject = referencedReports.getJSONObject(key)
+                    Pair(nestedObject.getString("fileReference"), nestedObject)
+                }.toMap()
 
-        val dataPointsFileReferences = dataPoints.associate { dataPoint ->
-            val fileReference = dataPoint.getString("fileReference")
-            val fileName = dataPoint.getString("fileName")
-            Pair(fileReference, fileName)
-        } // note that in the case of the same key with two names the last key remains
+        val dataPointsFileReferences =
+            dataPoints.associate { dataPoint ->
+                val fileReference = dataPoint.getString("fileReference")
+                val fileName = dataPoint.getString("fileName")
+                Pair(fileReference, fileName)
+            } // note that in the case of the same key with two names the last key remains
 
         val allFileReferences = referencedReportsFileReferences.keys.union(dataPointsFileReferences.keys)
 

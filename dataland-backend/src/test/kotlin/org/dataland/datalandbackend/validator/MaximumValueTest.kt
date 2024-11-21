@@ -42,14 +42,15 @@ class MaximumValueTest : NumberValidationTestBase() {
     }
 
     override fun validate(value: Any?): Int {
-        val violations = validator.validate(
-            when (value) {
-                null -> NumberFieldHolder(null)
-                is Number -> NumberFieldHolder(value)
-                is BaseDataPoint<*> -> DataPointFieldHolder(value)
-                else -> throw IllegalArgumentException("Argument was neither null nor Number nor BaseDataPoint")
-            },
-        )
+        val violations =
+            validator.validate(
+                when (value) {
+                    null -> NumberFieldHolder(null)
+                    is Number -> NumberFieldHolder(value)
+                    is BaseDataPoint<*> -> DataPointFieldHolder(value)
+                    else -> throw IllegalArgumentException("Argument was neither null nor Number nor BaseDataPoint")
+                },
+            )
         return violations.size
     }
 }

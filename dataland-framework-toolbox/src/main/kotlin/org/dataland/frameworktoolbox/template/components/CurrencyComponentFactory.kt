@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates CurrencyComponents from rows with the component "Currency"
  */
 @Component
-class CurrencyComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class CurrencyComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Currency"
 
     override fun generateComponent(

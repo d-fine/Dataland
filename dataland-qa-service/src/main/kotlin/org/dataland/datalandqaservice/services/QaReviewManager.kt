@@ -1,7 +1,10 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.QaSearchFilter
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service
 class QaReviewManager(
     @Autowired val reviewQueueRepository: ReviewQueueRepository,
     @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired val exceptionForwarder: ExceptionForwarder,
 ) {
     /**
      * The method returns a list of unreviewed datasets with corresponding information for the specified input params
@@ -31,22 +35,16 @@ class QaReviewManager(
         chunkSize: Int,
         chunkIndex: Int,
     ): List<ReviewQueueResponse> {
-        var companyIds = emptySet<String>()
-        if (!companyName.isNullOrBlank()) {
-            companyIds =
-                companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
-        }
-        val searchFilter = QaSearchFilter(
-            dataTypes = dataTypes,
-            reportingPeriods = reportingPeriods,
-            companyIds = companyIds,
-            companyName = companyName,
-        )
         val offset = (chunkIndex) * (chunkSize)
         return reviewQueueRepository.getSortedPendingMetadataSet(
-            searchFilter, resultOffset = offset,
+            QaSearchFilter(
+                dataTypes = dataTypes,
+                reportingPeriods = reportingPeriods,
+                companyIds = getCompanyIdsForCompanyName(companyName),
+                companyName = companyName,
+            ),
+            resultOffset = offset,
             resultLimit = chunkSize,
-
         )
     }
 
@@ -60,16 +58,29 @@ class QaReviewManager(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
         companyName: String?,
-    ): Int {
+    ): Int =
+        reviewQueueRepository.getNumberOfRequests(
+            QaSearchFilter(
+                dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
+                companyIds = getCompanyIdsForCompanyName(companyName),
+            ),
+        )
+
+    private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {
-            companyIds =
-                companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
+            try {
+                companyIds = companyDataControllerApi.getCompaniesBySearchString(companyName).map { it.companyId }.toSet()
+            } catch (clientException: ClientException) {
+                val responseBody = (clientException.response as ClientError<*>).body.toString()
+                exceptionForwarder.catchSearchStringTooShortClientException(
+                    responseBody,
+                    clientException.statusCode,
+                    clientException,
+                )
+                throw clientException
+            }
         }
-        val filter = QaSearchFilter(
-            dataTypes = dataTypes, companyName = companyName, reportingPeriods = reportingPeriods,
-            companyIds = companyIds,
-        )
-        return reviewQueueRepository.getNumberOfRequests(filter)
+        return companyIds
     }
 }

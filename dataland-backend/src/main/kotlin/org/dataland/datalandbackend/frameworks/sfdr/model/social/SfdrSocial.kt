@@ -15,14 +15,10 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.social.socialAndEmploy
 data class SfdrSocial(
     @field:Valid()
     val socialAndEmployeeMatters: SfdrSocialSocialAndEmployeeMatters? = null,
-
     @field:Valid()
     val greenSecurities: SfdrSocialGreenSecurities? = null,
-
     @field:Valid()
     val humanRights: SfdrSocialHumanRights? = null,
-
     @field:Valid()
     val antiCorruptionAndAntiBribery: SfdrSocialAntiCorruptionAndAntiBribery? = null,
-
 )

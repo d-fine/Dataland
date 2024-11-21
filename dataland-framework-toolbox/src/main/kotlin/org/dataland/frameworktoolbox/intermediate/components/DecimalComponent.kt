@@ -19,9 +19,9 @@ open class DecimalComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : NumberBaseComponent(identifier, parent) {
-
     var minimumValue: Long? = null
     var maximumValue: Long? = null
+
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
         val annotations = getMinMaxDatamodelAnnotations(minimumValue, maximumValue)
 
@@ -48,15 +48,12 @@ open class DecimalComponent(
     }
 
     override fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder) {
-        val uploadComponent = when (documentSupport) {
-            is NoDocumentSupport -> "NumberFormField"
-            is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
-            is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
-            else -> throw IllegalArgumentException(
-                "Upload-page generation for this component " +
-                    "does not support $documentSupport",
-            )
-        }
+        val uploadComponent =
+            when (documentSupport) {
+                is NoDocumentSupport -> "NumberFormField"
+                is SimpleDocumentSupport -> "BigDecimalBaseDataPointFormField"
+                is ExtendedDocumentSupport -> "BigDecimalExtendedDataPointFormField"
+            }
 
         uploadCategoryBuilder.addStandardUploadConfigCell(
             component = this,

@@ -23,21 +23,16 @@ import java.sql.SQLException
 
 /**
  * Simple implementation of the message queue listeners for the euroDatdataManager
- * @param cloudEventMessageHandler service for managing CloudEvents messages
- * on eurodat
- * @param messageUtils contains utils connected to the messages on the message queue
+ * @param cloudEventMessageHandler service for managing CloudEvents messages on eurodat
  * @param eurodatDataStore service for handling data for the eurodat storage
  */
 @Component
 class MessageQueueListenerEurodatDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var messageUtils: MessageQueueUtils,
     @Autowired var eurodatDataStore: EurodatDataStore,
-
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-//
     /**
      * Method that listens to the storage_queue and stores data into the EuroDaT database in case there is a message
      * on the storage_queue
@@ -48,25 +43,26 @@ class MessageQueueListenerEurodatDataStore(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "privateRequestReceivedEurodatDataStore",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.PrivateRequestReceived, declare = "false"),
-                key = [RoutingKeyNames.privateDataAndDocument],
+                value =
+                    Queue(
+                        "privateRequestReceivedEurodatDataStore",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.PRIVATE_REQUEST_RECEIVED, declare = "false"),
+                key = [RoutingKeyNames.PRIVATE_DATA_AND_DOCUMENT],
             ),
         ],
     )
     fun processStorageRequest(
         @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PrivateDataReceived)
+        MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
         val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
@@ -74,9 +70,9 @@ class MessageQueueListenerEurodatDataStore(
         logger.info(
             "Received storage request for dataId $dataId and correlationId $correlationId with payload: $payload",
         )
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val actionType = JSONObject(payload).getString("actionType")
-            if (actionType == ActionType.StorePrivateDataAndDocuments) {
+            if (actionType == ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS) {
                 try {
                     eurodatDataStore.storeDataInEurodat(dataId, correlationId, payload)
                     eurodatDataStore.sendMessageAfterSuccessfulStorage(payload, correlationId)

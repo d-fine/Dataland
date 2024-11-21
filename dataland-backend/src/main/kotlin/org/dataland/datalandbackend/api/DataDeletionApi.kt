@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 @SecurityRequirement(name = "default-oauth")
 @RequestMapping("/data/{dataId}")
 fun interface DataDeletionApi {
-
     /**
      * A method to delete data via Dataland into a data store
      * @param dataId consisting of the ID of the dataset to be removed

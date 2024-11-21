@@ -1,4 +1,5 @@
 package org.dataland.datalandbackend.interfaces.documents
+
 /**
  * --- API model ---
  * Interface of the base document reference

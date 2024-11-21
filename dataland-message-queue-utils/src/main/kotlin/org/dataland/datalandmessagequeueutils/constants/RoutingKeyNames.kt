@@ -5,11 +5,10 @@ package org.dataland.datalandmessagequeueutils.constants
  */
 
 object RoutingKeyNames {
-    const val document = "document"
-    const val data = "data"
-    const val internalEmail = "internalEmail"
-    const val templateEmail = "templateEmail"
-    const val persistAutomatedQaResult = "persistAutomatedQaResult"
-    const val metaDataPersisted = "metaDataPersisted"
-    const val privateDataAndDocument = "privateDataAndDocument"
+    const val DOCUMENT = "document"
+    const val DATA = "data"
+    const val EMAIL = "email"
+    const val PERSIST_AUTOMATED_QA_RESULT = "persistAutomatedQaResult"
+    const val META_DATA_PERSISTED = "metaDataPersisted"
+    const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
 }

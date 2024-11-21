@@ -11,8 +11,7 @@ export function selectItemFromDropdownByValue(
 ): void {
   dropdownDiv.find('.p-dropdown-trigger').click();
   if (exactMatchNotNeeded) {
-    cy.get('.p-dropdown-items').contains(valueToSelect).should('contain.text', valueToSelect);
-    cy.get('.p-dropdown-items').contains(valueToSelect).click();
+    cy.get('.p-dropdown-items').contains(valueToSelect).should('contain.text', valueToSelect).click();
   } else {
     cy.get('.p-dropdown-items')
       .contains(new RegExp(`^${valueToSelect}$`))

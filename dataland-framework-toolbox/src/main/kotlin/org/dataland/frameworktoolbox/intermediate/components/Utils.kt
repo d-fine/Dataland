@@ -15,9 +15,10 @@ fun SectionConfigBuilder.addStandardCellWithValueGetterFactory(
     valueGetter: FrameworkDisplayValueLambda,
 ) {
     addCell(
-        label = component.label ?: throw IllegalStateException(
-            "You must specify a label for ${component.identifier} to generate a view configuration",
-        ),
+        label =
+            component.label ?: throw IllegalStateException(
+                "You must specify a label for ${component.identifier} to generate a view configuration",
+            ),
         explanation = component.viewPageExplanation ?: component.uploadPageExplanation,
         shouldDisplay = component.availableIf.toFrameworkBooleanLambda(),
         valueGetter = valueGetter,
@@ -36,9 +37,10 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
 ) {
     addUploadCell(
         identifier = component.identifier,
-        label = component.label ?: throw IllegalStateException(
-            "You must specify a label for ${component.identifier} to generate a view configuration",
-        ),
+        label =
+            component.label ?: throw IllegalStateException(
+                "You must specify a label for ${component.identifier} to generate a view configuration",
+            ),
         explanation = component.uploadPageExplanation,
         unit = unit,
         required = component.isRequired,

@@ -25,7 +25,7 @@
     <a
       v-if="showProvideDataButton && !useMobileView"
       class="summary-panel__provide-button"
-      @click="$router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
+      @click="router.push(`/companies/${props.companyId}/frameworks/${props.framework}/upload`)"
       @pointerenter="onCursorEnterProvideButton"
       @pointerleave="onCursorLeaveProvideButton"
       :data-test="`${framework}-provide-data-button`"
@@ -40,9 +40,7 @@ import { computed, inject } from 'vue';
 import { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
+import router from '@/router';
 
 const props = defineProps<{
   companyId: string;

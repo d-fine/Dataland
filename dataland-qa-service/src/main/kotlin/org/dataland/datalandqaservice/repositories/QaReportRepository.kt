@@ -40,7 +40,10 @@ interface QaReportRepository : JpaRepository<QaReportEntity, String> {
             "AND qaReport.reporterUserId = :reporterUserId",
     )
     @Modifying
-    fun markAllReportsInactiveByDataIdAndReportingUserId(dataId: String, reporterUserId: String)
+    fun markAllReportsInactiveByDataIdAndReportingUserId(
+        dataId: String,
+        reporterUserId: String,
+    )
 
     /**
      * Deletes all QA reports for a specific dataId.

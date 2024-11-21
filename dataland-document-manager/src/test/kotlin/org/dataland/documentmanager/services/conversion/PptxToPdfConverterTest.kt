@@ -9,7 +9,6 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.mock.web.MockMultipartFile
 
 class PptxToPdfConverterTest {
-
     private val pathToLibre = "/usr/lib/libreoffice"
     private val correlationId = "test-correlation-id"
     private val pptxToPdfConverter = PptxToPdfConverter(pathToLibre)
@@ -20,12 +19,13 @@ class PptxToPdfConverterTest {
 
     @Test
     fun `verify that a pptx file can be converted to pdf`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(testPowerPoint),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                TestUtils().loadFileBytes(testPowerPoint),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
         pptxToPdfConverter.validateFile(testInput, correlationId)
         val convertedDocument = pptxToPdfConverter.convertFile(testInput, correlationId)
@@ -34,16 +34,18 @@ class PptxToPdfConverterTest {
 
     @Test
     fun `verify that an empty pptx file is not validated`() {
-        val testInput = MockMultipartFile(
-            testFileName,
-            testFileName,
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            TestUtils().loadFileBytes(emptyPowerPoint),
-        )
+        val testInput =
+            MockMultipartFile(
+                testFileName,
+                testFileName,
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                TestUtils().loadFileBytes(emptyPowerPoint),
+            )
         assertEquals(mimeType, Tika().detect(testInput.bytes))
-        val exception = assertThrows<InvalidInputApiException> {
-            pptxToPdfConverter.validateFile(testInput, correlationId)
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                pptxToPdfConverter.validateFile(testInput, correlationId)
+            }
         assertEquals("The file you uploaded seems to be empty.", exception.message)
     }
 }

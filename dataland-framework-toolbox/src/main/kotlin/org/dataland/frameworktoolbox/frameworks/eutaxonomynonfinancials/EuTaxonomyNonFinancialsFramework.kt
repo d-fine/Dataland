@@ -14,18 +14,19 @@ import java.io.File
  * Definition of the Eu Taxonomy Non-Financials framework
  */
 @Component
-class EuTaxonomyNonFinancialsFramework : PavedRoadFramework(
-    identifier = "eutaxonomy-non-financials",
-    label = "EU Taxonomy Non-Financials",
-    explanation = "The EU-Taxonomy framework for non-financial companies",
-    File(
-        "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
-    ),
-    order = 2,
-    enabledFeatures =
-    FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.UploadPage),
-) {
-
+class EuTaxonomyNonFinancialsFramework :
+    PavedRoadFramework(
+        identifier = "eutaxonomy-non-financials",
+        label = "EU Taxonomy Non-Financials",
+        explanation = "The EU-Taxonomy framework for non-financial companies",
+        File(
+            "./dataland-framework-toolbox/inputs/euTaxonomyNonFinancials/EutaxonomyNonFinancials.xlsx",
+        ),
+        order = 2,
+        enabledFeatures =
+            FrameworkGenerationFeatures
+                .allExcept(FrameworkGenerationFeatures.UploadPage, FrameworkGenerationFeatures.DataPointSpecifications),
+    ) {
     private fun configureComponentGroupColorsAndExpansion(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
             viewPageExpandOnPageLoad = true

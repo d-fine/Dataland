@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component
  * Generates PercentageComponents from rows with the component "Percentage"
  */
 @Component
-class PercentageComponentFactory(@Autowired val templateDiagnostic: TemplateDiagnostic) : TemplateComponentFactory {
+class PercentageComponentFactory(
+    @Autowired val templateDiagnostic: TemplateDiagnostic,
+) : TemplateComponentFactory {
     override fun canGenerateComponent(row: TemplateRow): Boolean = row.component == "Percentage"
 
     override fun generateComponent(

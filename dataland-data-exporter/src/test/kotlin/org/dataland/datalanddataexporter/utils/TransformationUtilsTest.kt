@@ -26,14 +26,16 @@ class TransformationUtilsTest {
     private val inconsistentJson = File("./src/test/resources/csv/inputs/inconsistent.json")
     private val referencedReportJson = File("./src/test/resources/csv/inputs/referencedReport.json")
     private val minimalSfdrDataJson = File("./src/test/resources/csv/inputs/minimalSfdrData.json")
-    private val expectedTransformationRules = mapOf(
-        "presentMapping" to "presentHeader",
-        "notMapped" to "",
-        "mappedButNoData" to "mappedButNoDataHeader",
-        "nested.nestedMapping" to "nestedHeader",
-    )
-    private val expectedHeaders = listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
-        listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
+    private val expectedTransformationRules =
+        mapOf(
+            "presentMapping" to "presentHeader",
+            "notMapped" to "",
+            "mappedButNoData" to "mappedButNoDataHeader",
+            "nested.nestedMapping" to "nestedHeader",
+        )
+    private val expectedHeaders =
+        listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
+            listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
     private val expectedJsonPaths = listOf("presentMapping", "notMapped", "nested.nestedMapping")
     private val expectedCsvData =
         mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
@@ -94,19 +96,21 @@ class TransformationUtilsTest {
     @Test
     fun `check that the data class to json conversion correctly converts the date`() {
         val expectedJson = ObjectMapper().readTree(minimalSfdrDataJson)
-        val input = CompanyAssociatedDataSfdrData(
-            data = SfdrData(
-                SfdrGeneral(
-                    SfdrGeneralGeneral(
-                        dataDate = LocalDate.parse("2022-01-01"),
-                        fiscalYearEnd = LocalDate.parse("2022-01-01"),
-                        fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
+        val input =
+            CompanyAssociatedDataSfdrData(
+                data =
+                    SfdrData(
+                        SfdrGeneral(
+                            SfdrGeneralGeneral(
+                                dataDate = LocalDate.parse("2022-01-01"),
+                                fiscalYearEnd = LocalDate.parse("2022-01-01"),
+                                fiscalYearDeviation = SfdrGeneralGeneralFiscalYearDeviationOptions.Deviation,
+                            ),
+                        ),
                     ),
-                ),
-            ),
-            companyId = "companyId",
-            reportingPeriod = "reportingPeriod",
-        )
+                companyId = "companyId",
+                reportingPeriod = "reportingPeriod",
+            )
         val result = TransformationUtils.convertDataToJson(input)
         assertEquals(expectedJson, result)
     }
@@ -122,10 +126,11 @@ class TransformationUtilsTest {
         val mapper = CsvMapper()
 
         val schema = CsvSchema.emptySchema().withHeader().withColumnSeparator('|')
-        val expectedCsvData = mapper
-            .readerFor(MutableMap::class.java)
-            .with(schema)
-            .readValue<Map<String, String>>(csvFile)
+        val expectedCsvData =
+            mapper
+                .readerFor(MutableMap::class.java)
+                .with(schema)
+                .readValue<Map<String, String>>(csvFile)
         assertEquals(csvData, expectedCsvData)
     }
 }

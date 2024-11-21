@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class CompanyAvailableDistinctValues(
     @field:JsonProperty(required = true)
     val countryCodes: Set<String>,
-
     @field:JsonProperty(required = true)
     val sectors: Set<String>,
 )

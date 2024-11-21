@@ -30,7 +30,6 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Component
 class MessageQueueListener(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private var objectMapper: ObjectMapper,
@@ -48,25 +47,26 @@ class MessageQueueListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "dataStoredDocumentManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-                key = [RoutingKeyNames.document],
+                value =
+                    Queue(
+                        "dataStoredDocumentManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                key = [RoutingKeyNames.DOCUMENT],
             ),
         ],
     )
     fun removeStoredDocumentFromTemporaryStore(
         @Payload documentId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DocumentStored)
+        MessageQueueUtils.validateMessageType(type, MessageType.DOCUMENT_STORED)
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -74,7 +74,7 @@ class MessageQueueListener(
         logger.info(
             "Document with ID $documentId was successfully stored. Correlation ID: $correlationId.",
         )
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
         }
     }
@@ -88,31 +88,33 @@ class MessageQueueListener(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "documentQualityAssuredDocumentManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.document],
+                value =
+                    Queue(
+                        "documentQualityAssuredDocumentManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                key = [RoutingKeyNames.DOCUMENT],
             ),
         ],
     )
     @Transactional
     fun updateDocumentMetaData(
         @Payload jsonString: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QaCompleted)
-        val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(jsonString, objectMapper)
+        val documentId = qaCompletedMessage.identifier
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
             metaInformation.qaStatus = QaStatus.Accepted
             logger.info(

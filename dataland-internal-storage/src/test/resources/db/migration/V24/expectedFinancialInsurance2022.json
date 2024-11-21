@@ -1,0 +1,48 @@
+{
+  "insuranceReinsurance": {
+    "underwritingKpi": {
+      "proportionOfAbsolutePremiumsOfTaxonomyNonEligibleActivities": {
+        "comment": null,
+        "dataSource": null,
+        "quality": "Audited",
+        "value": 45.1
+      }
+    }
+  },
+  "general": {
+    "general": {
+      "assurance": {
+        "dataSource": null,
+        "provider": "Ernst & Young GmbH",
+        "value": "LimitedAssurance"
+      },
+      "fiscalYearEnd": {
+        "value": "2022-12-31"
+      },
+      "referencedReports": {
+        "Annual Report": {
+          "fileName": null,
+          "fileReference": "0294a167243780261930651e9d5922b62d8de7f61a11ffc6e6e5b1d447637c33",
+          "publicationDate": "2022-12-31"
+        },
+        "Sustainability Report": {
+          "fileName": null,
+          "fileReference": "9b9151a567895a56d84e5aa86f2163807d3de73a29e0e542a1ee84f31e989a92",
+          "publicationDate": "2022-12-31"
+        }
+      },
+      "areAllGroupEntitiesCovered": {
+        "value": "Yes"
+      },
+      "fiscalYearDeviation": {
+        "value": "NoDeviation"
+      },
+      "isNfrdMandatory": {
+        "value": "Yes"
+      },
+      "numberOfEmployees": {
+        "value": 41389
+      }
+    }
+  }
+}

@@ -2,7 +2,10 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
+import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataAndQaReportMetadata
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
@@ -10,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.*
+import java.util.UUID
 
 /**
  * A service class for handling QA report metadata information.
@@ -20,8 +23,8 @@ class QaReportMetadataService(
     @Autowired private val companyController: CompanyDataControllerApi,
     @Autowired private val qaReportRepository: QaReportRepository,
     @Autowired val metadataController: MetaDataControllerApi,
+    @Autowired val exceptionForwarder: ExceptionForwarder,
 ) {
-
     /**
      * Method to search all data and the connected meta information associated with a data set.
      * @param uploaderUserIds set of user ids of the uploader
@@ -40,17 +43,20 @@ class QaReportMetadataService(
         maxUploadDate: LocalDate?,
         companyIdentifier: String?,
     ): List<DataAndQaReportMetadata> {
-        val companyId: String? = companyIdentifier?.let {
-            getCompanyIdFromCompanyIdentifier(it) ?: return emptyList()
-        }
-        val dataMetaInformation = metadataController.getListOfDataMetaInfo(
-            companyId, null, false, null, uploaderUserIds, qaStatus,
-        )
+        val companyId: String? =
+            companyIdentifier?.let {
+                getCompanyIdFromCompanyIdentifier(it) ?: return emptyList()
+            }
+        val dataMetaInformation =
+            metadataController.getListOfDataMetaInfo(
+                companyId, null, false, null, uploaderUserIds, qaStatus,
+            )
         val dataIds = dataMetaInformation.map { it.dataId }
         val startDateMillis = minUploadDate?.let { convertDateToMillis(it) }
         val endDateMillis = maxUploadDate?.let { convertDateToMillis(it) }
-        val qaReportEntities = qaReportRepository
-            .searchQaReportMetaInformation(dataIds, showOnlyActive, startDateMillis, endDateMillis)
+        val qaReportEntities =
+            qaReportRepository
+                .searchQaReportMetaInformation(dataIds, showOnlyActive, startDateMillis, endDateMillis)
         val qaReportMap = qaReportEntities.associateBy { it.dataId }
         return dataMetaInformation.mapNotNull { metaInformation ->
             qaReportMap[metaInformation.dataId]?.let { qaEntity ->
@@ -59,21 +65,34 @@ class QaReportMetadataService(
         }
     }
 
-    private fun convertDateToMillis(date: LocalDate): Long {
-        return date.atStartOfDay(ZoneId.of("Europe/Berlin"))
+    private fun convertDateToMillis(date: LocalDate): Long =
+        date
+            .atStartOfDay(ZoneId.of("Europe/Berlin"))
             .toInstant()
             .toEpochMilli()
-    }
 
     private fun getCompanyIdFromCompanyIdentifier(companyIdentifier: String): String? {
-        val matchingCompanyIdsAndNamesOnDataland = companyController.getCompaniesBySearchString(companyIdentifier)
+        val matchingCompanyIdsAndNamesOnDataland =
+            try {
+                companyController.getCompaniesBySearchString(companyIdentifier)
+            } catch (clientException: ClientException) {
+                val responseBody = (clientException.response as ClientError<*>).body.toString()
+                exceptionForwarder.catchSearchStringTooShortClientException(
+                    responseBody,
+                    clientException.statusCode,
+                    clientException,
+                )
+                throw clientException
+            }
+
         return when (matchingCompanyIdsAndNamesOnDataland.size) {
             0 -> null
             1 -> matchingCompanyIdsAndNamesOnDataland[0].companyId
             else -> throw InvalidInputApiException(
                 summary = "Company identifier is non unique. Multiple matching companies found.",
-                message = "Multiple companies have been found for the identifier you specified. " +
-                    "Please specify a unique company identifier.",
+                message =
+                    "Multiple companies have been found for the identifier you specified. " +
+                        "Please specify a unique company identifier.",
             )
         }
     }

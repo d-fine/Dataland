@@ -70,7 +70,7 @@ runs:
         echo '${{ inputs.vars }}' > logs/$GITHUB_JOB/vars_json.log
         find logs/$GITHUB_JOB -type f -size -4c -delete
     - name: Store env and secrets
-      uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4
+      uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
       with:
         name: parameters-${{ inputs.task }}
         path: ./logs/

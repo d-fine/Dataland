@@ -21,18 +21,23 @@ class DocxToPdfConverter(
     @Value("\${dataland.libreoffice.path}")
     private val pathToLibre: String,
 ) : MsOfficeToPdfConverterBase(
-    converterSourceType = DefaultDocumentFormatRegistry.DOCX,
-    pathToLibre = pathToLibre,
-    allowedMimeTypesPerFileExtension = mapOf(
-        "docx" to setOf(
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/x-tika-ooxml",
-        ),
-    ),
-) {
+        converterSourceType = DefaultDocumentFormatRegistry.DOCX,
+        pathToLibre = pathToLibre,
+        allowedMimeTypesPerFileExtension =
+            mapOf(
+                "docx" to
+                    setOf(
+                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        "application/x-tika-ooxml",
+                    ),
+            ),
+    ) {
     override val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    override fun validateFileContent(file: MultipartFile, correlationId: String) {
+    override fun validateFileContent(
+        file: MultipartFile,
+        correlationId: String,
+    ) {
         file.inputStream.use { inputStream ->
             XWPFDocument(inputStream).use { document ->
                 validateDocumentContent(document)
@@ -49,20 +54,28 @@ class DocxToPdfConverter(
         }
     }
 
-    override fun convert(file: MultipartFile, correlationId: String): ByteArray {
+    override fun convert(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray {
         logger.info("Converting docx to a pdf document. (correlation ID: $correlationId)")
         val outputStream = ByteArrayOutputStream()
 
-        val officeManager: OfficeManager = LocalOfficeManager.builder()
-            .officeHome(pathToLibre)
-            .build()
+        val officeManager: OfficeManager =
+            LocalOfficeManager
+                .builder()
+                .officeHome(pathToLibre)
+                .build()
         officeManager.start()
 
-        val converter = LocalConverter.builder()
-            .officeManager(officeManager)
-            .build()
+        val converter =
+            LocalConverter
+                .builder()
+                .officeManager(officeManager)
+                .build()
 
-        converter.convert(file.inputStream)
+        converter
+            .convert(file.inputStream)
             .`as`(DefaultDocumentFormatRegistry.DOCX)
             .to(outputStream)
             .`as`(DefaultDocumentFormatRegistry.PDF)

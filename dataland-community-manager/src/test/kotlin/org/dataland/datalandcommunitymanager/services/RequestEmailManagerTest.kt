@@ -18,7 +18,6 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.verifyNoMoreInteractions
 
 class RequestEmailManagerTest {
-
     private lateinit var dataRequestResponseEmailMessageSender: DataRequestResponseEmailSender
     private lateinit var singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender
     private lateinit var accessRequestEmailSender: AccessRequestEmailSender
@@ -31,11 +30,12 @@ class RequestEmailManagerTest {
         singleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
         accessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
 
-        requestEmailManager = RequestEmailManager(
-            dataRequestResponseEmailMessageSender,
-            singleDataRequestEmailMessageSender,
-            accessRequestEmailSender,
-        )
+        requestEmailManager =
+            RequestEmailManager(
+                dataRequestResponseEmailMessageSender,
+                singleDataRequestEmailMessageSender,
+                accessRequestEmailSender,
+            )
     }
 
     @Test
@@ -44,12 +44,17 @@ class RequestEmailManagerTest {
         for (requestStatus in RequestStatus.entries) {
             requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, null, null)
 
-            if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
+            if (requestStatus == RequestStatus.Answered) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
-                    .sendDataRequestResponseEmail(any(), any(), any())
+                    .sendDataRequestAnsweredEmail(any(), any())
+            } else if (requestStatus == RequestStatus.Closed) {
+                verify(dataRequestResponseEmailMessageSender, times(1))
+                    .sendDataRequestClosedEmail(any(), any())
             } else {
                 verify(dataRequestResponseEmailMessageSender, times(0))
-                    .sendDataRequestResponseEmail(any(), any(), any())
+                    .sendDataRequestAnsweredEmail(any(), any())
+                verify(dataRequestResponseEmailMessageSender, times(0))
+                    .sendDataRequestClosedEmail(any(), any())
             }
             reset(dataRequestResponseEmailMessageSender)
         }
@@ -92,7 +97,7 @@ class RequestEmailManagerTest {
         verify(accessRequestEmailSender, times(1))
             .notifyCompanyOwnerAboutNewRequest(any(), any())
         verify(dataRequestResponseEmailMessageSender, times(1))
-            .sendDataRequestResponseEmail(any(), any(), any())
+            .sendDataRequestAnsweredEmail(any(), any())
 
         verifyNoMoreInteractions(accessRequestEmailSender)
         verifyNoMoreInteractions(dataRequestResponseEmailMessageSender)

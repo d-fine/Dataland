@@ -16,7 +16,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
+import java.util.UUID
+
 /**
  * Service that handles all operations associated with company roles
  */
@@ -47,9 +48,10 @@ class CompanyRolesManager(
         val companyName = companyIdValidator.checkIfCompanyIdIsValidAndReturnName(companyId)
         val correlationId = UUID.randomUUID().toString()
 
-        val companyRoleAssignmentEntityOptional = companyRoleAssignmentRepository.findById(
-            CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId),
-        )
+        val companyRoleAssignmentEntityOptional =
+            companyRoleAssignmentRepository.findById(
+                CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId),
+            )
         return if (companyRoleAssignmentEntityOptional.isPresent) {
             logCompanyRoleAlreadyAssigned(companyRole, companyId, userId)
             companyRoleAssignmentEntityOptional.get()
@@ -67,14 +69,19 @@ class CompanyRolesManager(
         }
     }
 
-    private fun saveCompanyRoleAssignment(companyRole: CompanyRole, companyId: String, userId: String):
-        CompanyRoleAssignmentEntity {
-        return companyRoleAssignmentRepository.save(
+    private fun saveCompanyRoleAssignment(
+        companyRole: CompanyRole,
+        companyId: String,
+        userId: String,
+    ): CompanyRoleAssignmentEntity =
+        companyRoleAssignmentRepository.save(
             CompanyRoleAssignmentEntity(companyRole = companyRole, companyId = companyId, userId = userId),
         )
-    }
 
-    private fun deleteAllCompanyRoleAssignmentsForCompanyAndUser(companyId: String, userId: String) {
+    private fun deleteAllCompanyRoleAssignmentsForCompanyAndUser(
+        companyId: String,
+        userId: String,
+    ) {
         companyRoleAssignmentRepository.deleteAllRolesByCompanyIdAndUserId(companyId, userId)
     }
 
@@ -84,7 +91,11 @@ class CompanyRolesManager(
      * @param companyId of the company for which the role is already assigned
      * @param userId that is already assigned the company role to
      */
-    private fun logCompanyRoleAlreadyAssigned(companyRole: CompanyRole, companyId: String, userId: String) {
+    private fun logCompanyRoleAlreadyAssigned(
+        companyRole: CompanyRole,
+        companyId: String,
+        userId: String,
+    ) {
         logger.info(
             "User with Id $userId already has the company role $companyRole for the company with " +
                 "the company Id $companyId",
@@ -97,7 +108,11 @@ class CompanyRolesManager(
      * @param companyId of the company for which the role has been assigned
      * @param userId that has been assigned the company role to
      */
-    private fun logCompanyRoleHasBeenAssigned(companyRole: CompanyRole, companyId: String, userId: String) {
+    private fun logCompanyRoleHasBeenAssigned(
+        companyRole: CompanyRole,
+        companyId: String,
+        userId: String,
+    ) {
         logger.info(
             "User with Id $userId has received the company role $companyRole for the company with " +
                 "the company Id $companyId",
@@ -125,12 +140,15 @@ class CompanyRolesManager(
         )
     }
 
-    private fun throwExceptionDueToRoleNotAssignedToUser(companyRole: CompanyRole, companyId: String, userId: String) {
+    private fun throwExceptionDueToRoleNotAssignedToUser(
+        companyRole: CompanyRole,
+        companyId: String,
+        userId: String,
+    ): Unit =
         throw ResourceNotFoundApiException(
             exceptionSummaryTextWhenRoleNotAssigned,
             "The role $companyRole for company $companyId is not assigned to user $userId",
         )
-    }
 
     /**
      * Removes a company role assignment
@@ -139,12 +157,17 @@ class CompanyRolesManager(
      * @param userId of the user whose company role assignment shall be removed
      */
     @Transactional
-    fun removeCompanyRoleForCompanyFromUser(companyRole: CompanyRole, companyId: String, userId: String) {
+    fun removeCompanyRoleForCompanyFromUser(
+        companyRole: CompanyRole,
+        companyId: String,
+        userId: String,
+    ) {
         companyIdValidator.checkIfCompanyIdIsValid(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         val companyRoleAssignmentEntityOptional = companyRoleAssignmentRepository.findById(id)
         if (companyRoleAssignmentEntityOptional.isPresent) {
-            companyRoleAssignmentRepository.deleteById(id) } else {
+            companyRoleAssignmentRepository.deleteById(id)
+        } else {
             throwExceptionDueToRoleNotAssignedToUser(companyRole, companyId, userId)
         }
     }
@@ -213,7 +236,9 @@ class CompanyRolesManager(
                     correlationId = correlationId,
                 )
                 return
-            } else { throw e }
+            } else {
+                throw e
+            }
         }
         throw InvalidInputApiException(
             "User is already a company owner for company.",
@@ -224,6 +249,8 @@ class CompanyRolesManager(
     private fun assertAuthenticationViaJwtToken(userAuthentication: DatalandAuthentication): DatalandJwtAuthentication {
         if (userAuthentication !is DatalandJwtAuthentication) {
             throw AuthenticationMethodNotSupportedException()
-        } else { return userAuthentication }
+        } else {
+            return userAuthentication
+        }
     }
 }

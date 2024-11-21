@@ -25,7 +25,8 @@ class SwaggerUiSecurityConfig {
         http
             .securityMatcher(AntPathRequestMatcher.antMatcher("/swagger-ui/**"))
             // The provided hash is for the OAuth2 Redirect of the Swagger UI Login
-            .headers().contentSecurityPolicy(
+            .headers()
+            .contentSecurityPolicy(
                 "frame-src 'self' data: https://www.youtube.com https://www.youtube-nocookie.com/ " +
                     "https://consentcdn.cookiebot.com; script-src-elem 'self' 'unsafe-eval' " +
                     "'sha256-/0dJfWlZ9/P1qMKyXvELqM6+ycG3hol3gmKln32el8o=' https://consent.cookiebot.com " +

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDateFiscalYearEnd",
+  "name" : "Fiscal Year End",
+  "businessDefinition" : "The date the fiscal year ends",
+  "dataPointTypeId" : "extendedDate",
+  "frameworkOwnership" : "additional-company-information"
+}

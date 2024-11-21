@@ -1,14 +1,14 @@
 package org.dataland.datalandmessagequeueutils.utils
 
+import com.fasterxml.jackson.core.JacksonException
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.json.JSONObject
-import org.springframework.stereotype.Component
 
 /**
  * MessageQueueUtils provides utility functions to be used with the processing of messages
  */
-@Component("MessageQueueUtils")
-class MessageQueueUtils {
+object MessageQueueUtils {
     /**
      * rejectMessageOnException is a wrapper function which provides a possibility to add a try catch block to a
      * function
@@ -27,11 +27,29 @@ class MessageQueueUtils {
     /**
      * Handles a message type comparison and rejects the message in case of a missmatch
      */
-    fun validateMessageType(messageType: String, expectedType: String) {
+    fun validateMessageType(
+        messageType: String,
+        expectedType: String,
+    ) {
         if (messageType != expectedType) {
             throw MessageQueueRejectException(
                 "Message has type \"$messageType\" but type \"$expectedType\" was expected",
             )
+        }
+    }
+
+    /**
+     * Reads the json payload message received from the queue into the generic T type.
+     * If a jackson exception is thrown, it is caught and rethrown as MessageQueueRejectException.
+     */
+    inline fun <reified T> readMessagePayload(
+        jsonString: String,
+        objectMapper: ObjectMapper,
+    ): T {
+        try {
+            return objectMapper.readValue(jsonString, T::class.java)
+        } catch (e: JacksonException) {
+            throw MessageQueueRejectException("Failed to parse json into ${T::class.qualifiedName}, json: $jsonString, exception: $e\"")
         }
     }
 

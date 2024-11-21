@@ -23,17 +23,19 @@ class InvalidSfdrRequestTests {
     }
 
     fun getErrorFromApi(companyName: String): ClientException {
-        val oneInvalidSfdrDataset = apiAccessor.testDataProviderForSfdrData
-            .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
+        val oneInvalidSfdrDataset =
+            apiAccessor.testDataProviderForSfdrData
+                .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
-        val errorForInvalidInput = assertThrows<ClientException> {
-            apiAccessor.sfdrUploaderFunction(
-                companyInformation.actualStoredCompany.companyId,
-                oneInvalidSfdrDataset!!.t,
-                "",
-            )
-        }
+        val errorForInvalidInput =
+            assertThrows<ClientException> {
+                apiAccessor.sfdrUploaderFunction(
+                    companyInformation.actualStoredCompany.companyId,
+                    oneInvalidSfdrDataset!!.t,
+                    "",
+                )
+            }
         return errorForInvalidInput
     }
 
@@ -42,7 +44,9 @@ class InvalidSfdrRequestTests {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-currency-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+            (errorForInvalidInput.response as ClientError<*>)
+                .body!!
+                .toString()
                 .contains(errorMessage),
         )
     }
@@ -52,7 +56,9 @@ class InvalidSfdrRequestTests {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-negative-big-decimal-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+            (errorForInvalidInput.response as ClientError<*>)
+                .body!!
+                .toString()
                 .contains(errorMessage),
         )
     }
@@ -62,7 +68,9 @@ class InvalidSfdrRequestTests {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-negative-long-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+            (errorForInvalidInput.response as ClientError<*>)
+                .body!!
+                .toString()
                 .contains(errorMessage),
         )
     }
@@ -72,7 +80,9 @@ class InvalidSfdrRequestTests {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-invalid-percentage-input")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+            (errorForInvalidInput.response as ClientError<*>)
+                .body!!
+                .toString()
                 .contains(errorMessage),
         )
     }
@@ -82,15 +92,21 @@ class InvalidSfdrRequestTests {
         val errorForInvalidInput = getErrorFromApi("Sfdr-dataset-with-two-invalid-inputs")
         Assertions.assertTrue(errorForInvalidInput.message!!.contains(errorCode400))
         Assertions.assertTrue(
-            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+            (errorForInvalidInput.response as ClientError<*>)
+                .body!!
+                .toString()
                 .contains(errorMessage),
         )
         Assertions.assertTrue(
-            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+            (errorForInvalidInput.response as ClientError<*>)
+                .body!!
+                .toString()
                 .contains("rateOfAccidentsInPercent"),
         )
         Assertions.assertTrue(
-            (errorForInvalidInput.response as ClientError<*>).body!!.toString()
+            (errorForInvalidInput.response as ClientError<*>)
+                .body!!
+                .toString()
                 .contains("reportedConvictionsOfBriberyAndCorruption"),
         )
     }

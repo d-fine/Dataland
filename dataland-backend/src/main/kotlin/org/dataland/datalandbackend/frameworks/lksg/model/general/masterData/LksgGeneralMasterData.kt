@@ -12,24 +12,14 @@ import java.time.LocalDate
  */
 data class LksgGeneralMasterData(
     val dataDate: LocalDate,
-
     val headOfficeInGermany: YesNo? = null,
-
     val groupOfCompanies: YesNo? = null,
-
     val groupOfCompaniesName: String? = null,
-
     val industry: List<String>? = null,
-
     @field:MinimumValue(minimumValue = 0)
     val numberOfEmployees: BigDecimal? = null,
-
     val seasonalOrMigrantWorkers: YesNo? = null,
-
     val shareOfTemporaryWorkers: LksgGeneralMasterdataShareOfTemporaryWorkersOptions? = null,
-
     val annualTotalRevenue: AmountWithCurrency? = null,
-
     val fixedAndWorkingCapital: AmountWithCurrency? = null,
-
 )

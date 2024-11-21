@@ -41,7 +41,7 @@ export function getRandomNumberOfNaceCodesForSpecificActivity(activityName: stri
 function getRandomNumberOfNaceCodes(childNode: TreeNode): string[] | null {
   let naceCodesToReturn: string[] | null = null;
   if (Array.isArray(childNode.naceCodes) && childNode.naceCodes.every((item) => typeof item === 'string')) {
-    const allNaceCodesForActivity = childNode.naceCodes as string[];
+    const allNaceCodesForActivity = childNode.naceCodes;
     const listWithRandomNumberOfNaceCodes = Array.from(
       { length: faker.number.int({ min: 1, max: allNaceCodesForActivity.length }) },
       () => {

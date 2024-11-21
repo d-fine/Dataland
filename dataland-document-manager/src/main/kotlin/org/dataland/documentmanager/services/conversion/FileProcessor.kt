@@ -31,14 +31,18 @@ class FileProcessor(
      * @file the file to convert
      * @returns the pdf content as bytes
      */
-    fun processFile(file: MultipartFile, correlationId: String): ByteArray {
+    fun processFile(
+        file: MultipartFile,
+        correlationId: String,
+    ): ByteArray {
         logger.info("Trying to process uploaded file ${file.originalFilename}. (correlation ID: $correlationId)")
         val fileExtension = file.lowercaseExtension()
-        val matchingConverter = toPdfConverters.find { fileExtension in it.responsibleFileExtensions }
-            ?: throw InvalidInputApiException(
-                "File extension $fileExtension could not be recognized",
-                "File extension $fileExtension could not be recognized",
-            )
+        val matchingConverter =
+            toPdfConverters.find { fileExtension in it.responsibleFileExtensions }
+                ?: throw InvalidInputApiException(
+                    "File extension $fileExtension could not be recognized",
+                    "File extension $fileExtension could not be recognized",
+                )
         matchingConverter.validateFile(file, correlationId)
         return matchingConverter.convertFile(file, correlationId)
     }

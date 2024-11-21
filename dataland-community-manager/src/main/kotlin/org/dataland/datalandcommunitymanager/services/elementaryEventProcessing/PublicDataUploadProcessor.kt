@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.events.ElementaryEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
@@ -10,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.Logger
@@ -24,22 +25,19 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
-import java.util.*
 
 /**
 * Defines the processing of public framework data upload events as elementary events
 */
 @Component
 class PublicDataUploadProcessor(
-    @Autowired messageUtils: MessageQueueUtils,
     @Autowired notificationService: NotificationService,
     @Autowired elementaryEventRepository: ElementaryEventRepository,
     @Autowired objectMapper: ObjectMapper,
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
-) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
-
+) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
     override val elementaryEventType = ElementaryEventType.UploadEvent
-    override val messageType = MessageType.QaCompleted
+    override val messageType = MessageType.QA_COMPLETED
     override val actionType = null
     override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -53,43 +51,42 @@ class PublicDataUploadProcessor(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredCommunityManagerNotificationService",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
+                value =
+                    Queue(
+                        "dataQualityAssuredCommunityManagerNotificationService",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                key = [RoutingKeyNames.DATA],
             ),
         ],
     )
     fun processEvent(
         @Payload payload: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        val dataId = validateIncomingPayloadAndReturnDataId(payload, type)
+        MessageQueueUtils.validateMessageType(messageType, this.messageType)
 
-        super.processEvent(
-            createElementaryEventBasicInfo(
-                objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(dataId)),
-            ),
-            correlationId,
-            type,
-        )
-    }
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(payload, objectMapper)
 
-    override fun validateIncomingPayloadAndReturnDataId(payload: String, messageType: String): String {
-        messageUtils.validateMessageType(messageType, this.messageType)
+        if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+            return
+        }
 
-        val payloadJsonObject = JSONObject(payload)
-
-        return payloadJsonObject.getString("identifier")
-            .takeIf { it.isNotEmpty() }
-            ?: throw MessageQueueRejectException("The identifier in the message payload is empty.")
+        MessageQueueUtils.rejectMessageOnException {
+            super.processEvent(
+                createElementaryEventBasicInfo(
+                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.identifier)),
+                ),
+                correlationId,
+                type,
+            )
+        }
     }
 
     override fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {

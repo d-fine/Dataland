@@ -82,7 +82,12 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     group = "clients"
     val communityManagerClientDestinationPackage = "org.dataland.datalandcommunitymanager.openApiClient"
     input = project.file("${project.rootDir}/dataland-community-manager/communityManagerOpenApi.json").path
-    outputDir.set(layout.buildDirectory.dir("clients/communitymanager").get().toString())
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/communitymanager")
+            .get()
+            .toString(),
+    )
     packageName.set(communityManagerClientDestinationPackage)
     modelPackage.set("$communityManagerClientDestinationPackage.model")
     apiPackage.set("$communityManagerClientDestinationPackage.api")
@@ -127,7 +132,12 @@ tasks.test {
     useJUnitPlatform()
 
     extensions.configure(JacocoTaskExtension::class) {
-        setDestinationFile(layout.buildDirectory.dir("clients/jacoco/jacoco.exec").get().asFile)
+        setDestinationFile(
+            layout.buildDirectory
+                .dir("clients/jacoco/jacoco.exec")
+                .get()
+                .asFile,
+        )
     }
 }
 

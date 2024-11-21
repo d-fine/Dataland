@@ -20,20 +20,17 @@ import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param metaDataManager service for managing metadata
- * @param messageQueueUtils contains utils to be used to handle messages for the message queue
  * @param dataManager the dataManager service for public data
 */
 @Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val dataManager: DataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -47,32 +44,34 @@ class MessageQueueListenerForDataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "dataQualityAssuredBackendDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.DataQualityAssured, declare = "false"),
-                key = [RoutingKeyNames.data],
+                value =
+                    Queue(
+                        "dataQualityAssuredBackendDataManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                key = [RoutingKeyNames.DATA],
             ),
         ],
     )
     @Transactional
     fun updateMetaData(
         @Payload jsonString: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.QaCompleted)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(jsonString, objectMapper)
         val dataId = qaCompletedMessage.identifier
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             metaInformation.qaStatus = qaCompletedMessage.validationResult
             if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
@@ -96,25 +95,26 @@ class MessageQueueListenerForDataManager(
     @RabbitListener(
         bindings = [
             QueueBinding(
-                value = Queue(
-                    "dataStoredBackendDataManager",
-                    arguments = [
-                        Argument(name = "x-dead-letter-exchange", value = ExchangeName.DeadLetter),
-                        Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
-                        Argument(name = "defaultRequeueRejected", value = "false"),
-                    ],
-                ),
-                exchange = Exchange(ExchangeName.ItemStored, declare = "false"),
-                key = [RoutingKeyNames.data],
+                value =
+                    Queue(
+                        "dataStoredBackendDataManager",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                key = [RoutingKeyNames.DATA],
             ),
         ],
     )
     fun removeStoredItemFromTemporaryStore(
         @Payload dataId: String,
-        @Header(MessageHeaderKey.CorrelationId) correlationId: String,
-        @Header(MessageHeaderKey.Type) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.DataStored)
+        MessageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
@@ -122,7 +122,7 @@ class MessageQueueListenerForDataManager(
             "Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: " +
                 "$correlationId.",
         )
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             dataManager.removeDataSetFromInMemoryStore(dataId)
         }
     }

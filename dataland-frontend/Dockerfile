@@ -8,6 +8,7 @@ COPY ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-api-key-man
 COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
 COPY ./dataland-qa-service/qaServiceOpenApi.json ./dataland-qa-service/qaServiceOpenApi.json
 COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
+COPY ./dataland-email-service/emailServiceOpenApi.json ./dataland-email-service/emailServiceOpenApi.json
 COPY ./dataland-frontend/ ./dataland-frontend/
 COPY ./.git/ ./.git
 
@@ -21,7 +22,7 @@ ARG MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER
 ENV MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER=${MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER}
 RUN ./gradlew dataland-frontend:generateClients dataland-frontend:npm_run_build --no-daemon --stacktrace
 
-FROM nginx:1.27.1@sha256:135fbc7ed19c8f644ddf678e68292e678696908451dad7ee2fd4e0cf861f4b6f as production-stage
+FROM nginx:1.27.2@sha256:28402db69fec7c17e179ea87882667f1e054391138f77ffaf0c3eb388efc3ffb as production-stage
 COPY --from=build-stage /app/dataland-frontend/dist /usr/share/nginx/html
 COPY ./dataland-frontend/default.conf /etc/nginx/conf.d/default.conf
 COPY ./dataland-inbound-proxy/config/utils/securityHeaderMap.conf /etc/nginx/utils/securityHeaderMap.conf

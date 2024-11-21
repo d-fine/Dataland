@@ -79,7 +79,6 @@ class ListOfStringBaseDataPointComponent(
             setOf(
                 TypeScriptImport("generateArray", "@e2e/fixtures/FixtureUtils"),
             ),
-
         )
     }
 }

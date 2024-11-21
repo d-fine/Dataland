@@ -5,22 +5,28 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
+import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
+import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
+import java.util.UUID
 
 class DataRequestResponseEmailSenderTest {
     private val reportingPeriod = "2022"
@@ -31,45 +37,32 @@ class DataRequestResponseEmailSenderTest {
     private val companyName = "Test Inc."
     private val objectMapper = jacksonObjectMapper()
     private val correlationId = UUID.randomUUID().toString()
-    private val staleDaysThreshold = "some number"
-    private val dataTypes = getListOfAllDataTypes()
+    private val staleDaysThreshold = 34
+    private val dataTypes = readableFrameworkNameMapping.mapKeys { it.key.value }
 
     @BeforeEach
     fun setupAuthentication() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        val authenticationMock = AuthenticationMock.mockJwtAuthentication(
-            "userEmail",
-            userId,
-            setOf(DatalandRealmRole.ROLE_USER),
-        )
+        val authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "userEmail",
+                userId,
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
         `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
         `when`(authenticationMock.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
-    private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity {
-        return DataRequestEntity(
+
+    private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity =
+        DataRequestEntity(
             userId = userId,
             creationTimestamp = creationTimestamp,
             dataType = dataType,
             reportingPeriod = reportingPeriod,
             datalandCompanyId = companyId,
         )
-    }
-    private fun checkPropertiesOfDataRequestResponseEmail(
-        dataRequestId: String,
-        properties: Map<String, String?>,
-        dataType: String,
-        dataTypeDescription: String,
-    ) {
-        assertEquals(companyId, properties.getValue("companyId"))
-        assertEquals(companyName, properties.getValue("companyName"))
-        assertEquals(dataType, properties.getValue("dataType"))
-        assertEquals(dataTypeDescription, properties.getValue("dataTypeDescription"))
-        assertEquals(reportingPeriod, properties.getValue("reportingPeriod"))
-        assertEquals(creationTimestampAsDate, properties.getValue("creationDate"))
-        assertEquals(dataRequestId, properties.getValue("dataRequestId"))
-        assertEquals(staleDaysThreshold, properties.getValue("closedInDays"))
-    }
+
     private fun getCompanyDataControllerMock(): CompanyDataControllerApi {
         val companyDataControllerMock = mock(CompanyDataControllerApi::class.java)
         `when`(companyDataControllerMock.getCompanyInfo(companyId))
@@ -84,96 +77,96 @@ class DataRequestResponseEmailSenderTest {
         return companyDataControllerMock
     }
 
-    private fun getListOfAllDataTypes(): List<List<String>> {
-        return listOf(
-            listOf("p2p", "WWF Pathways to Paris"),
-            listOf("eutaxonomy-financials", "EU Taxonomy for financial companies"),
-            listOf("eutaxonomy-non-financials", "EU Taxonomy for non-financial companies"),
-            listOf("lksg", "LkSG"),
-            listOf("sfdr", "SFDR"),
-            listOf("vsme", "VSME"),
-            listOf("esg-questionnaire", "ESG Questionnaire"),
-            listOf("heimathafen", "Heimathafen"),
-        )
-    }
-
-    private fun getMockCloudEventMessageHandlerAndSetChecks(
-        dataType: String,
-        dataTypeDescription: String,
-        dataRequestId: String,
-        emailMessageType: TemplateEmailMessage.Type,
-    ): CloudEventMessageHandler {
+    private fun getMockCloudEventMessageHandlerAndSetChecks(assertEmailData: (TypedEmailContent) -> Unit): CloudEventMessageHandler {
         val cloudEventMessageHandlerMock = mock(CloudEventMessageHandler::class.java)
         `when`(
             cloudEventMessageHandlerMock.buildCEMessageAndSendToQueue(
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
+                any(), any(), any(), any(), any(),
             ),
-        ).then() {
-            val arg1 =
-                objectMapper.readValue(it.getArgument<String>(0), TemplateEmailMessage::class.java)
-            val arg2 = it.getArgument<String>(1)
-            val arg3 = it.getArgument<String>(2)
-            val arg4 = it.getArgument<String>(3)
-            val arg5 = it.getArgument<String>(4)
-            assertEquals(emailMessageType, arg1.emailTemplateType)
-            assertEquals(TemplateEmailMessage.UserIdEmailRecipient(userId), arg1.receiver)
-            checkPropertiesOfDataRequestResponseEmail(
-                dataRequestId, arg1.properties, dataType, dataTypeDescription,
-            )
-            assertEquals(MessageType.SendTemplateEmail, arg2)
-            assertEquals(correlationId, arg3)
-            assertEquals(ExchangeName.SendEmail, arg4)
-            assertEquals(RoutingKeyNames.templateEmail, arg5)
+        ).then {
+            val emailMessage = objectMapper.readValue(it.getArgument<String>(0), EmailMessage::class.java)
+            assertEquals(listOf(EmailRecipient.UserId(userId)), emailMessage.receiver)
+            assertEmailData(emailMessage.typedEmailContent)
+            assertEquals(MessageType.SEND_EMAIL, it.getArgument<String>(1))
+            assertEquals(correlationId, it.getArgument<String>(2))
+            assertEquals(ExchangeName.SEND_EMAIL, it.getArgument<String>(3))
+            assertEquals(RoutingKeyNames.EMAIL, it.getArgument<String>(4))
         }
         return cloudEventMessageHandlerMock
     }
 
+    private fun assertClosedEmailData(
+        dataRequestId: String,
+        dataTypeLabel: String,
+    ): (TypedEmailContent) -> Unit =
+        { emailData ->
+            assertTrue(emailData is DataRequestClosed)
+            val dataRequestAnswered = emailData as DataRequestClosed
+            assertEquals(companyName, dataRequestAnswered.companyName)
+            assertEquals(dataTypeLabel, dataRequestAnswered.dataTypeLabel)
+            assertEquals(reportingPeriod, dataRequestAnswered.reportingPeriod)
+            assertEquals(creationTimestampAsDate, dataRequestAnswered.creationDate)
+            assertEquals(dataRequestId, dataRequestAnswered.dataRequestId)
+            assertEquals(staleDaysThreshold, dataRequestAnswered.closedInDays)
+        }
+
     @Test
     fun `validate that the output of the closed request email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestClosed,
+                    assertClosedEmailData(dataRequestId, it.value),
                 )
 
             val dataRequestClosedEmailMessageSender =
                 DataRequestResponseEmailSender(
                     cloudEventMessageHandlerMock,
-                    jacksonObjectMapper(),
+                    objectMapper,
                     getCompanyDataControllerMock(),
-                    staleDaysThreshold,
+                    staleDaysThreshold.toString(),
                 )
-            dataRequestClosedEmailMessageSender.sendDataRequestResponseEmail(
-                dataRequestEntity, TemplateEmailMessage.Type.DataRequestClosed, correlationId,
+            dataRequestClosedEmailMessageSender.sendDataRequestClosedEmail(
+                dataRequestEntity, correlationId,
             )
         }
     }
 
+    private fun assertAnsweredEmailData(
+        dataRequestId: String,
+        dataTypeLabel: String,
+    ): (TypedEmailContent) -> Unit =
+        { emailData ->
+            assertTrue(emailData is DataRequestAnswered)
+            val dataRequestAnswered = emailData as DataRequestAnswered
+            assertEquals(companyName, dataRequestAnswered.companyName)
+            assertEquals(dataTypeLabel, dataRequestAnswered.dataTypeLabel)
+            assertEquals(reportingPeriod, dataRequestAnswered.reportingPeriod)
+            assertEquals(creationTimestampAsDate, dataRequestAnswered.creationDate)
+            assertEquals(dataRequestId, dataRequestAnswered.dataRequestId)
+            assertEquals(staleDaysThreshold, dataRequestAnswered.closedInDays)
+        }
+
     @Test
     fun `check that the output of the answered request email message sender is correctly build for all frameworks`() {
         dataTypes.forEach {
-            val dataRequestEntity = getDataRequestEntityWithDataType(it[0])
+            val dataRequestEntity = getDataRequestEntityWithDataType(it.key)
             val dataRequestId = dataRequestEntity.dataRequestId
             val cloudEventMessageHandlerMock =
                 getMockCloudEventMessageHandlerAndSetChecks(
-                    it[0], it[1], dataRequestId, TemplateEmailMessage.Type.DataRequestedAnswered,
+                    assertAnsweredEmailData(dataRequestId, it.value),
                 )
 
             val dataRequestClosedEmailMessageSender =
                 DataRequestResponseEmailSender(
                     cloudEventMessageHandlerMock,
-                    jacksonObjectMapper(),
+                    objectMapper,
                     getCompanyDataControllerMock(),
-                    staleDaysThreshold,
+                    staleDaysThreshold.toString(),
                 )
-            dataRequestClosedEmailMessageSender.sendDataRequestResponseEmail(
-                dataRequestEntity, TemplateEmailMessage.Type.DataRequestedAnswered, correlationId,
+            dataRequestClosedEmailMessageSender.sendDataRequestAnsweredEmail(
+                dataRequestEntity, correlationId,
             )
         }
     }

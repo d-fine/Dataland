@@ -106,12 +106,13 @@ class ProcessDataUpdatesTest {
     @Test
     fun `test ingestion is not executed if no flag file is provided`() {
         val mockStaticFile = mockStatic(File::class.java)
-        processDataUpdates = ProcessDataUpdates(
-            mockGleifApiAccessor, mockGleifGoldenCopyIngestorTest, mockNorthDataAccessor, mockNorthDataIngestorTest,
-            mockActuatorApi,
-            false, false,
-            null, null, oldFile,
-        )
+        processDataUpdates =
+            ProcessDataUpdates(
+                mockGleifApiAccessor, mockGleifGoldenCopyIngestorTest, mockNorthDataAccessor, mockNorthDataIngestorTest,
+                mockActuatorApi,
+                false, false,
+                null, null, oldFile,
+            )
         processDataUpdates.processFullGoldenCopyFileIfEnabled()
         mockStaticFile.verify({ File.createTempFile(any(), any()) }, times(0))
         mockStaticFile.close()
@@ -152,20 +153,22 @@ class ProcessDataUpdatesTest {
         val flagFileNorthdata = File.createTempFile("test2", ".csv")
         val bufferedReader = BufferedReader(BufferedReader.nullReader())
 
-        companyIngestor = GleifGoldenCopyIngestor(
-            mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
-            mockRelationshipExtractor,
-            File.createTempFile("tesd", ".csv"),
-        )
+        companyIngestor =
+            GleifGoldenCopyIngestor(
+                mockGleifApiAccessor, mockCsvParser, mockCompanyUploader, mockIsinDeltaBuilder,
+                mockRelationshipExtractor,
+                File.createTempFile("tesd", ".csv"),
+            )
 
         companyIngestorNorthData = NorthdataDataIngestor(mockCompanyUploader, mockCsvParser)
 
-        processDataUpdates = ProcessDataUpdates(
-            mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
-            companyIngestorNorthData, mockActuatorApi,
-            false, false,
-            flagFileGleif.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
-        )
+        processDataUpdates =
+            ProcessDataUpdates(
+                mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
+                companyIngestorNorthData, mockActuatorApi,
+                false, false,
+                flagFileGleif.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
+            )
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
     }

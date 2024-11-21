@@ -42,11 +42,11 @@ class ReferencedReportsListConstraintValidator :
     }
 
     private fun getFileReferencesFromReports(map: Map<String, CompanyReport>?): List<String> {
-        if (map == null) return emptyList()
+        if(map == null) return emptyList()
         val referencedReportsList = mutableListOf<String>()
-        for (entry in map.entries) {
+            for (entry in map.entries) {
             referencedReportsList.add(entry.value.fileReference)
-        }
+            }
         return referencedReportsList
     }
 

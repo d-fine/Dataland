@@ -8,6 +8,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotat
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.getBackendClientTypeReference
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.SectionConfigBuilder
 
@@ -18,7 +19,6 @@ class ReportPreuploadComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     private val companyReportType = TypeReference("org.dataland.datalandbackend.model.documents.CompanyReport", false)
 
     override fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder) {
@@ -60,7 +60,6 @@ class ReportPreuploadComponent(
                     ),
                 ),
             ),
-
         )
     }
 
@@ -82,5 +81,9 @@ class ReportPreuploadComponent(
             identifier,
             "dataGenerator.reports",
         )
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        // Component not part of specification
     }
 }

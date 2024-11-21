@@ -10,24 +10,16 @@ import java.math.BigDecimal
  */
 data class VsmeBasicEnergyAndGreenhousGasEmissions(
     val energyFossilFuelsInMWh: BigDecimal? = null,
-
     @field:Valid()
     val electricityTotalInMWh: ExtendedDataPoint<BigDecimal?>? = null,
-
     val electricityNonRenewableInMWh: BigDecimal? = null,
-
     val electricityRenewableInMWh: BigDecimal? = null,
-
     @field:Valid()
     val totalEmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope1EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope2EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val scope3EmissionsInTonnesOfCO2Equivalents: ExtendedDataPoint<BigDecimal?>? = null,
-
 )

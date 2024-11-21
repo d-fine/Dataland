@@ -26,10 +26,9 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.Mockito.`when`
 import org.springframework.http.HttpStatus
-import java.util.*
+import java.util.UUID
 
 class CompanyRolesManagerTest {
-
     private lateinit var companyRolesManager: CompanyRolesManager
 
     private lateinit var mockCompanyRoleAssignmentRepository: CompanyRoleAssignmentRepository
@@ -43,18 +42,20 @@ class CompanyRolesManagerTest {
     private val testUserId = UUID.randomUUID().toString()
 
     private val testCompanyName = "Test Company AG"
-    private val testCompanyInformation = CompanyInformation(
-        companyName = testCompanyName,
-        headquarters = "dummyHeadquarters",
-        identifiers = emptyMap(),
-        countryCode = "dummyCountryCode",
-    )
+    private val testCompanyInformation =
+        CompanyInformation(
+            companyName = testCompanyName,
+            headquarters = "dummyHeadquarters",
+            identifiers = emptyMap(),
+            countryCode = "dummyCountryCode",
+        )
 
-    private val mockAuthentication = AuthenticationMock.mockJwtAuthentication(
-        "username",
-        testUserId,
-        setOf(DatalandRealmRole.ROLE_USER),
-    )
+    private val mockAuthentication =
+        AuthenticationMock.mockJwtAuthentication(
+            "username",
+            testUserId,
+            setOf(DatalandRealmRole.ROLE_USER),
+        )
 
     @BeforeEach
     fun initializeCompanyRolesManager() {
@@ -69,18 +70,20 @@ class CompanyRolesManagerTest {
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockCompanyIdValidator = CompanyIdValidator(mockCompanyDataControllerApi)
 
-        companyRolesManager = CompanyRolesManager(
-            mockCompanyIdValidator,
-            mockCompanyRoleAssignmentRepository,
-            mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
-            companyOwnershipAcceptedEmailMessageSender,
-        )
+        companyRolesManager =
+            CompanyRolesManager(
+                mockCompanyIdValidator,
+                mockCompanyRoleAssignmentRepository,
+                mock(CompanyOwnershipRequestedEmailMessageSender::class.java),
+                companyOwnershipAcceptedEmailMessageSender,
+            )
 
         mockCompanyRoleAssignmentEntity = mock(CompanyRoleAssignmentEntity::class.java)
         `when`(mockCompanyRoleAssignmentRepository.save(any(CompanyRoleAssignmentEntity::class.java)))
             .thenReturn(mockCompanyRoleAssignmentEntity)
 
-        doNothing().`when`(companyOwnershipAcceptedEmailMessageSender)
+        doNothing()
+            .`when`(companyOwnershipAcceptedEmailMessageSender)
             .sendCompanyOwnershipAcceptanceExternalEmailMessage(
                 anyString(),
                 anyString(), anyString(), anyString(),
@@ -92,11 +95,12 @@ class CompanyRolesManagerTest {
         `when`(mockCompanyDataControllerApi.isCompanyIdValid("non-existing-company-id")).thenThrow(
             ClientException("Client error", HttpStatus.NOT_FOUND.value()),
         )
-        val exception = assertThrows<ResourceNotFoundApiException> {
-            companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(
-                "non-existing-company-id",
-            )
-        }
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.validateIfCompanyHasAtLeastOneCompanyOwner(
+                    "non-existing-company-id",
+                )
+            }
         assertTrue(exception.summary.contains("Company not found"))
     }
 
@@ -107,21 +111,23 @@ class CompanyRolesManagerTest {
         `when`(mockCompanyDataControllerApi.getCompanyById(existingCompanyId)).thenReturn(mockStoredCompany)
         `when`(mockStoredCompany.companyInformation).thenReturn(testCompanyInformation)
 
-        val id = CompanyRoleAssignmentId(
-            companyRole = CompanyRole.CompanyOwner,
-            companyId = existingCompanyId,
-            userId = testUserId,
-        )
+        val id =
+            CompanyRoleAssignmentId(
+                companyRole = CompanyRole.CompanyOwner,
+                companyId = existingCompanyId,
+                userId = testUserId,
+            )
         `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(true)
 
-        val exception = assertThrows<InvalidInputApiException> {
-            companyRolesManager.triggerCompanyOwnershipRequest(
-                existingCompanyId,
-                mockAuthentication,
-                null,
-                "",
-            )
-        }
+        val exception =
+            assertThrows<InvalidInputApiException> {
+                companyRolesManager.triggerCompanyOwnershipRequest(
+                    existingCompanyId,
+                    mockAuthentication,
+                    null,
+                    "",
+                )
+            }
         assertTrue(exception.summary.contains("User is already a company owner for company."))
     }
 
@@ -130,13 +136,14 @@ class CompanyRolesManagerTest {
         `when`(mockCompanyDataControllerApi.getCompanyById(anyString())).thenThrow(
             ClientException("Client error", HttpStatus.NOT_FOUND.value()),
         )
-        val exception = assertThrows<ResourceNotFoundApiException> {
-            companyRolesManager.assignCompanyRoleForCompanyToUser(
-                companyRole = CompanyRole.CompanyOwner,
-                companyId = UUID.randomUUID().toString(),
-                userId = testUserId,
-            )
-        }
+        val exception =
+            assertThrows<ResourceNotFoundApiException> {
+                companyRolesManager.assignCompanyRoleForCompanyToUser(
+                    companyRole = CompanyRole.CompanyOwner,
+                    companyId = UUID.randomUUID().toString(),
+                    userId = testUserId,
+                )
+            }
         verifyNoInteractions(companyOwnershipAcceptedEmailMessageSender)
         assertTrue(exception.summary.contains("Company not found"))
     }
@@ -144,18 +151,20 @@ class CompanyRolesManagerTest {
     @Test
     fun `check that email generated for users becoming company owner are generated`() {
         val companyId = UUID.randomUUID().toString()
-        val storedCompany = StoredCompany(
-            companyId = companyId,
-            companyInformation = testCompanyInformation,
-            dataRegisteredByDataland = listOf(),
-        )
+        val storedCompany =
+            StoredCompany(
+                companyId = companyId,
+                companyInformation = testCompanyInformation,
+                dataRegisteredByDataland = listOf(),
+            )
         `when`(mockCompanyDataControllerApi.getCompanyById(companyId)).thenReturn(storedCompany)
 
-        val id = CompanyRoleAssignmentId(
-            companyRole = CompanyRole.CompanyOwner,
-            companyId = companyId,
-            userId = testUserId,
-        )
+        val id =
+            CompanyRoleAssignmentId(
+                companyRole = CompanyRole.CompanyOwner,
+                companyId = companyId,
+                userId = testUserId,
+            )
         `when`(mockCompanyRoleAssignmentRepository.existsById(id)).thenReturn(false)
 
         companyRolesManager.assignCompanyRoleForCompanyToUser(
@@ -164,7 +173,8 @@ class CompanyRolesManagerTest {
             userId = testUserId,
         )
 
-        Mockito.verify(companyOwnershipAcceptedEmailMessageSender, Mockito.times(1))
+        Mockito
+            .verify(companyOwnershipAcceptedEmailMessageSender, Mockito.times(1))
             .sendCompanyOwnershipAcceptanceExternalEmailMessage(
                 anyString(),
                 anyString(),

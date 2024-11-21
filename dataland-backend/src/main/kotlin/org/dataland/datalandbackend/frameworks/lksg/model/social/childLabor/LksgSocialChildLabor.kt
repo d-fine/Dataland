@@ -10,34 +10,20 @@ import org.dataland.datalandbackend.model.enums.commons.YesNo
  */
 data class LksgSocialChildLabor(
     val employeeSUnder18: YesNo? = null,
-
     val employeeSUnder15: YesNo? = null,
-
     val employeeSUnder18InApprenticeship: YesNo? = null,
-
     val worstFormsOfChildLaborProhibition: YesNo? = null,
-
     val worstFormsOfChildLaborForms: String? = null,
-
     val measuresForPreventionOfEmploymentUnderLocalMinimumAge: YesNo? = null,
-
     val employmentUnderLocalMinimumAgePreventionEmploymentContracts: YesNo? = null,
-
     val employmentUnderLocalMinimumAgePreventionJobDescription: YesNo? = null,
-
     val employmentUnderLocalMinimumAgePreventionIdentityDocuments: YesNo? = null,
-
     @field:Valid()
     val employmentUnderLocalMinimumAgePreventionTraining: BaseDataPoint<YesNo>? = null,
-
     val employmentUnderLocalMinimumAgePreventionCheckingOfLegalMinimumAge: YesNo? = null,
-
     @field:Valid()
     val childLaborPreventionPolicy: BaseDataPoint<YesNo>? = null,
-
     @field:Valid()
     val additionalChildLaborOtherMeasures: BaseDataPoint<YesNo>? = null,
-
     val additionalChildLaborOtherMeasuresDescription: String? = null,
-
 )

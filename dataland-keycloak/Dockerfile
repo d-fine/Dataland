@@ -7,11 +7,11 @@ COPY ./dataland-keycloak/dataland_theme/login ./dataland-keycloak/dataland_theme
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-keycloak:dataland_theme:login:buildTheme --no-daemon --stacktrace
 
-FROM registry.access.redhat.com/ubi9@sha256:7575b6e3cc492f856daf8c43f30692d8f5fcd5b7077806dba4bac436ad0a84e8 AS ubi-micro-build
+FROM registry.access.redhat.com/ubi9@sha256:b00d5990a00937bd1ef7f44547af6c7fd36e3fd410e2c89b5d2dfc1aff69fe99 AS ubi-micro-build
 RUN mkdir -p /mnt/rootfs
 RUN dnf install --installroot /mnt/rootfs curl --releasever 9 --setopt install_weak_deps=false --nodocs -y; dnf --installroot /mnt/rootfs clean all
 
-FROM quay.io/keycloak/keycloak:24.0.4@sha256:ff02c932f0249c58f32b8ff1b188a48cc90809779a3a05931ab67f5672400ad0
+FROM quay.io/keycloak/keycloak:24.0.5@sha256:c916c668a5cd589948c3310ab31ffcfc5da55f0e546028f2f606419ce17c6ad8
 
 COPY --from=ubi-micro-build /mnt/rootfs /
 

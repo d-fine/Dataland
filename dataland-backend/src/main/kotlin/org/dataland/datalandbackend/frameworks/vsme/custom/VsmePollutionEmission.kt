@@ -11,7 +11,6 @@ import java.math.BigDecimal
 data class VsmePollutionEmission(
     @field:JsonProperty(required = true)
     val pollutionType: String,
-
     val emissionInKilograms: BigDecimal? = null,
     @field:JsonProperty(required = true)
     val releaseMedium: ReleaseMedium,

@@ -7,12 +7,11 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 /**
  * Manages all alterations of data requests
@@ -23,7 +22,6 @@ class RequestEmailManager(
     @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
     @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
 ) {
-
     /**
      * Method to send email when the request status or access status changes
      * @param dataRequestEntity the request entity
@@ -38,16 +36,11 @@ class RequestEmailManager(
         correlationId: String?,
     ) {
         val correlationId = correlationId ?: UUID.randomUUID().toString()
-        if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
-            dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
-                dataRequestEntity,
-                if (requestStatus == RequestStatus.Answered) {
-                    TemplateEmailMessage.Type.DataRequestedAnswered
-                } else {
-                    TemplateEmailMessage.Type.DataRequestClosed
-                },
-                correlationId,
-            )
+        if (requestStatus == RequestStatus.Answered) {
+            dataRequestResponseEmailMessageSender.sendDataRequestAnsweredEmail(dataRequestEntity, correlationId)
+        }
+        if (requestStatus == RequestStatus.Closed) {
+            dataRequestResponseEmailMessageSender.sendDataRequestClosedEmail(dataRequestEntity, correlationId)
         }
         if (accessStatus == AccessStatus.Granted) {
             accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
@@ -76,12 +69,13 @@ class RequestEmailManager(
     ) {
         val correlationId = UUID.randomUUID().toString()
         singleDataRequestEmailMessageSender.sendSingleDataRequestExternalMessage(
-            messageInformation = SingleDataRequestEmailMessageSender.MessageInformation(
-                dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
-                reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
-                datalandCompanyId = dataRequestEntity.datalandCompanyId,
-                userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
-            ),
+            messageInformation =
+                SingleDataRequestEmailMessageSender.MessageInformation(
+                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                    reportingPeriods = setOf(dataRequestEntity.reportingPeriod),
+                    datalandCompanyId = dataRequestEntity.datalandCompanyId,
+                    userAuthentication = DatalandAuthentication.fromContext() as DatalandJwtAuthentication,
+                ),
             receiverSet = contacts,
             contactMessage = message,
             correlationId = correlationId,

@@ -12,8 +12,6 @@ import java.math.BigDecimal
 data class EutaxonomyNonFinancialsCapexNonAlignedShare(
     @field:Valid()
     val relativeShareInPercent: ExtendedDataPoint<BigDecimal?>? = null,
-
     @field:Valid()
     val absoluteShare: CurrencyDataPoint? = null,
-
 )
