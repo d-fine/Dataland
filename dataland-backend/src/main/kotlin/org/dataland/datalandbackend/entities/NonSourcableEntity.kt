@@ -7,7 +7,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NonSourcable
+import org.dataland.datalandbackend.model.metainformation.NonSourcableData
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import java.util.UUID
 
@@ -34,9 +34,9 @@ data class NonSourcableEntity(
     var reason: String,
     @Column(name = "creation_time", nullable = false)
     var creationTime: Long,
-) : ApiModelConversion<NonSourcable> {
-    override fun toApiModel(viewingUser: DatalandAuthentication?): NonSourcable =
-        NonSourcable(
+) : ApiModelConversion<NonSourcableData> {
+    override fun toApiModel(viewingUser: DatalandAuthentication?): NonSourcableData =
+        NonSourcableData(
             eventId = eventId,
             companyId = company.companyId,
             dataType = DataType.valueOf(dataType),

@@ -15,7 +15,7 @@ import java.util.UUID
  * @param reason reason why there is no source available
  * @param creationTime is a timestamp for the creation of this event
  */
-data class NonSourcable(
+data class NonSourcableData(
     @field:JsonProperty(required = true)
     val eventId: UUID,
     @field:JsonProperty(required = true)
