@@ -11,7 +11,7 @@ import org.dataland.datalandbackendutils.utils.isEmailAddress
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.services.CompanyRolesManager
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import java.util.UUID
 
 /**
@@ -85,9 +85,9 @@ data class MessageEntity(
             contact: String,
             companyRolesManager: CompanyRolesManager,
             companyId: String,
-        ): List<TemplateEmailMessage.EmailRecipient> =
+        ): List<EmailRecipient> =
             if (contact.isEmailAddress()) {
-                listOf(TemplateEmailMessage.EmailAddressEmailRecipient(contact))
+                listOf(EmailRecipient.EmailAddress(contact))
             } else if (contact == COMPANY_OWNER_KEYWORD) {
                 val companyOwnerList =
                     companyRolesManager.getCompanyRoleAssignmentsByParameters(
@@ -95,7 +95,7 @@ data class MessageEntity(
                         companyId = companyId,
                         userId = null,
                     )
-                companyOwnerList.map { TemplateEmailMessage.UserIdEmailRecipient(it.userId) }
+                companyOwnerList.map { EmailRecipient.UserId(it.userId) }
             } else {
                 listOf()
             }

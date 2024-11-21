@@ -279,6 +279,22 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
+            label: 'Scope 4 GHG emissions',
+            explanation:
+              'Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes?.value,
+                  'Tonnes'
+                ),
+                'Scope 4 GHG emissions',
+                dataset.environmental?.greenhouseGasEmissions?.scope4GhgEmissionsInTonnes
+              ),
+          },
+          {
+            type: 'cell',
             label: 'Enterprise Value',
             explanation:
               'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).',
@@ -333,7 +349,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 1',
             explanation:
-              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -349,7 +365,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 2',
             explanation:
-              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -365,7 +381,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 3',
             explanation:
-              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 3 carbon emissions, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -381,7 +397,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 4',
             explanation:
-              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -406,6 +422,36 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
                 ),
                 'Fossil Fuel Sector Exposure',
                 dataset.environmental?.greenhouseGasEmissions?.fossilFuelSectorExposure
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Financed scope 1 and scope 2 emissions',
+            explanation: 'The sum of scope 1 and scope 2 emissions of financed companies',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions?.value,
+                  'Tonnes'
+                ),
+                'Financed scope 1 and scope 2 emissions',
+                dataset.environmental?.greenhouseGasEmissions?.financedScope1AndScope2Emissions
+              ),
+          },
+          {
+            type: 'cell',
+            label: 'Financed scope 3 emissions',
+            explanation: 'The scope 3 emissions of financed companies',
+            shouldDisplay: (): boolean => true,
+            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
+              wrapDisplayValueWithDatapointInformation(
+                formatNumberForDatatable(
+                  dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions?.value,
+                  'Tonnes'
+                ),
+                'Financed scope 3 emissions',
+                dataset.environmental?.greenhouseGasEmissions?.financedScope3Emissions
               ),
           },
         ],

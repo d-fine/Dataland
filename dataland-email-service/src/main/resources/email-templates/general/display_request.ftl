@@ -32,7 +32,7 @@
         <td style="font-size: 5px; height: 5px">&nbsp;</td>
     </tr>
     <tr>
-        <td style="font-weight: bold; font-size:19px"><#if dataTypeDescription??>${dataTypeDescription}<#else>${dataType}</#if></td>
+        <td style="font-weight: bold; font-size:19px">${dataTypeLabel}</td>
     </tr>
     <tr>
         <td style="height: 20px">&nbsp;</td>

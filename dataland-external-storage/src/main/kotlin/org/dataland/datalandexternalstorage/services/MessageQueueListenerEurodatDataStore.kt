@@ -23,20 +23,15 @@ import java.sql.SQLException
 
 /**
  * Simple implementation of the message queue listeners for the euroDatdataManager
- * @param cloudEventMessageHandler service for managing CloudEvents messages
- * on eurodat
- * @param messageUtils contains utils connected to the messages on the message queue
+ * @param cloudEventMessageHandler service for managing CloudEvents messages on eurodat
  * @param eurodatDataStore service for handling data for the eurodat storage
  */
 @Component
 class MessageQueueListenerEurodatDataStore(
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var messageUtils: MessageQueueUtils,
     @Autowired var eurodatDataStore: EurodatDataStore,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
-
-//
 
     /**
      * Method that listens to the storage_queue and stores data into the EuroDaT database in case there is a message
@@ -67,7 +62,7 @@ class MessageQueueListenerEurodatDataStore(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
+        MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
         val dataId = JSONObject(payload).getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty.")
@@ -75,7 +70,7 @@ class MessageQueueListenerEurodatDataStore(
         logger.info(
             "Received storage request for dataId $dataId and correlationId $correlationId with payload: $payload",
         )
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val actionType = JSONObject(payload).getString("actionType")
             if (actionType == ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS) {
                 try {

@@ -10,7 +10,6 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
@@ -33,10 +32,12 @@ private const val AUTOMATED_QA = "automated-qa-service"
 
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-@SpringBootTest(classes = [DatalandQaService::class])
+@SpringBootTest(
+    classes = [DatalandQaService::class],
+    properties = ["spring.profiles.active=nodb"],
+)
 class QaEventListenerQaServiceTest(
     @Autowired val objectMapper: ObjectMapper,
-    @Autowired var messageUtils: MessageQueueUtils,
     @Autowired val testReviewQueueRepository: ReviewQueueRepository,
     @Autowired val testReviewHistoryRepository: ReviewHistoryRepository,
     @Autowired val companyDataControllerApi: CompanyDataControllerApi,
@@ -68,7 +69,6 @@ class QaEventListenerQaServiceTest(
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
                 objectMapper,
-                messageUtils,
                 testReviewQueueRepository,
                 testReviewHistoryRepository,
                 companyDataControllerApi,

@@ -72,6 +72,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { FormKit } from '@formkit/vue';
+import { isEmailAddressValid } from '@/utils/ValidationUtils';
 const dataRequesterMessageAccessDisabledText = 'Please provide a valid email before entering a message';
 
 export default defineComponent({
@@ -156,16 +157,6 @@ export default defineComponent({
       this.displayConsentToMessageDateUsageNotGiven = !this.consentToMessageDataUsageGiven;
       this.displayNoMessageError = this.dataRequesterMessage.length == 0;
     },
-    /**
-     * Checks if an email string is a valid email using regex
-     * @param email the email string to check
-     * @returns true if the email is valid, false otherwise
-     */
-    isValidEmail(email: string): boolean {
-      // This RegEx should be kept consistent with the validation rules used by the community service in the backend
-      const regex = /^[a-zA-Z0-9_.!-]+@([a-zA-Z0-9-]+\.){1,2}[a-z]{2,}$/;
-      return regex.test(email.toLowerCase());
-    },
 
     /**
      * updates the messagebox visibility and stops displaying the contacts not valid error
@@ -215,7 +206,7 @@ export default defineComponent({
     areContactsValid(): boolean {
       return (
         this.contactsAsString.length > 0 &&
-        this.selectedContacts.every((selectedContact) => this.isValidEmail(selectedContact))
+        this.selectedContacts.every((selectedContact) => isEmailAddressValid(selectedContact))
       );
     },
     /**

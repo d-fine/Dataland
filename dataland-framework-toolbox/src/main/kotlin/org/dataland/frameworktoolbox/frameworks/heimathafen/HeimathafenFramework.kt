@@ -20,9 +20,9 @@ class HeimathafenFramework :
         label = "Heimathafen",
         explanation = "Das Heimathafen Framework",
         File("./dataland-framework-toolbox/inputs/heimathafen/dataDictionary-Heimathafen.csv"),
-        order = 8,
+        order = 9,
         enabledFeatures =
-            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = ComponentGenerationUtilsForGermanFrameworks()
 

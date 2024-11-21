@@ -64,9 +64,10 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5439:5433-5439"
+      - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
   api-key-manager:
     restart: always
@@ -352,6 +353,7 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     profiles: [ "production", "testing", "development" ]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -365,6 +367,7 @@ services:
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
+      EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
   rabbitmq:
@@ -418,6 +421,7 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
+      QA_SERVICE_MIGRATION_BASELINE_VERSION: ${QA_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
     depends_on:
       - qa-service-db
@@ -494,19 +498,52 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+  specification-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_test:${DATALAND_SPECIFICATION_SERVICE_TEST_VERSION}}
+    expose:
+      - "8489"
+    networks:
+      - internal
+    <<: *uncritical-constants-env
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
     image: ${EMAIL_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_email_service_test:${DATALAND_EMAIL_SERVICE_TEST_VERSION}}
+    expose:
+      - "8080"
     networks:
       - internal
+      - email-service-db
+    depends_on:
+      - email-service-db
     environment:
       <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
+      EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
+  email-service-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - email-service-db
+    image: postgres:17.0@sha256:8d3be35b184e70d81e54cbcbd3df3c0b47f37d06482c0dd1c140db5dbcc6a808
+    volumes:
+      - email_service_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: email_service
+      POSTGRES_USER: email_service
+      POSTGRES_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
+      PGUSER: email_service
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
   external-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -583,6 +620,7 @@ networks:
   document-manager-db:
   qa-service-db:
   community-manager-db:
+  email-service-db:
 volumes:
   keycloak_data:
     driver: local
@@ -607,4 +645,6 @@ volumes:
   community_manager_data:
     driver: local
   batch_manager_data:
+    driver: local
+  email_service_data:
     driver: local
