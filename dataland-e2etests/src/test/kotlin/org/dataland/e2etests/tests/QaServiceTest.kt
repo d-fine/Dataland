@@ -165,9 +165,9 @@ class QaServiceTest {
             (1..5).map {
                 val currentDataId = postEuTaxoData(dummyEuTaxoDataAlpha).dataId
                 await().atMost(2, TimeUnit.SECONDS).until {
-                    getInfoOnPendingDatasets().map { it.dataId }.lastOrNull() == currentDataId
+                    getInfoOnPendingDatasets().map { it.dataId }.firstOrNull() == currentDataId
                 }
-                expectedDataIdsOfPendingDatasets += currentDataId
+                expectedDataIdsOfPendingDatasets.addFirst(currentDataId)
             }
         }
 
@@ -183,7 +183,9 @@ class QaServiceTest {
         changeQaStatusAsReviewer(dataId, QaServiceQaStatus.Accepted)
         waitForExpectedQaStatus(dataId, BackendQaStatus.Accepted)
         assertDoesNotThrow { changeQaStatus(dataId, QaServiceQaStatus.Rejected) }
-        assertEquals(BackendQaStatus.Rejected, getDataMetaInfo(dataId).qaStatus)
+        await().atMost(2, TimeUnit.SECONDS).until {
+            BackendQaStatus.Rejected == getDataMetaInfo(dataId).qaStatus
+        }
     }
 
     @Test

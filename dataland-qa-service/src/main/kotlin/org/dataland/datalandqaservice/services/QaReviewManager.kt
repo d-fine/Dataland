@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
@@ -48,6 +49,7 @@ class QaReviewManager(
      * @param chunkIndex the chunkIndex of the request
      * @param chunkSize the chunkSize of the request
      */
+    @Transactional
     fun getInfoOnPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
@@ -77,6 +79,7 @@ class QaReviewManager(
      * @param reportingPeriods the set of reportingPeriods for which should be filtered
      * @param companyName the companyName for which should be filtered
      */
+    @Transactional
     fun getNumberOfPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
@@ -93,6 +96,7 @@ class QaReviewManager(
      * Retrieves from database a QaReviewEntity by its dataId
      * @param dataId: dataID
      */
+    @Transactional
     fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
         val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         return qaReviewRepository
@@ -101,23 +105,24 @@ class QaReviewManager(
     }
 
     /**
-     * Saves QaReviewEntity to database and sends status change message to MessageQueue
+     * Saves QaReviewEntity to database
      * @param dataId dataId of dataset of which to change qaStatus
      * @param qaStatus new qaStatus to be set
      * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
      * @param correlationId
      */
-    fun saveQaReviewEntityAndSendQaStatusChangeMessage(
+    @Transactional
+    fun saveQaReviewEntity(
         dataId: String,
         qaStatus: QaStatus,
         triggeringUserId: String,
         comment: String?,
         correlationId: String,
-    ) {
+    ): QaReviewEntity {
         val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
         val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
-        logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId")
+        logger.info("Assigning quality status ${qaStatus.name} to dataset with ID $dataId (correlationID: $correlationId)")
 
         val qaReviewEntity =
             QaReviewEntity(
@@ -131,19 +136,25 @@ class QaReviewManager(
                 triggeringUserId = triggeringUserId,
                 comment = comment,
             )
+        return qaReviewRepository.save(qaReviewEntity)
+    }
 
-        qaReviewRepository.saveAndFlush(qaReviewEntity)
-
+    /**
+     * Sends QaStatusChangeMessage to messageQueue
+     * @param qaReviewEntity qaReviewEntity for which to send the QaStatusChangeMessage
+     * @param correlationId
+     */
+    @Transactional
+    fun sendQaStatusChangeMessage(
+        qaReviewEntity: QaReviewEntity,
+        correlationId: String,
+    ) {
         val qaStatusChangeMessage =
             QaStatusChangeMessage(
                 dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
                 currentlyActiveDataId =
-                    this.getDataIdOfCurrentlyActiveDataset(
-                        qaReviewEntity.companyId,
-                        qaReviewEntity.framework,
-                        qaReviewEntity.reportingPeriod,
-                    ),
+                    this.getDataIdOfCurrentlyActiveDataset(qaReviewEntity),
             )
 
         sendQaStatusChangeMessage(
@@ -157,6 +168,7 @@ class QaReviewManager(
      * @param dataId All QA review information with dataId is deleted
      * @param correlationId correlation Id
      */
+    @Transactional
     fun deleteAllByDataId(
         dataId: String,
         correlationId: String,
@@ -186,21 +198,29 @@ class QaReviewManager(
 
     /**
      * Retrieve dataId of currently active dataset for same triple (companyId, dataType, reportingPeriod)
-     * @param companyId
-     * @param dataType
-     * @param reportingPeriod
+     * @param qaReviewEntity qaReviewEntity as baseline for finding active dataset
      * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
      */
-    private fun getDataIdOfCurrentlyActiveDataset(
-        companyId: String,
-        dataType: String,
-        reportingPeriod: String,
-    ): String? =
-        qaReviewRepository
-            .findByCompanyIdAndFrameworkAndReportingPeriod(companyId, dataType, reportingPeriod)
-            ?.filter { it.qaStatus == QaStatus.Accepted }
-            ?.maxByOrNull { it.timestamp }
+    private fun getDataIdOfCurrentlyActiveDataset(qaReviewEntity: QaReviewEntity): String? {
+        logger.info("")
+        if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
+            return qaReviewEntity.dataId
+        }
+
+        val searchFilter =
+            QaSearchFilter(
+                dataTypes = DataTypeEnum.decode(qaReviewEntity.framework)?.let { setOf(it) },
+                companyIds = setOf(qaReviewEntity.companyId),
+                reportingPeriods = setOf(qaReviewEntity.reportingPeriod),
+                qaStatuses = setOf(QaStatus.Accepted),
+                companyName = null,
+            )
+
+        return qaReviewRepository
+            .getSortedAndFilteredQaReviewMetadataSet(searchFilter)
+            .maxByOrNull { it.timestamp }
             ?.dataId
+    }
 
     private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
         var companyIds = emptySet<String>()

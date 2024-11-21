@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * The QA Service's MessageListener Service. Listens to messages (usually) sent be the internal storage after a dataset
@@ -67,7 +66,6 @@ class QaEventListenerQaService
                 ),
             ],
         )
-        @Transactional
         fun addDatasetToQaReviewRepository(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
@@ -100,12 +98,17 @@ class QaEventListenerQaService
                     )
                 }
 
-                qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
-                    dataId = dataId,
-                    qaStatus = qaStatus,
-                    triggeringUserId = triggeringUserId,
-                    comment = comment,
-                    correlationId = correlationId,
+                val qaReviewEntity =
+                    qaReviewManager.saveQaReviewEntity(
+                        dataId = dataId,
+                        qaStatus = qaStatus,
+                        triggeringUserId = triggeringUserId,
+                        comment = comment,
+                        correlationId = correlationId,
+                    )
+
+                qaReviewManager.sendQaStatusChangeMessage(
+                    qaReviewEntity = qaReviewEntity, correlationId = correlationId,
                 )
             }
         }
@@ -188,7 +191,6 @@ class QaEventListenerQaService
                 ),
             ],
         )
-        @Transactional
         fun deleteQaInformationForDeletedDataId(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,

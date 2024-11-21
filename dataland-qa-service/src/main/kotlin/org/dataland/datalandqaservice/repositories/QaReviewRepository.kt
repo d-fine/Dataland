@@ -22,15 +22,6 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
     fun deleteAllByDataId(dataId: String)
 
     /**
-     * Find QA Information based on companyId, framework, and reportingPeriod
-     */
-    fun findByCompanyIdAndFrameworkAndReportingPeriod(
-        companyId: String,
-        framework: String,
-        reportingPeriod: String,
-    ): List<QaReviewEntity>?
-
-    /**
      * A function for getting a list of dataset IDs matching the filters in ascending order by timestamp
      * This query uses a CTE (Common Table Expression) in the following way: It creates a temporary result saved in the
      * table RankedByDataId which effectively partitions the entries by data_id (PARTITION BY) and orders each partition
@@ -55,11 +46,11 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
                 " (:#{#searchFilter.shouldFilterByReportingPeriod} = false" +
                 " OR entry.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND" +
                 " ( (:#{#searchFilter.shouldFilterByCompanyName } = false AND" +
-                " :#{#searchFilter.shouldFilterByCompanyId} = false) AND" +
+                " :#{#searchFilter.shouldFilterByCompanyId} = false)" +
+                " OR entry.company_id IN :#{#searchFilter.preparedCompanyIds}) AND" +
                 " (:#{#searchFilter.shouldFilterByQaStatus} = false" +
                 " OR entry.qa_status IN :#{#searchFilter.preparedQaStatuses})" +
-                " OR entry.company_id IN :#{#searchFilter.preparedCompanyIds})" +
-                " ORDER BY entry.timestamp ASC" +
+                " ORDER BY entry.timestamp DESC" +
                 " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
     fun getSortedAndFilteredQaReviewMetadataSet(
@@ -86,10 +77,10 @@ interface QaReviewRepository : JpaRepository<QaReviewEntity, UUID> {
                 " (:#{#searchFilter.shouldFilterByReportingPeriod} = false" +
                 " OR entry.reporting_period IN :#{#searchFilter.preparedReportingPeriods}) AND" +
                 " ( (:#{#searchFilter.shouldFilterByCompanyName } = false AND" +
-                " :#{#searchFilter.shouldFilterByCompanyId} = false) AND" +
+                " :#{#searchFilter.shouldFilterByCompanyId} = false)" +
+                " OR entry.company_id IN :#{#searchFilter.preparedCompanyIds}) AND" +
                 " (:#{#searchFilter.shouldFilterByQaStatus} = false" +
-                " OR entry.qa_status IN :#{#searchFilter.preparedQaStatuses})" +
-                " OR entry.company_id IN :#{#searchFilter.preparedCompanyIds})",
+                " OR entry.qa_status IN :#{#searchFilter.preparedQaStatuses})",
     )
     fun getNumberOfFilteredQaReviews(
         @Param("searchFilter") searchFilter: QaSearchFilter,

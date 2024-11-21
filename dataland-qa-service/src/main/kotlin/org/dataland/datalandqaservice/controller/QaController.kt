@@ -9,7 +9,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 import java.util.UUID.randomUUID
@@ -23,7 +22,6 @@ class QaController(
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @Transactional
     override fun getInfoOnPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
@@ -44,7 +42,6 @@ class QaController(
         )
     }
 
-    @Transactional
     override fun getQaReviewResponseByDataId(dataId: UUID): ResponseEntity<QaReviewResponse> {
         logger.info(
             "Received request to respond with the review information " +
@@ -58,7 +55,6 @@ class QaController(
         return ResponseEntity.ok(datasetQaReviewResponse)
     }
 
-    @Transactional
     override fun changeQaStatus(
         dataId: String,
         qaStatus: QaStatus,
@@ -71,12 +67,17 @@ class QaController(
                 "(correlationId: $correlationId)",
         )
 
-        qaReviewManager.saveQaReviewEntityAndSendQaStatusChangeMessage(
-            dataId = dataId,
-            qaStatus = qaStatus,
-            triggeringUserId = reviewerId,
-            comment = comment,
-            correlationId = correlationId,
+        val qaReviewEntity =
+            qaReviewManager.saveQaReviewEntity(
+                dataId = dataId,
+                qaStatus = qaStatus,
+                triggeringUserId = reviewerId,
+                comment = comment,
+                correlationId = correlationId,
+            )
+
+        qaReviewManager.sendQaStatusChangeMessage(
+            qaReviewEntity = qaReviewEntity, correlationId = correlationId,
         )
     }
 
