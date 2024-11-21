@@ -108,7 +108,7 @@
                 </Column>
                 <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
                   <template #body="slotProps">
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.receptionTime) }}
+                    {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
                   </template>
                 </Column>
                 <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
