@@ -8,8 +8,6 @@ import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.Ele
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -20,7 +18,6 @@ import java.time.Instant
  */
 @Component
 abstract class BaseEventProcessor(
-    @Autowired val messageUtils: MessageQueueUtils,
     @Autowired val notificationService: NotificationService,
     @Autowired val elementaryEventRepository: ElementaryEventRepository,
     @Autowired val objectMapper: ObjectMapper,
@@ -81,18 +78,6 @@ abstract class BaseEventProcessor(
                 notificationEvent = null,
             ),
         )
-
-    /**
-     * Each EventProcessor listens to a different messageQueue which will contain different message payloads.
-     * Thus, the payload validation needs to be implemented in the child classes.
-     * @param payload: JSON-ish object/string to validate
-     * @throws MessageQueueRejectException if the validation fails
-     */
-    @Throws(MessageQueueRejectException::class)
-    abstract fun validateIncomingPayloadAndReturnDataId(
-        payload: String,
-        messageType: String,
-    ): String
 
     /**
      * Parses a message payload from the rabbit mq as object.

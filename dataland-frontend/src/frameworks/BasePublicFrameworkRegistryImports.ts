@@ -6,6 +6,7 @@ import eutaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy
 import eutaxonomyNonFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-non-financials/BaseFrameworkDefinition';
 import heimathafenBaseFrameworkDefinition from '@/frameworks/heimathafen/BaseFrameworkDefinition';
 import lksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
+import nuclearAndGasBaseFrameworkDefinition from '@/frameworks/nuclear-and-gas/BaseFrameworkDefinition';
 import sfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
 
 export const PublicFrameworkDefinitions: Record<string, BasePublicFrameworkDefinition<object>> = {
@@ -15,5 +16,6 @@ export const PublicFrameworkDefinitions: Record<string, BasePublicFrameworkDefin
   eutaxonomyNonFinancials: eutaxonomyNonFinancialsBaseFrameworkDefinition,
   heimathafen: heimathafenBaseFrameworkDefinition,
   lksg: lksgBaseFrameworkDefinition,
+  nuclearAndGas: nuclearAndGasBaseFrameworkDefinition,
   sfdr: sfdrBaseFrameworkDefinition,
 };

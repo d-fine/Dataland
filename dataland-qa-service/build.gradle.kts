@@ -44,6 +44,8 @@ dependencies {
     implementation(Spring.boot.data.jpa)
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
+    implementation(libs.flyway)
+    implementation(libs.flyway.core)
     runtimeOnly(libs.postgresql)
     runtimeOnly(libs.h2)
     testImplementation(Spring.boot.test)

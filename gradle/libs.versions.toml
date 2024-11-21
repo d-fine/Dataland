@@ -153,7 +153,7 @@ json = "org.json:json:20240303"
 spring-context = "org.springframework:spring-context:6.1.14"
 spring-test = "org.springframework:spring-test:6.1.14"
 
-spring-boot = "org.springframework.boot:spring-boot:3.3.2"
+spring-boot = "org.springframework.boot:spring-boot:3.3.5"
 
 spring-rabbit = "org.springframework.amqp:spring-rabbit:3.1.7"
 
@@ -185,9 +185,9 @@ itext-core = "com.itextpdf:itext-core:8.0.5"
 
 layout = "com.itextpdf:layout:8.0.5"
 
-tika-core = "org.apache.tika:tika-core:2.9.2"
+tika-core = "org.apache.tika:tika-core:3.0.0"
 
-tika-parsers = "org.apache.tika:tika-parsers:2.9.2"
+tika-parsers = "org.apache.tika:tika-parsers:3.0.0"
 
 poi = "org.apache.poi:poi:5.3.0"
 

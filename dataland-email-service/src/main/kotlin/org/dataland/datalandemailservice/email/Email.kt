@@ -9,7 +9,8 @@ import com.mailjet.client.transactional.TransactionalEmail
 data class Email(
     val sender: EmailContact,
     val receivers: List<EmailContact>,
-    val cc: List<EmailContact>?,
+    val cc: List<EmailContact>,
+    val bcc: List<EmailContact>,
     val content: EmailContent,
 )
 
@@ -22,8 +23,6 @@ fun TransactionalEmail.TransactionalEmailBuilder.integrateEmailIntoTransactional
     this
         .integrateSenderIntoTransactionalEmailBuilder(email.sender)
         .integrateReceiversIntoTransactionalEmailBuilder(email.receivers)
-        .apply {
-            email.cc?.let { ccReceivers ->
-                this.integrateCcIntoTransactionalEmailBuilder(ccReceivers)
-            }
-        }.integrateContentIntoTransactionalEmailBuilder(email.content)
+        .integrateCcIntoTransactionalEmailBuilder(email.cc)
+        .integrateBccIntoTransactionalEmailBuilder(email.bcc)
+        .integrateContentIntoTransactionalEmailBuilder(email.content)

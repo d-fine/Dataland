@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataContr
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -24,7 +23,6 @@ class DatabaseStringDataStoreTest {
     lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
     val correlationId = UUID.randomUUID().toString()
     val objectMapper: ObjectMapper = ObjectMapper()
-    val messageQueueUtils: MessageQueueUtils = MessageQueueUtils()
 
     @BeforeEach
     fun reset() {
@@ -34,7 +32,6 @@ class DatabaseStringDataStoreTest {
                 mockCloudEventMessageHandler,
                 mockTemporarilyCachedDataControllerApi,
                 objectMapper,
-                messageQueueUtils,
             )
         spyDatabaseStringDataStore = spy(databaseStringDataStore)
     }

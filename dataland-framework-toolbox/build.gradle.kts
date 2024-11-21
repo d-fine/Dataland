@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.slf4j.api)
     implementation(libs.gradle.tooling)
     implementation(libs.freemarker)
+    implementation(project(":dataland-specification-lib"))
     implementation(kotlin("reflect"))
     testImplementation(kotlin("test"))
 }

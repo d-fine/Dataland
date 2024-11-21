@@ -24,9 +24,13 @@ class VsmeFramework :
         label = "VSME",
         explanation = "Voluntary small and medium-sized enterprises questionnaire",
         File("./dataland-framework-toolbox/inputs/vsme/vsme.xlsx"),
-        order = 6,
+        order = 7,
         isPrivateFramework = true,
-        enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+        enabledFeatures =
+            FrameworkGenerationFeatures.allExcept(
+                FrameworkGenerationFeatures.QaModel,
+                FrameworkGenerationFeatures.DataPointSpecifications,
+            ),
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = VsmeComponentGenerationUtils()
 

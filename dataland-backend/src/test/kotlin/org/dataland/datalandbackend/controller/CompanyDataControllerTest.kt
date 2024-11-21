@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.controller
 
 import jakarta.transaction.Transactional
+import jakarta.validation.Validation
+import jakarta.validation.Validator
 import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.enums.company.IdentifierType
@@ -9,10 +11,15 @@ import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
@@ -23,6 +30,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import kotlin.reflect.jvm.javaMethod
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -33,6 +41,21 @@ internal class CompanyDataControllerTest(
     @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired val companyBaseManager: CompanyBaseManager,
 ) {
+    private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
+
+    lateinit var companyController: CompanyDataController
+
+    @BeforeEach
+    fun initCompanyController() {
+        companyController =
+            CompanyDataController(
+                companyAlterationManager,
+                companyQueryManager,
+                companyIdentifierRepositoryInterface,
+                companyBaseManager,
+            )
+    }
+
     private final val testLei = "testLei"
     val companyWithTestLei =
         CompanyInformation(
@@ -53,13 +76,6 @@ internal class CompanyDataControllerTest(
                 ),
             parentCompanyLei = null,
         )
-    val companyController =
-        CompanyDataController(
-            companyAlterationManager,
-            companyQueryManager,
-            companyIdentifierRepositoryInterface,
-            companyBaseManager,
-        )
 
     fun postCompany(): String =
         companyController
@@ -73,12 +89,26 @@ internal class CompanyDataControllerTest(
         mockSecurityContext()
 
         val expectedCompanyId = postCompany()
-        Assertions.assertEquals(
+        assertEquals(
             expectedCompanyId,
             companyController.getCompanyIdByIdentifier(IdentifierType.Lei, testLei).body!!.companyId,
         )
         assertThrows<ResourceNotFoundApiException> {
             companyController.getCompanyIdByIdentifier(IdentifierType.Lei, "nonExistingLei")
+        }
+    }
+
+    @Test
+    fun `check that the is company valid head endpoint works as expected`() {
+        mockSecurityContext()
+
+        val expectedCompanyId = postCompany()
+        assertDoesNotThrow {
+            companyController.isCompanyIdValid(expectedCompanyId)
+        }
+
+        assertThrows<ResourceNotFoundApiException> {
+            companyController.isCompanyIdValid("nonExistingLei")
         }
     }
 
@@ -95,16 +125,51 @@ internal class CompanyDataControllerTest(
     }
 
     @Test
-    fun `check that the is company valid head endpoint endpoint works as expected`() {
-        mockSecurityContext()
+    fun `getCompanies should fail validation when searchString is too short`() {
+        val method = CompanyDataController::getCompaniesBySearchString.javaMethod!!
+        val parameters = arrayOf("aa", 100)
 
-        val expectedCompanyId = postCompany()
-        assertDoesNotThrow {
-            companyController.isCompanyIdValid(expectedCompanyId)
-        }
+        val violations =
+            validator.forExecutables().validateParameters(
+                companyController,
+                method,
+                parameters,
+            )
 
-        assertThrows<ResourceNotFoundApiException> {
-            companyController.isCompanyIdValid("nonExistingLei")
+        assertFalse(violations.isEmpty())
+        val violation = violations.iterator().next()
+        assertEquals("$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEARCHSTRING_TOO_SHORT_THRESHOLD", violation.message)
+    }
+
+    @Test
+    fun `getCompanies should pass validation when searchString is long enough`() {
+        val method = CompanyDataController::getCompaniesBySearchString.javaMethod!!
+        val parameters = arrayOf("aaa", 100)
+
+        val violations =
+            validator.forExecutables().validateParameters(
+                companyController,
+                method,
+                parameters,
+            )
+
+        assertTrue(violations.isEmpty())
+    }
+
+    @Test
+    fun `getCompanies should pass validation when searchString null or empty`() {
+        val method = CompanyDataController::getCompaniesBySearchString.javaMethod!!
+        val parametersList = arrayOf(arrayOf("", 100), arrayOf(null, 100))
+
+        for (parameters in parametersList) {
+            val violations =
+                validator.forExecutables().validateParameters(
+                    companyController,
+                    method,
+                    parameters,
+                )
+
+            assertTrue(violations.isEmpty())
         }
     }
 }

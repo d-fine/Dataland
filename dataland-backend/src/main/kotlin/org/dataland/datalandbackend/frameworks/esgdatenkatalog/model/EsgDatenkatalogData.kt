@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.umwelt.EsgD
  * The root data-model for the Esg-datenkatalog Framework
  */
 @Suppress("MagicNumber")
-@DataType("esg-datenkatalog", 7)
+@DataType("esg-datenkatalog", 8)
 data class EsgDatenkatalogData(
     @field:Valid()
     val allgemein: EsgDatenkatalogAllgemein? = null,
