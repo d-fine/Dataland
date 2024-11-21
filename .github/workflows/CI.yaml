@@ -210,16 +210,17 @@ jobs:
         run: |
           sudo apt update && sudo apt install libreoffice
           #TODO: look into a more elegant solution for the line below
-          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test --no-daemon --stacktrace
+          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test  :dataland-specification-service:test :dataland-specification-lib:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}
           MAILJET_API_SECRET: ${{ secrets.MAILJET_API_SECRET }}
           NOTIFICATION_INTERNAL_RECEIVERS: "dummyCI@example.com"
-          NOTIFICATION_INTERNAL_CC: ""
+          NOTIFICATION_INTERNAL_CC: "dummyCI@example.com"
           DATALAND_QA_SERVICE_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
+          DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
       - name: Frontend linting
         run: ./gradlew :dataland-frontend:generateClients :dataland-frontend:npm_run_lintci :dataland-frontend:npm_run_formatci :dataland-frontend:npm_run_checkdependencies --no-daemon --stacktrace
         if: always()
@@ -366,6 +367,7 @@ jobs:
           DOCUMENT_MANAGER_DB_PASSWORD: "password"
           QA_SERVICE_DB_PASSWORD: "password"
           COMMUNITY_MANAGER_DB_PASSWORD: "password"
+          EMAIL_SERVICE_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
           KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="

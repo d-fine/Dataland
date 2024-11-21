@@ -215,6 +215,17 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
+            name: 'scope4GhgEmissionsInTonnes',
+            label: 'Scope 4 GHG emissions',
+            description:
+              'Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
             name: 'enterpriseValue',
             label: 'Enterprise Value',
             description:
@@ -259,7 +270,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope1InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 1',
             description:
-              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -270,7 +281,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope2InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 2',
             description:
-              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -281,7 +292,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope3InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 3',
             description:
-              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 3 carbon emissions, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -292,7 +303,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope4InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 4',
             description:
-              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue)',
+              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -306,6 +317,26 @@ export const sfdrDataModel = [
               'Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).',
 
             component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'financedScope1AndScope2Emissions',
+            label: 'Financed scope 1 and scope 2 emissions',
+            description: 'The sum of scope 1 and scope 2 emissions of financed companies',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'financedScope3Emissions',
+            label: 'Financed scope 3 emissions',
+            description: 'The scope 3 emissions of financed companies',
+
+            unit: 'Tonnes',
+            component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
           },
