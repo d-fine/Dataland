@@ -163,7 +163,7 @@ interface RequestApi {
     @Suppress("LongParameterList")
     @Operation(
         summary = "Updates a data request.",
-        description = "Updates status and message history of data request given data request id.",
+        description = "Updates a data request given the data request id.",
     )
     @ApiResponses(
         value = [
