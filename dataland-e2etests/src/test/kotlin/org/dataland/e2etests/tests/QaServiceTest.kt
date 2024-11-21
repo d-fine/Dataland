@@ -201,9 +201,9 @@ class QaServiceTest {
                 assertDoesNotThrow {
                     val reviewInfo = getReviewInfoById(UUID.fromString(dataId))
                     if (it == TechnicalUser.Admin) {
-                        assertEquals(TechnicalUser.Reviewer.technicalUserId, reviewInfo.reviewerId)
+                        assertEquals(TechnicalUser.Reviewer.technicalUserId, reviewInfo.triggeringUserId)
                     } else {
-                        assertEquals(null, reviewInfo.reviewerId)
+                        assertEquals(null, reviewInfo.triggeringUserId)
                     }
                 }
             }
@@ -232,7 +232,7 @@ class QaServiceTest {
 
         withTechnicalUser(reader) {
             val reviewInformationResponse = getReviewInfoById(UUID.fromString(dataId))
-            assertEquals(null, reviewInformationResponse.reviewerId)
+            assertEquals(null, reviewInformationResponse.triggeringUserId)
             assertEquals(dataId, reviewInformationResponse.dataId)
         }
 
