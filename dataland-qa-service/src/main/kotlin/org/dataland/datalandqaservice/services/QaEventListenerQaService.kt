@@ -115,7 +115,7 @@ class QaEventListenerQaService
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
-         * @param blobId the documentId sent as payload
+         * @param messageAsJsonString the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
          */
@@ -170,7 +170,7 @@ class QaEventListenerQaService
         /**
          * Method that listens to the ItemStored Exchange for potential data deletion messages and deletes the corresponding
          * QA reports accordingly
-         * @param payload the content of the message
+         * @param messageAsJsonString the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
          */

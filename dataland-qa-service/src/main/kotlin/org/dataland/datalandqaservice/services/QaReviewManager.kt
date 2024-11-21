@@ -109,7 +109,7 @@ class QaReviewManager(
      * @param dataId dataId of dataset of which to change qaStatus
      * @param qaStatus new qaStatus to be set
      * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
-     * @param correlationId
+     * @param correlationId the ID for the process triggering the change
      */
     @Transactional
     fun saveQaReviewEntity(
@@ -140,9 +140,9 @@ class QaReviewManager(
     }
 
     /**
-     * Sends QaStatusChangeMessage to messageQueue
+     * Send the information that the QA status changed to the message queue
      * @param qaReviewEntity qaReviewEntity for which to send the QaStatusChangeMessage
-     * @param correlationId
+     * @param correlationId the ID for the process triggering the change
      */
     @Transactional
     fun sendQaStatusChangeMessage(
@@ -157,7 +157,7 @@ class QaReviewManager(
                     this.getDataIdOfCurrentlyActiveDataset(qaReviewEntity),
             )
 
-        sendQaStatusChangeMessage(
+        publishQaStatusChange(
             qaStatusChangeMessage = qaStatusChangeMessage,
             correlationId = correlationId,
         )
@@ -178,12 +178,12 @@ class QaReviewManager(
     }
 
     /**
-     * Sends the QA Status Change Message to MessageQueue
-     * @param qaStatusChangeMessage QAStatusChangeMessage containing the dataId of the changed data set, the new QA
+     * Publishes the QA Status Change Message to the queue
+     * @param qaStatusChangeMessage contains the dataId of the changed data set, the new QA
      * status and the dataId of the newly active dataset
      * @param correlationId the ID of the process
      */
-    private fun sendQaStatusChangeMessage(
+    private fun publishQaStatusChange(
         qaStatusChangeMessage: QaStatusChangeMessage,
         correlationId: String,
     ) {
@@ -202,7 +202,10 @@ class QaReviewManager(
      * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
      */
     private fun getDataIdOfCurrentlyActiveDataset(qaReviewEntity: QaReviewEntity): String? {
-        logger.info("")
+        logger.info(
+            "Searching for currently active dataset for company ${qaReviewEntity.companyId}, " +
+                "dataType ${qaReviewEntity.framework}, and reportingPeriod ${qaReviewEntity.reportingPeriod}",
+        )
         if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
             return qaReviewEntity.dataId
         }
