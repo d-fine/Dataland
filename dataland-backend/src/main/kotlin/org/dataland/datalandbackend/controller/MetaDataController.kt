@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -80,6 +81,9 @@ class MetaDataController(
 
     override fun postNonSourceableDataSet(nonSourceableData: NonSourceableData) {
         // implement functionality
+        val correlationId = generateCorrelationId(nonSourceableData.companyId, null)
+        // set creationTime
+        nonSourceableDataManager.createEventDatasetNonSourceable(correlationId, nonSourceableData)
     }
 
     override fun isDataNonSourceable(

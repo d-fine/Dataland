@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 /**
  * A service class for managing information about non-sourceable datasets
@@ -27,18 +27,19 @@ class NonSourceableDataManager(
      */
     fun setDatasetAsNonSourceable(nonSourceableInfo: NonSourceableEntity) {
         nonSourceableInfo.nonSourceable = true
-
-        // send message to community manager
-        createEventDatasetNonSourceable(nonSourceableInfo)
+        nonSourceableDataRepository.save(nonSourceableInfo)
+        val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
+        createEventDatasetNonSourceable(correlationId, nonSourceableInfo)
     }
 
     /**
      * The method writes a message to a queue about the event of a dataset being labeled as non-sourceable
      * @param nonSourceableInfo the NonSourceableEntity of the dataset
      */
-    fun createEventDatasetNonSourceable(nonSourceableInfo: NonSourceableEntity) {
-        val correlationId = UUID.randomUUID().toString()
-
+    fun createEventDatasetNonSourceable(
+        correlationId: String,
+        nonSourceableInfo: NonSourceableEntity,
+    ) {
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(nonSourceableInfo),
             correlationId,
@@ -49,19 +50,18 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method retrieves non sourceable data sets by filtering
-     * @param companyId the NonSourceableEntity of the dataset
-     * @param dataType the NonSourceableEntity of the dataset
-     * @param reportingPeriod the NonSourceableEntity of the dataset
+     * The method retrieves non sourceable data sets by filtering for query params
+     * @param companyId
+     * @param dataType
+     * @param reportingPeriod
      */
-
     fun getNonSourceableDataByTriple(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
     ): List<NonSourceableEntity>? {
         val nonSourceableDataSets =
-            nonSourceableDataRepository.findByCompanyIdAnAndDataTypeAndReportingPeriod(
+            nonSourceableDataRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
                 companyId,
                 dataType.toString(),
                 reportingPeriod,
