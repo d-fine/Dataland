@@ -41,7 +41,7 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "3.12.36",
+    "@cypress/code-coverage": "3.13.4",
     "@faker-js/faker": "8.4.1",
     "@rushstack/eslint-patch": "1.10.4",
     "@tsconfig/node20": "20.1.4",
@@ -57,9 +57,9 @@
     "depcheck": "1.4.7",
     "dompurify": "3.1.7",
     "eslint": "8.57.1",
-    "eslint-plugin-cypress": "3.5.0",
+    "eslint-plugin-cypress": "3.6.0",
     "eslint-plugin-jsdoc": "48.11.0",
-    "eslint-plugin-vue": "9.28.0",
+    "eslint-plugin-vue": "9.29.0",
     "git-commit-id": "2.0.1",
     "lint-staged": "15.2.10",
     "markdown-it": "14.1.0",
