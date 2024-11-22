@@ -68,6 +68,13 @@ class DataPointValidator(
         className: String,
         correlationId: String,
     ) {
+        if (!className.startsWith("org.dataland.datalandbackend.model.datapoints.")) {
+            logger.error("Invalid class name $className (correlation ID: $correlationId).")
+            throw InvalidInputApiException(
+                "Invalid class name.",
+                "The class name $className is not valid.",
+            )
+        }
         val classForValidation = Class.forName(className).kotlin.java
         checkCastIntoClass(jsonData, classForValidation, className, correlationId)
         val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
@@ -114,13 +121,9 @@ class DataPointValidator(
         val violations = validator.validate(dataPointObject)
         if (violations.isNotEmpty()) {
             logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): $violations")
-            var errorMessage = "Validation failed for data point. "
-            violations.forEach {
-                errorMessage += (it.message)
-            }
             throw InvalidInputApiException(
                 summary = "Validation failed for data point.",
-                message = errorMessage,
+                message = "Validation failed for data point: ${violations.joinToString(", ") { it.message }}",
             )
         }
     }

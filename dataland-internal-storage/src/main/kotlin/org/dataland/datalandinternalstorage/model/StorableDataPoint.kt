@@ -2,7 +2,6 @@ package org.dataland.datalandinternalstorage.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackendutils.interfaces.DataPointInstance
-import java.util.UUID
 
 /**
  * --- API model ---
@@ -18,7 +17,7 @@ data class StorableDataPoint(
     @field:JsonProperty(required = true)
     override val dataPointIdentifier: String,
     @field:JsonProperty(required = true)
-    override val companyId: UUID,
+    override val companyId: String,
     @field:JsonProperty(required = true)
     override val reportingPeriod: String,
 ) : DataPointInstance

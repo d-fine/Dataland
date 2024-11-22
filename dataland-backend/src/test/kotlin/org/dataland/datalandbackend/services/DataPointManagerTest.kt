@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.utils.DataPointValidator
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -11,7 +12,6 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
-import java.util.UUID
 
 class DataPointManagerTest {
     private val dataManager = mock(DataManager::class.java)
@@ -36,7 +36,7 @@ class DataPointManagerTest {
             UploadedDataPoint(
                 dataPointIdentifier = "test-identifier",
                 dataPointContent = "test-content",
-                companyId = UUID.randomUUID(),
+                companyId = IdUtils.generateUUID(),
                 reportingPeriod = "test-period",
             )
 

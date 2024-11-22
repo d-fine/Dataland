@@ -94,8 +94,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -443,8 +442,7 @@
             "type": "string"
           },
           "companyId": {
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "reportingPeriod": {
             "type": "string"

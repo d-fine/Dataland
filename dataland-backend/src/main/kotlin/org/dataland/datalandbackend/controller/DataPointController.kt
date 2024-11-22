@@ -11,7 +11,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 /**
  * Controller for data points
@@ -31,14 +30,13 @@ class DataPointController(
         bypassQa: Boolean,
     ): ResponseEntity<DataPointMetaInformation> {
         val uploaderId = DatalandAuthentication.fromContext().userId
-        val correlationId = IdUtils.generateCorrelationId(uploadedDataPoint.companyId.toString(), null)
+        val correlationId = IdUtils.generateCorrelationId(uploadedDataPoint.companyId, null)
         logMessageBuilder.postDataPointMessage(uploaderId, uploadedDataPoint, bypassQa, correlationId)
         return ResponseEntity.ok(dataPointManager.processDataPoint(uploadedDataPoint, uploaderId, bypassQa, correlationId))
     }
 
-    override fun getDataPoint(dataId: UUID): ResponseEntity<UploadedDataPoint> {
-        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataId)
-        val correlationId = IdUtils.generateCorrelationId(metaInfo.companyId.toString(), dataId.toString())
-        return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, metaInfo.dataPointIdentifier, correlationId))
+    override fun getDataPoint(dataId: String): ResponseEntity<UploadedDataPoint> {
+        val correlationId = IdUtils.generateCorrelationId(null, dataId)
+        return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, correlationId))
     }
 }

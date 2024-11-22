@@ -86,7 +86,7 @@ class DataMetaInformationManager(
      * @param dataId filters the requested meta info to one specific data ID
      * @return meta info about data behind the dataId
      */
-    fun getDataPointMetaInformationByDataId(dataId: UUID): DataPointMetaInformationEntity =
+    fun getDataPointMetaInformationByDataId(dataId: String): DataPointMetaInformationEntity =
         dataPointMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
                 "Data point not found",

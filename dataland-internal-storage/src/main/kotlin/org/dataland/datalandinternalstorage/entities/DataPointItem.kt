@@ -7,7 +7,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.interfaces.DataPointInstance
 import org.dataland.datalandinternalstorage.model.StorableDataPoint
-import java.util.UUID
 
 /**
  * The database entity for storing data points
@@ -19,7 +18,7 @@ data class DataPointItem(
     @Column(name = "data_id")
     val dataId: String,
     @Column(name = "company_id")
-    override val companyId: UUID,
+    override val companyId: String,
     @Column(name = "reporting_period")
     override val reportingPeriod: String,
     @Column(name = "data_point_identifier")

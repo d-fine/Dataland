@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.utils.DataPointValidator
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.UUID
 
 /**
  * Class for managing data points and associated validations
@@ -60,10 +60,10 @@ class DataPointManager(
         correlationId: String,
     ): DataPointMetaInformation {
         logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point.")
-        val dataId = UUID.randomUUID()
+        val dataId = IdUtils.generateUUID()
         val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
         metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
-        dataManager.storeDataInTemporaryStorage(dataId.toString(), objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
+        dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
         messageQueueInteractionForDataPoints.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
 
         return dataPointMetaInformationEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
@@ -72,15 +72,15 @@ class DataPointManager(
     /**
      * Retrieves a single data point from the internal storage
      * @param dataId the id of the data point
-     * @param dataPointIdentifier the identifier of the data point
      * @param correlationId the correlation id for the operation
      * @return the data point in form of a StorableDataSet
      */
     fun retrieveDataPoint(
-        dataId: UUID,
-        dataPointIdentifier: String,
+        dataId: String,
         correlationId: String,
     ): UploadedDataPoint {
+        val metaInfo = metaDataManager.getDataPointMetaInformationByDataId(dataId)
+        val dataPointIdentifier = metaInfo.dataPointIdentifier
         logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
         dataPointValidator.validateDataPointIdentifierExists(dataPointIdentifier)
 

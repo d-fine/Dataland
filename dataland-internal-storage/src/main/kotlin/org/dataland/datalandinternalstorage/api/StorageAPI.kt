@@ -8,7 +8,6 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import java.util.UUID
 
 /**
  * Defines the restful internal storage API.
@@ -82,7 +81,7 @@ interface StorageAPI {
         produces = ["application/json"],
     )
     fun selectDataPointById(
-        @PathVariable("dataId") dataId: UUID,
+        @PathVariable("dataId") dataId: String,
         correlationId: String,
     ): ResponseEntity<StorableDataPoint>
 }

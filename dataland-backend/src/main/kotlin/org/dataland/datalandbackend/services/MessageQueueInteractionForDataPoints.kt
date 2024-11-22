@@ -8,7 +8,6 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataUploadPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.UUID
 
 /**
  * Component that bundles the message queue interactions of the data pint manager
@@ -16,7 +15,7 @@ import java.util.UUID
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
 */
 
-@Component("MessageQueueInteractionForDataPoints")
+@Component
 class MessageQueueInteractionForDataPoints(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
@@ -30,7 +29,7 @@ class MessageQueueInteractionForDataPoints(
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataPointUploadedMessage(
-        dataId: UUID,
+        dataId: String,
         bypassQa: Boolean,
         correlationId: String,
     ) {

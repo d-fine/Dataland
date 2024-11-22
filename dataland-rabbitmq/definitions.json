@@ -123,9 +123,9 @@
       "arguments": {}
     },
     {
-      "name": "backend.datapoint.fanout",
+      "name": "backend.datapoints",
       "vhost": "vhost",
-      "type": "fanout",
+      "type": "direct",
       "durable": true,
       "auto_delete": false,
       "internal": false,

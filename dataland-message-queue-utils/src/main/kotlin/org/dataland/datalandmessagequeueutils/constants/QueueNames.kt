@@ -5,5 +5,5 @@ package org.dataland.datalandmessagequeueutils.constants
  */
 
 object QueueNames {
-    const val DATA_POINT_STORAGE = "storage.datapoint.fanout"
+    const val DATA_POINT_STORAGE = "internal-storage.store_datapoints"
 }

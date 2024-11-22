@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import java.util.UUID
 
 /**
  * The database entity for storing metadata regarding data points uploaded to dataland
@@ -25,9 +24,9 @@ import java.util.UUID
 data class DataPointMetaInformationEntity(
     @Id
     @Column(name = "data_id")
-    val dataId: UUID,
+    val dataId: String,
     @Column(name = "companyId", nullable = false)
-    var companyId: UUID,
+    var companyId: String,
     @Column(name = "data_point_identifier", nullable = false)
     var dataPointIdentifier: String,
     @Column(name = "reporting_period", nullable = false)

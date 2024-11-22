@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackendutils.interfaces.DataPointInstance
 import org.dataland.datalandbackendutils.model.QaStatus
 import java.time.Instant
-import java.util.UUID
 
 /**
  * --- API model ---
@@ -22,7 +21,7 @@ data class UploadedDataPoint(
     @field:JsonProperty(required = true)
     override val dataPointIdentifier: String,
     @field:JsonProperty(required = true)
-    override val companyId: UUID,
+    override val companyId: String,
     @field:JsonProperty(required = true)
     override val reportingPeriod: String,
 ) : DataPointInstance {
@@ -35,7 +34,7 @@ data class UploadedDataPoint(
      * @param qaStatus the QA status of the data point (default is Pending)
      */
     fun toDataPointMetaInformationEntity(
-        dataId: UUID,
+        dataId: String,
         uploaderUserId: String,
         uploadTime: Long = Instant.now().toEpochMilli(),
         currentlyActive: Boolean = false,

@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.model.metainformation
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
-import java.util.UUID
 
 /**
  * --- API model ---
@@ -17,11 +16,11 @@ import java.util.UUID
  */
 data class DataPointMetaInformation(
     @field:JsonProperty(required = true)
-    val dataId: UUID,
+    val dataId: String,
     @field:JsonProperty(required = true)
     override val dataPointIdentifier: String,
     @field:JsonProperty(required = true)
-    override val companyId: UUID,
+    override val companyId: String,
     @field:JsonProperty(required = true)
     override val reportingPeriod: String,
     val uploaderUserId: String? = null,
