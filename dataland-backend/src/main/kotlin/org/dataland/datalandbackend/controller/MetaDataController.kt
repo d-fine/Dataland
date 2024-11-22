@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.NonSourceableDataManager
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +24,7 @@ import java.util.UUID
 class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
+    @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) : MetaDataApi {
     override fun getListOfDataMetaInfo(
         companyId: String?,
@@ -57,14 +59,23 @@ class MetaDataController(
     }
 
     override fun getNonSourceableDatasets(
-        companyId: String?,
-        dataType: DataType?,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-        uploaderUserIds: Set<UUID>?,
-        qaStatus: QaStatus?,
-    ): ResponseEntity<NonSourceableData> {
-        // implement functionality
+        companyId: String,
+        dataType: DataType,
+        reportingPeriod: String,
+        nonSourceable: Boolean,
+    ): ResponseEntity<List<NonSourceableData>?> {
+        val currentUser = DatalandAuthentication.fromContextOrNull()
+        val nonSourceableData =
+            nonSourceableDataManager.getNonSourceableDataByTriple(
+                companyId,
+                dataType,
+                reportingPeriod,
+            )
+        return ResponseEntity.ok(
+            nonSourceableData
+                .filter { it }
+                .map { it.toApiModel(currentUser) },
+        )
     }
 
     override fun postNonSourceableDataSet(nonSourceableData: NonSourceableData) {

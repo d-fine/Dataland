@@ -2,6 +2,8 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceableEntity
+import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -17,6 +19,7 @@ import java.util.UUID
 class NonSourceableDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val nonSourceableDataRepository: NonSourceableDataRepository,
 ) {
     /**
      * The method sets a dataset as non-sourceable in the nonSourceableDataRepository
@@ -38,10 +41,31 @@ class NonSourceableDataManager(
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(nonSourceableInfo),
-            MessageType.DATA_NONSOURCEABLE,
             correlationId,
+            MessageType.DATA_NONSOURCEABLE,
             ExchangeName.DATA_NONSOURCEABLE,
             RoutingKeyNames.DATA_NONSOURCEABLE,
         )
+    }
+
+    /**
+     * The method retrieves non sourceable data sets by filtering
+     * @param companyId the NonSourceableEntity of the dataset
+     * @param dataType the NonSourceableEntity of the dataset
+     * @param reportingPeriod the NonSourceableEntity of the dataset
+     */
+
+    fun getNonSourceableDataByTriple(
+        companyId: String?,
+        dataType: DataType?,
+        reportingPeriod: String?,
+    ): List<NonSourceableEntity>? {
+        val nonSourceableDataSets =
+            nonSourceableDataRepository.findByCompanyIdAnAndDataTypeAndReportingPeriod(
+                companyId,
+                dataType.toString(),
+                reportingPeriod,
+            )
+        return nonSourceableDataSets
     }
 }

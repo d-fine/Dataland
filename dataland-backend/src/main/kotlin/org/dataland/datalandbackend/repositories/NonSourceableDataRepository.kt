@@ -24,4 +24,13 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
         @Param("dataType") dataType: String,
         @Param("reportingPeriod") reportingPeriod: String,
     )
+
+    /**
+     * Retrieves a list of non-sourceable data sets concerning the query parameters.
+     */
+    fun findByCompanyIdAnAndDataTypeAndReportingPeriod(
+        companyId: String?,
+        dataType: String?,
+        reportingPeriod: String?,
+    ): List<NonSourceableEntity>?
 }

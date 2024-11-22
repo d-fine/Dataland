@@ -116,11 +116,9 @@ interface MetaDataApi {
     fun getNonSourceableDatasets(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
-        @RequestParam(defaultValue = "true") showOnlyActive: Boolean,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam uploaderUserIds: Set<UUID>? = null,
-        @RequestParam qaStatus: QaStatus? = null,
-    ): ResponseEntity<NonSourceableData>
+        @RequestParam nonSourceable: Boolean,
+    ): ResponseEntity<List<NonSourceableData>>
 
     /**
      * A method to save information on the sourceability of a specific data set.
@@ -140,6 +138,7 @@ interface MetaDataApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
+    // newRequestBody
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postNonSourceableDataSet(
         @Valid @RequestBody
