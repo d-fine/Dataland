@@ -7,7 +7,7 @@ import {
   DataTypeEnum,
   type PathwaysToParisData,
 } from '@clients/backend';
-import { QaStatus, type ReviewQueueResponse } from '@clients/qaservice';
+import { type QaReviewResponse, QaStatus } from '@clients/qaservice';
 import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
@@ -60,24 +60,25 @@ describe('Component tests for the Quality Assurance page', () => {
    * @param companyId to include
    * @param framework to include
    * @param reportingPeriod to include
-   * @param receptionTime to include
+   * @param timestamp to include
    * @returns the element
    */
   function buildReviewQueueElement(
     dataId: string,
-    companyName?: string,
-    companyId?: string,
-    framework?: string,
-    reportingPeriod?: string,
-    receptionTime: number = Date.now()
-  ): ReviewQueueResponse {
+    companyName: string,
+    companyId: string,
+    framework: string,
+    reportingPeriod: string,
+    timestamp: number = Date.now()
+  ): QaReviewResponse {
     return {
       dataId: dataId,
-      receptionTime: receptionTime,
+      timestamp: timestamp,
       companyName: companyName,
       companyId: companyId,
       framework: framework,
       reportingPeriod: reportingPeriod,
+      qaStatus: QaStatus.Pending,
     };
   }
 

@@ -11,7 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.Logger
@@ -27,8 +27,8 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 
 /**
-* Defines the processing of public framework data upload events as elementary events
-*/
+ * Defines the processing of public framework data upload events as elementary events
+ */
 @Component
 class PublicDataUploadProcessor(
     @Autowired notificationService: NotificationService,
@@ -37,7 +37,7 @@ class PublicDataUploadProcessor(
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
     override val elementaryEventType = ElementaryEventType.UploadEvent
-    override val messageType = MessageType.QA_COMPLETED
+    override val messageType = MessageType.QA_STATUS_CHANGED
     override val actionType = null
     override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -71,17 +71,15 @@ class PublicDataUploadProcessor(
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         MessageQueueUtils.validateMessageType(messageType, this.messageType)
-
-        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(payload, objectMapper)
-
-        if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
+        if (qaCompletedMessage.updatedQaStatus != QaStatus.Accepted) {
             return
         }
 
         MessageQueueUtils.rejectMessageOnException {
             super.processEvent(
                 createElementaryEventBasicInfo(
-                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.identifier)),
+                    objectMapper.writeValueAsString(metaDataControllerApi.getDataMetaInfo(qaCompletedMessage.dataId)),
                 ),
                 correlationId,
                 type,
