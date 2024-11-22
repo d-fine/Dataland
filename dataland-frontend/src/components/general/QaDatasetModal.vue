@@ -75,7 +75,7 @@ export default defineComponent({
       try {
         const qaServiceControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .qaController;
-        await qaServiceControllerApi.assignQaStatus(this.dataId, this.qaStatus);
+        await qaServiceControllerApi.changeQaStatus(this.dataId, this.qaStatus);
         this.reviewSubmitted = true;
         this.reviewSuccessful = true;
       } catch (error) {
