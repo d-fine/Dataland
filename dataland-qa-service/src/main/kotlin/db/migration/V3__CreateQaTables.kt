@@ -17,7 +17,7 @@ class V3__CreateQaTables : BaseJavaMigration() {
                 "company_name VARCHAR(255) NOT NULL, " +
                 "data_type VARCHAR(255) NOT NULL, " +
                 "reporting_period VARCHAR(255) NOT NULL, " +
-                "timestamp smallint NOT NULL, " +
+                "timestamp bigint NOT NULL, " +
                 "qa_status VARCHAR(255) NOT NULL, " +
                 "triggering_user_id VARCHAR(255) NOT NULL, " +
                 "comment VARCHAR(255), " +
@@ -28,7 +28,7 @@ class V3__CreateQaTables : BaseJavaMigration() {
         context.connection.createStatement().execute(
             "CREATE TABLE IF NOT EXISTS review_queue (" +
                 "data_id VARCHAR(255) NOT NULL, " +
-                "reception_time smallint NOT NULL, " +
+                "reception_time bigint NOT NULL, " +
                 "comment text, " +
                 "company_id VARCHAR(255) NOT NULL, " +
                 "company_name VARCHAR(255) NOT NULL," +
