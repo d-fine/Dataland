@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
+import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
@@ -43,25 +44,28 @@ class DataMetaInformationManager(
         if (dataMetaInfo.currentlyActive == true) {
             return
         }
-        setNewDatasetActiveAndOldDatasetInactive(dataMetaInfo)
+        setCurrentlyActiveDatasetInactive(dataMetaInfo.company, dataMetaInfo.dataType, dataMetaInfo.reportingPeriod)
+        dataMetaInfo.currentlyActive = true
     }
 
     /**
-     * The method sets a new dataset active in the metadata database and sets the existing dataset to inactive
-     * @param dataMetaInfo the DataMetaInformationEntity of the dataset
+     * The method sets the currently active dataset for the triple (company, dataType, reportingPeriod) to inactive in
+     * the metadata database
+     * @param company the company of the metadata entity to be set to inactive
+     * @param dataType the dataType of the metadata entity to be set to inactive
+     * @param reportingPeriod the reportingPeriod of the metadata entity to be set to inactive
      */
-    fun setNewDatasetActiveAndOldDatasetInactive(dataMetaInfo: DataMetaInformationEntity) {
+    fun setCurrentlyActiveDatasetInactive(
+        company: StoredCompanyEntity,
+        dataType: String,
+        reportingPeriod: String,
+    ) {
         val metaInfoOfCurrentlyActiveDataset =
-            dataMetaInformationRepositoryInterface.getActiveDataset(
-                dataMetaInfo.company,
-                dataMetaInfo.dataType,
-                dataMetaInfo.reportingPeriod,
-            )
+            dataMetaInformationRepositoryInterface.getActiveDataset(company, dataType, reportingPeriod)
         if (metaInfoOfCurrentlyActiveDataset != null) {
             metaInfoOfCurrentlyActiveDataset.currentlyActive = null
             dataMetaInformationRepositoryInterface.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
         }
-        dataMetaInfo.currentlyActive = true
     }
 
     /**

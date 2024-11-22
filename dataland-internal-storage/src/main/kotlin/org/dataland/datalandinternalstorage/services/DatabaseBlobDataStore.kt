@@ -1,5 +1,6 @@
 package org.dataland.datalandinternalstorage.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.BlobItem
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
@@ -9,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
+import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -30,14 +32,15 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class DatabaseBlobDataStore(
     @Autowired private val blobItemRepository: BlobItemRepository,
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var temporarilyCachedDocumentClient: StreamingTemporarilyCachedDocumentControllerApi,
+    @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired val temporarilyCachedDocumentClient: StreamingTemporarilyCachedDocumentControllerApi,
+    @Autowired val objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Retrieves a blob from the document-manager and stores it in the postgres database.
-     * Emits a stored message after this has finshed
+     * Emits a stored message after this has finished
      */
     @RabbitListener(
         bindings = [
@@ -76,13 +79,24 @@ class DatabaseBlobDataStore(
                 blobId, MessageType.DOCUMENT_STORED, correlationId, ExchangeName.ITEM_STORED,
                 RoutingKeyNames.DOCUMENT,
             )
+            val body =
+                objectMapper.writeValueAsString(
+                    ManualQaRequestedMessage(
+                        resourceId = blobId,
+                        bypassQa = null,
+                    ),
+                )
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED,
+                RoutingKeyNames.DOCUMENT_QA,
+            )
         }
     }
 
     /**
      * Stores the provided binary blob to the database and returns the
      * stored database entity. Also ensures that this function is not executed as part of any transaction.
-     * This will guarantee that the write is committed after exit of this method.
+     * This will guarantee that writing is committed after exit of this method.
      * @param blob the blob to store to the database
      * @return the stored database entity
      */

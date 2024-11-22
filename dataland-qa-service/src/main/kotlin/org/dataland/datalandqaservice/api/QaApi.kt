@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewInformationResponse
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.ReviewQueueResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -39,29 +38,29 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getInfoOnUnreviewedDatasets(
+    fun getInfoOnPendingDatasets(
         @RequestParam dataTypes: Set<DataTypeEnum>?,
         @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,
         @RequestParam(defaultValue = "10") chunkSize: Int,
         @RequestParam(defaultValue = "0") chunkIndex: Int,
-    ): ResponseEntity<List<ReviewQueueResponse>>
+    ): ResponseEntity<List<QaReviewResponse>>
 
     /**
      * A method to get the QA review status of an uploaded dataset for a given identifier
      * @param dataId the dataId
      */
     @Operation(
-        summary = "Gets the QA review status of an uploaded dataset for a given id.",
+        summary = "Get the QA review information of an uploaded dataset for a given id.",
         description =
-            "Get the QA review status of uploaded dataset for a given id." +
-                "Users can get the review status of their own datasets." +
-                "Admins and reviewer can get the review status for all datasets.",
+            "Get the QA review information of uploaded dataset for a given id." +
+                "Users can get the review information of their own datasets." +
+                "Admins and reviewer can get the review information for all datasets.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Found a QA review status corresponding the id."),
-            ApiResponse(responseCode = "404", description = "Found no QA review status corresponding the id."),
+            ApiResponse(responseCode = "200", description = "Found QA review information corresponding the id."),
+            ApiResponse(responseCode = "404", description = "Found no QA review information corresponding the id."),
         ],
     )
     @GetMapping(
@@ -73,39 +72,40 @@ interface QaApi {
             "or hasRole('ROLE_ADMIN') " +
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
-    fun getDatasetById(
+    fun getQaReviewResponseByDataId(
         @PathVariable("dataId") dataId: UUID,
-    ): ResponseEntity<ReviewInformationResponse>
+    ): ResponseEntity<QaReviewResponse>
 
     /**
-     * Assigns a quality status to a unreviewed dataset
-     * @param dataId the ID of the dataset of which to change the quality status
-     * @param qaStatus the quality status to be assigned to a dataset
-     * @param message (optional) message to be assigned to a dataset
+     * Changes the QA review status of a dataset
+     * @param dataId the ID of the dataset of which to change the QA review status
+     * @param qaStatus the QA review status to be assigned to a dataset
+     * @param comment (optional) comment to explain the QA review status change
      */
     @Operation(
-        summary = "Assign a quality status to a unreviewed dataset.",
-        description = "Set the quality status after a dataset has been reviewed.",
+        summary = "Assign a QA review status to a dataset.",
+        description =
+            "Assign a QA review status to a dataset.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully assigned quality status to dataset."),
+            ApiResponse(responseCode = "200", description = "Successfully assigned QA review status to dataset."),
         ],
     )
     @PostMapping(
         value = ["/datasets/{dataId}"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun assignQaStatus(
+    fun changeQaStatus(
         @PathVariable("dataId") dataId: String,
         @RequestParam qaStatus: QaStatus,
-        @RequestParam message: String? = null,
+        @RequestParam comment: String? = null,
     )
 
     /** A method to count open reviews based on specific filters.
-     * @param dataType If set, only the unreviewed datasets with a data type in dataType are counted
-     * @param reportingPeriod If set, only the unreviewed datasets with this reportingPeriod are counted
-     * @param companyId If set, only the unreviewed datasets for this company are counted
+     * @param dataTypes If set, only the unreviewed datasets with a data type in dataType are counted
+     * @param reportingPeriods If set, only the unreviewed datasets with this reportingPeriod are counted
+     * @param companyName If set, only the unreviewed datasets for this company are counted
      * @return The number of unreviewed datasets that match the filter
      */
     @Operation(
@@ -125,7 +125,7 @@ interface QaApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
-    fun getNumberOfUnreviewedDatasets(
+    fun getNumberOfPendingDatasets(
         @RequestParam dataTypes: Set<DataTypeEnum>?,
         @RequestParam reportingPeriods: Set<String>?,
         @RequestParam companyName: String?,

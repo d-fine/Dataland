@@ -330,7 +330,6 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
-      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
@@ -390,23 +389,6 @@ services:
         limits:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
-  automated-qa-service:
-    restart: always
-    profiles: [ "production", "testing", "development" ]
-    image: ${AUTOMATED_QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_automated_qa_service_test:${DATALAND_AUTOMATED_QA_SERVICE_TEST_VERSION}}
-    networks:
-      - internal
-    expose:
-      - "8080"
-    environment:
-      <<: *rabbit-mq-user-and-pass
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-    depends_on:
-      - qa-service
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -532,7 +514,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - email-service-db
-    image: postgres:17.0@sha256:8d3be35b184e70d81e54cbcbd3df3c0b47f37d06482c0dd1c140db5dbcc6a808
+    image: postgres:17.0@sha256:f176fef320ed02c347e9f85352620945547a9a23038f02b57cf7939a198182ae
     volumes:
       - email_service_data:/var/lib/postgresql/data
     environment:
@@ -583,7 +565,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:14195b0729fce792f47ae3c3704d6fd04305826d57af3b01d5b4d004667df174
+    image: postgres:alpine@sha256:0d9624535618a135c5453258fd629f4963390338b11aaffb92292c12df3a6c17
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data

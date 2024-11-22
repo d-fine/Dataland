@@ -1,13 +1,12 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -26,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param metaDataManager service for managing metadata
  * @param dataManager the dataManager service for public data
-*/
+ */
 @Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
@@ -36,8 +35,9 @@ class MessageQueueListenerForDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Method that listens to the qa_queue and updates the metadata information after successful qa process
-     * @param jsonString the message describing the result of the completed QA process
+     * Method that listens to the messages from the QA service, modifies the qa status in the metadata accordingly,
+     * and updates which dataset is currently active after successful qa process
+     * @param jsonString the message describing the changed QA status process
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -59,28 +59,52 @@ class MessageQueueListenerForDataManager(
         ],
     )
     @Transactional
-    fun updateMetaData(
+    fun changeQaStatus(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
 
-        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(jsonString, objectMapper)
-        val dataId = qaCompletedMessage.identifier
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+
+        val updatedDataId = qaStatusChangeMessage.dataId
+        val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
+        val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
+
+        logger.info(
+            "Received QA Status Change message for dataID $updatedDataId. New qaStatus is $updatedQaStatus. " +
+                "(correlationId: $correlationId)",
+        )
+
+        if (updatedDataId.isEmpty()) {
+            throw MessageQueueRejectException("Provided data ID to change qa status dataset is empty")
         }
+
         MessageQueueUtils.rejectMessageOnException {
-            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
-            metaInformation.qaStatus = qaCompletedMessage.validationResult
-            if (qaCompletedMessage.validationResult == QaStatus.Accepted) {
-                metaDataManager.setActiveDataset(metaInformation)
+            val updatedDataMetaInformation = metaDataManager.getDataMetaInformationByDataId(updatedDataId)
+            updatedDataMetaInformation.qaStatus = updatedQaStatus
+            metaDataManager.storeDataMetaInformation(updatedDataMetaInformation)
+
+            if (currentlyActiveDataId.isNullOrEmpty()) {
+                logger.info(
+                    "No active dataset passed for companyId ${updatedDataMetaInformation.company.companyId}, " +
+                        "dataType ${updatedDataMetaInformation.dataType}, and " +
+                        "reportingPeriod ${updatedDataMetaInformation.reportingPeriod}. Setting currently active" +
+                        "dataset to inactive.",
+                )
+                metaDataManager
+                    .setCurrentlyActiveDatasetInactive(
+                        updatedDataMetaInformation.company,
+                        updatedDataMetaInformation.dataType,
+                        updatedDataMetaInformation.reportingPeriod,
+                    )
+            } else {
+                val currentlyActiveMetaInformation =
+                    metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
+                metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
+                logger.info("Dataset with dataId $currentlyActiveDataId has been set to active.")
             }
-            logger.info(
-                "Received quality assurance: ${qaCompletedMessage.validationResult} for data upload with DataId: " +
-                    "$dataId with Correlation Id: $correlationId",
-            )
         }
     }
 
