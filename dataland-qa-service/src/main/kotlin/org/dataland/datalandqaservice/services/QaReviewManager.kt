@@ -149,17 +149,26 @@ class QaReviewManager(
         qaReviewEntity: QaReviewEntity,
         correlationId: String,
     ) {
+        val currentlyActiveDataId =
+            if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
+                qaReviewEntity.dataId
+            } else {
+                getDataIdOfCurrentlyActiveDataset(qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod)
+            }
+
         val qaStatusChangeMessage =
             QaStatusChangeMessage(
                 dataId = qaReviewEntity.dataId,
                 updatedQaStatus = qaReviewEntity.qaStatus,
-                currentlyActiveDataId =
-                    this.getDataIdOfCurrentlyActiveDataset(qaReviewEntity),
+                currentlyActiveDataId = currentlyActiveDataId,
             )
 
-        publishQaStatusChange(
-            qaStatusChangeMessage = qaStatusChangeMessage,
-            correlationId = correlationId,
+        logger.info("Send QA status change message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
+        val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
+
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            messageBody, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+            RoutingKeyNames.DATA,
         )
     }
 
@@ -178,43 +187,24 @@ class QaReviewManager(
     }
 
     /**
-     * Publishes the QA Status Change Message to the queue
-     * @param qaStatusChangeMessage contains the dataId of the changed data set, the new QA
-     * status and the dataId of the newly active dataset
-     * @param correlationId the ID of the process
-     */
-    private fun publishQaStatusChange(
-        qaStatusChangeMessage: QaStatusChangeMessage,
-        correlationId: String,
-    ) {
-        logger.info("Send QA status change message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
-        val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
-
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            messageBody, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
-            RoutingKeyNames.DATA,
-        )
-    }
-
-    /**
      * Retrieve dataId of currently active dataset for same triple (companyId, dataType, reportingPeriod)
      * @param qaReviewEntity qaReviewEntity as baseline for finding active dataset
      * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
      */
-    private fun getDataIdOfCurrentlyActiveDataset(qaReviewEntity: QaReviewEntity): String? {
+    private fun getDataIdOfCurrentlyActiveDataset(
+        companyId: String,
+        dataType: String,
+        reportingPeriod: String,
+    ): String? {
         logger.info(
-            "Searching for currently active dataset for company ${qaReviewEntity.companyId}, " +
-                "dataType ${qaReviewEntity.framework}, and reportingPeriod ${qaReviewEntity.reportingPeriod}",
+            "Searching for currently active dataset for company $companyId, " +
+                "dataType $dataType, and reportingPeriod $reportingPeriod",
         )
-        if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
-            return qaReviewEntity.dataId
-        }
-
         val searchFilter =
             QaSearchFilter(
-                dataTypes = DataTypeEnum.decode(qaReviewEntity.framework)?.let { setOf(it) },
-                companyIds = setOf(qaReviewEntity.companyId),
-                reportingPeriods = setOf(qaReviewEntity.reportingPeriod),
+                dataTypes = DataTypeEnum.decode(dataType)?.let { setOf(it) },
+                companyIds = setOf(companyId),
+                reportingPeriods = setOf(reportingPeriod),
                 qaStatuses = setOf(QaStatus.Accepted),
                 companyName = null,
             )

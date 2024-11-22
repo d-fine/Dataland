@@ -260,7 +260,7 @@ class PrivateDataManager(
             dataMetaInfoEntityForDataId.currentlyActive = true
             return metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
         }
-        throw NullPointerException(
+        throw NoSuchElementException(
             "Could not retrieve dataMetaInformation from memoryStorage for dataId $dataId" +
                 " (correlationId $correlationId)",
         )
