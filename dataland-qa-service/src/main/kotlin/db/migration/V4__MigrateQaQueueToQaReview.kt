@@ -50,17 +50,19 @@ class V4__MigrateQaQueueToQaReview : BaseJavaMigration() {
             val triggeringUserId = "Lost in Migration"
             val comment: String? = queueResultSet.getString("comment")
 
-            var index = 1
-            queueInsertStatement.setString(index++, eventId)
-            queueInsertStatement.setString(index++, dataId)
-            queueInsertStatement.setString(index++, companyId)
-            queueInsertStatement.setString(index++, companyName)
-            queueInsertStatement.setString(index++, dataType)
-            queueInsertStatement.setString(index++, reportingPeriod)
-            queueInsertStatement.setLong(index++, timestamp)
-            queueInsertStatement.setString(index++, qaStatus)
-            queueInsertStatement.setString(index++, triggeringUserId)
-            queueInsertStatement.setString(index, comment)
+            // The order of the parameters has to be consistent with the order of the placeholders in the query above
+            queueInsertStatement.setString(1, eventId)
+            queueInsertStatement.setString(2, dataId)
+            queueInsertStatement.setString(3, companyId)
+            queueInsertStatement.setString(4, companyName)
+            queueInsertStatement.setString(5, dataType)
+            queueInsertStatement.setString(6, reportingPeriod)
+            queueInsertStatement.setLong(7, timestamp)
+            queueInsertStatement.setString(8, qaStatus)
+            queueInsertStatement.setString(9, triggeringUserId)
+            queueInsertStatement.setString(10, comment)
+
+            queueInsertStatement.executeUpdate()
         }
 
         queueResultSet.close()
