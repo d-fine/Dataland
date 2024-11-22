@@ -250,14 +250,20 @@ class PrivateDataManager(
         logger.info(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
-        val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]!!
-        metaDataManager.setCurrentlyActiveDatasetInactive(
-            dataMetaInfoEntityForDataId.company,
-            dataMetaInfoEntityForDataId.dataType,
-            dataMetaInfoEntityForDataId.reportingPeriod,
+        val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
+        if (dataMetaInfoEntityForDataId != null) {
+            metaDataManager.setCurrentlyActiveDatasetInactive(
+                dataMetaInfoEntityForDataId.company,
+                dataMetaInfoEntityForDataId.dataType,
+                dataMetaInfoEntityForDataId.reportingPeriod,
+            )
+            dataMetaInfoEntityForDataId.currentlyActive = true
+            return metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
+        }
+        throw NullPointerException(
+            "Could not retrieve dataMetaInformation from memoryStorage for dataId $dataId" +
+                " (correlationId $correlationId)",
         )
-        dataMetaInfoEntityForDataId.currentlyActive = true
-        return metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
     }
 
     private fun removeDocumentsAndHashesFromInMemoryStorages(
