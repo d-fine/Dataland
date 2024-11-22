@@ -39,7 +39,7 @@ class V4__MigrateQaQueueToQaReview : BaseJavaMigration() {
             )
 
         while (queueResultSet.next()) {
-            val eventId = UUID.randomUUID().toString()
+            val eventId = UUID.randomUUID()
             val dataId = queueResultSet.getString("data_id")
             val companyId = queueResultSet.getString("company_id")
             val companyName = queueResultSet.getString("company_name")
@@ -51,16 +51,17 @@ class V4__MigrateQaQueueToQaReview : BaseJavaMigration() {
             val comment: String? = queueResultSet.getString("comment")
 
             // The order of the parameters has to be consistent with the order of the placeholders in the query above
-            queueInsertStatement.setString(1, eventId)
-            queueInsertStatement.setString(2, dataId)
-            queueInsertStatement.setString(3, companyId)
-            queueInsertStatement.setString(4, companyName)
-            queueInsertStatement.setString(5, dataType)
-            queueInsertStatement.setString(6, reportingPeriod)
-            queueInsertStatement.setLong(7, timestamp)
-            queueInsertStatement.setString(8, qaStatus)
-            queueInsertStatement.setString(9, triggeringUserId)
-            queueInsertStatement.setString(10, comment)
+            var index = 1
+            queueInsertStatement.setObject(index, eventId)
+            queueInsertStatement.setString(++index, dataId)
+            queueInsertStatement.setString(++index, companyId)
+            queueInsertStatement.setString(++index, companyName)
+            queueInsertStatement.setString(++index, dataType)
+            queueInsertStatement.setString(++index, reportingPeriod)
+            queueInsertStatement.setLong(++index, timestamp)
+            queueInsertStatement.setString(++index, qaStatus)
+            queueInsertStatement.setString(++index, triggeringUserId)
+            queueInsertStatement.setString(++index, comment)
 
             queueInsertStatement.executeUpdate()
         }
