@@ -13,5 +13,5 @@ object ExchangeName {
     const val SEND_EMAIL = "sendEmail"
     const val PRIVATE_ITEM_STORED = "privateItemStored"
     const val PRIVATE_REQUEST_RECEIVED = "privateRequestReceived"
-    const val BACKEND_DATA_POINT_EVENTS = "backend.datapoints"
+    const val BACKEND_DATA_POINT_EVENTS = "backend.dataPoints"
 }

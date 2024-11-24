@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,6 +46,7 @@ class MessageQueueInteractionForDataPoints(
             type = MessageType.PUBLIC_DATA_RECEIVED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_POINT_EVENTS,
+            routingKey = RoutingKeyNames.DATA_POINT_UPLOAD,
         )
         logger.info("Published message to queue that data point with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
     }

@@ -114,6 +114,7 @@ class DatabaseStringDataStore(
                         ],
                     ),
                 exchange = Exchange(ExchangeName.BACKEND_DATA_POINT_EVENTS, declare = "false"),
+                key = [RoutingKeyNames.DATA_POINT_UPLOAD],
             ),
         ],
     )
@@ -125,7 +126,7 @@ class DatabaseStringDataStore(
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         MessageQueueUtils.rejectMessageOnException {
             val dataUploadPayload = MessageQueueUtils.readMessagePayload<DataUploadPayload>(payload, objectMapper)
-            val dataId = dataUploadPayload.dataId.toString()
+            val dataId = dataUploadPayload.dataId
             val dataPointString = retrieveData(dataId, correlationId)
 
             val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)

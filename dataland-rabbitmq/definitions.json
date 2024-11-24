@@ -123,7 +123,7 @@
       "arguments": {}
     },
     {
-      "name": "backend.datapoints",
+      "name": "backend.dataPoints",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
