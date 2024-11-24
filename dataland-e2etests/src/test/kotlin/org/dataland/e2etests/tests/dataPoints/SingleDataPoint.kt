@@ -10,7 +10,6 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataPoint {
@@ -32,7 +31,7 @@ class SingleDataPoint {
             UploadedDataPoint(
                 dataPointContent = dataPointContent,
                 dataPointIdentifier = "extendedCurrencyEquity",
-                companyId = UUID.fromString(storedCompanyInfos.companyId),
+                companyId = storedCompanyInfos.companyId,
                 reportingPeriod = "2022",
             )
         val dataPointId = dataPointControllerApi.postDataPoint(uploadedDataPoint, false).dataId
