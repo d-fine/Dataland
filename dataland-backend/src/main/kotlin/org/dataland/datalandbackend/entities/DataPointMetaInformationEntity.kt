@@ -1,12 +1,14 @@
 package org.dataland.datalandbackend.entities
 
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
+import org.dataland.datalandbackendutils.converter.QaStatusConverter
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 
@@ -38,6 +40,7 @@ data class DataPointMetaInformationEntity(
     @Column(name = "currently_active", nullable = true)
     var currentlyActive: Boolean?,
     @Column(name = "quality_status", nullable = false)
+    @Convert(converter = QaStatusConverter::class)
     var qaStatus: QaStatus,
 ) : ApiModelConversion<DataPointMetaInformation> {
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataPointMetaInformation =
