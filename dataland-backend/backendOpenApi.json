@@ -3239,8 +3239,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -17778,8 +17777,7 @@
             "type": "string"
           },
           "companyId": {
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
@@ -17799,15 +17797,13 @@
         "type": "object",
         "properties": {
           "dataId": {
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "dataPointIdentifier": {
             "type": "string"
           },
           "companyId": {
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           },
           "reportingPeriod": {
             "type": "string"
