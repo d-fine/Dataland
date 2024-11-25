@@ -31,7 +31,7 @@ interface QaReportApi<QaReportType> {
      */
     @Operation(
         summary = "Upload new QA report.",
-        description = "The uploaded QA report is added to the database, the generated report id is returned.",
+        description = "The uploaded QA report is added to the database, the generated QA report id is returned.",
     )
     @ApiResponses(
         value = [

@@ -25,9 +25,9 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Gets the QA review status of an uploaded dataset for a given id.",
-        "description": "Get the QA review status of uploaded dataset for a given id.Users can get the review status of their own datasets.Admins and reviewer can get the review status for all datasets.",
-        "operationId": "getDatasetById",
+        "summary": "Get the QA review information of an uploaded dataset for a given id.",
+        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins and reviewer can get the review information for all datasets.",
+        "operationId": "getQaReviewResponseByDataId",
         "parameters": [
           {
             "name": "dataId",
@@ -41,21 +41,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Found a QA review status corresponding the id.",
+            "description": "Found QA review information corresponding the id.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReviewInformationResponse"
+                  "$ref": "#/components/schemas/QaReviewResponse"
                 }
               }
             }
           },
           "404": {
-            "description": "Found no QA review status corresponding the id.",
+            "description": "Found no QA review information corresponding the id.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReviewInformationResponse"
+                  "$ref": "#/components/schemas/QaReviewResponse"
                 }
               }
             }
@@ -94,9 +94,9 @@
         "tags": [
           "qa-controller"
         ],
-        "summary": "Assign a quality status to a unreviewed dataset.",
-        "description": "Set the quality status after a dataset has been reviewed.",
-        "operationId": "assignQaStatus",
+        "summary": "Assign a QA review status to a dataset.",
+        "description": "Assign a QA review status to a dataset.",
+        "operationId": "changeQaStatus",
         "parameters": [
           {
             "name": "dataId",
@@ -115,7 +115,7 @@
             }
           },
           {
-            "name": "message",
+            "name": "comment",
             "in": "query",
             "required": false,
             "schema": {
@@ -125,7 +125,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully assigned quality status to dataset."
+            "description": "Successfully assigned QA review status to dataset."
           },
           "default": {
             "description": "An error occurred",
@@ -1225,7 +1225,7 @@
         ],
         "summary": "Get the number of unreviewed datasets based on filters.",
         "description": "Get the number of unreviewed datasets based on filters.",
-        "operationId": "getNumberOfUnreviewedDatasets",
+        "operationId": "getNumberOfPendingDatasets",
         "parameters": [
           {
             "name": "dataTypes",
@@ -1322,7 +1322,7 @@
         ],
         "summary": "Get relevant meta info on unreviewed datasets.",
         "description": "Gets a filtered and chronologically ordered list of relevant meta info on unreviewed datasets.",
-        "operationId": "getInfoOnUnreviewedDatasets",
+        "operationId": "getInfoOnPendingDatasets",
         "parameters": [
           {
             "name": "dataTypes",
@@ -1397,7 +1397,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ReviewQueueResponse"
+                    "$ref": "#/components/schemas/QaReviewResponse"
                   }
                 }
               }
@@ -5404,22 +5404,20 @@
           }
         }
       },
-      "ReviewQueueResponse": {
+      "QaReviewResponse": {
         "required": [
+          "companyId",
+          "companyName",
           "dataId",
-          "receptionTime"
+          "framework",
+          "qaStatus",
+          "reportingPeriod",
+          "timestamp"
         ],
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
-          },
           "dataId": {
             "type": "string"
-          },
-          "receptionTime": {
-            "type": "integer",
-            "format": "int64"
           },
           "companyId": {
             "type": "string"
@@ -5432,31 +5430,18 @@
           },
           "reportingPeriod": {
             "type": "string"
-          }
-        }
-      },
-      "ReviewInformationResponse": {
-        "required": [
-          "dataId",
-          "qaStatus",
-          "receptionTime"
-        ],
-        "type": "object",
-        "properties": {
-          "dataId": {
-            "type": "string"
           },
-          "receptionTime": {
+          "timestamp": {
             "type": "integer",
             "format": "int64"
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
-          "reviewerKeycloakId": {
+          "comment": {
             "type": "string"
           },
-          "message": {
+          "triggeringUserId": {
             "type": "string"
           }
         }

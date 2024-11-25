@@ -1,7 +1,0 @@
-ARG DATALAND_AUTOMATED_QA_SERVICE_BASE_VERSION
-FROM ghcr.io/d-fine/dataland/dataland_automated_qa_service_base:${DATALAND_AUTOMATED_QA_SERVICE_BASE_VERSION}
-
-COPY ./dataland-automated-qa-service/src/test/measure_coverage.py ./src/test/measure_coverage.py
-CMD ["sh", "-c", "if find .coverage | grep -q . ; then coverage xml; fi; coverage run -m pytest -o log_cli=true -o log_cli_level=INFO ./src/test/measure_coverage.py"]
-
-HEALTHCHECK --interval=30s --timeout=3s CMD exit 0

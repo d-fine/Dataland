@@ -43,9 +43,6 @@ do
   docker cp dala-e2e-test-${service}-1:/jacoco.exec ./${service}-bootRun-${CYPRESS_TEST_GROUP}.exec
 done
 
-docker exec dala-e2e-test-automated-qa-service-1 pkill -f --signal SIGINT coverage
-while ! docker cp dala-e2e-test-automated-qa-service-1:/usr/src/app/coverage.xml ./automated-qa-service-bootRun-${CYPRESS_TEST_GROUP}.xml ; do echo Coverage file not yet found; sleep 5; done
-
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
 docker logs dala-e2e-test-backend-1 | grep "Searching for known Datatypes"

@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -10,12 +9,11 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewInformationEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.ReviewQueueEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewHistoryRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.ReviewQueueRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -26,11 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 
 /**
- * Implementation of a QA Service reacting on the upload_queue and forwarding message to qa_queue
+ * The QA Service's MessageListener Service. Listens to messages (usually) sent be the internal storage after a dataset
+ * has been stored or if a dataset has been deleted. Calls, depending on the data event (storing, deletion), the
+ * corresponding methods of the QaReviewManager and QaReportManager
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  */
 @Component
@@ -39,27 +37,11 @@ class QaEventListenerQaService
     constructor(
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired var objectMapper: ObjectMapper,
-        @Autowired val reviewQueueRepository: ReviewQueueRepository,
-        @Autowired val reviewHistoryRepository: ReviewHistoryRepository,
-        @Autowired val companyDataControllerApi: CompanyDataControllerApi,
+        @Autowired val qaReviewManager: QaReviewManager,
+        @Autowired val qaReportManager: QaReportManager,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
-
-        private val reviewerIdAutomatedQaService = "automated-qa-service"
-
-        private data class ForwardedQaMessage(
-            val identifier: String,
-            val comment: String,
-        )
-
-        private data class PersistAutomatedQaResultMessage(
-            val identifier: String,
-            val validationResult: QaStatus,
-            val reviewerId: String,
-            val resourceType: String,
-            val message: String?,
-        )
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
@@ -72,74 +54,68 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            "manualQaRequestedDataQaService",
+                            "itemStoredDataQaService",
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                                 Argument(name = "defaultRequeueRejected", value = "false"),
                             ],
                         ),
-                    exchange = Exchange(ExchangeName.MANUAL_QA_REQUESTED, declare = "false"),
-                    key = [RoutingKeyNames.DATA],
+                    exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                    key = [RoutingKeyNames.DATA_QA],
                 ),
             ],
         )
-        @Transactional
-        fun addDataToQueue(
+        fun addDatasetToQaReviewRepository(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
 
-            val message = MessageQueueUtils.readMessagePayload<ForwardedQaMessage>(messageAsJsonString, objectMapper)
-
-            val comment = message.comment
-            val dataId = message.identifier
+            val dataId = message.resourceId
+            val bypassQa: Boolean? = message.bypassQa
             if (dataId.isEmpty()) {
-                throw MessageQueueRejectException("Provided data ID is empty")
+                throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
             }
 
             MessageQueueUtils.rejectMessageOnException {
-                val dataMetaInfo = metaDataControllerApi.getDataMetaInfo(dataId)
-                val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
+                val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+                val qaStatus: QaStatus
+                var comment: String? = null
 
-                logger.info("Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId")
-                storeDatasetAsToBeReviewed(
-                    dataId,
-                    dataMetaInfo.companyId,
-                    companyName,
-                    dataMetaInfo.dataType.value,
-                    dataMetaInfo.reportingPeriod,
-                    comment,
+                when (bypassQa) {
+                    true -> {
+                        qaStatus = QaStatus.Accepted
+                        comment = "Automatically QA approved."
+                    }
+                    false -> qaStatus = QaStatus.Pending
+                    null -> throw MessageQueueRejectException(
+                        "BypassQa is not set; message should not end up here" +
+                            " (correlationId: $correlationId)",
+                    )
+                }
+
+                val qaReviewEntity =
+                    qaReviewManager.saveQaReviewEntity(
+                        dataId = dataId,
+                        qaStatus = qaStatus,
+                        triggeringUserId = triggeringUserId,
+                        comment = comment,
+                        correlationId = correlationId,
+                    )
+
+                qaReviewManager.sendQaStatusChangeMessage(
+                    qaReviewEntity = qaReviewEntity, correlationId = correlationId,
                 )
             }
         }
 
-        private fun storeDatasetAsToBeReviewed(
-            dataId: String,
-            companyId: String,
-            companyName: String,
-            framework: String,
-            reportingPeriod: String,
-            comment: String,
-        ) {
-            reviewQueueRepository.save(
-                ReviewQueueEntity(
-                    dataId = dataId,
-                    companyId = companyId,
-                    companyName = companyName,
-                    framework = framework,
-                    reportingPeriod = reportingPeriod,
-                    receptionTime = Instant.now().toEpochMilli(),
-                    comment = comment,
-                ),
-            )
-        }
-
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for quality_Assured exchange
-         * @param messageAsJsonString the message body as json string
+         * @param messageAsJsonString the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
          */
@@ -148,15 +124,15 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            "manualQaRequestedDocumentQaService",
+                            "itemStoredDocumentQaService",
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                                 Argument(name = "defaultRequeueRejected", value = "false"),
                             ],
                         ),
-                    exchange = Exchange(ExchangeName.MANUAL_QA_REQUESTED, declare = "false"),
-                    key = [RoutingKeyNames.DOCUMENT],
+                    exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                    key = [RoutingKeyNames.DOCUMENT_QA],
                 ),
             ],
         )
@@ -166,12 +142,11 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
+            val documentId = message.resourceId
 
-            val forwardedQaMessage = MessageQueueUtils.readMessagePayload<ForwardedQaMessage>(messageAsJsonString, objectMapper)
-
-            val documentId = forwardedQaMessage.identifier
             if (documentId.isEmpty()) {
-                throw MessageQueueRejectException("Provided document ID is empty")
+                throw MessageQueueRejectException("Provided document ID is empty (correlationId: $correlationId)")
             }
             MessageQueueUtils.rejectMessageOnException {
                 logger.info(
@@ -179,18 +154,23 @@ class QaEventListenerQaService
                 )
                 val messageToSend =
                     objectMapper.writeValueAsString(
-                        QaCompletedMessage(documentId, QaStatus.Accepted, reviewerIdAutomatedQaService, null),
+                        QaStatusChangeMessage(
+                            documentId,
+                            QaStatus.Accepted,
+                            null,
+                        ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    messageToSend, MessageType.QA_COMPLETED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+                    messageToSend, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
                     RoutingKeyNames.DOCUMENT,
                 )
             }
         }
 
         /**
-         * Method to retrieve qa completed message and store the
-         * @param messageAsJsonString the message body as json string
+         * Method that listens to the ItemStored Exchange for potential data deletion messages and deletes the corresponding
+         * QA reports accordingly
+         * @param messageAsJsonString the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
          */
@@ -199,54 +179,38 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            "manualQaRequestedPersistAutomatedQaResultQaService",
+                            "itemStoredDeleteQaInfoQaService",
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                                 Argument(name = "defaultRequeueRejected", value = "false"),
                             ],
                         ),
-                    exchange = Exchange(ExchangeName.MANUAL_QA_REQUESTED, declare = "false"),
-                    key = [RoutingKeyNames.PERSIST_AUTOMATED_QA_RESULT],
+                    exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                    key = [RoutingKeyNames.DELETE_QA_INFO],
                 ),
             ],
         )
-        @Transactional
-        fun addDataReviewFromAutomatedQaToReviewHistoryRepository(
+        fun deleteQaInformationForDeletedDataId(
             @Payload messageAsJsonString: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.PERSIST_AUTOMATED_QA_RESULT)
+            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
 
-            val persistAutomatedQaResultMessage =
-                MessageQueueUtils.readMessagePayload<PersistAutomatedQaResultMessage>(messageAsJsonString, objectMapper)
+            val dataId = message.resourceId
+            val bypassQa = message.bypassQa
+            if (dataId.isEmpty()) {
+                throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
+            }
+            if (bypassQa != null) {
+                throw MessageQueueRejectException("BypassQa should be set to null when deleting QA information.")
+            }
 
-            if (persistAutomatedQaResultMessage.resourceType == "data") {
-                val validationResult = persistAutomatedQaResultMessage.validationResult
-                val reviewerId = persistAutomatedQaResultMessage.reviewerId
-                val dataId = persistAutomatedQaResultMessage.identifier
-                if (dataId.isEmpty()) {
-                    throw MessageQueueRejectException("Provided data ID is empty")
-                }
-
-                MessageQueueUtils.rejectMessageOnException {
-                    logger.info(
-                        "Received data with DataId: $dataId on QA message queue with Correlation Id: $correlationId",
-                    )
-                    logger.info(
-                        "Assigning quality status $validationResult and reviewerId $reviewerId to dataset with ID $dataId",
-                    )
-                    reviewHistoryRepository.save(
-                        ReviewInformationEntity(
-                            dataId = dataId,
-                            receptionTime = System.currentTimeMillis(),
-                            qaStatus = validationResult,
-                            reviewerKeycloakId = reviewerId,
-                            message = persistAutomatedQaResultMessage.message,
-                        ),
-                    )
-                }
+            MessageQueueUtils.rejectMessageOnException {
+                qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
+                qaReviewManager.deleteAllByDataId(dataId, correlationId)
             }
         }
     }

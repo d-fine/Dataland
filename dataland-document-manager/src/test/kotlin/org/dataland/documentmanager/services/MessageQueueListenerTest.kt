@@ -6,7 +6,7 @@ import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
@@ -50,16 +50,15 @@ class MessageQueueListenerTest(
     fun `check that an exception is thrown in updating of meta data when documentId is empty`() {
         val messageWithEmptyDocumentID =
             objectMapper.writeValueAsString(
-                QaCompletedMessage(
-                    identifier = "",
-                    validationResult = QaStatus.Accepted,
-                    reviewerId = "",
-                    message = null,
+                QaStatusChangeMessage(
+                    dataId = "",
+                    updatedQaStatus = QaStatus.Accepted,
+                    currentlyActiveDataId = "",
                 ),
             )
         val thrown =
             assertThrows<MessageQueueRejectException> {
-                messageQueueListener.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QA_COMPLETED)
+                messageQueueListener.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QA_STATUS_CHANGED)
             }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
@@ -69,11 +68,10 @@ class MessageQueueListenerTest(
         val documentId = "abc"
         val message =
             objectMapper.writeValueAsString(
-                QaCompletedMessage(
-                    identifier = documentId,
-                    validationResult = QaStatus.Accepted,
-                    reviewerId = "",
-                    message = null,
+                QaStatusChangeMessage(
+                    dataId = documentId,
+                    updatedQaStatus = QaStatus.Accepted,
+                    currentlyActiveDataId = null,
                 ),
             )
 
@@ -90,7 +88,7 @@ class MessageQueueListenerTest(
                 ),
             )
 
-        assertDoesNotThrow { messageQueueListener.updateDocumentMetaData(message, "", MessageType.QA_COMPLETED) }
+        assertDoesNotThrow { messageQueueListener.updateDocumentMetaData(message, "", MessageType.QA_STATUS_CHANGED) }
     }
 
     @Test
