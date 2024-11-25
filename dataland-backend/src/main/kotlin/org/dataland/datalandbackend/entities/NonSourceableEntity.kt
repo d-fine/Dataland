@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.interfaces.ApiModelConversion
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import java.util.UUID
 
 /**
  * The database entity for storing the history on non-sourceable datasets
@@ -21,7 +20,7 @@ import java.util.UUID
 data class NonSourceableEntity(
     @Id
     @Column(name = "event_Id", nullable = false, updatable = false)
-    val eventId: UUID = UUID.randomUUID(),
+    val eventId: String,
     @JoinColumn(name = "company_id")
     var companyId: String,
     @Column(name = "data_type", nullable = false)

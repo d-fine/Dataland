@@ -2,7 +2,6 @@ package org.dataland.datalandbackend.model.metainformation
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.DataType
-import java.util.UUID
 
 /**
  * --- API model ---
@@ -17,7 +16,7 @@ import java.util.UUID
  */
 data class NonSourceableData(
     @field:JsonProperty(required = true)
-    val eventId: UUID,
+    val eventId: String,
     @field:JsonProperty(required = true)
     val companyId: String,
     @field:JsonProperty(required = true)

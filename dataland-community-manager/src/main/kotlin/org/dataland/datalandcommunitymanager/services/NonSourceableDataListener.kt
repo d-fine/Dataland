@@ -1,0 +1,65 @@
+package org.dataland.datalandcommunitymanager.services
+
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.metainformation.NonSourceableData
+import org.dataland.datalandmessagequeueutils.constants.ExchangeName
+import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
+import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.springframework.amqp.rabbit.annotation.Argument
+import org.springframework.amqp.rabbit.annotation.Exchange
+import org.springframework.amqp.rabbit.annotation.Queue
+import org.springframework.amqp.rabbit.annotation.QueueBinding
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.messaging.handler.annotation.Header
+import org.springframework.messaging.handler.annotation.Payload
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+/**
+ * This service processes new messages of non-sourceable data
+ */
+@Service("NonSourceableDataListener")
+class NonSourceableDataListener(
+    @Autowired private val objectMapper: ObjectMapper,
+    private val dataRequestAlterationManager: DataRequestAlterationManager,
+) {
+    /**
+     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * and data type and sets their status to answered
+     * @param jsonString the message describing the result of the data non-sourceable event
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        "nonSourceableData",
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.DATA_NONSOURCEABLE, declare = "false"),
+                key = [RoutingKeyNames.DATA_NONSOURCEABLE],
+            ),
+        ],
+    )
+    @Transactional
+    fun changeRequestStatusAfterDataReportedNonSourceable(
+        @Payload jsonString: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) id: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
+        val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableData>(jsonString, objectMapper)
+        MessageQueueUtils.rejectMessageOnException {
+            // should patch all requests to non sourceable that link to this data
+            dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId = id)
+        }
+    }
+}

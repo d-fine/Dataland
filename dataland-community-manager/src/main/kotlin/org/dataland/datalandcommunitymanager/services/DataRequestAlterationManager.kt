@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
@@ -116,6 +117,36 @@ class DataRequestAlterationManager(
         logger.info(
             "Changed Request Status for company Id ${metaData.companyId}, " +
                 "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
+        )
+    }
+
+    /**
+     * Method to patch data request corresponding to a dataset
+     * @param nonSourceableInfo the info on the non-sourceable dataset
+     * @param correlationId dataland correlationId
+     */
+    @Transactional
+    fun patchAllRequestsForThisDatasetToStatusNonSourceable(
+        nonSourceableInfo: NonSourceableData,
+        correlationId: String,
+    ) {
+        val dataRequestEntities =
+            dataRequestRepository.findByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                datalandCompanyId = nonSourceableInfo.companyId,
+                dataType = nonSourceableInfo.dataType.toString(),
+                reportingPeriod = nonSourceableInfo.reportingPeriod,
+            )
+
+        // call patch data request always and in the patch data request it is decided if a mail is sent or not
+        dataRequestEntities?.forEach {
+            patchDataRequest(
+                dataRequestId = it.dataRequestId, requestStatus = RequestStatus.NonSourceable,
+                correlationId = correlationId,
+            )
+        }
+        logger.info(
+            "Changed request status for all requests relating data of company ${nonSourceableInfo.companyId}, " +
+                "reporting period ${nonSourceableInfo.reportingPeriod} and framework ${nonSourceableInfo.dataType.name} to non-sourceable",
         )
     }
 }
