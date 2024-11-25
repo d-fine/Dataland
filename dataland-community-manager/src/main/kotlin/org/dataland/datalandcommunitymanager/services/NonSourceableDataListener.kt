@@ -6,7 +6,9 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -26,11 +28,14 @@ class NonSourceableDataListener(
     @Autowired private val objectMapper: ObjectMapper,
     private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
+    private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
+
     /**
      * Checks if for a given dataset there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered
      * @param jsonString the message describing the result of the data non-sourceable event
      * @param type the type of the message
+     * @param id the correlation id of the message
      */
     @RabbitListener(
         bindings = [
@@ -57,8 +62,16 @@ class NonSourceableDataListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
         val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableData>(jsonString, objectMapper)
+        val eventId = nonSourceableInfo.eventId
+        if (eventId.isEmpty()) {
+            throw MessageQueueRejectException("Provided event ID is empty")
+        }
+        logger.info("Received request status changed to non-sourceable for envent ID: $eventId")
+        if (!nonSourceableInfo.nonSourceable) {
+            logger.info("Event ID $eventId did not set a dataset to non-sourceable")
+            return
+        }
         MessageQueueUtils.rejectMessageOnException {
-            // should patch all requests to non sourceable that link to this data
             dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId = id)
         }
     }

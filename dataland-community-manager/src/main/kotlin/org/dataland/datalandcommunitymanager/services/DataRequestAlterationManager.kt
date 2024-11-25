@@ -137,7 +137,6 @@ class DataRequestAlterationManager(
                 reportingPeriod = nonSourceableInfo.reportingPeriod,
             )
 
-        // call patch data request always and in the patch data request it is decided if a mail is sent or not
         dataRequestEntities?.forEach {
             patchDataRequest(
                 dataRequestId = it.dataRequestId, requestStatus = RequestStatus.NonSourceable,
