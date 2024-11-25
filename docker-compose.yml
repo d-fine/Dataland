@@ -448,7 +448,7 @@ services:
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
-      SCRiIPT_NAME: "/pgadmin"
+      SCRIPT_NAME: "/pgadmin"
     logging:
       driver: json-file
       options:
