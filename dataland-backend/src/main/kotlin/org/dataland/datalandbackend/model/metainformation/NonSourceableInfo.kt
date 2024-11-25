@@ -5,10 +5,11 @@ import org.dataland.datalandbackend.model.DataType
 
 /**
  * --- API model ---
- * Meta information storing the history on datasets where no sources are avalaible
+ * Meta information storing the history on the if a data set is sourceable or not
  * @param companyId unique identifier to identify the company the data is associated with
  * @param dataType type of the data
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
+ * @param nonSourceable true if there is no source available
  * @param reason reason why there is no source available
  */
 data class NonSourceableInfo(
@@ -17,6 +18,8 @@ data class NonSourceableInfo(
     @field:JsonProperty(required = true)
     val dataType: DataType,
     val reportingPeriod: String,
+    @field:JsonProperty(required = true)
+    val nonSourceable: Boolean,
     @field:JsonProperty(required = true)
     val reason: String,
 )

@@ -21,6 +21,9 @@ import java.util.UUID
 /**
  * Controller for the company metadata endpoints
  * @param dataMetaInformationManager service for handling data meta information
+ * @param logMessageBuilder a helper for building log messages
+ * @param nonSourceableDataManager service for handling information on data sets and theirs sourceability
+ * @param nonSourceableDataRepository repository for meta info on sourceability of data sets
  */
 
 @RestController
@@ -66,7 +69,7 @@ class MetaDataController(
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 
-    override fun getNonSourceableDatasets(
+    override fun getSourceabilityOfDataSetsInfo(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
@@ -79,11 +82,12 @@ class MetaDataController(
                     companyId,
                     dataType,
                     reportingPeriod,
+                    nonSourceable,
                 )?.map { it.toApiModel(currentUser) },
         )
     }
 
-    override fun postNonSourceableDataSet(nonSourceableInfo: NonSourceableInfo) {
+    override fun postSourceabilityOfADataSet(nonSourceableInfo: NonSourceableInfo) {
         val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
         nonSourceableDataManager.createEventDatasetNonSourceable(correlationId, nonSourceableInfo)
     }
