@@ -130,7 +130,7 @@ class DataRequestLogger {
      */
     fun logMessageForPatchingRequestPriority(
         dataRequestId: String,
-        requestPriority: RequestPriority?,
+        requestPriority: RequestPriority,
     ) {
         singleDataRequestLogger.info(
             "Patching request $dataRequestId " +
@@ -143,7 +143,7 @@ class DataRequestLogger {
      */
     fun logMessageForPatchingAdminComment(
         dataRequestId: String,
-        adminComment: String?,
+        adminComment: String,
     ) {
         singleDataRequestLogger.info(
             "Patching request $dataRequestId " +

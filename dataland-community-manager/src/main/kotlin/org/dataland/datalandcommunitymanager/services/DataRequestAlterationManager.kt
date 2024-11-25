@@ -94,10 +94,11 @@ class DataRequestAlterationManager(
             dataRequestLogger.logMessageForPatchingRequestPriority(dataRequestEntity.dataRequestId, newRequestPriority)
         }
 
-        val newAdminComment = adminComment ?: dataRequestEntity.adminComment
-        if (newAdminComment != dataRequestEntity.adminComment) {
-            dataRequestEntity.adminComment = newAdminComment
-            dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, newAdminComment)
+        if (adminComment != null) {
+            if (adminComment != dataRequestEntity.adminComment) {
+                dataRequestEntity.adminComment = adminComment
+                dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, adminComment)
+            }
         }
 
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime

@@ -80,7 +80,7 @@ class DataRequestMaskerTest {
         dataRequestMasker = DataRequestMasker(mockKeycloakUserService)
     }
 
-    private fun getExtendedStoredDataRequestEntityWithAdminCommentList(): List<ExtendedStoredDataRequest> {
+    private fun getExtendedStoredDataRequestEntityWithAdminComment(): ExtendedStoredDataRequest {
         val dataRequestEntityWithAdminComment = dummyDataRequestEntity.copy(adminComment = testComment)
         val extendedStoredDataRequestWithAdminComment =
             ExtendedStoredDataRequest(
@@ -88,7 +88,7 @@ class DataRequestMaskerTest {
                 companyName = "",
                 userEmailAddress = "",
             )
-        return listOf(extendedStoredDataRequestWithAdminComment)
+        return extendedStoredDataRequestWithAdminComment
     }
 
     private fun setupAdminAuthentication() {
@@ -122,7 +122,7 @@ class DataRequestMaskerTest {
         setupNonAdminAuthentication()
         val modifiedDataRequestEntityList =
             dataRequestMasker.hideAdminCommentForNonAdmins(
-                getExtendedStoredDataRequestEntityWithAdminCommentList(),
+                listOf(getExtendedStoredDataRequestEntityWithAdminComment()),
             )
         val allAdminCommentsNull = modifiedDataRequestEntityList.all { it.adminComment == null }
         assertTrue(allAdminCommentsNull)
@@ -134,10 +134,9 @@ class DataRequestMaskerTest {
 
         val modifiedDataRequestEntityList =
             dataRequestMasker.hideAdminCommentForNonAdmins(
-                getExtendedStoredDataRequestEntityWithAdminCommentList(),
+                listOf(getExtendedStoredDataRequestEntityWithAdminComment()),
             )
         val extendedStoredDataRequest = modifiedDataRequestEntityList[0]
-
         assertEquals(testComment, extendedStoredDataRequest.adminComment)
     }
 

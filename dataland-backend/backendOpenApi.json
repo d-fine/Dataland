@@ -17921,12 +17921,6 @@
         ],
         "type": "object",
         "properties": {
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "lei": {
             "type": "string",
             "nullable": true
@@ -17936,6 +17930,12 @@
             "nullable": true
           },
           "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "companyName": {
