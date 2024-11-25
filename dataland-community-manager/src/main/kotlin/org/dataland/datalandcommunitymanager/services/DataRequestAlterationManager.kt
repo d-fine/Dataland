@@ -1,8 +1,8 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableData
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -39,6 +39,7 @@ class DataRequestAlterationManager(
      * @param requestStatus the status to apply to the data request
      * @return the updated data request object
      */
+    @Suppress("LongParameterList")
     @Transactional
     fun patchDataRequest(
         dataRequestId: String,
@@ -47,6 +48,7 @@ class DataRequestAlterationManager(
         contacts: Set<String>? = null,
         message: String? = null,
         correlationId: String? = null,
+        requestStatusChangeReason: String? = null,
     ): StoredDataRequest {
         val dataRequestEntity =
             dataRequestRepository.findById(dataRequestId).getOrElse {
@@ -64,7 +66,10 @@ class DataRequestAlterationManager(
         val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             anyChanges = true
-            utils.addNewRequestStatusToHistory(dataRequestEntity, newRequestStatus, newAccessStatus, modificationTime)
+            utils
+                .addNewRequestStatusToHistory(
+                    dataRequestEntity, newRequestStatus, newAccessStatus, requestStatusChangeReason, modificationTime,
+                )
             dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
                 dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
             )
@@ -140,7 +145,7 @@ class DataRequestAlterationManager(
         dataRequestEntities?.forEach {
             patchDataRequest(
                 dataRequestId = it.dataRequestId, requestStatus = RequestStatus.NonSourceable,
-                correlationId = correlationId,
+                correlationId = correlationId, requestStatusChangeReason = nonSourceableInfo.reason,
             )
         }
         logger.info(

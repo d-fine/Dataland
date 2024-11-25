@@ -5421,16 +5421,16 @@
             "type": "integer",
             "format": "int64"
           },
-          "companyName": {
-            "type": "string"
-          },
           "companyId": {
             "type": "string"
           },
-          "framework": {
+          "companyName": {
             "type": "string"
           },
           "reportingPeriod": {
+            "type": "string"
+          },
+          "framework": {
             "type": "string"
           }
         }

@@ -1679,7 +1679,8 @@
           "Answered",
           "Resolved",
           "Withdrawn",
-          "Closed"
+          "Closed",
+          "NonSourceable"
         ]
       },
       "AccessStatus": {
@@ -1794,6 +1795,9 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestStatusChangeReason": {
+            "type": "string"
           }
         }
       },

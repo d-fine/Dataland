@@ -27,6 +27,7 @@ data class RequestStatusEntity(
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
     var dataRequest: DataRequestEntity,
+    val requestStatusChangeReason: String? = null,
 ) {
     constructor(
         statusObject: StoredDataRequestStatusObject,
@@ -36,6 +37,7 @@ data class RequestStatusEntity(
         requestStatus = statusObject.status,
         accessStatus = statusObject.accessStatus,
         creationTimestamp = statusObject.creationTimestamp,
+        requestStatusChangeReason = statusObject.requestStatusChangeReason,
         dataRequest = dataRequest,
     )
 
@@ -48,5 +50,6 @@ data class RequestStatusEntity(
             status = requestStatus,
             accessStatus = accessStatus,
             creationTimestamp = creationTimestamp,
+            requestStatusChangeReason = requestStatusChangeReason,
         )
 }

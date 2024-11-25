@@ -121,7 +121,8 @@ class DataAccessManagerTest {
         val dataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
             dataRequestEntity = any(), requestStatus = any(),
-            accessStatus = any(), modificationTime = any(),
+            accessStatus = any(), requestStatusChangeReason = anyString(),
+            modificationTime = any(),
         )
         doNothing().`when`(dataRequestProcessingUtils).addMessageToMessageHistory(
             dataRequestEntity = any(), contacts = anySet(), message = anyString(),
@@ -225,7 +226,8 @@ class DataAccessManagerTest {
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
-                accessStatus = eq(AccessStatus.Pending), modificationTime = any(),
+                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
+                modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
@@ -252,7 +254,8 @@ class DataAccessManagerTest {
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
-                accessStatus = eq(AccessStatus.Pending), modificationTime = any(),
+                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
+                modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(

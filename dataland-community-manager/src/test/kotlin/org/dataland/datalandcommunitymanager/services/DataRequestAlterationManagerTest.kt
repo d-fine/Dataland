@@ -101,7 +101,8 @@ class DataRequestAlterationManagerTest {
         processingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(processingUtils).addNewRequestStatusToHistory(
             any(), any(),
-            any(), any(),
+            any(), anyString(),
+            any(),
         )
         doNothing().`when`(processingUtils).addMessageToMessageHistory(
             any(), anySet(), anyString(), any(),
@@ -167,7 +168,8 @@ class DataRequestAlterationManagerTest {
         verify(processingUtils, times(2))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), eq(null),
+                any(),
             )
         verify(processingUtils, times(0))
             .addMessageToMessageHistory(
@@ -186,7 +188,8 @@ class DataRequestAlterationManagerTest {
         verify(processingUtils, times(1))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), eq(null),
+                any(),
             )
 
         verify(processingUtils, times(0))
@@ -205,7 +208,8 @@ class DataRequestAlterationManagerTest {
         verify(processingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), eq(null),
+                any(),
             )
         verify(processingUtils, times(0))
             .addMessageToMessageHistory(
@@ -236,7 +240,8 @@ class DataRequestAlterationManagerTest {
         verify(processingUtils, times(0))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), anyString(),
+                any(),
             )
     }
 }
