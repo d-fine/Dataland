@@ -18,6 +18,7 @@ const queues = [
   'privateRequestReceivedEurodatDataStore',
   'requestReceivedInternalStorageDatabaseDataStore',
   'sendEmailService',
+  'internal-storage.store_datapoints',
 ];
 
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {
