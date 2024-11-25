@@ -33,7 +33,7 @@ sequenceDiagram
     backend -->> storage: Dataset
     deactivate backend
     storage ->> storage: Store Dataset in Database
-    storage --) mq: Send 'Item Stored'
+    storage --) mq: Send 'Item Stored' and 'Manual QA Requested'
     activate mq
     deactivate storage
 
@@ -42,7 +42,7 @@ sequenceDiagram
     backend ->> backend: Remove Dataset from Temporary Storage
     deactivate backend
     alt bypassQa is false
-        mq -) qaService: Receive 'Item Stored'
+        mq -) qaService: Receive 'Manual QA Requested'
         deactivate mq
         activate qaService
         qaService ->> qaService: Store entry in QA-DB table
@@ -63,7 +63,7 @@ sequenceDiagram
 
     else bypassQa is true
         activate mq
-        mq -) qaService: Receive 'Item Stored'
+        mq -) qaService: Receive 'Manual QA Requested'
         deactivate mq
         activate qaService
         qaService ->> qaService: Store entry in QA-DB table
