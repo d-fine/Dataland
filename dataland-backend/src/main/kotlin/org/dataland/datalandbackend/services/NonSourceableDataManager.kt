@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NonSourceableData
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -27,7 +27,7 @@ class NonSourceableDataManager(
      * The method sets a dataset as non-sourceable in the nonSourceableDataRepository
      * @param nonSourceableInfo the NonSourceableEntity of the dataset
      */
-    fun storeNonSourceableData(nonSourceableInfo: NonSourceableData) {
+    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo) {
         val creationTime = Instant.now().toEpochMilli()
 
         val nonSourceableEntity =
@@ -36,12 +36,10 @@ class NonSourceableDataManager(
                 companyId = nonSourceableInfo.companyId,
                 dataType = nonSourceableInfo.dataType.toString(),
                 reportingPeriod = nonSourceableInfo.reportingPeriod,
-                nonSourceable = nonSourceableInfo.nonSourceable,
+                nonSourceable = true,
                 reason = nonSourceableInfo.reason,
                 creationTime = creationTime,
             )
-
-        nonSourceableEntity.nonSourceable = true
         nonSourceableDataRepository.save(nonSourceableEntity)
     }
 
@@ -51,7 +49,7 @@ class NonSourceableDataManager(
      */
     fun createEventDatasetNonSourceable(
         correlationId: String,
-        nonSourceableInfo: NonSourceableData,
+        nonSourceableInfo: NonSourceableInfo,
     ) {
         storeNonSourceableData(nonSourceableInfo)
 
@@ -65,12 +63,12 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method retrieves non sourceable data sets by filtering for query params
-     * @param companyId
-     * @param dataType
-     * @param reportingPeriod
+     * The method retrieves non sourceable data sets by given filters.
+     * @param companyId if not empty, it filters the requested meta info to a specific company
+     * @param dataType if not empty, it filters the requested meta info to a specific data type
+     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
      */
-    fun getNonSourceableDataByTriple(
+    fun getNonSourceableDataByFilters(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
@@ -78,7 +76,7 @@ class NonSourceableDataManager(
         val nonSourceableDataSets =
             nonSourceableDataRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
                 companyId,
-                dataType.toString(),
+                dataType,
                 reportingPeriod,
             )
         return nonSourceableDataSets

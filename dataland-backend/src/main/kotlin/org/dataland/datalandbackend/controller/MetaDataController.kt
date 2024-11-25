@@ -4,6 +4,8 @@ import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceableData
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
+import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
@@ -26,6 +28,7 @@ class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired val nonSourceableDataRepository: NonSourceableDataRepository,
 ) : MetaDataApi {
     override fun getListOfDataMetaInfo(
         companyId: String?,
@@ -54,36 +57,35 @@ class MetaDataController(
         val currentUser = DatalandAuthentication.fromContextOrNull()
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+            throw AccessDeniedException(
+                logMessageBuilder.generateAccessDeniedExceptionMessage(
+                    metaInfo.qaStatus,
+                ),
+            )
         }
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 
     override fun getNonSourceableDatasets(
-        companyId: String,
-        dataType: DataType,
-        reportingPeriod: String,
-        nonSourceable: Boolean,
-    ): ResponseEntity<List<NonSourceableData>?> {
+        companyId: String?,
+        dataType: DataType?,
+        reportingPeriod: String?,
+        nonSourceable: Boolean?,
+    ): ResponseEntity<List<NonSourceableData>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
-        val nonSourceableData =
-            nonSourceableDataManager.getNonSourceableDataByTriple(
-                companyId,
-                dataType,
-                reportingPeriod,
-            )
         return ResponseEntity.ok(
-            nonSourceableData
-                .filter { it }
-                .map { it.toApiModel(currentUser) },
+            nonSourceableDataManager
+                .getNonSourceableDataByFilters(
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                )?.map { it.toApiModel(currentUser) },
         )
     }
 
-    override fun postNonSourceableDataSet(nonSourceableData: NonSourceableData) {
-        // implement functionality
-        val correlationId = generateCorrelationId(nonSourceableData.companyId, null)
-        // set creationTime
-        nonSourceableDataManager.createEventDatasetNonSourceable(correlationId, nonSourceableData)
+    override fun postNonSourceableDataSet(nonSourceableInfo: NonSourceableInfo) {
+        val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
+        nonSourceableDataManager.createEventDatasetNonSourceable(correlationId, nonSourceableInfo)
     }
 
     override fun isDataNonSourceable(
@@ -91,6 +93,10 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        // implement functionality
+        nonSourceableDataRepository.getNonSourceableDataByTriple(
+            companyId,
+            dataType,
+            reportingPeriod,
+        )
     }
 }

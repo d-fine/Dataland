@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceableData
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -112,12 +113,12 @@ interface MetaDataApi {
         value = ["/nonSourceable"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getNonSourceableDatasets(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam nonSourceable: Boolean,
+        @RequestParam nonSourceable: Boolean? = null,
     ): ResponseEntity<List<NonSourceableData>>
 
     /**
@@ -138,11 +139,10 @@ interface MetaDataApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    // newRequestBody
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun postNonSourceableDataSet(
         @Valid @RequestBody
-        nonSourceableData: NonSourceableData,
+        nonSourceableInfo: NonSourceableInfo,
     )
 
     /**
@@ -152,8 +152,8 @@ interface MetaDataApi {
      * @param reportingPeriod the reporting period
      */
     @Operation(
-        summary = "Checks that a data set is non sourceable.",
-        description = "Checks that a specific data set is non sourceable.",
+        summary = "Checks if a data set is non sourceable.",
+        description = "Checks if a specific data set is non sourceable.",
     )
     @ApiResponses(
         value = [

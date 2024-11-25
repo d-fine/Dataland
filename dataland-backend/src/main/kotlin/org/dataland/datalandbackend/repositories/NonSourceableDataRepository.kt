@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.NonSourceableEntity
+import org.dataland.datalandbackend.model.DataType
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -17,11 +18,14 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
             "WHERE nonSourceableData.reportingPeriod = :#{#reportingPeriod} " +
             "AND nonSourceableData.companyId = :#{#companyId} " +
             "AND nonSourceableData.dataType = :#{#dataType} " +
-            "AND nonSourceableData.nonSourceable = true ",
+            "AND nonSourceableData.nonSourceable = true " +
+            "ORDER BY creation_time DESC" +
+            "LIMIT 1",
+        nativeQuery = true,
     )
     fun getNonSourceableDataByTriple(
         @Param("companyId") companyId: String,
-        @Param("dataType") dataType: String,
+        @Param("dataType") dataType: DataType,
         @Param("reportingPeriod") reportingPeriod: String,
     )
 
@@ -30,7 +34,7 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
      */
     fun findByCompanyIdAndDataTypeAndReportingPeriod(
         companyId: String?,
-        dataType: String?,
+        dataType: DataType?,
         reportingPeriod: String?,
     ): List<NonSourceableEntity>?
 }
