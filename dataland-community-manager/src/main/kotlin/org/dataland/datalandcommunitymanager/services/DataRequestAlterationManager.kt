@@ -94,11 +94,9 @@ class DataRequestAlterationManager(
             dataRequestLogger.logMessageForPatchingRequestPriority(dataRequestEntity.dataRequestId, newRequestPriority)
         }
 
-        if (adminComment != null) {
-            if (adminComment != dataRequestEntity.adminComment) {
-                dataRequestEntity.adminComment = adminComment
-                dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, adminComment)
-            }
+        if (adminComment != null && adminComment != dataRequestEntity.adminComment) {
+            dataRequestEntity.adminComment = adminComment
+            dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, adminComment)
         }
 
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
