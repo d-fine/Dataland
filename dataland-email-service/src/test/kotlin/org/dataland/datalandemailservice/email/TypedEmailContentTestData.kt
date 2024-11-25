@@ -5,6 +5,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequ
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
@@ -34,6 +35,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
         const val CREATION_DATE = "October 5th"
         const val NUMBER_OF_DAYS = 23
         const val EMAIL_TITLE = "Email-Title"
+        const val NON_SOURCEABLE_COMMENT = "No bananas means no data available. Donkey Kong ate all the bananas..."
     }
 
     val companyId = UUID.randomUUID().toString()
@@ -80,6 +82,21 @@ class TypedEmailContentTestData : ArgumentsProvider {
         listOf(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
             "Your answered data request has been automatically closed as no action was taken within the last",
+        )
+
+    val dataRequestNonSourceable =
+        DataRequestNonSourceable(
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NON_SOURCEABLE_COMMENT,
+        ).also {
+            it.baseUrl = BASE_URL
+        }
+
+    val dataRequestNonSourceableKeywords =
+        listOf(
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, dataRequestId, BASE_URL, NON_SOURCEABLE_COMMENT,
+            "Unfortunately, your requested dataset has been labeled as non-sourceable by the data provider.",
+            "We will continue to check the status of your request regularly",
+            "inform you in case the dataset will be uploaded in the future.",
         )
 
     val companyOwnershipClaimApproved =
@@ -199,6 +216,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
             Arguments.of(datasetRequestedClaimOwnership, datasetRequestedClaimOwnershipKeywords),
             Arguments.of(dataRequestAnswered, dataRequestAnsweredKeywords),
             Arguments.of(dataRequestClosed, dataRequestClosedKeywords),
+            Arguments.of(dataRequestNonSourceable, dataRequestNonSourceableKeywords),
             Arguments.of(companyOwnershipClaimApproved, companyOwnershipClaimApprovedKeywords),
             Arguments.of(accessToDatasetRequested, accessToDatasetRequestedKeywords),
             Arguments.of(accessToDatasetGranted, accessToDatasetGrantedKeywords),
