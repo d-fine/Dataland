@@ -37,7 +37,7 @@ data class UploadedDataPoint(
         dataId: String,
         uploaderUserId: String,
         uploadTime: Long = Instant.now().toEpochMilli(),
-        currentlyActive: Boolean = false,
+        currentlyActive: Boolean? = null,
         qaStatus: QaStatus = QaStatus.Pending,
     ): DataPointMetaInformationEntity =
         DataPointMetaInformationEntity(
