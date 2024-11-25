@@ -24,8 +24,8 @@ class NonSourceableDataManager(
     @Autowired private val nonSourceableDataRepository: NonSourceableDataRepository,
 ) {
     /**
-     * The method sets a dataset as non-sourceable in the nonSourceableDataRepository
-     * @param nonSourceableInfo the NonSourceableEntity of the dataset
+     * The method sets a given dataset in the nonSourceableDataRepository
+     * @param nonSourceableInfo the  of the dataset
      */
     fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo) {
         val creationTime = Instant.now().toEpochMilli()
@@ -36,7 +36,7 @@ class NonSourceableDataManager(
                 companyId = nonSourceableInfo.companyId,
                 dataType = nonSourceableInfo.dataType.toString(),
                 reportingPeriod = nonSourceableInfo.reportingPeriod,
-                nonSourceable = true,
+                nonSourceable = nonSourceableInfo.nonSourceable,
                 reason = nonSourceableInfo.reason,
                 creationTime = creationTime,
             )
@@ -72,12 +72,14 @@ class NonSourceableDataManager(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
+        nonSourceable: Boolean?,
     ): List<NonSourceableEntity>? {
         val nonSourceableDataSets =
-            nonSourceableDataRepository.findByCompanyIdAndDataTypeAndReportingPeriod(
+            nonSourceableDataRepository.findByCompanyIdAndDataTypeAndReportingPeriodAndNonSourceable(
                 companyId,
                 dataType,
                 reportingPeriod,
+                nonSourceable,
             )
         return nonSourceableDataSets
     }
