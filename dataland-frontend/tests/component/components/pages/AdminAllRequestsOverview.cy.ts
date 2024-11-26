@@ -3,7 +3,12 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import {
+  AccessStatus,
+  type ExtendedStoredDataRequest,
+  RequestPriority,
+  RequestStatus,
+} from '@clients/communitymanager';
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
@@ -19,13 +24,17 @@ describe('Component test for the admin-requests-overview page', () => {
    * @param framework for which data has been requested
    * @param requestStatus of the data request
    * @param accessStatus of the data request
+   * @param adminComment of the data request
+   * @param requestPriority of the data request
    * @returns the generated ExtendedStoredDataRequest
    */
   function generateExtendedStoredDataRequest(
     userEmailAddress: string,
     framework: DataTypeEnum,
     requestStatus: RequestStatus,
-    accessStatus: AccessStatus
+    accessStatus: AccessStatus,
+    adminComment: string,
+    requestPriority: RequestPriority
   ): ExtendedStoredDataRequest {
     return {
       dataRequestId: crypto.randomUUID(),
@@ -39,6 +48,8 @@ describe('Component test for the admin-requests-overview page', () => {
       lastModifiedDate: Date.now(),
       requestStatus: requestStatus,
       accessStatus: accessStatus,
+      adminComment: adminComment,
+      requestPriority: requestPriority,
     };
   }
 
@@ -47,13 +58,46 @@ describe('Component test for the admin-requests-overview page', () => {
   const mailGamma = 'test123@fake.com';
   const mailDelta = 'steven@fake.com';
   const mailSearchTerm = mailAlpha.substring(0, 3);
+  const commentAlpha = 'A test comment';
+  const commentBeta = 'The second test comment';
+  const commentGamma = 'Another test comment';
+  const commentDelta = 'The last test comment';
+  const commentSearchTerm = commentBeta.substring(0, 3);
 
   before(function () {
     mockRequests = [
-      generateExtendedStoredDataRequest(mailAlpha, DataTypeEnum.Lksg, RequestStatus.Open, AccessStatus.Public),
-      generateExtendedStoredDataRequest(mailBeta, DataTypeEnum.P2p, RequestStatus.Answered, AccessStatus.Public),
-      generateExtendedStoredDataRequest(mailGamma, DataTypeEnum.Vsme, RequestStatus.Answered, AccessStatus.Declined),
-      generateExtendedStoredDataRequest(mailDelta, DataTypeEnum.Sfdr, RequestStatus.Resolved, AccessStatus.Public),
+      generateExtendedStoredDataRequest(
+        mailAlpha,
+        DataTypeEnum.Lksg,
+        RequestStatus.Open,
+        AccessStatus.Public,
+        commentAlpha,
+        RequestPriority.Urgent
+      ),
+      generateExtendedStoredDataRequest(
+        mailBeta,
+        DataTypeEnum.P2p,
+        RequestStatus.Answered,
+        AccessStatus.Public,
+        commentBeta,
+        RequestPriority.VeryHigh
+      ),
+      generateExtendedStoredDataRequest(
+        mailGamma,
+        DataTypeEnum.Vsme,
+        RequestStatus.Answered,
+        AccessStatus.Declined,
+        commentGamma,
+        RequestPriority.High
+      ),
+      generateExtendedStoredDataRequest(
+        mailDelta,
+        DataTypeEnum.Sfdr,
+        RequestStatus.Resolved,
+        AccessStatus.Public,
+        commentDelta,
+        RequestPriority.Low
+      ),
     ];
     mockRequestsLarge = [];
     for (let num = 1; num <= 104; num++) {
@@ -64,7 +108,16 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestStatus.Answered,
         RequestStatus.Withdrawn,
       ]);
-      mockRequestsLarge.push(generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public));
+      const comment = faker.helpers.arrayElement([commentAlpha, commentBeta, commentGamma, commentDelta]);
+      const requestPriority = faker.helpers.arrayElement([
+        RequestPriority.Low,
+        RequestPriority.High,
+        RequestPriority.Urgent,
+        RequestPriority.VeryHigh,
+      ]);
+      mockRequestsLarge.push(
+        generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public, comment, requestPriority)
+      );
     }
   });
 
@@ -146,7 +199,8 @@ describe('Component test for the admin-requests-overview page', () => {
       'fetchEmailFilteredNumberOfRequests'
     );
 
-    cy.get(`input[data-test="email-searchbar"]`).type(mailSearchTerm).type('{enter}');
+    cy.get(`input[data-test="email-searchbar"]`).type(mailSearchTerm);
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailDelta);
@@ -171,6 +225,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailBeta);
@@ -194,8 +249,54 @@ describe('Component test for the admin-requests-overview page', () => {
 
     cy.get(`div[data-test="request-status-picker"]`).click();
     cy.get(`li[aria-label="${requestStatusToFilterFor}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
+  }
+
+  /**
+   * Validates if filtering via priority dropdown filter works as expected
+   */
+  function validateRequestPriorityFilter(): void {
+    const priorityToFilterFor = RequestPriority.VeryHigh;
+    const mockResponse = [mockRequests[1]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?requestPriority=${priorityToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchPriorityFilteredRequests');
+    cy.intercept(
+      `**/community/requests/numberOfRequests?requestPriority=${priorityToFilterFor}`,
+      expectedNumberOfRequests.toString()
+    ).as('fetchFrameworkFilteredNumberOfRequests');
+
+    cy.get(`div[data-test="request-priority-picker"]`).click();
+    cy.get(`li[aria-label="${priorityToFilterFor}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailBeta);
+  }
+
+  /**
+   * Validates if filtering via admin comment substring works as expected
+   */
+  function validateAdminCommentFilter(): void {
+    const mockResponse = [mockRequests[1], mockRequests[3]];
+    const expectedNumberOfRequests = mockResponse.length;
+    cy.intercept(
+      `**/community/requests?adminComment=${commentSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
+      mockResponse
+    ).as('fetchCommentFilteredRequests');
+    cy.intercept(`**/community/requests/numberOfRequests?adminComment=last`, expectedNumberOfRequests.toString()).as(
+      'fetchCommentFilteredNumberOfRequests'
+    );
+
+    cy.get(`input[data-test="comment-searchbar"]`).type(commentSearchTerm);
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
+    assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailBeta);
+    assertEmailAddressExistsInSearchResults(mailDelta);
   }
 
   /**
@@ -218,6 +319,7 @@ describe('Component test for the admin-requests-overview page', () => {
 
     cy.get(`div[data-test="framework-picker"]`).click();
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailDelta);
   }
@@ -236,6 +338,7 @@ describe('Component test for the admin-requests-overview page', () => {
     const frameworkHumanReadableName = humanizeStringOrNumber(DataTypeEnum.Sfdr);
     cy.get(`li[aria-label="${frameworkHumanReadableName}"]`).click();
     cy.get(`input[data-test="email-searchbar"]`).clear().type('{enter}');
+    cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
     assertEmailAddressExistsInSearchResults(mailAlpha);
@@ -291,6 +394,16 @@ describe('Component test for the admin-requests-overview page', () => {
   it('Filtering for request status works as expected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateRequestStatusFilter();
+  });
+
+  it('Filtering for request priority works as exprected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateRequestPriorityFilter();
+  });
+
+  it('Filtering for an admin comment works as expected', () => {
+    mountAdminAllRequestsPageWithMocks();
+    validateAdminCommentFilter();
   });
 
   it('A combined filter works as expected and is also de-selectable', () => {
