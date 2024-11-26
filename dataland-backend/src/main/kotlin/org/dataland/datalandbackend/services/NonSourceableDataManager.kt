@@ -11,6 +11,8 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.UUID
@@ -98,8 +100,22 @@ class NonSourceableDataManager(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
-    ) {
-        nonSourceableDataRepository.getLatestNonSourceableData(companyId, dataType, reportingPeriod)
+    ): ResponseEntity<Void> {
+        NonSourceableDataSearchFilter(companyId, dataType, reportingPeriod, null)
+        val latestNonSourceableEntity =
+            nonSourceableDataRepository.getLatestNonSourceableData(
+                NonSourceableDataSearchFilter(
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                    null,
+                ),
+            )
+        return if (latestNonSourceableEntity?.nonSourceable == true) {
+            ResponseEntity(HttpStatus.OK)
+        } else {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
     }
 
     /**

@@ -111,7 +111,7 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    fun getSourceabilityOfDataSetsInfo(
+    fun getInfoOnSourceabilityOfDataSets(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
@@ -167,5 +167,5 @@ interface MetaDataApi {
         @PathVariable("companyId") companyId: String,
         @PathVariable("dataType") dataType: DataType,
         @PathVariable("reportingPeriod") reportingPeriod: String,
-    )
+    ): ResponseEntity<Void>
 }

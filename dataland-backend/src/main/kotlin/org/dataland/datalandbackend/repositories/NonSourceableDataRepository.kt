@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.NonSourceableEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -14,21 +13,18 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
     /**
      * Retrieves non sourceable datasets for the given triplet of reporting Period, company and dataType
      */
+
     @Query(
         "SELECT nonSourceableData FROM NonSourceableEntity nonSourceableData " +
-            "WHERE nonSourceableData.reportingPeriod = :#{#reportingPeriod} " +
-            "AND nonSourceableData.companyId = :#{#companyId} " +
-            "AND nonSourceableData.dataType = :#{#dataType} " +
-            "AND nonSourceableData.nonSourceable = true " +
-            "ORDER BY creation_time DESC" +
+            "WHERE nonSourceableData.reportingPeriod = :#{#searchFilter.preparedReportingPeriod} " +
+            "AND nonSourceableData.companyId = :#{#searchFilter.preparedCompanyId} " +
+            "AND nonSourceableData.dataType = :#{#searchFilter.preparedDataType} " +
+            "ORDER BY nonSourceableData.creationTime DESC " +
             "LIMIT 1",
-        nativeQuery = true,
     )
     fun getLatestNonSourceableData(
-        @Param("companyId") companyId: String,
-        @Param("dataType") dataType: DataType,
-        @Param("reportingPeriod") reportingPeriod: String,
-    ): Boolean?
+        @Param("searchFilter") searchFilter: NonSourceableDataSearchFilter,
+    ): NonSourceableEntity?
 
     /**
      * Searches for non-sourceable data entries based on a filter defined in NonSourceableDataSearchFilter.

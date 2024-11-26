@@ -69,7 +69,7 @@ class MetaDataController(
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 
-    override fun getSourceabilityOfDataSetsInfo(
+    override fun getInfoOnSourceabilityOfDataSets(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
