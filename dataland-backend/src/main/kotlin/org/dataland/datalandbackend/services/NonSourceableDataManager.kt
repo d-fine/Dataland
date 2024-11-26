@@ -6,13 +6,12 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.UUID
@@ -100,7 +99,7 @@ class NonSourceableDataManager(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
-    ): ResponseEntity<Void> {
+    ) {
         NonSourceableDataSearchFilter(companyId, dataType, reportingPeriod, null)
         val latestNonSourceableEntity =
             nonSourceableDataRepository.getLatestNonSourceableData(
@@ -111,10 +110,13 @@ class NonSourceableDataManager(
                     null,
                 ),
             )
-        return if (latestNonSourceableEntity?.nonSourceable == true) {
-            ResponseEntity(HttpStatus.OK)
-        } else {
-            ResponseEntity(HttpStatus.NOT_FOUND)
+        if (latestNonSourceableEntity?.nonSourceable != true) {
+            throw ResourceNotFoundApiException(
+                summary = "Dataset is sourceable or not found.",
+                message =
+                    "No non-sourceable dataset found for company $companyId, dataType $dataType, " +
+                        "and reportingPeriod $reportingPeriod.",
+            )
         }
     }
 

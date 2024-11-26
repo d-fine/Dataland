@@ -167,5 +167,5 @@ interface MetaDataApi {
         @PathVariable("companyId") companyId: String,
         @PathVariable("dataType") dataType: DataType,
         @PathVariable("reportingPeriod") reportingPeriod: String,
-    ): ResponseEntity<Void>
+    )
 }
