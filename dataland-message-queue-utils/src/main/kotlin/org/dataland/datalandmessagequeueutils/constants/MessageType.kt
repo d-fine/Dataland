@@ -5,10 +5,11 @@ package org.dataland.datalandmessagequeueutils.constants
  */
 object MessageType {
     const val PUBLIC_DATA_RECEIVED = "Public Data received"
+    const val DELETE_DATA = "Delete Data"
     const val DATA_STORED = "Data stored"
     const val DOCUMENT_RECEIVED = "Document received"
     const val DOCUMENT_STORED = "Document stored"
-    const val MANUAL_QA_REQUESTED = "Manual QA requested"
+    const val QA_REQUESTED = "QA requested"
     const val SEND_EMAIL = "Send email"
     const val PRIVATE_DATA_STORED = "Private Data Stored"
     const val PRIVATE_DATA_RECEIVED = "Private Data received"

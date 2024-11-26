@@ -59,12 +59,12 @@ class DataPointManager(
         bypassQa: Boolean,
         correlationId: String,
     ): DataPointMetaInformation {
-        logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point.")
+        logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point with bypassQa set to: $bypassQa.")
         val dataId = IdUtils.generateUUID()
         val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
         metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
         dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
-        messageQueueInteractionForDataPoints.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
+        messageQueueInteractionForDataPoints.publishDataPointUploadedMessage(dataId, correlationId)
 
         return dataPointMetaInformationEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
     }

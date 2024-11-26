@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import java.util.UUID
 
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -36,7 +38,7 @@ import org.springframework.boot.test.context.SpringBootTest
     properties = ["spring.profiles.active=nodb"],
 )
 class QaEventListenerQaServiceTest(
-    @Autowired final val objectMapper: ObjectMapper,
+    @Autowired val objectMapper: ObjectMapper,
     @Autowired val testQaReviewRepository: QaReviewRepository,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
@@ -49,13 +51,13 @@ class QaEventListenerQaServiceTest(
     val dataId = "TestDataId"
     val correlationId = "correlationId"
 
-    private fun getManualQaRequestedMessage(
-        resourceId: String,
-        bypassQa: Boolean? = null,
+    private fun getQaMessagePayload(
+        dataId: String,
+        bypassQa: Boolean,
     ): String =
         objectMapper.writeValueAsString(
-            ManualQaRequestedMessage(
-                resourceId = resourceId,
+            QaPayload(
+                dataId = dataId,
                 bypassQa = bypassQa,
             ),
         )
@@ -80,13 +82,13 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check that an exception is thrown in reading out message from data stored queue when dataId is empty`() {
-        val noIdPayload = getManualQaRequestedMessage("")
+        val noIdPayload = getQaMessagePayload("", false)
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService
-                    .addDatasetToQaReviewRepository(noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED)
+                    .addDatasetToQaReviewRepository(noIdPayload, correlationId, MessageType.QA_REQUESTED)
             }
-        Assertions.assertEquals("Message was rejected: Provided data ID is empty (correlationId: $correlationId)", thrown.message)
+        Assertions.assertEquals("Invalid UUID string: ", thrown.message)
     }
 
     @Test
@@ -112,11 +114,11 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check that an exception is thrown in reading out message from document stored queue when documentId is empty`() {
-        val noIdPayload = getManualQaRequestedMessage("")
+        val noIdPayload = objectMapper.writeValueAsString(ManualQaRequestedMessage("", false))
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService.assureQualityOfDocument(
-                    noIdPayload, correlationId, MessageType.MANUAL_QA_REQUESTED,
+                    noIdPayload, correlationId, MessageType.QA_REQUESTED,
                 )
             }
         Assertions.assertEquals("Message was rejected: Provided document ID is empty (correlationId: $correlationId)", thrown.message)
@@ -124,8 +126,8 @@ class QaEventListenerQaServiceTest(
 
     @Test
     fun `check that a bypassQA result is stored correctly in the QA review repository`() {
-        val dataId = "thisIdIsStoredAsAccepted"
-        val manualQaRequestedMessage = getManualQaRequestedMessage(resourceId = dataId, bypassQa = true)
+        val dataId = UUID.randomUUID().toString()
+        val manualQaRequestedMessage = getQaMessagePayload(dataId = dataId, bypassQa = true)
 
         val acceptedStoredCompanyJson = "json/services/StoredCompanyAccepted.json"
         val acceptedStoredCompany = objectMapper.readValue(getJsonString(acceptedStoredCompanyJson), StoredCompany::class.java)
@@ -136,7 +138,7 @@ class QaEventListenerQaServiceTest(
         `when`(mockCompanyDataControllerApi.getCompanyById(acceptedDataMetaInformation.companyId)).thenReturn(acceptedStoredCompany)
 
         qaEventListenerQaService.addDatasetToQaReviewRepository(
-            manualQaRequestedMessage, correlationId, MessageType.MANUAL_QA_REQUESTED,
+            manualQaRequestedMessage, correlationId, MessageType.QA_REQUESTED,
         )
 
         testQaReviewRepository.findFirstByDataIdOrderByTimestampDesc(acceptedDataId)?.let {

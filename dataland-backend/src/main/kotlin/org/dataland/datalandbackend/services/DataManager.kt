@@ -8,12 +8,12 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.json.JSONObject
+import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
@@ -148,22 +148,27 @@ class DataManager
             correlationId: String,
         ) {
             storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
-            val payload =
-                JSONObject(
-                    mapOf(
-                        "dataId" to dataId, "bypassQa" to bypassQa,
-                        "actionType" to
-                            ActionType.STORE_PUBLIC_DATA,
-                    ),
-                ).toString()
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                payload, MessageType.PUBLIC_DATA_RECEIVED, correlationId,
-                ExchangeName.REQUEST_RECEIVED,
-            )
             logger.info(
                 "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
                     "for company ID '${storableDataSet.companyId}' in temporary storage. " +
                     "Data ID '$dataId'. Correlation ID: '$correlationId'.",
+            )
+
+            logger.info("Publishing message that data with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+                type = MessageType.PUBLIC_DATA_RECEIVED,
+                correlationId = correlationId,
+                exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+                routingKey = RoutingKeyNames.DATASET_UPLOAD,
+            )
+            logger.info("Publishing message that QA is required for data with ID '$dataId'. Correlation ID: '$correlationId'.")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body = objectMapper.writeValueAsString(QaPayload(dataId = dataId, bypassQa = bypassQa)),
+                type = MessageType.QA_REQUESTED,
+                correlationId = correlationId,
+                exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+                routingKey = RoutingKeyNames.DATA_QA,
             )
         }
 
@@ -221,31 +226,21 @@ class DataManager
             dataId: String,
             correlationId: String,
         ) {
-            try {
-                metaDataManager.deleteDataMetaInfo(dataId)
-                val payload =
-                    JSONObject(
-                        mapOf(
-                            "dataId" to dataId, "bypassQa" to false,
-                            "actionType" to
-                                ActionType.DELETE_DATA,
-                        ),
-                    ).toString()
-                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    payload, MessageType.PUBLIC_DATA_RECEIVED, correlationId,
-                    ExchangeName.REQUEST_RECEIVED,
-                )
-                logger.info(
-                    "Received deletion request for dataset with DataId: " +
-                        "$dataId with Correlation Id: $correlationId",
-                )
-            } catch (e: ServerException) {
-                logger.error(
-                    "Error deleting data. Received ServerException with Message:" +
-                        " ${e.message}. Data ID: $dataId",
-                )
-                throw e
-            }
+            logger.info("Received deletion request for dataset with DataId: $dataId with Correlation Id: $correlationId")
+            val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
+            logger.info(
+                "Dataset with DataId: $dataId exists and is associated to company ID ${metaInformation.company} " +
+                    "and of the reporting period ${metaInformation.reportingPeriod}.Correlation Id: $correlationId",
+            )
+            metaDataManager.deleteDataMetaInfo(dataId)
+            logger.info("Publish message that data with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+                type = MessageType.DELETE_DATA,
+                correlationId = correlationId,
+                exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+                routingKey = RoutingKeyNames.DATASET_DELETION,
+            )
         }
 
         /**

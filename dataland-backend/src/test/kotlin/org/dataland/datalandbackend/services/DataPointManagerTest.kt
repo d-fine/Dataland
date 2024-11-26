@@ -60,7 +60,7 @@ class DataPointManagerTest {
 
         verify(metaDataManager).storeDataPointMetaInformation(any())
         verify(dataManager).storeDataInTemporaryStorage(any(), eq("json-content"), eq(correlationId))
-        verify(messageQueueInteractionForDataPoints).publishDataPointUploadedMessage(any(), eq(bypassQa), eq(correlationId))
+        verify(messageQueueInteractionForDataPoints).publishDataPointUploadedMessage(any(), eq(correlationId))
         assert(result.companyId == uploadedDataPoint.companyId)
         assert(result.dataPointIdentifier == uploadedDataPoint.dataPointIdentifier)
         assert(result.reportingPeriod == uploadedDataPoint.reportingPeriod)

@@ -42,7 +42,7 @@
   ],
   "exchanges": [
     {
-      "name": "requestReceived",
+      "name": "backend.datasets",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
@@ -60,7 +60,7 @@
       "arguments": {}
     },
     {
-      "name": "itemStored",
+      "name": "internal-storage.itemStored",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
@@ -70,15 +70,6 @@
     },
     {
       "name": "documentReceived",
-      "vhost": "vhost",
-      "type": "direct",
-      "durable": true,
-      "auto_delete": false,
-      "internal": false,
-      "arguments": {}
-    },
-    {
-      "name": "manualQaRequested",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,

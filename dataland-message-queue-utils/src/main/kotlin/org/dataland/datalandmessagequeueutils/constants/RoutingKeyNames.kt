@@ -9,9 +9,10 @@ object RoutingKeyNames {
     const val DOCUMENT_QA = "document.qa"
     const val DATA = "data"
     const val DATA_QA = "data.qa"
-    const val DELETE_QA_INFO = "delete.qa.info"
     const val EMAIL = "email"
     const val META_DATA_PERSISTED = "metaDataPersisted"
     const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
     const val DATA_POINT_UPLOAD = "dataPoint.upload"
+    const val DATASET_UPLOAD = "dataset.upload"
+    const val DATASET_DELETION = "dataset.deletion"
 }

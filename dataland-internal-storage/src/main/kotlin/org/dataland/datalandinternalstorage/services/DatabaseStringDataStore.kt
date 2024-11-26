@@ -9,17 +9,13 @@ import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
 import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
-import org.dataland.datalandmessagequeueutils.messages.data.DataUploadPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
@@ -62,36 +58,68 @@ class DatabaseStringDataStore(
             QueueBinding(
                 value =
                     Queue(
-                        "requestReceivedInternalStorageDatabaseDataStore",
+                        QueueNames.DATASET_STORAGE,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                             Argument(name = "defaultRequeueRejected", value = "false"),
                         ],
                     ),
-                exchange = Exchange(ExchangeName.REQUEST_RECEIVED, declare = "false"),
-                key = [""],
+                exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
+                key = [RoutingKeyNames.DATASET_UPLOAD],
             ),
         ],
     )
-    fun distributeIncomingRequests(
+    fun storeDataset(
         @Payload payload: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
-        val dataId = JSONObject(payload).getString("dataId")
-        val actionType = JSONObject(payload).getString("actionType")
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty.")
-        }
         MessageQueueUtils.rejectMessageOnException {
-            if (actionType == ActionType.STORE_PUBLIC_DATA) {
-                persistentlyStoreDataSetAndSendMessage(dataId, correlationId, payload)
-            }
-            if (actionType == ActionType.DELETE_DATA) {
-                deleteDataItemWithoutTransactionAndSendMessage(dataId, correlationId)
-            }
+            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+            MessageQueueUtils.validateDataId(dataId)
+            val data = retrieveData(dataId, correlationId)
+            logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
+            storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
+            publishStorageEvent(payload, correlationId)
+        }
+    }
+
+    /**
+     * Method that listens to the storage_queue and stores data into the database in case there is a message on the
+     * storage_queue
+     * @param payload the content of the message
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.DATASET_DELETION,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
+                key = [RoutingKeyNames.DATASET_DELETION],
+            ),
+        ],
+    )
+    fun deleteDataset(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
+        MessageQueueUtils.rejectMessageOnException {
+            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+            MessageQueueUtils.validateDataId(dataId)
+            deleteDataItemWithoutTransaction(dataId, correlationId)
         }
     }
 
@@ -125,10 +153,9 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         MessageQueueUtils.rejectMessageOnException {
-            val dataUploadPayload = MessageQueueUtils.readMessagePayload<DataUploadPayload>(payload, objectMapper)
-            val dataId = dataUploadPayload.dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+            MessageQueueUtils.validateDataId(dataId)
             val dataPointString = retrieveData(dataId, correlationId)
-
             val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
             logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
             storeDataPointItemWithoutTransaction(
@@ -159,36 +186,6 @@ class DatabaseStringDataStore(
         logger.info("Publishing storage event to the message queue. CorrelationId: $correlationId")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
-        )
-    }
-
-    /**
-     * Method that stores data into the database in case there is a message on the storage_queue and sends a message to
-     * the message queue
-     * @param payload the content of the message
-     * @param correlationId the correlation ID of the current user process
-     * @param dataId the dataId of the dataset to be stored
-     */
-    fun persistentlyStoreDataSetAndSendMessage(
-        dataId: String,
-        correlationId: String,
-        payload: String,
-    ) {
-        val data = retrieveData(dataId, correlationId)
-        logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
-        storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
-        publishStorageEvent(payload, correlationId)
-
-        val bypassQa = JSONObject(payload).getBoolean("bypassQa")
-        val body =
-            objectMapper.writeValueAsString(
-                ManualQaRequestedMessage(
-                    resourceId = dataId,
-                    bypassQa = bypassQa,
-                ),
-            )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA_QA,
         )
     }
 
@@ -262,23 +259,11 @@ class DatabaseStringDataStore(
      * @param correlationId the correlationId ot the current user process
      */
     @Transactional(propagation = Propagation.NEVER)
-    fun deleteDataItemWithoutTransactionAndSendMessage(
+    fun deleteDataItemWithoutTransaction(
         dataId: String,
         correlationId: String,
     ) {
         logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
         dataItemRepository.deleteById(dataId)
-
-        val body =
-            objectMapper.writeValueAsString(
-                ManualQaRequestedMessage(
-                    resourceId = dataId,
-                    bypassQa = null,
-                ),
-            )
-        logger.info("Sending message to QA service to delete qa information on data ID $dataId (correlationID: $correlationId).")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DELETE_QA_INFO,
-        )
     }
 }

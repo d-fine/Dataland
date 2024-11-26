@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -112,7 +114,7 @@ class MessageQueueListenerForDataManager(
      * Method that listens to the stored queue and removes data entries from the temporary storage once they have been
      * stored in the persisted database. Further it logs success notification associated containing dataId and
      * correlationId
-     * @param dataId the ID of the dataset to that was stored
+     * @param payload the body of the message containing the dataId of the stored data
      * @param correlationId the correlation ID of the current user process
      * @param type the type of the message
      */
@@ -121,7 +123,7 @@ class MessageQueueListenerForDataManager(
             QueueBinding(
                 value =
                     Queue(
-                        "dataStoredBackendDataManager",
+                        QueueNames.DATA_PERSISTED,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -134,19 +136,15 @@ class MessageQueueListenerForDataManager(
         ],
     )
     fun removeStoredItemFromTemporaryStore(
-        @Payload dataId: String,
+        @Payload payload: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
-        if (dataId.isEmpty()) {
-            throw MessageQueueRejectException("Provided data ID is empty")
-        }
-        logger.info(
-            "Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: " +
-                "$correlationId.",
-        )
         MessageQueueUtils.rejectMessageOnException {
+            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+            MessageQueueUtils.validateDataId(dataId)
+            logger.info("Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: $correlationId.")
             dataManager.removeDataSetFromInMemoryStore(dataId)
         }
     }

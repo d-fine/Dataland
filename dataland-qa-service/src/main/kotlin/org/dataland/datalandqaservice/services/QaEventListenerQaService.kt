@@ -7,10 +7,13 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -45,7 +48,7 @@ class QaEventListenerQaService
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
-         * @param messageAsJsonString the message body as a json string
+         * @param payload the message body as a json string
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
          */
@@ -54,33 +57,30 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            "itemStoredDataQaService",
+                            QueueNames.DATASET_QA,
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                                 Argument(name = "defaultRequeueRejected", value = "false"),
                             ],
                         ),
-                    exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
+                    exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
                     key = [RoutingKeyNames.DATA_QA],
                 ),
             ],
         )
         fun addDatasetToQaReviewRepository(
-            @Payload messageAsJsonString: String,
+            @Payload payload: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
-
-            val dataId = message.resourceId
-            val bypassQa: Boolean? = message.bypassQa
-            if (dataId.isEmpty()) {
-                throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
-            }
+            MessageQueueUtils.validateMessageType(type, MessageType.QA_REQUESTED)
 
             MessageQueueUtils.rejectMessageOnException {
+                val qaPayload = MessageQueueUtils.readMessagePayload<QaPayload>(payload, objectMapper)
+                val dataId = qaPayload.dataId
+                MessageQueueUtils.validateDataId(dataId)
+                val bypassQa: Boolean = qaPayload.bypassQa
                 logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
                 val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
                 val qaStatus: QaStatus
@@ -92,10 +92,6 @@ class QaEventListenerQaService
                         comment = "Automatically QA approved."
                     }
                     false -> qaStatus = QaStatus.Pending
-                    null -> throw MessageQueueRejectException(
-                        "BypassQa is not set; message should not end up here" +
-                            " (correlationId: $correlationId)",
-                    )
                 }
 
                 val qaReviewEntity =
@@ -141,7 +137,7 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
+            MessageQueueUtils.validateMessageType(type, MessageType.QA_REQUESTED)
             val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
             val documentId = message.resourceId
 
@@ -170,7 +166,7 @@ class QaEventListenerQaService
         /**
          * Method that listens to the ItemStored Exchange for potential data deletion messages and deletes the corresponding
          * QA reports accordingly
-         * @param messageAsJsonString the content of the message
+         * @param payload the content of the message
          * @param correlationId the correlation ID of the current user process
          * @param type the type of the message
          */
@@ -179,36 +175,27 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            "itemStoredDeleteQaInfoQaService",
+                            QueueNames.DATASET_QA_DELETION,
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                                 Argument(name = "defaultRequeueRejected", value = "false"),
                             ],
                         ),
-                    exchange = Exchange(ExchangeName.ITEM_STORED, declare = "false"),
-                    key = [RoutingKeyNames.DELETE_QA_INFO],
+                    exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
+                    key = [RoutingKeyNames.DATASET_DELETION],
                 ),
             ],
         )
         fun deleteQaInformationForDeletedDataId(
-            @Payload messageAsJsonString: String,
+            @Payload payload: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.MANUAL_QA_REQUESTED)
-            val message = MessageQueueUtils.readMessagePayload<ManualQaRequestedMessage>(messageAsJsonString, objectMapper)
-
-            val dataId = message.resourceId
-            val bypassQa = message.bypassQa
-            if (dataId.isEmpty()) {
-                throw MessageQueueRejectException("Provided data ID is empty (correlationId: $correlationId)")
-            }
-            if (bypassQa != null) {
-                throw MessageQueueRejectException("BypassQa should be set to null when deleting QA information.")
-            }
-
+            MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
             MessageQueueUtils.rejectMessageOnException {
+                val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+                MessageQueueUtils.validateDataId(dataId)
                 qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
                 qaReviewManager.deleteAllByDataId(dataId, correlationId)
             }
