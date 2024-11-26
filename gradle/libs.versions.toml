@@ -123,6 +123,8 @@ spring-security-web = "org.springframework.security:spring-security-web:6.3.4"
 
 jakarta-servlet-api = "jakarta.servlet:jakarta.servlet-api:6.1.0"
 
+jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version = "3.2.0" }
+
 bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
