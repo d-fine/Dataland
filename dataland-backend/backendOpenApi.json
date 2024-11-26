@@ -275,9 +275,9 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Look up meta info about a non sourceable data set.",
-        "description": "Meta info about a specific data set registered by Dataland and identified by its data ID is retrieved.",
-        "operationId": "getSourceabilityOfDataSetsInfo",
+        "summary": "Retrieve information about sourceability of data sets",
+        "description": "Retrieve information about the sourceability of data sets by the filters.",
+        "operationId": "getInfoOnSourceabilityOfDataSets",
         "parameters": [
           {
             "name": "companyId",
@@ -314,7 +314,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved data sets.",
             "content": {
               "application/json": {
                 "schema": {
@@ -360,7 +360,7 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Add a data set with information on sourceability.",
+        "summary": "Adds a data set with information on sourceability.",
         "description": "A data set is added with information on its sourceability.",
         "operationId": "postSourceabilityOfADataSet",
         "requestBody": {
@@ -18388,10 +18388,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
@@ -18429,10 +18429,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

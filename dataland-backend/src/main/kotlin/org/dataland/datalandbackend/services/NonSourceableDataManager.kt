@@ -17,7 +17,7 @@ import java.time.Instant
 import java.util.UUID
 
 /**
- * A service class for managing information about non-sourceable datasets
+ * A service class for managing information about the sourceabilty of data sets.
  */
 @Service("NonSourceableDataManager")
 class NonSourceableDataManager(
@@ -26,8 +26,8 @@ class NonSourceableDataManager(
     @Autowired private val nonSourceableDataRepository: NonSourceableDataRepository,
 ) {
     /**
-     * The method sets a given dataset in the nonSourceableDataRepository
-     * @param nonSourceableInfo the  of the dataset
+     * The method stores a non-sourceable dataset in the nonSourceableDataRepository
+     * @param nonSourceableInfo the of the dataset
      */
     fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo) {
         val creationTime = Instant.now().toEpochMilli()
@@ -121,8 +121,8 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method sets a given dataset in the nonSourceableDataRepository
-     * @param nonSourceableInfo the  of the dataset
+     * The method stores a sourceable dataset in the nonSourceableDataRepository
+     * @param nonSourceableInfo the of the dataset
      */
     fun storeSourceableData(nonSourceableInfo: NonSourceableInfo) {
         val creationTime = Instant.now().toEpochMilli()
