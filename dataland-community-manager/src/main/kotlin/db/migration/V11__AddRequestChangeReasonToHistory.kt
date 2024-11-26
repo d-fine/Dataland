@@ -7,7 +7,7 @@ import org.flywaydb.core.api.migration.Context
  * This migration script adds the requestStatusChangeReason column to the request status history table
  */
 @Suppress("ClassName")
-class V11_AddRequestChangeReasonToHistory : BaseJavaMigration() {
+class V11__AddRequestChangeReasonToHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!
         addRequestStatusChangeReasonColumn(context)
