@@ -12,6 +12,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
@@ -129,6 +130,7 @@ class DataMetaInformationManager(
      * Method to delete the data meta information for a given dataId
      * @param dataId of the dataset that should be deleted
      */
+    @Transactional
     fun deleteDataMetaInfo(dataId: String) {
         val dataMetaInformation = getDataMetaInformationByDataId(dataId)
         dataMetaInformationRepositoryInterface.delete(dataMetaInformation)

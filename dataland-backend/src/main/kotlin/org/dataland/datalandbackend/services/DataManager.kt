@@ -229,7 +229,7 @@ class DataManager
             logger.info("Received deletion request for dataset with DataId: $dataId with Correlation Id: $correlationId")
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             logger.info(
-                "Dataset with DataId: $dataId exists and is associated to company ID ${metaInformation.company} " +
+                "Dataset with DataId: $dataId exists and is associated to company ID ${metaInformation.company.companyId} " +
                     "and of the reporting period ${metaInformation.reportingPeriod}.Correlation Id: $correlationId",
             )
             metaDataManager.deleteDataMetaInfo(dataId)
