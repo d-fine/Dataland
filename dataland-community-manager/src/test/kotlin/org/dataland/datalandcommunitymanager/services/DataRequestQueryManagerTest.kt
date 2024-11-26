@@ -9,8 +9,12 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -21,15 +25,24 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.eq
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.UUID
 
+/**
+ * Tests the getDataRequests call including the email filter
+ * */
 class DataRequestQueryManagerTest {
     private lateinit var dataRequestQueryManager: DataRequestQueryManager
-    private lateinit var dataRequestRepository: DataRequestRepository
-    private lateinit var companyDataControllerApi: CompanyDataControllerApi
-    private lateinit var processingUtils: DataRequestProcessingUtils
-    private lateinit var keycloakUserControllerApiService: KeycloakUserService
+    private lateinit var mockDataRequestRepository: DataRequestRepository
+    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
+    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
+    private lateinit var mockKeycloakUserService: KeycloakUserService
+    private lateinit var mockDataRequestMasker: DataRequestMasker
+    private lateinit var mockAuthentication: DatalandJwtAuthentication
+    private val userId = "1234-221-1111elf"
+
     private val dataRequestLogger = mock(DataRequestLogger::class.java)
 
     private val testCompanyId = UUID.randomUUID().toString()
@@ -84,6 +97,8 @@ class DataRequestQueryManagerTest {
             testReportingPeriod,
             setOf(RequestStatus.Open),
             null,
+            null,
+            null,
         )
 
     private val emailAddressSubstring = "beta"
@@ -97,62 +112,79 @@ class DataRequestQueryManagerTest {
             testReportingPeriod,
             setOf(RequestStatus.Open),
             null,
+            null,
+            null,
         )
 
     private fun setupMocks() {
-        processingUtils = mock(DataRequestProcessingUtils::class.java)
+        mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
 
-        companyDataControllerApi = mock(CompanyDataControllerApi::class.java)
-        `when`(companyDataControllerApi.getCompanyInfo(testCompanyId))
+        mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
+        `when`(mockCompanyDataControllerApi.getCompanyInfo(testCompanyId))
             .thenReturn(testCompanyInformation)
 
-        dataRequestRepository = mock(DataRequestRepository::class.java)
+        mockDataRequestRepository = mock(DataRequestRepository::class.java)
         `when`(
-            dataRequestRepository.searchDataRequestEntity(eq(filterWithoutEmailAddress), anyOrNull(), anyOrNull()),
+            mockDataRequestRepository.searchDataRequestEntity(eq(filterWithoutEmailAddress), anyOrNull(), anyOrNull()),
         ).thenReturn(listOf(dataRequestEntityAlpha, dataRequestEntityBeta))
         `when`(
-            dataRequestRepository.searchDataRequestEntity(eq(filterWithEmailAddressBeta), anyOrNull(), anyOrNull()),
+            mockDataRequestRepository.searchDataRequestEntity(eq(filterWithEmailAddressBeta), anyOrNull(), anyOrNull()),
         ).thenReturn(listOf(dataRequestEntityBeta))
 
-        keycloakUserControllerApiService = mock(KeycloakUserService::class.java)
+        mockKeycloakUserService = mock(KeycloakUserService::class.java)
         `when`(
-            keycloakUserControllerApiService.getUser(keycloakUserAlpha.userId),
+            mockKeycloakUserService.getUser(keycloakUserAlpha.userId),
         ).thenReturn(keycloakUserAlpha)
         `when`(
-            keycloakUserControllerApiService.getUser(keycloakUserBeta.userId),
+            mockKeycloakUserService.getUser(keycloakUserBeta.userId),
         ).thenReturn(keycloakUserBeta)
         `when`(
-            keycloakUserControllerApiService.searchUsers(emailAddressSubstring),
+            mockKeycloakUserService.searchUsers(emailAddressSubstring),
         ).thenReturn(listOf(keycloakUserBeta))
+    }
+
+    private fun setupAdminAuthentication() {
+        val mockSecurityContext = mock(SecurityContext::class.java)
+        mockAuthentication =
+            AuthenticationMock.mockJwtAuthentication(
+                "userEmail",
+                userId,
+                setOf(DatalandRealmRole.ROLE_ADMIN),
+            )
+        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+        `when`(mockAuthentication.credentials).thenReturn("")
+        SecurityContextHolder.setContext(mockSecurityContext)
     }
 
     @BeforeEach
     fun setupDataRequestQueryManager() {
         setupMocks()
+        mockDataRequestMasker = DataRequestMasker(mockKeycloakUserService)
         dataRequestQueryManager =
             DataRequestQueryManager(
-                dataRequestRepository = dataRequestRepository,
+                dataRequestRepository = mockDataRequestRepository,
                 dataRequestLogger = dataRequestLogger,
-                companyDataControllerApi = companyDataControllerApi,
-                processingUtils = processingUtils,
-                keycloakUserControllerApiService = keycloakUserControllerApiService,
+                companyDataControllerApi = mockCompanyDataControllerApi,
+                processingUtils = mockDataRequestProcessingUtils,
+                keycloakUserControllerApiService = mockKeycloakUserService,
+                dataRequestMasker = mockDataRequestMasker,
             )
     }
 
     @Test
     fun `simulate getDataRequests call without email filter `() {
+        setupAdminAuthentication()
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                true,
                 emptyList(),
                 filterWithoutEmailAddress,
                 null,
                 null,
             )
 
-        verify(keycloakUserControllerApiService, times(0)).searchUsers(anyString())
-        verify(keycloakUserControllerApiService, times(1)).getUser(keycloakUserAlpha.userId)
-        verify(keycloakUserControllerApiService, times(1)).getUser(keycloakUserBeta.userId)
+        verify(mockKeycloakUserService, times(0)).searchUsers(anyString())
+        verify(mockKeycloakUserService, times(1)).getUser(keycloakUserAlpha.userId)
+        verify(mockKeycloakUserService, times(1)).getUser(keycloakUserBeta.userId)
         assertEquals(2, queryResults!!.size)
         assertEquals(keycloakUserAlpha.email, queryResults[0].userEmailAddress)
         assertEquals(keycloakUserBeta.email, queryResults[1].userEmailAddress)
@@ -160,17 +192,17 @@ class DataRequestQueryManagerTest {
 
     @Test
     fun `simulate getDataRequests call with email filter `() {
+        setupAdminAuthentication()
         val queryResults =
             dataRequestQueryManager.getDataRequests(
-                true,
                 emptyList(),
                 filterWithEmailAddressBeta,
                 null,
                 null,
             )
 
-        verify(keycloakUserControllerApiService, times(1)).searchUsers(emailAddressSubstring)
-        verify(keycloakUserControllerApiService, times(0)).getUser(anyString())
+        verify(mockKeycloakUserService, times(1)).searchUsers(emailAddressSubstring)
+        verify(mockKeycloakUserService, times(0)).getUser(anyString())
         assertEquals(1, queryResults!!.size)
         assertEquals(keycloakUserBeta.email, queryResults[0].userEmailAddress)
     }

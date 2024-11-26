@@ -1,4 +1,4 @@
-import { AccessStatus, RequestStatus } from '@clients/communitymanager';
+import { AccessStatus, RequestPriority, RequestStatus } from '@clients/communitymanager';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
@@ -60,6 +60,19 @@ export function retrieveAvailableAccessStatus(): Array<SelectableItem> {
  */
 export function retrieveAvailableRequestStatus(): Array<SelectableItem> {
   return Object.values(RequestStatus).map((status) => {
+    return {
+      displayName: status,
+      disabled: false,
+    };
+  });
+}
+
+/**
+ * Gets list with all available request priorities
+ * @returns array of PrioritySelectableItem
+ */
+export function retrieveAvailablePriority(): Array<SelectableItem> {
+  return Object.values(RequestPriority).map((status) => {
     return {
       displayName: status,
       disabled: false,
