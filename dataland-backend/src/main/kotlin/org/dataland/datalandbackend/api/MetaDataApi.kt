@@ -88,43 +88,42 @@ interface MetaDataApi {
     ): ResponseEntity<DataMetaInformation>
 
     /**
-     * A method to retrieve information on the sourceability of data sets.
+     * A method to retrieve information about the sourceability of data sets.
      * @param companyId if set, filters the requested info to a specific company.
      * @param dataType if set, filters the requested info to a specific data type.
      * @param reportingPeriod if set, the method only returns meta info with this reporting period
      * @param nonSourceable if set true, the method only returns meta info for datasets which are
      * non-sourceable and if set false, it returns sourceable data.
-     * @return A list of NonSourceableData for the specified data set
+     * @return A list of NonSourceableData matching the filters, or an empty list if none found.
      */
     @Operation(
-        summary = "Look up meta info about a non sourceable data set.",
+        summary = "Retrieve information about sourceability of data sets",
         description =
-            "Meta info about a specific data set registered by Dataland " +
-                "and identified by its data ID is retrieved.",
+            "Retrieve information about the sourceability of data sets by the filters.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved data sets."),
         ],
     )
     @GetMapping(
         value = ["/nonSourceable"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     fun getSourceabilityOfDataSetsInfo(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam nonSourceable: Boolean? = null,
+        @RequestParam nonSourceable: Boolean?,
     ): ResponseEntity<List<NonSourceableData>>
 
     /**
-     * A method to save information on the sourceability of a specific data set.
+     * Adds a data set with information on sourceability.
      * @param nonSourceableData includes the information on the sourceability of a specific data set.
      */
     @Operation(
-        summary = "Add a data set with information on sourceability.",
+        summary = "Adds a data set with information on sourceability.",
         description = "A data set is added with information on its sourceability.",
     )
     @ApiResponses(
@@ -137,7 +136,7 @@ interface MetaDataApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_UPLOADER')")
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
     fun postSourceabilityOfADataSet(
         @Valid @RequestBody
         nonSourceableInfo: NonSourceableInfo,

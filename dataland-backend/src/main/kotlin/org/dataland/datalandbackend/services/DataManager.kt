@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -42,6 +43,7 @@ class DataManager
         @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired private val dataManagerUtils: DataManagerUtils,
         @Autowired private val companyRoleChecker: CompanyRoleChecker,
+        @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -101,6 +103,12 @@ class DataManager
                     QaStatus.Pending,
                 )
             metaDataManager.storeDataMetaInformation(metaData)
+            val nonSourceableInfo =
+                NonSourceableInfo(
+                    storableDataSet.companyId, storableDataSet.dataType,
+                    storableDataSet.reportingPeriod, false, storableDataSet.uploaderUserId,
+                )
+            nonSourceableDataManager.storeSourceableData(nonSourceableInfo)
         }
 
         /**

@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
+import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -64,9 +65,9 @@ class NonSourceableDataManager(
 
     /**
      * The method retrieves non sourceable data sets by given filters.
-     * @param companyId if not empty, it filters the requested meta info to a specific company
-     * @param dataType if not empty, it filters the requested meta info to a specific data type
-     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
+     * @param companyId if not empty, it filters the requested info to a specific company
+     * @param dataType if not empty, it filters the requested info to a specific data type
+     * @param reportingPeriod if not empty, it filters the requested info to a specific reporting period
      */
     fun getNonSourceableDataByFilters(
         companyId: String?,
@@ -75,12 +76,49 @@ class NonSourceableDataManager(
         nonSourceable: Boolean?,
     ): List<NonSourceableEntity>? {
         val nonSourceableDataSets =
-            nonSourceableDataRepository.findByCompanyIdAndDataTypeAndReportingPeriodAndNonSourceable(
-                companyId,
-                dataType,
-                reportingPeriod,
-                nonSourceable,
+            nonSourceableDataRepository.searchNonSourceableData(
+                NonSourceableDataSearchFilter(
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                    nonSourceable,
+                ),
             )
         return nonSourceableDataSets
+    }
+
+    /**
+     * The method checks if a specific data set is non-sourceable.
+     * @param companyId filters for the specific company
+     * @param dataType filters for the specific data type
+     * @param reportingPeriod filters for the specific reporting period
+     */
+
+    fun isDataNonSourceable(
+        companyId: String,
+        dataType: DataType,
+        reportingPeriod: String,
+    ) {
+        nonSourceableDataRepository.getLatestNonSourceableData(companyId, dataType, reportingPeriod)
+    }
+
+    /**
+     * The method sets a given dataset in the nonSourceableDataRepository
+     * @param nonSourceableInfo the  of the dataset
+     */
+    fun storeSourceableData(nonSourceableInfo: NonSourceableInfo) {
+        val creationTime = Instant.now().toEpochMilli()
+
+        val nonSourceableEntity =
+            NonSourceableEntity(
+                eventId = UUID.randomUUID().toString(),
+                companyId = nonSourceableInfo.companyId,
+                dataType = nonSourceableInfo.dataType.toString(),
+                reportingPeriod = nonSourceableInfo.toString(),
+                nonSourceable = nonSourceableInfo.nonSourceable,
+                reason = "Uploaded by a user with the Id:${nonSourceableInfo.reason}",
+                creationTime = creationTime,
+            )
+        nonSourceableDataRepository.save(nonSourceableEntity)
     }
 }

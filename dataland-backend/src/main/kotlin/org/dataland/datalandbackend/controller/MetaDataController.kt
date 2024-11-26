@@ -83,7 +83,7 @@ class MetaDataController(
                     dataType,
                     reportingPeriod,
                     nonSourceable,
-                )?.map { it.toApiModel(currentUser) },
+                )?.map { it.toApiModel(currentUser) } ?: emptyList(),
         )
     }
 
@@ -97,7 +97,7 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        nonSourceableDataRepository.getNonSourceableDataByTriple(
+        nonSourceableDataManager.isDataNonSourceable(
             companyId,
             dataType,
             reportingPeriod,
