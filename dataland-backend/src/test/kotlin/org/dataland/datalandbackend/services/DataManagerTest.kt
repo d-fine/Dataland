@@ -19,6 +19,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
@@ -118,7 +119,9 @@ class DataManagerTest(
             )
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
+        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+        )
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
                 dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
@@ -138,7 +141,9 @@ class DataManagerTest(
             getExpectedDataTypeName(
                 storableEuTaxonomyDataSetForNonFinancials, dataId, "eutaxonomy-financials",
             )
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
+        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+        )
         val thrown =
             assertThrows<InternalServerErrorApiException> {
                 dataManager.getPublicDataSet(dataId, DataType(expectedDataTypeName), correlationId)
@@ -174,7 +179,9 @@ class DataManagerTest(
             buildReturnOfMockDataSelect(storableDataSetForNonFinancials),
         )
 
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
+        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+        )
         val thrown =
             assertThrows<InternalServerErrorApiException> {
                 dataManager.getPublicDataSet(dataId, storableDataSetForNonFinancials.dataType, correlationId)
@@ -195,9 +202,11 @@ class DataManagerTest(
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
-                messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DATA_STORED)
+                messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+                    objectMapper.writeValueAsString(DataIdPayload("")), "", MessageType.DATA_STORED,
+                )
             }
-        assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
+        assertEquals("Invalid UUID string: ", thrown.message)
     }
 
     @Test
