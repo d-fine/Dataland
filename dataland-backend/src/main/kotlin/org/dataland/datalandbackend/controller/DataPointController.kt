@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -21,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class DataPointController(
-    @Autowired var dataPointMetaInformationManager: DataMetaInformationManager,
-    @Autowired val dataPointManager: DataPointManager,
-    @Autowired val logMessageBuilder: LogMessageBuilder,
+    @Autowired private val dataPointMetaInformationManager: DataMetaInformationManager,
+    @Autowired private val dataPointManager: DataPointManager,
+    @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {
     override fun postDataPoint(
         uploadedDataPoint: UploadedDataPoint,
@@ -37,6 +38,18 @@ class DataPointController(
 
     override fun getDataPoint(dataId: String): ResponseEntity<UploadedDataPoint> {
         val correlationId = IdUtils.generateCorrelationId(null, dataId)
+        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataId)
+        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+        }
         return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataId, correlationId))
+    }
+
+    override fun getDataPointMetaInfo(dataId: String): ResponseEntity<DataPointMetaInformation> {
+        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataId)
+        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+        }
+        return ResponseEntity.ok(metaInfo.toApiModel(DatalandAuthentication.fromContextOrNull()))
     }
 }
