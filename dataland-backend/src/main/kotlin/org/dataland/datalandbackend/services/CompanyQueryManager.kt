@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
  * Implementation of common read-only queries against company data
  * @param companyRepository  JPA for company data
  */
-@Service("CompanyQueryManager")
+@Service
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,

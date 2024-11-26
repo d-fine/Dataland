@@ -3,13 +3,13 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
 /**
  * Enables a centralized generation of log messages for all Dataland backend operations.
  */
 
-@Component("LogMessageBuilder")
+@Service
 class LogMessageBuilder {
     /**
      * Generates an "access denied" message if a user without the necessary role tries to bypass the QA process

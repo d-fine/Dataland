@@ -26,7 +26,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.time.Instant
@@ -41,7 +41,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param externalStorageDataGetter is a util class which contains the necessary storage clients to be used here
  * @param dataManagerUtils is a util class which contains methods for the data manager services
  */
-@Component("PrivateDataManager")
+@Service
 class PrivateDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,

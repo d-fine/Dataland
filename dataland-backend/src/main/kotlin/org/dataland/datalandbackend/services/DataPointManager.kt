@@ -9,14 +9,14 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
 /**
  * Class for managing data points and associated validations
  * @param dataManager service for handling data storage
  * @param metaDataManager service for handling data meta information
  */
-@Component("DataPointManager")
+@Service
 class DataPointManager(
     @Autowired private val dataManager: DataManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,
@@ -91,5 +91,14 @@ class DataPointManager(
             companyId = storedDataPoint.companyId,
             reportingPeriod = storedDataPoint.reportingPeriod,
         )
+    }
+
+    /**
+     * Retrieves meta-information about a single data point
+     * @param dataId the id of the data point
+     */
+    fun retrieveDataPointMetaInformation(dataId: String): DataPointMetaInformation {
+        val metaInfo = metaDataManager.getDataPointMetaInformationByDataId(dataId)
+        return metaInfo.toApiModel(DatalandAuthentication.fromContextOrNull())
     }
 }

@@ -12,7 +12,7 @@ import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ServerE
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
 /**
  * The class holds methods which are used in handling data requests
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component
  *  @param metaDataManager service for managing metadata
  */
 
-@Component("DataManagerUtils")
+@Service
 class DataManagerUtils(
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val objectMapper: ObjectMapper,

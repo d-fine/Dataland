@@ -11,13 +11,13 @@ import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearch
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
  * A service class for managing data meta-information
  */
-@Component("DataMetaInformationManager")
+@Service
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,

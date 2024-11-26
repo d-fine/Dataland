@@ -18,7 +18,7 @@ import kotlin.reflect.full.memberProperties
  * @param dataMetaInformationManager required here to find companyIds for dataIds
  * @param companyRolesControllerApi gets company role assignments from the community manager
  */
-@Service("CompanyRoleChecker")
+@Service
 class CompanyRoleChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
