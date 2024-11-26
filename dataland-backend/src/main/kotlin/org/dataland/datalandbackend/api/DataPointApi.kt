@@ -47,11 +47,11 @@ interface DataPointApi {
         "hasRole('ROLE_UPLOADER') or " +
             "(hasRole('ROLE_USER') and " +
             "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#companyAssociatedData.companyId, " +
+            "#uploadedDataPoint.companyId, " +
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
             ") or " +
             "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#companyAssociatedData.companyId, " +
+            "#uploadedDataPoint.companyId, " +
             "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
             ")" +
             ")" +

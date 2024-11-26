@@ -10,8 +10,8 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.stereotype.Component
 
 /**
  * Class for managing data points and associated validations
