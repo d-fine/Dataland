@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -15,6 +16,8 @@ import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.anySet
@@ -34,12 +37,12 @@ import java.util.UUID
 
 class DataRequestAlterationManagerTest {
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
-    private lateinit var authenticationMock: DatalandJwtAuthentication
-    private lateinit var dataRequestRepository: DataRequestRepository
-    private lateinit var metaDataControllerApi: MetaDataControllerApi
-    private lateinit var processingUtils: DataRequestProcessingUtils
-    private lateinit var requestEmailManager: RequestEmailManager
-    private lateinit var companyRolesManager: CompanyRolesManager
+    private lateinit var mockAuthentication: DatalandJwtAuthentication
+    private lateinit var mockDataRequestRepository: DataRequestRepository
+    private lateinit var mockMetaControllerApi: MetaDataControllerApi
+    private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
+    private lateinit var mockRequestEmailManager: RequestEmailManager
+    private lateinit var mockCompanyRolesManager: CompanyRolesManager
 
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
@@ -78,32 +81,34 @@ class DataRequestAlterationManagerTest {
             creationTimestamp = Instant.now().toEpochMilli(),
         )
 
+    private val dummyAdminComment = "test comment"
+
     private fun mockRepos() {
-        dataRequestRepository = mock(DataRequestRepository::class.java)
+        mockDataRequestRepository = mock(DataRequestRepository::class.java)
         `when`<Any>(
-            dataRequestRepository.findById(dataRequestId),
+            mockDataRequestRepository.findById(dataRequestId),
         ).thenReturn(Optional.of(dummyDataRequestEntity))
         dummyDataRequestEntities.forEach {
             `when`<Any>(
-                dataRequestRepository.findById(it.dataRequestId),
+                mockDataRequestRepository.findById(it.dataRequestId),
             ).thenReturn(Optional.of(it))
         }
         `when`(
-            dataRequestRepository.searchDataRequestEntity(
+            mockDataRequestRepository.searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
                         setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
-                        setOf(RequestStatus.Open), null,
+                        setOf(RequestStatus.Open), null, null, null,
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)
 
-        processingUtils = mock(DataRequestProcessingUtils::class.java)
-        doNothing().`when`(processingUtils).addNewRequestStatusToHistory(
+        mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
+        doNothing().`when`(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
             any(), any(),
             any(), any(),
         )
-        doNothing().`when`(processingUtils).addMessageToMessageHistory(
+        doNothing().`when`(mockDataRequestProcessingUtils).addMessageToMessageHistory(
             any(), anySet(), anyString(), any(),
         )
     }
@@ -112,35 +117,35 @@ class DataRequestAlterationManagerTest {
     fun setupDataRequestAlterationManager() {
         mockRepos()
 
-        requestEmailManager = mock(RequestEmailManager::class.java)
-        companyRolesManager = mock(CompanyRolesManager::class.java)
+        mockRequestEmailManager = mock(RequestEmailManager::class.java)
+        mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
 
-        metaDataControllerApi = mock(MetaDataControllerApi::class.java)
-        `when`(metaDataControllerApi.getDataMetaInfo(metaData.dataId))
+        mockMetaControllerApi = mock(MetaDataControllerApi::class.java)
+        `when`(mockMetaControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
 
         dataRequestAlterationManager =
             DataRequestAlterationManager(
-                dataRequestRepository = dataRequestRepository,
+                dataRequestRepository = mockDataRequestRepository,
                 dataRequestLogger = mock(DataRequestLogger::class.java),
-                metaDataControllerApi = metaDataControllerApi,
-                requestEmailManager = requestEmailManager,
-                companyRolesManager = companyRolesManager,
-                utils = processingUtils,
+                metaDataControllerApi = mockMetaControllerApi,
+                requestEmailManager = mockRequestEmailManager,
+                companyRolesManager = mockCompanyRolesManager,
+                utils = mockDataRequestProcessingUtils,
             )
     }
 
     @BeforeEach
     fun setupSecurityMock() {
         val mockSecurityContext = mock(SecurityContext::class.java)
-        authenticationMock =
+        mockAuthentication =
             AuthenticationMock.mockJwtAuthentication(
                 "user@example.com",
                 "1234-221-1111elf",
                 setOf(DatalandRealmRole.ROLE_USER),
             )
-        `when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
-        `when`(authenticationMock.credentials).thenReturn("")
+        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+        `when`(mockAuthentication.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
@@ -151,7 +156,7 @@ class DataRequestAlterationManagerTest {
             requestStatus = RequestStatus.Answered,
             null,
         )
-        verify(requestEmailManager, times(1))
+        verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenStatusChanged(
                 any(), eq(RequestStatus.Answered), eq(null), eq(null),
             )
@@ -160,16 +165,16 @@ class DataRequestAlterationManagerTest {
             requestStatus = RequestStatus.Closed,
             null,
         )
-        verify(requestEmailManager, times(1))
+        verify(mockRequestEmailManager, times(1))
             .sendEmailsWhenStatusChanged(
                 any(), eq(RequestStatus.Closed), eq(null), eq(null),
             )
-        verify(processingUtils, times(2))
+        verify(mockDataRequestProcessingUtils, times(2))
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), any(),
             )
-        verify(processingUtils, times(0))
+        verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
                 any(), anySet(), anyString(), any(),
             )
@@ -183,13 +188,13 @@ class DataRequestAlterationManagerTest {
             accessStatus = AccessStatus.Pending,
         )
 
-        verify(processingUtils, times(1))
+        verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), any(),
             )
 
-        verify(processingUtils, times(0))
+        verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
                 any(), anySet(), anyString(), any(),
             )
@@ -199,15 +204,15 @@ class DataRequestAlterationManagerTest {
     fun `validate that a request answered email is sent when request statuses are patched from open to answered`() {
         dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
-            verify(requestEmailManager)
+            verify(mockRequestEmailManager)
                 .sendEmailsWhenStatusChanged(eq(it), eq(RequestStatus.Answered), eq(null), anyString())
         }
-        verify(processingUtils, times(dummyDataRequestEntities.size))
+        verify(mockDataRequestProcessingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), any(),
             )
-        verify(processingUtils, times(0))
+        verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
                 any(), anySet(), anyString(), any(),
             )
@@ -223,20 +228,64 @@ class DataRequestAlterationManagerTest {
             dummyMessage.message,
         )
 
-        verify(requestEmailManager, times(1))
+        verify(mockRequestEmailManager, times(1))
             .sendSingleDataRequestEmail(
                 any(), anySet(), anyString(),
             )
 
-        verify(processingUtils, times(1))
+        verify(mockDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(
                 any(), anySet(), anyString(), any(),
             )
 
-        verify(processingUtils, times(0))
+        verify(mockDataRequestProcessingUtils, times(0))
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), any(),
             )
+    }
+
+    @Test
+    fun `validate that no email is sent when both request priority and admin comment are patched`() {
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestStatus = null,
+            accessStatus = null,
+            message = null,
+            contacts = null,
+            requestPriority = RequestPriority.Low,
+            adminComment = "test",
+        )
+
+        verify(mockRequestEmailManager, times(0))
+            .sendSingleDataRequestEmail(
+                any(), anySet(), anyString(),
+            )
+    }
+
+    @Test
+    fun `validate that the modification time remains unchanged when only the admin comment is patched`() {
+        val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
+
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            adminComment = dummyAdminComment,
+        )
+
+        assertEquals(originalModificationTime, dummyDataRequestEntity.lastModifiedDate)
+        assertEquals(dummyAdminComment, dummyDataRequestEntity.adminComment)
+    }
+
+    @Test
+    fun `validate that the modification time changes if the request priority is patched`() {
+        val originalModificationTime = dummyDataRequestEntity.lastModifiedDate
+
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestPriority = RequestPriority.High,
+        )
+
+        assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
+        assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
     }
 }
