@@ -10,6 +10,7 @@ COPY ./dataland-internal-storage/internalStorageOpenApi.json ./dataland-internal
 COPY ./dataland-external-storage/externalStorageOpenApi.json ./dataland-external-storage/externalStorageOpenApi.json
 COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
 COPY ./dataland-document-manager/documentManagerOpenApi.json ./dataland-document-manager/documentManagerOpenApi.json
+COPY ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-specification-service/specificationServiceOpenApi.json
 
 COPY ./dataland-keycloak-adapter/ ./dataland-keycloak-adapter/
 COPY ./.git/ ./.git

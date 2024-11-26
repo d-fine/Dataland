@@ -80,6 +80,66 @@
         }
       }
     },
+    "/data/data-points/{dataId}": {
+      "get": {
+        "tags": [
+          "storage-controller"
+        ],
+        "summary": "Request data point by ID.",
+        "description": "Requests data point by ID.",
+        "operationId": "selectDataPointById",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StorableDataPoint"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/blobs/{blobId}": {
       "get": {
         "tags": [
@@ -366,6 +426,29 @@
   },
   "components": {
     "schemas": {
+      "StorableDataPoint": {
+        "required": [
+          "companyId",
+          "dataPointContent",
+          "dataPointIdentifier",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointContent": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
       "Link": {
         "type": "object",
         "properties": {

@@ -4,15 +4,20 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.DataItem
+import org.dataland.datalandinternalstorage.entities.DataPointItem
+import org.dataland.datalandinternalstorage.model.StorableDataPoint
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
+import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
+import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataUploadPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -38,6 +43,7 @@ import org.springframework.transaction.annotation.Transactional
 @Component
 class DatabaseStringDataStore(
     @Autowired private var dataItemRepository: DataItemRepository,
+    @Autowired private var dataPointItemRepository: DataPointItemRepository,
     @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired var temporarilyCachedDataClient: TemporarilyCachedDataControllerApi,
     @Autowired var objectMapper: ObjectMapper,
@@ -81,12 +87,79 @@ class DatabaseStringDataStore(
         }
         MessageQueueUtils.rejectMessageOnException {
             if (actionType == ActionType.STORE_PUBLIC_DATA) {
-                persistentlyStoreDataAndSendMessage(dataId, correlationId, payload)
+                persistentlyStoreDataSetAndSendMessage(dataId, correlationId, payload)
             }
             if (actionType == ActionType.DELETE_DATA) {
                 deleteDataItemWithoutTransactionAndSendMessage(dataId, correlationId)
             }
         }
+    }
+
+    /**
+     * Method that listens to the data point storage queue and stores data points into the database
+     * @param payload the content of the message
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.DATA_POINT_STORAGE,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.BACKEND_DATA_POINT_EVENTS, declare = "false"),
+                key = [RoutingKeyNames.DATA_POINT_UPLOAD],
+            ),
+        ],
+    )
+    fun storeDataPoint(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+        MessageQueueUtils.rejectMessageOnException {
+            val dataUploadPayload = MessageQueueUtils.readMessagePayload<DataUploadPayload>(payload, objectMapper)
+            val dataId = dataUploadPayload.dataId
+            val dataPointString = retrieveData(dataId, correlationId)
+
+            val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
+            logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
+            storeDataPointItemWithoutTransaction(
+                DataPointItem(
+                    dataId = dataId,
+                    companyId = storableDataPoint.companyId,
+                    reportingPeriod = storableDataPoint.reportingPeriod,
+                    dataPointIdentifier = storableDataPoint.dataPointIdentifier,
+                    dataPointContent = objectMapper.writeValueAsString(storableDataPoint.dataPointContent),
+                ),
+            )
+            publishStorageEvent(payload, correlationId)
+        }
+    }
+
+    private fun retrieveData(
+        dataId: String,
+        correlationId: String,
+    ): String {
+        logger.info("Retrieving data for DataID $dataId from the backend. CorrelationId: $correlationId")
+        return temporarilyCachedDataClient.getReceivedPublicData(dataId)
+    }
+
+    private fun publishStorageEvent(
+        payload: String,
+        correlationId: String,
+    ) {
+        logger.info("Publishing storage event to the message queue. CorrelationId: $correlationId")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
+        )
     }
 
     /**
@@ -96,18 +169,15 @@ class DatabaseStringDataStore(
      * @param correlationId the correlation ID of the current user process
      * @param dataId the dataId of the dataset to be stored
      */
-    fun persistentlyStoreDataAndSendMessage(
+    fun persistentlyStoreDataSetAndSendMessage(
         dataId: String,
         correlationId: String,
         payload: String,
     ) {
-        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
-        val data = temporarilyCachedDataClient.getReceivedPublicData(dataId)
+        val data = retrieveData(dataId, correlationId)
         logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
         storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
-        )
+        publishStorageEvent(payload, correlationId)
 
         val bypassQa = JSONObject(payload).getBoolean("bypassQa")
         val body =
@@ -123,13 +193,47 @@ class DatabaseStringDataStore(
     }
 
     /**
+     * Stores a Data Point Item while ensuring that there is no active transaction. This will guarantee that the data
      * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
      * is commited after exit of this method.
-     * @param dataItem the DataItem to be stored
+     * @param dataPointItem the DataItem to be stored
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    fun storeDataPointItemWithoutTransaction(dataPointItem: DataPointItem) {
+        dataPointItemRepository.save(dataPointItem)
+    }
+
+    /**
+     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
+     * point is commited after exit of this method.
+     * @param dataItem the DatapointItem to be stored
      */
     @Transactional(propagation = Propagation.NEVER)
     fun storeDataItemWithoutTransaction(dataItem: DataItem) {
         dataItemRepository.save(dataItem)
+    }
+
+    /**
+     * Reads data point from a database
+     * @param dataId the ID of the data to be retrieved
+     * @return the data as json string with ID dataId
+     */
+    fun selectDataPoint(
+        dataId: String,
+        correlationId: String,
+    ): StorableDataPoint {
+        val entry =
+            dataPointItemRepository
+                .findById(dataId)
+                .orElseThrow {
+                    logger.info("Data point with data ID: $dataId could not be found. Correlation ID: $correlationId.")
+                    ResourceNotFoundApiException(
+                        "Data point not found",
+                        "No data point with the ID: $dataId could be found in the data store.",
+                    )
+                }
+
+        return entry.toStorableDataPoint(objectMapper)
     }
 
     /**
@@ -144,7 +248,7 @@ class DatabaseStringDataStore(
         dataItemRepository
             .findById(dataId)
             .orElseThrow {
-                logger.info("Data with data ID: $dataId could not be found. Correlation ID: $correlationId.")
+                logger.info("Dataset with data ID: $dataId could not be found. Correlation ID: $correlationId.")
                 ResourceNotFoundApiException(
                     "Dataset not found",
                     "No dataset with the ID: $dataId could be found in the data store.",
@@ -162,7 +266,6 @@ class DatabaseStringDataStore(
         dataId: String,
         correlationId: String,
     ) {
-        logger.info("Received DataID $dataId and CorrelationId: $correlationId")
         logger.info("Deleting data from database with data ID: $dataId and correlation ID: $correlationId.")
         dataItemRepository.deleteById(dataId)
 
