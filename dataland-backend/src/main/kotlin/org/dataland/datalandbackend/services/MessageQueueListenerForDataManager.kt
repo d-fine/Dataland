@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -31,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
-    @Autowired private val objectMapper: ObjectMapper = jacksonObjectMapper(),
+    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val dataManager: DataManager,
 ) {

@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.utils.DataPointValidator
@@ -10,8 +9,8 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.stereotype.Component
 
 /**
  * Class for managing data points and associated validations
@@ -28,7 +27,7 @@ class DataPointManager(
     @Autowired private val dataPointValidator: DataPointValidator,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyRoleChecker: CompanyRoleChecker,
-    @Autowired private val objectMapper: ObjectMapper = jacksonObjectMapper(),
+    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)

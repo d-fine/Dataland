@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -40,7 +39,7 @@ class QaEventListenerQaService
     @Suppress("LongParameterList")
     constructor(
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-        @Autowired var objectMapper: ObjectMapper = jacksonObjectMapper(),
+        @Autowired var objectMapper: ObjectMapper,
         @Autowired val qaReviewManager: QaReviewManager,
         @Autowired val qaReportManager: QaReportManager,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,

@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
@@ -39,7 +38,7 @@ import java.util.UUID
     properties = ["spring.profiles.active=nodb"],
 )
 class QaEventListenerQaServiceTest(
-    @Autowired val objectMapper: ObjectMapper = jacksonObjectMapper(),
+    @Autowired val objectMapper: ObjectMapper,
     @Autowired val testQaReviewRepository: QaReviewRepository,
 ) {
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler

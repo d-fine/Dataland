@@ -1,7 +1,6 @@
 package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.entities.BlobItem
 import org.dataland.datalandinternalstorage.repositories.BlobItemRepository
@@ -35,7 +34,7 @@ class DatabaseBlobDataStore(
     @Autowired private val blobItemRepository: BlobItemRepository,
     @Autowired val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired val temporarilyCachedDocumentClient: StreamingTemporarilyCachedDocumentControllerApi,
-    @Autowired val objectMapper: ObjectMapper = jacksonObjectMapper(),
+    @Autowired val objectMapper: ObjectMapper,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
