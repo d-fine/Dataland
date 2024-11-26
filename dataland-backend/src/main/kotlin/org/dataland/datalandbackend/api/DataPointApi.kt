@@ -43,7 +43,20 @@ interface DataPointApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize(
+        "hasRole('ROLE_UPLOADER') or " +
+            "(hasRole('ROLE_USER') and " +
+            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
+            "#companyAssociatedData.companyId, " +
+            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
+            ") or " +
+            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
+            "#companyAssociatedData.companyId, " +
+            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
+            ")" +
+            ")" +
+            ")",
+    )
     fun postDataPoint(
         @Valid @RequestBody
         uploadedDataPoint: UploadedDataPoint,
@@ -68,8 +81,31 @@ interface DataPointApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#companyId)")
     fun getDataPoint(
         @PathVariable dataId: String,
     ): ResponseEntity<UploadedDataPoint>
+
+    /**
+     * A method to retrieve meta-information about a data point by providing its ID
+     * @param dataId the unique identifier for the data point
+     * @return the meta-information of the data point identified by the ID
+     */
+    @Operation(
+        summary = "Retrieve meta-information about data points by ID.",
+        description = "Meta-information about a data point identified by its ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta-information about data point."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}/metadata"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#companyId)")
+    fun getDataPointMetaInfo(
+        @PathVariable dataId: String,
+    ): ResponseEntity<DataPointMetaInformation>
 }

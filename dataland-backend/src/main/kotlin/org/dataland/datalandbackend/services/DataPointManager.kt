@@ -9,6 +9,7 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service
  * @param dataManager service for handling data storage
  * @param metaDataManager service for handling data meta information
  */
+@Suppress("LongParameterList")
 @Service
 class DataPointManager(
     @Autowired private val dataManager: DataManager,
@@ -23,7 +25,10 @@ class DataPointManager(
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val messageQueueInteractionForDataPoints: MessageQueueInteractionForDataPoints,
     @Autowired private val dataPointValidator: DataPointValidator,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val companyRoleChecker: CompanyRoleChecker,
     @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -61,12 +66,27 @@ class DataPointManager(
     ): DataPointMetaInformation {
         logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point with bypassQa set to: $bypassQa.")
         val dataId = IdUtils.generateUUID()
+
+        if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataPoint.companyId)) {
+            throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
+        }
+
         val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
         metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
         dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
         messageQueueInteractionForDataPoints.publishDataPointUploadedMessage(dataId, correlationId)
 
         return dataPointMetaInformationEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
+    }
+
+    /**
+     * Checks if a company is associated with a data point marked for public access
+     * @param dataId the id of the data point
+     * @return true if the company is associated with the data point, false otherwise
+     */
+    fun isCompanyAssociatedWithDataPointMarkedForPublicAccess(dataId: String): Boolean {
+        val metaInfo = metaDataManager.getDataPointMetaInformationByDataId(dataId)
+        return companyQueryManager.isCompanyPublic(metaInfo.companyId)
     }
 
     /**
@@ -91,14 +111,5 @@ class DataPointManager(
             companyId = storedDataPoint.companyId,
             reportingPeriod = storedDataPoint.reportingPeriod,
         )
-    }
-
-    /**
-     * Retrieves meta-information about a single data point
-     * @param dataId the id of the data point
-     */
-    fun retrieveDataPointMetaInformation(dataId: String): DataPointMetaInformation {
-        val metaInfo = metaDataManager.getDataPointMetaInformationByDataId(dataId)
-        return metaInfo.toApiModel(DatalandAuthentication.fromContextOrNull())
     }
 }
