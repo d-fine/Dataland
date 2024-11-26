@@ -9,8 +9,8 @@ import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerA
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.stereotype.Service
 
 /**
  * Class for managing data points and associated validations
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
  * @param metaDataManager service for handling data meta information
  */
 @Suppress("LongParameterList")
-@Service
+@Component("DataPointManager")
 class DataPointManager(
     @Autowired private val dataManager: DataManager,
     @Autowired private val metaDataManager: DataMetaInformationManager,

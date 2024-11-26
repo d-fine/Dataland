@@ -16,7 +16,7 @@ import java.util.UUID
  * @param dataMetaInformationManager required here to find companyIds for dataIds
  * @param requestManager gets the access status for a dataset from the community manager
  */
-@Service
+@Service("PrivateDataAccessChecker")
 class PrivateDataAccessChecker(
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val requestManager: RequestControllerApi,

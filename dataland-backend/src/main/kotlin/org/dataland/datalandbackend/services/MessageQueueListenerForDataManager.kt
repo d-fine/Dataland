@@ -19,7 +19,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional
  * @param metaDataManager service for managing metadata
  * @param dataManager the dataManager service for public data
  */
-@Service
+@Component("MessageQueueListenerForDataManager")
 class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,

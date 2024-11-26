@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
  * Implementation of a company base manager for Dataland
  * @param companyBaseRepository JPA repository for company base data
  */
-@Service
+@Service("CompanyBaseManager")
 class CompanyBaseManager(
     @Autowired private val companyBaseRepository: StoredCompanyBaseRepository,
 ) {

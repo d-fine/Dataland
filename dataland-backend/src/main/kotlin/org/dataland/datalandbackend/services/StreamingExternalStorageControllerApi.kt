@@ -5,14 +5,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import java.io.InputStream
 
 /**
  * An interface to the document endpoint of the external storage service
  * that allows raw access to the body data-stream
  */
-@Service
+@Component
 class StreamingExternalStorageControllerApi(
     @Value("\${dataland.externalstorage.base-url}")
     private val externalStorageBaseUrl: String,

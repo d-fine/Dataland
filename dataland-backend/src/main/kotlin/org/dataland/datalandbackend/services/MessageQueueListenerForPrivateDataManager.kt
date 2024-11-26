@@ -17,13 +17,13 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param privateDataManager the datamanager service for private manager
 */
-@Service
+@Component("MessageQueueListenerForPrivateDataManager")
 class MessageQueueListenerForPrivateDataManager(
     @Autowired private val privateDataManager: PrivateDataManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,

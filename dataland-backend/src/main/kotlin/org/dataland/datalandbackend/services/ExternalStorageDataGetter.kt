@@ -2,14 +2,14 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandexternalstorage.openApiClient.api.ExternalStorageControllerApi
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 import java.io.InputStream
 
 /**
  * The class holds the various storage clients for the data manager services
  */
 
-@Service
+@Component("ExternalStorageDataGetter")
 class ExternalStorageDataGetter(
     @Autowired private val streamingStorageClient: StreamingExternalStorageControllerApi,
     @Autowired private val storageClient: ExternalStorageControllerApi,

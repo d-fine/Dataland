@@ -8,7 +8,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
 /**
  * Component that bundles the message queue interactions of the data pint manager
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
 */
 
-@Service
+@Component
 class MessageQueueInteractionForDataPoints(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
