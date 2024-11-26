@@ -46,7 +46,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -93,7 +93,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -131,7 +131,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -166,7 +166,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -196,7 +196,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -264,57 +264,6 @@ jobs:
         if: always()
         with:
           subfolder: 'unit-tests-backend'
-  python-tests:
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch'
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: ./.github/workflows/logObjects
-        name: log job contexts
-        with:
-          task: "python-tests"
-          env: ${{ toJSON(env) }}
-          job: ${{ toJSON(job) }}
-          steps: ${{ toJSON(steps) }}
-          strategy: ${{ toJSON(strategy) }}
-          matrix: ${{ toJSON(matrix) }}
-          needs: ${{ toJSON(needs) }}
-          inputs: ${{ toJSON(inputs) }}
-          vars: ${{ toJSON(vars) }}
-      - name: Prepare python environment
-        if: always()
-        run: | 
-          cd ./dataland-automated-qa-service
-          pip install --no-cache-dir -r requirements.txt
-          pip install -e .
-          openapi-python-client generate --path ../dataland-document-manager/documentManagerOpenApi.json
-          openapi-python-client generate --path ../dataland-backend/backendOpenApi.json
-          pip install --no-cache-dir ./dataland-backend-api-documentation-client
-          pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
-      - name: Python linting
-        if: always()
-        run: |
-          pip install ruff
-          ruff check --preview ./dataland-automated-qa-service/src
-      - name: Execute python unit tests and measure coverage
-        if: always()
-        run: |
-          cd ./dataland-automated-qa-service
-          coverage run --source="./src/main" -m pytest -o log_cli=true -o log_cli_level=INFO
-          coverage xml
-          mv ./coverage.xml ./automated-qa-service-unit-test.xml
-        env:
-          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
-          RABBITMQ_USER: "dummy"
-          RABBITMQ_PASS: "dummy"
-          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-      - name: Upload Python Unit Test Coverage Results
-        if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
-        with:
-          name: PythonUnitTestCoverage
-          path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -378,7 +327,6 @@ jobs:
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
-          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DATA_EXPORTER_CLIENT_SECRET: "password"
           KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
@@ -424,12 +372,6 @@ jobs:
         with:
           name: JaCoCoResultsE2ETest-${{ matrix.testGroup }}
           path: ./*.exec
-      - name: Upload Python Coverage Results
-        if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
-        with:
-          name: PythonE2eTestCoverage-${{ matrix.testGroup }}
-          path: ./*.xml
       - name: Upload lcov Exec Results
         if: always()
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
@@ -462,7 +404,6 @@ jobs:
       - e2e-tests
       - gradle-based-tests
       - frontend-component-tests
-      - python-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
     steps:
@@ -481,29 +422,11 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        name: PythonUnitTestCoverage
-        with:
-          pattern: PythonUnitTestCoverage
-          path: python-coverage
-          merge-multiple: true
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        name: PythonE2eTestCoverage
-        with:
-          pattern: PythonE2eTestCoverage-*
-          path: python-coverage
-          merge-multiple: true
-      - name: Convert Python coverage paths
-        if: always()
-        run: |
-          cd ./python-coverage
-          sed -i "s%src/main%/home/runner/work/Dataland/Dataland/dataland-automated-qa-service/src/main%g" ./*.xml
-          sed -i "s%.//home%/home%g" ./*.xml
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         name: JaCoCoResultsUnitTests
         with:
@@ -573,7 +496,6 @@ jobs:
       - e2e-tests
       - gradle-based-tests
       - frontend-component-tests
-      - python-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
     if: ${{ success() }}
@@ -604,13 +526,6 @@ jobs:
         with:
           name: JaCoCoResultsToolbox
           pattern: JaCoCoResultsToolbox-*
-          delete-merged: true
-      - name: Merge Python Test Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
-        if: always()
-        with:
-          name: PythonE2eTestCoverage
-          pattern: PythonE2eTestCoverage-*
           delete-merged: true
       - name: Merge lcovResults Test Artifacts
         uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4

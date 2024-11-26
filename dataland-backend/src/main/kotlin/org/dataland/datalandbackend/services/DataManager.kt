@@ -128,6 +128,20 @@ class DataManager
         }
 
         /**
+         * Store data in the temporary storage
+         * @param dataId the id of the data
+         * @param data the data to store as a string
+         */
+        fun storeDataInTemporaryStorage(
+            dataId: String,
+            data: String,
+            correlationId: String,
+        ) {
+            logger.info("Storing data in temporary storage with dataId: $dataId. Correlation ID: $correlationId")
+            publicDataInMemoryStorage[dataId] = data
+        }
+
+        /**
          * Method to temporarily store a data set in a hash map and send a message to the storage_queue
          * @param dataId The id of the inserted data set
          * @param storableDataSet The data set to store
@@ -141,7 +155,7 @@ class DataManager
             bypassQa: Boolean,
             correlationId: String,
         ) {
-            publicDataInMemoryStorage[dataId] = objectMapper.writeValueAsString(storableDataSet)
+            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
             val payload =
                 JSONObject(
                     mapOf(
