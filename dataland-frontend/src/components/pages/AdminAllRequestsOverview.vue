@@ -75,19 +75,20 @@
                   >RESET</span
                 >
               </span>
-            </span>
-            <span class="align-content-start flex items-center justify-start">
+
               <PrimeButton
                 :disabled="waitingForData"
-                class="p-button-rounded border-none my-2 mx-3 pl-4 pr-4 pt-3 pb-3"
-                :style="{ fontSize: '20px' }"
+                class="d-letters ml-auto pl-3 pr-3"
+                :style="{ fontSize: '14px', margin: '20px' }"
                 name="trigger-filtering-requests"
                 data-test="trigger-filtering-requests"
                 @click="getAllRequestsForFilters"
               >
-                Filter Requests
+                FILTER REQUESTS
               </PrimeButton>
-              <span class="flex align-items-center ml-auto" style="margin: 15px">
+            </span>
+            <span class="align-content-start flex items-center justify-start">
+              <span class="flex align-items-center ml-auto" :style="{ marginRight: '20px' }">
                 <span>{{ numberOfRequestsInformation }}</span>
               </span>
             </span>
