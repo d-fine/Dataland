@@ -277,7 +277,7 @@
         ],
         "summary": "Look up meta info about a non sourceable data set.",
         "description": "Meta info about a specific data set registered by Dataland and identified by its data ID is retrieved.",
-        "operationId": "getNonSourceableDatasets",
+        "operationId": "getSourceabilityOfDataSetsInfo",
         "parameters": [
           {
             "name": "companyId",
@@ -361,8 +361,8 @@
           "meta-data-controller"
         ],
         "summary": "Add a data set with information on sourceability.",
-        "description": "A data set is added with information on its sourcability.",
-        "operationId": "postNonSourceableDataSet",
+        "description": "A data set is added with information on its sourceability.",
+        "operationId": "postSourceabilityOfADataSet",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1102,6 +1102,77 @@
         ]
       }
     },
+    "/data-points": {
+      "post": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Upload new data point.",
+        "description": "The uploaded data point is added to the data store, the generated data id is returned.",
+        "operationId": "postDataPoint",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadedDataPoint"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -1284,8 +1355,8 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Checks if a data set is non sourceable.",
-        "description": "Checks if a specific data set is non sourceable.",
+        "summary": "Checks if a data set is non-sourceable.",
+        "description": "Checks if a specific data set is non-sourceable.",
         "operationId": "isDataNonSourceable",
         "parameters": [
           {
@@ -3364,6 +3435,66 @@
         ]
       }
     },
+    "/data-points/{dataId}": {
+      "get": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Retrieve data points by ID.",
+        "description": "A data point identified by its ID is retrieved.",
+        "operationId": "getDataPoint",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadedDataPoint"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}/info": {
       "get": {
         "tags": [
@@ -4202,6 +4333,7 @@
         "required": [
           "companyId",
           "dataType",
+          "nonSourceable",
           "reason",
           "reportingPeriod"
         ],
@@ -4215,6 +4347,9 @@
           },
           "reportingPeriod": {
             "type": "string"
+          },
+          "nonSourceable": {
+            "type": "boolean"
           },
           "reason": {
             "type": "string"
@@ -17863,6 +17998,69 @@
           }
         }
       },
+      "UploadedDataPoint": {
+        "required": [
+          "companyId",
+          "dataPointContent",
+          "dataPointIdentifier",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointContent": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointMetaInformation": {
+        "required": [
+          "companyId",
+          "currentlyActive",
+          "dataId",
+          "dataPointIdentifier",
+          "qaStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "uploaderUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currentlyActive": {
+            "type": "boolean"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          }
+        }
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -18190,9 +18388,11 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -18204,11 +18404,9 @@
             "type": "string",
             "nullable": true
           },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
