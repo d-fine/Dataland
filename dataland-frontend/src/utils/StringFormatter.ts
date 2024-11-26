@@ -31,6 +31,18 @@ function convertCamelCaseToSentenceCase(rawText: string): string {
 }
 
 /**
+ * convert camel case string to a string with spaces
+ * @param rawText is the string to be converted to a human-readable string
+ * @returns the converted string with "Words With Spaces"
+ */
+export function convertCamelCaseToWordsWithSpaces(rawText: string): string {
+  return rawText
+    .toString()
+    .replace(/([A-Z])/g, ' $1')
+    .trim();
+}
+
+/**
  * get the representable text from the mapping object
  * @param rawText is the string to be converted to a human-readable string
  * @returns the converted string

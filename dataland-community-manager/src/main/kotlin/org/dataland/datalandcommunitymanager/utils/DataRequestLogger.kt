@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service
 /**
  * Implementation of a request manager service for all operations concerning the processing of data requests
  */
+@Suppress("TooManyFunctions")
 @Service("DataRequestLogger")
 class DataRequestLogger {
     private val bulkDataRequestLogger = LoggerFactory.getLogger(BulkDataRequestManager::class.java)
@@ -96,7 +98,7 @@ class DataRequestLogger {
      * Logs an appropriate message when a data request has been stored in the database.
      */
     fun logMessageForStoringDataRequest(dataRequestId: String) {
-        bulkDataRequestLogger.info("Stored data request with dataRequestId $dataRequestId")
+        bulkDataRequestLogger.info("Stored data request with dataRequestId $dataRequestId.")
     }
 
     /**
@@ -109,7 +111,7 @@ class DataRequestLogger {
     ) {
         singleDataRequestLogger.info(
             "Patching request $dataRequestId with " +
-                "RequestStatus $requestStatus and AccessStatus $accessStatus",
+                "request status $requestStatus and access status $accessStatus.",
         )
     }
 
@@ -120,6 +122,32 @@ class DataRequestLogger {
         singleDataRequestLogger.info(
             "Patching request $dataRequestId " +
                 "with new message.",
+        )
+    }
+
+    /**
+     * Logs an appropriate message when the data request priority is updated
+     */
+    fun logMessageForPatchingRequestPriority(
+        dataRequestId: String,
+        requestPriority: RequestPriority,
+    ) {
+        singleDataRequestLogger.info(
+            "Patching request $dataRequestId " +
+                "with request priority $requestPriority.",
+        )
+    }
+
+    /**
+     * Logs an appropriate message when the admin comment of the request priority is updated
+     */
+    fun logMessageForPatchingAdminComment(
+        dataRequestId: String,
+        adminComment: String,
+    ) {
+        singleDataRequestLogger.info(
+            "Patching request $dataRequestId " +
+                "with admin comment $adminComment.",
         )
     }
 }

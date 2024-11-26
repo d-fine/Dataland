@@ -5,6 +5,8 @@ gradle_dependencies=$(grep gradle_dependencies ./build-utils/common.conf | cut -
 dependencies="./dataland-backend/ ./dataland-backend-utils/ ./dataland-keycloak-adapter/ ./dataland-message-queue-utils/ $gradle_dependencies"
 dependencies+=" ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json"
 dependencies+=" ./dataland-internal-storage/internalStorageOpenApi.json ./environments/.env.uncritical"
+dependencies+=" ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-external-storage/externalStorageOpenApi.json"
+dependencies+=" ./dataland-document-manager/documentManagerOpenApi.json"
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_backend_base ./dataland-backend/DockerfileBase $dependencies
 

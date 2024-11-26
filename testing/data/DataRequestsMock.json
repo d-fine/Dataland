@@ -68,7 +68,8 @@
 		],
 		"lastModifiedDate": 977,
 		"requestStatus": "Withdrawn",
-		"accessStatus": "Declined"
+		"accessStatus": "Declined",
+		"requestPriority": "Normal"
 	},
 	{
 		"dataRequestId": "63271c29-314a-4d6e-b8cd-be6c830744d7",
@@ -139,7 +140,8 @@
 		],
 		"lastModifiedDate": 642,
 		"requestStatus": "Open",
-		"accessStatus": "Revoked"
+		"accessStatus": "Revoked",
+		"requestPriority": "Normal"
 	},
 	{
 		"dataRequestId": "9be2ddb8-8834-4b23-ab30-b33afc8d679c",
@@ -187,7 +189,8 @@
 		],
 		"lastModifiedDate": 617,
 		"requestStatus": "Answered",
-		"accessStatus": "Revoked"
+		"accessStatus": "Revoked",
+		"requestPriority": "Normal"
 	},
 	{
 		"dataRequestId": "10ad826b-ed87-44f7-b90f-079e984b2e23",
@@ -255,7 +258,8 @@
 		],
 		"lastModifiedDate": 548,
 		"requestStatus": "Answered",
-		"accessStatus": "Declined"
+		"accessStatus": "Declined",
+		"requestPriority": "Normal"
 	},
 	{
 		"dataRequestId": "6d612554-4472-4efc-8dd6-624af3174a2d",
@@ -319,6 +323,7 @@
 		],
 		"lastModifiedDate": 795,
 		"requestStatus": "Answered",
-		"accessStatus": "Pending"
+		"accessStatus": "Pending",
+		"requestPriority": "Normal"
 	}
 ]

@@ -1,5 +1,10 @@
 import type Keycloak from 'keycloak-js';
-import { type AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import {
+  type AccessStatus,
+  type ExtendedStoredDataRequest,
+  RequestStatus,
+  type RequestPriority,
+} from '@clients/communitymanager';
 import { ApiClientProvider } from '@/services/ApiClients';
 import { type DataTypeEnum } from '@clients/backend';
 
@@ -107,6 +112,28 @@ export function accessStatusBadgeClass(accessStatus: AccessStatus): string {
       return 'p-badge badge-gray outline rounded';
     case 'Declined':
       return 'p-badge badge-brown outline rounded';
+    default:
+      return 'p-badge outline rounded';
+  }
+}
+
+/**
+ * Defines the color of p-badge
+ * @param priority priority of a request
+ * @returns p-badge class
+ */
+export function priorityBadgeClass(priority: RequestPriority): string {
+  switch (priority) {
+    case 'Low':
+      return 'p-badge badge-light-green outline rounded';
+    case 'Normal':
+      return 'p-badge badge-blue outline rounded';
+    case 'High':
+      return 'p-badge badge-yellow outline rounded';
+    case 'VeryHigh':
+      return 'p-badge badge-orange outline rounded';
+    case 'Urgent':
+      return 'p-badge badge-red outline rounded';
     default:
       return 'p-badge outline rounded';
   }
