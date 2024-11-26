@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component
 
 @Component("DataPointValidator")
 class DataPointValidator(
-    @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val objectMapper: ObjectMapper = jacksonObjectMapper(),
     @Autowired private val specificationClient: SpecificationControllerApi,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)

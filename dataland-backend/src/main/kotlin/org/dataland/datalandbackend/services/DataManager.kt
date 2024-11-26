@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -35,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap
 class DataManager
     @Suppress("LongParameterList")
     constructor(
-        @Autowired private val objectMapper: ObjectMapper,
+        @Autowired private val objectMapper: ObjectMapper = jacksonObjectMapper(),
         @Autowired private val companyQueryManager: CompanyQueryManager,
         @Autowired private val metaDataManager: DataMetaInformationManager,
         @Autowired private val storageClient: StorageControllerApi,

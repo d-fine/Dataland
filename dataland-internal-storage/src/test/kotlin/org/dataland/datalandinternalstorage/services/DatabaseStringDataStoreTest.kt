@@ -1,6 +1,7 @@
 package org.dataland.datalandinternalstorage.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
@@ -24,7 +25,7 @@ class DatabaseStringDataStoreTest {
     private lateinit var databaseStringDataStore: DatabaseStringDataStore
     private lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
     private val correlationId = UUID.randomUUID().toString()
-    private val objectMapper: ObjectMapper = ObjectMapper()
+    private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
     @BeforeEach
     fun reset() {
