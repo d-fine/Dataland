@@ -2,6 +2,7 @@ import ViewDataRequestPage from '@/components/pages/ViewDataRequestPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
   AccessStatus,
+  RequestPriority,
   RequestStatus,
   type StoredDataRequest,
   type StoredDataRequestMessageObject,
@@ -53,6 +54,7 @@ describe('Component tests for the view data request page', function (): void {
       lastModifiedDate: dummyLastModifiedDate,
       requestStatus: requestStatus,
       accessStatus: AccessStatus.Public,
+      requestPriority: RequestPriority.Normal,
     };
   }
   /**

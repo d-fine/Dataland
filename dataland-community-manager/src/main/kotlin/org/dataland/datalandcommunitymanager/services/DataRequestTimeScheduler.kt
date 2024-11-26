@@ -39,7 +39,7 @@ class DataRequestTimeScheduler(
         val searchFilterForAnsweredDataRequests =
             DataRequestsFilter(
                 null, null, null, null, null,
-                setOf(RequestStatus.Answered), null,
+                setOf(RequestStatus.Answered), null, null, null,
             )
         val staleAnsweredRequests =
             dataRequestRepository

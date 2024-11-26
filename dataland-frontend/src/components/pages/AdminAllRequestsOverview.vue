@@ -13,13 +13,25 @@
               <span class="w-3 p-input-icon-left" style="margin: 15px">
                 <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
                 <InputText
+                  :disabled="waitingForData"
                   data-test="email-searchbar"
-                  v-model="searchBarInput"
+                  v-model="searchBarInputEmail"
                   placeholder="Search by Requester"
                   class="w-12 pl-6 pr-6"
                 />
               </span>
+              <span class="w-3 p-input-icon-left" style="margin: 15px">
+                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+                <InputText
+                  :disabled="waitingForData"
+                  data-test="comment-searchbar"
+                  v-model="searchBarInputComment"
+                  placeholder="Search by Comment"
+                  class="w-12 pl-6 pr-6"
+                />
+              </span>
               <FrameworkDataSearchDropdownFilter
+                :disabled="waitingForData"
                 v-model="selectedFrameworks"
                 ref="frameworkFilter"
                 :available-items="availableFrameworks"
@@ -31,6 +43,7 @@
                 style="margin: 15px"
               />
               <FrameworkDataSearchDropdownFilter
+                :disabled="waitingForData"
                 v-model="selectedRequestStatus"
                 ref="frameworkFilter"
                 :available-items="availableRequestStatus"
@@ -41,7 +54,19 @@
                 class="ml-3"
                 style="margin: 15px"
               />
-              <div class="flex align-items-center">
+              <FrameworkDataSearchDropdownFilter
+                :disabled="waitingForData"
+                v-model="selectedPriority"
+                ref="frameworkFilter"
+                :available-items="availablePriority"
+                filter-name="Priority"
+                data-test="request-priority-picker"
+                filter-id="framework-filter"
+                filter-placeholder="Search by Priority"
+                class="ml-3"
+                style="margin: 15px"
+              />
+              <span class="flex align-items-center">
                 <span
                   data-test="reset-filter"
                   style="margin: 15px"
@@ -49,10 +74,23 @@
                   @click="resetFilterAndSearchBar"
                   >RESET</span
                 >
-              </div>
-              <div class="flex align-items-center ml-auto" style="margin: 15px">
+              </span>
+
+              <PrimeButton
+                :disabled="waitingForData"
+                class="d-letters ml-auto pl-3 pr-3"
+                :style="{ fontSize: '14px', margin: '20px' }"
+                name="trigger-filtering-requests"
+                data-test="trigger-filtering-requests"
+                @click="getAllRequestsForFilters"
+              >
+                FILTER REQUESTS
+              </PrimeButton>
+            </span>
+            <span class="align-content-start flex items-center justify-start">
+              <span class="flex align-items-center ml-auto" :style="{ marginRight: '20px' }">
                 <span>{{ numberOfRequestsInformation }}</span>
-              </div>
+              </span>
             </span>
           </div>
 
@@ -147,6 +185,20 @@
                     </div>
                   </template>
                 </Column>
+                <Column header="REQUEST PRIORITY" :sortable="false" field="priority">
+                  <template #body="slotProps">
+                    <div :class="priorityBadgeClass(slotProps.data.requestPriority)" style="display: inline-flex">
+                      {{ convertCamelCaseToWordsWithSpaces(slotProps.data.requestPriority) }}
+                    </div>
+                  </template>
+                </Column>
+                <Column header="ADMIN COMMENT" :sortable="false" field="adminComment">
+                  <template #body="slotProps">
+                    <div>
+                      {{ slotProps.data.adminComment }}
+                    </div>
+                  </template>
+                </Column>
               </DataTable>
               <div v-if="!waitingForData && currentDataRequests.length == 0">
                 <div class="d-center-div text-center px-7 py-4">
@@ -173,26 +225,38 @@ import type Keycloak from 'keycloak-js';
 import { ApiClientProvider } from '@/services/ApiClients';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
-import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
+import {
+  convertCamelCaseToWordsWithSpaces,
+  frameworkHasSubTitle,
+  getFrameworkSubtitle,
+  getFrameworkTitle,
+} from '@/utils/StringFormatter';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import {
   type ExtendedStoredDataRequest,
   type GetDataRequestsDataTypeEnum,
   type RequestStatus,
+  type RequestPriority,
 } from '@clients/communitymanager';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
-import { retrieveAvailableFrameworks, retrieveAvailableRequestStatus } from '@/utils/RequestsOverviewPageUtils';
+import { accessStatusBadgeClass, badgeClass, priorityBadgeClass } from '@/utils/RequestUtils';
+import {
+  retrieveAvailableFrameworks,
+  retrieveAvailableRequestStatus,
+  retrieveAvailablePriority,
+} from '@/utils/RequestsOverviewPageUtils';
 import type { DataTypeEnum } from '@clients/backend';
 import router from '@/router';
+import PrimeButton from 'primevue/button';
 
 export default defineComponent({
   name: 'AdminDataRequestsOverview',
   components: {
+    PrimeButton,
     AuthenticationWrapper,
     FrameworkDataSearchDropdownFilter,
     DatasetsTabMenu,
@@ -224,18 +288,20 @@ export default defineComponent({
       firstRowIndex: 0,
       currentDataRequests: [] as ExtendedStoredDataRequest[],
       footerContent,
-      searchBarInput: '',
+      searchBarInputEmail: '',
+      searchBarInputComment: '',
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableRequestStatus: [] as Array<SelectableItem>,
       selectedRequestStatus: [] as Array<SelectableItem>,
-      debounceInMs: 300,
-      timerId: 0,
+      availablePriority: [] as Array<SelectableItem>,
+      selectedPriority: [] as Array<SelectableItem>,
     };
   },
   mounted() {
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableRequestStatus = retrieveAvailableRequestStatus();
+    this.availablePriority = retrieveAvailablePriority();
     this.getAllRequestsForFilters().catch((error) => console.error(error));
   },
   computed: {
@@ -254,31 +320,30 @@ export default defineComponent({
   },
 
   watch: {
-    selectedFrameworks() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        this.getAllRequestsForFilters();
-      }
+    selectedFrameworks(newSelected) {
+      this.selectedFrameworks = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
     },
-    selectedRequestStatus() {
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (!this.waitingForData) {
-        this.getAllRequestsForFilters();
-      }
+    selectedRequestStatus(newSelected) {
+      this.selectedRequestStatus = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
     },
-    searchBarInput(newSearch: string) {
-      this.searchBarInput = newSearch;
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (this.timerId) {
-        clearTimeout(this.timerId);
-      }
-      this.timerId = setTimeout(() => this.getAllRequestsForFilters(), this.debounceInMs);
+    selectedPriority(newSelected) {
+      this.selectedPriority = newSelected;
+      this.setChunkAndFirstRowIndexToZero();
+    },
+    searchBarInputEmail(newSearch: string) {
+      this.searchBarInputEmail = newSearch;
+      this.setChunkAndFirstRowIndexToZero();
+    },
+    searchBarInputComment(newSearch: string) {
+      this.searchBarInputComment = newSearch;
+      this.setChunkAndFirstRowIndexToZero();
     },
   },
   methods: {
+    convertCamelCaseToWordsWithSpaces,
+    priorityBadgeClass,
     badgeClass,
     accessStatusBadgeClass,
     frameworkHasSubTitle,
@@ -297,17 +362,23 @@ export default defineComponent({
       const selectedRequestStatusesAsSet = new Set<RequestStatus>(
         this.selectedRequestStatus.map((selectableItem) => selectableItem.displayName as RequestStatus)
       );
+      const selectedPriorityAsSet = new Set<RequestPriority>(
+        this.selectedPriority.map((selectableItem) => selectableItem.displayName as RequestPriority)
+      );
       try {
         if (this.getKeycloakPromise) {
-          const emailFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
+          const emailFilter = this.searchBarInputEmail === '' ? undefined : this.searchBarInputEmail;
+          const commentFilter = this.searchBarInputComment === '' ? undefined : this.searchBarInputComment;
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
           this.currentDataRequests = (
             await apiClientProvider.apiClients.requestController.getDataRequests(
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
+              commentFilter,
               selectedRequestStatusesAsSet,
               undefined,
+              selectedPriorityAsSet,
               undefined,
               undefined,
               this.datasetsPerPage,
@@ -319,8 +390,10 @@ export default defineComponent({
               selectedFrameworksAsSet as Set<GetDataRequestsDataTypeEnum>,
               undefined,
               emailFilter,
+              commentFilter,
               selectedRequestStatusesAsSet,
               undefined,
+              selectedPriorityAsSet,
               undefined,
               undefined
             )
@@ -339,7 +412,10 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.selectedFrameworks = [];
       this.selectedRequestStatus = [];
-      this.searchBarInput = '';
+      this.selectedPriority = [];
+      this.searchBarInputEmail = '';
+      this.searchBarInputComment = '';
+      this.getAllRequestsForFilters();
     },
 
     /**
@@ -363,6 +439,14 @@ export default defineComponent({
     onRowClick(event: DataTableRowClickEvent) {
       const requestIdOfClickedRow = event.data.dataRequestId;
       return router.push(`/requests/${requestIdOfClickedRow}`);
+    },
+
+    /**
+     * Sets the currentChunkIndex and firstRowIndex to Zero
+     */
+    setChunkAndFirstRowIndexToZero() {
+      this.currentChunkIndex = 0;
+      this.firstRowIndex = 0;
     },
   },
 });
