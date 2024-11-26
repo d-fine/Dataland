@@ -129,9 +129,9 @@ bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
 
-jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.2"
+jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.3"
 
-jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
+jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
 
 commons-io = "commons-io:commons-io:2.17.0"
 
@@ -173,7 +173,7 @@ spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
 springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
 
-jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.2"
+jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
 freemarker = "org.freemarker:freemarker:2.3.33"
 
 
