@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -36,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap
 class DataManager
     @Suppress("LongParameterList")
     constructor(
-        @Autowired private val objectMapper: ObjectMapper = jacksonObjectMapper(),
+        @Autowired private val objectMapper: ObjectMapper,
         @Autowired private val companyQueryManager: CompanyQueryManager,
         @Autowired private val metaDataManager: DataMetaInformationManager,
         @Autowired private val storageClient: StorageControllerApi,
@@ -230,7 +229,7 @@ class DataManager
             logger.info("Received deletion request for dataset with DataId: $dataId with Correlation Id: $correlationId")
             val metaInformation = metaDataManager.getDataMetaInformationByDataId(dataId)
             logger.info(
-                "Dataset with DataId: $dataId exists and is associated to company ID ${metaInformation.company} " +
+                "Dataset with DataId: $dataId exists and is associated to company ID ${metaInformation.company.companyId} " +
                     "and of the reporting period ${metaInformation.reportingPeriod}.Correlation Id: $correlationId",
             )
             metaDataManager.deleteDataMetaInfo(dataId)

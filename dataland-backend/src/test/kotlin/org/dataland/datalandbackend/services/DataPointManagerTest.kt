@@ -20,10 +20,14 @@ class DataPointManagerTest {
     private val messageQueueInteractionForDataPoints = mock(MessageQueueInteractionForDataPoints::class.java)
     private val dataPointValidator = mock(DataPointValidator::class.java)
     private val objectMapper = mock(ObjectMapper::class.java)
+    private val companyQueryManager = mock(CompanyQueryManager::class.java)
+    private val companyRoleChecker = mock(CompanyRoleChecker::class.java)
+    private val logMessageBuilder = mock(LogMessageBuilder::class.java)
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueueInteractionForDataPoints, dataPointValidator, objectMapper,
+            dataManager, metaDataManager, storageClient, messageQueueInteractionForDataPoints, dataPointValidator, companyQueryManager,
+            companyRoleChecker, objectMapper, logMessageBuilder,
         )
 
     private val correlationId = "test-correlation-id"

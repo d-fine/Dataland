@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Component
 @Component("DataManagerUtils")
 class DataManagerUtils(
     @Autowired private val metaDataManager: DataMetaInformationManager,
-    @Autowired private val objectMapper: ObjectMapper = jacksonObjectMapper(),
+    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)

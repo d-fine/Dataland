@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.utils.DataPointValidator
@@ -28,7 +27,7 @@ class DataPointManager(
     @Autowired private val dataPointValidator: DataPointValidator,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyRoleChecker: CompanyRoleChecker,
-    @Autowired private val objectMapper: ObjectMapper = jacksonObjectMapper(),
+    @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)

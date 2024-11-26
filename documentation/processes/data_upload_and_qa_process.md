@@ -21,7 +21,7 @@ sequenceDiagram
     activate backend
     backend ->> backend: Store Meta-Data
     backend ->> backend: Store Dataset in Temporary Storage
-    backend --) mq: Send 'Public Data received'
+    backend --) mq: Send 'Public Data received' and 'QA Requested'
     activate mq
     backend -->> Uploader: Upload completed
     deactivate backend
@@ -33,16 +33,18 @@ sequenceDiagram
     backend -->> storage: Dataset
     deactivate backend
     storage ->> storage: Store Dataset in Database
-    storage --) mq: Send 'Item Stored' and 'Manual QA Requested'
+    storage --) mq: Send 'Item Stored'
     activate mq
     deactivate storage
+
+
 
     mq -) backend: Receive 'Item Stored'
     activate backend
     backend ->> backend: Remove Dataset from Temporary Storage
     deactivate backend
     alt bypassQa is false
-        mq -) qaService: Receive 'Manual QA Requested'
+        mq -) qaService: Receive 'QA Requested'
         deactivate mq
         activate qaService
         qaService ->> qaService: Store entry in QA-DB table
@@ -63,7 +65,7 @@ sequenceDiagram
 
     else bypassQa is true
         activate mq
-        mq -) qaService: Receive 'Manual QA Requested'
+        mq -) qaService: Receive 'QA Requested'
         deactivate mq
         activate qaService
         qaService ->> qaService: Store entry in QA-DB table

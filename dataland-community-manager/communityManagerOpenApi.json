@@ -482,7 +482,7 @@
           "request-controller"
         ],
         "summary": "Updates a data request.",
-        "description": "Updates status and message history of data request given data request id.",
+        "description": "Updates a data request given the data request id.",
         "operationId": "patchDataRequest",
         "parameters": [
           {
@@ -524,6 +524,22 @@
           },
           {
             "name": "message",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RequestPriority"
+            }
+          },
+          {
+            "name": "adminComment",
             "in": "query",
             "required": false,
             "schema": {
@@ -705,6 +721,14 @@
             }
           },
           {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "requestStatus",
             "in": "query",
             "required": false,
@@ -725,6 +749,18 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestPriority"
               }
             }
           },
@@ -974,6 +1010,14 @@
             }
           },
           {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "requestStatus",
             "in": "query",
             "required": false,
@@ -994,6 +1038,18 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestPriority"
               }
             }
           },
@@ -1692,6 +1748,16 @@
           "Revoked"
         ]
       },
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Normal",
+          "High",
+          "VeryHigh",
+          "Urgent"
+        ]
+      },
       "StoredDataRequest": {
         "required": [
           "accessStatus",
@@ -1703,6 +1769,7 @@
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
+          "requestPriority",
           "requestStatus",
           "userId"
         ],
@@ -1751,6 +1818,12 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "adminComment": {
+            "type": "string"
           }
         }
       },
@@ -1807,6 +1880,7 @@
           "datalandCompanyId",
           "lastModifiedDate",
           "reportingPeriod",
+          "requestPriority",
           "requestStatus",
           "userId"
         ],
@@ -1846,6 +1920,12 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "adminComment": {
+            "type": "string"
           }
         }
       },
