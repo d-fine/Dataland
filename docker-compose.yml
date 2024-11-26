@@ -21,7 +21,11 @@ x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
   POSTGRES_DB: eurodat_db_name
   POSTGRES_USER: eurodat_db_user
   POSTGRES_PASSWORD: eurodat_db_password
-
+x-logging-options: &logging-options
+  driver: json-file
+  options:
+    max-size: ${LOGGING_OPTIONS_MAX_SIZE}
+    max-file: ${LOGGING_OPTIONS_MAX_FILE}
 
 services:
   proxy:
@@ -51,10 +55,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
@@ -75,10 +76,7 @@ services:
       - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   api-key-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -95,10 +93,7 @@ services:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   api-key-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -117,10 +112,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -140,10 +132,7 @@ services:
     depends_on:
       - document-manager-db
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   document-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -162,10 +151,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   backend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -185,10 +171,7 @@ services:
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   backend-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -215,10 +198,7 @@ services:
       -c shared_buffers=1GB
       -c temp_buffers=512MB
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   e2etests:
     profiles: [ "testing" ]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -245,10 +225,7 @@ services:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   frontend-dev:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
     # don't work anymore after a certain amount of requests
@@ -268,10 +245,7 @@ services:
     environment:
       POLLING: "false"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -280,10 +254,7 @@ services:
       - internal
     <<: *uncritical-constants-env
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -302,10 +273,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   internal-storage-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -324,10 +292,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   keycloak-db:
     restart: always
     profiles: [ "production", "testing", "development", "init" ]
@@ -346,10 +311,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   keycloak:
     restart: always
     profiles: [ "production", "development" ]
@@ -366,10 +328,7 @@ services:
     depends_on:
       - keycloak-db
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   keycloak-initializer:
     profiles: [ "testing", "init" ]
     networks:
@@ -416,10 +375,7 @@ services:
       keycloak-db:
         condition: service_healthy
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   pgadmin:
     restart: always
     image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
@@ -450,10 +406,7 @@ services:
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   rabbitmq:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -475,10 +428,7 @@ services:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -500,10 +450,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   qa-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -522,10 +469,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   batch-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -543,10 +487,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   community-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -569,10 +510,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   community-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -591,10 +529,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   specification-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -607,10 +542,7 @@ services:
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -630,10 +562,7 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   email-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -652,10 +581,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   external-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -671,10 +597,7 @@ services:
     extra_hosts:
      - "host.docker.internal:host-gateway"
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
@@ -688,10 +611,7 @@ services:
     env_file:
       - ./dataland-eurodat-client/secret_files/client.env
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   dummy-eurodat-client:
     restart: always
     profiles: [ "testing" ]
@@ -703,10 +623,7 @@ services:
     environment:
       <<: *dummy-eurodat-db-settings
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
@@ -723,10 +640,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
   data-exporter:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -743,10 +657,7 @@ services:
     volumes:
       - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
     logging:
-      driver: json-file
-      options:
-        max-size: 20M
-        max-file: 1
+      <<: *logging-options
 networks:
   internal:
   external:
