@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableData
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -29,6 +30,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.isNull
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
@@ -63,7 +65,22 @@ class DataRequestAlterationManagerTest {
                 datalandCompanyId = "dummyCompanyId",
             ),
         )
+
+    private val dummyRequestChangeReason = "dummy reason"
+
+    private val dummyNonSourceableData =
+        NonSourceableData(
+            eventId = "eventId",
+            companyId = "",
+            dataType = DataTypeEnum.p2p,
+            reportingPeriod = "",
+            nonSourceable = true,
+            reason = dummyRequestChangeReason,
+            creationTime = 0,
+        )
+
     private val dummyDataRequestEntity: DataRequestEntity = dummyDataRequestEntities[0]
+
     private val metaData =
         DataMetaInformation(
             dataId = UUID.randomUUID().toString(),
@@ -102,6 +119,14 @@ class DataRequestAlterationManagerTest {
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)
+
+        `when`(
+            mockDataRequestRepository.findByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                datalandCompanyId = dummyNonSourceableData.companyId,
+                dataType = dummyNonSourceableData.dataType.toString(),
+                reportingPeriod = dummyNonSourceableData.reportingPeriod,
+            ),
+        ).thenReturn(listOf(dummyDataRequestEntity))
 
         mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
@@ -292,5 +317,30 @@ class DataRequestAlterationManagerTest {
 
         assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
         assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
+    }
+
+    @Test
+    fun `validate that all requests matching a dataset are patched to status non-sourceable`() {
+        dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
+            nonSourceableData = dummyNonSourceableData,
+            correlationId = "dummyCorrelationID",
+        )
+
+        verify(mockDataRequestProcessingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                eq(dummyDataRequestEntity), eq(RequestStatus.NonSourceable),
+                any(), eq(dummyRequestChangeReason),
+                any(),
+            )
+
+        verify(mockRequestEmailManager, times(1))
+            .sendEmailsWhenStatusChanged(
+                eq(dummyDataRequestEntity), eq(RequestStatus.NonSourceable), isNull(), anyString(),
+            )
+
+        verify(mockDataRequestProcessingUtils, times(0))
+            .addMessageToMessageHistory(
+                any(), anySet(), anyString(), any(),
+            )
     }
 }
