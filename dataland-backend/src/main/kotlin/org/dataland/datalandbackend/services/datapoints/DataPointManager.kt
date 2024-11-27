@@ -1,8 +1,12 @@
-package org.dataland.datalandbackend.services
+package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
+import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.CompanyRoleChecker
+import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -21,7 +25,8 @@ import org.springframework.stereotype.Component
 @Component("DataPointManager")
 class DataPointManager(
     @Autowired private val dataManager: DataManager,
-    @Autowired private val metaDataManager: DataMetaInformationManager,
+    @Autowired private val metaDataManager: DataPointMetaInformationManager,
+    @Autowired private val metaDataChanges: DataPointMetaInformationChanges,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val messageQueueInteractionForDataPoints: MessageQueueInteractionForDataPoints,
     @Autowired private val dataPointValidator: DataPointValidator,
@@ -47,23 +52,6 @@ class DataPointManager(
         correlationId: String,
     ): DataPointMetaInformation {
         dataPointValidator.validateDataPoint(uploadedDataPoint.dataPointIdentifier, uploadedDataPoint.dataPointContent, correlationId)
-        return storeDataPoint(uploadedDataPoint, uploaderUserId, bypassQa, correlationId)
-    }
-
-    /**
-     * Stores a single data point in the internal storage
-     * @param uploadedDataPoint the data point to store
-     * @param uploaderUserId the user id of the user who uploaded the data point
-     * @param bypassQa whether to bypass the QA process
-     * @param correlationId the correlation id for the operation
-     * @return the id of the stored data point
-     */
-    fun storeDataPoint(
-        uploadedDataPoint: UploadedDataPoint,
-        uploaderUserId: String,
-        bypassQa: Boolean,
-        correlationId: String,
-    ): DataPointMetaInformation {
         logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point with bypassQa set to: $bypassQa.")
         val dataId = IdUtils.generateUUID()
 
@@ -71,10 +59,29 @@ class DataPointManager(
             throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
         }
 
-        val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
-        metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
-        dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
+        val dataPointMetaInformation = storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, correlationId)
         messageQueueInteractionForDataPoints.publishDataPointUploadedMessage(dataId, correlationId)
+        messageQueueInteractionForDataPoints.publishDataPointQaRequestedMessage(dataId, bypassQa, correlationId)
+        return dataPointMetaInformation
+    }
+
+    /**
+     * Stores a single data point in the internal storage
+     * @param dataId the ID of the data point
+     * @param uploadedDataPoint the data point to store
+     * @param uploaderUserId the user id of the user who uploaded the data point
+     * @param correlationId the correlation id for the operation
+     * @return the id of the stored data point
+     */
+    fun storeDataPoint(
+        uploadedDataPoint: UploadedDataPoint,
+        dataId: String,
+        uploaderUserId: String,
+        correlationId: String,
+    ): DataPointMetaInformation {
+        val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
+        metaDataChanges.storeDataPointMetaInformation(dataPointMetaInformationEntity)
+        dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
 
         return dataPointMetaInformationEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
     }

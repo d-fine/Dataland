@@ -5,7 +5,7 @@ package org.dataland.datalandmessagequeueutils.constants
  */
 
 object ExchangeName {
-    const val DATA_QUALITY_ASSURED = "dataQualityAssured"
+    const val QA_SERVICE_DATA_QUALITY_EVENTS = "qa-service.dataQuality"
     const val ITEM_STORED = "internal-storage.itemStored"
     const val DOCUMENT_RECEIVED = "documentReceived"
     const val DEAD_LETTER = "deadLetter"

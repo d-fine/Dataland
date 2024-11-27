@@ -60,7 +60,7 @@ class PublicDataUploadProcessor(
                             Argument(name = "defaultRequeueRejected", value = "false"),
                         ],
                     ),
-                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                exchange = Exchange(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS, declare = "false"),
                 key = [RoutingKeyNames.DATA],
             ),
         ],

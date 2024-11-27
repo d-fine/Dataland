@@ -15,6 +15,7 @@ import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.slf4j.LoggerFactory
@@ -41,6 +42,7 @@ class QaEventListenerQaService
         @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired var objectMapper: ObjectMapper,
         @Autowired val qaReviewManager: QaReviewManager,
+        @Autowired val dataPointQaReviewManager: DataPointQaReviewManager,
         @Autowired val qaReportManager: QaReportManager,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,
     ) {
@@ -157,7 +159,7 @@ class QaEventListenerQaService
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    messageToSend, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+                    messageToSend, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
                     RoutingKeyNames.DOCUMENT,
                 )
             }
@@ -198,6 +200,70 @@ class QaEventListenerQaService
                 MessageQueueUtils.validateDataId(dataId)
                 qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
                 qaReviewManager.deleteAllByDataId(dataId, correlationId)
+            }
+        }
+
+        /**
+         * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
+         * @param payload the message body as a json string
+         * @param correlationId the correlation ID of the current user process
+         * @param type the type of the message
+         */
+        @RabbitListener(
+            bindings = [
+                QueueBinding(
+                    value =
+                        Queue(
+                            QueueNames.DATA_POINT_QA,
+                            arguments = [
+                                Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                                Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                                Argument(name = "defaultRequeueRejected", value = "false"),
+                            ],
+                        ),
+                    exchange = Exchange(ExchangeName.BACKEND_DATA_POINT_EVENTS, declare = "false"),
+                    key = [RoutingKeyNames.DATA_QA],
+                ),
+            ],
+        )
+        fun addDataPointToQaReviewRepository(
+            @Payload payload: String,
+            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+            @Header(MessageHeaderKey.TYPE) type: String,
+        ) {
+            MessageQueueUtils.validateMessageType(type, MessageType.QA_REQUESTED)
+
+            MessageQueueUtils.rejectMessageOnException {
+                val qaPayload = MessageQueueUtils.readMessagePayload<QaPayload>(payload, objectMapper)
+                val dataId = qaPayload.dataId
+                MessageQueueUtils.validateDataId(dataId)
+                val bypassQa: Boolean = qaPayload.bypassQa
+                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
+                val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+                val qaStatus: QaStatus
+                var comment: String? = null
+
+                when (bypassQa) {
+                    true -> {
+                        qaStatus = QaStatus.Accepted
+                        comment = "Automatically QA approved."
+                    }
+                    false -> qaStatus = QaStatus.Pending
+                }
+
+                val dataPointQaReviewEntity =
+                    dataPointQaReviewManager.saveDataPointQaReviewEntity(
+                        dataId = dataId,
+                        qaStatus = qaStatus,
+                        triggeringUserId = triggeringUserId,
+                        comment = comment,
+                        correlationId = correlationId,
+                    )
+
+                dataPointQaReviewManager.sendDataPointQaStatusChangeMessage(
+                    dataPointQaReviewEntity = dataPointQaReviewEntity,
+                    correlationId = correlationId,
+                )
             }
         }
     }

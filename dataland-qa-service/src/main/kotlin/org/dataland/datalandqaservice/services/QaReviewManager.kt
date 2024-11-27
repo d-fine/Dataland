@@ -167,7 +167,7 @@ class QaReviewManager(
         val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            messageBody, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+            messageBody, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
             RoutingKeyNames.DATA,
         )
     }
@@ -187,8 +187,10 @@ class QaReviewManager(
     }
 
     /**
-     * Retrieve dataId of currently active dataset for same triple (companyId, dataType, reportingPeriod)
-     * @param qaReviewEntity qaReviewEntity as baseline for finding active dataset
+     * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
+     * @param companyId the ID of the company
+     * @param dataType the dataType of the dataset
+     * @param reportingPeriod the reportingPeriod of the dataset
      * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
      */
     private fun getDataIdOfCurrentlyActiveDataset(

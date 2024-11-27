@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.DataPointApi
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
-import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.DataPointManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.datapoints.DataPointManager
+import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class DataPointController(
-    @Autowired private val dataPointMetaInformationManager: DataMetaInformationManager,
+    @Autowired private val dataPointMetaInformationManager: DataPointMetaInformationManager,
     @Autowired private val dataPointManager: DataPointManager,
     @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {

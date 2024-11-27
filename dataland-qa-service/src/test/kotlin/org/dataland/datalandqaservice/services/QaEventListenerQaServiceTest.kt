@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
@@ -44,6 +45,7 @@ class QaEventListenerQaServiceTest(
     lateinit var mockCloudEventMessageHandler: CloudEventMessageHandler
     lateinit var qaEventListenerQaService: QaEventListenerQaService
     lateinit var mockQaReviewManager: QaReviewManager
+    lateinit var mockDataPointQaReviewManager: DataPointQaReviewManager
     lateinit var mockQaReportManager: QaReportManager
     lateinit var mockMetaDataControllerApi: MetaDataControllerApi
     lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
@@ -69,12 +71,14 @@ class QaEventListenerQaServiceTest(
         mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         mockQaReviewManager = mock(QaReviewManager::class.java)
+        mockDataPointQaReviewManager = mock(DataPointQaReviewManager::class.java)
         mockQaReportManager = mock(QaReportManager::class.java)
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
                 objectMapper,
                 mockQaReviewManager,
+                mockDataPointQaReviewManager,
                 mockQaReportManager,
                 mockMetaDataControllerApi,
             )
@@ -102,7 +106,7 @@ class QaEventListenerQaServiceTest(
             )
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                message, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED, RoutingKeyNames.DATA,
+                message, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS, RoutingKeyNames.DATA,
             ),
         ).thenThrow(
             AmqpException::class.java,

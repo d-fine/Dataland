@@ -13,6 +13,7 @@ object RoutingKeyNames {
     const val META_DATA_PERSISTED = "metaDataPersisted"
     const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
     const val DATA_POINT_UPLOAD = "dataPoint.upload"
+    const val DATA_POINT_QA = "dataPoint.qa"
     const val DATASET_UPLOAD = "dataset.upload"
     const val DATASET_DELETION = "dataset.deletion"
 }
