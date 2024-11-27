@@ -124,17 +124,22 @@ class NonSourceableDataManager(
      * The method stores a sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
-    fun storeSourceableData(nonSourceableInfo: NonSourceableInfo) {
+    fun storeSourceableData(
+        companyId: String,
+        dataType: DataType,
+        reportingPeriod: String,
+        uploaderId: String,
+    ) {
         val creationTime = Instant.now().toEpochMilli()
 
         val nonSourceableEntity =
             NonSourceableEntity(
                 eventId = UUID.randomUUID().toString(),
-                companyId = nonSourceableInfo.companyId,
-                dataType = nonSourceableInfo.dataType.toString(),
-                reportingPeriod = nonSourceableInfo.toString(),
-                nonSourceable = nonSourceableInfo.nonSourceable,
-                reason = "Uploaded by a user with the Id:${nonSourceableInfo.reason}",
+                companyId = companyId,
+                dataType = dataType.toString(),
+                reportingPeriod = reportingPeriod,
+                nonSourceable = true,
+                reason = "Uploaded by a user with the Id:$uploaderId",
                 creationTime = creationTime,
             )
         nonSourceableDataRepository.save(nonSourceableEntity)
