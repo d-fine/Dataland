@@ -18,7 +18,7 @@
   <div v-show="isStatusHistoryVisible">
     <div>
       <DataTable :value="statusHistory" data-test="statusHistoryTable">
-        <Column field="creationTimeStamp" header="Creation Timestamp"
+        <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 33%"
           ><template #body="slotProps">
             <span data-test="creationTimestampEntry">
               {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
@@ -32,7 +32,7 @@
               :class="badgeClass(slotProps.data.status)"
               data-test="requestStatusEntry"
             >
-              {{ slotProps.data.status }}
+              {{ getRequestStatusLabel(slotProps.data.status) }}
             </div></template
           >
         </Column>
@@ -47,6 +47,13 @@
             </div></template
           >
         </Column>
+        <Column field="reasonNonSourceable" header="Comment" style="width: 45%"
+          ><template #body="slotProps"
+            ><div style="display: inline-flex" data-test="reasonNonSourceableEntry">
+              {{ slotProps.data.requestStatusChangeReason }}
+            </div></template
+          >
+        </Column>
       </DataTable>
     </div>
   </div>
@@ -55,7 +62,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
 import ChevronDownIcon from 'primevue/icons/chevrondown';
 import ChevronUpIcon from 'primevue/icons/chevronup';
@@ -76,6 +83,7 @@ export default defineComponent({
     };
   },
   methods: {
+    getRequestStatusLabel,
     accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,

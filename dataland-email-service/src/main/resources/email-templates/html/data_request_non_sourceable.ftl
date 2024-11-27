@@ -49,7 +49,14 @@
         <td colspan="3">
             <ol style="line-height: 25px;">
                 <li>Review the provided data.</li>
-                <li>Close or reopen your data request.</li>
+                <li>Do one of the following.</li>
+                <li>
+                    <ul>
+                        <li>Do nothing.</li>
+                        <li>Withdraw your request.</li>
+                        <li>Reopen the request (in case you are certain this dataset should exist).</li>
+                    </ul>
+                </li>
             </ol>
         </td>
     </tr>
