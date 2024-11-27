@@ -14,12 +14,14 @@ const queues = [
   'privateRequestReceivedCommunityManagerNotificationService',
   'privateRequestReceivedEurodatDataStore',
   'sendEmailService',
-  'internal-storage.deleteDatasets',
   'internal-storage.storeDatasets',
   'internal-storage.storeDatapoints',
+  'internal-storage.deleteDatasets',
   'backend.removeDataFromMemory',
+  'backend.dataPointQaStatusChange',
   'qa-service.deleteDatasets',
   'qa-service.qaDatasets',
+  'qa-service.qaDataPoints',
 ];
 
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {

@@ -51,7 +51,7 @@
       "arguments": {}
     },
     {
-      "name": "dataQualityAssured",
+      "name": "qa-service.dataQuality",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
