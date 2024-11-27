@@ -15,6 +15,7 @@ import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -226,7 +227,7 @@ class QaEventListenerQaService
                 ),
             ],
         )
-        fun addDataPointToQaReviewRepository(
+        fun addDataPointToDataPointQaReviewRepository(
             @Payload payload: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
@@ -235,35 +236,42 @@ class QaEventListenerQaService
 
             MessageQueueUtils.rejectMessageOnException {
                 val qaPayload = MessageQueueUtils.readMessagePayload<QaPayload>(payload, objectMapper)
-                val dataId = qaPayload.dataId
-                MessageQueueUtils.validateDataId(dataId)
-                val bypassQa: Boolean = qaPayload.bypassQa
-                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
-                val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
-                val qaStatus: QaStatus
-                var comment: String? = null
-
-                when (bypassQa) {
-                    true -> {
-                        qaStatus = QaStatus.Accepted
-                        comment = "Automatically QA approved."
-                    }
-                    false -> qaStatus = QaStatus.Pending
-                }
-
-                val dataPointQaReviewEntity =
-                    dataPointQaReviewManager.saveDataPointQaReviewEntity(
-                        dataId = dataId,
-                        qaStatus = qaStatus,
-                        triggeringUserId = triggeringUserId,
-                        comment = comment,
-                        correlationId = correlationId,
-                    )
-
-                dataPointQaReviewManager.sendDataPointQaStatusChangeMessage(
-                    dataPointQaReviewEntity = dataPointQaReviewEntity,
-                    correlationId = correlationId,
+                MessageQueueUtils.validateDataId(qaPayload.dataId)
+                logger.info(
+                    "Received QA required for dataId ${qaPayload.dataId} with " +
+                        "bypassQA ${qaPayload.bypassQa} (correlation Id: $correlationId)",
                 )
+
+                val dataPointQaReviewEntity = saveQaReviewEntityFromMessage(qaPayload, correlationId)
+                dataPointQaReviewManager.sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
             }
+        }
+
+        /**
+         * Method to save a DataPointQaReviewEntity from a QaPayload
+         * @param qaPayload the payload containing the dataId and bypassQa
+         * @param correlationId the correlation ID of the current user process
+         * @return the saved DataPointQaReviewEntity
+         */
+        fun saveQaReviewEntityFromMessage(
+            qaPayload: QaPayload,
+            correlationId: String,
+        ): DataPointQaReviewEntity {
+            val dataId = qaPayload.dataId
+            val bypassQa = qaPayload.bypassQa
+            val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+
+            val (qaStatus, comment) =
+                when (bypassQa) {
+                    true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
+                    false -> Pair(QaStatus.Pending, null)
+                }
+            return dataPointQaReviewManager.saveDataPointQaReviewEntity(
+                dataId = dataId,
+                qaStatus = qaStatus,
+                triggeringUserId = triggeringUserId,
+                comment = comment,
+                correlationId = correlationId,
+            )
         }
     }

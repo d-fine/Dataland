@@ -49,7 +49,7 @@ class DataPointQaReviewManager(
         val dataMetaInfo = dataPointControllerApi.getDataPointMetaInfo(dataId)
         val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
-        logger.info("Assigning quality status ${qaStatus.name} to data point with ID $dataId (correlationID: $correlationId)")
+        logger.info("Assigning quality status $qaStatus to data point with ID $dataId (correlationID: $correlationId)")
 
         val dataPointQaReviewEntity =
             DataPointQaReviewEntity(
