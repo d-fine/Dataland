@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
-import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationChanges
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.MessageQueueInteractionForDataPoints
 import org.dataland.datalandbackend.utils.DataPointValidator
@@ -20,7 +19,6 @@ import org.mockito.kotlin.eq
 class DataPointManagerTest {
     private val dataManager = mock(DataManager::class.java)
     private val metaDataManager = mock(DataPointMetaInformationManager::class.java)
-    private val metaDataChanges = mock(DataPointMetaInformationChanges::class.java)
     private val storageClient = mock(StorageControllerApi::class.java)
     private val messageQueueInteractionForDataPoints = mock(MessageQueueInteractionForDataPoints::class.java)
     private val dataPointValidator = mock(DataPointValidator::class.java)
@@ -31,8 +29,8 @@ class DataPointManagerTest {
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, metaDataChanges, storageClient, messageQueueInteractionForDataPoints, dataPointValidator, companyQueryManager,
-            companyRoleChecker, objectMapper, logMessageBuilder,
+            dataManager, metaDataManager, storageClient, messageQueueInteractionForDataPoints, dataPointValidator,
+            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder,
         )
 
     private val correlationId = "test-correlation-id"
@@ -50,7 +48,7 @@ class DataPointManagerTest {
 
         `when`(objectMapper.writeValueAsString(uploadedDataPoint)).thenReturn("json-content")
 
-        `when`(metaDataChanges.storeDataPointMetaInformation(any())).thenAnswer { invocation ->
+        `when`(metaDataManager.storeDataPointMetaInformation(any())).thenAnswer { invocation ->
             val argument = invocation.getArgument<DataPointMetaInformationEntity>(0)
             DataPointMetaInformationEntity(
                 dataId = argument.dataId,
@@ -67,7 +65,7 @@ class DataPointManagerTest {
         val dataId = IdUtils.generateUUID()
         val result = dataPointManager.storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, correlationId)
 
-        verify(metaDataChanges).storeDataPointMetaInformation(any())
+        verify(metaDataManager).storeDataPointMetaInformation(any())
         verify(dataManager).storeDataInTemporaryStorage(eq(dataId), eq("json-content"), eq(correlationId))
         assert(result.companyId == uploadedDataPoint.companyId)
         assert(result.dataPointIdentifier == uploadedDataPoint.dataPointIdentifier)

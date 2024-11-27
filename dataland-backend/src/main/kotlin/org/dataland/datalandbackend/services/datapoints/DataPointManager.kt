@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.model.DataPointDimension
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -26,7 +27,6 @@ import org.springframework.stereotype.Component
 class DataPointManager(
     @Autowired private val dataManager: DataManager,
     @Autowired private val metaDataManager: DataPointMetaInformationManager,
-    @Autowired private val metaDataChanges: DataPointMetaInformationChanges,
     @Autowired private val storageClient: StorageControllerApi,
     @Autowired private val messageQueueInteractionForDataPoints: MessageQueueInteractionForDataPoints,
     @Autowired private val dataPointValidator: DataPointValidator,
@@ -80,7 +80,7 @@ class DataPointManager(
         correlationId: String,
     ): DataPointMetaInformation {
         val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
-        metaDataChanges.storeDataPointMetaInformation(dataPointMetaInformationEntity)
+        metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
         dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
 
         return dataPointMetaInformationEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
@@ -107,6 +107,9 @@ class DataPointManager(
         correlationId: String,
     ): UploadedDataPoint {
         val metaInfo = metaDataManager.getDataPointMetaInformationByDataId(dataId)
+        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+        }
         val dataPointIdentifier = metaInfo.dataPointIdentifier
         logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
         dataPointValidator.validateDataPointIdentifierExists(dataPointIdentifier)
@@ -118,5 +121,29 @@ class DataPointManager(
             companyId = storedDataPoint.companyId,
             reportingPeriod = storedDataPoint.reportingPeriod,
         )
+    }
+
+    /**
+     * Method to update the currently active data point for a specific data point dimension
+     * @param dataPointDimension the data point dimension to update the currently active data point for
+     * @param newActiveDataId the id of the new active data point
+     * @param correlationId the correlation id for the operation
+     */
+    fun updateCurrentlyActiveDataPoint(
+        dataPointDimension: DataPointDimension,
+        newActiveDataId: String?,
+        correlationId: String,
+    ) {
+        val currentlyActiveDataId = metaDataManager.getCurrentlyActiveDataId(dataPointDimension)
+        if (newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
+            logger.info("Setting data point with dataId $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
+            metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, false)
+        } else if (newActiveDataId != currentlyActiveDataId && !newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
+            logger.info("Setting $newActiveDataId to active and $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
+            metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, false)
+            metaDataManager.updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
+        } else {
+            logger.info("No update of the currently active flag required (correlation ID: $correlationId).")
+        }
     }
 }

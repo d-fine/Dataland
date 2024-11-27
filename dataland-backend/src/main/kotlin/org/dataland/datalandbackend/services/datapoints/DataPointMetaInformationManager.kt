@@ -4,9 +4,10 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DataPointDimension
-import org.slf4j.LoggerFactory
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * A service class for managing data meta-information
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Component
 @Component
 class DataPointMetaInformationManager(
     @Autowired private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
-    @Autowired val dataPointMetaInformationChanges: DataPointMetaInformationChanges,
 ) {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     /**
      * Method to make the data manager get meta info about one specific data point
      * @param dataId filters the requested meta info to one specific data ID
@@ -54,26 +52,41 @@ class DataPointMetaInformationManager(
     }
 
     /**
-     * Method to update the currently active data point for a specific data point dimension
-     * @param dataPointDimension the data point dimension to update the currently active data point for
-     * @param newActiveDataId the id of the new active data point
-     * @param correlationId the correlation id for the operation
+     * Method to store the meta information of a data point
+     * @param dataPointMetaInformation the meta information to store
+     * @return the stored meta information
      */
-    fun updateCurrentlyActiveDataPoint(
-        dataPointDimension: DataPointDimension,
-        newActiveDataId: String?,
-        correlationId: String,
+    @Transactional
+    fun storeDataPointMetaInformation(dataPointMetaInformation: DataPointMetaInformationEntity): DataPointMetaInformationEntity =
+        dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
+
+    /**
+     * Method to update the QA status of a data point
+     * @param dataId the id of the data point to update
+     * @param newQaStatus the new value for the QA status
+     */
+    @Transactional
+    fun updateQaStatusOfDataPoint(
+        dataId: String,
+        newQaStatus: QaStatus,
     ) {
-        val currentlyActiveDataId = getCurrentlyActiveDataId(dataPointDimension)
-        if (newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
-            logger.info("Setting data point with dataId $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-            dataPointMetaInformationChanges.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, false)
-        } else if (newActiveDataId != currentlyActiveDataId && !newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
-            logger.info("Setting $newActiveDataId to active and $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-            dataPointMetaInformationChanges.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, false)
-            dataPointMetaInformationChanges.updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
-        } else {
-            logger.info("No update of the currently active flag required (correlation ID: $correlationId).")
-        }
+        val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
+        dataPointMetaInformation.qaStatus = newQaStatus
+        dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
+    }
+
+    /**
+     * Method to update the currently active flag of a data point
+     * @param dataId the id of the data point to update
+     * @param newCurrentlyActiveValue the new value for the currently active flag
+     */
+    @Transactional
+    fun updateCurrentlyActiveFlagOfDataPoint(
+        dataId: String,
+        newCurrentlyActiveValue: Boolean,
+    ) {
+        val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
+        dataPointMetaInformation.currentlyActive = newCurrentlyActiveValue
+        dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
     }
 }

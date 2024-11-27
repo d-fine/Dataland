@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component
 class MessageQueueListenerForDataPointManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataPointMetaInformationManager: DataPointMetaInformationManager,
-    @Autowired private val dataPointMetaInformationChanges: DataPointMetaInformationChanges,
+    @Autowired private val dataPointManager: DataPointManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -72,10 +72,10 @@ class MessageQueueListenerForDataPointManager(
             val newActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
             val dataPointDimension = dataPointMetaInformationManager.getDataPointDimensionFromId(updatedDataId)
 
-            dataPointMetaInformationChanges.updateQaStatusOfDataPoint(updatedDataId, newQaStatus)
+            dataPointMetaInformationManager.updateQaStatusOfDataPoint(updatedDataId, newQaStatus)
             logger.info("QA status for dataID $updatedDataId changed to $newQaStatus (correlationId: $correlationId)")
 
-            dataPointMetaInformationManager.updateCurrentlyActiveDataPoint(dataPointDimension, newActiveDataId, correlationId)
+            dataPointManager.updateCurrentlyActiveDataPoint(dataPointDimension, newActiveDataId, correlationId)
         }
     }
 }
