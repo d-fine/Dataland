@@ -199,4 +199,18 @@ class SecurityUtilsService(
         val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
         return isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
     }
+
+    /**
+     * Returns true if user tries to change the request status from NonSourceable to Open
+     * @param requestId requestId of the request that is to be patched
+     * @param requestStatus the request status of the patch request
+     */
+    fun isTryingToReopenNonSourceableRequest(
+        requestId: UUID,
+        requestStatus: RequestStatus,
+    ): Boolean {
+        val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
+        val newRequestStatus = requestStatus
+        return currentRequestStatus == RequestStatus.NonSourceable && newRequestStatus == RequestStatus.Open
+    }
 }

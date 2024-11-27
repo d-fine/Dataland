@@ -184,7 +184,8 @@ interface RequestApi {
             ") or" +
             "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
             "@SecurityUtilsService.isNotTryingToPatch(" +
-            "#requestStatus, #contacts, #message, #requestPriority, #adminComment) ",
+            "#requestStatus, #contacts, #message, #requestPriority, #adminComment) or " +
+            "@SecurityUtilsService.isTryingToReopenNonSourceableRequest(#dataRequestId, #requestStatus)",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,

@@ -320,6 +320,22 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
+    fun `validate that no email is send when the request status changes to Open`() {
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestStatus = RequestStatus.Open,
+            accessStatus = null,
+            dummyMessage.contacts,
+            dummyMessage.message,
+        )
+
+        verify(mockRequestEmailManager, times(0))
+            .sendSingleDataRequestEmail(
+                any(), anySet(), anyString(),
+            )
+    }
+
+    @Test
     fun `validate that all requests matching a dataset are patched to status non-sourceable`() {
         dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
             nonSourceableData = dummyNonSourceableData,

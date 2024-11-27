@@ -429,14 +429,20 @@ export default defineComponent({
      */
     async reopenRequest() {
       if (this.reopenMessage.length > 10) {
-        //const reopenMessage = this.reopenMessage;
-        /*try {
-          const response = await patchDataRequest(this.storedDataRequest.dataRequestId, RequestStatus.Open);
-          // send request and message id to community manager => set status back to open
-        }*/
-        this.reopenMessage = '';
-        this.reopenModalIsVisible = false;
-        this.reopenedModalIsVisible = true;
+        try {
+          await patchDataRequest(
+            this.storedDataRequest.dataRequestId,
+            RequestStatus.Open,
+            undefined,
+            undefined,
+            this.reopenMessage
+          );
+          this.reopenMessage = '';
+          this.reopenModalIsVisible = false;
+          this.reopenedModalIsVisible = true;
+        } catch (error) {
+          console.log(error);
+        }
       }
       this.reopenMessageError = true;
     },
