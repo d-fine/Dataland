@@ -339,7 +339,7 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that all requests matching a dataset are patched to status non-sourceable`() {
+    fun `validate that all requests matching a dataset are patched to status nonSourceable`() {
         dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
             nonSourceableData = dummyNonSourceableData,
             correlationId = "dummyCorrelationID",
