@@ -92,7 +92,7 @@ export function badgeClass(requestStatus: RequestStatus): string {
     case 'Closed':
       return 'p-badge badge-brown outline rounded';
     case 'NonSourceable':
-      return 'p-badge badge-lightgray outline rounded';
+      return 'p-badge badge-gray outline rounded';
     default:
       return 'p-badge outline rounded';
   }
