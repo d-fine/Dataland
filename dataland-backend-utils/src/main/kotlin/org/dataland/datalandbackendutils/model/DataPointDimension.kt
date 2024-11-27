@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.datapoints
+package org.dataland.datalandbackendutils.model
 
 import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 

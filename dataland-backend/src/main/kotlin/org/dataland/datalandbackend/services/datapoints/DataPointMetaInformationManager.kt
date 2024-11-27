@@ -1,9 +1,9 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.model.datapoints.DataPointDimension
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.DataPointDimension
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component

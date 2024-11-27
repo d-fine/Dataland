@@ -12,7 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.BasicSearchFilter
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointFilter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -121,9 +121,9 @@ class DataPointQaReviewManager(
                 "data point identifier $dataPointIdentifier, and reportingPeriod $reportingPeriod",
         )
         val searchFilter =
-            BasicSearchFilter(
-                dataType = dataPointIdentifier,
+            DataPointFilter(
                 companyId = companyId,
+                dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,
                 qaStatus = QaStatus.Accepted.toString(),
             )

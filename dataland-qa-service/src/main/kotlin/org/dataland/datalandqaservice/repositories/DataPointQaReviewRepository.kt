@@ -1,7 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories
 
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.BasicSearchFilter
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointFilter
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -18,12 +18,12 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
     @Query(
         "SELECT dataPointQaReview.dataId FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE dataPointQaReview.companyId = ':#{#searchFilter.companyId}' " +
-            "AND dataPointQaReview.dataPointIdentifier = ':#{#searchFilter.dataType}' " +
+            "AND dataPointQaReview.dataPointIdentifier = ':#{#searchFilter.dataPointIdentifier}' " +
             "AND dataPointQaReview.reportingPeriod = ':#{#searchFilter.reportingPeriod}' " +
             "AND dataPointQaReview.qaStatus = 'Accepted' " +
             "ORDER BY dataPointQaReview.timestamp DESC ",
     )
     fun getDataIdOfCurrentlyActiveDataPoint(
-        @Param("searchFilter") searchFilter: BasicSearchFilter,
+        @Param("searchFilter") searchFilter: DataPointFilter,
     ): String?
 }

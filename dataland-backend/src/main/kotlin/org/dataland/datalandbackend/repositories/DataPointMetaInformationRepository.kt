@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackend.model.datapoints.DataPointDimension
+import org.dataland.datalandbackendutils.model.DataPointDimension
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
