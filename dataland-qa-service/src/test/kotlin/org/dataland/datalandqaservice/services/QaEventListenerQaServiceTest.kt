@@ -3,6 +3,7 @@ package org.dataland.datalandqaservice.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -49,6 +50,7 @@ class QaEventListenerQaServiceTest(
     lateinit var mockQaReportManager: QaReportManager
     lateinit var mockMetaDataControllerApi: MetaDataControllerApi
     lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
+    lateinit var mockDataPointControllerApi: DataPointControllerApi
 
     val dataId = "TestDataId"
     val correlationId = "correlationId"
@@ -73,6 +75,7 @@ class QaEventListenerQaServiceTest(
         mockQaReviewManager = mock(QaReviewManager::class.java)
         mockDataPointQaReviewManager = mock(DataPointQaReviewManager::class.java)
         mockQaReportManager = mock(QaReportManager::class.java)
+        mockDataPointControllerApi = mock(DataPointControllerApi::class.java)
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
@@ -81,6 +84,7 @@ class QaEventListenerQaServiceTest(
                 mockDataPointQaReviewManager,
                 mockQaReportManager,
                 mockMetaDataControllerApi,
+                mockDataPointControllerApi,
             )
     }
 

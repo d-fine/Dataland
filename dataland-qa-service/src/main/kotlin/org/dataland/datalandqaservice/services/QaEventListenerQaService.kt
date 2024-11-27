@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -46,6 +47,7 @@ class QaEventListenerQaService
         @Autowired val dataPointQaReviewManager: DataPointQaReviewManager,
         @Autowired val qaReportManager: QaReportManager,
         @Autowired val metaDataControllerApi: MetaDataControllerApi,
+        @Autowired val dataPointControllerApi: DataPointControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -259,7 +261,7 @@ class QaEventListenerQaService
         ): DataPointQaReviewEntity {
             val dataId = qaPayload.dataId
             val bypassQa = qaPayload.bypassQa
-            val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+            val triggeringUserId = dataPointControllerApi.getDataPointMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
 
             val (qaStatus, comment) =
                 when (bypassQa) {
