@@ -293,4 +293,20 @@ class DataRequestAlterationManagerTest {
         assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
         assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
     }
+
+    @Test
+    fun `validate that no email is send when the request status changes to Open`() {
+        dataRequestAlterationManager.patchDataRequest(
+            dataRequestId = dataRequestId,
+            requestStatus = RequestStatus.Open,
+            accessStatus = null,
+            dummyMessage.contacts,
+            dummyMessage.message,
+        )
+
+        verify(mockRequestEmailManager, times(0))
+            .sendSingleDataRequestEmail(
+                any(), anySet(), anyString(),
+            )
+    }
 }
