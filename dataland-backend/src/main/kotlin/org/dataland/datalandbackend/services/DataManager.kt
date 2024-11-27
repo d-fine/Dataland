@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -31,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataManagerUtils holds util methods for handling of data
-*/
+ */
 @Component("DataManager")
 class DataManager
     @Suppress("LongParameterList")
@@ -103,12 +102,10 @@ class DataManager
                     QaStatus.Pending,
                 )
             metaDataManager.storeDataMetaInformation(metaData)
-            val nonSourceableInfo =
-                NonSourceableInfo(
-                    storableDataSet.companyId, storableDataSet.dataType,
-                    storableDataSet.reportingPeriod, false, storableDataSet.uploaderUserId,
-                )
-            nonSourceableDataManager.storeSourceableData(nonSourceableInfo)
+            nonSourceableDataManager.storeSourceableData(
+                storableDataSet.companyId, storableDataSet.dataType,
+                storableDataSet.reportingPeriod, storableDataSet.uploaderUserId,
+            )
         }
 
         /**
@@ -155,7 +152,11 @@ class DataManager
             bypassQa: Boolean,
             correlationId: String,
         ) {
-            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
+            storeDataInTemporaryStorage(
+                dataId,
+                objectMapper.writeValueAsString(storableDataSet),
+                correlationId,
+            )
             val payload =
                 JSONObject(
                     mapOf(
@@ -216,7 +217,8 @@ class DataManager
          */
         @Transactional(readOnly = true)
         fun isDataSetPublic(dataId: String): Boolean {
-            val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
+            val associatedCompanyId =
+                metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
             return companyQueryManager.isCompanyPublic(associatedCompanyId)
         }
 

@@ -44,6 +44,7 @@ import java.time.Instant
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
+@Suppress("LongParameterList")
 class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
@@ -51,6 +52,7 @@ class DataManagerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val dataManagerUtils: DataManagerUtils,
     @Autowired val companyRoleChecker: CompanyRoleChecker,
+    @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
@@ -66,7 +68,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, dataMetaInformationManager,
-                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
+                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker, nonSourceableDataManager,
             )
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
@@ -233,7 +235,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, mockDataMetaInformationManager,
-                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
+                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker, nonSourceableDataManager,
             )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(
