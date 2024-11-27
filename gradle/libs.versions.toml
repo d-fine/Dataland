@@ -48,7 +48,7 @@ log4j = "2.24.1"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:8.10.2"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.11.1"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.23.7"
 
