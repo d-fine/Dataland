@@ -321,12 +321,15 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that no email is send when the request status changes to Open`() {
+        // to properly test this we would need to set a request to non-sourceable
+        // and then patch it to open
+        // maybe test this in an end2end test
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
             requestStatus = RequestStatus.Open,
             accessStatus = null,
-            dummyMessage.contacts,
-            dummyMessage.message,
+            contacts = null,
+            message = null,
         )
 
         verify(mockRequestEmailManager, times(0))
