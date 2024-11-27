@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
+import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -29,34 +30,32 @@ class NonSourceableDataManager(
      * The method stores a non-sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
-    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo) {
+    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): UUID? {
         val creationTime = Instant.now().toEpochMilli()
-
         val nonSourceableEntity =
             NonSourceableEntity(
-                eventId = UUID.randomUUID().toString(),
+                eventId = null,
                 companyId = nonSourceableInfo.companyId,
-                dataType = nonSourceableInfo.dataType.toString(),
+                dataType = nonSourceableInfo.dataType,
                 reportingPeriod = nonSourceableInfo.reportingPeriod,
-                nonSourceable = nonSourceableInfo.nonSourceable,
+                isNonSourceable = nonSourceableInfo.nonSourceable,
                 reason = nonSourceableInfo.reason,
                 creationTime = creationTime,
             )
         nonSourceableDataRepository.save(nonSourceableEntity)
+        return nonSourceableEntity.eventId
     }
 
     /**
      * The method writes a message to a queue about the event of a dataset being labeled as non-sourceable
      * @param nonSourceableInfo the NonSourceableEntity of the dataset
      */
-    fun createEventDatasetNonSourceable(
-        correlationId: String,
-        nonSourceableInfo: NonSourceableInfo,
-    ) {
-        storeNonSourceableData(nonSourceableInfo)
+    fun createEventDatasetNonSourceable(nonSourceableInfo: NonSourceableInfo) {
+        val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
+        val eventId = storeNonSourceableData(nonSourceableInfo)
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(nonSourceableInfo),
+            body = objectMapper.writeValueAsString(eventId),
             type = MessageType.DATA_NONSOURCEABLE,
             correlationId = correlationId,
             exchange = ExchangeName.DATA_NONSOURCEABLE,
@@ -71,6 +70,7 @@ class NonSourceableDataManager(
      * @param reportingPeriod if not empty, it filters the requested info to a specific reporting period
      */
     fun getNonSourceableDataByFilters(
+        eventId: UUID?,
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
@@ -79,6 +79,7 @@ class NonSourceableDataManager(
         val nonSourceableDataSets =
             nonSourceableDataRepository.searchNonSourceableData(
                 NonSourceableDataSearchFilter(
+                    eventId,
                     companyId,
                     dataType,
                     reportingPeriod,
@@ -100,17 +101,18 @@ class NonSourceableDataManager(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        NonSourceableDataSearchFilter(companyId, dataType, reportingPeriod, null)
+        NonSourceableDataSearchFilter(null, companyId, dataType, reportingPeriod, null)
         val latestNonSourceableEntity =
             nonSourceableDataRepository.getLatestNonSourceableData(
                 NonSourceableDataSearchFilter(
+                    null,
                     companyId,
                     dataType,
                     reportingPeriod,
                     null,
                 ),
             )
-        if (latestNonSourceableEntity?.nonSourceable != true) {
+        if (latestNonSourceableEntity?.isNonSourceable != true) {
             throw ResourceNotFoundApiException(
                 summary = "Dataset is sourceable or not found.",
                 message =
@@ -134,11 +136,11 @@ class NonSourceableDataManager(
 
         val nonSourceableEntity =
             NonSourceableEntity(
-                eventId = UUID.randomUUID().toString(),
+                eventId = null,
                 companyId = companyId,
-                dataType = dataType.toString(),
+                dataType = dataType,
                 reportingPeriod = reportingPeriod,
-                nonSourceable = true,
+                isNonSourceable = false,
                 reason = "Uploaded by a user with the Id:$uploaderId",
                 creationTime = creationTime,
             )

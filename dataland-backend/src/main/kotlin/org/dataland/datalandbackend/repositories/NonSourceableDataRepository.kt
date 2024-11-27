@@ -50,7 +50,7 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
             "OR nonSourceableData.reportingPeriod = :#{#searchFilter.preparedReportingPeriod}) AND " +
             "(:#{#searchFilter.shouldFilterByNonSourceable} = false " +
-            "OR nonSourceableData.nonSourceable = :#{#searchFilter.preparedNonSourceable}) " +
+            "OR nonSourceableData.isNonSourceable = :#{#searchFilter.preparedNonSourceable}) " +
             "ORDER BY nonSourceableData.creationTime DESC",
     )
     fun searchNonSourceableData(

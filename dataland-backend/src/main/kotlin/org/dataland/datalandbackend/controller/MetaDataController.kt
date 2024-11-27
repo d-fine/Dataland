@@ -1,15 +1,14 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.MetaDataApi
+import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
-import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -70,26 +69,25 @@ class MetaDataController(
     }
 
     override fun getInfoOnSourceabilityOfDataSets(
+        eventId: UUID?,
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): ResponseEntity<List<NonSourceableData>> {
-        val currentUser = DatalandAuthentication.fromContextOrNull()
-        return ResponseEntity.ok(
+    ): ResponseEntity<List<NonSourceableEntity>> =
+        ResponseEntity.ok(
             nonSourceableDataManager
                 .getNonSourceableDataByFilters(
+                    eventId,
                     companyId,
                     dataType,
                     reportingPeriod,
                     nonSourceable,
-                )?.map { it.toApiModel(currentUser) } ?: emptyList(),
+                ),
         )
-    }
 
     override fun postSourceabilityOfADataSet(nonSourceableInfo: NonSourceableInfo) {
-        val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
-        nonSourceableDataManager.createEventDatasetNonSourceable(correlationId, nonSourceableInfo)
+        nonSourceableDataManager.createEventDatasetNonSourceable(nonSourceableInfo)
     }
 
     override fun isDataNonSourceable(

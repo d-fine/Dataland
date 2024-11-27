@@ -5,9 +5,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.model.metainformation.NonSourceableData
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
@@ -112,11 +112,12 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     fun getInfoOnSourceabilityOfDataSets(
+        @RequestParam eventId: UUID? = null,
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
         @RequestParam nonSourceable: Boolean?,
-    ): ResponseEntity<List<NonSourceableData>>
+    ): ResponseEntity<List<NonSourceableEntity>>
 
     /**
      * Adds a data set with information on sourceability.
