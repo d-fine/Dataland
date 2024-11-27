@@ -92,7 +92,7 @@ export function badgeClass(requestStatus: RequestStatus): string {
     case 'Closed':
       return 'p-badge badge-brown outline rounded';
     case 'NonSourceable':
-      return 'p-badge badge-lightgray outline rounded';
+      return 'p-badge badge-gray outline rounded';
     default:
       return 'p-badge outline rounded';
   }
@@ -145,6 +145,6 @@ export function priorityBadgeClass(priority: RequestPriority): string {
  * Gives back a different string for status nonSourceable, otherwise a string that similar to requestStatus
  * @param requestStatus request status of a request
  */
-export function getRequestStatusLabel(requestStatus: RequestStatus): String {
+export function getRequestStatusLabel(requestStatus: RequestStatus): string {
   return requestStatus === 'NonSourceable' ? 'No sources available' : requestStatus;
 }

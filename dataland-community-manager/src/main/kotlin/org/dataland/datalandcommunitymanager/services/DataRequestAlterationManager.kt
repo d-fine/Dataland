@@ -74,6 +74,7 @@ class DataRequestAlterationManager(
 
         val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
         val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
+
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             anyChanges = true
             utils
@@ -84,6 +85,7 @@ class DataRequestAlterationManager(
                 dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
             )
         }
+
         if (filteredContacts != null) {
             anyChanges = true
             utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
@@ -104,6 +106,7 @@ class DataRequestAlterationManager(
         }
 
         if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
+
         requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
 
         return dataRequestEntity.toStoredDataRequest()
@@ -156,30 +159,30 @@ class DataRequestAlterationManager(
 
     /**
      * Method to patch data request corresponding to a dataset
-     * @param nonSourceableInfo the info on the non-sourceable dataset
+     * @param nonSourceableData the info on the non-sourceable dataset
      * @param correlationId dataland correlationId
      */
     @Transactional
     fun patchAllRequestsForThisDatasetToStatusNonSourceable(
-        nonSourceableInfo: NonSourceableData,
+        nonSourceableData: NonSourceableData,
         correlationId: String,
     ) {
         val dataRequestEntities =
             dataRequestRepository.findByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                datalandCompanyId = nonSourceableInfo.companyId,
-                dataType = nonSourceableInfo.dataType.toString(),
-                reportingPeriod = nonSourceableInfo.reportingPeriod,
+                datalandCompanyId = nonSourceableData.companyId,
+                dataType = nonSourceableData.dataType.toString(),
+                reportingPeriod = nonSourceableData.reportingPeriod,
             )
 
         dataRequestEntities?.forEach {
             patchDataRequest(
                 dataRequestId = it.dataRequestId, requestStatus = RequestStatus.NonSourceable,
-                correlationId = correlationId, requestStatusChangeReason = nonSourceableInfo.reason,
+                correlationId = correlationId, requestStatusChangeReason = nonSourceableData.reason,
             )
         }
         logger.info(
-            "Changed request status for all requests relating data of company ${nonSourceableInfo.companyId}, " +
-                "reporting period ${nonSourceableInfo.reportingPeriod} and framework ${nonSourceableInfo.dataType.name} to non-sourceable",
+            "Changed request status for all requests relating data of company ${nonSourceableData.companyId}, " +
+                "reporting period ${nonSourceableData.reportingPeriod} and framework ${nonSourceableData.dataType.name} to non-sourceable",
         )
     }
 }

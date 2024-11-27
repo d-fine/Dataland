@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * This service processes new messages of non-sourceable data
@@ -54,7 +53,6 @@ class NonSourceableDataListener(
             ),
         ],
     )
-    @Transactional
     fun changeRequestStatusAfterDataReportedNonSourceable(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.TYPE) type: String,

@@ -174,7 +174,7 @@
                 <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ getRequestStatusLabel(slotProps.data.accessStatus) }}
+                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
                     </div>
                   </template>
                 </Column>
