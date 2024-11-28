@@ -53,6 +53,7 @@ class NonSourceableDataManager(
     fun createEventDatasetNonSourceable(nonSourceableInfo: NonSourceableInfo) {
         val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
 
+        storeNonSourceableData(nonSourceableInfo)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(nonSourceableInfo),
             type = MessageType.DATA_NONSOURCEABLE,

@@ -28,12 +28,10 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
 
     /**
      * Searches for non-sourceable data entries based on a filter defined in NonSourceableDataSearchFilter.
-     * The filtering parameters are companyId, dataType, reportingPeriod, and nonSourceable.
+     * The filtering parameters are companyId, dataType, reportingPeriod, and isNonSourceable.
      *
      * If a filter for companyId, dataType, or reportingPeriod is set (non-null or non-empty),
      * only entries matching the criteria will be returned. If the filter is not set, this criterion is ignored.
-     * The nonSourceable filter allows filtering for entries where the `nonSourceable` field is either `true` or `false`.
-     * If the filter is not set (null), no filtering is applied on the `nonSourceable` field.
      * The query is designed to return results matching all specified criteria. If no entries match the criteria, an empty list is returned.
      *
      * @param searchFilter The set of filtering criteria encapsulated in a NonSourceableDataSearchFilter object.
@@ -49,8 +47,8 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
             "OR nonSourceableData.dataType = :#{#searchFilter.preparedDataType}) AND " +
             "(:#{#searchFilter.shouldFilterByReportingPeriod} = false " +
             "OR nonSourceableData.reportingPeriod = :#{#searchFilter.preparedReportingPeriod}) AND " +
-            "(:#{#searchFilter.shouldFilterByNonSourceable} = false " +
-            "OR nonSourceableData.isNonSourceable = :#{#searchFilter.preparedNonSourceable}) " +
+            "(:#{#searchFilter.shouldFilterByIsNonSourceable} = false " +
+            "OR nonSourceableData.isNonSourceable = :#{#searchFilter.preparedIsNonSourceable}) " +
             "ORDER BY nonSourceableData.creationTime DESC",
     )
     fun searchNonSourceableData(
