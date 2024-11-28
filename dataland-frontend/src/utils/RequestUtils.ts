@@ -49,6 +49,7 @@ export async function getAnsweredDataRequestsForViewPage(
  * @param accessStatus the desired access status
  * @param contacts set of email contacts
  * @param message context of the email
+ * @param requestStatusChangeReason provided reason why data should be available
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  */
 export async function patchDataRequest(
@@ -57,6 +58,7 @@ export async function patchDataRequest(
   accessStatus: AccessStatus | undefined,
   contacts: Set<string> | undefined,
   message: string | undefined,
+  requestStatusChangeReason: string | undefined,
   keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<void> {
   try {
@@ -66,7 +68,10 @@ export async function patchDataRequest(
         requestStatus,
         accessStatus,
         contacts,
-        message
+        message,
+        undefined,
+        undefined,
+        requestStatusChangeReason
       );
     }
   } catch (error) {

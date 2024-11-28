@@ -458,6 +458,7 @@ export default defineComponent({
           undefined,
           undefined,
           undefined,
+          undefined,
           this.getKeycloakPromise
         );
       } catch (error) {
@@ -494,6 +495,7 @@ export default defineComponent({
           undefined,
           this.emailContacts,
           this.emailMessage,
+          undefined,
           this.getKeycloakPromise
         )
           .then(() => {
