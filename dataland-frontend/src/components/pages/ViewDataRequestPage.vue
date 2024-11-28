@@ -431,10 +431,12 @@ export default defineComponent({
         try {
           await patchDataRequest(
             this.storedDataRequest.dataRequestId,
-            RequestStatus.Open,
+            RequestStatus.Open as RequestStatus,
             undefined,
             undefined,
-            this.reopenMessage
+            undefined,
+            this.reopenMessage,
+            this.getKeycloakPromise
           );
           this.reopenMessage = '';
           this.reopenModalIsVisible = false;
