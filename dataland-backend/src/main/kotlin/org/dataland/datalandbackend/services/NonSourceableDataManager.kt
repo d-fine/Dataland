@@ -132,7 +132,7 @@ class NonSourceableDataManager(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
-    ): Boolean {
+    ): Boolean? {
         NonSourceableDataSearchFilter(null, companyId, dataType, reportingPeriod, null)
         val latestNonSourceableEntity =
             nonSourceableDataRepository.getLatestNonSourceableData(
@@ -147,6 +147,7 @@ class NonSourceableDataManager(
         if (latestNonSourceableEntity != null) {
             return latestNonSourceableEntity.isNonSourceable
         }
+        return null
     }
 
     /**
@@ -161,7 +162,7 @@ class NonSourceableDataManager(
     ) {
         val creationTime = Instant.now().toEpochMilli()
 
-        if (isDataSourceable(companyId, dataType, reportingPeriod)) {
+        if (isDataSourceable(companyId, dataType, reportingPeriod) == true) {
             val nonSourceableEntity =
                 NonSourceableEntity(
                     eventId = null,
