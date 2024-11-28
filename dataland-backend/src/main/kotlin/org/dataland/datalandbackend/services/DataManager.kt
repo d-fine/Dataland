@@ -42,6 +42,7 @@ class DataManager
         @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired private val dataManagerUtils: DataManagerUtils,
         @Autowired private val companyRoleChecker: CompanyRoleChecker,
+        @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -70,8 +71,9 @@ class DataManager
         }
 
         /**
-         * Persists the data meta-information to the database ensuring that the database transaction
-         * ends directly after this function returns so that a MQ-Message might be sent out after this function completes
+         * Persists the data meta-information to the database and the updates the data source history
+         * in the database if necessary ensuring that the database transaction ends directly after this
+         * function returns so that a MQ-Message might be sent out after this function completes
          * @param dataId The dataId of the dataset to store
          * @param storableDataSet the dataset to store
          * @param correlationId the correlation id of the insertion process
@@ -101,6 +103,16 @@ class DataManager
                     QaStatus.Pending,
                 )
             metaDataManager.storeDataMetaInformation(metaData)
+            if (nonSourceableDataManager.isDataNonSourceable(
+                    company.companyId, storableDataSet.dataType,
+                    storableDataSet.reportingPeriod,
+                ) == true
+            ) {
+                nonSourceableDataManager.storeSourceableData(
+                    company.companyId, storableDataSet.dataType,
+                    storableDataSet.reportingPeriod, storableDataSet.uploaderUserId,
+                )
+            }
         }
 
         /**
