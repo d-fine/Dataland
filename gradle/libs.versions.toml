@@ -44,7 +44,7 @@ mockito = "5.14.2"
 
 junit-jupiter = "5.11.3"
 
-log4j = "2.24.1"
+log4j = "2.24.2"
 
 [libraries]
 
