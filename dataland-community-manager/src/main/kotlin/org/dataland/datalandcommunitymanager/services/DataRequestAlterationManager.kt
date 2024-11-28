@@ -2,7 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableData
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -159,30 +159,31 @@ class DataRequestAlterationManager(
 
     /**
      * Method to patch data request corresponding to a dataset
-     * @param nonSourceableData the info on the non-sourceable dataset
+     * @param nonSourceableInfo the info on the non-sourceable dataset
      * @param correlationId dataland correlationId
      */
     @Transactional
     fun patchAllRequestsForThisDatasetToStatusNonSourceable(
-        nonSourceableData: NonSourceableData,
+        nonSourceableInfo: NonSourceableInfo,
         correlationId: String,
     ) {
+        MetaDataControllerApi
         val dataRequestEntities =
             dataRequestRepository.findByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                datalandCompanyId = nonSourceableData.companyId,
-                dataType = nonSourceableData.dataType.toString(),
-                reportingPeriod = nonSourceableData.reportingPeriod,
+                datalandCompanyId = nonSourceableInfo.companyId,
+                dataType = nonSourceableInfo.dataType.toString(),
+                reportingPeriod = nonSourceableInfo.reportingPeriod,
             )
 
         dataRequestEntities?.forEach {
             patchDataRequest(
                 dataRequestId = it.dataRequestId, requestStatus = RequestStatus.NonSourceable,
-                correlationId = correlationId, requestStatusChangeReason = nonSourceableData.reason,
+                correlationId = correlationId, requestStatusChangeReason = nonSourceableInfo.reason,
             )
         }
         logger.info(
-            "Changed request status for all requests relating data of company ${nonSourceableData.companyId}, " +
-                "reporting period ${nonSourceableData.reportingPeriod} and framework ${nonSourceableData.dataType.name} to non-sourceable",
+            "Changed request status for all requests relating data of company ${nonSourceableInfo.companyId}, " +
+                "reporting period ${nonSourceableInfo.reportingPeriod} and framework ${nonSourceableInfo.dataType.name} to non-sourceable",
         )
     }
 }

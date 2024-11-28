@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableData
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -59,14 +59,19 @@ class NonSourceableDataListener(
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
-        val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableData>(jsonString, objectMapper)
-        val eventId = nonSourceableInfo.eventId
-        if (eventId.isEmpty()) {
-            throw MessageQueueRejectException("Provided event ID is empty")
+        val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableInfo>(jsonString, objectMapper)
+        if (nonSourceableInfo == null) {
+            throw MessageQueueRejectException("Provided non-sourceable Info is null")
         }
-        logger.info("Received request status changed to non-sourceable for envent ID: $eventId")
+        if (nonSourceableInfo.dataType.value.isEmpty() ||
+            nonSourceableInfo.companyId.isNullOrEmpty() ||
+            nonSourceableInfo.reportingPeriod.isNullOrEmpty()
+        ) {
+            throw MessageQueueRejectException("Provided data ")
+        }
+        logger.info("Received request status changed to non-sourceable for company ID: ${nonSourceableInfo.companyId}")
         if (!nonSourceableInfo.nonSourceable) {
-            logger.info("Event ID $eventId did not set a dataset to non-sourceable")
+            logger.info("Event did not set a dataset to non-sourceable")
             return
         }
         MessageQueueUtils.rejectMessageOnException {

@@ -38,7 +38,7 @@ class NonSourceableDataManager(
                 companyId = nonSourceableInfo.companyId,
                 dataType = nonSourceableInfo.dataType,
                 reportingPeriod = nonSourceableInfo.reportingPeriod,
-                isNonSourceable = nonSourceableInfo.nonSourceable,
+                isNonSourceable = nonSourceableInfo.isNonSourceable,
                 reason = nonSourceableInfo.reason,
                 creationTime = creationTime,
             )

@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.openApiClient.model.NonSourceableData
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -69,14 +69,12 @@ class DataRequestAlterationManagerTest {
     private val dummyRequestChangeReason = "dummy reason"
 
     private val dummyNonSourceableData =
-        NonSourceableData(
-            eventId = "eventId",
+        NonSourceableInfo(
             companyId = "",
             dataType = DataTypeEnum.p2p,
             reportingPeriod = "",
             nonSourceable = true,
             reason = dummyRequestChangeReason,
-            creationTime = 0,
         )
 
     private val dummyDataRequestEntity: DataRequestEntity = dummyDataRequestEntities[0]
@@ -341,7 +339,7 @@ class DataRequestAlterationManagerTest {
     @Test
     fun `validate that all requests matching a dataset are patched to status nonSourceable`() {
         dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
-            nonSourceableData = dummyNonSourceableData,
+            nonSourceableInfo = dummyNonSourceableData,
             correlationId = "dummyCorrelationID",
         )
 
