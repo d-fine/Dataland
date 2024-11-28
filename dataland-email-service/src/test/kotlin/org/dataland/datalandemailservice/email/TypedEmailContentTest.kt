@@ -44,7 +44,7 @@ class TypedEmailContentTest {
                 assertThat(emailContent.textContent).contains(keyword)
             }
             assertFalse(htmlTagPattern.containsMatchIn(emailContent.textContent))
-            saveEmailContent(typedEmailContent::class.simpleName ?: UUID.randomUUID().toString(), emailContent, skip = false)
+            saveEmailContent(typedEmailContent::class.simpleName ?: UUID.randomUUID().toString(), emailContent, skip = true)
         }
     }
 

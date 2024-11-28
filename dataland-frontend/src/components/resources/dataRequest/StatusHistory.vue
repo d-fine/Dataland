@@ -18,7 +18,7 @@
   <div v-show="isStatusHistoryVisible">
     <div>
       <DataTable :value="statusHistory" data-test="statusHistoryTable">
-        <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 33%"
+        <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 28%"
           ><template #body="slotProps">
             <span data-test="creationTimestampEntry">
               {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
@@ -50,7 +50,13 @@
         <Column field="reasonNonSourceable" header="Comment" style="width: 45%"
           ><template #body="slotProps"
             ><div style="display: inline-flex" data-test="reasonNonSourceableEntry">
-              {{ slotProps.data.requestStatusChangeReason }}
+              {{
+                getRequestStatusChangeReason(
+                  slotProps.data.companyId,
+                  slotProps.data.reportingPeriod,
+                  slotProps.data.dataType
+                )
+              }}
             </div></template
           >
         </Column>
@@ -92,6 +98,17 @@ export default defineComponent({
      */
     toggleViewStatusHistory() {
       this.isStatusHistoryVisible = !this.isStatusHistoryVisible;
+    },
+    /**
+     * get the requestStatusChangeReason form data table in Backend
+     * @param companyId companyId for search triple
+     * @param reportingPeriod for search triple
+     * @param dataType for search triple
+     */
+    getRequestStatusChangeReason(companyId: String, reportingPeriod: String, dataType: String): String {
+      var requestStatusChangeReason = '';
+      // get Change reason from entry in backend table (which one?)
+      return requestStatusChangeReason;
     },
   },
 });
