@@ -50,13 +50,7 @@
         <Column field="reasonNonSourceable" header="Comment" style="width: 45%"
           ><template #body="slotProps"
             ><div style="display: inline-flex" data-test="reasonNonSourceableEntry">
-              {{
-                getRequestStatusChangeReason(
-                  slotProps.data.companyId,
-                  slotProps.data.reportingPeriod,
-                  slotProps.data.dataType
-                )
-              }}
+              {{ slotProps.data.requestStatusChangeReason }}
             </div></template
           >
         </Column>
@@ -98,17 +92,6 @@ export default defineComponent({
      */
     toggleViewStatusHistory() {
       this.isStatusHistoryVisible = !this.isStatusHistoryVisible;
-    },
-    /**
-     * get the requestStatusChangeReason form data table in Backend
-     * @param companyId companyId for search triple
-     * @param reportingPeriod for search triple
-     * @param dataType for search triple
-     */
-    getRequestStatusChangeReason(companyId: String, reportingPeriod: String, dataType: String): String {
-      var requestStatusChangeReason = '';
-      // get Change reason from entry in backend table (which one?)
-      return requestStatusChangeReason;
     },
   },
 });
