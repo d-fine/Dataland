@@ -205,6 +205,38 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
   });
 
+  it('Check view data request page for nonSourceable request renders as expected and reopen data request', function () {
+    interceptUserAskForSingleDataRequestsOnMounted(
+      createStoredDataRequest(RequestStatus.NonSourceable, [dummyMessageObject])
+    );
+    interceptUserAskForCompanyNameOnMounted();
+    interceptUserActiveDatasetOnMounted(QaStatus.Pending);
+    interceptPatchRequest();
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+      props: {
+        requestId: requestId,
+      },
+    });
+    checkBasicPageElementsAsUser(RequestStatus.NonSourceable);
+    cy.get('[data-test="newMessage"').should('exist').should('not.be.visible');
+    cy.get('[data-test="viewDataset"').should('exist').should('not.be.visible');
+    cy.get('[data-test="card_withdrawn"]').should('exist').should('be.visible');
+    cy.get('[data-test="card_reopen')
+      .should('exist')
+      .within(() => {
+        cy.contains(
+          'Currently your request has the status non-sourceable and is not actively searched for.' +
+            'However, you will still be informed if your request is answered.'
+        ).should('exist');
+        cy.contains('Reopen Request').should('exist');
+        cy.contains('Reopen request.').should('exist').click();
+      });
+    cy.get('[data-test="reopenModal"]').should('exist').should('be.visible').contains('REOPEN REQUEST').click();
+    cy.get('[data-test="reopenModal"]').should('not.exist');
+    cy.get('[data-test="reopenedModal"]').should('exist').should('be.visible').contains('CLOSE').click();
+    cy.get('[data-test="reopenedModal"]').should('not.exist');
+  });
+
   it('Check view data request page for open request without data and withdraw the data request', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
