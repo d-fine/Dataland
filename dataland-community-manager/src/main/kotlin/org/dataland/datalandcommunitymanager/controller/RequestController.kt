@@ -175,6 +175,7 @@ class RequestController(
                 correlationId = null,
                 requestPriority,
                 adminComment,
+                requestStatusChangeReason,
             ),
         )
 }
