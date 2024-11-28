@@ -371,7 +371,7 @@
         ],
         "summary": "Adds a data set with information on sourceability.",
         "description": "A data set is added with information on its sourceability.",
-        "operationId": "postSourceabilityOfADataset",
+        "operationId": "postSourceabilityOfADataSet",
         "requestBody": {
           "content": {
             "application/json": {
@@ -383,14 +383,8 @@
           "required": true
         },
         "responses": {
-          "400": {
-            "description": "The update failed because an existing dataset was incorrectly attempted to be set to non-sourceable data."
-          },
-          "404": {
-            "description": "The companyId does not exist."
-          },
           "200": {
-            "description": "Successfully added dataset."
+            "description": "Successfully added data set."
           },
           "default": {
             "description": "An error occurred",
@@ -18213,7 +18207,6 @@
           "companyId",
           "creationTime",
           "dataType",
-          "isNonSourceable",
           "reason",
           "reportingPeriod"
         ],
@@ -18234,7 +18227,8 @@
             "type": "string"
           },
           "isNonSourceable": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "reason": {
             "type": "string"
@@ -18409,23 +18403,23 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
-          "sector": {
+          "headquarters": {
+            "type": "string"
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }
@@ -18450,10 +18444,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

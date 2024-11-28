@@ -18,7 +18,7 @@
   <div v-show="isStatusHistoryVisible">
     <div>
       <DataTable :value="statusHistory" data-test="statusHistoryTable">
-        <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 33%"
+        <Column field="creationTimeStamp" header="Creation Timestamp" style="width: 28%"
           ><template #body="slotProps">
             <span data-test="creationTimestampEntry">
               {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
