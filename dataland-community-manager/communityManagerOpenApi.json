@@ -545,6 +545,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "requestStatusChangeReason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

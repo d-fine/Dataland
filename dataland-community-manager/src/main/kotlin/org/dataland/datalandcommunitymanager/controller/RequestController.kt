@@ -163,6 +163,7 @@ class RequestController(
         message: String?,
         requestPriority: RequestPriority?,
         adminComment: String?,
+        requestStatusChangeReason: String?,
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(

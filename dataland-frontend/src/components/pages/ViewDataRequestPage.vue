@@ -431,10 +431,12 @@ export default defineComponent({
         try {
           await patchDataRequest(
             this.storedDataRequest.dataRequestId,
-            RequestStatus.Open,
+            RequestStatus.Open as RequestStatus,
             undefined,
             undefined,
-            this.reopenMessage
+            undefined,
+            this.reopenMessage,
+            this.getKeycloakPromise
           );
           this.reopenMessage = '';
           this.reopenModalIsVisible = false;
@@ -453,6 +455,7 @@ export default defineComponent({
         await patchDataRequest(
           this.requestId,
           RequestStatus.Withdrawn as RequestStatus,
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -492,6 +495,7 @@ export default defineComponent({
           undefined,
           this.emailContacts,
           this.emailMessage,
+          undefined,
           this.getKeycloakPromise
         )
           .then(() => {

@@ -193,6 +193,7 @@ interface RequestApi {
         @RequestParam message: String?,
         @RequestParam requestPriority: RequestPriority?,
         @RequestParam adminComment: String?,
+        @RequestParam requestStatusChangeReason: String?,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
