@@ -32,7 +32,7 @@ data class NonSourceableEntity(
     @Column(name = "reporting_period", nullable = false)
     var reportingPeriod: String,
     @Column(name = "is_non_sourceable")
-    var isNonSourceable: Boolean,
+    var isNonSourceable: Boolean?,
     @Column(name = "reason", nullable = true)
     var reason: String,
     @Column(name = "creation_time", nullable = false)

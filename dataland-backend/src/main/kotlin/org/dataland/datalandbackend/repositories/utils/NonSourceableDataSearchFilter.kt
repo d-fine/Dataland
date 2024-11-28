@@ -28,8 +28,8 @@ data class NonSourceableDataSearchFilter(
     val shouldFilterByDataType: Boolean
         get() = dataType != null
 
-    val preparedDataType: String
-        get() = dataType?.name ?: ""
+    val preparedDataType: DataType?
+        get() = dataType
 
     val shouldFilterByReportingPeriod: Boolean
         get() = !reportingPeriod.isNullOrEmpty()
