@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.converter.DataTypeConverter
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
@@ -22,13 +23,20 @@ class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
+    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired private val dataTypeConverter: DataTypeConverter,
 ) {
     /**
      * Method to associate data information with a specific company
      * @param dataMetaInformation The data meta information which should be stored
      */
-    fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
-        dataMetaInformationRepositoryInterface.save(dataMetaInformation)
+    fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity {
+        nonSourceableDataManager.storeSourceableData(
+            dataMetaInformation.company.companyId, dataTypeConverter.convertToEntityAttribute(dataMetaInformation.dataType),
+            dataMetaInformation.reportingPeriod, dataMetaInformation.uploaderUserId,
+        )
+        return dataMetaInformationRepositoryInterface.save(dataMetaInformation)
+    }
 
     /**
      * Method to store data point meta information

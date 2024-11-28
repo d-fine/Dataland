@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param storageClient service for managing data
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataManagerUtils holds util methods for handling of data
- */
+*/
 @Component("DataManager")
 class DataManager
     @Suppress("LongParameterList")
@@ -42,7 +42,6 @@ class DataManager
         @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired private val dataManagerUtils: DataManagerUtils,
         @Autowired private val companyRoleChecker: CompanyRoleChecker,
-        @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -102,10 +101,6 @@ class DataManager
                     QaStatus.Pending,
                 )
             metaDataManager.storeDataMetaInformation(metaData)
-            nonSourceableDataManager.storeSourceableData(
-                storableDataSet.companyId, storableDataSet.dataType,
-                storableDataSet.reportingPeriod, storableDataSet.uploaderUserId,
-            )
         }
 
         /**
@@ -152,11 +147,7 @@ class DataManager
             bypassQa: Boolean,
             correlationId: String,
         ) {
-            storeDataInTemporaryStorage(
-                dataId,
-                objectMapper.writeValueAsString(storableDataSet),
-                correlationId,
-            )
+            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
             val payload =
                 JSONObject(
                     mapOf(
@@ -217,8 +208,7 @@ class DataManager
          */
         @Transactional(readOnly = true)
         fun isDataSetPublic(dataId: String): Boolean {
-            val associatedCompanyId =
-                metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
+            val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
             return companyQueryManager.isCompanyPublic(associatedCompanyId)
         }
 

@@ -123,6 +123,33 @@ class NonSourceableDataManager(
     }
 
     /**
+     * The method checks if a specific data set is non-sourceable.
+     * @param companyId filters for the specific company
+     * @param dataType filters for the specific data type
+     * @param reportingPeriod filters for the specific reporting period
+     */
+    fun isDataSourceable(
+        companyId: String,
+        dataType: DataType,
+        reportingPeriod: String,
+    ): Boolean {
+        NonSourceableDataSearchFilter(null, companyId, dataType, reportingPeriod, null)
+        val latestNonSourceableEntity =
+            nonSourceableDataRepository.getLatestNonSourceableData(
+                NonSourceableDataSearchFilter(
+                    null,
+                    companyId,
+                    dataType,
+                    reportingPeriod,
+                    null,
+                ),
+            )
+        if (latestNonSourceableEntity != null) {
+            return latestNonSourceableEntity.isNonSourceable
+        }
+    }
+
+    /**
      * The method stores a sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
@@ -134,16 +161,18 @@ class NonSourceableDataManager(
     ) {
         val creationTime = Instant.now().toEpochMilli()
 
-        val nonSourceableEntity =
-            NonSourceableEntity(
-                eventId = null,
-                companyId = companyId,
-                dataType = dataType,
-                reportingPeriod = reportingPeriod,
-                isNonSourceable = false,
-                reason = "Uploaded by a user with the Id:$uploaderId",
-                creationTime = creationTime,
-            )
-        nonSourceableDataRepository.save(nonSourceableEntity)
+        if (isDataSourceable(companyId, dataType, reportingPeriod)) {
+            val nonSourceableEntity =
+                NonSourceableEntity(
+                    eventId = null,
+                    companyId = companyId,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    isNonSourceable = false,
+                    reason = "Uploaded by a user with the Id:$uploaderId",
+                    creationTime = creationTime,
+                )
+            nonSourceableDataRepository.save(nonSourceableEntity)
+        }
     }
 }
