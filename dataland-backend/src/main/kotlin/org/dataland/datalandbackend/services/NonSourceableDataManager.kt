@@ -30,7 +30,7 @@ class NonSourceableDataManager(
      * The method stores a non-sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
-    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): UUID? {
+    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo) {
         val creationTime = Instant.now().toEpochMilli()
         val nonSourceableEntity =
             NonSourceableEntity(
@@ -43,7 +43,6 @@ class NonSourceableDataManager(
                 creationTime = creationTime,
             )
         nonSourceableDataRepository.save(nonSourceableEntity)
-        return nonSourceableEntity.eventId
     }
 
     /**
@@ -90,7 +89,7 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method checks if a specific data set is non-sourceable.
+     * The method throws an exception if a specific data set is sourceable or not found.
      * @param companyId filters for the specific company
      * @param dataType filters for the specific data type
      * @param reportingPeriod filters for the specific reporting period
