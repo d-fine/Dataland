@@ -17,7 +17,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataManagerUtils holds util methods for handling of data
 */
-@Component("DataManager")
+@Service("DataManager")
 class DataManager
     @Suppress("LongParameterList")
     constructor(

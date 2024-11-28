@@ -12,25 +12,44 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.util.UUID
 
 /**
- * A service class for managing information about the sourceabilty of data sets.
+ * A service class for managing information about the sourceabilty of datasets.
  */
 @Service("NonSourceableDataManager")
 class NonSourceableDataManager(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val nonSourceableDataRepository: NonSourceableDataRepository,
+    @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * The method stores a non-sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
-    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo) {
+    fun storeNonSourceableData(
+        nonSourceableInfo: NonSourceableInfo,
+        correlationId: String,
+    ): NonSourceableInfo? {
+        companyQueryManager.verifyCompanyIdExists(nonSourceableInfo.companyId)
+        val dataMetaInfo =
+            dataMetaInformationManager.searchDataMetaInfo(
+                nonSourceableInfo.companyId, nonSourceableInfo.dataType,
+                false, nonSourceableInfo.reportingPeriod, null, null,
+            )
+        if (dataMetaInfo != null) {
+            logger.info("Process with $correlationId broke up due to: Setting non-sourceable flag failed because the dataset exists")
+            return null
+        }
+
         val creationTime = Instant.now().toEpochMilli()
         val nonSourceableEntity =
             NonSourceableEntity(
@@ -42,17 +61,18 @@ class NonSourceableDataManager(
                 reason = nonSourceableInfo.reason,
                 creationTime = creationTime,
             )
-        nonSourceableDataRepository.save(nonSourceableEntity)
+        return nonSourceableDataRepository.save(nonSourceableEntity).toApiModel()
     }
 
     /**
      * The method writes a message to a queue about the event of a dataset being labeled as non-sourceable
-     * @param nonSourceableInfo the NonSourceableEntity of the dataset
+     * @param nonSourceableInfo the NonSourceableInfo of the dataset
      */
-    fun createEventDatasetNonSourceable(nonSourceableInfo: NonSourceableInfo) {
+    fun processSourceabilityDataStorageRequest(nonSourceableInfo: NonSourceableInfo) {
         val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
 
-        storeNonSourceableData(nonSourceableInfo)
+        storeNonSourceableData(nonSourceableInfo, correlationId)
+        logger.info("NonSourceableEntity has been saved to data based during process with correlationId $correlationId")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(nonSourceableInfo),
             type = MessageType.DATA_NONSOURCEABLE,
@@ -63,7 +83,7 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method retrieves non sourceable data sets by given filters.
+     * The method retrieves non sourceable datasets by given filters.
      * @param companyId if not empty, it filters the requested info to a specific company
      * @param dataType if not empty, it filters the requested info to a specific data type
      * @param reportingPeriod if not empty, it filters the requested info to a specific reporting period
@@ -74,7 +94,7 @@ class NonSourceableDataManager(
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): List<NonSourceableEntity>? {
+    ): List<NonSourceableEntity> {
         val nonSourceableDataSets =
             nonSourceableDataRepository.searchNonSourceableData(
                 NonSourceableDataSearchFilter(
@@ -89,13 +109,13 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method throws an exception if a specific data set is sourceable or not found.
+     * The method throws an exception if a specific dataset is sourceable or not found.
      * @param companyId filters for the specific company
      * @param dataType filters for the specific data type
      * @param reportingPeriod filters for the specific reporting period
      */
 
-    fun responseDataNonSourceable(
+    fun verifyDataNonSourceable(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
@@ -139,8 +159,9 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method stores a sourceable dataset in the nonSourceableDataRepository
-     * @param nonSourceableInfo the of the dataset
+     * The method stores a sourceable dataset in the data store history, initiated by the upload of the
+     * previously non-sourceable dataset.
+     * @param nonSourceableInfo the nonSourceableInfo of the dataset
      */
     fun storeSourceableData(
         companyId: String,

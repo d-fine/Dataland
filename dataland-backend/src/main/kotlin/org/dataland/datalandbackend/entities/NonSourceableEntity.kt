@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.converter.DataTypeConverter
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import java.util.UUID
 
 /**
@@ -31,10 +32,23 @@ data class NonSourceableEntity(
     var dataType: DataType,
     @Column(name = "reporting_period", nullable = false)
     var reportingPeriod: String,
-    @Column(name = "is_non_sourceable")
-    var isNonSourceable: Boolean?,
+    @Column(name = "is_non_sourceable", nullable = false)
+    var isNonSourceable: Boolean,
     @Column(name = "reason", nullable = true)
     var reason: String,
     @Column(name = "creation_time", nullable = false)
     var creationTime: Long,
-)
+) {
+    /**
+     * Converts the entity to an API model object
+     * @returns the API model object
+     */
+    fun toApiModel(): NonSourceableInfo =
+        NonSourceableInfo(
+            companyId = companyId,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
+            isNonSourceable = isNonSourceable,
+            reason = reason,
+        )
+}
