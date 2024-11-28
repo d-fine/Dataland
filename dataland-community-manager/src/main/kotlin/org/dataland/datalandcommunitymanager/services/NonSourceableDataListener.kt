@@ -67,7 +67,7 @@ class NonSourceableDataListener(
             throw MessageQueueRejectException("Provided data is not empty")
         }
         logger.info("Received request status changed to non-sourceable for company ID: ${nonSourceableInfo.companyId}")
-        if (!nonSourceableInfo.nonSourceable) {
+        if (!nonSourceableInfo.isNonSourceable) {
             logger.info("Event did not set a dataset to non-sourceable")
             return
         }
