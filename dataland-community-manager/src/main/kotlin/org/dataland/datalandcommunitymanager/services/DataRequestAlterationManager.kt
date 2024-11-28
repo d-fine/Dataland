@@ -167,7 +167,6 @@ class DataRequestAlterationManager(
         nonSourceableInfo: NonSourceableInfo,
         correlationId: String,
     ) {
-        MetaDataControllerApi
         val dataRequestEntities =
             dataRequestRepository.findByDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 datalandCompanyId = nonSourceableInfo.companyId,

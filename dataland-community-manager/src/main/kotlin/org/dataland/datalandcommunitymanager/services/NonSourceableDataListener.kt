@@ -60,14 +60,11 @@ class NonSourceableDataListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
         val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableInfo>(jsonString, objectMapper)
-        if (nonSourceableInfo == null) {
-            throw MessageQueueRejectException("Provided non-sourceable Info is null")
-        }
-        if (nonSourceableInfo.dataType.value.isEmpty() ||
-            nonSourceableInfo.companyId.isNullOrEmpty() ||
-            nonSourceableInfo.reportingPeriod.isNullOrEmpty()
+        if (nonSourceableInfo.dataType.toString().isEmpty() ||
+            nonSourceableInfo.companyId.isEmpty() ||
+            nonSourceableInfo.reportingPeriod.isEmpty()
         ) {
-            throw MessageQueueRejectException("Provided data ")
+            throw MessageQueueRejectException("Provided data is not empty")
         }
         logger.info("Received request status changed to non-sourceable for company ID: ${nonSourceableInfo.companyId}")
         if (!nonSourceableInfo.nonSourceable) {
