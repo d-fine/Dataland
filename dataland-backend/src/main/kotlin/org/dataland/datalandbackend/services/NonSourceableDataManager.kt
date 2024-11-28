@@ -96,23 +96,12 @@ class NonSourceableDataManager(
      * @param reportingPeriod filters for the specific reporting period
      */
 
-    fun isDataNonSourceable(
+    fun responseDataNonSourceable(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        NonSourceableDataSearchFilter(null, companyId, dataType, reportingPeriod, null)
-        val latestNonSourceableEntity =
-            nonSourceableDataRepository.getLatestNonSourceableData(
-                NonSourceableDataSearchFilter(
-                    null,
-                    companyId,
-                    dataType,
-                    reportingPeriod,
-                    null,
-                ),
-            )
-        if (latestNonSourceableEntity?.isNonSourceable != true) {
+        if (isDataNonSourceable(companyId, dataType, reportingPeriod) != true) {
             throw ResourceNotFoundApiException(
                 summary = "Dataset is sourceable or not found.",
                 message =
@@ -128,7 +117,7 @@ class NonSourceableDataManager(
      * @param dataType filters for the specific data type
      * @param reportingPeriod filters for the specific reporting period
      */
-    fun isDataSourceable(
+    fun isDataNonSourceable(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
@@ -162,7 +151,7 @@ class NonSourceableDataManager(
     ) {
         val creationTime = Instant.now().toEpochMilli()
 
-        if (isDataSourceable(companyId, dataType, reportingPeriod) == true) {
+        if (isDataNonSourceable(companyId, dataType, reportingPeriod) == true) {
             val nonSourceableEntity =
                 NonSourceableEntity(
                     eventId = null,

@@ -95,7 +95,7 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        nonSourceableDataManager.isDataNonSourceable(
+        nonSourceableDataManager.responseDataNonSourceable(
             companyId,
             dataType,
             reportingPeriod,

@@ -5,7 +5,7 @@ import jakarta.persistence.Converter
 import org.dataland.datalandbackend.model.DataType
 
 /**
- * Converts QaStatus entries in Entities to database values and vice versa
+ * Converts DataType entries in Entities to database values and vice versa
  */
 @Converter
 class DataTypeConverter : AttributeConverter<DataType, String> {
