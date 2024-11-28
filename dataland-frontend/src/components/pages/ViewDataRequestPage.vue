@@ -415,7 +415,6 @@ export default defineComponent({
      * @returns true if request status is non sourceable otherwise false
      */
     isRequestReopenable(requestStatus: RequestStatus) {
-      //return true;
       return requestStatus == RequestStatus.NonSourceable;
     },
     /**
