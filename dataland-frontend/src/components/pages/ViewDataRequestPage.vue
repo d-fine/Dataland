@@ -438,10 +438,10 @@ export default defineComponent({
             this.reopenMessage,
             this.getKeycloakPromise
           );
-          this.reopenMessage = '';
           this.reopenModalIsVisible = false;
           this.reopenedModalIsVisible = true;
           this.storedDataRequest.requestStatus = RequestStatus.Open;
+          this.reopenMessage = '';
         } catch (error) {
           console.log(error);
         }
