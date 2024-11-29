@@ -149,6 +149,7 @@ export function priorityBadgeClass(priority: RequestPriority): string {
 /**
  * Gives back a different string for status nonSourceable, otherwise a string that similar to requestStatus
  * @param requestStatus request status of a request
+ * @returns the label of the request status
  */
 export function getRequestStatusLabel(requestStatus: RequestStatus): string {
   return requestStatus === 'NonSourceable' ? 'No sources available' : requestStatus;
