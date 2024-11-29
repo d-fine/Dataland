@@ -445,6 +445,7 @@ export default defineComponent({
         } catch (error) {
           console.log(error);
         }
+        return;
       }
       this.reopenMessageError = true;
     },
