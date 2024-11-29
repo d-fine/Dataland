@@ -25,13 +25,13 @@ import org.springframework.stereotype.Service
 @Service("NonSourceableDataListener")
 class NonSourceableDataListener(
     @Autowired private val objectMapper: ObjectMapper,
-    private val dataRequestAlterationManager: DataRequestAlterationManager,
+    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
-     * and data type and sets their status to answered
+     * Listens for information that specifies a dataset as non-sourceable
+     * and patches all requests corresponding to this dataset to the request status non-sourceable.
      * @param jsonString the message describing the result of the data non-sourceable event
      * @param type the type of the message
      * @param id the correlation id of the message
@@ -53,10 +53,10 @@ class NonSourceableDataListener(
             ),
         ],
     )
-    fun changeRequestStatusAfterDataReportedNonSourceable(
+    fun processDataReportedNotSourceableMessage(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.TYPE) type: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) id: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
         val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableInfo>(jsonString, objectMapper)
@@ -64,15 +64,19 @@ class NonSourceableDataListener(
             nonSourceableInfo.companyId.isEmpty() ||
             nonSourceableInfo.reportingPeriod.isEmpty()
         ) {
-            throw MessageQueueRejectException("Provided data is not empty")
+            throw MessageQueueRejectException("Received data is incomplete")
         }
-        logger.info("Received request status changed to non-sourceable for company ID: ${nonSourceableInfo.companyId}")
+
         if (!nonSourceableInfo.isNonSourceable) {
-            logger.info("Event did not set a dataset to non-sourceable")
-            return
+            throw MessageQueueRejectException("Received event did not set a dataset to status non-sourceable")
         }
+        logger.info(
+            "Received data-non-sourceable-message for data type: ${nonSourceableInfo.dataType} " +
+                "company ID: ${nonSourceableInfo.companyId} and reporting period: ${nonSourceableInfo.reportingPeriod}",
+        )
+
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId = id)
+            dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId)
         }
     }
 }

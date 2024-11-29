@@ -119,7 +119,7 @@ class DataRequestAlterationManagerTest {
         ).thenReturn(dummyDataRequestEntities)
 
         `when`(
-            mockDataRequestRepository.findByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+            mockDataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 datalandCompanyId = dummyNonSourceableData.companyId,
                 dataType = dummyNonSourceableData.dataType.toString(),
                 reportingPeriod = dummyNonSourceableData.reportingPeriod,

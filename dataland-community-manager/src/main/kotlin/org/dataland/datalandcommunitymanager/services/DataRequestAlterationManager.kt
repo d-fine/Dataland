@@ -77,10 +77,9 @@ class DataRequestAlterationManager(
 
         if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
             anyChanges = true
-            utils
-                .addNewRequestStatusToHistory(
-                    dataRequestEntity, newRequestStatus, newAccessStatus, requestStatusChangeReason, modificationTime,
-                )
+            utils.addNewRequestStatusToHistory(
+                dataRequestEntity, newRequestStatus, newAccessStatus, requestStatusChangeReason, modificationTime,
+            )
             dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
                 dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
             )
@@ -158,9 +157,9 @@ class DataRequestAlterationManager(
     }
 
     /**
-     * Method to patch data request corresponding to a dataset
+     * Method to patch all data request corresponding to a dataset
      * @param nonSourceableInfo the info on the non-sourceable dataset
-     * @param correlationId dataland correlationId
+     * @param correlationId correlationId
      */
     @Transactional
     fun patchAllRequestsForThisDatasetToStatusNonSourceable(
@@ -168,7 +167,7 @@ class DataRequestAlterationManager(
         correlationId: String,
     ) {
         val dataRequestEntities =
-            dataRequestRepository.findByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+            dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 datalandCompanyId = nonSourceableInfo.companyId,
                 dataType = nonSourceableInfo.dataType.toString(),
                 reportingPeriod = nonSourceableInfo.reportingPeriod,

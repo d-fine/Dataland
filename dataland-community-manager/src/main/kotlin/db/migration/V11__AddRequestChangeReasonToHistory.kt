@@ -10,10 +10,6 @@ import org.flywaydb.core.api.migration.Context
 class V11__AddRequestChangeReasonToHistory : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!
-        addRequestStatusChangeReasonColumn(context)
-    }
-
-    private fun addRequestStatusChangeReasonColumn(context: Context) {
         context.connection.createStatement().execute(
             "ALTER TABLE request_status_history " +
                 "ADD COLUMN request_status_change_reason VARCHAR(255) " +
