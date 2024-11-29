@@ -73,7 +73,7 @@ class DataRequestAlterationManagerTest {
             companyId = "",
             dataType = DataTypeEnum.p2p,
             reportingPeriod = "",
-            nonSourceable = true,
+            isNonSourceable = true,
             reason = dummyRequestChangeReason,
         )
 
