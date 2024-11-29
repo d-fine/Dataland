@@ -61,13 +61,13 @@
 				"accessStatus": "Public"
 			},
 			{
-				"status": "Withdrawn",
+				"status": "Closed",
 				"creationTimestamp": 977,
 				"accessStatus": "Declined"
 			}
 		],
 		"lastModifiedDate": 977,
-		"requestStatus": "Withdrawn",
+		"requestStatus": "Closed",
 		"accessStatus": "Declined",
 		"requestPriority": "Normal"
 	},
@@ -133,7 +133,7 @@
 				"accessStatus": "Public"
 			},
 			{
-				"status": "Resolved",
+				"status": "Withdrawn",
 				"creationTimestamp": 642,
 				"accessStatus": "Revoked"
 			}
@@ -251,7 +251,7 @@
 				"accessStatus": "Public"
 			},
 			{
-				"status": "Closed",
+				"status": "NonSourceable",
 				"creationTimestamp": 548,
 				"accessStatus": "Declined"
 			}
@@ -316,7 +316,7 @@
 				"accessStatus": "Public"
 			},
 			{
-				"status": "Resolved",
+				"status": "Withdrawn",
 				"creationTimestamp": 795,
 				"accessStatus": "Pending"
 			}
