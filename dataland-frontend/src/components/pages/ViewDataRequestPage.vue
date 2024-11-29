@@ -441,6 +441,7 @@ export default defineComponent({
           this.reopenMessage = '';
           this.reopenModalIsVisible = false;
           this.reopenedModalIsVisible = true;
+          this.storedDataRequest.requestStatus = RequestStatus.Open;
         } catch (error) {
           console.log(error);
         }
