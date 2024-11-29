@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
-import java.util.UUID
 
 /**
  * A service class for managing information about the sourceabilty of datasets.
@@ -89,22 +88,21 @@ class NonSourceableDataManager(
      * @param reportingPeriod if not empty, it filters the requested info to a specific reporting period
      */
     fun getNonSourceableDataByFilters(
-        eventId: UUID?,
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): List<NonSourceableEntity> {
+    ): List<NonSourceableInfo> {
         val nonSourceableDataSets =
-            nonSourceableDataRepository.searchNonSourceableData(
-                NonSourceableDataSearchFilter(
-                    eventId,
-                    companyId,
-                    dataType,
-                    reportingPeriod,
-                    nonSourceable,
-                ),
-            )
+            nonSourceableDataRepository
+                .searchNonSourceableData(
+                    NonSourceableDataSearchFilter(
+                        companyId,
+                        dataType,
+                        reportingPeriod,
+                        nonSourceable,
+                    ),
+                ).map { it.toApiModel() }
         return nonSourceableDataSets
     }
 
@@ -141,11 +139,9 @@ class NonSourceableDataManager(
         dataType: DataType,
         reportingPeriod: String,
     ): Boolean? {
-        NonSourceableDataSearchFilter(null, companyId, dataType, reportingPeriod, null)
         val latestNonSourceableEntity =
             nonSourceableDataRepository.getLatestNonSourceableData(
                 NonSourceableDataSearchFilter(
-                    null,
                     companyId,
                     dataType,
                     reportingPeriod,
