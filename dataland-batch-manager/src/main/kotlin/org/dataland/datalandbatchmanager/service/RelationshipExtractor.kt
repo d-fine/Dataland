@@ -17,7 +17,7 @@ class RelationshipExtractor {
      *  @return The final mapping of child LEI to parent LEI as MutableMap<String, String>
      */
     fun prepareFinalParentMapping(gleifParser: Iterable<GleifRelationshipInformation>): Map<String, String> {
-        val mappings = parseCsvToGroupedMap(gleifParser)
+        val mappings : Map<GleifRelationshipTypes, MutableMap<String, String>> = parseCsvToGroupedMap(gleifParser)
 
         val localFinalParentMapping = mappings[GleifRelationshipTypes.IS_ULTIMATELY_CONSOLIDATED_BY] ?: mutableMapOf()
         val orderOfImportance =

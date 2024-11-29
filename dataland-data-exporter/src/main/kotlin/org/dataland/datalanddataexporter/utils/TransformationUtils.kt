@@ -67,7 +67,7 @@ object TransformationUtils {
         node: JsonNode,
         transformationRules: Map<String, String>,
     ) {
-        val leafNodesInJsonNode = getNonArrayLeafNodeFieldNames(node, "")
+        val leafNodesInJsonNode : List<String> = getNonArrayLeafNodeFieldNames(node, "")
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {
             "Transformation rules do not cover all leaf nodes in the data."
