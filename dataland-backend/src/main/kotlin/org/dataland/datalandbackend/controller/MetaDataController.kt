@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.MetaDataApi
-import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
@@ -69,16 +68,14 @@ class MetaDataController(
     }
 
     override fun getInfoOnSourceabilityOfDataSets(
-        eventId: UUID?,
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): ResponseEntity<List<NonSourceableEntity>> =
+    ): ResponseEntity<List<NonSourceableInfo>> =
         ResponseEntity.ok(
             nonSourceableDataManager
                 .getNonSourceableDataByFilters(
-                    eventId,
                     companyId,
                     dataType,
                     reportingPeriod,

@@ -1,24 +1,17 @@
 package org.dataland.datalandbackend.repositories.utils
 
 import org.dataland.datalandbackend.model.DataType
-import java.util.UUID
 
 /**
- * A filter class used in the searchDataMetaInformation()-Method which allows
+ * A filter class used in the searchNonSourceableData()-Method which allows
  * convenient usage of SEPL instructions in the query
  */
 data class NonSourceableDataSearchFilter(
-    val eventId: UUID?,
     val companyId: String?,
     val dataType: DataType?,
     val reportingPeriod: String?,
     val isNonSourceable: Boolean?,
 ) {
-    val shouldFilterByEventId: Boolean
-        get() = eventId != null
-
-    val preparedEventId: UUID?
-        get() = eventId
     val shouldFilterByCompanyId: Boolean
         get() = !companyId.isNullOrEmpty()
 
