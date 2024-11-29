@@ -45,7 +45,7 @@ class NonSourceableDataManager(
                 nonSourceableInfo.companyId, nonSourceableInfo.dataType,
                 false, nonSourceableInfo.reportingPeriod, null, null,
             )
-        if (dataMetaInfo != null) {
+        if (dataMetaInfo.isEmpty()) {
             logger.info("Process with $correlationId broke up due to: Setting non-sourceable flag failed because the dataset exists")
             return null
         }
