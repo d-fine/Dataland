@@ -3,7 +3,9 @@ package org.dataland.datalandqaservice.controller
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.api.QaApi
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -19,6 +21,7 @@ import java.util.UUID.randomUUID
 @RestController
 class QaController(
     @Autowired var qaReviewManager: QaReviewManager,
+    @Autowired var dataPointQaReviewManager: DataPointQaReviewManager,
 ) : QaApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -96,6 +99,55 @@ class QaController(
 
         return ResponseEntity.ok(
             qaReviewManager.getNumberOfPendingDatasets(dataTypes, reportingPeriods, companyName),
+        )
+    }
+
+    override fun getDataPointQaReviewInformationByDataId(dataId: UUID): ResponseEntity<List<DataPointQaReviewInformation>> {
+        logger.info("Received request to retrieve the review information of the dataset with identifier $dataId")
+        return ResponseEntity.ok(dataPointQaReviewManager.getDataPointQaReviewInformationByDataId(dataId.toString()))
+    }
+
+    override fun getDataPointReviewQueue(): ResponseEntity<List<DataPointQaReviewInformation>> {
+        logger.info("Received request to retrieve the review queue")
+        return ResponseEntity.ok(dataPointQaReviewManager.getDataPointQaReviewQueue())
+    }
+
+    override fun changeDataPointQaStatus(
+        dataId: String,
+        qaStatus: QaStatus,
+        comment: String?,
+    ) {
+        val correlationId = randomUUID().toString()
+        val reviewerId = DatalandAuthentication.fromContext().userId
+        logger.info(
+            "Received request to change the QA status of the data point $dataId to $qaStatus " +
+                "from user $reviewerId (correlationId: $correlationId)",
+        )
+        val dataPointQaReviewEntity =
+            dataPointQaReviewManager.saveDataPointQaReviewEntity(
+                dataId, qaStatus, reviewerId, comment, correlationId,
+            )
+        dataPointQaReviewManager.sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
+    }
+
+    override fun getDataPointQaReviewInformation(
+        companyId: String?,
+        dataPointIdentifier: String?,
+        reportingPeriod: String?,
+        qaStatus: QaStatus?,
+        chunkSize: Int?,
+        chunkIndex: Int?,
+    ): ResponseEntity<List<DataPointQaReviewInformation>> {
+        logger.info("Received request to retrieve the review information of the dataset with identifier $companyId")
+        return ResponseEntity.ok(
+            dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(
+                companyId = companyId,
+                dataPointIdentifier = dataPointIdentifier,
+                reportingPeriod,
+                qaStatus,
+                chunkSize,
+                chunkIndex,
+            ),
         )
     }
 }

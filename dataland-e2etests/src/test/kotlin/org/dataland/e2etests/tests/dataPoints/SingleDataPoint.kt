@@ -63,6 +63,7 @@ class SingleDataPoint {
         withTechnicalUser(TechnicalUser.Reader) {
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
             assertEquals(QaStatus.Accepted, datapointMetaInformation.qaStatus)
+            assertEquals(true, datapointMetaInformation.currentlyActive)
             assertDoesNotThrow { Backend.dataPointControllerApi.getDataPoint(dataPointId) }
         }
     }

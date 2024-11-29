@@ -82,9 +82,12 @@ class DataPointMetaInformationManager(
      */
     @Transactional
     fun updateCurrentlyActiveFlagOfDataPoint(
-        dataId: String,
+        dataId: String?,
         newCurrentlyActiveValue: Boolean,
     ) {
+        if (dataId == null) {
+            return
+        }
         val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
         dataPointMetaInformation.currentlyActive = newCurrentlyActiveValue
         dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)

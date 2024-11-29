@@ -1,12 +1,15 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.dataland.datalandbackendutils.converter.QaStatusConverter
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import java.util.UUID
 
 /**
@@ -30,10 +33,27 @@ data class DataPointQaReviewEntity(
     val reportingPeriod: String,
     @Column(name = "timestamp", nullable = false)
     val timestamp: Long,
+    @Convert(converter = QaStatusConverter::class)
     @Column(name = "qa_status", nullable = false)
     var qaStatus: QaStatus,
     @Column(name = "triggering_user_id", nullable = false)
     val triggeringUserId: String,
     @Column(name = "comment", columnDefinition = "TEXT", nullable = true)
     val comment: String?,
-)
+) {
+    /**
+     * Converts the entity into a DataPointQaReviewInformation object, which is used for API responses
+     */
+    fun toDataPointQaReviewInformation() =
+        DataPointQaReviewInformation(
+            dataId = this.dataId,
+            companyId = this.companyId,
+            companyName = this.companyName,
+            dataPointIdentifier = this.dataPointIdentifier,
+            reportingPeriod = this.reportingPeriod,
+            timestamp = this.timestamp,
+            qaStatus = this.qaStatus,
+            comment = this.comment,
+            reviewerId = this.triggeringUserId,
+        )
+}

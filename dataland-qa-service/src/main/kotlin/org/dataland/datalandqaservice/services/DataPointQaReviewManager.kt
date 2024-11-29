@@ -11,8 +11,9 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointFilter
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -121,7 +122,7 @@ class DataPointQaReviewManager(
                 "data point identifier $dataPointIdentifier, and reportingPeriod $reportingPeriod",
         )
         val searchFilter =
-            DataPointFilter(
+            DataPointQaReviewItemFilter(
                 companyId = companyId,
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,
@@ -129,5 +130,52 @@ class DataPointQaReviewManager(
             )
 
         return dataPointQaReviewRepository.getDataIdOfCurrentlyActiveDataPoint(searchFilter)
+    }
+
+    /**
+     * Retrieve all data points currently in the QA review queue (i.e. with status 'Pending')
+     */
+    fun getDataPointQaReviewQueue(): List<DataPointQaReviewInformation> =
+        dataPointQaReviewRepository
+            .findByQaStatusOrderByTimestampDesc(QaStatus.Pending)
+            .map { it.toDataPointQaReviewInformation() }
+
+    /**
+     * Retrieve all the QA review information for a specific data point ID ordered by descending timestamp
+     */
+    fun getDataPointQaReviewInformationByDataId(dataId: String): List<DataPointQaReviewInformation> =
+        dataPointQaReviewRepository
+            .findByDataIdOrderByTimestampDesc(dataId)
+            .map { it.toDataPointQaReviewInformation() }
+
+    /**
+     * Retrieve all QA review information items for matching the provided filters in descending order by timestamp
+     * Results are paginated using [chunkSize] and [chunkIndex]
+     * @param companyId the company ID by which to filter
+     * @param dataPointIdentifier the data point identifier by which to filter
+     * @param reportingPeriod the reporting period by which to filter
+     * @param qaStatus the QA status by which to filter
+     * @param chunkSize the number of results to return
+     * @param chunkIndex the index to start the result set from
+     *
+     */
+    fun getFilteredDataPointQaReviewInformation(
+        companyId: String?,
+        dataPointIdentifier: String?,
+        reportingPeriod: String?,
+        qaStatus: QaStatus?,
+        chunkSize: Int? = 10,
+        chunkIndex: Int? = 0,
+    ): List<DataPointQaReviewInformation> {
+        val searchFilter =
+            DataPointQaReviewItemFilter(
+                companyId = companyId,
+                dataPointIdentifier = dataPointIdentifier,
+                reportingPeriod = reportingPeriod,
+                qaStatus = qaStatus?.toString(),
+            )
+        return dataPointQaReviewRepository
+            .findByFilters(searchFilter, chunkSize, chunkIndex)
+            .map { it.toDataPointQaReviewInformation() }
     }
 }
