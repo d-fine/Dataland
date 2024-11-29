@@ -86,8 +86,8 @@ class MetaDataController(
                 ),
         )
 
-    override fun postSourceabilityOfADataSet(nonSourceableInfo: NonSourceableInfo) {
-        nonSourceableDataManager.createEventDatasetNonSourceable(nonSourceableInfo)
+    override fun postSourceabilityOfADataset(nonSourceableInfo: NonSourceableInfo) {
+        nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
     }
 
     override fun isDataNonSourceable(
@@ -95,7 +95,7 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        nonSourceableDataManager.responseDataNonSourceable(
+        nonSourceableDataManager.verifyDataNonSourceable(
             companyId,
             dataType,
             reportingPeriod,

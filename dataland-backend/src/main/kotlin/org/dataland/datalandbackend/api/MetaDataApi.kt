@@ -110,7 +110,7 @@ interface MetaDataApi {
         value = ["/nonSourceable"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun getInfoOnSourceabilityOfDataSets(
         @RequestParam eventId: UUID? = null,
         @RequestParam companyId: String? = null,
@@ -129,7 +129,14 @@ interface MetaDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added data set."),
+            ApiResponse(responseCode = "200", description = "Successfully added dataset."),
+            ApiResponse(
+                responseCode = "400",
+                description =
+                    "The update failed because an existing dataset was" +
+                        " incorrectly attempted to be set to non-sourceable data.",
+            ),
+            ApiResponse(responseCode = "404", description = "The companyId does not exist."),
         ],
     )
     @PostMapping(
@@ -138,7 +145,7 @@ interface MetaDataApi {
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
-    fun postSourceabilityOfADataSet(
+    fun postSourceabilityOfADataset(
         @Valid @RequestBody
         nonSourceableInfo: NonSourceableInfo,
     )

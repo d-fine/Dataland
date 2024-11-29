@@ -371,7 +371,7 @@
         ],
         "summary": "Adds a data set with information on sourceability.",
         "description": "A data set is added with information on its sourceability.",
-        "operationId": "postSourceabilityOfADataSet",
+        "operationId": "postSourceabilityOfADataset",
         "requestBody": {
           "content": {
             "application/json": {
@@ -383,8 +383,14 @@
           "required": true
         },
         "responses": {
+          "400": {
+            "description": "The update failed because an existing dataset was incorrectly attempted to be set to non-sourceable data."
+          },
+          "404": {
+            "description": "The companyId does not exist."
+          },
           "200": {
-            "description": "Successfully added data set."
+            "description": "Successfully added dataset."
           },
           "default": {
             "description": "An error occurred",
@@ -18207,6 +18213,7 @@
           "companyId",
           "creationTime",
           "dataType",
+          "isNonSourceable",
           "reason",
           "reportingPeriod"
         ],
@@ -18227,8 +18234,7 @@
             "type": "string"
           },
           "isNonSourceable": {
-            "type": "boolean",
-            "nullable": true
+            "type": "boolean"
           },
           "reason": {
             "type": "string"
@@ -18403,21 +18409,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
