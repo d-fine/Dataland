@@ -113,7 +113,7 @@ class DataRequestAlterationManagerTest {
                 searchFilter =
                     DataRequestsFilter(
                         setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
-                        setOf(RequestStatus.Open), null, null, null,
+                        setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)
@@ -228,7 +228,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that a request answered email is sent when request statuses are patched from open to answered`() {
-        dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
+        dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
             verify(mockRequestEmailManager)
                 .sendEmailsWhenStatusChanged(eq(it), eq(RequestStatus.Answered), eq(null), anyString())
