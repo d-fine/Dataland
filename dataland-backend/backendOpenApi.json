@@ -280,15 +280,6 @@
         "operationId": "getInfoOnSourceabilityOfDataSets",
         "parameters": [
           {
-            "name": "eventId",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
             "name": "companyId",
             "in": "query",
             "required": false,
@@ -329,7 +320,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NonSourceableEntity"
+                    "$ref": "#/components/schemas/NonSourceableInfo"
                   }
                 }
               }
@@ -18208,48 +18199,6 @@
           }
         }
       },
-      "NonSourceableEntity": {
-        "required": [
-          "companyId",
-          "creationTime",
-          "dataType",
-          "isNonSourceable",
-          "reason",
-          "reportingPeriod"
-        ],
-        "type": "object",
-        "properties": {
-          "eventId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "dataType": {
-            "$ref": "#/components/schemas/DataTypeEnum"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "isNonSourceable": {
-            "type": "boolean"
-          },
-          "reason": {
-            "type": "string"
-          },
-          "creationTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "nonSourceable": {
-            "type": "boolean",
-            "nullable": true,
-            "writeOnly": true
-          }
-        }
-      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -18409,10 +18358,6 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -18423,11 +18368,15 @@
           "companyId": {
             "type": "string"
           },
+          "countryCode": {
+            "type": "string"
+          },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

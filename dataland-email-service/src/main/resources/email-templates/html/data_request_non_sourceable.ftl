@@ -20,11 +20,11 @@
     </tr>
     <tr>
         <td colspan="3">
-            Unfortunately, your requested dataset has been labeled as non-sourceable by the data provider.<br>
-            We will continue to check the status of your request regularly and inform you in case the dataset will be uploaded in the future.<br>
-            View details on the
+            Unfortunately, there are no sources available for your requested dataset according to the data provider.<br>
+            We will continue to check the status of your request regularly and inform you in case the dataset will be uploaded in the future.
+            If you are certain the requested data should exist, you may reopen your request on the
             <a href="${baseUrl}/requests/${dataRequestId}" target="_blank">
-                request page.
+                data request page.
             </a>
         </td>
     </tr>
@@ -39,30 +39,7 @@
         <td style="height: 20px">&nbsp;</td>
     </tr>
 
-    <tr>
-        <td colspan="3" style="font-weight: bold;">How to proceed?</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <ol style="line-height: 25px;">
-                <li>Review the provided data.</li>
-                <li>Do one of the following.</li>
-                <li>
-                    <ul>
-                        <li>Do nothing.</li>
-                        <li>Withdraw your request.</li>
-                        <li>Reopen the request (in case you are certain this dataset should exist).</li>
-                    </ul>
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
+
     <tr>
         <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">

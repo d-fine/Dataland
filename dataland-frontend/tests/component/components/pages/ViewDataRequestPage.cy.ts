@@ -15,6 +15,7 @@ import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 import router from '@/router';
+import { getRequestStatusLabel } from '@/utils/RequestUtils.ts';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
@@ -125,7 +126,7 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="card_requestIs"]')
       .should('exist')
       .within(() => {
-        cy.contains(`${requestStatus}`).should('exist');
+        cy.contains(`${getRequestStatusLabel(requestStatus)}`).should('exist');
         cy.contains(`${convertUnixTimeInMsToDateString(dummyLastModifiedDate)}`).should('exist');
       });
   }
@@ -226,12 +227,19 @@ describe('Component tests for the view data request page', function (): void {
       .within(() => {
         cy.contains(
           'Currently your request has the status non-sourceable and is not actively searched for.' +
-            'However, you will still be informed if your request is answered.'
+            ' However, you will still be informed if your request is answered.'
         ).should('exist');
         cy.contains('Reopen Request').should('exist');
-        cy.contains('Reopen request.').should('exist').click();
+        cy.contains('Reopen request').should('exist').click();
       });
     cy.get('[data-test="reopenModal"]').should('exist').should('be.visible').contains('REOPEN REQUEST').click();
+    cy.get('[data-test="reopenModal"]').should('exist').should('be.visible');
+    cy.get('[data-test="reopenModal"]')
+      .should('exist')
+      .within(() => {
+        cy.get('[data-test="reopenMessage"]').should('exist').should('be.visible').type('Make the test work, please!');
+        cy.get('[data-test="reopenButton"]').should('exist').should('be.visible').contains('REOPEN REQUEST').click();
+      });
     cy.get('[data-test="reopenModal"]').should('not.exist');
     cy.get('[data-test="reopenedModal"]').should('exist').should('be.visible').contains('CLOSE').click();
     cy.get('[data-test="reopenedModal"]').should('not.exist');
@@ -258,7 +266,7 @@ describe('Component tests for the view data request page', function (): void {
             ' The company owner will not be notified anymore.'
         ).should('exist');
         cy.contains('Withdraw Request').should('exist');
-        cy.contains('Withdraw request.').should('exist').click();
+        cy.contains('Withdraw request').should('exist').click();
       });
     cy.get('[data-test="successModal"]').should('exist').should('be.visible').contains('CLOSE').click();
     cy.get('[data-test="successModal"]').should('not.exist');

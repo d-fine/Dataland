@@ -93,7 +93,7 @@
             @click="reopenRequest()"
             style="width: 100%; justify-content: center"
           >
-            <span class="d-letters" style="text-align: center"> REOPEN REQUEST </span>
+            <span class="d-letters" style="text-align: center" data-test="reopenButton"> REOPEN REQUEST </span>
           </PrimeButton>
         </div>
       </PrimeDialog>
@@ -106,7 +106,7 @@
         :closable="false"
         style="border-radius: 0.75rem; text-align: center"
         :show-header="false"
-        data-test="successModal"
+        data-test="reopenedModal"
       >
         <div class="text-center" style="display: flex; flex-direction: column">
           <div style="margin: 10px">

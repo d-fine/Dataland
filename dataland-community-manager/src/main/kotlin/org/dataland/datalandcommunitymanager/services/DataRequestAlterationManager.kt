@@ -118,7 +118,7 @@ class DataRequestAlterationManager(
      * @param correlationId dataland correlationId
      */
     @Transactional
-    fun patchRequestStatusFromOpenToAnsweredByDataId(
+    fun patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
         dataId: String,
         correlationId: String,
     ) {
@@ -131,7 +131,7 @@ class DataRequestAlterationManager(
                     emailAddress = null,
                     datalandCompanyId = metaData.companyId,
                     reportingPeriod = metaData.reportingPeriod,
-                    requestStatus = setOf(RequestStatus.Open),
+                    requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                     accessStatus = null,
                     adminComment = null,
                     requestPriority = null,
