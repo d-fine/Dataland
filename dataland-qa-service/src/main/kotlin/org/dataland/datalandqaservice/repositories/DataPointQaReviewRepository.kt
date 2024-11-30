@@ -42,7 +42,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
         value =
             "WITH RankedByDataId AS (" +
                 "SELECT *, ROW_NUMBER() OVER (PARTITION BY data_id ORDER BY timestamp DESC) AS num_row " +
-                "FROM qa_review " +
+                "FROM data_point_qa_review " +
                 ") " +
                 "SELECT entry.* FROM RankedByDataId entry " +
                 "WHERE entry.num_row = 1 " +

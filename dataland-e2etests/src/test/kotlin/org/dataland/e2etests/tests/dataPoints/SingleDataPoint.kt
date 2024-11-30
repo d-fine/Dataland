@@ -124,7 +124,7 @@ class SingleDataPoint {
     @Test
     fun `ensure a data point can be uploaded by an uploader, QA approved by a reviewer and retrieved by a reader`() {
         var dataPointId = ""
-        withTechnicalUser(TechnicalUser.Uploader) {
+        withTechnicalUser(TechnicalUser.Admin) {
             val companyId = createDummyCompany()
             dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataId
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
