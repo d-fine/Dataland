@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
-import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
@@ -20,8 +19,7 @@ import java.util.UUID
  * Controller for the company metadata endpoints
  * @param dataMetaInformationManager service for handling data meta information
  * @param logMessageBuilder a helper for building log messages
- * @param nonSourceableDataManager service for handling information on data sets and theirs sourceability
- * @param nonSourceableDataRepository repository for meta info on sourceability of data sets
+ * @param nonSourceableDataManager service for handling information on data sets and their sourceability
  */
 
 @RestController
@@ -29,7 +27,6 @@ class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
-    @Autowired val nonSourceableDataRepository: NonSourceableDataRepository,
 ) : MetaDataApi {
     override fun getListOfDataMetaInfo(
         companyId: String?,
@@ -57,7 +54,7 @@ class MetaDataController(
     override fun getDataMetaInfo(dataId: String): ResponseEntity<DataMetaInformation> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+        if (!metaInfo.isDatasetViewableByUser(currentUser)) {
             throw AccessDeniedException(
                 logMessageBuilder.generateAccessDeniedExceptionMessage(
                     metaInfo.qaStatus,
@@ -67,7 +64,7 @@ class MetaDataController(
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 
-    override fun getInfoOnSourceabilityOfDataSets(
+    override fun getInfoOnNonSourceabilityOfDataSets(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
@@ -83,7 +80,7 @@ class MetaDataController(
                 ),
         )
 
-    override fun postSourceabilityOfADataset(nonSourceableInfo: NonSourceableInfo) {
+    override fun postNonSourceabilityOfADataset(nonSourceableInfo: NonSourceableInfo) {
         nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
     }
 
@@ -92,7 +89,7 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        nonSourceableDataManager.verifyDataNonSourceable(
+        nonSourceableDataManager.checkDataIsNonSourceable(
             companyId,
             dataType,
             reportingPeriod,

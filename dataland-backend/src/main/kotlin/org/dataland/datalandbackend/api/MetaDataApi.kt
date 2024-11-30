@@ -88,12 +88,12 @@ interface MetaDataApi {
 
     /**
      * A method to retrieve information about the sourceability of data sets.
-     * @param companyId if set, filters the requested info to a specific company.
-     * @param dataType if set, filters the requested info to a specific data type.
+     * @param companyId if set, filters the requested info by companyId
+     * @param dataType if set, filters the requested info by data type.
      * @param reportingPeriod if set, the method only returns meta info with this reporting period
      * @param nonSourceable if set true, the method only returns meta info for datasets which are
      * non-sourceable and if set false, it returns sourceable data.
-     * @return A list of NonSourceableData matching the filters, or an empty list if none found.
+     * @return A list of NonSourceableInfo matching the filters, or an empty list if none found.
      */
     @Operation(
         summary = "Retrieve information about sourceability of data sets",
@@ -110,16 +110,16 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getInfoOnSourceabilityOfDataSets(
+    fun getInfoOnNonSourceabilityOfDataSets(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam nonSourceable: Boolean? = true,
+        @RequestParam nonSourceable: Boolean? = null,
     ): ResponseEntity<List<NonSourceableInfo>>
 
     /**
      * Adds a data set with information on sourceability.
-     * @param nonSourceableData includes the information on the sourceability of a specific data set.
+     * @param nonSourceableInfo includes the information on the sourceability of a specific data set.
      */
     @Operation(
         summary = "Adds a data set with information on sourceability.",
@@ -143,13 +143,13 @@ interface MetaDataApi {
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER')")
-    fun postSourceabilityOfADataset(
+    fun postNonSourceabilityOfADataset(
         @Valid @RequestBody
         nonSourceableInfo: NonSourceableInfo,
     )
 
     /**
-     * A method to check if a dataset is non-sourceable or not.
+     * A method to check if a dataset is non-sourceable.
      * @param companyId the company identifier
      * @param dataType the data type
      * @param reportingPeriod the reporting period

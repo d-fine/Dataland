@@ -17,6 +17,7 @@ data class NonSourceableInfo(
     val companyId: String,
     @field:JsonProperty(required = true)
     val dataType: DataType,
+    @JsonProperty(required = true)
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
     val isNonSourceable: Boolean,

@@ -11,7 +11,10 @@ import org.springframework.data.repository.query.Param
  */
 interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, String> {
     /**
-     * Retrieves non sourceable datasets for the given triplet of reporting Period, company and dataType
+     * Retrieves the most recent non-sourceable dataset entry matching the specified reporting period, company ID,
+     * and data type. The results are filtered and sorted by the given criteria, and only the latest entry is returned.
+     * @param searchFilter An object containing the filtering criteria: reporting period, company ID, and data type.
+     * @return The most recent NonSourceableEntity that matches the filter criteria, or `null` if no match is found.
      */
 
     @Query(
@@ -22,7 +25,7 @@ interface NonSourceableDataRepository : JpaRepository<NonSourceableEntity, Strin
             "ORDER BY nonSourceableData.creationTime DESC " +
             "LIMIT 1",
     )
-    fun getLatestNonSourceableData(
+    fun getLatestNonSourceableInfoForDataset(
         @Param("searchFilter") searchFilter: NonSourceableDataSearchFilter,
     ): NonSourceableEntity?
 

@@ -18,7 +18,7 @@ import java.util.UUID
  */
 @Entity
 @Table(
-    name = "data_source_history",
+    name = "data_sourceability",
 )
 data class NonSourceableEntity(
     @Id
