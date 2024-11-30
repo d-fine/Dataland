@@ -2,7 +2,6 @@ package org.dataland.e2etests.tests.dataPoints
 
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
@@ -10,11 +9,14 @@ import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.CommunityManager
+import org.dataland.e2etests.utils.api.QaService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.model.QaStatus as QaStatusBackend
+import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaStatusQaService
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SingleDataPoint {
@@ -23,6 +25,7 @@ class SingleDataPoint {
         """
         {"value": 0.5, "currency": "USD"}
         """.trimIndent()
+    private val dummyDataPointIdentifier = "extendedCurrencyEquity"
     private val listOfOneCompanyInformation = apiAccessor.testDataProviderForSfdrData.getCompanyInformationWithoutIdentifiers(1)
 
     private fun uploadDummyDatapoint(
@@ -32,7 +35,7 @@ class SingleDataPoint {
         val uploadedDataPoint =
             UploadedDataPoint(
                 dataPointContent = dummyDatapointContent,
-                dataPointIdentifier = "extendedCurrencyEquity",
+                dataPointIdentifier = dummyDataPointIdentifier,
                 companyId = companyId,
                 reportingPeriod = "2022",
             )
@@ -62,7 +65,7 @@ class SingleDataPoint {
             }
         withTechnicalUser(TechnicalUser.Reader) {
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
-            assertEquals(QaStatus.Accepted, datapointMetaInformation.qaStatus)
+            assertEquals(QaStatusBackend.Accepted, datapointMetaInformation.qaStatus)
             assertEquals(true, datapointMetaInformation.currentlyActive)
             assertDoesNotThrow { Backend.dataPointControllerApi.getDataPoint(dataPointId) }
         }
@@ -115,6 +118,36 @@ class SingleDataPoint {
                     assertAccessDeniedWrapper { uploadDummyDatapoint(dummyCompanyId, bypassQa = false) }
                 }
             }
+        }
+    }
+
+    @Test
+    fun `ensure a data point can be uploaded by an uploader, QA approved by a reviewer and retrieved by a reader`() {
+        var dataPointId = ""
+        withTechnicalUser(TechnicalUser.Uploader) {
+            val companyId = createDummyCompany()
+            dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataId
+            val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
+            assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Pending)
+        }
+
+        withTechnicalUser(TechnicalUser.Reader) {
+            assertAccessDeniedWrapper { Backend.dataPointControllerApi.getDataPoint(dataPointId) }
+        }
+
+        withTechnicalUser(TechnicalUser.Reviewer) {
+            val reviewQueueItem = QaService.QaControllerApi.getDataPointReviewQueue().firstOrNull { it.dataId == dataPointId }
+            assert(reviewQueueItem != null) { "Data point not found in review queue" }
+            assert(reviewQueueItem!!.dataPointIdentifier == dummyDataPointIdentifier)
+            assert(reviewQueueItem.qaStatus == QaStatusQaService.Pending)
+            QaService.QaControllerApi.changeDataPointQaStatus(dataPointId, QaStatusQaService.Accepted)
+        }
+
+        withTechnicalUser(TechnicalUser.Reader) {
+            val dataPointInstance = Backend.dataPointControllerApi.getDataPoint(dataPointId)
+            val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
+            assertEquals(dummyDatapointContent, dataPointInstance.dataPointContent)
+            assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Accepted)
         }
     }
 }
