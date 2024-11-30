@@ -1,6 +1,5 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories
 
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.springframework.data.jpa.repository.JpaRepository
@@ -36,11 +35,21 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
     fun findByDataIdOrderByTimestampDesc(dataId: String): List<DataPointQaReviewEntity>
 
     /**
-     * Find all QA information items for all data points currently in the QA status provided by [qaStatus].
-     * Is specifically used to find all data points that are currently in the 'Pending' QA status (the review queue).
-     * @param qaStatus the QA status to filter for
+     * Find the latest QA information items per dataId and filter for the QA status 'Pending'. These entries form the review queue.
      */
-    fun findByQaStatusOrderByTimestampDesc(qaStatus: QaStatus): List<DataPointQaReviewEntity>
+    @Query(
+        nativeQuery = true,
+        value =
+            "WITH RankedByDataId AS (" +
+                "SELECT *, ROW_NUMBER() OVER (PARTITION BY data_id ORDER BY timestamp DESC) AS num_row " +
+                "FROM qa_review " +
+                ") " +
+                "SELECT entry.* FROM RankedByDataId entry " +
+                "WHERE entry.num_row = 1 " +
+                "AND entry.qa_status = 'Pending' " +
+                "ORDER BY entry.timestamp DESC",
+    )
+    fun getAllEntriesForTheReviewQueue(): List<DataPointQaReviewEntity>
 
     /**
      * Find all QA information items filtering by company ID, data point identifier, reporting period and QA status provided via [filter].

@@ -137,7 +137,7 @@ class DataPointQaReviewManager(
      */
     fun getDataPointQaReviewQueue(): List<DataPointQaReviewInformation> =
         dataPointQaReviewRepository
-            .findByQaStatusOrderByTimestampDesc(QaStatus.Pending)
+            .getAllEntriesForTheReviewQueue()
             .map { it.toDataPointQaReviewInformation() }
 
     /**

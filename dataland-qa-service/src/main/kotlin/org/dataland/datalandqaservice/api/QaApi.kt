@@ -226,7 +226,7 @@ interface QaApi {
             ApiResponse(responseCode = "200", description = "Successfully retrieved queue of QA review items for data points."),
         ],
     )
-    @PostMapping(
+    @GetMapping(
         value = ["/data-points/queue"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")

@@ -1017,59 +1017,6 @@
         ]
       }
     },
-    "/data-points/queue": {
-      "post": {
-        "tags": [
-          "qa-controller"
-        ],
-        "summary": "Get the content of the data point review queue.",
-        "description": "Retrieves an ordered list of all QA review items currently in status \u0027Pending\u0027 in reverse chronological order.",
-        "operationId": "getDataPointReviewQueue",
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved queue of QA review items for data points.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DataPointQaReviewInformation"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -2144,6 +2091,59 @@
             "description": "Successfully retrieved data point QA review information.",
             "content": {
               "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataPointQaReviewInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/queue": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get the content of the data point review queue.",
+        "description": "Retrieves an ordered list of all QA review items currently in status \u0027Pending\u0027 in reverse chronological order.",
+        "operationId": "getDataPointReviewQueue",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved queue of QA review items for data points.",
+            "content": {
+              "*/*": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -5697,48 +5697,6 @@
           }
         }
       },
-      "DataPointQaReviewInformation": {
-        "required": [
-          "companyId",
-          "companyName",
-          "dataId",
-          "dataPointIdentifier",
-          "qaStatus",
-          "reportingPeriod",
-          "timestamp"
-        ],
-        "type": "object",
-        "properties": {
-          "dataId": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "dataPointIdentifier": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "timestamp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "qaStatus": {
-            "$ref": "#/components/schemas/QaStatus"
-          },
-          "comment": {
-            "type": "string"
-          },
-          "reviewerId": {
-            "type": "string"
-          }
-        }
-      },
       "QaReportStatusPatch": {
         "required": [
           "active"
@@ -5935,6 +5893,48 @@
           },
           "report": {
             "$ref": "#/components/schemas/AdditionalCompanyInformationData"
+          }
+        }
+      },
+      "DataPointQaReviewInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "dataId",
+          "dataPointIdentifier",
+          "qaStatus",
+          "reportingPeriod",
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "reviewerId": {
+            "type": "string"
           }
         }
       },
