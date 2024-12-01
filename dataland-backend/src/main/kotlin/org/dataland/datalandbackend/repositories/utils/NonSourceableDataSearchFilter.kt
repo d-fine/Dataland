@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.model.DataType
 
 /**
  * A filter class used in the searchNonSourceableData()-Method which allows
- * convenient usage of SEPL instructions in the query
+ * convenient usage of SpEL  instructions in the query
  */
 data class NonSourceableDataSearchFilter(
     val companyId: String?,

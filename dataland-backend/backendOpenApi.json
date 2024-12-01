@@ -277,7 +277,7 @@
         ],
         "summary": "Retrieve information about sourceability of data sets",
         "description": "Retrieve information about the sourceability of data sets by the filters.",
-        "operationId": "getInfoOnSourceabilityOfDataSets",
+        "operationId": "getInfoOnNonSourceabilityOfDataSets",
         "parameters": [
           {
             "name": "companyId",
@@ -362,7 +362,7 @@
         ],
         "summary": "Adds a data set with information on sourceability.",
         "description": "A data set is added with information on its sourceability.",
-        "operationId": "postSourceabilityOfADataset",
+        "operationId": "postNonSourceabilityOfADataset",
         "requestBody": {
           "content": {
             "application/json": {
@@ -18358,21 +18358,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
+          "headquarters": {
+            "type": "string"
+          },
           "countryCode": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
