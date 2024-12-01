@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.model.DataPointDimension
+import org.dataland.datalandbackendutils.model.DataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -87,7 +87,8 @@ class DataPointManager(
     }
 
     /**
-     * Checks if a company is associated with a data point marked for public access
+     * Checks if a company is associated with a data point marked for public access (the function is used as part of the authorization
+     * and wrongly flagged as unused by the IDE).
      * @param dataId the id of the data point
      * @return true if the company is associated with the data point, false otherwise
      */
@@ -125,17 +126,17 @@ class DataPointManager(
 
     /**
      * Method to update the currently active data point for a specific data point dimension
-     * @param dataPointDimension the data point dimension to update the currently active data point for
+     * @param dataPointDimensions the data point dimension to update the currently active data point for
      * @param newActiveDataId the id of the new active data point
      * @param correlationId the correlation id for the operation
      */
     fun updateCurrentlyActiveDataPoint(
-        dataPointDimension: DataPointDimension,
+        dataPointDimensions: DataPointDimensions,
         newActiveDataId: String?,
         correlationId: String,
     ) {
-        logger.info("Updating currently active data point for $dataPointDimension (correlation ID: $correlationId).")
-        val currentlyActiveDataId = metaDataManager.getCurrentlyActiveDataId(dataPointDimension)
+        logger.info("Updating currently active data point for $dataPointDimensions (correlation ID: $correlationId).")
+        val currentlyActiveDataId = metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)
         logger.info("Currently and newly active IDs are $currentlyActiveDataId and $newActiveDataId (correlation ID: $correlationId).")
         if (newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
             logger.info("Setting data point with dataId $currentlyActiveDataId to inactive (correlation ID: $correlationId).")

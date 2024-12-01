@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services.datapoints
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.DataPointDimension
+import org.dataland.datalandbackendutils.model.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -31,20 +31,20 @@ class DataPointMetaInformationManager(
 
     /**
      * Method to get the currently active data id for a specific data point dimension
-     * @param dataPointDimension the data point dimension to get the currently active data id for
+     * @param dataPointDimensions the data point dimension to get the currently active data id for
      * @return the id of the currently active data point
      */
-    fun getCurrentlyActiveDataId(dataPointDimension: DataPointDimension): String? =
-        dataPointMetaInformationRepositoryInterface.getActiveDataPointId(dataPointDimension)
+    fun getCurrentlyActiveDataId(dataPointDimensions: DataPointDimensions): String? =
+        dataPointMetaInformationRepositoryInterface.getActiveDataPointId(dataPointDimensions)
 
     /**
      * Method to get the data point dimension from a data id
      * @param dataId the id of the data point
      * @return the data point dimension
      */
-    fun getDataPointDimensionFromId(dataId: String): DataPointDimension {
+    fun getDataPointDimensionFromId(dataId: String): DataPointDimensions {
         val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
-        return DataPointDimension(
+        return DataPointDimensions(
             reportingPeriod = dataPointMetaInformation.reportingPeriod,
             companyId = dataPointMetaInformation.companyId,
             dataPointIdentifier = dataPointMetaInformation.dataPointIdentifier,

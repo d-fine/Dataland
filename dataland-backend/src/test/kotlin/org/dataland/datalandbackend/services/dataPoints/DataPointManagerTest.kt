@@ -12,7 +12,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformation
 import org.dataland.datalandbackend.services.datapoints.MessageQueueInteractionForDataPoints
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.model.DataPointDimension
+import org.dataland.datalandbackendutils.model.DataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -84,7 +84,7 @@ class DataPointManagerTest {
         val newActiveDataId = "test-new-active-data-id"
         val someId = "dummy"
         val returnDifferentId =
-            DataPointDimension(
+            DataPointDimensions(
                 companyId = "different-id",
                 dataPointIdentifier = "test-identifier",
                 reportingPeriod = "test-period",
@@ -100,13 +100,13 @@ class DataPointManagerTest {
     fun `check that no update happens to the active data id if it does not change or the new id is null`() {
         val newActiveDataId = "test-new-active-data-id"
         val returnNewActiveId =
-            DataPointDimension(
+            DataPointDimensions(
                 companyId = "same-id",
                 dataPointIdentifier = "test-identifier",
                 reportingPeriod = "test-period",
             )
         val returnNull =
-            DataPointDimension(
+            DataPointDimensions(
                 companyId = "no-id",
                 dataPointIdentifier = "test-identifier",
                 reportingPeriod = "test-period",
