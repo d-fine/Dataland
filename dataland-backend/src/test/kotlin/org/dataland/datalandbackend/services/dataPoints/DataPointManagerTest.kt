@@ -1,16 +1,22 @@
-package org.dataland.datalandbackend.services
+package org.dataland.datalandbackend.services.dataPoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.services.CompanyRoleChecker
+import org.dataland.datalandbackend.services.DataManager
+import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.services.datapoints.MessageQueueInteractionForDataPoints
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.model.DataPointDimension
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
@@ -71,5 +77,47 @@ class DataPointManagerTest {
         assert(result.dataPointIdentifier == uploadedDataPoint.dataPointIdentifier)
         assert(result.reportingPeriod == uploadedDataPoint.reportingPeriod)
         assert(result.dataId == dataId)
+    }
+
+    @Test
+    fun `check that the new data id is set to active and the previous one set to inactive`() {
+        val newActiveDataId = "test-new-active-data-id"
+        val someId = "dummy"
+        val returnDifferentId =
+            DataPointDimension(
+                companyId = "different-id",
+                dataPointIdentifier = "test-identifier",
+                reportingPeriod = "test-period",
+            )
+        `when`(metaDataManager.getCurrentlyActiveDataId(returnDifferentId)).thenReturn(someId)
+
+        dataPointManager.updateCurrentlyActiveDataPoint(returnDifferentId, newActiveDataId, correlationId)
+        verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(someId, false)
+        verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
+    }
+
+    @Test
+    fun `check that no update happens to the active data id if it does not change or the new id is null`() {
+        val newActiveDataId = "test-new-active-data-id"
+        val returnNewActiveId =
+            DataPointDimension(
+                companyId = "same-id",
+                dataPointIdentifier = "test-identifier",
+                reportingPeriod = "test-period",
+            )
+        val returnNull =
+            DataPointDimension(
+                companyId = "no-id",
+                dataPointIdentifier = "test-identifier",
+                reportingPeriod = "test-period",
+            )
+        `when`(metaDataManager.getCurrentlyActiveDataId(returnNewActiveId)).thenReturn(newActiveDataId)
+        `when`(metaDataManager.getCurrentlyActiveDataId(returnNull)).thenReturn(null)
+
+        dataPointManager.updateCurrentlyActiveDataPoint(returnNewActiveId, newActiveDataId, correlationId)
+        verify(metaDataManager, times(0)).updateCurrentlyActiveFlagOfDataPoint(any(), any())
+
+        dataPointManager.updateCurrentlyActiveDataPoint(returnNull, null, correlationId)
+        verify(metaDataManager, times(0)).updateCurrentlyActiveFlagOfDataPoint(any(), any())
     }
 }
