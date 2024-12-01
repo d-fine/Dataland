@@ -75,7 +75,7 @@ class NonSourceableDataManager(
             body = objectMapper.writeValueAsString(nonSourceableInfo),
             type = MessageType.DATA_NONSOURCEABLE,
             correlationId = correlationId,
-            exchange = ExchangeName.DATA_NONSOURCEABLE,
+            exchange = ExchangeName.BACKEND_DATA_NONSOURCEABLE,
             routingKey = RoutingKeyNames.DATA_NONSOURCEABLE,
         )
     }

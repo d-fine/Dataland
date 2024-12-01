@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service
 @Service("NonSourceableDataListener")
 class NonSourceableDataListener(
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
+    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -34,21 +34,21 @@ class NonSourceableDataListener(
      * and patches all requests corresponding to this dataset to the request status non-sourceable.
      * @param jsonString the message describing the result of the data non-sourceable event
      * @param type the type of the message
-     * @param id the correlation id of the message
+     * @param correlationId the correlation id of the message
      */
     @RabbitListener(
         bindings = [
             QueueBinding(
                 value =
                     Queue(
-                        "nonSourceableData",
+                        "community-manager.queue.nonSourceableData",
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
                             Argument(name = "defaultRequeueRejected", value = "false"),
                         ],
                     ),
-                exchange = Exchange(ExchangeName.DATA_NONSOURCEABLE, declare = "false"),
+                exchange = Exchange(ExchangeName.BACKEND_DATA_NONSOURCEABLE, declare = "false"),
                 key = [RoutingKeyNames.DATA_NONSOURCEABLE],
             ),
         ],
@@ -76,7 +76,7 @@ class NonSourceableDataListener(
         )
 
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId)
+            nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfo, correlationId)
         }
     }
 }

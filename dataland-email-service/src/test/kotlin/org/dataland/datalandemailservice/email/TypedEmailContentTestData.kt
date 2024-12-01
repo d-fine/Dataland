@@ -5,7 +5,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequ
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceableMail
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
@@ -84,8 +84,8 @@ class TypedEmailContentTestData : ArgumentsProvider {
             "Your answered data request has been automatically closed as no action was taken within the last",
         )
 
-    val dataRequestNonSourceable =
-        DataRequestNonSourceable(
+    val dataRequestNonSourceableMail =
+        DataRequestNonSourceableMail(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NON_SOURCEABLE_COMMENT,
         ).also {
             it.baseUrl = BASE_URL
@@ -217,7 +217,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
             Arguments.of(datasetRequestedClaimOwnership, datasetRequestedClaimOwnershipKeywords),
             Arguments.of(dataRequestAnswered, dataRequestAnsweredKeywords),
             Arguments.of(dataRequestClosed, dataRequestClosedKeywords),
-            Arguments.of(dataRequestNonSourceable, dataRequestNonSourceableKeywords),
+            Arguments.of(dataRequestNonSourceableMail, dataRequestNonSourceableKeywords),
             Arguments.of(companyOwnershipClaimApproved, companyOwnershipClaimApprovedKeywords),
             Arguments.of(accessToDatasetRequested, accessToDatasetRequestedKeywords),
             Arguments.of(accessToDatasetGranted, accessToDatasetGrantedKeywords),

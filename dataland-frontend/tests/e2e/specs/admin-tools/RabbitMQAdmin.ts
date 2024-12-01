@@ -19,7 +19,7 @@ const queues = [
   'requestReceivedInternalStorageDatabaseDataStore',
   'sendEmailService',
   'internal-storage.store_datapoints',
-  'nonSourceableData',
+  'community-manager.queue.nonSourceableData',
 ];
 
 describe('As a developer, I expect the RabbitMQ GUI console to be available to me. Also check if all expected channels exist.', () => {

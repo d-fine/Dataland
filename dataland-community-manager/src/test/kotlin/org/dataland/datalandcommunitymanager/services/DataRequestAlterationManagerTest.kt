@@ -30,7 +30,6 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
-import org.mockito.kotlin.isNull
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
@@ -315,49 +314,5 @@ class DataRequestAlterationManagerTest {
 
         assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
         assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
-    }
-
-    @Test
-    fun `validate that no email is send when the request status changes to Open`() {
-        // to properly test this we would need to set a request to non-sourceable
-        // and then patch it to open
-        // maybe test this in an end2end test
-        dataRequestAlterationManager.patchDataRequest(
-            dataRequestId = dataRequestId,
-            requestStatus = RequestStatus.Open,
-            accessStatus = null,
-            contacts = null,
-            message = null,
-        )
-
-        verify(mockRequestEmailManager, times(0))
-            .sendSingleDataRequestEmail(
-                any(), anySet(), anyString(),
-            )
-    }
-
-    @Test
-    fun `validate that all requests matching a dataset are patched to status nonSourceable`() {
-        dataRequestAlterationManager.patchAllRequestsForThisDatasetToStatusNonSourceable(
-            nonSourceableInfo = dummyNonSourceableData,
-            correlationId = "dummyCorrelationID",
-        )
-
-        verify(mockDataRequestProcessingUtils, times(1))
-            .addNewRequestStatusToHistory(
-                eq(dummyDataRequestEntity), eq(RequestStatus.NonSourceable),
-                any(), eq(dummyRequestChangeReason),
-                any(),
-            )
-
-        verify(mockRequestEmailManager, times(1))
-            .sendEmailsWhenStatusChanged(
-                eq(dummyDataRequestEntity), eq(RequestStatus.NonSourceable), isNull(), anyString(),
-            )
-
-        verify(mockDataRequestProcessingUtils, times(0))
-            .addMessageToMessageHistory(
-                any(), anySet(), anyString(), any(),
-            )
     }
 }

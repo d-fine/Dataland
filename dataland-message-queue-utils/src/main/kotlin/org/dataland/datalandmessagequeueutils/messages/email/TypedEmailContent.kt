@@ -233,7 +233,7 @@ data class DataRequestClosed(
 /**
  * A class for the DataRequestNonSourceable email.
  */
-data class DataRequestNonSourceable(
+data class DataRequestNonSourceableMail(
     val companyName: String,
     val dataTypeLabel: String,
     val reportingPeriod: String,

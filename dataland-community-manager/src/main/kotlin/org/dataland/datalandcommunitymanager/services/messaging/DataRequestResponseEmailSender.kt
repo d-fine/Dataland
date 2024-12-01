@@ -9,7 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceableMail
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
@@ -119,8 +119,8 @@ class DataRequestResponseEmailSender(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        val dataRequestNonSourceable =
-            DataRequestNonSourceable(
+        val dataRequestNonSourceableMail =
+            DataRequestNonSourceableMail(
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
@@ -130,7 +130,7 @@ class DataRequestResponseEmailSender(
             )
         val message =
             EmailMessage(
-                dataRequestNonSourceable, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
+                dataRequestNonSourceableMail, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
