@@ -122,7 +122,7 @@ class SingleDataPoint {
     }
 
     @Test
-    fun `ensure a data point can be uploaded by an uploader, qa approved by a reviewer and retrieved by a reader`() {
+    fun `ensure a data point can be uploaded by an uploader then QA approved by a reviewer and afterwards retrieved by a reader`() {
         var dataPointId = ""
         withTechnicalUser(TechnicalUser.Admin) {
             val companyId = createDummyCompany()

@@ -41,15 +41,17 @@ class DataPointManagerTest {
 
     private val correlationId = "test-correlation-id"
     private val uploaderUserId = "test-user-id"
+    private val dataPointIdentifier = "test-identifier"
+    private val reportingPeriod = "test-period"
 
     @Test
     fun `check that the storeDataPoint function executes the expected calls and returns the expected results`() {
         val uploadedDataPoint =
             UploadedDataPoint(
-                dataPointIdentifier = "test-identifier",
+                dataPointIdentifier = dataPointIdentifier,
                 dataPointContent = "test-content",
                 companyId = IdUtils.generateUUID(),
-                reportingPeriod = "test-period",
+                reportingPeriod = reportingPeriod,
             )
 
         `when`(objectMapper.writeValueAsString(uploadedDataPoint)).thenReturn("json-content")
@@ -86,8 +88,8 @@ class DataPointManagerTest {
         val returnDifferentId =
             DataPointDimensions(
                 companyId = "different-id",
-                dataPointIdentifier = "test-identifier",
-                reportingPeriod = "test-period",
+                dataPointIdentifier = dataPointIdentifier,
+                reportingPeriod = reportingPeriod,
             )
         `when`(metaDataManager.getCurrentlyActiveDataId(returnDifferentId)).thenReturn(someId)
 
@@ -102,14 +104,14 @@ class DataPointManagerTest {
         val returnNewActiveId =
             DataPointDimensions(
                 companyId = "same-id",
-                dataPointIdentifier = "test-identifier",
-                reportingPeriod = "test-period",
+                dataPointIdentifier = dataPointIdentifier,
+                reportingPeriod = reportingPeriod,
             )
         val returnNull =
             DataPointDimensions(
                 companyId = "no-id",
-                dataPointIdentifier = "test-identifier",
-                reportingPeriod = "test-period",
+                dataPointIdentifier = dataPointIdentifier,
+                reportingPeriod = reportingPeriod,
             )
         `when`(metaDataManager.getCurrentlyActiveDataId(returnNewActiveId)).thenReturn(newActiveDataId)
         `when`(metaDataManager.getCurrentlyActiveDataId(returnNull)).thenReturn(null)
