@@ -60,7 +60,7 @@ class NonSourceableDataListener(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DATA_NONSOURCEABLE)
         val nonSourceableInfo = MessageQueueUtils.readMessagePayload<NonSourceableInfo>(jsonString, objectMapper)
-        if (nonSourceableInfo.dataType.toString().isEmpty() ||
+        if (
             nonSourceableInfo.companyId.isEmpty() ||
             nonSourceableInfo.reportingPeriod.isEmpty()
         ) {

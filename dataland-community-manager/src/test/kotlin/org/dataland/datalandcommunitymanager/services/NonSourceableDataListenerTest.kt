@@ -30,6 +30,11 @@ class NonSourceableDataListenerTest {
         | "reportingPeriod": "2023", "isNonSourceable": true}
         """.trimMargin()
 
+    private val nonSourceableJsonStringNoReportingPeriod =
+        """{"companyId": "exampleCompany", "dataType": "sfdr",
+        | "reportingPeriod": "", "isNonSourceable": true}
+        """.trimMargin()
+
     private val nonSourceableJsonStringValidButSourceable =
         """{"companyId": "exampleCompany", "dataType": "sfdr",
         | "reportingPeriod": "2023", "isNonSourceable": false, "reason": "test"}
@@ -48,11 +53,20 @@ class NonSourceableDataListenerTest {
             "test",
         )
 
-    private val nonSourceableNoCompanyId =
+    private val nonSourceableInfoNoCompanyId =
         NonSourceableInfo(
             "",
             DataTypeEnum.sfdr,
             "2023",
+            true,
+            "test",
+        )
+
+    private val nonSourceableInfoNoReportingPeriod =
+        NonSourceableInfo(
+            "exampleCompany",
+            DataTypeEnum.sfdr,
+            "",
             true,
             "test",
         )
@@ -74,9 +88,11 @@ class NonSourceableDataListenerTest {
 
         `when`(mockObjectMapper.readValue(nonSourceableJsonStringValid, NonSourceableInfo::class.java)).thenReturn(nonSourceableInfoValid)
         `when`(mockObjectMapper.readValue(nonSourceableJsonStringNoCompanyId, NonSourceableInfo::class.java))
-            .thenReturn(nonSourceableNoCompanyId)
+            .thenReturn(nonSourceableInfoNoCompanyId)
         `when`(mockObjectMapper.readValue(nonSourceableJsonStringValidButSourceable, NonSourceableInfo::class.java))
             .thenReturn(nonSourceableInfoValidButSourceable)
+        `when`(mockObjectMapper.readValue(nonSourceableJsonStringNoReportingPeriod, NonSourceableInfo::class.java))
+            .thenReturn(nonSourceableInfoNoReportingPeriod)
     }
 
     @Test
@@ -89,6 +105,9 @@ class NonSourceableDataListenerTest {
     fun `should throw exception for incomplete data`() {
         assertThrows<MessageQueueRejectException> {
             nonSourceableDataListener.processDataReportedNotSourceableMessage(nonSourceableJsonStringNoCompanyId, type, correlationId)
+        }
+        assertThrows<MessageQueueRejectException> {
+            nonSourceableDataListener.processDataReportedNotSourceableMessage(nonSourceableJsonStringNoReportingPeriod, type, correlationId)
         }
     }
 
