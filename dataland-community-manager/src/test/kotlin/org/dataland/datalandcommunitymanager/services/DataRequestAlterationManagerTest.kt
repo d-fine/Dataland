@@ -38,6 +38,7 @@ import java.util.UUID
 
 class DataRequestAlterationManagerTest {
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
+    private lateinit var nonSourceableDataManager: NonSourceableDataManager
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var mockMetaControllerApi: MetaDataControllerApi
@@ -61,6 +62,13 @@ class DataRequestAlterationManagerTest {
                 dataType = "dummyDataType",
                 reportingPeriod = "dummyPeriod",
                 creationTimestamp = 123456,
+                datalandCompanyId = "dummyCompanyId",
+            ),
+            DataRequestEntity(
+                userId = "1234",
+                dataType = "p2p",
+                reportingPeriod = "dummyPeriod",
+                creationTimestamp = 0,
                 datalandCompanyId = "dummyCompanyId",
             ),
         )
@@ -314,5 +322,21 @@ class DataRequestAlterationManagerTest {
 
         assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
         assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
+    }
+
+    @Test
+    fun `validate that two request for labelled nonSourceable dataset are set to nonSourceable`() {
+        val dataRequestOpen: DataRequestEntity = dummyDataRequestEntities[1]
+        val dataRequestNonSourceable: DataRequestEntity = dummyDataRequestEntities[2]
+
+        nonSourceableDataManager =
+            NonSourceableDataManager(
+                dataRequestAlterationManager = dataRequestAlterationManager,
+                dataRequestRepository = mockDataRequestRepository,
+            )
+        nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableData, correlationId)
+
+        assertEquals(RequestStatus.NonSourceable, dataRequestNonSourceable.requestStatus)
+        assertEquals(RequestStatus.Open, dataRequestOpen.requestStatus)
     }
 }
