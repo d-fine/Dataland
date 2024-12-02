@@ -85,6 +85,8 @@ class DataRequestNonSourceableTest {
         apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
             nonSourceableInfo = nonSourceableInfo,
         )
+// insert test of get endpoint
+
         val requestIdOfstoredSingleDataRequestFirstUserSameRequest =
             UUID
                 .fromString(storedSingleDataRequestFirstUserSameRequest[0].dataRequestId)
@@ -94,6 +96,8 @@ class DataRequestNonSourceableTest {
         val requestIdOfStoredSingleDataRequestFirstUserOtherRequest =
             UUID
                 .fromString(storedSingleDataRequestFirstUserOtherRequest[0].dataRequestId)
+
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val updatedstoredSingleDataRequestFirstUserSameRequest =
             requestControllerApi
