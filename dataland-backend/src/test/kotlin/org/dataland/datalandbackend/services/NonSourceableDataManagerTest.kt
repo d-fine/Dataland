@@ -64,7 +64,7 @@ class NonSourceableDataManagerTest(
     }
 
     @Test
-    fun `check that an exception is thrown when non-existing companyId is provided processing sourcebility storage`() {
+    fun `check that an exception is thrown when non-existing companyId is provided processing sourceability storage`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
         val dataType = DataType("eutaxonomy-financials")
         val nonSourceableInfo = NonSourceableInfo(nonExistingCompanyId, dataType, "2023", true, "test reason")
