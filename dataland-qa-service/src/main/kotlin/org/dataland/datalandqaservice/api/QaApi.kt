@@ -154,6 +154,7 @@ interface QaApi {
         @RequestParam dataPointIdentifier: String?,
         @RequestParam reportingPeriod: String?,
         @RequestParam qaStatus: QaStatus?,
+        @RequestParam(defaultValue = true.toString()) onlyLatest: Boolean?,
         @RequestParam(defaultValue = "10") chunkSize: Int?,
         @RequestParam(defaultValue = "0") chunkIndex: Int?,
     ): ResponseEntity<List<DataPointQaReviewInformation>>

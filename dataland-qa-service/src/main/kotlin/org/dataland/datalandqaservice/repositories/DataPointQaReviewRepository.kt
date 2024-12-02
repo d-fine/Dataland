@@ -38,16 +38,14 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
      * Find the latest QA information items per dataId and filter for the QA status 'Pending'. These entries form the review queue.
      */
     @Query(
-        nativeQuery = true,
-        value =
-            "WITH RankedByDataId AS (" +
-                "SELECT *, ROW_NUMBER() OVER (PARTITION BY data_id ORDER BY timestamp DESC) AS num_row " +
-                "FROM data_point_qa_review " +
-                ") " +
-                "SELECT entry.* FROM RankedByDataId entry " +
-                "WHERE entry.num_row = 1 " +
-                "AND entry.qa_status = 'Pending' " +
-                "ORDER BY entry.timestamp DESC",
+        "WITH RankedByDataId AS (" +
+            "SELECT dataPointQaReview, " +
+            "ROW_NUMBER() OVER (PARTITION BY dataPointQaReview.dataId ORDER BY dataPointQaReview.timestamp DESC) AS num_row " +
+            "FROM DataPointQaReviewEntity dataPointQaReview) " +
+            "SELECT entry FROM RankedByDataId entry " +
+            "WHERE entry.num_row = 1 " +
+            "AND entry.qaStatus = 'Pending' " +
+            "ORDER BY entry.timestamp DESC",
     )
     fun getAllEntriesForTheReviewQueue(): List<DataPointQaReviewEntity>
 
@@ -67,7 +65,34 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
-    fun findByFilters(
+    fun findByFilter(
+        @Param("filter") filter: DataPointQaReviewItemFilter,
+        @Param("resultLimit") resultLimit: Int? = 100,
+        @Param("resultOffset") resultOffset: Int? = 0,
+    ): List<DataPointQaReviewEntity>
+
+    /**
+     * Find all QA information items filtering by company ID, data point identifier, reporting period and QA status provided via [filter].
+     * Results are paginated using [resultLimit] and [resultOffset] and only contain the most recent entry per dataId.
+     * @param filter the filter to apply to the search containing the company ID, data point identifier, reporting period and the QA status
+     * @param resultLimit the maximum number of results to return
+     * @param resultOffset the offset to start the result set from
+     */
+    @Query(
+        "WITH RankedByDataId AS (" +
+            "SELECT dataPointQaReview, " +
+            "ROW_NUMBER() OVER (PARTITION BY dataPointQaReview.dataId ORDER BY dataPointQaReview.timestamp DESC) AS num_row " +
+            "FROM DataPointQaReviewEntity dataPointQaReview) " +
+            "SELECT entry FROM RankedByDataId entry " +
+            "WHERE entry.num_row = 1 " +
+            "AND (:#{#filter.companyId} IS NULL OR entry.companyId = ':#{#filter.companyId}') " +
+            "AND (:#{#filter.dataPointIdentifier} IS NULL OR entry.dataPointIdentifier = ':#{#filter.dataPointIdentifier}') " +
+            "AND (:#{#filter.reportingPeriod} IS NULL OR entry.reportingPeriod = ':#{#filter.reportingPeriod}') " +
+            "AND (:#{#filter.qaStatus} IS NULL OR entry.qaStatus = ':#{#filter.qaStatus}')" +
+            "ORDER BY entry.timestamp DESC " +
+            "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
+    )
+    fun findByFilterLatestOnly(
         @Param("filter") filter: DataPointQaReviewItemFilter,
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,

@@ -7,6 +7,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataP
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -135,18 +136,24 @@ class QaController(
         dataPointIdentifier: String?,
         reportingPeriod: String?,
         qaStatus: QaStatus?,
+        onlyLatest: Boolean?,
         chunkSize: Int?,
         chunkIndex: Int?,
     ): ResponseEntity<List<DataPointQaReviewInformation>> {
-        logger.info("Received request to retrieve the review information of the dataset with identifier $companyId")
-        return ResponseEntity.ok(
-            dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(
+        logger.info("Received request to retrieve the review information of the data point with identifier $companyId")
+        val searchFilter =
+            DataPointQaReviewItemFilter(
                 companyId = companyId,
                 dataPointIdentifier = dataPointIdentifier,
-                reportingPeriod,
-                qaStatus,
-                chunkSize,
-                chunkIndex,
+                reportingPeriod = reportingPeriod,
+                qaStatus = qaStatus?.toString(),
+            )
+        return ResponseEntity.ok(
+            dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(
+                searchFilter = searchFilter,
+                onlyLatest = onlyLatest,
+                chunkSize = chunkSize,
+                chunkIndex = chunkIndex,
             ),
         )
     }
