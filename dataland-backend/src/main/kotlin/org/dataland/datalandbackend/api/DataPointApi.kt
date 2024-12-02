@@ -43,20 +43,7 @@ interface DataPointApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize(
-        "hasRole('ROLE_UPLOADER') or " +
-            "(hasRole('ROLE_USER') and " +
-            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#uploadedDataPoint.companyId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
-            ") or " +
-            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#uploadedDataPoint.companyId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
-            ")" +
-            ")" +
-            ")",
-    )
+    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#uploadedDataPoint.companyId)")
     fun postDataPoint(
         @Valid @RequestBody
         uploadedDataPoint: UploadedDataPoint,
@@ -81,7 +68,7 @@ interface DataPointApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataId)")
     fun getDataPoint(
         @PathVariable dataId: String,
     ): ResponseEntity<UploadedDataPoint>
