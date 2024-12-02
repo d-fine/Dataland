@@ -68,6 +68,9 @@ class DataRequestNonSourceableTest {
         requestControllerApi.postSingleDataRequest(singleDataRequestSecondUserSameRequest)
         val storedSingleDataRequestSecondUserSameRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
+        assertEquals(RequestStatus.Open, storedSingleDataRequestFirstUserSameRequest[0].requestStatus)
+        assertEquals(RequestStatus.Open, storedSingleDataRequestSecondUserSameRequest[0].requestStatus)
+
         val nonSourceableInfo =
             NonSourceableInfo(
                 companyId,
