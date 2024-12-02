@@ -146,7 +146,7 @@ class NonSourceableDataManager(
         dataType: DataType,
         reportingPeriod: String,
         uploaderId: String,
-    ) {
+    ): NonSourceableInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
 
         val nonSourceableEntity =
@@ -160,6 +160,6 @@ class NonSourceableDataManager(
                 creationTime = creationTime,
                 userId = uploaderId,
             )
-        nonSourceableDataRepository.save(nonSourceableEntity)
+        return nonSourceableDataRepository.save(nonSourceableEntity).toApiModel()
     }
 }
