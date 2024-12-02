@@ -109,7 +109,7 @@ describe('Component tests for the view data request page', function (): void {
   function checkBasicPageElementsAsUser(requestStatus: RequestStatus): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist').should('have.class', 'card__title');
-    cy.contains('Provided Contact Details & Messages').should('exist').should('have.class', 'card__title');
+    cy.contains('Provided Contact Details and Messages').should('exist').should('have.class', 'card__title');
     cy.contains('Request is').should('exist').should('have.class', 'card__title');
     cy.get('[data-test="status_history_toggle"]').should('exist');
 
@@ -138,7 +138,7 @@ describe('Component tests for the view data request page', function (): void {
   function checkBasicPageElementsAsAdmin(requestStatus: RequestStatus): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist').should('have.class', 'card__title');
-    cy.contains('Provided Contact Details & Messages').should('not.exist');
+    cy.contains('Provided Contact Details and Messages').should('not.exist');
     cy.contains('Request is').should('exist').should('have.class', 'card__title');
     cy.get('[data-test="status_history_toggle"]').should('exist');
 
@@ -225,10 +225,7 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="card_reopen')
       .should('exist')
       .within(() => {
-        cy.contains(
-          'Currently your request has the status non-sourceable and is not actively searched for.' +
-            ' However, you will still be informed if your request is answered.'
-        ).should('exist');
+        cy.contains('Currently, your request has the status non-sourceable.').should('exist');
         cy.contains('Reopen Request').should('exist');
         cy.contains('Reopen request').should('exist').click();
       });
