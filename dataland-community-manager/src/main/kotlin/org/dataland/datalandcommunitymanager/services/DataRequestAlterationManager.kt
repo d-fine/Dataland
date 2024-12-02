@@ -126,7 +126,8 @@ class DataRequestAlterationManager
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
             logger.info(
                 "Changing request status for company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name}",
+                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name} to answered. " +
+                    "Correlation ID: $correlationId",
             )
             val dataRequestEntities =
                 dataRequestRepository.searchDataRequestEntity(
