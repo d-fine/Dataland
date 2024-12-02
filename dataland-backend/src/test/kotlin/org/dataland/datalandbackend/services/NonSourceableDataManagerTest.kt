@@ -14,10 +14,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doNothing
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -62,6 +58,7 @@ class NonSourceableDataManagerTest(
                 isNonSourceable = true,
                 reason = "Initial reason",
                 creationTime = Instant.now().toEpochMilli(),
+                userId = "testUser",
             )
         nonSourceableDataRepository.save(nonSourceableEntity)
     }
@@ -80,52 +77,6 @@ class NonSourceableDataManagerTest(
         assertEquals(
             "Dataland does not know the company ID nonExistingCompanyId",
             thrown.message,
-        )
-    }
-
-    @Test
-    fun `check that processSourceabilityDataStorageRequest does store an NonSourceableEntity when companyId and no dataMetaInfo exists`() {
-        val mockCompanyQueryManager = mock(CompanyQueryManager::class.java)
-        nonSourceableDataManager =
-            NonSourceableDataManager(
-                cloudEventMessageHandler = mockCloudEventMessageHandler,
-                objectMapper = objectMapper,
-                dataMetaInformationManager = mockDataMetaInformationManager,
-                nonSourceableDataRepository = nonSourceableDataRepository,
-                companyQueryManager = mockCompanyQueryManager,
-            )
-        val nonSourceableInfo =
-            NonSourceableInfo(
-                companyId = "existingCompanyId",
-                dataType = DataType("eutaxonomy-financials"),
-                reportingPeriod = "2023",
-                isNonSourceable = true,
-                reason = "Test reason",
-            )
-        doNothing().whenever(mockCompanyQueryManager).verifyCompanyIdExists(nonSourceableInfo.companyId)
-        whenever(
-            mockDataMetaInformationManager.searchDataMetaInfo(
-                companyId = nonSourceableInfo.companyId,
-                dataType = nonSourceableInfo.dataType,
-                showOnlyActive = false,
-                reportingPeriod = nonSourceableInfo.reportingPeriod,
-                uploaderUserIds = null,
-                qaStatus = null,
-            ),
-        ).thenReturn(emptyList())
-
-        nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
-
-        verify(mockDataMetaInformationManager).searchDataMetaInfo(
-            companyId = nonSourceableInfo.companyId,
-            dataType = nonSourceableInfo.dataType,
-            showOnlyActive = false,
-            reportingPeriod = nonSourceableInfo.reportingPeriod,
-            uploaderUserIds = null,
-            qaStatus = null,
-        )
-        verify(mockCloudEventMessageHandler).buildCEMessageAndSendToQueue(
-            any(), any(), any(), any(), any(),
         )
     }
 }

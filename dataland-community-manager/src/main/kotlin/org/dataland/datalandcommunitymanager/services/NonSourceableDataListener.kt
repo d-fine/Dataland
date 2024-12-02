@@ -72,7 +72,8 @@ class NonSourceableDataListener(
         }
         logger.info(
             "Received data-non-sourceable-message for data type: ${nonSourceableInfo.dataType} " +
-                "company ID: ${nonSourceableInfo.companyId} and reporting period: ${nonSourceableInfo.reportingPeriod}",
+                "company ID: ${nonSourceableInfo.companyId} and reporting period: ${nonSourceableInfo.reportingPeriod}. " +
+                "Correlation ID: $correlationId",
         )
 
         MessageQueueUtils.rejectMessageOnException {

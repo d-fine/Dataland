@@ -11,6 +11,7 @@ import jakarta.persistence.Table
 import org.dataland.datalandbackend.converter.DataTypeConverter
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import java.util.UUID
 
 /**
@@ -38,6 +39,8 @@ data class NonSourceableEntity(
     var reason: String,
     @Column(name = "creation_time", nullable = false)
     var creationTime: Long,
+    @Column(name = "user_id", nullable = false)
+    var userId: String,
 ) {
     /**
      * Converts the entity to an API model object
@@ -50,5 +53,20 @@ data class NonSourceableEntity(
             reportingPeriod = reportingPeriod,
             isNonSourceable = isNonSourceable,
             reason = reason,
+        )
+
+    /**
+     * Converts the entity to an API Response model object
+     * @returns the API model object
+     */
+    fun toApiModelResponse(): NonSourceableInfoResponse =
+        NonSourceableInfoResponse(
+            companyId = companyId,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
+            isNonSourceable = isNonSourceable,
+            reason = reason,
+            creationTime = creationTime,
+            userId = userId,
         )
 }

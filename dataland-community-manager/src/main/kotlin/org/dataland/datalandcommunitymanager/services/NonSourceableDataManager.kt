@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
+import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service
 @Service
 class NonSourceableDataManager(
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
-    @Autowired private val dataRequestQueryManager: DataRequestQueryManager,
+    @Autowired private val dataRequestRepository: DataRequestRepository,
 ) {
     /**
      * Method to patch all data request corresponding to a dataset
@@ -24,7 +25,7 @@ class NonSourceableDataManager(
     ) {
         if (nonSourceableInfo.isNonSourceable) {
             val dataRequestEntities =
-                dataRequestQueryManager.findAllRequestsCorrespondingToADataset(
+                dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
                     datalandCompanyId = nonSourceableInfo.companyId,
                     dataType = nonSourceableInfo.dataType.toString(),
                     reportingPeriod = nonSourceableInfo.reportingPeriod,
