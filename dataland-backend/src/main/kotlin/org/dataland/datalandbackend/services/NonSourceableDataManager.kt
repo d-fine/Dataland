@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoRespo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -70,7 +71,11 @@ class NonSourceableDataManager(
             )
         if (dataMetaInfo.isNotEmpty()) {
             logger.info("Creating a NonSourceableEntity failed because the dataset exists (correlationId: $correlationId)")
-            return
+            throw InvalidInputApiException(
+                "DataMetaInfo exists for the triple companyId, reportingPeriod and datyType. ",
+                "DataMetaInfo exists for companyId ${nonSourceableInfo.companyId}, " + "reporting period " +
+                    "${nonSourceableInfo.reportingPeriod} and dataType ${nonSourceableInfo.dataType}. ",
+            )
         }
         storeNonSourceableData(nonSourceableInfo)
         logger.info("NonSourceableEntity has been saved to data base during process with correlationId $correlationId")
