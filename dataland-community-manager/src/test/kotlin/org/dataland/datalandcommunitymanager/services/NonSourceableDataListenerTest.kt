@@ -96,7 +96,7 @@ class NonSourceableDataListenerTest {
     }
 
     @Test
-    fun `should process non-sourceable message successfully`() {
+    fun `should process non sourceable message successfully`() {
         nonSourceableDataListener.processDataReportedNotSourceableMessage(nonSourceableJsonStringValid, type, correlationId)
         verify(mockNonSourceableDataManager).patchAllRequestsForThisDatasetToStatusNonSourceable(nonSourceableInfoValid, correlationId)
     }
