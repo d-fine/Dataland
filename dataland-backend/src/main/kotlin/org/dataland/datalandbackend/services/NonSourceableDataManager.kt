@@ -34,7 +34,7 @@ class NonSourceableDataManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * The method stores a non-sourceable dataset in the nonSourceableDataRepository
+     * The method stores meta information to a non-sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
     @Transactional
