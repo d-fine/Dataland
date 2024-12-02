@@ -5,7 +5,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.AccessToDatasetRequ
 import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipClaimApproved
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceableMail
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
@@ -85,7 +85,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
         )
 
     val dataRequestNonSourceableMail =
-        DataRequestNonSourceableMail(
+        DataRequestNonSourceable(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NON_SOURCEABLE_COMMENT,
         ).also {
             it.baseUrl = BASE_URL
