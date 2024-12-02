@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -96,7 +97,7 @@ interface MetaDataApi {
      * @return A list of NonSourceableInfo matching the filters, or an empty list if none found.
      */
     @Operation(
-        summary = "Retrieve information about sourceability of data sets",
+        summary = "Retrieve information about the sourceability of data sets",
         description =
             "Retrieve information about the sourceability of data sets by the filters.",
     )
@@ -115,7 +116,7 @@ interface MetaDataApi {
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
         @RequestParam nonSourceable: Boolean? = null,
-    ): ResponseEntity<List<NonSourceableInfo>>
+    ): ResponseEntity<List<NonSourceableInfoResponse>>
 
     /**
      * Adds a data set with information on sourceability.

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
@@ -12,6 +13,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -38,6 +40,7 @@ class NonSourceableDataManager(
     @Transactional
     fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): NonSourceableInfo? {
         val creationTime = Instant.now().toEpochMilli()
+        val userId = DatalandAuthentication.fromContext().userId
         val nonSourceableEntity =
             NonSourceableEntity(
                 eventId = null,
@@ -47,6 +50,7 @@ class NonSourceableDataManager(
                 isNonSourceable = nonSourceableInfo.isNonSourceable,
                 reason = nonSourceableInfo.reason,
                 creationTime = creationTime,
+                userId = userId,
             )
         return nonSourceableDataRepository.save(nonSourceableEntity).toApiModel()
     }
@@ -70,7 +74,7 @@ class NonSourceableDataManager(
             return
         }
         storeNonSourceableData(nonSourceableInfo)
-        logger.info("NonSourceableEntity has been saved to data based during process with correlationId $correlationId")
+        logger.info("NonSourceableEntity has been saved to data base during process with correlationId $correlationId")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(nonSourceableInfo),
             type = MessageType.DATA_NONSOURCEABLE,
@@ -81,10 +85,10 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method retrieves non sourceable datasets by given filters.
+     * The method retrieves non-sourceable datasets by given filters.
      * @param companyId if not empty, filters the requested information by companyId.
      * @param dataType if not empty, filters the requested information by data type.
-     * @param reportingPeriod if not empty, filters the requested information reporting period.
+     * @param reportingPeriod if not empty, filters the requested information by reporting period.
      * @param nonSourceable if not null, filters the requested information to include only datasets
      *                      with a non-sourceable flag matching the provided value (true or false).
      * @return a list of NonSourceableInfo objects that match the specified filters.
@@ -94,7 +98,7 @@ class NonSourceableDataManager(
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): List<NonSourceableInfo> {
+    ): List<NonSourceableInfoResponse> {
         val nonSourceableEntities =
             nonSourceableDataRepository
                 .searchNonSourceableData(
@@ -105,7 +109,7 @@ class NonSourceableDataManager(
                         nonSourceable,
                     ),
                 )
-        return nonSourceableEntities.map { it.toApiModel() }
+        return nonSourceableEntities.map { it.toApiModelResponse() }
     }
 
     /**
@@ -183,6 +187,7 @@ class NonSourceableDataManager(
                 isNonSourceable = false,
                 reason = "Uploaded by a user with the Id:$uploaderId",
                 creationTime = creationTime,
+                userId = uploaderId,
             )
         nonSourceableDataRepository.save(nonSourceableEntity)
     }

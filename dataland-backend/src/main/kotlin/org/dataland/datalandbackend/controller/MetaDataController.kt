@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
+import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
@@ -69,7 +70,7 @@ class MetaDataController(
         dataType: DataType?,
         reportingPeriod: String?,
         nonSourceable: Boolean?,
-    ): ResponseEntity<List<NonSourceableInfo>> =
+    ): ResponseEntity<List<NonSourceableInfoResponse>> =
         ResponseEntity.ok(
             nonSourceableDataManager
                 .getNonSourceableDataByFilters(
