@@ -75,7 +75,7 @@ class NonSourceableDataManagerTest(
                 )
             }
         assertEquals(
-            "Dataland does not know the company ID nonExistingCompanyId",
+            "Dataland does not know the company ID $nonExistingCompanyId",
             thrown.message,
         )
     }
