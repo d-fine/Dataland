@@ -15,6 +15,7 @@ import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillis
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestNonSourceableTest {
@@ -84,9 +85,28 @@ class DataRequestNonSourceableTest {
         apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
             nonSourceableInfo = nonSourceableInfo,
         )
+        val requestIdOfstoredSingleDataRequestFirstUserSameRequest =
+            UUID
+                .fromString(storedSingleDataRequestFirstUserSameRequest[0].dataRequestId)
+        val requestIdOfstoredSingleDataRequestSecondUserSameRequest =
+            UUID
+                .fromString(storedSingleDataRequestSecondUserSameRequest[0].dataRequestId)
+        val requestIdOfStoredSingleDataRequestFirstUserOtherRequest =
+            UUID
+                .fromString(storedSingleDataRequestFirstUserOtherRequest[0].dataRequestId)
 
-        assertEquals(RequestStatus.NonSourceable, storedSingleDataRequestFirstUserSameRequest[0].requestStatus)
-        assertEquals(RequestStatus.NonSourceable, storedSingleDataRequestSecondUserSameRequest[0].requestStatus)
-        assertEquals(RequestStatus.Open, storedSingleDataRequestFirstUserOtherRequest[0].requestStatus)
+        val updatedstoredSingleDataRequestFirstUserSameRequest =
+            requestControllerApi
+                .getDataRequestById(requestIdOfstoredSingleDataRequestFirstUserSameRequest)
+        val updatedstoredSingleDataRequestSecondUserSameRequest =
+            requestControllerApi
+                .getDataRequestById(requestIdOfstoredSingleDataRequestSecondUserSameRequest)
+        val updatedstoredSingleDataRequestFirstUserOtherRequest =
+            requestControllerApi
+                .getDataRequestById(requestIdOfStoredSingleDataRequestFirstUserOtherRequest)
+
+        assertEquals(RequestStatus.NonSourceable, updatedstoredSingleDataRequestFirstUserSameRequest.requestStatus)
+        assertEquals(RequestStatus.NonSourceable, updatedstoredSingleDataRequestSecondUserSameRequest.requestStatus)
+        assertEquals(RequestStatus.Open, updatedstoredSingleDataRequestFirstUserOtherRequest.requestStatus)
     }
 }
