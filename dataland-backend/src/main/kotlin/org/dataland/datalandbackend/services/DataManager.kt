@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
 
@@ -78,7 +77,6 @@ class DataManager
          * @param storableDataSet the dataset to store
          * @param correlationId the correlation id of the insertion process
          */
-        @Transactional(propagation = Propagation.NEVER)
         fun storeMetaDataFrom(
             dataId: String,
             storableDataSet: StorableDataSet,

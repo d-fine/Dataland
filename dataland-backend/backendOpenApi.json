@@ -275,7 +275,7 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Retrieve information about sourceability of data sets",
+        "summary": "Retrieve information about the sourceability of data sets",
         "description": "Retrieve information about the sourceability of data sets by the filters.",
         "operationId": "getInfoOnNonSourceabilityOfDataSets",
         "parameters": [
@@ -320,7 +320,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NonSourceableInfo"
+                    "$ref": "#/components/schemas/NonSourceableInfoResponse"
                   }
                 }
               }
@@ -18199,6 +18199,42 @@
           }
         }
       },
+      "NonSourceableInfoResponse": {
+        "required": [
+          "companyId",
+          "creationTime",
+          "dataType",
+          "isNonSourceable",
+          "reason",
+          "reportingPeriod",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "isNonSourceable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "creationTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "string"
+          }
+        }
+      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -18358,20 +18394,20 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
           },
+          "companyId": {
+            "type": "string"
+          },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
             "type": "string"
           },
           "lei": {
@@ -18399,10 +18435,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
