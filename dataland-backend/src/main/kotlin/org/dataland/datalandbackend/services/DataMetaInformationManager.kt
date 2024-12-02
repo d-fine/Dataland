@@ -42,6 +42,7 @@ class DataMetaInformationManager(
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
      * Ensures that only one dataset per group has the active status
      */
+    @Transactional
     fun setActiveDataset(dataMetaInfo: DataMetaInformationEntity) {
         if (dataMetaInfo.currentlyActive == true) {
             return
@@ -66,7 +67,7 @@ class DataMetaInformationManager(
             dataMetaInformationRepositoryInterface.getActiveDataset(company, dataType, reportingPeriod)
         if (metaInfoOfCurrentlyActiveDataset != null) {
             metaInfoOfCurrentlyActiveDataset.currentlyActive = null
-            dataMetaInformationRepositoryInterface.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
+            dataMetaInformationRepositoryInterface.save(metaInfoOfCurrentlyActiveDataset)
         }
     }
 
@@ -75,6 +76,7 @@ class DataMetaInformationManager(
      * @param dataId filters the requested meta info to one specific data ID
      * @return meta info about data behind the dataId
      */
+    @Transactional(readOnly = true)
     fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity =
         dataMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
