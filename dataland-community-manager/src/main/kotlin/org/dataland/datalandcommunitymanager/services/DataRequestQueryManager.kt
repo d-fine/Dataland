@@ -58,7 +58,7 @@ class DataRequestQueryManager
         }
 
         /** This method retrieves an extended stored data request based on a data request entity
-         * @param dataRequestEntity dataland data request entity
+         * @param dataRequestEntity data request entity
          * @returns extended stored data request
          */
         private fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
@@ -167,27 +167,5 @@ class DataRequestQueryManager
         fun getNumberOfDataRequests(filter: DataRequestsFilter): Int {
             filter.setupEmailAddressFilter(keycloakUserControllerApiService)
             return dataRequestRepository.getNumberOfRequests(filter)
-        }
-
-        /**
-         * Method to find all requests that correspond to a dataset
-         * @param datalandCompanyId the companyID on dataland
-         * @param dataType the framework of the dataset
-         * @param reportingPeriod the reporting period of the dataset
-         * @returns all data request entities corresponding to this dataset
-         */
-        @Transactional(readOnly = true)
-        fun findAllRequestsCorrespondingToADataset(
-            datalandCompanyId: String,
-            dataType: String,
-            reportingPeriod: String,
-        ): List<DataRequestEntity>? {
-            val dataRequestEntities =
-                dataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                    datalandCompanyId = datalandCompanyId,
-                    dataType = dataType,
-                    reportingPeriod = reportingPeriod,
-                )
-            return dataRequestEntities
         }
     }
