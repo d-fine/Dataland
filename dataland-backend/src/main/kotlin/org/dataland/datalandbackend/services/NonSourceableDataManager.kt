@@ -17,7 +17,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 /**
@@ -37,7 +36,6 @@ class NonSourceableDataManager(
      * The method stores a non-sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
-    @Transactional
     fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): NonSourceableInfo? {
         val creationTime = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
@@ -166,7 +164,6 @@ class NonSourceableDataManager(
      * @param reportingPeriod the reporting period of the dataset, typically a specific year or quarter.
      * @param uploaderId the ID of the user who uploaded the dataset, used for audit purposes.
      */
-    @Transactional
     fun storeSourceableData(
         companyId: String,
         dataType: DataType,

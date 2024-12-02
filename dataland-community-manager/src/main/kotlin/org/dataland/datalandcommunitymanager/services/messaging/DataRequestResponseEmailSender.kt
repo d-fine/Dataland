@@ -9,7 +9,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
-import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceableMail
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
@@ -120,7 +120,7 @@ class DataRequestResponseEmailSender(
         correlationId: String,
     ) {
         val dataRequestNonSourceableMail =
-            DataRequestNonSourceableMail(
+            DataRequestNonSourceable(
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
                 reportingPeriod = dataRequestEntity.reportingPeriod,
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),

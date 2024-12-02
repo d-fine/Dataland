@@ -12,7 +12,6 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
@@ -28,7 +27,6 @@ class DataMetaInformationManager(
      * Method to associate data information with a specific company
      * @param dataMetaInformation The data meta information which should be stored
      */
-    @Transactional
     fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
         dataMetaInformationRepositoryInterface.save(dataMetaInformation)
 
