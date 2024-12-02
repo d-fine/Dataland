@@ -239,10 +239,10 @@ data class DataRequestNonSourceableMail(
     val reportingPeriod: String,
     val creationDate: String,
     val dataRequestId: String,
-    val nonSourceableComment: String,
+    val nonSourceableComment: String?,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
-    override val subject = "Your data request is non sourceable!"
+    override val subject = "There are no sources for your requested data available!"
     override val textTemplate = "/text/data_request_non_sourceable.ftl"
     override val htmlTemplate = "/html/data_request_non_sourceable.ftl"
 

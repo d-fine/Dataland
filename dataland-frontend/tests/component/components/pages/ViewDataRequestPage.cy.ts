@@ -206,7 +206,7 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
   });
 
-  it('Check view data request page for nonSourceable request renders as expected and reopen data request', function () {
+  it('Check viewDataRequest page for nonSourceable request renders as expected and reopen data request', function () {
     interceptUserAskForSingleDataRequestsOnMounted(
       createStoredDataRequest(RequestStatus.NonSourceable, [dummyMessageObject])
     );

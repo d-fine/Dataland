@@ -80,7 +80,7 @@
             class="text-danger text-xs"
             data-test="noMessageErrorMessage"
           >
-            You have not provided a sufficient reason yet.
+            You have not provided a sufficient reason yet. Please provide a reason.
           </p>
           <p class="gray-text font-italic" style="text-align: left">
             Please enter the reason why you think that the dataset should be available. Your message will be forwarded
@@ -189,7 +189,7 @@
               </div>
               <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">
-                  <span class="card__title" style="margin-right: auto">Provided Contact Details & Messages</span>
+                  <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
                   <span
                     v-show="isNewMessageAllowed()"
                     style="cursor: pointer; display: flex; align-items: center"
@@ -218,9 +218,8 @@
                 <div class="card__title">Reopen Request</div>
                 <div class="card__separator" />
                 <div>
-                  Currently your request has the status non-sourceable and is not actively searched for. However, you
-                  will still be informed if your request is answered. If you believe that your data should be available
-                  you can reopen the request and comment why you believe the data should be available.<br />
+                  Currently, your request has the status non-sourceable. If you believe that your data should be
+                  available, you can reopen the request and comment why you believe the data should be available.<br />
                   <br />
                   <a
                     class="link"

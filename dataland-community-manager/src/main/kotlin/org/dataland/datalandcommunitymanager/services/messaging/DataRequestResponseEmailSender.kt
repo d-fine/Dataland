@@ -126,7 +126,7 @@ class DataRequestResponseEmailSender(
                 dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
                 dataRequestId = dataRequestEntity.dataRequestId,
-                nonSourceableComment = "placeholder reason",
+                nonSourceableComment = dataRequestEntity.requestStatusChangeReason,
             )
         val message =
             EmailMessage(
