@@ -35,7 +35,7 @@ if ls "$keycloak_user_dir"/*-users-*.json &>/dev/null; then
   exported_actual_users=$((exported_users-exported_test_users-exported_expected_technical_users))
 
   imported_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity'")
-  imported_expected_technical_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity' and username ~ '^(data_(reader|uploader|reviewer|premium_user|admin)|service-account-dataland-[a-z-]+)'")
+  imported_expected_technical_users=$(sudo docker exec $keycloak_database_container_name psql -U keycloak -d keycloak -t -c "select count(*) from user_entity where realm_id = 'datalandsecurity' and username ~ '^(data_(reader|uploader|reviewer|premium_user|admin)|service-account-dataland-[a-z-]+)$'")
   imported_actual_users=$((imported_users-imported_expected_technical_users))
 
   echo "The new instance contains a total of $imported_users users with $imported_expected_technical_users technical users (Actual users: $imported_actual_users)"
