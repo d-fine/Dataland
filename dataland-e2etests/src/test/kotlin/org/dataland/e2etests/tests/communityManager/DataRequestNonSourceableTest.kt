@@ -21,31 +21,39 @@ class DataRequestNonSourceableTest {
     val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
+    val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+    val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
+    val reportingPeriodOne = setOf("2023")
+    val reportingPeriodTwo = setOf("2022")
+    val dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials
+    val singleDataRequestFirstUserSameRequest =
+        SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = dataType,
+            reportingPeriods = reportingPeriodOne,
+            contacts = setOf("simpleString@example.com"),
+            message = "This is the request from the first user that should be unsourceable.",
+        )
+    val singleDataRequestFirstUserOtherRequest =
+        SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = dataType,
+            reportingPeriods = reportingPeriodTwo,
+            contacts = setOf("simpleString@example.com"),
+            message = "This is the request from the first user that should not be unsourceable.",
+        )
+
+    val singleDataRequestSecondUserSameRequest =
+        SingleDataRequest(
+            companyIdentifier = stringThatMatchesThePermIdRegex,
+            dataType = dataType,
+            reportingPeriods = reportingPeriodOne,
+            contacts = setOf("someContact@example.com"),
+            message = "This is the request from the second user that should be unsourceable.",
+        )
 
     @Test
     fun `post data requests from different users and check if correct requests are set to nonSourceable`() {
-        val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
-        val reportingPeriodOne = setOf("2023")
-        val reportingPeriodTwo = setOf("2022")
-        val dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials
-        val singleDataRequestFirstUserSameRequest =
-            SingleDataRequest(
-                companyIdentifier = stringThatMatchesThePermIdRegex,
-                dataType = dataType,
-                reportingPeriods = reportingPeriodOne,
-                contacts = setOf("simpleString@example.com"),
-                message = "This is the request from the first user that should be unsourceable.",
-            )
-        val singleDataRequestFirstUserOtherRequest =
-            SingleDataRequest(
-                companyIdentifier = stringThatMatchesThePermIdRegex,
-                dataType = dataType,
-                reportingPeriods = reportingPeriodTwo,
-                contacts = setOf("simpleString@example.com"),
-                message = "This is the request from the first user that should not be unsourceable.",
-            )
-
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         var timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequestFirstUserSameRequest)
@@ -56,14 +64,6 @@ class DataRequestNonSourceableTest {
         val storedSingleDataRequestFirstUserOtherRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val singleDataRequestSecondUserSameRequest =
-            SingleDataRequest(
-                companyIdentifier = stringThatMatchesThePermIdRegex,
-                dataType = dataType,
-                reportingPeriods = reportingPeriodOne,
-                contacts = setOf("someContact@example.com"),
-                message = "This is the request from the second user that should be unsourceable.",
-            )
         timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(singleDataRequestSecondUserSameRequest)
         val storedSingleDataRequestSecondUserSameRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
