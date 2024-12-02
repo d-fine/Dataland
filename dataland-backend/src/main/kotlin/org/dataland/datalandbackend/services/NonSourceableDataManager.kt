@@ -38,7 +38,7 @@ class NonSourceableDataManager(
      * @param nonSourceableInfo the of the dataset
      */
     @Transactional
-    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): NonSourceableInfo? {
+    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): NonSourceableInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
         val nonSourceableEntity =
@@ -109,7 +109,7 @@ class NonSourceableDataManager(
                         nonSourceable,
                     ),
                 )
-        return nonSourceableEntities.map { it.toApiModelResponse() }
+        return nonSourceableEntities.map { it.toApiModel() }
     }
 
     /**

@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.converter.DataTypeConverter
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import java.util.UUID
 
@@ -43,23 +42,10 @@ data class NonSourceableEntity(
     var userId: String,
 ) {
     /**
-     * Converts the entity to an API model object
-     * @returns the API model object
-     */
-    fun toApiModel(): NonSourceableInfo =
-        NonSourceableInfo(
-            companyId = companyId,
-            dataType = dataType,
-            reportingPeriod = reportingPeriod,
-            isNonSourceable = isNonSourceable,
-            reason = reason,
-        )
-
-    /**
      * Converts the entity to an API Response model object
      * @returns the API model object
      */
-    fun toApiModelResponse(): NonSourceableInfoResponse =
+    fun toApiModel(): NonSourceableInfoResponse =
         NonSourceableInfoResponse(
             companyId = companyId,
             dataType = dataType,
