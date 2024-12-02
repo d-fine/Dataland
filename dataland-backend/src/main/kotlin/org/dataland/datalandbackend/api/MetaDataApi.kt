@@ -131,8 +131,7 @@ interface MetaDataApi {
             ApiResponse(responseCode = "200", description = "Successfully added dataset."),
             ApiResponse(
                 responseCode = "400",
-                description =
-                    "Bad request has been submitted.",
+                description = "Bad request has been submitted.",
             ),
             ApiResponse(responseCode = "404", description = "Invalid input parameters."),
         ],
