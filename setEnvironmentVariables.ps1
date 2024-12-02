@@ -71,5 +71,5 @@
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 
-[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_SIZE", "1K", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_FILE", "5", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_SIZE", "100M", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_FILE", "1", [System.EnvironmentVariableTarget]::User)
