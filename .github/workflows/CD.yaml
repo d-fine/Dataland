@@ -192,6 +192,8 @@ jobs:
           IGNORE_EXTERNAL_STORAGE_ERROR: ${{ github.event.inputs.ignoreExternalStorageError }}
           COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: ${{ vars.COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG }}
           DATA_EXPORTER_OUTPUT_DIRECTORY: ${{ secrets.DATA_EXPORTER_OUTPUT_DIRECTORY }}
+          LOGGING_OPTIONS_MAX_SIZE: ${{ vars.LOGGING_OPTIONS_MAX_SIZE }}
+          LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:

@@ -366,6 +366,8 @@ jobs:
           IGNORE_EXTERNAL_STORAGE_ERROR: "false"
           COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: true
           DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
+          LOGGING_OPTIONS_MAX_SIZE: "1G"
+          LOGGING_OPTIONS_MAX_FILE: 1
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
