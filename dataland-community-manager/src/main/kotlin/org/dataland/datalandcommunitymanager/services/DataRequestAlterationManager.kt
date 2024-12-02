@@ -76,7 +76,10 @@ class DataRequestAlterationManager
             val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
             val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
 
-            if (newRequestStatus != dataRequestEntity.requestStatus || newAccessStatus != dataRequestEntity.accessStatus) {
+            if (newRequestStatus != dataRequestEntity.requestStatus ||
+                newAccessStatus != dataRequestEntity.accessStatus ||
+                newRequestStatus == RequestStatus.NonSourceable
+            ) {
                 anyChanges = true
                 utils.addNewRequestStatusToHistory(
                     dataRequestEntity, newRequestStatus, newAccessStatus, requestStatusChangeReason, modificationTime,
