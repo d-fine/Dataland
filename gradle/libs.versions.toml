@@ -22,7 +22,7 @@ org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugi
 
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.4.2" }
 
-org-openapi-generator = { id = "org.openapi.generator", version = "7.7.0" }
+org-openapi-generator = { id = "org.openapi.generator", version = "7.10.0" }
 
 com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.51.0" }
 
