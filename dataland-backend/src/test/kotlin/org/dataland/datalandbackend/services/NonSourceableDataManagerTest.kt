@@ -1,24 +1,73 @@
 package org.dataland.datalandbackend.services
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.DatalandBackend
+import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
+import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
+import java.time.Instant
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 class NonSourceableDataManagerTest(
-    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired private val nonSourceableDataRepository: NonSourceableDataRepository,
+    @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val objectMapper: ObjectMapper,
 ) {
+    lateinit var nonSourceableDataManager: NonSourceableDataManager
+    val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
+    private val existingCompanyId = "existingCompanyId"
+    private val dataType = DataType("eutaxonomy-financials")
+    private val reportingPeriod = "2023"
+    private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+
+    @BeforeEach
+    fun setup() {
+        Mockito.reset(mockDataMetaInformationManager)
+        nonSourceableDataManager =
+            NonSourceableDataManager(
+                cloudEventMessageHandler = mockCloudEventMessageHandler,
+                objectMapper = objectMapper,
+                dataMetaInformationManager = mockDataMetaInformationManager,
+                nonSourceableDataRepository = nonSourceableDataRepository,
+                companyQueryManager = companyQueryManager,
+            )
+        nonSourceableDataRepository.deleteAll()
+
+        val nonSourceableEntity =
+            NonSourceableEntity(
+                eventId = null,
+                companyId = existingCompanyId,
+                dataType = dataType,
+                reportingPeriod = reportingPeriod,
+                isNonSourceable = true,
+                reason = "Initial reason",
+                creationTime = Instant.now().toEpochMilli(),
+            )
+        nonSourceableDataRepository.save(nonSourceableEntity)
+    }
+
     @Test
-    fun `check that an exception is thrown when non existing company id is provided processing sourcebility storage`() {
+    fun `check that an exception is thrown when non-existing companyId is provided processing sourcebility storage`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
         val dataType = DataType("eutaxonomy-financials")
         val nonSourceableInfo = NonSourceableInfo(nonExistingCompanyId, dataType, "2023", true, "test reason")
@@ -31,6 +80,52 @@ class NonSourceableDataManagerTest(
         assertEquals(
             "Dataland does not know the company ID nonExistingCompanyId",
             thrown.message,
+        )
+    }
+
+    @Test
+    fun `check that processSourceabilityDataStorageRequest does store an NonSourceableEntity when companyId and no dataMetaInfo exists`() {
+        val mockCompanyQueryManager = mock(CompanyQueryManager::class.java)
+        nonSourceableDataManager =
+            NonSourceableDataManager(
+                cloudEventMessageHandler = mockCloudEventMessageHandler,
+                objectMapper = objectMapper,
+                dataMetaInformationManager = mockDataMetaInformationManager,
+                nonSourceableDataRepository = nonSourceableDataRepository,
+                companyQueryManager = mockCompanyQueryManager,
+            )
+        val nonSourceableInfo =
+            NonSourceableInfo(
+                companyId = "existingCompanyId",
+                dataType = DataType("eutaxonomy-financials"),
+                reportingPeriod = "2023",
+                isNonSourceable = true,
+                reason = "Test reason",
+            )
+        doNothing().whenever(mockCompanyQueryManager).verifyCompanyIdExists(nonSourceableInfo.companyId)
+        whenever(
+            mockDataMetaInformationManager.searchDataMetaInfo(
+                companyId = nonSourceableInfo.companyId,
+                dataType = nonSourceableInfo.dataType,
+                showOnlyActive = false,
+                reportingPeriod = nonSourceableInfo.reportingPeriod,
+                uploaderUserIds = null,
+                qaStatus = null,
+            ),
+        ).thenReturn(emptyList())
+
+        nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
+
+        verify(mockDataMetaInformationManager).searchDataMetaInfo(
+            companyId = nonSourceableInfo.companyId,
+            dataType = nonSourceableInfo.dataType,
+            showOnlyActive = false,
+            reportingPeriod = nonSourceableInfo.reportingPeriod,
+            uploaderUserIds = null,
+            qaStatus = null,
+        )
+        verify(mockCloudEventMessageHandler).buildCEMessageAndSendToQueue(
+            any(), any(), any(), any(), any(),
         )
     }
 }
