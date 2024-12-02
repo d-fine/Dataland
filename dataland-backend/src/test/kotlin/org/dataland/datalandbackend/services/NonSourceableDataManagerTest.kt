@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -122,7 +123,7 @@ class NonSourceableDataManagerTest(
                 showOnlyActive = false,
                 reportingPeriod = nonSourceableInfo.reportingPeriod,
                 uploaderUserIds = null,
-                qaStatus = null,
+                qaStatus = QaStatus.Accepted,
             ),
         ).thenReturn(emptyList())
         nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
@@ -133,7 +134,7 @@ class NonSourceableDataManagerTest(
             showOnlyActive = false,
             reportingPeriod = nonSourceableInfo.reportingPeriod,
             uploaderUserIds = null,
-            qaStatus = null,
+            qaStatus = QaStatus.Accepted,
         )
         verify(mockCloudEventMessageHandler).buildCEMessageAndSendToQueue(
             any(), any(), any(), any(), any(),
