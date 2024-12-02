@@ -21,104 +21,130 @@ import java.util.UUID
 class DataRequestNonSourceableTest {
     val apiAccessor = ApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
+
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
-    val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
-    val companyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
-    val reportingPeriodOne = setOf("2023")
-    val reportingPeriodTwo = setOf("2022")
-    val dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials
-    val singleDataRequestFirstUserSameRequest =
+    private val stringThatMatchesThePermIdRegex = System.currentTimeMillis().toString()
+    private val dummyCompanyId = getIdForUploadedCompanyWithIdentifiers(permId = stringThatMatchesThePermIdRegex)
+    private val dummyDataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials
+
+    private val firstUserRequest2023 =
         SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = dataType,
-            reportingPeriods = reportingPeriodOne,
-            contacts = setOf("simpleString@example.com"),
-            message = "This is the request from the first user that should be unsourceable.",
+            companyIdentifier = dummyCompanyId,
+            dataType = dummyDataType,
+            reportingPeriods = setOf("2023"),
+            contacts = null,
+            message = null,
         )
-    val singleDataRequestFirstUserOtherRequest =
+    private val firstUserRequest2024 =
         SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = dataType,
-            reportingPeriods = reportingPeriodTwo,
-            contacts = setOf("simpleString@example.com"),
-            message = "This is the request from the first user that should not be unsourceable.",
+            companyIdentifier = dummyCompanyId,
+            dataType = dummyDataType,
+            reportingPeriods = setOf("2022"),
+            contacts = null,
+            message = null,
         )
 
-    val singleDataRequestSecondUserSameRequest =
+    private val secondUserRequest2023 =
         SingleDataRequest(
-            companyIdentifier = stringThatMatchesThePermIdRegex,
-            dataType = dataType,
-            reportingPeriods = reportingPeriodOne,
-            contacts = setOf("someContact@example.com"),
-            message = "This is the request from the second user that should be unsourceable.",
+            companyIdentifier = dummyCompanyId,
+            dataType = dummyDataType,
+            reportingPeriods = setOf("2023"),
+            contacts = null,
+            message = null,
         )
 
-    @Test
-    fun `post data requests from different users and check if correct requests are set to nonSourceable`() {
+    private val nonSourceableInfoRequest2023 =
+        NonSourceableInfo(
+            companyId = dummyCompanyId,
+            dataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
+            reportingPeriod = "2023",
+            isNonSourceable = true,
+            reason = "This dataset is non-sourceable.",
+        )
+
+    private fun postTwoDataRequestForSameUserAndReturnRequestIds(): Pair<UUID, UUID> {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+
         var timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        requestControllerApi.postSingleDataRequest(singleDataRequestFirstUserSameRequest)
-        val storedSingleDataRequestFirstUserSameRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+        requestControllerApi.postSingleDataRequest(firstUserRequest2023)
+        val storedFirstUserRequest2023List = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
         timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        requestControllerApi.postSingleDataRequest(singleDataRequestFirstUserOtherRequest)
-        val storedSingleDataRequestFirstUserOtherRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
+        requestControllerApi.postSingleDataRequest(firstUserRequest2024)
+        val storedFirstUserRequest2024List = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
+        val requestIdFirstUserRequest2023 =
+            UUID.fromString(storedFirstUserRequest2023List[0].dataRequestId)
+
+        val requestIdFirstUserRequest2024 =
+            UUID.fromString(storedFirstUserRequest2024List[0].dataRequestId)
+
+        return Pair(requestIdFirstUserRequest2023, requestIdFirstUserRequest2024)
+    }
+
+    private fun postADataRequestAndReturnRequestId(): UUID {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        requestControllerApi.postSingleDataRequest(singleDataRequestSecondUserSameRequest)
-        val storedSingleDataRequestSecondUserSameRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
-        assertEquals(RequestStatus.Open, storedSingleDataRequestFirstUserSameRequest[0].requestStatus)
-        assertEquals(RequestStatus.Open, storedSingleDataRequestSecondUserSameRequest[0].requestStatus)
+        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
+        requestControllerApi.postSingleDataRequest(secondUserRequest2023)
+        val storedSecondUserRequest2023List = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
 
-        val nonSourceableInfo =
-            NonSourceableInfo(
-                companyId,
-                DataTypeEnum.eutaxonomyMinusNonMinusFinancials,
-                "2023",
-                true,
-                "This is a test so I need nonSourceable data.",
-            )
+        val requestIdSecondUserRequest2023 =
+            UUID.fromString(storedSecondUserRequest2023List[0].dataRequestId)
 
+        return requestIdSecondUserRequest2023
+    }
+
+    private fun postNonSourceableInfo(nonSourceableInfo: NonSourceableInfo) {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
             nonSourceableInfo = nonSourceableInfo,
         )
+    }
 
-        val receivedNonSourceableInfoOfRequests = apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDataSets()
-        val receivedNonSourceableInfoOfRequest = receivedNonSourceableInfoOfRequests[0]
+    @Test
+    fun `validate that only the requests corresponding to the nonSourceable dataset are patched`() {
+        val requestIdsFirstUser = postTwoDataRequestForSameUserAndReturnRequestIds()
+        val requestIdFirstUserRequest2023 = requestIdsFirstUser.first
+        val requestIdFirstUserRequest2024 = requestIdsFirstUser.second
 
-        assertEquals(nonSourceableInfo.companyId, receivedNonSourceableInfoOfRequest.companyId)
-        assertEquals(nonSourceableInfo.dataType, receivedNonSourceableInfoOfRequest.dataType)
-        assertEquals(nonSourceableInfo.reportingPeriod, receivedNonSourceableInfoOfRequest.reportingPeriod)
-        assertEquals(nonSourceableInfo.isNonSourceable, receivedNonSourceableInfoOfRequest.isNonSourceable)
-        assertEquals(nonSourceableInfo.reason, receivedNonSourceableInfoOfRequest.reason)
+        val requestIdSecondUserRequest2023 = postADataRequestAndReturnRequestId()
 
-        val requestIdOfstoredSingleDataRequestFirstUserSameRequest =
-            UUID
-                .fromString(storedSingleDataRequestFirstUserSameRequest[0].dataRequestId)
-        val requestIdOfstoredSingleDataRequestSecondUserSameRequest =
-            UUID
-                .fromString(storedSingleDataRequestSecondUserSameRequest[0].dataRequestId)
-        val requestIdOfStoredSingleDataRequestFirstUserOtherRequest =
-            UUID
-                .fromString(storedSingleDataRequestFirstUserOtherRequest[0].dataRequestId)
+        postNonSourceableInfo(nonSourceableInfoRequest2023)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
-        val updatedstoredSingleDataRequestFirstUserSameRequest =
-            requestControllerApi
-                .getDataRequestById(requestIdOfstoredSingleDataRequestFirstUserSameRequest)
-        val updatedstoredSingleDataRequestSecondUserSameRequest =
-            requestControllerApi
-                .getDataRequestById(requestIdOfstoredSingleDataRequestSecondUserSameRequest)
-        val updatedstoredSingleDataRequestFirstUserOtherRequest =
-            requestControllerApi
-                .getDataRequestById(requestIdOfStoredSingleDataRequestFirstUserOtherRequest)
+        val updatedFirstUserRequest2023 =
+            requestControllerApi.getDataRequestById(requestIdFirstUserRequest2023)
 
-        assertEquals(RequestStatus.NonSourceable, updatedstoredSingleDataRequestFirstUserSameRequest.requestStatus)
-        assertEquals(RequestStatus.NonSourceable, updatedstoredSingleDataRequestSecondUserSameRequest.requestStatus)
-        assertEquals(RequestStatus.Open, updatedstoredSingleDataRequestFirstUserOtherRequest.requestStatus)
+        val updatedFirstUserRequest2024 =
+            requestControllerApi.getDataRequestById(requestIdFirstUserRequest2024)
+
+        val updatedSecondUserRequest2023 =
+            requestControllerApi.getDataRequestById(requestIdSecondUserRequest2023)
+
+        assertEquals(RequestStatus.NonSourceable, updatedFirstUserRequest2023.requestStatus)
+        assertEquals(RequestStatus.Open, updatedFirstUserRequest2024.requestStatus)
+        assertEquals(RequestStatus.NonSourceable, updatedSecondUserRequest2023.requestStatus)
+    }
+
+    @Test
+    fun `validate that the get info on sourceability of a dataset endpoint is working`() {
+        postNonSourceableInfo(nonSourceableInfoRequest2023)
+        val receivedNonSourceableInfoList =
+            apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDataSets(
+                companyId = nonSourceableInfoRequest2023.companyId,
+                dataType = nonSourceableInfoRequest2023.dataType,
+                reportingPeriod = nonSourceableInfoRequest2023.reportingPeriod,
+            )
+
+        assertEquals(1, receivedNonSourceableInfoList.size)
+        val receivedNonSourceableInfo = receivedNonSourceableInfoList[0]
+
+        assertEquals(nonSourceableInfoRequest2023.companyId, receivedNonSourceableInfo.companyId)
+        assertEquals(nonSourceableInfoRequest2023.dataType, receivedNonSourceableInfo.dataType)
+        assertEquals(nonSourceableInfoRequest2023.reportingPeriod, receivedNonSourceableInfo.reportingPeriod)
+        assertEquals(nonSourceableInfoRequest2023.isNonSourceable, receivedNonSourceableInfo.isNonSourceable)
+        assertEquals(nonSourceableInfoRequest2023.reason, receivedNonSourceableInfo.reason)
     }
 }
