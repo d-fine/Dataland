@@ -2066,6 +2066,15 @@
             }
           },
           {
+            "name": "onlyLatest",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
             "name": "chunkSize",
             "in": "query",
             "required": false,

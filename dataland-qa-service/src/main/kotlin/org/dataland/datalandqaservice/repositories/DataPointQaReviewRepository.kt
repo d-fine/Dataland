@@ -38,14 +38,12 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
      * Find the latest QA information items per dataId and filter for the QA status 'Pending'. These entries form the review queue.
      */
     @Query(
-        "WITH RankedByDataId AS (" +
-            "SELECT dataPointQaReview, " +
-            "ROW_NUMBER() OVER (PARTITION BY dataPointQaReview.dataId ORDER BY dataPointQaReview.timestamp DESC) AS num_row " +
-            "FROM DataPointQaReviewEntity dataPointQaReview) " +
-            "SELECT entry FROM RankedByDataId entry " +
-            "WHERE entry.num_row = 1 " +
-            "AND entry.qaStatus = 'Pending' " +
-            "ORDER BY entry.timestamp DESC",
+        "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
+            "WHERE dataPointQaReview.timestamp = " +
+            "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
+            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "AND dataPointQaReview.qaStatus = 'Pending' " +
+            "ORDER BY dataPointQaReview.timestamp DESC",
     )
     fun getAllEntriesForTheReviewQueue(): List<DataPointQaReviewEntity>
 
@@ -79,17 +77,15 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
      * @param resultOffset the offset to start the result set from
      */
     @Query(
-        "WITH RankedByDataId AS (" +
-            "SELECT dataPointQaReview, " +
-            "ROW_NUMBER() OVER (PARTITION BY dataPointQaReview.dataId ORDER BY dataPointQaReview.timestamp DESC) AS num_row " +
-            "FROM DataPointQaReviewEntity dataPointQaReview) " +
-            "SELECT entry FROM RankedByDataId entry " +
-            "WHERE entry.num_row = 1 " +
-            "AND (:#{#filter.companyId} IS NULL OR entry.companyId = ':#{#filter.companyId}') " +
-            "AND (:#{#filter.dataPointIdentifier} IS NULL OR entry.dataPointIdentifier = ':#{#filter.dataPointIdentifier}') " +
-            "AND (:#{#filter.reportingPeriod} IS NULL OR entry.reportingPeriod = ':#{#filter.reportingPeriod}') " +
-            "AND (:#{#filter.qaStatus} IS NULL OR entry.qaStatus = ':#{#filter.qaStatus}')" +
-            "ORDER BY entry.timestamp DESC " +
+        "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
+            "WHERE dataPointQaReview.timestamp = " +
+            "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
+            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = ':#{#filter.companyId}') " +
+            "AND (:#{#filter.dataPointIdentifier} IS NULL OR dataPointQaReview.dataPointIdentifier = ':#{#filter.dataPointIdentifier}') " +
+            "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = ':#{#filter.reportingPeriod}') " +
+            "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = ':#{#filter.qaStatus}')" +
+            "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
     fun findByFilterLatestOnly(
