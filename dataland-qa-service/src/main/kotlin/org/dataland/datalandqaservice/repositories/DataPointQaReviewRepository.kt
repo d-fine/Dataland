@@ -17,9 +17,12 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
      */
     @Query(
         "SELECT dataPointQaReview.dataId FROM DataPointQaReviewEntity dataPointQaReview " +
-            "WHERE dataPointQaReview.companyId = ':#{#filter.companyId}' " +
-            "AND dataPointQaReview.dataPointIdentifier = ':#{#filter.dataPointIdentifier}' " +
-            "AND dataPointQaReview.reportingPeriod = ':#{#filter.reportingPeriod}' " +
+            "WHERE dataPointQaReview.timestamp = " +
+            "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
+            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "AND dataPointQaReview.companyId = :#{#filter.companyId} " +
+            "AND dataPointQaReview.dataPointIdentifier = :#{#filter.dataPointIdentifier} " +
+            "AND dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod} " +
             "AND dataPointQaReview.qaStatus = 'Accepted' " +
             "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT 1",
@@ -56,10 +59,10 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
      */
     @Query(
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
-            "WHERE (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = ':#{#filter.companyId}') " +
-            "AND (:#{#filter.dataPointIdentifier} IS NULL OR dataPointQaReview.dataPointIdentifier = ':#{#filter.dataPointIdentifier}') " +
-            "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = ':#{#filter.reportingPeriod}') " +
-            "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = ':#{#filter.qaStatus}')" +
+            "WHERE (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
+            "AND (:#{#filter.dataPointIdentifier} IS NULL OR dataPointQaReview.dataPointIdentifier = :#{#filter.dataPointIdentifier}) " +
+            "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
+            "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = :#{#filter.qaStatus})" +
             "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
@@ -81,10 +84,10 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
             "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
-            "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = ':#{#filter.companyId}') " +
-            "AND (:#{#filter.dataPointIdentifier} IS NULL OR dataPointQaReview.dataPointIdentifier = ':#{#filter.dataPointIdentifier}') " +
-            "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = ':#{#filter.reportingPeriod}') " +
-            "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = ':#{#filter.qaStatus}')" +
+            "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
+            "AND (:#{#filter.dataPointIdentifier} IS NULL OR dataPointQaReview.dataPointIdentifier = :#{#filter.dataPointIdentifier}) " +
+            "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
+            "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = :#{#filter.qaStatus})" +
             "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
