@@ -42,7 +42,8 @@ class NonSourceableDataManagerTest(
     private val existingCompanyId = "existingCompanyId"
     private val dataType = DataType("eutaxonomy-financials")
     private val reportingPeriod = "2023"
-    private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+    private val mockCloudEventMessageHandler: CloudEventMessageHandler =
+        mock(CloudEventMessageHandler::class.java)
 
     @BeforeEach
     fun setup() {
@@ -72,10 +73,10 @@ class NonSourceableDataManagerTest(
     }
 
     @Test
-    fun `check that an exception is thrown when non-existing companyId is provided processing sourceability storage`() {
+    fun `check that an exception is thrown when non existing companyId is provided processing sourceability storage`() {
         val nonExistingCompanyId = "nonExistingCompanyId"
-        val dataType = DataType("eutaxonomy-financials")
-        val nonSourceableInfo = NonSourceableInfo(nonExistingCompanyId, dataType, "2023", true, "test reason")
+        val nonSourceableInfo =
+            NonSourceableInfo(nonExistingCompanyId, dataType, "2023", true, "test reason")
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
                 nonSourceableDataManager.processSourceabilityDataStorageRequest(
@@ -106,7 +107,7 @@ class NonSourceableDataManagerTest(
         val nonSourceableInfo =
             NonSourceableInfo(
                 companyId = "existingCompanyId",
-                dataType = DataType("eutaxonomy-financials"),
+                dataType = dataType,
                 reportingPeriod = "2023",
                 isNonSourceable = true,
                 reason = "Test reason",
@@ -139,6 +140,30 @@ class NonSourceableDataManagerTest(
         )
     }
 
+    @Test
+    fun `check that a sourceable dataset is stored to the repository`() {
+        val reportingPeriod = "2023"
+        val uploaderId = "testUploaderId"
+        val nonSourceable = false
+
+        nonSourceableDataManager.storeSourceableData(
+            companyId = existingCompanyId,
+            dataType = dataType,
+            reportingPeriod = reportingPeriod,
+            uploaderId = uploaderId,
+        )
+
+        val nonSourceableData =
+            nonSourceableDataManager.getNonSourceableDataByFilters(
+                existingCompanyId,
+                dataType, reportingPeriod, nonSourceable,
+            )
+        assertEquals(existingCompanyId, nonSourceableData[0].companyId)
+        assertEquals(reportingPeriod, nonSourceableData[0].reportingPeriod)
+        assertEquals(dataType, nonSourceableData[0].dataType)
+        assertEquals(false, nonSourceableData[0].isNonSourceable)
+    }
+
     private fun mockSecurityContext(
         userId: String,
         roles: Set<DatalandRealmRole>,
@@ -149,7 +174,7 @@ class NonSourceableDataManagerTest(
                 userId,
                 roles,
             )
-        val mockSecurityContext = Mockito.mock(SecurityContext::class.java)
+        val mockSecurityContext = mock(SecurityContext::class.java)
         Mockito.`when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         SecurityContextHolder.setContext(mockSecurityContext)
     }

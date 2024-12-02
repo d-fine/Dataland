@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -106,20 +107,7 @@ class MessageQueueListenerForDataManager(
                 val currentlyActiveMetaInformation =
                     metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
-                if (nonSourceableDataManager
-                        .getLatestNonSourceableInfoForDataset(
-                            updatedDataMetaInformation.company.companyId,
-                            DataType.valueOf(updatedDataMetaInformation.dataType),
-                            updatedDataMetaInformation.reportingPeriod,
-                        )?.isNonSourceable == true
-                ) {
-                    nonSourceableDataManager.storeSourceableData(
-                        updatedDataMetaInformation.company.companyId,
-                        DataType.valueOf(updatedDataMetaInformation.dataType),
-                        updatedDataMetaInformation.reportingPeriod,
-                        updatedDataMetaInformation.uploaderUserId,
-                    )
-                }
+                storeUpdatedDatatoNonSourceableData(updatedDataMetaInformation)
                 logger.info(
                     "Dataset with dataId $currentlyActiveDataId has been set to active. +" +
                         "Previously non-sourceable datasets are now marked as sourceable.",
@@ -168,6 +156,26 @@ class MessageQueueListenerForDataManager(
         )
         MessageQueueUtils.rejectMessageOnException {
             dataManager.removeDataSetFromInMemoryStore(dataId)
+        }
+    }
+
+    /** Stores a sourceable dataset to the data-sourceability table if it was previously flagged as non-sourceable.
+     * @param updatedDataMetaInformation DataMetaInformationEntity that holds information of the updated dataset.
+     */
+    private fun storeUpdatedDatatoNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
+        if (nonSourceableDataManager
+                .getLatestNonSourceableInfoForDataset(
+                    updatedDataMetaInformation.company.companyId,
+                    DataType.valueOf(updatedDataMetaInformation.dataType),
+                    updatedDataMetaInformation.reportingPeriod,
+                )?.isNonSourceable == true
+        ) {
+            nonSourceableDataManager.storeSourceableData(
+                updatedDataMetaInformation.company.companyId,
+                DataType.valueOf(updatedDataMetaInformation.dataType),
+                updatedDataMetaInformation.reportingPeriod,
+                updatedDataMetaInformation.uploaderUserId,
+            )
         }
     }
 }
