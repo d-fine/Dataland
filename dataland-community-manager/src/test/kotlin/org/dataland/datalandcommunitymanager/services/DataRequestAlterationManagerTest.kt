@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.doNothing
@@ -75,12 +76,21 @@ class DataRequestAlterationManagerTest {
 
     private val dummyRequestChangeReason = "dummy reason"
 
-    private val dummyNonSourceableData =
+    private val dummyNonSourceableInfo =
         NonSourceableInfo(
             companyId = "",
             dataType = DataTypeEnum.p2p,
             reportingPeriod = "",
             isNonSourceable = true,
+            reason = dummyRequestChangeReason,
+        )
+
+    private val dummySourceableInfo =
+        NonSourceableInfo(
+            companyId = "",
+            dataType = DataTypeEnum.p2p,
+            reportingPeriod = "",
+            isNonSourceable = false,
             reason = dummyRequestChangeReason,
         )
 
@@ -127,9 +137,9 @@ class DataRequestAlterationManagerTest {
 
         `when`(
             mockDataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                datalandCompanyId = dummyNonSourceableData.companyId,
-                dataType = dummyNonSourceableData.dataType.toString(),
-                reportingPeriod = dummyNonSourceableData.reportingPeriod,
+                datalandCompanyId = dummyNonSourceableInfo.companyId,
+                dataType = dummyNonSourceableInfo.dataType.toString(),
+                reportingPeriod = dummyNonSourceableInfo.reportingPeriod,
             ),
         ).thenReturn(listOf(dummyDataRequestEntity))
 
@@ -325,13 +335,13 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that patching corresponding requests for a dataset only changed the corresponding request`() {
+    fun `validate that patching corresponding requests for a dataset only changed the corresponding requests`() {
         nonSourceableDataManager =
             NonSourceableDataManager(
                 dataRequestAlterationManager = dataRequestAlterationManager,
                 dataRequestRepository = mockDataRequestRepository,
             )
-        nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableData, correlationId)
+        nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
 
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
@@ -339,5 +349,18 @@ class DataRequestAlterationManagerTest {
                 any(), anyString(),
                 any(),
             )
+    }
+
+    @Test
+    fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
+        nonSourceableDataManager =
+            NonSourceableDataManager(
+                dataRequestAlterationManager = dataRequestAlterationManager,
+                dataRequestRepository = mockDataRequestRepository,
+            )
+
+        assertThrows<IllegalArgumentException> {
+            nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummySourceableInfo, correlationId)
+        }
     }
 }
