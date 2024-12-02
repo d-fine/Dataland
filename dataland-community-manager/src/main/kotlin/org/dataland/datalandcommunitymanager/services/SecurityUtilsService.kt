@@ -67,20 +67,23 @@ class SecurityUtilsService(
         if (requestStatusToPatch == null) return true
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
 
-        return when (currentRequestStatus) {
-            RequestStatus.Answered -> {
-                requestStatusToPatch in listOf(RequestStatus.Resolved, RequestStatus.Open, RequestStatus.Withdrawn)
-            }
-            RequestStatus.Open -> {
-                requestStatusToPatch == RequestStatus.Withdrawn
-            }
-            RequestStatus.NonSourceable -> {
-                requestStatusToPatch == RequestStatus.Open
-            }
-            else -> {
-                false
-            }
-        }
+        val statusChangeFromAnsweredToResolved =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Resolved
+        val statusChangeFromAnsweredToOpen =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open
+        val statusChangeFromAnsweredToWithdrawn =
+            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Withdrawn
+        val statusChangeFromOpenToWithdrawn =
+            currentRequestStatus == RequestStatus.Open && requestStatusToPatch == RequestStatus.Withdrawn
+        val statusChangeFromNonSourceableToOpen =
+            currentRequestStatus == RequestStatus.NonSourceable && requestStatusToPatch == RequestStatus.Open
+        return (
+            statusChangeFromAnsweredToResolved ||
+                statusChangeFromAnsweredToOpen ||
+                statusChangeFromAnsweredToWithdrawn ||
+                statusChangeFromOpenToWithdrawn ||
+                statusChangeFromNonSourceableToOpen
+        )
     }
 
     /**

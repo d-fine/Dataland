@@ -132,7 +132,7 @@
       "arguments": {}
     },
     {
-      "name": "dataNonSourceable",
+      "name": "backend.dataNonSourceable",
       "vhost": "vhost",
       "type": "direct",
       "durable": true,
