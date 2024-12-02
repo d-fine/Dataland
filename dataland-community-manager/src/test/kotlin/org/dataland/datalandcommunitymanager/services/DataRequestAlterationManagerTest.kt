@@ -325,10 +325,7 @@ class DataRequestAlterationManagerTest {
     }
 
     @Test
-    fun `validate that two request for labelled nonSourceable dataset are set to nonSourceable`() {
-        val dataRequestOpen: DataRequestEntity = dummyDataRequestEntities[1]
-        val dataRequestNonSourceable: DataRequestEntity = dummyDataRequestEntities[2]
-
+    fun `validate that patching corresponding requests for a dataset only changed the corresponding request`() {
         nonSourceableDataManager =
             NonSourceableDataManager(
                 dataRequestAlterationManager = dataRequestAlterationManager,
@@ -336,7 +333,11 @@ class DataRequestAlterationManagerTest {
             )
         nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableData, correlationId)
 
-        assertEquals(RequestStatus.NonSourceable, dataRequestNonSourceable.requestStatus)
-        assertEquals(RequestStatus.Open, dataRequestOpen.requestStatus)
+        verify(mockDataRequestProcessingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), anyString(),
+                any(),
+            )
     }
 }
