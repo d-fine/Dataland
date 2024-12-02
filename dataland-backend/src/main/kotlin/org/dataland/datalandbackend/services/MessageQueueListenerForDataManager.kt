@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -31,6 +32,7 @@ class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val dataManager: DataManager,
+    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -103,7 +105,23 @@ class MessageQueueListenerForDataManager(
                 val currentlyActiveMetaInformation =
                     metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
-                logger.info("Dataset with dataId $currentlyActiveDataId has been set to active.")
+                if (nonSourceableDataManager.isDataNonSourceable(
+                        updatedDataMetaInformation.company.companyId,
+                        DataType.valueOf(updatedDataMetaInformation.dataType),
+                        updatedDataMetaInformation.reportingPeriod,
+                    ) == true
+                ) {
+                    nonSourceableDataManager.storeSourceableData(
+                        updatedDataMetaInformation.company.companyId,
+                        DataType.valueOf(updatedDataMetaInformation.dataType),
+                        updatedDataMetaInformation.reportingPeriod,
+                        updatedDataMetaInformation.uploaderUserId,
+                    )
+                }
+                logger.info(
+                    "Dataset with dataId $currentlyActiveDataId has been set to active. +" +
+                        "Previously non-sourceable datasets are now marked as sourceable.",
+                )
             }
         }
     }

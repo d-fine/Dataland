@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
 
@@ -42,7 +41,6 @@ class DataManager
         @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired private val dataManagerUtils: DataManagerUtils,
         @Autowired private val companyRoleChecker: CompanyRoleChecker,
-        @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -78,7 +76,6 @@ class DataManager
          * @param storableDataSet the dataset to store
          * @param correlationId the correlation id of the insertion process
          */
-        @Transactional(propagation = Propagation.NEVER)
         fun storeMetaDataFrom(
             dataId: String,
             storableDataSet: StorableDataSet,
@@ -103,16 +100,6 @@ class DataManager
                     QaStatus.Pending,
                 )
             metaDataManager.storeDataMetaInformation(metaData)
-            if (nonSourceableDataManager.isDataNonSourceable(
-                    company.companyId, storableDataSet.dataType,
-                    storableDataSet.reportingPeriod,
-                ) == true
-            ) {
-                nonSourceableDataManager.storeSourceableData(
-                    company.companyId, storableDataSet.dataType,
-                    storableDataSet.reportingPeriod, storableDataSet.uploaderUserId,
-                )
-            }
         }
 
         /**

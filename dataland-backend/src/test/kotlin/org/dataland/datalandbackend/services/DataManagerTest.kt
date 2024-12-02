@@ -69,13 +69,12 @@ class DataManagerTest(
             DataManager(
                 objectMapper, companyQueryManager, dataMetaInformationManager,
                 mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
-                nonSourceableDataManager,
             )
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
             MessageQueueListenerForDataManager(
                 objectMapper, dataMetaInformationManager,
-                dataManager,
+                dataManager, nonSourceableDataManager,
             )
     }
 
@@ -237,7 +236,6 @@ class DataManagerTest(
             DataManager(
                 objectMapper, companyQueryManager, mockDataMetaInformationManager,
                 mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
-                nonSourceableDataManager,
             )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(

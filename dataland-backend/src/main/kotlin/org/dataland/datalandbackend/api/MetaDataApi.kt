@@ -132,10 +132,9 @@ interface MetaDataApi {
             ApiResponse(
                 responseCode = "400",
                 description =
-                    "The update failed because an existing dataset was" +
-                        " incorrectly attempted to be set to non-sourceable data.",
+                    "Bad request has been submitted.",
             ),
-            ApiResponse(responseCode = "404", description = "The companyId does not exist."),
+            ApiResponse(responseCode = "404", description = "Invalid input parameters."),
         ],
     )
     @PostMapping(
