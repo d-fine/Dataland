@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoRespo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -113,49 +112,25 @@ class NonSourceableDataManager(
     }
 
     /**
-     * The method throws an exception if a specific dataset is sourceable or not found.
-     * @param companyId filters for the specific company
-     * @param dataType filters for the specific data type
-     * @param reportingPeriod filters for the specific reporting period
+     * Gets the latest non-sourceable info for triple (companyId, dataType, reportingPeriod)
+     * @param companyId companyId
+     * @param dataType dataType
+     * @param reportingPeriod reportingPeriod
+     * @return most recent NonSourceableInfoResponse for triple (companyId, dataType, reportingPeriod)
      */
-
-    fun checkDataIsNonSourceable(
+    fun getLatestNonSourceableInfoForDataset(
         companyId: String,
         dataType: DataType,
         reportingPeriod: String,
-    ) {
-        if (isDataNonSourceable(companyId, dataType, reportingPeriod) != true) {
-            throw ResourceNotFoundApiException(
-                summary = "Dataset is sourceable or not found.",
-                message =
-                    "No non-sourceable dataset found for company $companyId, dataType $dataType, " +
-                        "and reportingPeriod $reportingPeriod.",
-            )
-        }
-    }
-
-    /**
-     * The method checks if a specific data set is non-sourceable.
-     * @param companyId filters for the specific company
-     * @param dataType filters for the specific data type
-     * @param reportingPeriod filters for the specific reporting period
-     */
-    fun isDataNonSourceable(
-        companyId: String,
-        dataType: DataType,
-        reportingPeriod: String,
-    ): Boolean? {
-        val latestNonSourceableEntity =
-            nonSourceableDataRepository.getLatestNonSourceableInfoForDataset(
+    ): NonSourceableInfoResponse? =
+        nonSourceableDataRepository
+            .getLatestNonSourceableInfoForDataset(
                 NonSourceableDataSearchFilter(
                     companyId,
                     dataType,
                     reportingPeriod,
-                    null,
                 ),
-            )
-        return latestNonSourceableEntity?.isNonSourceable
-    }
+            )?.toApiModel()
 
     /**
      * Stores a NonSourceableEntity in the data-sourceability table, marking the previously

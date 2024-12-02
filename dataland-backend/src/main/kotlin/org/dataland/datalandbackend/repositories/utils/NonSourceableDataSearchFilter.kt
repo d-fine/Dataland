@@ -10,7 +10,7 @@ data class NonSourceableDataSearchFilter(
     val companyId: String?,
     val dataType: DataType?,
     val reportingPeriod: String?,
-    val isNonSourceable: Boolean?,
+    val isNonSourceable: Boolean? = null,
 ) {
     val shouldFilterByCompanyId: Boolean
         get() = !companyId.isNullOrEmpty()

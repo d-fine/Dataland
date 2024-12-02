@@ -68,7 +68,8 @@ class MessageQueueListenerForDataManager(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
 
-        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val qaStatusChangeMessage =
+            MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
 
         val updatedDataId = qaStatusChangeMessage.dataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
@@ -105,11 +106,12 @@ class MessageQueueListenerForDataManager(
                 val currentlyActiveMetaInformation =
                     metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
-                if (nonSourceableDataManager.isDataNonSourceable(
-                        updatedDataMetaInformation.company.companyId,
-                        DataType.valueOf(updatedDataMetaInformation.dataType),
-                        updatedDataMetaInformation.reportingPeriod,
-                    ) == true
+                if (nonSourceableDataManager
+                        .getLatestNonSourceableInfoForDataset(
+                            updatedDataMetaInformation.company.companyId,
+                            DataType.valueOf(updatedDataMetaInformation.dataType),
+                            updatedDataMetaInformation.reportingPeriod,
+                        )?.isNonSourceable == true
                 ) {
                     nonSourceableDataManager.storeSourceableData(
                         updatedDataMetaInformation.company.companyId,

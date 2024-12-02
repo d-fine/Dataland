@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoRespo
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -90,10 +91,15 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        nonSourceableDataManager.checkDataIsNonSourceable(
-            companyId,
-            dataType,
-            reportingPeriod,
-        )
+        val latestNonSourceableInfo = nonSourceableDataManager.getLatestNonSourceableInfoForDataset(companyId, dataType, reportingPeriod)
+
+        if (latestNonSourceableInfo?.isNonSourceable != true) {
+            throw ResourceNotFoundApiException(
+                summary = "Dataset is sourceable or not found.",
+                message =
+                    "No non-sourceable dataset found for company $companyId, dataType $dataType, " +
+                        "and reportingPeriod $reportingPeriod.",
+            )
+        }
     }
 }
