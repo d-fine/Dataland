@@ -67,22 +67,17 @@ class MessageQueueListenerForDataManager(
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
-
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
-
         val updatedDataId = qaStatusChangeMessage.dataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
         val currentlyActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
-
         logger.info(
             "Received QA Status Change message for dataID $updatedDataId. New qaStatus is $updatedQaStatus. " +
                 "(correlationId: $correlationId)",
         )
-
         if (updatedDataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID to change qa status dataset is empty")
         }
-
         MessageQueueUtils.rejectMessageOnException {
             val updatedDataMetaInformation = metaDataManager.getDataMetaInformationByDataId(updatedDataId)
             updatedDataMetaInformation.qaStatus = updatedQaStatus
