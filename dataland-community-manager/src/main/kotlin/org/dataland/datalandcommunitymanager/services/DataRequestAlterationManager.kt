@@ -107,7 +107,8 @@ class DataRequestAlterationManager
 
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-            requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
+            requestEmailManager
+                .sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
 
             return dataRequestEntity.toStoredDataRequest()
         }
