@@ -83,7 +83,7 @@ docker compose --profile development --profile developmentContainerFrontend pull
 
 if [[ -s ./localContainer.conf ]]; then
   echo "Starting only configured services."
-  for service in $(cat ./localContainer.conf; do
+  for service in $(cat ./localContainer.conf); do
     echo "Starting service $service"
     docker compose "${compose_profiles[@]}" up -d --build "$service"
   done
