@@ -85,7 +85,15 @@ class DataRequestNonSourceableTest {
         apiAccessor.metaDataControllerApi.postNonSourceabilityOfADataset(
             nonSourceableInfo = nonSourceableInfo,
         )
-// insert test of get endpoint
+
+        val receivedNonSourceableInfoOfRequests = apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDataSets()
+        val receivedNonSourceableInfoOfRequest = receivedNonSourceableInfoOfRequests[0]
+
+        assertEquals(nonSourceableInfo.companyId, receivedNonSourceableInfoOfRequest.companyId)
+        assertEquals(nonSourceableInfo.dataType, receivedNonSourceableInfoOfRequest.dataType)
+        assertEquals(nonSourceableInfo.reportingPeriod, receivedNonSourceableInfoOfRequest.reportingPeriod)
+        assertEquals(nonSourceableInfo.isNonSourceable, receivedNonSourceableInfoOfRequest.isNonSourceable)
+        assertEquals(nonSourceableInfo.reason, receivedNonSourceableInfoOfRequest.reason)
 
         val requestIdOfstoredSingleDataRequestFirstUserSameRequest =
             UUID
