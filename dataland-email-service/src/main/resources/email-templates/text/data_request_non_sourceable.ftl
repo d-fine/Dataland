@@ -1,4 +1,4 @@
-Unfortunately, there are no public sources available for your requested dataset according to a data provider.
+Unfortunately, no public sources could be found for your requested dataset by a data provider.
 We will continue to check the status of your request regularly and inform you in case the dataset will be uploaded in the future.
 If you are certain the requested data should exist, you may reopen your request on the data request page.
 ${baseUrl}/requests/${dataRequestId}

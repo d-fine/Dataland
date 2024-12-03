@@ -94,7 +94,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
     val dataRequestNonSourceableKeywords =
         listOf(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, dataRequestId, BASE_URL, NON_SOURCEABLE_COMMENT,
-            "Unfortunately, there are no public sources available for your requested dataset according to a data provider.",
+            "Unfortunately, no public sources could be found for your requested dataset by a data provider.",
             "We will continue to check the status of your request regularly",
             "inform you in case the dataset will be uploaded in the future.",
             "If you are certain the requested data should exist, you may reopen your request ",
