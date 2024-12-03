@@ -2,35 +2,42 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Keventown",
-			"headquartersPostalCode": "08624-9889",
-			"sector": "web services",
+			"headquarters": "Kerlukeshire",
+			"headquartersPostalCode": "60933",
+			"sector": "platforms",
 			"identifiers": {
 				"Lei": [
-					"ZSW19V9gRjT8dOwHuHw8"
+					"d6G2Ns6yWmAfnDlKzyE8"
 				],
 				"Isin": [
-					"7isXp6iT68ka"
+					"OQhtTJtNKGxt"
 				],
 				"PermId": [],
 				"Ticker": [
-					"NJ56EIw"
+					"KusqRjv"
 				],
 				"Duns": [
-					"Uv5q40XAG"
+					"2VGFoj3pY"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"ZpBjhhkxNgn3BlA"
+					"cmxecBpkXRn7jzV"
 				]
 			},
-			"countryCode": "AE",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Abbott, Stroman and Rempel"
+			"countryCode": "PA",
+			"companyContactDetails": [
+				"Leo62@example.com",
+				"Freida_Heller@example.com",
+				"Lavada29@example.com",
+				"Shea.Boyle53@example.com",
+				"Casimir80@example.com"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://reflecting-jungle.name",
+			"companyAlternativeNames": [
+				"Hoppe Group",
+				"Pagac Group"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://wide-eyed-object.org/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -39,86 +46,86 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "109-1241",
-							"fileName": "SustainabilityReport",
+							"page": "404",
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "niches"
 						},
-						"comment": "parse optical driver",
-						"quality": "Estimated"
+						"comment": "generate 1080p system",
+						"quality": "NoDataFound"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-12-10",
+						"value": "2024-05-08",
 						"dataSource": {
-							"page": "1197-1214",
-							"fileName": "IntegratedReport",
+							"page": "392",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "users"
 						},
-						"comment": "synthesize mobile pixel",
+						"comment": "override optical interface",
 						"quality": "Reported"
 					},
 					"referencedReports": {
-						"IntegratedReport": {
+						"ESEFReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"publicationDate": "2023-04-01"
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-05-09"
 						},
 						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-08-18"
+							"publicationDate": "2023-04-15"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 9602059661.42,
+						"value": 3015959701,
 						"dataSource": {
-							"page": "689",
-							"fileName": "IntegratedReport",
+							"page": "214-1233",
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "architectures"
 						},
-						"comment": "input mobile microchip",
-						"quality": "Estimated",
-						"currency": "LAK"
+						"comment": "calculate wireless interface",
+						"quality": "NoDataFound",
+						"currency": "LSL"
 					},
 					"debt": {
-						"value": 1098737262.65,
+						"value": 5636161134.16,
 						"dataSource": {
-							"page": "752-1062",
+							"page": "883",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "mindshare"
 						},
-						"comment": "index 1080p bus",
-						"quality": "Reported",
-						"currency": "CDF"
+						"comment": "navigate bluetooth alarm",
+						"quality": "Audited",
+						"currency": "LAK"
 					},
 					"balanceSheetTotal": {
-						"value": 4386258840.09,
+						"value": 1374657419.22,
 						"dataSource": {
-							"page": "300-1131",
-							"fileName": "IntegratedReport",
+							"page": "665",
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "supply-chains"
 						},
-						"comment": "program primary monitor",
-						"quality": "Incomplete",
-						"currency": "MAD"
+						"comment": "index virtual sensor",
+						"quality": "Audited",
+						"currency": "PGK"
 					},
 					"evic": {
-						"value": 5305528752.51,
+						"value": 6458550405.32,
 						"dataSource": {
-							"page": "599",
-							"fileName": "IntegratedReport",
+							"page": "153-923",
+							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"tagName": "functionalities"
 						},
-						"comment": "copy optical array",
-						"quality": "NoDataFound",
-						"currency": "BWP"
+						"comment": "calculate wireless capacitor",
+						"quality": "Reported",
+						"currency": "NPR"
 					}
 				}
 			}

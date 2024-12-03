@@ -2,34 +2,37 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "North Wallaceworth",
-			"headquartersPostalCode": "97416-7205",
-			"sector": "metrics",
+			"headquarters": "Denesikport",
+			"headquartersPostalCode": "28692-7152",
+			"sector": "niches",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"GczmeVXsx6ipAhYkW4xv"
+				],
 				"Isin": [
-					"Q3CoERJfyoUh"
+					"0djLRssaGyqY",
+					"IRTovuaD70PK"
 				],
-				"PermId": [
-					"hWr3EB4NVC"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"Y0KbP18Xg"
+				"Duns": [
+					"KT68Clm7W"
 				],
-				"CompanyRegistrationNumber": [
-					"2ZvCn2oatj9aSG1"
-				]
+				"VatNumber": [
+					"WnsbkazW0"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GU",
-			"companyContactDetails": [],
+			"countryCode": "IL",
+			"companyContactDetails": null,
 			"companyAlternativeNames": [
-				"Hilll - Corkery",
-				"Rodriguez Inc"
+				"Huels Inc",
+				"Jones LLC",
+				"Nikolaus Group",
+				"Witting and Sons"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": null,
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://petty-puritan.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -97,6 +100,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2022"
 	}
 ]
