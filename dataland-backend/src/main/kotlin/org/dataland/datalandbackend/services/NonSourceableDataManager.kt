@@ -38,7 +38,8 @@ class NonSourceableDataManager(
      * The method stores meta information to a non-sourceable dataset in the nonSourceableDataRepository
      * @param nonSourceableInfo the of the dataset
      */
-    private fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): NonSourceableInfoResponse? {
+    @Transactional
+    fun storeNonSourceableData(nonSourceableInfo: NonSourceableInfo): NonSourceableInfoResponse? {
         val creationTime = Instant.now().toEpochMilli()
         val userId = DatalandAuthentication.fromContext().userId
         val nonSourceableEntity =
@@ -61,7 +62,6 @@ class NonSourceableDataManager(
      * storing the non-sourceable data, and sending a corresponding message to a message queue.
      * @param nonSourceableInfo the NonSourceableInfo of the dataset
      */
-    @Transactional
     fun processSourceabilityDataStorageRequest(nonSourceableInfo: NonSourceableInfo) {
         val correlationId = generateCorrelationId(nonSourceableInfo.companyId, null)
         companyQueryManager.verifyCompanyIdExists(nonSourceableInfo.companyId)

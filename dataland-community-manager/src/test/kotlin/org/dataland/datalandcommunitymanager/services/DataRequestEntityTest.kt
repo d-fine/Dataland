@@ -1,6 +1,5 @@
 package org.dataland.datalandcommunitymanager.services
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
@@ -13,14 +12,14 @@ import java.util.UUID
 
 class DataRequestEntityTest {
     private val testUserId = UUID.randomUUID().toString()
-    private val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+    private val testDataType = "testDataType"
     private val testReportingPeriod = "2024"
     private val testCompanyId = UUID.randomUUID().toString()
 
     private val dataRequest =
         DataRequestEntity(
             userId = testUserId,
-            dataType = testDataType.value,
+            dataType = testDataType,
             reportingPeriod = testReportingPeriod,
             datalandCompanyId = testCompanyId,
             creationTimestamp = Instant.now().toEpochMilli(),

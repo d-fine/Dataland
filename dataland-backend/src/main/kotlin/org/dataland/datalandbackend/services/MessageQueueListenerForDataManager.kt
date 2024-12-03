@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -60,6 +61,7 @@ class MessageQueueListenerForDataManager(
             ),
         ],
     )
+    @Transactional
     fun changeQaStatus(
         @Payload jsonString: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
@@ -104,10 +106,12 @@ class MessageQueueListenerForDataManager(
             } else {
                 val currentlyActiveMetaInformation =
                     metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
-                logger.info("Set dataset with dataId $currentlyActiveDataId to active.")
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
-                logger.info("Check if dataset was previously marked as non-sourceable and if so, mark as sourceable.")
-                storeUpdatedDataToNonSourceableData(updatedDataMetaInformation)
+                storeUpdatedDatatoNonSourceableData(updatedDataMetaInformation)
+                logger.info(
+                    "Dataset with dataId $currentlyActiveDataId has been set to active. +" +
+                        "Previously non-sourceable datasets are now marked as sourceable.",
+                )
             }
         }
     }
@@ -155,12 +159,10 @@ class MessageQueueListenerForDataManager(
         }
     }
 
-    /**
-     * Adds a new entry to the data-sourceability repo if a corresponding dataset was previously flagged as
-     * non-sourceable.
+    /** Stores a sourceable dataset to the data-sourceability table if it was previously flagged as non-sourceable.
      * @param updatedDataMetaInformation DataMetaInformationEntity that holds information of the updated dataset.
      */
-    private fun storeUpdatedDataToNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
+    private fun storeUpdatedDatatoNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
         if (nonSourceableDataManager
                 .getLatestNonSourceableInfoForDataset(
                     updatedDataMetaInformation.company.companyId,
