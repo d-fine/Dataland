@@ -58,7 +58,7 @@ class DataRequestQueryManager
         }
 
         /** This method retrieves an extended stored data request based on a data request entity
-         * @param dataRequestEntity dataland data request entity
+         * @param dataRequestEntity data request entity
          * @returns extended stored data request
          */
         private fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {

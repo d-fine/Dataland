@@ -21,6 +21,18 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      */
     fun findByUserId(userId: String): List<DataRequestEntity>
 
+    /** This method looks for data requests with the provided params.
+     * @param datalandCompanyId to check for
+     * @param dataType to check for
+     * @param reportingPeriod to check for
+     * @returns a list of the data requests
+     */
+    fun findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+        datalandCompanyId: String,
+        dataType: String,
+        reportingPeriod: String,
+    ): List<DataRequestEntity>?
+
     /** This method looks for data requests with the provided params already exist in the database.
      * @param userId to check for
      * @param datalandCompanyId to check for

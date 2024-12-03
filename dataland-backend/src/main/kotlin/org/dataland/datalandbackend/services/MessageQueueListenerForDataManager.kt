@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -31,6 +33,7 @@ class MessageQueueListenerForDataManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val metaDataManager: DataMetaInformationManager,
     @Autowired private val dataManager: DataManager,
+    @Autowired private val nonSourceableDataManager: NonSourceableDataManager,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -66,7 +69,8 @@ class MessageQueueListenerForDataManager(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
 
-        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val qaStatusChangeMessage =
+            MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
 
         val updatedDataId = qaStatusChangeMessage.dataId
         val updatedQaStatus = qaStatusChangeMessage.updatedQaStatus
@@ -102,8 +106,10 @@ class MessageQueueListenerForDataManager(
             } else {
                 val currentlyActiveMetaInformation =
                     metaDataManager.getDataMetaInformationByDataId(currentlyActiveDataId)
+                logger.info("Set dataset with dataId $currentlyActiveDataId to active.")
                 metaDataManager.setActiveDataset(currentlyActiveMetaInformation)
-                logger.info("Dataset with dataId $currentlyActiveDataId has been set to active.")
+                logger.info("Check if dataset was previously marked as non-sourceable and if so, mark as sourceable.")
+                storeUpdatedDataToNonSourceableData(updatedDataMetaInformation)
             }
         }
     }
@@ -148,6 +154,28 @@ class MessageQueueListenerForDataManager(
         )
         MessageQueueUtils.rejectMessageOnException {
             dataManager.removeDataSetFromInMemoryStore(dataId)
+        }
+    }
+
+    /**
+     * Adds a new entry to the data-sourceability repo if a corresponding dataset was previously flagged as
+     * non-sourceable.
+     * @param updatedDataMetaInformation DataMetaInformationEntity that holds information of the updated dataset.
+     */
+    private fun storeUpdatedDataToNonSourceableData(updatedDataMetaInformation: DataMetaInformationEntity) {
+        if (nonSourceableDataManager
+                .getLatestNonSourceableInfoForDataset(
+                    updatedDataMetaInformation.company.companyId,
+                    DataType.valueOf(updatedDataMetaInformation.dataType),
+                    updatedDataMetaInformation.reportingPeriod,
+                )?.isNonSourceable == true
+        ) {
+            nonSourceableDataManager.storeSourceableData(
+                updatedDataMetaInformation.company.companyId,
+                DataType.valueOf(updatedDataMetaInformation.dataType),
+                updatedDataMetaInformation.reportingPeriod,
+                updatedDataMetaInformation.uploaderUserId,
+            )
         }
     }
 }

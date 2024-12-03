@@ -174,7 +174,7 @@
                 <Column header="REQUEST STATUS" :sortable="false" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ slotProps.data.requestStatus }}
+                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
                     </div>
                   </template>
                 </Column>
@@ -243,7 +243,7 @@ import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import type { FrameworkSelectableItem, SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass, priorityBadgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, priorityBadgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import {
   retrieveAvailableFrameworks,
   retrieveAvailableRequestStatus,
@@ -346,6 +346,7 @@ export default defineComponent({
     priorityBadgeClass,
     badgeClass,
     accessStatusBadgeClass,
+    getRequestStatusLabel,
     frameworkHasSubTitle,
     getFrameworkTitle,
     getFrameworkSubtitle,
