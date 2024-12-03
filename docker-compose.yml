@@ -21,7 +21,11 @@ x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
   POSTGRES_DB: eurodat_db_name
   POSTGRES_USER: eurodat_db_user
   POSTGRES_PASSWORD: eurodat_db_password
-
+x-logging-options: &logging-options
+  driver: json-file
+  options:
+    max-size: ${LOGGING_OPTIONS_MAX_SIZE}
+    max-file: ${LOGGING_OPTIONS_MAX_FILE}
 
 services:
   proxy:
@@ -50,6 +54,8 @@ services:
       BACKEND_URL: ${BACKEND_URL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
@@ -69,6 +75,8 @@ services:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
+    logging:
+      <<: *logging-options
   api-key-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -84,6 +92,8 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+    logging:
+      <<: *logging-options
   api-key-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -101,6 +111,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -119,6 +131,8 @@ services:
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
     depends_on:
       - document-manager-db
+    logging:
+      <<: *logging-options
   document-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -136,6 +150,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   backend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -154,6 +170,8 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
+    logging:
+      <<: *logging-options
   backend-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -179,6 +197,8 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+    logging:
+      <<: *logging-options
   e2etests:
     profiles: [ "testing" ]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -204,6 +224,8 @@ services:
     links:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
+    logging:
+      <<: *logging-options
   frontend-dev:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
     # don't work anymore after a certain amount of requests
@@ -222,6 +244,8 @@ services:
     <<: *uncritical-constants-env
     environment:
       POLLING: "false"
+    logging:
+      <<: *logging-options
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -229,6 +253,8 @@ services:
     networks:
       - internal
     <<: *uncritical-constants-env
+    logging:
+      <<: *logging-options
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -246,6 +272,8 @@ services:
       - internal-storage-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   internal-storage-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -263,6 +291,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   keycloak-db:
     restart: always
     profiles: [ "production", "testing", "development", "init" ]
@@ -280,6 +310,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   keycloak:
     restart: always
     profiles: [ "production", "development" ]
@@ -295,6 +327,8 @@ services:
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
       - keycloak-db
+    logging:
+      <<: *logging-options
   keycloak-initializer:
     profiles: [ "testing", "init" ]
     networks:
@@ -340,6 +374,8 @@ services:
     depends_on:
       keycloak-db:
         condition: service_healthy
+    logging:
+      <<: *logging-options
   pgadmin:
     restart: always
     image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
@@ -369,6 +405,8 @@ services:
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
+    logging:
+      <<: *logging-options
   rabbitmq:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -389,6 +427,8 @@ services:
         limits:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
+    logging:
+      <<: *logging-options
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -409,6 +449,8 @@ services:
       - qa-service-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   qa-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -426,6 +468,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   batch-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -442,6 +486,8 @@ services:
       - batch_manager_data:/deltafiles
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   community-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -463,6 +509,8 @@ services:
       - community-manager-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   community-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -480,6 +528,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   specification-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -491,6 +541,8 @@ services:
     <<: *uncritical-constants-env
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+    logging:
+      <<: *logging-options
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -509,6 +561,8 @@ services:
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
+    logging:
+      <<: *logging-options
   email-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -526,6 +580,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   external-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -540,6 +596,8 @@ services:
       IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:-false}
     extra_hosts:
      - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
@@ -552,6 +610,8 @@ services:
       - ./dataland-eurodat-client/secret_files:/crt
     env_file:
       - ./dataland-eurodat-client/secret_files/client.env
+    logging:
+      <<: *logging-options
   dummy-eurodat-client:
     restart: always
     profiles: [ "testing" ]
@@ -562,6 +622,8 @@ services:
       - "8080"
     environment:
       <<: *dummy-eurodat-db-settings
+    logging:
+      <<: *logging-options
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
@@ -577,6 +639,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   data-exporter:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -592,6 +656,8 @@ services:
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
     volumes:
       - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
+    logging:
+      <<: *logging-options
 networks:
   internal:
   external:
