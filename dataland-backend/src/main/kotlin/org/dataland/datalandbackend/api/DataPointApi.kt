@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.model.datapoints.DataPointContent
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.springframework.http.ResponseEntity
@@ -24,6 +25,28 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface DataPointApi {
+    /**
+     * A method to validate the content of a data point
+     * @param dataPoint the data point content to be validated
+     */
+    @Operation(
+        summary = "Verify data point content.",
+        description = "The uploaded data point is verified to conform to it's specification",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Successfully verified specification conformity."),
+        ],
+    )
+    @PostMapping(
+        value = ["/verify"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun validateDataPointContent(
+        @Valid @RequestBody dataPoint: DataPointContent,
+    ): ResponseEntity<Void>
+
     /**
      * A method to store a data point via Dataland into a data store
      * @param uploadedDataPoint consisting of the triple data point identifier, company ID and reporting period and the actual data

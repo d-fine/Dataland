@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.DataPointApi
+import org.dataland.datalandbackend.model.datapoints.DataPointContent
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
+import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,8 +26,15 @@ import org.springframework.web.bind.annotation.RestController
 class DataPointController(
     @Autowired private val dataPointMetaInformationManager: DataPointMetaInformationManager,
     @Autowired private val dataPointManager: DataPointManager,
+    @Autowired private val dataPointValidator: DataPointValidator,
     @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {
+    override fun validateDataPointContent(dataPoint: DataPointContent): ResponseEntity<Void> {
+        val correlationId = IdUtils.generateCorrelationId(null, null)
+        dataPointValidator.validateDataPoint(dataPoint.dataPointIdentifier, dataPoint.dataPointContent, correlationId)
+        return ResponseEntity.noContent().build()
+    }
+
     override fun postDataPoint(
         uploadedDataPoint: UploadedDataPoint,
         bypassQa: Boolean,
