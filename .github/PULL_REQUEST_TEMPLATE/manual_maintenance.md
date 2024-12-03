@@ -89,7 +89,7 @@ Check the cloud provider's dashboard for manually created backups and images. De
 - [ ] The PR actually implements what is described above
 - [ ] Documentation is updated as required
 - [ ] The automated deployment is updated if required
-- [ ] The new version is deployed to the dev server "dev1" using this branch
+- [ ] The new version is deployed to one of the dev servers using this branch
   - [ ] Run with setting `Reset non-user related Docker Volumes & Re-populate` turned on
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
