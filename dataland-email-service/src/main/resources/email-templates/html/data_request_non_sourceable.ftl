@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <td colspan="3">
-            Unfortunately, there are no sources available for your requested dataset according to a data provider.<br>
+            Unfortunately, there are no public sources available for your requested dataset according to a data provider.<br>
             We will continue to check the status of your request regularly and inform you in case the dataset will be uploaded in the future.
             If you are certain the requested data should exist, you may reopen your request on the
             <a href="${baseUrl}/requests/${dataRequestId}" target="_blank">
