@@ -130,7 +130,7 @@ class QaControllerTest(
                 eq(RoutingKeyNames.DATA_POINT_QA),
             )
 
-            val reviewEntries = qaController.getDataPointQaReviewInformationByDataId(UUID.fromString(dataId)).body!!
+            val reviewEntries = qaController.getDataPointQaReviewInformationByDataId(dataId).body!!
             assertEquals(3, reviewEntries.size)
             assertEquals(BackendUtilsQaStatus.Rejected, reviewEntries.first().qaStatus)
 

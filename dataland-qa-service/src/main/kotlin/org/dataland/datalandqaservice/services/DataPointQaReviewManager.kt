@@ -33,14 +33,26 @@ class DataPointQaReviewManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * Saves QaReviewEntity to database
+     * Review a data point and change its QA status
      * @param dataId dataId of dataset of which to change qaStatus
      * @param qaStatus new qaStatus to be set
      * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
      * @param correlationId the ID for the process triggering the change
      */
     @Transactional
-    fun saveDataPointQaReviewEntity(
+    fun reviewDataPoint(
+        dataId: String,
+        qaStatus: QaStatus,
+        triggeringUserId: String,
+        comment: String?,
+        correlationId: String,
+    ): DataPointQaReviewEntity {
+        val reviewEntity = saveDataPointQaReviewEntity(dataId, qaStatus, triggeringUserId, comment, correlationId)
+        sendDataPointQaStatusChangeMessage(reviewEntity, correlationId)
+        return reviewEntity
+    }
+
+    private fun saveDataPointQaReviewEntity(
         dataId: String,
         qaStatus: QaStatus,
         triggeringUserId: String,
@@ -67,13 +79,7 @@ class DataPointQaReviewManager(
         return dataPointQaReviewRepository.save(dataPointQaReviewEntity)
     }
 
-    /**
-     * Send the information that the QA status changed to the message queue
-     * @param dataPointQaReviewEntity qaReviewEntity for which to send the QaStatusChangeMessage
-     * @param correlationId the ID for the process triggering the change
-     */
-    @Transactional
-    fun sendDataPointQaStatusChangeMessage(
+    private fun sendDataPointQaStatusChangeMessage(
         dataPointQaReviewEntity: DataPointQaReviewEntity,
         correlationId: String,
     ) {

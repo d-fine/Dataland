@@ -186,7 +186,7 @@ interface QaApi {
             "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
     )
     fun getDataPointQaReviewInformationByDataId(
-        @PathVariable("dataId") dataId: UUID,
+        @PathVariable("dataId") dataId: String,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**

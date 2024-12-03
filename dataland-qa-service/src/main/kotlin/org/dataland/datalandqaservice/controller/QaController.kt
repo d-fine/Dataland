@@ -103,9 +103,9 @@ class QaController(
         )
     }
 
-    override fun getDataPointQaReviewInformationByDataId(dataId: UUID): ResponseEntity<List<DataPointQaReviewInformation>> {
+    override fun getDataPointQaReviewInformationByDataId(dataId: String): ResponseEntity<List<DataPointQaReviewInformation>> {
         logger.info("Received request to retrieve the review information of the dataset with identifier $dataId")
-        return ResponseEntity.ok(dataPointQaReviewManager.getDataPointQaReviewInformationByDataId(dataId.toString()))
+        return ResponseEntity.ok(dataPointQaReviewManager.getDataPointQaReviewInformationByDataId(dataId))
     }
 
     override fun getDataPointReviewQueue(): ResponseEntity<List<DataPointQaReviewInformation>> {
@@ -124,11 +124,7 @@ class QaController(
             "Received request to change the QA status of the data point $dataId to $qaStatus " +
                 "from user $reviewerId (correlationId: $correlationId)",
         )
-        val dataPointQaReviewEntity =
-            dataPointQaReviewManager.saveDataPointQaReviewEntity(
-                dataId, qaStatus, reviewerId, comment, correlationId,
-            )
-        dataPointQaReviewManager.sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
+        dataPointQaReviewManager.reviewDataPoint(dataId, qaStatus, reviewerId, comment, correlationId)
     }
 
     override fun getDataPointQaReviewInformation(

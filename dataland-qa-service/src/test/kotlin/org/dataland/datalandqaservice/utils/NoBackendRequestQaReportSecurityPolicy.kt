@@ -17,4 +17,11 @@ class NoBackendRequestQaReportSecurityPolicy(
     ) {
         // Do nothing. This function is checked in an E2E-test.
     }
+
+    override fun ensureUserCanViewDataPointQaReportForDataId(
+        dataId: String,
+        user: DatalandAuthentication,
+    ) {
+        // Do nothing. This function is checked in an E2E-test.
+    }
 }

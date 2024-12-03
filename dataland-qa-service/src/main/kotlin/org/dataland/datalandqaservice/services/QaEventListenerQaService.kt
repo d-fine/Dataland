@@ -244,8 +244,7 @@ class QaEventListenerQaService
                         "bypassQA ${qaPayload.bypassQa} (correlation Id: $correlationId)",
                 )
 
-                val dataPointQaReviewEntity = saveQaReviewEntityFromMessage(qaPayload, correlationId)
-                dataPointQaReviewManager.sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
+                saveQaReviewEntityFromMessage(qaPayload, correlationId)
             }
         }
 
@@ -268,7 +267,7 @@ class QaEventListenerQaService
                     true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
                     false -> Pair(QaStatus.Pending, null)
                 }
-            return dataPointQaReviewManager.saveDataPointQaReviewEntity(
+            return dataPointQaReviewManager.reviewDataPoint(
                 dataId = dataId,
                 qaStatus = qaStatus,
                 triggeringUserId = triggeringUserId,
