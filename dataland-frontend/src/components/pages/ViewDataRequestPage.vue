@@ -83,8 +83,7 @@
             You have not provided a sufficient reason yet. Please provide a reason.
           </p>
           <p class="gray-text font-italic" style="text-align: left">
-            Please enter the reason why you think that the dataset should be available. Your message will be forwarded
-            to the data provider.
+            Please enter the reason why you think that the dataset should be available.
           </p>
         </FormKit>
         <div>
