@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.utils
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -102,6 +103,13 @@ class DataPointValidator(
             throw InvalidInputApiException(
                 summary = "Validation failed for data point.",
                 message = "Validation failed for data point due to ${ex.propertyName}. Known properties are ${ex.knownPropertyIds}.",
+                cause = ex,
+            )
+        } catch (ex: JsonParseException) {
+            logger.error("Unable to parse JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
+            throw InvalidInputApiException(
+                summary = "Validation failed for data point: Invalid JSON",
+                message = "Validation failed for data point due to ${ex.message}.",
                 cause = ex,
             )
         }
