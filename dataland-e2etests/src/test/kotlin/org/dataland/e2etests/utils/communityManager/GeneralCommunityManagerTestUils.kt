@@ -7,6 +7,7 @@ import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
+import org.dataland.communitymanager.openApiClient.model.RequestPriority
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequestMessageObject
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -156,6 +157,7 @@ fun checkThatDataRequestExistsExactlyOnceInRecentlyStored(
 }
 
 fun check400ClientExceptionErrorMessage(clientException: ClientException) {
+    assertEquals(400, clientException.statusCode)
     assertEquals("Client error : 400 ", clientException.message)
 }
 
@@ -214,6 +216,24 @@ fun assertStatusForDataRequestId(
     assertEquals(expectedStatus, retrievedStoredDataRequest.requestStatus)
 }
 
+fun assertPriorityForDataRequestId(
+    dataRequestId: UUID,
+    expectedPriority: RequestPriority,
+) {
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+    val retrievedStoredDataRequest = requestControllerApi.getDataRequestById(dataRequestId)
+    assertEquals(expectedPriority, retrievedStoredDataRequest.requestPriority)
+}
+
+fun assertAdminCommentForDataRequestId(
+    dataRequestId: UUID,
+    expectedAdminComment: String?,
+) {
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+    val retrievedStoredDataRequest = requestControllerApi.getDataRequestById(dataRequestId)
+    assertEquals(expectedAdminComment, retrievedStoredDataRequest.adminComment)
+}
+
 fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(
     dataRequestId: UUID,
     newStatus: RequestStatus,
@@ -225,6 +245,30 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(
     assertEquals(newLastUpdatedTimestamp, storedDataRequestAfterPatch.lastModifiedDate)
     assertEquals(newStatus, storedDataRequestAfterPatch.requestStatus)
     assertStatusForDataRequestId(dataRequestId, newStatus)
+}
+
+fun patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated(
+    dataRequestId: UUID,
+    newAdminComment: String,
+) {
+    val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, adminComment = newAdminComment)
+    val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    assertTrue(oldLastUpdatedTimestamp == newLastUpdatedTimestamp)
+    assertEquals(newAdminComment, storedDataRequestAfterPatch.adminComment)
+    assertAdminCommentForDataRequestId(dataRequestId, newAdminComment)
+}
+
+fun patchDataRequestPriorityAndAssertLastModifiedUpdated(
+    dataRequestId: UUID,
+    newRequestPriority: RequestPriority,
+) {
+    val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, requestPriority = newRequestPriority)
+    val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
+    assertEquals(newRequestPriority, storedDataRequestAfterPatch.requestPriority)
+    assertPriorityForDataRequestId(dataRequestId, newRequestPriority)
 }
 
 fun generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap: Map<IdentifierType, String>) {

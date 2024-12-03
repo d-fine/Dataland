@@ -7,7 +7,11 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
+import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
+import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -44,45 +48,96 @@ class DataRequestResponseEmailSender(
         return dateFormat.format(creationTimestamp)
     }
 
-    private fun getProperties(
-        dataRequestEntity: DataRequestEntity,
-        staleDaysThreshold: String,
-    ): Map<String, String> =
-        mapOf(
-            "companyId" to dataRequestEntity.datalandCompanyId,
-            "companyName" to getCompanyNameById(dataRequestEntity.datalandCompanyId),
-            "dataType" to dataRequestEntity.dataType,
-            "reportingPeriod" to dataRequestEntity.reportingPeriod,
-            "creationDate" to convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
-            "dataTypeDescription" to dataRequestEntity.getDataTypeDescription(),
-            "dataRequestId" to dataRequestEntity.dataRequestId,
-            "closedInDays" to staleDaysThreshold,
-        )
-
     /**
-     * Method to informs user by mail that his request is answered.
+     * Method to inform the respective user by mail that his request is closed.
      * @param dataRequestEntity the dataRequestEntity
-     * @param emailType the template email message type
      * @param correlationId the correlation id
      */
-    fun sendDataRequestResponseEmail(
+    fun sendDataRequestClosedEmail(
         dataRequestEntity: DataRequestEntity,
-        emailType: TemplateEmailMessage.Type,
         correlationId: String,
     ) {
-        val properties = getProperties(dataRequestEntity, staleDaysThreshold)
+        val dataRequestClosed =
+            DataRequestClosed(
+                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
+                reportingPeriod = dataRequestEntity.reportingPeriod,
+                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+                dataRequestId = dataRequestEntity.dataRequestId,
+                closedInDays = staleDaysThreshold.toInt(),
+            )
         val message =
-            TemplateEmailMessage(
-                emailTemplateType = emailType,
-                receiver = TemplateEmailMessage.UserIdEmailRecipient(dataRequestEntity.userId),
-                properties = properties,
+            EmailMessage(
+                dataRequestClosed, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),
-            MessageType.SEND_TEMPLATE_EMAIL,
+            MessageType.SEND_EMAIL,
             correlationId,
             ExchangeName.SEND_EMAIL,
-            RoutingKeyNames.TEMPLATE_EMAIL,
+            RoutingKeyNames.EMAIL,
+        )
+    }
+
+    /**
+     * Method to inform user by mail that his request is answered.
+     * @param dataRequestEntity the dataRequestEntity
+     * @param correlationId the correlation id
+     */
+    fun sendDataRequestAnsweredEmail(
+        dataRequestEntity: DataRequestEntity,
+        correlationId: String,
+    ) {
+        val dataRequestAnswered =
+            DataRequestAnswered(
+                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                reportingPeriod = dataRequestEntity.reportingPeriod,
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
+                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+                dataRequestId = dataRequestEntity.dataRequestId,
+                closedInDays = staleDaysThreshold.toInt(),
+            )
+        val message =
+            EmailMessage(
+                dataRequestAnswered, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
+            )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            objectMapper.writeValueAsString(message),
+            MessageType.SEND_EMAIL,
+            correlationId,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.EMAIL,
+        )
+    }
+
+    /**
+     * Method to inform user by mail that his request is non-sourceable.
+     * @param dataRequestEntity the dataRequestEntity
+     * @param correlationId the correlation id
+     */
+    fun sendDataRequestNonSourceableEmail(
+        dataRequestEntity: DataRequestEntity,
+        correlationId: String,
+    ) {
+        val dataRequestNonSourceableMail =
+            DataRequestNonSourceable(
+                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                reportingPeriod = dataRequestEntity.reportingPeriod,
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
+                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+                dataRequestId = dataRequestEntity.dataRequestId,
+                nonSourceableComment = dataRequestEntity.requestStatusChangeReason,
+            )
+        val message =
+            EmailMessage(
+                dataRequestNonSourceableMail, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
+            )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            objectMapper.writeValueAsString(message),
+            MessageType.SEND_EMAIL,
+            correlationId,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.EMAIL,
         )
     }
 }

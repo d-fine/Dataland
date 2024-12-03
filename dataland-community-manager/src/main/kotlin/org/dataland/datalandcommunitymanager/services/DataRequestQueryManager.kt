@@ -2,15 +2,16 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
+import org.dataland.datalandcommunitymanager.utils.DataRequestMasker
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.datalandcommunitymanager.utils.GetAggregatedRequestsSearchFilter
@@ -32,7 +33,8 @@ class DataRequestQueryManager
         private val dataRequestLogger: DataRequestLogger,
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val processingUtils: DataRequestProcessingUtils,
-        private val keycloakUserControllerApiService: KeycloakUserControllerApiService,
+        private val keycloakUserControllerApiService: KeycloakUserService,
+        private val dataRequestMasker: DataRequestMasker,
     ) {
         /** This method retrieves all the data requests for the current user from the database and logs a message.
          * @returns all data requests for the current user
@@ -41,16 +43,22 @@ class DataRequestQueryManager
             val currentUserId = DatalandAuthentication.fromContext().userId
             val retrievedStoredDataRequestEntitiesForUser =
                 dataRequestRepository.fetchStatusHistory(dataRequestRepository.findByUserId(currentUserId))
+
             val extendedStoredDataRequests =
                 retrievedStoredDataRequestEntitiesForUser.map { dataRequestEntity ->
                     convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity)
                 }
+
+            val extendedStoredDataRequestsFilteredAdminComment =
+                dataRequestMasker
+                    .hideAdminCommentForNonAdmins(extendedStoredDataRequests)
+
             dataRequestLogger.logMessageForRetrievingDataRequestsForUser()
-            return extendedStoredDataRequests
+            return extendedStoredDataRequestsFilteredAdminComment
         }
 
         /** This method retrieves an extended stored data request based on a data request entity
-         * @param dataRequestEntity dataland data request entity
+         * @param dataRequestEntity data request entity
          * @returns extended stored data request
          */
         private fun convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity: DataRequestEntity): ExtendedStoredDataRequest {
@@ -110,13 +118,17 @@ class DataRequestQueryManager
                 dataRequestRepository.findById(dataRequestId).getOrElse {
                     throw DataRequestNotFoundApiException(dataRequestId)
                 }
+
             val emailAddress = keycloakUserControllerApiService.getUser(dataRequestEntity.userId).email ?: ""
-            return dataRequestEntity.toStoredDataRequest(emailAddress)
+            val storedDataRequest = dataRequestEntity.toStoredDataRequest(emailAddress)
+
+            val storedDataRequestsFilteredAdminComment = dataRequestMasker.hideAdminCommentForNonAdmins(storedDataRequest)
+
+            return storedDataRequestsFilteredAdminComment
         }
 
         /**
          * Method to get all data requests based on filters.
-         * @param isUserAdmin whether the requesting user is an admin
          * @param ownedCompanyIdsByUser the company ids for which the user is a company owner
          * @param filter the search filter containing relevant search parameters
          * @param chunkIndex the index of the chunked results which should be returned
@@ -125,7 +137,6 @@ class DataRequestQueryManager
          */
         @Transactional
         fun getDataRequests(
-            isUserAdmin: Boolean,
             ownedCompanyIdsByUser: List<String>,
             filter: DataRequestsFilter,
             chunkIndex: Int?,
@@ -133,32 +144,20 @@ class DataRequestQueryManager
         ): List<ExtendedStoredDataRequest>? {
             val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
 
-            val usersMatchingEmailFilter = filter.setupEmailAddressFilter(keycloakUserControllerApiService)
             val extendedStoredDataRequests =
                 dataRequestRepository
                     .searchDataRequestEntity(
                         searchFilter = filter, resultOffset = offset, resultLimit = chunkSize,
                     ).map { dataRequestEntity -> convertRequestEntityToExtendedStoredDataRequest(dataRequestEntity) }
 
-            val userIdsToEmails = usersMatchingEmailFilter.associate { it.userId to it.email }.toMutableMap()
-
             val extendedStoredDataRequestsWithMails =
-                extendedStoredDataRequests.map {
-                    val allowedToSeeEmailAddress =
-                        isUserAdmin ||
-                            (
-                                ownedCompanyIdsByUser.contains(it.datalandCompanyId) &&
-                                    it.accessStatus != AccessStatus.Public
-                            )
+                dataRequestMasker.addEmailAddressIfAllowedToSee(
+                    extendedStoredDataRequests, ownedCompanyIdsByUser, filter,
+                )
+            val extendedStoredDataRequestsFilteredAdminComment =
+                dataRequestMasker.hideAdminCommentForNonAdmins(extendedStoredDataRequestsWithMails)
 
-                    it.userEmailAddress =
-                        it.userId
-                            .takeIf { allowedToSeeEmailAddress }
-                            ?.let { userIdsToEmails.getOrPut(it) { keycloakUserControllerApiService.getUser(it).email ?: "" } }
-
-                    it
-                }
-            return extendedStoredDataRequestsWithMails
+            return extendedStoredDataRequestsFilteredAdminComment
         }
 
         /**

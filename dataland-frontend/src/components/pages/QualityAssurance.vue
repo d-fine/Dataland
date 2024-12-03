@@ -58,6 +58,9 @@
                 <span>{{ numberOfUnreviewedDatasets }}</span>
               </div>
             </span>
+            <div class="pb-2 ml-3 flex justify-content-start">
+              <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
+            </div>
           </div>
 
           <div class="col-12 text-left p-3">
@@ -105,7 +108,7 @@
                 </Column>
                 <Column header="SUBMISSION DATE" class="d-bg-white w-2 qa-review-submission-date">
                   <template #body="slotProps">
-                    {{ convertUnixTimeInMsToDateString(slotProps.data.receptionTime) }}
+                    {{ convertUnixTimeInMsToDateString(slotProps.data.timestamp) }}
                   </template>
                 </Column>
                 <Column field="reviewDataset" header="" class="w-2 d-bg-white qa-review-button">
@@ -154,7 +157,7 @@ import { retrieveAvailableFrameworks } from '@/utils/RequestsOverviewPageUtils';
 import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import { type GetInfoOnUnreviewedDatasetsDataTypesEnum, type ReviewQueueResponse } from '@clients/qaservice';
+import { type GetInfoOnPendingDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import router from '@/router';
 import { type DataTypeEnum } from '@clients/backend';
 
@@ -185,7 +188,7 @@ export default defineComponent({
     const footerContent = footerPage?.sections;
     return {
       apiClientProvider: new ApiClientProvider(this.getKeycloakPromise()),
-      displayDataOfPage: [] as ReviewQueueResponse[],
+      displayDataOfPage: [] as QaReviewResponse[],
       waitingForData: true,
       KEYCLOAK_ROLE_REVIEWER,
       currentChunkIndex: 0,
@@ -198,6 +201,8 @@ export default defineComponent({
       selectedFrameworks: [] as Array<FrameworkSelectableItem>,
       availableFrameworks: [] as Array<FrameworkSelectableItem>,
       availableReportingPeriods: undefined as undefined | Array<Date>,
+      notEnoughCharactersWarningTimeoutId: 0,
+      showNotEnoughCharactersWarning: false,
     };
   },
   mounted() {
@@ -219,14 +224,16 @@ export default defineComponent({
         this.getQaDataForCurrentPage();
       }
     },
-    searchBarInput(newSearch: string) {
-      this.searchBarInput = newSearch;
-      this.currentChunkIndex = 0;
-      this.firstRowIndex = 0;
-      if (this.timerId) {
-        clearTimeout(this.timerId);
+    searchBarInput() {
+      const isValid = this.validateSearchBarInput();
+      if (isValid) {
+        this.currentChunkIndex = 0;
+        this.firstRowIndex = 0;
+        if (this.timerId) {
+          clearTimeout(this.timerId);
+        }
+        this.timerId = setTimeout(() => this.getQaDataForCurrentPage(), this.debounceInMs);
       }
-      this.timerId = setTimeout(() => this.getQaDataForCurrentPage(), this.debounceInMs);
     },
   },
   methods: {
@@ -234,12 +241,12 @@ export default defineComponent({
     humanizeString: humanizeStringOrNumber,
     /**
      * Tells the typescript compiler to handle the DataTypeEnum input as type GetInfoOnUnreviewedDatasetsDataTypesEnum.
-     * This is acceptable because both enums sahre the same origin (DataTypeEnum in backend).
+     * This is acceptable because both enums share the same origin (DataTypeEnum in backend).
      * @param input is a value with type DataTypeEnum
      * @returns GetInfoOnUnreviewedDatasetsDataTypesEnum
      */
-    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnUnreviewedDatasetsDataTypesEnum {
-      return input as GetInfoOnUnreviewedDatasetsDataTypesEnum;
+    manuallyChangeTypeOfDataTypeEnum(input: DataTypeEnum): GetInfoOnPendingDatasetsDataTypesEnum {
+      return input as GetInfoOnPendingDatasetsDataTypesEnum;
     },
     /**
      * Uses the dataland QA API to retrieve the information that is displayed on the quality assurance page
@@ -249,7 +256,7 @@ export default defineComponent({
         this.waitingForData = true;
         this.displayDataOfPage = [];
 
-        const selectedFrameworksAsSet = new Set<GetInfoOnUnreviewedDatasetsDataTypesEnum>(
+        const selectedFrameworksAsSet = new Set<GetInfoOnPendingDatasetsDataTypesEnum>(
           this.selectedFrameworks.map((selectableItem) =>
             this.manuallyChangeTypeOfDataTypeEnum(selectableItem.frameworkDataType)
           )
@@ -258,7 +265,7 @@ export default defineComponent({
           this.availableReportingPeriods?.map((date) => date.getFullYear().toString())
         );
         const companyNameFilter = this.searchBarInput === '' ? undefined : this.searchBarInput;
-        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnUnreviewedDatasets(
+        const response = await this.apiClientProvider.apiClients.qaController.getInfoOnPendingDatasets(
           selectedFrameworksAsSet,
           reportingPeriodFilter,
           companyNameFilter,
@@ -267,7 +274,7 @@ export default defineComponent({
         );
         this.displayDataOfPage = response.data;
         this.totalRecords = (
-          await this.apiClientProvider.apiClients.qaController.getNumberOfUnreviewedDatasets(
+          await this.apiClientProvider.apiClients.qaController.getNumberOfPendingDatasets(
             selectedFrameworksAsSet,
             reportingPeriodFilter,
             companyNameFilter
@@ -284,7 +291,7 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     goToQaViewPage(event: DataTableRowClickEvent) {
-      const qaDataObject = event.data as ReviewQueueResponse;
+      const qaDataObject = event.data as QaReviewResponse;
       const qaUri = `/companies/${qaDataObject.companyId}/frameworks/${qaDataObject.framework}/${qaDataObject.dataId}`;
       return router.push(qaUri);
     },
@@ -309,6 +316,28 @@ export default defineComponent({
         this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
         this.getQaDataForCurrentPage();
       }
+    },
+    /**
+     * Validates the current company name search bar input.
+     * If there are only one or two characters typed, an error message shall be rendered asking the user to
+     * provide at least three characters.
+     * @returns the outcome of the validation
+     */
+    validateSearchBarInput(): boolean {
+      clearTimeout(this.notEnoughCharactersWarningTimeoutId);
+
+      const inputLength = this.searchBarInput.length;
+      const notEnoughCharacters = inputLength > 0 && inputLength < 3;
+
+      if (notEnoughCharacters) {
+        this.notEnoughCharactersWarningTimeoutId = setTimeout(() => {
+          this.showNotEnoughCharactersWarning = true;
+        }, 1000);
+        return false;
+      }
+
+      this.showNotEnoughCharactersWarning = false;
+      return true;
     },
   },
   computed: {

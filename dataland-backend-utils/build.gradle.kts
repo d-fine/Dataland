@@ -25,6 +25,7 @@ plugins {
 // apply(plugin = "io.spring.dependency-management")
 
 dependencies {
+    implementation(libs.jakarta.persistence.api)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
     implementation(libs.slf4j.api)
@@ -35,6 +36,7 @@ dependencies {
     implementation(libs.bcprov.jdk15on)
     implementation(libs.mailjet.client)
     testImplementation(Spring.boot.test)
+    testImplementation(libs.mockito.kotlin)
 }
 
 tasks.test {

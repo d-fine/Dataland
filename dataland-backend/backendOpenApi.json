@@ -270,6 +270,150 @@
         ]
       }
     },
+    "/metadata/nonSourceable": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Retrieve information about the sourceability of data sets",
+        "description": "Retrieve information about the sourceability of data sets by the filters.",
+        "operationId": "getInfoOnNonSourceabilityOfDataSets",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DataTypeEnum"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nonSourceable",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data sets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NonSourceableInfoResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Adds a data set with information on sourceability.",
+        "description": "A data set is added with information on its sourceability.",
+        "operationId": "postNonSourceabilityOfADataset",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NonSourceableInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Invalid input parameters."
+          },
+          "200": {
+            "description": "Successfully added dataset."
+          },
+          "400": {
+            "description": "Bad request has been submitted."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/vsme": {
       "post": {
         "tags": [
@@ -434,6 +578,75 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas": {
+      "post": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "postCompanyAssociatedNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
               }
             }
           },
@@ -895,6 +1108,77 @@
         ]
       }
     },
+    "/data-points": {
+      "post": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Upload new data point.",
+        "description": "The uploaded data point is added to the data store, the generated data id is returned.",
+        "operationId": "postDataPoint",
+        "parameters": [
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadedDataPoint"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added data to the data store.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -907,10 +1191,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -1038,6 +1324,78 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}": {
+      "head": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Checks if a data set is non-sourceable.",
+        "description": "Checks if a specific data set is non-sourceable.",
+        "operationId": "isDataNonSourceable",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DataTypeEnum"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked that data set is non-sourceable."
+          },
+          "404": {
+            "description": "Successfully checked that data set is sourceable."
           },
           "default": {
             "description": "An error occurred",
@@ -2131,6 +2489,142 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/{dataId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getCompanyAssociatedNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data set.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/nuclear-and-gas/companies/{companyId}": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "operationId": "getAllCompanyNuclearAndGasData",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showOnlyActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved framework datasets with meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataAndMetaInformationNuclearAndGasData"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg/{dataId}": {
       "get": {
         "tags": [
@@ -2947,6 +3441,66 @@
         ]
       }
     },
+    "/data-points/{dataId}": {
+      "get": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Retrieve data points by ID.",
+        "description": "A data point identified by its ID is retrieved.",
+        "operationId": "getDataPoint",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadedDataPoint"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies/{companyId}/info": {
       "get": {
         "tags": [
@@ -3135,10 +3689,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": false,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "dataTypes",
@@ -3232,10 +3788,12 @@
           {
             "name": "searchString",
             "in": "query",
+            "description": "Search string used for substring matching. Must be at least 3 characters after trimming.",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "Int"
           },
           {
             "name": "resultLimit",
@@ -3774,6 +4332,33 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
+          }
+        }
+      },
+      "NonSourceableInfo": {
+        "required": [
+          "companyId",
+          "dataType",
+          "isNonSourceable",
+          "reason",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "isNonSourceable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
           }
         }
       },
@@ -5524,6 +6109,14 @@
               }
             ]
           },
+          "scope4GhgEmissionsInTonnes": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
           "enterpriseValue": {
             "nullable": true,
             "allOf": [
@@ -5593,6 +6186,22 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "financedScope1AndScope2Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+              }
+            ]
+          },
+          "financedScope3Emissions": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
               }
             ]
           }
@@ -7392,6 +8001,621 @@
                 "$ref": "#/components/schemas/P2pCement"
               }
             ]
+          }
+        }
+      },
+      "CompanyAssociatedDataNuclearAndGasData": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasAlignedDenominator"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasAlignedNumerator"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEligibleButNotAligned"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "ExtendedDataPointNuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasNonEligible"
+              }
+            ]
+          },
+          "quality": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QualityOptions"
+              }
+            ]
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDocumentReference"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareDenominatorNAndG426": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareDenominatorNAndG427": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareDenominatorNAndG428": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareDenominatorNAndG429": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareDenominatorNAndG430": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareDenominatorNAndG431": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareDenominatorOtherActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "taxonomyAlignedShareNumeratorNAndG426": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareNumeratorNAndG427": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareNumeratorNAndG428": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareNumeratorNAndG429": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareNumeratorNAndG430": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareNumeratorNAndG431": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareNumeratorOtherActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyAlignedShareNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasData": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneral"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "taxonomyEligibleButNotAlignedShareNAndG426": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG427": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG428": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG429": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG430": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAlignedShareNAndG431": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAlignedShareOtherActivities": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAlignedShare": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasEnvironmentalObjective"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasEnvironmentalObjective": {
+        "type": "object",
+        "properties": {
+          "mitigationAndAdaptation": {
+            "type": "number",
+            "nullable": true
+          },
+          "mitigation": {
+            "type": "number",
+            "nullable": true
+          },
+          "adaptation": {
+            "type": "number",
+            "nullable": true
+          }
+        }
+      },
+      "NuclearAndGasGeneral": {
+        "type": "object",
+        "properties": {
+          "general": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralGeneral"
+              }
+            ]
+          },
+          "taxonomyAlignedDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedDenominator"
+              }
+            ]
+          },
+          "taxonomyAlignedNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyAlignedNumerator"
+              }
+            ]
+          },
+          "taxonomyEligibleButNotAligned": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyEligibleButNotAligned"
+              }
+            ]
+          },
+          "taxonomyNonEligible": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NuclearAndGasGeneralTaxonomyNonEligible"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralGeneral": {
+        "type": "object",
+        "properties": {
+          "referencedReports": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            },
+            "nullable": true,
+            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+          },
+          "nuclearEnergyRelatedActivitiesSection426": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "nuclearEnergyRelatedActivitiesSection427": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "nuclearEnergyRelatedActivitiesSection428": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection429": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection430": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "fossilGasRelatedActivitiesSection431": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedDenominator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyAlignedCapexDenominator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedDenominator"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyAlignedNumerator": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyAlignedRevenueNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyAlignedCapexNumerator": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasAlignedNumerator"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyEligibleButNotAligned": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasEligibleButNotAligned"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasGeneralTaxonomyNonEligible": {
+        "type": "object",
+        "properties": {
+          "nuclearAndGasTaxonomyNonEligibleRevenue": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
+              }
+            ]
+          },
+          "nuclearAndGasTaxonomyNonEligibleCapex": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
+              }
+            ]
+          }
+        }
+      },
+      "NuclearAndGasNonEligible": {
+        "type": "object",
+        "properties": {
+          "taxonomyNonEligibleShareNAndG426": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG427": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG428": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG429": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG430": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareNAndG431": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShareOtherActivities": {
+            "type": "number",
+            "nullable": true
+          },
+          "taxonomyNonEligibleShare": {
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -16780,6 +18004,69 @@
           }
         }
       },
+      "UploadedDataPoint": {
+        "required": [
+          "companyId",
+          "dataPointContent",
+          "dataPointIdentifier",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointContent": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointMetaInformation": {
+        "required": [
+          "companyId",
+          "currentlyActive",
+          "dataId",
+          "dataPointIdentifier",
+          "qaStatus",
+          "reportingPeriod",
+          "uploadTime"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "uploaderUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currentlyActive": {
+            "type": "boolean"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          }
+        }
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -16912,6 +18199,42 @@
           }
         }
       },
+      "NonSourceableInfoResponse": {
+        "required": [
+          "companyId",
+          "creationTime",
+          "dataType",
+          "isNonSourceable",
+          "reason",
+          "reportingPeriod",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "isNonSourceable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "creationTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "string"
+          }
+        }
+      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -16954,6 +18277,21 @@
           },
           "data": {
             "$ref": "#/components/schemas/PathwaysToParisData"
+          }
+        }
+      },
+      "DataAndMetaInformationNuclearAndGasData": {
+        "required": [
+          "data",
+          "metaInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "metaInfo": {
+            "$ref": "#/components/schemas/DataMetaInformation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/NuclearAndGasData"
           }
         }
       },
@@ -17056,25 +18394,25 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
             "type": "string"
           },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
           "lei": {
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
-          "headquarters": {
+          "companyId": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -17097,10 +18435,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
@@ -17157,6 +18495,7 @@
         "enum": [
           "eutaxonomy-financials",
           "eutaxonomy-non-financials",
+          "nuclear-and-gas",
           "lksg",
           "p2p",
           "sfdr",

@@ -7,7 +7,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandmessagequeueutils.messages.TemplateEmailMessage
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,16 +36,14 @@ class RequestEmailManager(
         correlationId: String?,
     ) {
         val correlationId = correlationId ?: UUID.randomUUID().toString()
-        if (requestStatus == RequestStatus.Answered || requestStatus == RequestStatus.Closed) {
-            dataRequestResponseEmailMessageSender.sendDataRequestResponseEmail(
-                dataRequestEntity,
-                if (requestStatus == RequestStatus.Answered) {
-                    TemplateEmailMessage.Type.DataRequestedAnswered
-                } else {
-                    TemplateEmailMessage.Type.DataRequestClosed
-                },
-                correlationId,
-            )
+        if (requestStatus == RequestStatus.Answered) {
+            dataRequestResponseEmailMessageSender.sendDataRequestAnsweredEmail(dataRequestEntity, correlationId)
+        }
+        if (requestStatus == RequestStatus.Closed) {
+            dataRequestResponseEmailMessageSender.sendDataRequestClosedEmail(dataRequestEntity, correlationId)
+        }
+        if (requestStatus == RequestStatus.NonSourceable) {
+            dataRequestResponseEmailMessageSender.sendDataRequestNonSourceableEmail(dataRequestEntity, correlationId)
         }
         if (accessStatus == AccessStatus.Granted) {
             accessRequestEmailSender.notifyRequesterAboutGrantedRequest(

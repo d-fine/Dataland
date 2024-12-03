@@ -5,6 +5,8 @@
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("MAILJET_API_ID", "", [System.EnvironmentVariableTarget]::User)
 # SET to the values provided in our internal Wiki! [Environment]::SetEnvironmentVariable("MAILJET_API_SECRET", "", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("BACKEND_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("EMAIL_SERVICE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("DATALAND_EMAIL_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("API_KEY_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("INTERNAL_STORAGE_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DOCUMENT_MANAGER_DB_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
@@ -37,7 +39,7 @@
 [Environment]::SetEnvironmentVariable("DATALAND_QA_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_BACKEND_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
+
 [Environment]::SetEnvironmentVariable("DATALAND_DATA_EXPORTER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_INTERNAL_RECEIVERS", "dummy.mail@example.com", [System.EnvironmentVariableTarget]::User)
@@ -62,9 +64,12 @@
 [Environment]::SetEnvironmentVariable("DATA_EXPORTER_OUTPUT_DIRECTORY", "./dataland-data-exporter", [System.EnvironmentVariableTarget]::User)
 
 # EuroDaT credentials - if value is not hardcoded here, look them up in our wiki
-[Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://int.gcp.qa-int.eurodat.org", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("EURODAT_BASE_URL", "https://app.int.eurodat.org", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("EURODAT_CLIENT_TLS_CERT", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("KEY_STORE_FILE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
+
+[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_SIZE", "100M", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_FILE", "1", [System.EnvironmentVariableTarget]::User)

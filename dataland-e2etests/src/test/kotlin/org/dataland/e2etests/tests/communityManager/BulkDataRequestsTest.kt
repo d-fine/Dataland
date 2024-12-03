@@ -179,7 +179,7 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `post bulk data request and verify that only unique identifiers are accepted `() {
+    fun `post bulk data request and verify that only unique identifiers are accepted`() {
         val permId1 = generateRandomPermId(20)
         val permId2 = generateRandomPermId(20)
         val companyOne =

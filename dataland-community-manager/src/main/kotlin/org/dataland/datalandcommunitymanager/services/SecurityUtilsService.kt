@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -18,6 +19,7 @@ import java.util.UUID
  * Implements utility functions that can be used e.g., in PRE_AUTHORIZE
  * for several authentication use-cases
  */
+@Suppress("TooManyFunctions")
 @Service("SecurityUtilsService")
 class SecurityUtilsService(
     @Autowired private val dataRequestRepository: DataRequestRepository,
@@ -64,20 +66,21 @@ class SecurityUtilsService(
     ): Boolean {
         if (requestStatusToPatch == null) return true
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
-        val statusChangeFromAnsweredToResolved =
-            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Resolved
-        val statusChangeFromAnsweredToOpen =
-            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open
-        val statusChangeFromAnsweredToWithdrawn =
-            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Withdrawn
-        val statusChangeFromOpenToWithdrawn =
-            currentRequestStatus == RequestStatus.Open && requestStatusToPatch == RequestStatus.Withdrawn
-        return (
-            statusChangeFromAnsweredToResolved ||
-                statusChangeFromAnsweredToOpen ||
-                statusChangeFromAnsweredToWithdrawn ||
-                statusChangeFromOpenToWithdrawn
-        )
+
+        return when (currentRequestStatus) {
+            RequestStatus.Answered -> {
+                requestStatusToPatch in listOf(RequestStatus.Resolved, RequestStatus.Open, RequestStatus.Withdrawn)
+            }
+            RequestStatus.Open -> {
+                requestStatusToPatch == RequestStatus.Withdrawn
+            }
+            RequestStatus.NonSourceable -> {
+                requestStatusToPatch == RequestStatus.Open
+            }
+            else -> {
+                false
+            }
+        }
     }
 
     /**
@@ -136,13 +139,6 @@ class SecurityUtilsService(
     }
 
     /**
-     * Returns true if the user is not trying to patch the accessStatus
-     * @param accessStatusPatch the accessStatus of the patch
-     */
-    @Transactional
-    fun isNotTryingToPatchAccessStatus(accessStatusPatch: AccessStatus?): Boolean = accessStatusPatch == null
-
-    /**
      * Returns true if the requesting user is company owner
      * @param requestId the requestId for which a company ownership check should be done
      */
@@ -173,14 +169,36 @@ class SecurityUtilsService(
         }
 
     /**
-     * This method checks that only access status of a request entity can be patched
+     * Returns true if the user is not trying to patch the arguments
+     * @param accessStatus the accessStatus of the patch
+     * @param requestPriority the requestPriority of the patch
+     * @param adminComment the adminComment of the patch
+     *
+     */
+    fun isNotTryingToPatch(
+        accessStatus: AccessStatus?,
+        requestPriority: RequestPriority?,
+        adminComment: String?,
+    ): Boolean = accessStatus == null && requestPriority == null && adminComment == null
+
+    /**
+     * Returns true if user is not trying to patch any of the arguments
      * @param requestStatus the request status of the patch request
      * @param contacts the contacts of the patch request
      * @param message the message of the patch request
+     * @param requestPriority the requestPriority of the patch
+     * @param adminComment the adminComment of the patch request
      */
-    fun areOnlyAuthorizedFieldsPatched(
+    fun isNotTryingToPatch(
         requestStatus: RequestStatus?,
         contacts: Set<String>?,
         message: String?,
-    ): Boolean = requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
+        requestPriority: RequestPriority?,
+        adminComment: String?,
+    ): Boolean {
+        val isNotTryingToPatchStatusContactsMessage =
+            requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
+        val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
+        return isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
+    }
 }

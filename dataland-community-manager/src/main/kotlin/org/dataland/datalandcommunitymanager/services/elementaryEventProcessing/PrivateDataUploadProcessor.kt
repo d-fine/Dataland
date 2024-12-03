@@ -29,11 +29,10 @@ import org.springframework.stereotype.Component
  */
 @Component("PrivateDataUploadProcessor")
 class PrivateDataUploadProcessor(
-    @Autowired messageUtils: MessageQueueUtils,
     @Autowired notificationService: NotificationService,
     @Autowired elementaryEventRepository: ElementaryEventRepository,
     @Autowired objectMapper: ObjectMapper,
-) : BaseEventProcessor(messageUtils, notificationService, elementaryEventRepository, objectMapper) {
+) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
     override var elementaryEventType = ElementaryEventType.UploadEvent
     override var messageType = MessageType.PRIVATE_DATA_RECEIVED
     override var actionType = ActionType.STORE_PRIVATE_DATA_AND_DOCUMENTS
@@ -70,18 +69,26 @@ class PrivateDataUploadProcessor(
     ) {
         validateIncomingPayloadAndReturnDataId(payload, type)
 
-        super.processEvent(
-            createElementaryEventBasicInfo(payload),
-            correlationId,
-            type,
-        )
+        MessageQueueUtils.rejectMessageOnException {
+            super.processEvent(
+                createElementaryEventBasicInfo(payload),
+                correlationId,
+                type,
+            )
+        }
     }
 
-    override fun validateIncomingPayloadAndReturnDataId(
+    /**
+     * Validates the incoming Payloads and returns the dataId
+     * @param payload the Payload as a string
+     * @param messageType the type of the message
+     * @returns the dataId of the dataset
+     */
+    fun validateIncomingPayloadAndReturnDataId(
         payload: String,
         messageType: String,
     ): String {
-        messageUtils.validateMessageType(messageType, this.messageType)
+        MessageQueueUtils.validateMessageType(messageType, this.messageType)
 
         val payloadJsonObject = JSONObject(payload)
 

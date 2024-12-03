@@ -8,11 +8,13 @@ import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
+import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
+import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.communityManager.causeClientExceptionBySingleDataRequest
 import org.dataland.e2etests.utils.communityManager.check400ClientExceptionErrorMessage
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForNonUniqueIdentifiersInSingleRequest
@@ -24,7 +26,6 @@ import org.dataland.e2etests.utils.communityManager.generateRandomPermId
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.communityManager.getMessageHistoryOfRequest
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
-import org.dataland.e2etests.utils.communityManager.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForReportingPeriodAndUpdateStatus
 import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
@@ -46,6 +47,7 @@ class SingleDataRequestsTest {
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     private val maxRequestsForUser = 10
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
+    private val clientErrorMessage403 = "Client error : 403 "
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
@@ -294,22 +296,6 @@ class SingleDataRequestsTest {
     }
 
     @Test
-    fun `post a single data request and check if patching it changes its status accordingly`() {
-        val companyId = getIdForUploadedCompanyWithIdentifiers(permId = System.currentTimeMillis().toString())
-        val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
-        postStandardSingleDataRequest(companyId)
-        val dataRequestId =
-            UUID.fromString(
-                getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)[0].dataRequestId,
-            )
-        assertStatusForDataRequestId(dataRequestId, RequestStatus.Open)
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Resolved)
-        patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Withdrawn)
-    }
-
-    @Test
     fun `query the data requests as an uploader and assert that it is forbidden`() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
 
@@ -317,7 +303,7 @@ class SingleDataRequestsTest {
             assertThrows<ClientException> {
                 requestControllerApi.getDataRequests()
             }
-        assertEquals("Client error : 403 ", clientException.message)
+        assertEquals(clientErrorMessage403, clientException.message)
     }
 
     @Test
@@ -375,5 +361,31 @@ class SingleDataRequestsTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertDoesNotThrow { requestControllerApi.postSingleDataRequest(singleDataRequest) }
+    }
+
+    @Test
+    fun `post single data request with too short company identifier and assert correct error response`() {
+        val tooShortCompanyIdentifier = "aa"
+        val singleDataRequest =
+            SingleDataRequest(
+                companyIdentifier = tooShortCompanyIdentifier,
+                dataType = SingleDataRequest.DataType.lksg,
+                reportingPeriods = setOf("2025"),
+                contacts = setOf("someMail@example.com"),
+                message = "Does not matter for this test.",
+            )
+
+        val expectedExceptionSummary = "Failed to retrieve companies by search string."
+        val expectedExceptionMessage = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEARCHSTRING_TOO_SHORT_THRESHOLD"
+
+        withTechnicalUser(TechnicalUser.Reader) {
+            val exception =
+                assertThrows<ClientException> { requestControllerApi.postSingleDataRequest(singleDataRequest) }
+            check400ClientExceptionErrorMessage(exception)
+
+            val responseString = (exception.response as ClientError<*>).body as String
+            assertTrue(responseString.contains(expectedExceptionSummary))
+            assertTrue(responseString.contains(expectedExceptionMessage))
+        }
     }
 }

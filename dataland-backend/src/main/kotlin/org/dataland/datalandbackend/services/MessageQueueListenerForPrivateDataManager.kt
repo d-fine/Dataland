@@ -21,12 +21,10 @@ import org.springframework.stereotype.Component
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
- * @param messageQueueUtils holds util methods to handle messages
  * @param privateDataManager the datamanager service for private manager
 */
 @Component("MessageQueueListenerForPrivateDataManager")
 class MessageQueueListenerForPrivateDataManager(
-    @Autowired private val messageQueueUtils: MessageQueueUtils,
     @Autowired private val privateDataManager: PrivateDataManager,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
 ) {
@@ -34,7 +32,7 @@ class MessageQueueListenerForPrivateDataManager(
 
     /**
      * This method processes a storing request if the applicable message is received from the queue
-     * @param payload the paylod of the received message from the message queue
+     * @param payload the payload of the received message from the message queue
      * @param correlationId the correlationId of the request
      * @param type the type of the message
      */
@@ -60,13 +58,13 @@ class MessageQueueListenerForPrivateDataManager(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_STORED)
-        val dataId = messageQueueUtils.getDataId(payload)
+        MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_STORED)
+        val dataId = MessageQueueUtils.getDataId(payload)
         logger.info(
             "Received message that dataset with dataId $dataId and correlationId $correlationId was successfully " +
                 "stored on EuroDaT. Starting to persist mapping info, meta info and clearing in-memory-storages",
         )
-        messageQueueUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             privateDataManager.persistMappingInfo(dataId, correlationId)
             val metaData = privateDataManager.persistMetaInfo(dataId, correlationId)
             privateDataManager.removeRelatedEntriesFromInMemoryStorages(dataId, correlationId)

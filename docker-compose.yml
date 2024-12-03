@@ -21,7 +21,11 @@ x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
   POSTGRES_DB: eurodat_db_name
   POSTGRES_USER: eurodat_db_user
   POSTGRES_PASSWORD: eurodat_db_password
-
+x-logging-options: &logging-options
+  driver: json-file
+  options:
+    max-size: ${LOGGING_OPTIONS_MAX_SIZE}
+    max-file: ${LOGGING_OPTIONS_MAX_FILE}
 
 services:
   proxy:
@@ -50,6 +54,8 @@ services:
       BACKEND_URL: ${BACKEND_URL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
@@ -64,10 +70,13 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5439:5433-5439"
+      - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
+    logging:
+      <<: *logging-options
   api-key-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -83,12 +92,14 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+    logging:
+      <<: *logging-options
   api-key-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -100,6 +111,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -118,12 +131,14 @@ services:
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
     depends_on:
       - document-manager-db
+    logging:
+      <<: *logging-options
   document-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -135,6 +150,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   backend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -153,12 +170,14 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
+    logging:
+      <<: *logging-options
   backend-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -178,6 +197,8 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+    logging:
+      <<: *logging-options
   e2etests:
     profiles: [ "testing" ]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -203,6 +224,8 @@ services:
     links:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
+    logging:
+      <<: *logging-options
   frontend-dev:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
     # don't work anymore after a certain amount of requests
@@ -221,6 +244,8 @@ services:
     <<: *uncritical-constants-env
     environment:
       POLLING: "false"
+    logging:
+      <<: *logging-options
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -228,6 +253,8 @@ services:
     networks:
       - internal
     <<: *uncritical-constants-env
+    logging:
+      <<: *logging-options
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -245,12 +272,14 @@ services:
       - internal-storage-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   internal-storage-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -262,12 +291,14 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   keycloak-db:
     restart: always
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -279,6 +310,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   keycloak:
     restart: always
     profiles: [ "production", "development" ]
@@ -294,6 +327,8 @@ services:
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
       - keycloak-db
+    logging:
+      <<: *logging-options
   keycloak-initializer:
     profiles: [ "testing", "init" ]
     networks:
@@ -329,7 +364,6 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
-      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
@@ -340,6 +374,8 @@ services:
     depends_on:
       keycloak-db:
         condition: service_healthy
+    logging:
+      <<: *logging-options
   pgadmin:
     restart: always
     image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
@@ -352,6 +388,7 @@ services:
       - document-manager-db
       - qa-service-db
       - community-manager-db
+      - email-service-db
     profiles: [ "production", "testing", "development" ]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -365,8 +402,11 @@ services:
       DOCUMENT_MANAGER_DB_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
+      EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
+    logging:
+      <<: *logging-options
   rabbitmq:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -387,23 +427,8 @@ services:
         limits:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
-  automated-qa-service:
-    restart: always
-    profiles: [ "production", "testing", "development" ]
-    image: ${AUTOMATED_QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_automated_qa_service_test:${DATALAND_AUTOMATED_QA_SERVICE_TEST_VERSION}}
-    networks:
-      - internal
-    expose:
-      - "8080"
-    environment:
-      <<: *rabbit-mq-user-and-pass
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-    depends_on:
-      - qa-service
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -418,17 +443,20 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
+      QA_SERVICE_MIGRATION_BASELINE_VERSION: ${QA_SERVICE_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_QA_SERVICE_CLIENT_SECRET: ${DATALAND_QA_SERVICE_CLIENT_SECRET}
     depends_on:
       - qa-service-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   qa-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -440,6 +468,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   batch-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -456,6 +486,8 @@ services:
       - batch_manager_data:/deltafiles
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   community-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -477,12 +509,14 @@ services:
       - community-manager-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   community-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -494,19 +528,60 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
+  specification-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${SPECIFICATION_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_specification_service_test:${DATALAND_SPECIFICATION_SERVICE_TEST_VERSION}}
+    expose:
+      - "8489"
+    networks:
+      - internal
+    <<: *uncritical-constants-env
+    environment:
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+    logging:
+      <<: *logging-options
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
     image: ${EMAIL_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_email_service_test:${DATALAND_EMAIL_SERVICE_TEST_VERSION}}
+    expose:
+      - "8080"
     networks:
       - internal
+      - email-service-db
+    depends_on:
+      - email-service-db
     environment:
       <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
+      EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
+    logging:
+      <<: *logging-options
+  email-service-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - email-service-db
+    image: postgres:17.0@sha256:f176fef320ed02c347e9f85352620945547a9a23038f02b57cf7939a198182ae
+    volumes:
+      - email_service_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: email_service
+      POSTGRES_USER: email_service
+      POSTGRES_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
+      PGUSER: email_service
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready || false" ]
+      interval: 30s
+      timeout: 3s
+    logging:
+      <<: *logging-options
   external-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -521,6 +596,8 @@ services:
       IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:-false}
     extra_hosts:
      - "host.docker.internal:host-gateway"
+    logging:
+      <<: *logging-options
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
@@ -533,6 +610,8 @@ services:
       - ./dataland-eurodat-client/secret_files:/crt
     env_file:
       - ./dataland-eurodat-client/secret_files/client.env
+    logging:
+      <<: *logging-options
   dummy-eurodat-client:
     restart: always
     profiles: [ "testing" ]
@@ -543,10 +622,12 @@ services:
       - "8080"
     environment:
       <<: *dummy-eurodat-db-settings
+    logging:
+      <<: *logging-options
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:14195b0729fce792f47ae3c3704d6fd04305826d57af3b01d5b4d004667df174
+    image: postgres:alpine@sha256:e7897baa70dae1968d23d785adb4aeb699175e0bcaae44f98a7083ecb9668b93
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -558,6 +639,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *logging-options
   data-exporter:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -573,6 +656,8 @@ services:
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
     volumes:
       - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
+    logging:
+      <<: *logging-options
 networks:
   internal:
   external:
@@ -583,6 +668,7 @@ networks:
   document-manager-db:
   qa-service-db:
   community-manager-db:
+  email-service-db:
 volumes:
   keycloak_data:
     driver: local
@@ -607,4 +693,6 @@ volumes:
   community_manager_data:
     driver: local
   batch_manager_data:
+    driver: local
+  email_service_data:
     driver: local

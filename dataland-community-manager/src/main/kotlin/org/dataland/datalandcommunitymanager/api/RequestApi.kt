@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
@@ -149,13 +150,20 @@ interface RequestApi {
         @PathVariable dataRequestId: UUID,
     ): ResponseEntity<StoredDataRequest>
 
-    /** Changes request status and message history of existing data request
+    /** A method to patch an existing data request
+     * @param dataRequestId The request id of the data request to patch
+     * @param requestStatus The new request status to set
+     * @param accessStatus The new access status to set
+     * @param contacts The new contacts to set
+     * @param message The new message to set
+     * @param requestPriority The new request priority to set
+     * @param adminComment The new admin comment to set
      * @return the modified data request
      */
-
+    @Suppress("LongParameterList")
     @Operation(
         summary = "Updates a data request.",
-        description = "Updates status and message history of data request given data request id.",
+        description = "Updates a data request given the data request id.",
     )
     @ApiResponses(
         value = [
@@ -170,12 +178,12 @@ interface RequestApi {
         "hasRole('ROLE_ADMIN') or " +
             "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
             "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.isNotTryingToPatchAccessStatus(#accessStatus) and " +
+            "@SecurityUtilsService.isNotTryingToPatch(#accessStatus,#requestPriority, #adminComment) and " +
             "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
-            "#dataRequestId, #requestStatus, #contacts,#message)" +
+            "#dataRequestId, #requestStatus, #contacts, #message)" +
             ") or" +
             "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message) ",
+            "@SecurityUtilsService.isNotTryingToPatch(#requestStatus, #contacts, #message, #requestPriority, #adminComment)",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
@@ -183,6 +191,9 @@ interface RequestApi {
         @RequestParam accessStatus: AccessStatus?,
         @RequestParam contacts: Set<String>?,
         @RequestParam message: String?,
+        @RequestParam requestPriority: RequestPriority?,
+        @RequestParam adminComment: String?,
+        @RequestParam requestStatusChangeReason: String?,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
@@ -190,8 +201,10 @@ interface RequestApi {
      * @param userId If set, only the requests from this user are returned
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  returned
+     * @param adminComment If set, only comments with this substring are returned
      * @param requestStatus If set, only the requests with a request status in requestStatus are returned
      * @param accessStatus If set, only the requests with an access status in accessStatus are returned
+     * @param requestPriority If set, only the requests with this priority are returned
      * @param reportingPeriod If set, only the requests with this reportingPeriod are returned
      * @param datalandCompanyId If set, only the requests for this company are returned
      * @param chunkSize Limits the number of returned requests
@@ -219,8 +232,10 @@ interface RequestApi {
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam userId: String?,
         @RequestParam emailAddress: String?,
+        @RequestParam adminComment: String?,
         @RequestParam requestStatus: Set<RequestStatus>?,
         @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam requestPriority: Set<RequestPriority>?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
         @RequestParam(defaultValue = "100") chunkSize: Int,
@@ -232,8 +247,10 @@ interface RequestApi {
      * @param userId If set, only the requests from this user are counted
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  counted
+     * @param adminComment If set, only comments with this substring are counted
      * @param requestStatus If set, only the requests with a request status in requestStatus are counted
      * @param accessStatus If set, only the requests with an access status in accessStatus are counted
+     * @param requestPriority If set, only the requests with this priority are counted
      * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
      * @param datalandCompanyId If set, only the requests for this company are counted
      * @return The number of requests that match the filter
@@ -259,8 +276,10 @@ interface RequestApi {
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam userId: String?,
         @RequestParam emailAddress: String?,
+        @RequestParam adminComment: String?,
         @RequestParam requestStatus: Set<RequestStatus>?,
         @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam requestPriority: Set<RequestPriority>?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<Int>

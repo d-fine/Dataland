@@ -14,6 +14,8 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
  * @param lastModifiedDate the date when the data request has been modified the last time
  * @param requestStatus the current status of the data request
  * @param accessStatus the current access status of the data request
+ * @param requestPriority the priority of the data request
+ * @param adminComment the admin comment of the data request
  */
 data class ExtendedStoredDataRequest(
     val dataRequestId: String,
@@ -27,6 +29,8 @@ data class ExtendedStoredDataRequest(
     val lastModifiedDate: Long,
     val requestStatus: RequestStatus,
     val accessStatus: AccessStatus,
+    val requestPriority: RequestPriority,
+    var adminComment: String?,
 ) {
     constructor(dataRequestEntity: DataRequestEntity, companyName: String, userEmailAddress: String?) : this(
         dataRequestEntity.dataRequestId,
@@ -40,5 +44,7 @@ data class ExtendedStoredDataRequest(
         dataRequestEntity.lastModifiedDate,
         dataRequestEntity.requestStatus,
         dataRequestEntity.accessStatus,
+        dataRequestEntity.requestPriority,
+        dataRequestEntity.adminComment,
     )
 }

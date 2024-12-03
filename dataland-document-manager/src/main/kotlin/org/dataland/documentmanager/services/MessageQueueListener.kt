@@ -1,13 +1,12 @@
 package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Component
 class MessageQueueListener(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired val documentMetaInfoRepository: DocumentMetaInfoRepository,
     @Autowired private val inMemoryDocumentStore: InMemoryDocumentStore,
     @Autowired private var objectMapper: ObjectMapper,
@@ -67,7 +65,7 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.DOCUMENT_STORED)
+        MessageQueueUtils.validateMessageType(type, MessageType.DOCUMENT_STORED)
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
@@ -75,7 +73,7 @@ class MessageQueueListener(
         logger.info(
             "Document with ID $documentId was successfully stored. Correlation ID: $correlationId.",
         )
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             inMemoryDocumentStore.deleteFromInMemoryStore(documentId)
         }
     }
@@ -109,16 +107,17 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QA_COMPLETED)
-        val documentId = objectMapper.readValue(jsonString, QaCompletedMessage::class.java).identifier
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        val message = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val documentId = message.dataId
         if (documentId.isEmpty()) {
             throw MessageQueueRejectException("Provided document ID is empty")
         }
-        messageUtils.rejectMessageOnException {
+        MessageQueueUtils.rejectMessageOnException {
             val metaInformation: DocumentMetaInfoEntity = documentMetaInfoRepository.findById(documentId).get()
-            metaInformation.qaStatus = QaStatus.Accepted
+            metaInformation.qaStatus = message.updatedQaStatus
             logger.info(
-                "Received quality assurance for document upload with document ID: " +
+                "Received quality status update for document upload with document ID: " +
                     "$documentId with Correlation ID: $correlationId",
             )
         }

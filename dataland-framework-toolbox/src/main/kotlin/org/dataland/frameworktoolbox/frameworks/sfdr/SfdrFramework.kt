@@ -1,5 +1,6 @@
 package org.dataland.frameworktoolbox.frameworks.sfdr
 
+import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
@@ -20,7 +21,8 @@ class SfdrFramework :
         label = "SFDR",
         explanation = "Sustainability Finance Disclosure Regulation",
         File("./dataland-framework-toolbox/inputs/sfdr/sfdr.xlsx"),
-        order = 5,
+        order = 6,
+        enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.DataPointSpecifications),
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = SfdrComponentGenerationUtils()
 

@@ -32,18 +32,16 @@ docker exec -i dala-e2e-test-internal-storage-db-1 /bin/bash -c "PGPASSWORD=${IN
 docker exec -i dala-e2e-test-document-manager-db-1 /bin/bash -c "PGPASSWORD=${DOCUMENT_MANAGER_DB_PASSWORD} pg_dump --username document_manager document_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/document-manager-db.sql || true
 docker exec -i dala-e2e-test-qa-service-db-1 /bin/bash -c "PGPASSWORD=${QA_SERVICE_DB_PASSWORD} pg_dump --username qa_service qa_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/qa-service-db.sql || true
 docker exec -i dala-e2e-test-community-manager-db-1 /bin/bash -c "PGPASSWORD=${COMMUNITY_MANAGER_DB_PASSWORD} pg_dump --username community_manager community_manager" > ./dbdumps/${CYPRESS_TEST_GROUP}/community-manager-db.sql || true
+docker exec -i dala-e2e-test-email-service-db-1 /bin/bash -c "PGPASSWORD=${EMAIL_SERVICE_DB_PASSWORD} pg_dump --username email_service email_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/email-service-db.sql || true
 
 # Stop services to make JaCoCo write the Coverage Reports and copy them to pwd
-services="backend api-key-manager document-manager internal-storage qa-service community-manager email-service external-storage data-exporter"
+services="backend api-key-manager document-manager internal-storage qa-service community-manager email-service external-storage data-exporter specification-service"
 for service in $services
 do
   docker exec dala-e2e-test-${service}-1 pkill -f java
   timeout 90 sh -c "docker logs dala-e2e-test-${service}-1 --follow" > /dev/null
   docker cp dala-e2e-test-${service}-1:/jacoco.exec ./${service}-bootRun-${CYPRESS_TEST_GROUP}.exec
 done
-
-docker exec dala-e2e-test-automated-qa-service-1 pkill -f --signal SIGINT coverage
-while ! docker cp dala-e2e-test-automated-qa-service-1:/usr/src/app/coverage.xml ./automated-qa-service-bootRun-${CYPRESS_TEST_GROUP}.xml ; do echo Coverage file not yet found; sleep 5; done
 
 # This test exists, because an update of SLF4J-API lead to no logging output after the spring logo was printed.
 # This was discovered only after the PR was merged.
@@ -57,6 +55,7 @@ pg_isready -d internal_storage -h "localhost" -p 5436
 pg_isready -d document_manager -h "localhost" -p 5437
 pg_isready -d qa_service -h "localhost" -p 5438
 pg_isready -d community_manager -h "localhost" -p 5439
+pg_isready -d email_service -h "localhost" -p 5440
 
 # Check execution success of Test Container
 TEST_EXIT_CODE=`docker inspect -f '{{.State.ExitCode}}' dala-e2e-test-e2etests-1`

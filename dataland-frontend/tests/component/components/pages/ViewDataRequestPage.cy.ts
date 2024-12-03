@@ -2,6 +2,7 @@ import ViewDataRequestPage from '@/components/pages/ViewDataRequestPage.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import {
   AccessStatus,
+  RequestPriority,
   RequestStatus,
   type StoredDataRequest,
   type StoredDataRequestMessageObject,
@@ -14,6 +15,7 @@ import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 import router from '@/router';
+import { getRequestStatusLabel } from '@/utils/RequestUtils.ts';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
@@ -53,6 +55,7 @@ describe('Component tests for the view data request page', function (): void {
       lastModifiedDate: dummyLastModifiedDate,
       requestStatus: requestStatus,
       accessStatus: AccessStatus.Public,
+      requestPriority: RequestPriority.Normal,
     };
   }
   /**
@@ -106,7 +109,7 @@ describe('Component tests for the view data request page', function (): void {
   function checkBasicPageElementsAsUser(requestStatus: RequestStatus): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist').should('have.class', 'card__title');
-    cy.contains('Provided Contact Details & Messages').should('exist').should('have.class', 'card__title');
+    cy.contains('Provided Contact Details and Messages').should('exist').should('have.class', 'card__title');
     cy.contains('Request is').should('exist').should('have.class', 'card__title');
     cy.get('[data-test="status_history_toggle"]').should('exist');
 
@@ -123,7 +126,7 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="card_requestIs"]')
       .should('exist')
       .within(() => {
-        cy.contains(`${requestStatus}`).should('exist');
+        cy.contains(`${getRequestStatusLabel(requestStatus)}`).should('exist');
         cy.contains(`${convertUnixTimeInMsToDateString(dummyLastModifiedDate)}`).should('exist');
       });
   }
@@ -135,7 +138,7 @@ describe('Component tests for the view data request page', function (): void {
   function checkBasicPageElementsAsAdmin(requestStatus: RequestStatus): void {
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist').should('have.class', 'card__title');
-    cy.contains('Provided Contact Details & Messages').should('not.exist');
+    cy.contains('Provided Contact Details and Messages').should('not.exist');
     cy.contains('Request is').should('exist').should('have.class', 'card__title');
     cy.get('[data-test="status_history_toggle"]').should('exist');
 
@@ -203,6 +206,42 @@ describe('Component tests for the view data request page', function (): void {
     cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
   });
 
+  it('Check viewDataRequest page for nonSourceable request renders as expected and reopen data request', function () {
+    interceptUserAskForSingleDataRequestsOnMounted(
+      createStoredDataRequest(RequestStatus.NonSourceable, [dummyMessageObject])
+    );
+    interceptUserAskForCompanyNameOnMounted();
+    interceptUserActiveDatasetOnMounted(QaStatus.Pending);
+    interceptPatchRequest();
+    getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
+      props: {
+        requestId: requestId,
+      },
+    });
+    checkBasicPageElementsAsUser(RequestStatus.NonSourceable);
+    cy.get('[data-test="newMessage"').should('exist').should('not.be.visible');
+    cy.get('[data-test="viewDataset"').should('exist').should('not.be.visible');
+    cy.get('[data-test="card_withdrawn"]').should('exist').should('be.visible');
+    cy.get('[data-test="card_reopen')
+      .should('exist')
+      .within(() => {
+        cy.contains('Currently, your request has the status non-sourceable.').should('exist');
+        cy.contains('Reopen Request').should('exist');
+        cy.contains('Reopen request').should('exist').click();
+      });
+    cy.get('[data-test="reopenModal"]').should('exist').should('be.visible').contains('REOPEN REQUEST').click();
+    cy.get('[data-test="reopenModal"]').should('exist').should('be.visible');
+    cy.get('[data-test="reopenModal"]')
+      .should('exist')
+      .within(() => {
+        cy.get('[data-test="reopenMessage"]').should('exist').should('be.visible').type('Make the test work, please!');
+        cy.get('[data-test="reopenButton"]').should('exist').should('be.visible').contains('REOPEN REQUEST').click();
+      });
+    cy.get('[data-test="reopenModal"]').should('not.exist');
+    cy.get('[data-test="reopenedModal"]').should('exist').should('be.visible').contains('CLOSE').click();
+    cy.get('[data-test="reopenedModal"]').should('not.exist');
+  });
+
   it('Check view data request page for open request without data and withdraw the data request', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
@@ -224,7 +263,7 @@ describe('Component tests for the view data request page', function (): void {
             ' The company owner will not be notified anymore.'
         ).should('exist');
         cy.contains('Withdraw Request').should('exist');
-        cy.contains('Withdraw request.').should('exist').click();
+        cy.contains('Withdraw request').should('exist').click();
       });
     cy.get('[data-test="successModal"]').should('exist').should('be.visible').contains('CLOSE').click();
     cy.get('[data-test="successModal"]').should('not.exist');

@@ -1,7 +1,8 @@
 <template>
-  <div :class="wrapperClass">
+  <div :class="wrapperClassBaseClasses + wrapperClassAdditions">
     <i :class="iconClass" aria-hidden="true" />
     <AutoComplete
+      class="w-full"
       input-id="company_search_bar_standard"
       ref="autocomplete"
       v-model="searchBarInput"
@@ -31,6 +32,9 @@
       </template>
     </AutoComplete>
   </div>
+  <div class="mt-2">
+    <span class="red-text" v-if="showNotEnoughCharactersWarning">Please type at least 3 characters</span>
+  </div>
 </template>
 
 <script lang="ts">
@@ -58,6 +62,9 @@ export default defineComponent({
       inputOfAutocompleteComponent.focus();
     }
   },
+  beforeUnmount() {
+    clearTimeout(this.notEnoughCharactersWarningTimeoutId);
+  },
 
   data: function () {
     return {
@@ -65,16 +72,18 @@ export default defineComponent({
       latestValidSearchString: '',
       autocompleteArray: [] as Array<CompanyIdAndName>,
       resultLimit: 100,
+      notEnoughCharactersWarningTimeoutId: 0,
+      showNotEnoughCharactersWarning: false,
+      wrapperClassBaseClasses: 'p-input-icon-left p-input-icon-right p-input-icon-align ',
     };
   },
   props: {
-    wrapperClass: {
+    wrapperClassAdditions: {
       type: String,
-      default: 'p-fluid p-input-icon-left p-input-icon-right p-input-icon-align',
     },
     inputClass: {
       type: String,
-      default: 'h-3rem d-framework-searchbar-input',
+      default: 'h-3rem d-framework-searchbar-input w-full',
     },
     iconClass: {
       type: String,
@@ -84,6 +93,7 @@ export default defineComponent({
 
   watch: {
     searchBarInput(newValue: string) {
+      this.validateSearchBarInput();
       this.saveCurrentSearchStringIfValid(newValue);
     },
   },
@@ -113,6 +123,22 @@ export default defineComponent({
         this.autocompleteArray = response.data;
       } catch (error) {
         console.error(error);
+      }
+    },
+    /**
+     * Validates the current search bar input. If there are only one or two characters typed, an error message
+     * shall be rendered asking the user to provide at least three characters.
+     */
+    validateSearchBarInput() {
+      clearTimeout(this.notEnoughCharactersWarningTimeoutId);
+      const areThereNotEnoughCharacters = this.searchBarInput.length > 0 && this.searchBarInput.length < 3;
+
+      if (areThereNotEnoughCharacters) {
+        this.notEnoughCharactersWarningTimeoutId = setTimeout(() => {
+          this.showNotEnoughCharactersWarning = true;
+        }, 1000);
+      } else {
+        this.showNotEnoughCharactersWarning = false;
       }
     },
   },

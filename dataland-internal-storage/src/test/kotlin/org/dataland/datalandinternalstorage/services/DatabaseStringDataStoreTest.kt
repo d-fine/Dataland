@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.TemporarilyCachedDataControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandinternalstorage.repositories.DataItemRepository
+import org.dataland.datalandinternalstorage.repositories.DataPointItemRepository
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,25 +16,25 @@ import java.util.Optional
 import java.util.UUID
 
 class DatabaseStringDataStoreTest {
-    val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
-    val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
-    val mockTemporarilyCachedDataControllerApi: TemporarilyCachedDataControllerApi =
+    private val mockDataItemRepository: DataItemRepository = mock(DataItemRepository::class.java)
+    private val mockDataPointItemRepository: DataPointItemRepository = mock(DataPointItemRepository::class.java)
+    private val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+    private val mockTemporarilyCachedDataControllerApi: TemporarilyCachedDataControllerApi =
         mock(TemporarilyCachedDataControllerApi::class.java)
-    lateinit var databaseStringDataStore: DatabaseStringDataStore
-    lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
-    val correlationId = UUID.randomUUID().toString()
-    val objectMapper: ObjectMapper = ObjectMapper()
-    val messageQueueUtils: MessageQueueUtils = MessageQueueUtils()
+    private lateinit var databaseStringDataStore: DatabaseStringDataStore
+    private lateinit var spyDatabaseStringDataStore: DatabaseStringDataStore
+    private val correlationId = UUID.randomUUID().toString()
+    private val objectMapper: ObjectMapper = ObjectMapper()
 
     @BeforeEach
     fun reset() {
         databaseStringDataStore =
             DatabaseStringDataStore(
                 mockDataItemRepository,
+                mockDataPointItemRepository,
                 mockCloudEventMessageHandler,
                 mockTemporarilyCachedDataControllerApi,
                 objectMapper,
-                messageQueueUtils,
             )
         spyDatabaseStringDataStore = spy(databaseStringDataStore)
     }

@@ -1,15 +1,18 @@
 package org.dataland.datalandmessagequeueutils.constants
 
 /**
- * Constants to be used as exchanges in rabbitmq.
+ * Constants to be used as routing keys in rabbitmq.
  */
 
 object RoutingKeyNames {
     const val DOCUMENT = "document"
+    const val DOCUMENT_QA = "document.qa"
     const val DATA = "data"
-    const val INTERNAL_EMAIL = "internalEmail"
-    const val TEMPLATE_EMAIL = "templateEmail"
-    const val PERSIST_AUTOMATED_QA_RESULT = "persistAutomatedQaResult"
+    const val DATA_QA = "data.qa"
+    const val DELETE_QA_INFO = "delete.qa.info"
+    const val EMAIL = "email"
     const val META_DATA_PERSISTED = "metaDataPersisted"
     const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
+    const val DATA_POINT_UPLOAD = "dataPoint.upload"
+    const val DATA_NONSOURCEABLE = "dataNonSourceable"
 }

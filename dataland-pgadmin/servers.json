@@ -69,6 +69,16 @@
       "SSLMode": "prefer",
       "MaintenanceDB": "postgres",
       "PassFile": "../../pgpass"
+    },
+    "8": {
+      "Name": "EmailServiceDb",
+      "Group": "EmailServiceDb",
+      "Port": 5432,
+      "Username": "email_service",
+      "Host": "email-service-db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres",
+      "PassFile": "../../pgpass"
     }
   }
 }

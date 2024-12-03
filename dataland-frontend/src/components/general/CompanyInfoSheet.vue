@@ -8,7 +8,7 @@
       <CompaniesOnlySearchBar
         v-if="showSearchBar"
         @select-company="router.push(`/companies/${$event.companyId}`)"
-        class="w-8 mt-2"
+        wrapper-class-additions="w-8 mt-2"
       />
     </template>
     <template v-else>

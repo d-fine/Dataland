@@ -23,9 +23,9 @@ class LksgFramework :
         label = "LkSG",
         explanation = "Lieferkettensorgfaltspflichtengesetz",
         File("./dataland-framework-toolbox/inputs/lksg/lksg.xlsx"),
-        order = 3,
+        order = 4,
         enabledFeatures =
-            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel),
+            FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.QaModel, FrameworkGenerationFeatures.DataPointSpecifications),
     ) {
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setSectionColorsAndExpansion(framework.root)

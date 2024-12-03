@@ -7,7 +7,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -27,14 +27,13 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Service("DataRequestUpdater")
 class DataRequestUploadListener(
-    @Autowired private val messageUtils: MessageQueueUtils,
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataRequestAlterationManager: DataRequestAlterationManager,
 ) {
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered
      * @param jsonString the message describing the result of the completed QA process
      * @param type the type of the message
@@ -62,24 +61,24 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.QA_COMPLETED)
-        val qaCompletedMessage = objectMapper.readValue(jsonString, QaCompletedMessage::class.java)
-        val dataId = qaCompletedMessage.identifier
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info("Received data QA completed message for dataset with ID $dataId")
-        if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+        if (qaStatusChangeMessage.updatedQaStatus != QaStatus.Accepted) {
             logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
             return
         }
-        messageUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+        MessageQueueUtils.rejectMessageOnException {
+            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 
     /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered and handles the update of the access status
      * @param dataId the dataId of the uploaded data
      * @param type the type of the message
@@ -107,14 +106,14 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        messageUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
+        MessageQueueUtils.validateMessageType(type, MessageType.PRIVATE_DATA_RECEIVED)
         val payloadJsonObject = JSONObject(payload)
         val dataId = payloadJsonObject.getString("dataId")
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
-        messageUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+        MessageQueueUtils.rejectMessageOnException {
+            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 }
