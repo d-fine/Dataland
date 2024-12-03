@@ -14,4 +14,5 @@ object RoutingKeyNames {
     const val META_DATA_PERSISTED = "metaDataPersisted"
     const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
     const val DATA_POINT_UPLOAD = "dataPoint.upload"
+    const val DATA_NONSOURCEABLE = "dataNonSourceable"
 }
