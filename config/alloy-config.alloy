@@ -1,0 +1,132 @@
+local.file_match "system" {
+	path_targets = [{
+		__address__ = "localhost",
+		__path__    = "/var/log/*log",
+		job         = "varlogs",
+	}]
+}
+
+loki.source.file "system" {
+	targets               = local.file_match.system.targets
+	forward_to            = [loki.write.default.receiver]
+	legacy_positions_file = "/tmp/positions.yaml"
+}
+
+local.file_match "containers" {
+	path_targets = [{
+		__address__ = "localhost",
+		__path__    = "/var/lib/docker/containers/*/*log",
+		job         = "containerlogs",
+	}]
+}
+
+loki.process "containers" {
+	forward_to = [loki.write.default.receiver]
+
+	stage.json {
+		expressions = {
+			attrs  = "",
+			output = "log",
+			stream = "stream",
+		}
+	}
+
+	stage.json {
+		expressions = {
+			tag = "",
+		}
+		source = "attrs"
+	}
+
+	stage.regex {
+		expression = "(?P<image_name>(?:[^|]*[^|])).(?P<container_name>(?:[^|]*[^|])).(?P<image_id>(?:[^|]*[^|])).(?P<container_id>(?:[^|]*[^|]))"
+		source     = "tag"
+	}
+
+	stage.timestamp {
+		source = "time"
+		format = "RFC3339Nano"
+	}
+
+	stage.labels {
+		values = {
+			container_id   = null,
+			container_name = null,
+			image_id       = null,
+			image_name     = null,
+			stream         = null,
+			tag            = null,
+		}
+	}
+
+	stage.output {
+		source = "output"
+	}
+}
+
+loki.source.file "containers" {
+	targets               = local.file_match.containers.targets
+	forward_to            = [loki.process.containers.receiver]
+	legacy_positions_file = "/tmp/positions.yaml"
+}
+
+loki.write "default" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+	}
+	external_labels = {}
+}
+
+
+local.file_match "logs_default_varlogs" {
+    path_targets = [{
+        address = "localhost",
+        path = "/var/log/*",
+        job = "varlogs",
+    }]
+}
+
+loki.source.file "logs_default_varlogs" {
+    targets = local.file_match.logs_default_varlogs.targets
+    forward_to = [loki.write.logs_default.receiver]
+}
+
+loki.write "logs_default" {
+    endpoint {
+        url = "http://loki:3100/loki/api/v1/push"
+    }
+external_labels = {}
+}
+
+
+local.file_match "applogs" {
+    path_targets = [{"__path__" = "/tmp/app-logs/app.log"}]
+}
+
+loki.source.file "local_files" {
+    targets    = local.file_match.applogs.targets
+    forward_to = [loki.process.add_new_label.receiver]
+}
+
+loki.process "add_new_label" {
+    stage.logfmt {
+        mapping = {
+            "extracted_level" = "level",
+        }
+    }
+
+    // Add the value of "extracted_level" from the extracted map as a "level" label
+    stage.labels {
+        values = {
+            "level" = "extracted_level",
+        }
+    }
+
+     forward_to = [loki.write.local_loki.receiver]
+}
+
+loki.write "local_loki" {
+    endpoint {
+        url = "http://loki:3100/loki/api/v1/push"
+    }
+}
