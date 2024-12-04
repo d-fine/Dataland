@@ -324,7 +324,7 @@ class QueryDataRequestsTest {
     }
 
     @Test
-    fun `test that querying by e-mail does not throw an error due to the setupEmailAddressFilter not being called`() {
+    fun `test that querying by email does not throw an error due to the setupEmailAddressFilter not being called`() {
         assertDoesNotThrow {
             api.getDataRequests(emailAddress = "test@test.com", chunkSize = chunkSize)
         }
