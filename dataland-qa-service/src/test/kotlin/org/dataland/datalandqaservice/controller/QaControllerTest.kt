@@ -51,16 +51,15 @@ class QaControllerTest(
     @MockBean
     private lateinit var cloudEventMessageHandler: CloudEventMessageHandler
 
-    @Test
-    fun `verify that the various endpoints return the correct order and content for data point QA review entries`() {
-        val dataId = UUID.randomUUID().toString()
-        val originalActiveDataId = UUID.randomUUID().toString()
-        val dataPointIdentifier = "some-identifier"
-        val reportingPeriod = "2022"
-        val companyId = UUID.randomUUID().toString()
-        val companyName = "some-company"
-        val firstComment = "OriginalActive"
+    val dataId = UUID.randomUUID().toString()
+    val originalActiveDataId = UUID.randomUUID().toString()
+    val dataPointIdentifier = "some-identifier"
+    val reportingPeriod = "2022"
+    val companyId = UUID.randomUUID().toString()
+    val companyName = "some-company"
+    val firstComment = "OriginalActive"
 
+    private fun specifyMocks(){
         `when`(dataPointControllerApi.getDataPointMetaInfo(any())).thenReturn(
             DataPointMetaInformation(
                 dataId = "dummy",
@@ -77,37 +76,35 @@ class QaControllerTest(
             StoredCompany(
                 companyId = companyId,
                 companyInformation =
-                    CompanyInformation(
-                        companyName = companyName,
-                        headquarters = "some-headquarters",
-                        countryCode = "some-country",
-                        identifiers = mapOf("LEI" to listOf("some-lei")),
-                    ),
+                CompanyInformation(
+                    companyName = companyName,
+                    headquarters = "some-headquarters",
+                    countryCode = "some-country",
+                    identifiers = mapOf("LEI" to listOf("some-lei")),
+                ),
                 dataRegisteredByDataland = emptyList(),
             ),
         )
 
         `when`(cloudEventMessageHandler.buildCEMessageAndSendToQueue(any(), any(), any(), any(), any()))
             .thenAnswer { println("Sending message to queue") }
+    }
 
-        val expectedBodyForNewSetToActive =
-            objectMapper.writeValueAsString(
-                QaStatusChangeMessage(
-                    dataId = dataId,
-                    updatedQaStatus = BackendUtilsQaStatus.Accepted,
-                    currentlyActiveDataId = dataId,
-                ),
-            )
+    private fun createMessageBody(dataId: String, updatedQaStatus: BackendUtilsQaStatus, currentlyActiveDataId: String): String {
+        return objectMapper.writeValueAsString(
+            QaStatusChangeMessage(
+                dataId = dataId,
+                updatedQaStatus = updatedQaStatus,
+                currentlyActiveDataId = currentlyActiveDataId,
+            ),
+        )
+    }
 
-        val expectedBodyForOriginalSetToActive =
-            objectMapper.writeValueAsString(
-                QaStatusChangeMessage(
-                    dataId = dataId,
-                    updatedQaStatus = BackendUtilsQaStatus.Rejected,
-                    currentlyActiveDataId = originalActiveDataId,
-                ),
-            )
-
+    @Test
+    fun `verify that the various endpoints return the correct order and content for data point QA review entries`() {
+        specifyMocks()
+        val expectedBodyForNewSetToActive = createMessageBody(dataId, BackendUtilsQaStatus.Accepted, dataId)
+        val expectedBodyForOriginalSetToActive: String = createMessageBody(dataId, BackendUtilsQaStatus.Rejected, originalActiveDataId)
         UtilityFunctions.withReviewerAuthentication {
             qaController.changeDataPointQaStatus(originalActiveDataId, BackendUtilsQaStatus.Accepted, firstComment)
             qaController.changeDataPointQaStatus(dataId, BackendUtilsQaStatus.Pending, "Pending")
