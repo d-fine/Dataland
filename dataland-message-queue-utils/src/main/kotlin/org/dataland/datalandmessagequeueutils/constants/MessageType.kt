@@ -14,4 +14,5 @@ object MessageType {
     const val PRIVATE_DATA_STORED = "Private Data Stored"
     const val PRIVATE_DATA_RECEIVED = "Private Data received"
     const val QA_STATUS_CHANGED = "QA status changed"
+    const val DATA_NONSOURCEABLE = "Data non-sourceable"
 }

@@ -13,5 +13,6 @@ object ExchangeName {
     const val PRIVATE_ITEM_STORED = "privateItemStored"
     const val PRIVATE_REQUEST_RECEIVED = "privateRequestReceived"
     const val BACKEND_DATA_POINT_EVENTS = "backend.dataPoints"
+    const val BACKEND_DATA_NONSOURCEABLE = "backend.dataNonSourceable"
     const val BACKEND_DATASET_EVENTS = "backend.datasets"
 }

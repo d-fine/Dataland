@@ -183,8 +183,7 @@ interface RequestApi {
             "#dataRequestId, #requestStatus, #contacts, #message)" +
             ") or" +
             "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.isNotTryingToPatch(" +
-            "#requestStatus, #contacts, #message, #requestPriority, #adminComment) ",
+            "@SecurityUtilsService.isNotTryingToPatch(#requestStatus, #contacts, #message, #requestPriority, #adminComment)",
     )
     fun patchDataRequest(
         @PathVariable dataRequestId: UUID,
@@ -194,6 +193,7 @@ interface RequestApi {
         @RequestParam message: String?,
         @RequestParam requestPriority: RequestPriority?,
         @RequestParam adminComment: String?,
+        @RequestParam requestStatusChangeReason: String?,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.

@@ -17,8 +17,7 @@ import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Propagation
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
 
@@ -31,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataManagerUtils holds util methods for handling of data
 */
-@Component("DataManager")
+@Service("DataManager")
 class DataManager
     @Suppress("LongParameterList")
     constructor(
@@ -70,13 +69,13 @@ class DataManager
         }
 
         /**
-         * Persists the data meta-information to the database ensuring that the database transaction
-         * ends directly after this function returns so that a MQ-Message might be sent out after this function completes
+         * Persists the data meta-information to the database and the updates the data source history
+         * in the database if necessary ensuring that the database transaction ends directly after this
+         * function returns so that a MQ-Message might be sent out after this function completes
          * @param dataId The dataId of the dataset to store
          * @param storableDataSet the dataset to store
          * @param correlationId the correlation id of the insertion process
          */
-        @Transactional(propagation = Propagation.NEVER)
         fun storeMetaDataFrom(
             dataId: String,
             storableDataSet: StorableDataSet,

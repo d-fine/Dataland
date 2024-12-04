@@ -41,7 +41,7 @@
                 class="ml-3"
                 style="margin: 15px"
               />
-              <div class="flex align-items-center">
+              <span class="flex align-items-center">
                 <span
                   data-test="reset-filter"
                   style="margin: 15px"
@@ -49,7 +49,7 @@
                   @click="resetFilterAndSearchBar"
                   >RESET</span
                 >
-              </div>
+              </span>
             </span>
           </div>
           <div class="col-12 text-left p-3">
@@ -112,7 +112,7 @@
                 <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ slotProps.data.requestStatus }}
+                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
                     </div>
                   </template>
                 </Column>
@@ -190,7 +190,7 @@ import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import {
   customCompareForRequestStatus,
   retrieveAvailableAccessStatus,
@@ -250,7 +250,6 @@ export default defineComponent({
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableAccessStatus = retrieveAvailableAccessStatus();
     this.getStoredRequestDataList().catch((error) => console.error(error));
-    this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
@@ -268,6 +267,7 @@ export default defineComponent({
     },
   },
   methods: {
+    getRequestStatusLabel,
     accessStatusBadgeClass,
     badgeClass,
     frameworkHasSubTitle,
@@ -373,18 +373,25 @@ export default defineComponent({
      * Resets selected frameworks and searchBarInput
      */
     resetFilterAndSearchBar() {
-      this.selectedFrameworks = this.availableFrameworks;
-      this.selectedAccessStatus = this.availableAccessStatus;
+      this.selectedFrameworks = [];
+      this.selectedAccessStatus = [];
       this.searchBarInput = '';
     },
     /**
      * Updates the displayedData
      */
     updateCurrentDisplayedData() {
-      this.displayedData = this.storedDataRequests
-        .filter((dataRequest) => this.filterSearchInput(dataRequest.companyName))
-        .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
-        .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
+      this.displayedData = this.storedDataRequests.filter((dataRequest) =>
+        this.filterSearchInput(dataRequest.companyName)
+      );
+      if (this.selectedFrameworks.length > 0) {
+        this.displayedData = this.displayedData.filter((dataRequest) => this.filterFramework(dataRequest.dataType));
+      }
+      if (this.selectedAccessStatus.length > 0) {
+        this.displayedData = this.displayedData.filter((dataRequest) =>
+          this.filterAccessStatus(dataRequest.accessStatus)
+        );
+      }
       this.displayedData.sort((a, b) => this.customCompareForExtendedStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(

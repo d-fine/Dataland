@@ -25,6 +25,7 @@ class DataMetaInformationManager(
      * Method to associate data information with a specific company
      * @param dataMetaInformation The data meta information which should be stored
      */
+    @Transactional
     fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
         dataMetaInformationRepositoryInterface.save(dataMetaInformation)
 

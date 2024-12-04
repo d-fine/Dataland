@@ -73,7 +73,7 @@ class DataRequestUploadListener(
             return
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 
@@ -113,7 +113,7 @@ class DataRequestUploadListener(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 }

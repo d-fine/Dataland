@@ -45,6 +45,7 @@ import java.time.Instant
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @Transactional
+@Suppress("LongParameterList")
 class DataManagerTest(
     @Autowired val objectMapper: ObjectMapper,
     @Autowired val dataMetaInformationManager: DataMetaInformationManager,
@@ -52,6 +53,7 @@ class DataManagerTest(
     @Autowired val companyAlterationManager: CompanyAlterationManager,
     @Autowired val dataManagerUtils: DataManagerUtils,
     @Autowired val companyRoleChecker: CompanyRoleChecker,
+    @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
     val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
@@ -73,7 +75,7 @@ class DataManagerTest(
         messageQueueListenerForDataManager =
             MessageQueueListenerForDataManager(
                 objectMapper, dataMetaInformationManager,
-                dataManager,
+                dataManager, nonSourceableDataManager,
             )
     }
 
