@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service
  * @param metaDataManager service for handling data meta information
  */
 @Suppress("LongParameterList")
-@Service
+@Service("DataPointManager")
 class DataPointManager(
     @Autowired private val dataManager: DataManager,
     @Autowired private val metaDataManager: DataPointMetaInformationManager,

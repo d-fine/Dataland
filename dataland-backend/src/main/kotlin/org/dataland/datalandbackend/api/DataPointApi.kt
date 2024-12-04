@@ -114,7 +114,7 @@ interface DataPointApi {
         value = ["/{dataId}/metadata"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#companyId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataId)")
     fun getDataPointMetaInfo(
         @PathVariable dataId: String,
     ): ResponseEntity<DataPointMetaInformation>
