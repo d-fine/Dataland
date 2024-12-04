@@ -51,7 +51,7 @@ class DataRequestTimeSchedulerTest {
                 messageHistory = emptyList(),
                 dataRequestStatusHistory = emptyList(),
                 lastModifiedDate = lastModifiedDate,
-                requestPriority = RequestPriority.Normal,
+                requestPriority = RequestPriority.Low,
                 adminComment = "dummyAdminComment",
             )
         dataRequestEntity.dataRequestStatusHistory =

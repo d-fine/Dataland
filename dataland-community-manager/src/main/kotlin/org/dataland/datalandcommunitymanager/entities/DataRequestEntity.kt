@@ -57,7 +57,7 @@ data class DataRequestEntity(
         messageHistory = listOf(),
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
-        requestPriority = RequestPriority.Normal,
+        requestPriority = RequestPriority.Low,
         adminComment = null,
     )
 
