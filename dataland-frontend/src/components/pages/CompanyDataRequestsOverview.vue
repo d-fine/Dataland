@@ -420,9 +420,7 @@ export default defineComponent({
       try {
         if (this.getKeycloakPromise) {
           await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.patchDataRequest(
-            requestId,
-            undefined,
-            newAccessStatus
+            requestId, {accessStatus: newAccessStatus}
           );
           await this.getStoredCompanyRequestDataList();
           this.updateCurrentDisplayedData();
