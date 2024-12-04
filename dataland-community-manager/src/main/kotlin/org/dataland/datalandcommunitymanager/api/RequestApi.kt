@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
@@ -79,12 +80,12 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>>
 
-    /** Retrieves aggregated data requests by aggregating all userIds
-     * @return aggregated data requests that match the given filters
+    /** Retrieves aggregated open data requests by aggregating open requests over all userIds
+     * @return aggregated open data requests that match the given filters
      */
     @Operation(
-        summary = "Get aggregated data requests.",
-        description = "Gets all data requests that match the given filters, while aggregating userIDs.",
+        summary = "Get aggregated open data requests.",
+        description = "Gets aggregated open data requests based on the chosen filters.",
     )
     @ApiResponses(
         value = [
@@ -96,11 +97,10 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getAggregatedDataRequests(
-        @RequestParam identifierValue: String? = null,
+    fun getAggregatedOpenDataRequests(
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam status: RequestStatus? = null,
+        @RequestParam aggregatedPriority: AggregatedRequestPriority? = null,
     ): ResponseEntity<List<AggregatedDataRequest>>
 
     /**

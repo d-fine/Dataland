@@ -1126,18 +1126,10 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get aggregated data requests.",
-        "description": "Gets all data requests that match the given filters, while aggregating userIDs.",
-        "operationId": "getAggregatedDataRequests",
+        "summary": "Get aggregated open data requests.",
+        "description": "Gets aggregated open data requests based on the chosen filters.",
+        "operationId": "getAggregatedOpenDataRequests",
         "parameters": [
-          {
-            "name": "identifierValue",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "dataTypes",
             "in": "query",
@@ -1171,11 +1163,11 @@
             }
           },
           {
-            "name": "status",
+            "name": "aggregatedPriority",
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
+              "$ref": "#/components/schemas/AggregatedRequestPriority"
             }
           }
         ],
@@ -1941,11 +1933,21 @@
           }
         }
       },
+      "AggregatedRequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Normal",
+          "High",
+          "VeryHigh",
+          "Urgent"
+        ]
+      },
       "AggregatedDataRequest": {
         "required": [
+          "aggregatedPriority",
           "count",
-          "datalandCompanyId",
-          "requestStatus"
+          "datalandCompanyId"
         ],
         "type": "object",
         "properties": {
@@ -1970,7 +1972,7 @@
           "datalandCompanyId": {
             "type": "string"
           },
-          "requestStatus": {
+          "aggregatedPriority": {
             "type": "string"
           },
           "count": {

@@ -5,6 +5,7 @@ import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
@@ -51,18 +52,17 @@ class RequestController(
             dataRequestQueryManager.getDataRequestsForRequestingUser(),
         )
 
-    override fun getAggregatedDataRequests(
-        identifierValue: String?,
+    override fun getAggregatedOpenDataRequests(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
-        status: RequestStatus?,
+        aggregatedPriority: AggregatedRequestPriority?,
     ): ResponseEntity<List<AggregatedDataRequest>> =
         ResponseEntity.ok(
-            dataRequestQueryManager.getAggregatedDataRequests(
-                identifierValue,
+            dataRequestQueryManager.getAggregatedOpenDataRequests(
+                identifierValue = null,
                 dataTypes,
                 reportingPeriod,
-                status,
+                aggregatedPriority = aggregatedPriority,
             ),
         )
 

@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
@@ -70,14 +71,13 @@ class DataRequestQueryManager
          * @param identifierValue can be used to filter via substring matching
          * @param dataTypes can be used to filter on frameworks
          * @param reportingPeriod can be used to filter on reporting periods
-         * @param status can be used to filter on request status
          * @returns aggregated data requests
          */
-        fun getAggregatedDataRequests(
+        fun getAggregatedOpenDataRequests(
             identifierValue: String?,
             dataTypes: Set<DataTypeEnum>?,
             reportingPeriod: String?,
-            status: RequestStatus?,
+            aggregatedPriority: AggregatedRequestPriority?,
         ): List<AggregatedDataRequest> {
             val dataTypesFilterForQuery =
                 if (dataTypes != null && dataTypes.isEmpty()) {
@@ -89,8 +89,9 @@ class DataRequestQueryManager
                 dataRequestRepository.getAggregatedDataRequests(
                     GetAggregatedRequestsSearchFilter(
                         dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
+                        requestStatus = RequestStatus.Open.toString(),
                         reportingPeriodFilter = reportingPeriod,
-                        requestStatus = status?.name ?: "",
+                        aggregatedPriority = aggregatedPriority?.name ?: "",
                         datalandCompanyIdFilter = identifierValue,
                     ),
                 )
@@ -100,7 +101,7 @@ class DataRequestQueryManager
                         processingUtils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                         aggregatedDataRequestEntity.reportingPeriod,
                         aggregatedDataRequestEntity.datalandCompanyId,
-                        aggregatedDataRequestEntity.requestStatus,
+                        aggregatedDataRequestEntity.aggregatedPriority,
                         aggregatedDataRequestEntity.count,
                     )
                 }

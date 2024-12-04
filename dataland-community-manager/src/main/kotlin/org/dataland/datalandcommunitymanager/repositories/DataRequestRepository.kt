@@ -53,9 +53,9 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
      * @param reportingPeriod to check for
      * @param dataTypes to check for
      * @param status to check for
+     * @param aggregatedPriority to check for
      * @returns the aggregated data requests
      */
-
     @Query(
         nativeQuery = true,
         value =
@@ -65,6 +65,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
                 "dr.reporting_period AS reportingPeriod, " +
                 "dr.dataland_company_id AS datalandCompanyId, " +
                 "st.request_status AS requestStatus, " +
+                "dr.aggregated_priority AS aggregatedPriority, " +
                 "COUNT(dr.user_id) AS count " +
                 "FROM data_requests dr " +
                 "JOIN status_table st ON dr.data_request_id = st.request_id " +
@@ -76,7 +77,9 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
                 "OR dr.dataland_company_id = :#{#searchFilter.datalandCompanyIdFilter}) " +
                 "AND (:#{#searchFilter.requestStatusLength} = 0 " +
                 "OR st.request_status = :#{#searchFilter.requestStatus} ) " +
-                "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, st.request_status ",
+                "AND (:#{#searchFilter.aggregatedPriorityLength} = 0 " +
+                "OR dr.aggregated_priority = :#{#searchFilter.aggregatedPriority}) " +
+                "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, dr.aggregated_priority ",
     )
     fun getAggregatedDataRequests(
         @Param("searchFilter") searchFilter: GetAggregatedRequestsSearchFilter,

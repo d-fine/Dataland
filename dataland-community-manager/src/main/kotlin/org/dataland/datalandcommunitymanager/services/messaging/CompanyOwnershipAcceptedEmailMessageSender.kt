@@ -1,7 +1,6 @@
 package org.dataland.datalandcommunitymanager.services.messaging
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -64,11 +63,11 @@ class CompanyOwnershipAcceptedEmailMessageSender(
      */
     fun getNumberOfOpenDataRequestsForCompany(datalandCompanyId: String): Int =
         dataRequestQueryManager
-            .getAggregatedDataRequests(
+            .getAggregatedOpenDataRequests(
                 identifierValue = datalandCompanyId,
                 dataTypes = null,
                 reportingPeriod = null,
-                status = RequestStatus.Open,
+                aggregatedPriority = null,
             ).filter { it.count > 0 }
             .size
 }
