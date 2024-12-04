@@ -27,6 +27,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import java.util.UUID
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as OpenApiClientQaStatus
 import org.dataland.datalandbackendutils.model.QaStatus as BackendUtilsQaStatus
 
@@ -103,6 +104,18 @@ class QaControllerTest(
             ),
         )
 
+    private fun getReviewEntries(onlyLatest: Boolean): List<DataPointQaReviewInformation> {
+        return qaController.getDataPointQaReviewInformation(
+            companyId = companyId,
+            dataPointIdentifier = dataPointIdentifier,
+            reportingPeriod = reportingPeriod,
+            qaStatus = null,
+            onlyLatest = onlyLatest,
+            chunkSize = 10,
+            chunkIndex = 0,
+        ).body!!
+    }
+
     @Test
     fun `verify that the various endpoints return the correct order and content for data point QA review entries`() {
         specifyMocks()
@@ -134,31 +147,11 @@ class QaControllerTest(
             assertEquals(3, reviewEntries.size)
             assertEquals(BackendUtilsQaStatus.Rejected, reviewEntries.first().qaStatus)
 
-            val latestReviewEntries =
-                qaController
-                    .getDataPointQaReviewInformation(
-                        companyId = companyId,
-                        dataPointIdentifier = dataPointIdentifier,
-                        reportingPeriod = reportingPeriod,
-                        qaStatus = null,
-                        onlyLatest = true,
-                        chunkSize = 10,
-                        chunkIndex = 0,
-                    ).body!!
+            val latestReviewEntries = getReviewEntries(onlyLatest = true)
             assertEquals(2, latestReviewEntries.size)
             assertEquals(BackendUtilsQaStatus.Rejected, latestReviewEntries.first().qaStatus)
 
-            val allReviewEntries =
-                qaController
-                    .getDataPointQaReviewInformation(
-                        companyId = companyId,
-                        dataPointIdentifier = dataPointIdentifier,
-                        reportingPeriod = reportingPeriod,
-                        qaStatus = null,
-                        onlyLatest = false,
-                        chunkSize = 10,
-                        chunkIndex = 0,
-                    ).body!!
+            val allReviewEntries = getReviewEntries(onlyLatest = false)
             assertEquals(4, allReviewEntries.size)
             assertEquals(firstComment, allReviewEntries.last().comment)
         }
