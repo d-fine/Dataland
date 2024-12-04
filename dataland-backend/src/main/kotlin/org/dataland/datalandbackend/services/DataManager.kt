@@ -12,14 +12,14 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
-import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -155,19 +155,11 @@ class DataManager
 
             logger.info("Publishing message that data with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+                body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
                 type = MessageType.PUBLIC_DATA_RECEIVED,
                 correlationId = correlationId,
                 exchange = ExchangeName.BACKEND_DATASET_EVENTS,
                 routingKey = RoutingKeyNames.DATASET_UPLOAD,
-            )
-            logger.info("Publishing message that QA is required for data with ID '$dataId'. Correlation ID: '$correlationId'.")
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body = objectMapper.writeValueAsString(QaPayload(dataId = dataId, bypassQa = bypassQa)),
-                type = MessageType.QA_REQUESTED,
-                correlationId = correlationId,
-                exchange = ExchangeName.BACKEND_DATASET_EVENTS,
-                routingKey = RoutingKeyNames.DATA_QA,
             )
         }
 

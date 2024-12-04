@@ -15,6 +15,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -77,12 +78,12 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
             MessageQueueUtils.validateDataId(dataId)
             val data = retrieveData(dataId, correlationId)
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
-            publishStorageEvent(payload, correlationId)
+            publishStorageEvent(dataId, correlationId)
         }
     }
 
@@ -117,7 +118,7 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
             MessageQueueUtils.validateDataId(dataId)
             deleteDataItemWithoutTransaction(dataId, correlationId)
         }
@@ -153,7 +154,7 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
             MessageQueueUtils.validateDataId(dataId)
             val dataPointString = retrieveData(dataId, correlationId)
             val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
@@ -167,7 +168,7 @@ class DatabaseStringDataStore(
                     dataPointContent = objectMapper.writeValueAsString(storableDataPoint.dataPointContent),
                 ),
             )
-            publishStorageEvent(payload, correlationId)
+            publishStorageEvent(dataId, correlationId)
         }
     }
 
@@ -180,10 +181,11 @@ class DatabaseStringDataStore(
     }
 
     private fun publishStorageEvent(
-        payload: String,
+        dataId: String,
         correlationId: String,
     ) {
-        logger.info("Publishing storage event to the message queue. CorrelationId: $correlationId")
+        logger.info("Publishing storage event for data ID $dataId to the message queue. CorrelationId: $correlationId")
+        val payload = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId))
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )

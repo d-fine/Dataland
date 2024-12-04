@@ -5,8 +5,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
-import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -31,35 +30,16 @@ class MessageQueueInteractionForDataPoints(
      */
     fun publishDataPointUploadedMessage(
         dataId: String,
+        bypassQa: Boolean,
         correlationId: String,
     ) {
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
             type = MessageType.PUBLIC_DATA_RECEIVED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_POINT_EVENTS,
             routingKey = RoutingKeyNames.DATA_POINT_UPLOAD,
         )
         logger.info("Published message that data point with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
-    }
-
-    /**
-     * Method to publish a message that a data point has been uploaded
-     * @param dataId The ID of the uploaded data point
-     * @param correlationId The correlation ID of the request initiating the event
-     */
-    fun publishDataPointQaRequestedMessage(
-        dataId: String,
-        bypassQa: Boolean,
-        correlationId: String,
-    ) {
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(QaPayload(dataId = dataId, bypassQa = bypassQa)),
-            type = MessageType.QA_REQUESTED,
-            correlationId = correlationId,
-            exchange = ExchangeName.BACKEND_DATA_POINT_EVENTS,
-            routingKey = RoutingKeyNames.DATA_QA,
-        )
-        logger.info("Published message for data point with ID '$dataId' to initiate the QA process. Correlation ID: '$correlationId'.")
     }
 }

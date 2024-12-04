@@ -13,8 +13,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
-import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
-import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
@@ -79,13 +78,13 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.QA_REQUESTED)
+            MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
 
             MessageQueueUtils.rejectMessageOnException {
-                val qaPayload = MessageQueueUtils.readMessagePayload<QaPayload>(payload, objectMapper)
-                val dataId = qaPayload.dataId
+                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
+                val dataId = dataUploadedPayload.dataId
                 MessageQueueUtils.validateDataId(dataId)
-                val bypassQa: Boolean = qaPayload.bypassQa
+                val bypassQa: Boolean = dataUploadedPayload.bypassQa
                 logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
                 val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
                 val qaStatus: QaStatus
@@ -199,7 +198,7 @@ class QaEventListenerQaService
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
             MessageQueueUtils.rejectMessageOnException {
-                val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+                val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
                 MessageQueueUtils.validateDataId(dataId)
                 qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
                 qaReviewManager.deleteAllByDataId(dataId, correlationId)
@@ -234,32 +233,32 @@ class QaEventListenerQaService
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.QA_REQUESTED)
+            MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
 
             MessageQueueUtils.rejectMessageOnException {
-                val qaPayload = MessageQueueUtils.readMessagePayload<QaPayload>(payload, objectMapper)
-                MessageQueueUtils.validateDataId(qaPayload.dataId)
+                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
+                MessageQueueUtils.validateDataId(dataUploadedPayload.dataId)
                 logger.info(
-                    "Received QA required for dataId ${qaPayload.dataId} with " +
-                        "bypassQA ${qaPayload.bypassQa} (correlation Id: $correlationId)",
+                    "Received QA required for dataId ${dataUploadedPayload.dataId} with " +
+                        "bypassQA ${dataUploadedPayload.bypassQa} (correlation Id: $correlationId)",
                 )
 
-                saveQaReviewEntityFromMessage(qaPayload, correlationId)
+                saveQaReviewEntityFromMessage(dataUploadedPayload, correlationId)
             }
         }
 
         /**
          * Method to save a DataPointQaReviewEntity from a QaPayload
-         * @param qaPayload the payload containing the dataId and bypassQa
+         * @param dataUploadedPayload the payload containing the dataId and bypassQa
          * @param correlationId the correlation ID of the current user process
          * @return the saved DataPointQaReviewEntity
          */
         fun saveQaReviewEntityFromMessage(
-            qaPayload: QaPayload,
+            dataUploadedPayload: DataUploadedPayload,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val dataId = qaPayload.dataId
-            val bypassQa = qaPayload.bypassQa
+            val dataId = dataUploadedPayload.dataId
+            val bypassQa = dataUploadedPayload.bypassQa
             val triggeringUserId = dataPointControllerApi.getDataPointMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
 
             val (qaStatus, comment) =

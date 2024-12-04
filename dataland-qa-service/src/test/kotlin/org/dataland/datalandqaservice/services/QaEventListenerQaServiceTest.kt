@@ -13,7 +13,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
-import org.dataland.datalandmessagequeueutils.messages.data.QaPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
@@ -60,7 +60,7 @@ class QaEventListenerQaServiceTest(
         bypassQa: Boolean,
     ): String =
         objectMapper.writeValueAsString(
-            QaPayload(
+            DataUploadedPayload(
                 dataId = dataId,
                 bypassQa = bypassQa,
             ),
@@ -94,7 +94,7 @@ class QaEventListenerQaServiceTest(
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 qaEventListenerQaService
-                    .addDatasetToQaReviewRepository(noIdPayload, correlationId, MessageType.QA_REQUESTED)
+                    .addDatasetToQaReviewRepository(noIdPayload, correlationId, MessageType.PUBLIC_DATA_RECEIVED)
             }
         Assertions.assertEquals("Invalid UUID string: ", thrown.message)
     }
@@ -146,7 +146,7 @@ class QaEventListenerQaServiceTest(
         `when`(mockCompanyDataControllerApi.getCompanyById(acceptedDataMetaInformation.companyId)).thenReturn(acceptedStoredCompany)
 
         qaEventListenerQaService.addDatasetToQaReviewRepository(
-            manualQaRequestedMessage, correlationId, MessageType.QA_REQUESTED,
+            manualQaRequestedMessage, correlationId, MessageType.PUBLIC_DATA_RECEIVED,
         )
 
         testQaReviewRepository.findFirstByDataIdOrderByTimestampDesc(acceptedDataId)?.let {
