@@ -1,27 +1,24 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-function getOpenApiSha1Sum() {
-  find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted.json' shell {} \;
-  find * -name "*OpenApi.json.formatted.json" -type f | \
-  sort -u | \
-  xargs sha1sum | \
-  awk '{print $1}' | \
-  sha1sum | \
-  awk '{print $1}'
-}
+# This script is used to verify that there are no uncommitted changes in the OpenApi files.
 
-sha1SumBeforeRegenerate=$(getOpenApiSha1Sum)
-find * -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted-before.json' shell {} \;
+find . -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted-before.json' shell {} \;
 ./gradlew generateOpenApiDocs --no-daemon --stacktrace
-sha1SumAfterRegenerate=$(getOpenApiSha1Sum)
-echo "sha1sum before regenerate: $sha1SumBeforeRegenerate"
-echo "sha1sum after regenerate: $sha1SumAfterRegenerate"
+find . -name "*OpenApi.json" -type f -exec bash -c 'jq -S . $1 > $1.formatted-after.json' shell {} \;
 
-if [[ "$sha1SumBeforeRegenerate" == "$sha1SumAfterRegenerate" ]]; then
-  echo "OpenApi Files OK!"
-  exit 0
-else
-  echo "OpenApi Files not OK!"
+error=0
+while IFS= read -r -d '' file
+do
+  hash_before=$(sha1sum "$file" | awk '{ print $1 }' )
+  hash_after=$(sha1sum "${file/.formatted-before.json/.formatted-after.json}" | awk '{ print $1 }' )
+  if [[ "$hash_before" != "$hash_after" ]]; then
+    echo "OpenApi Files do not match for $file!"
+    ((error++))
+  fi
+done < <(find . -name "*OpenApi.json.formatted-before.json" -type f -print0)
+
+if [[ $error -ne 0 ]]; then
+  echo "There are $error OpenApi files that do not match!"
   exit 1
 fi
