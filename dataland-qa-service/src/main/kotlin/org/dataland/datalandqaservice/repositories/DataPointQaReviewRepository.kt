@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.util.UUID
+import org.springframework.stereotype.Repository
 
 /**
  * A JPA repository for accessing QA information of a data point
  */
+@Repository
 interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, UUID> {
     /**
      * A function to get the dataId of the currently active data point, given a triple of company ID, data type and reporting period

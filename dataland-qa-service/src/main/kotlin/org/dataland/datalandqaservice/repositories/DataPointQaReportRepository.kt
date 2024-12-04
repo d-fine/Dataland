@@ -5,10 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import org.springframework.stereotype.Repository
 
 /**
  * A JPA repository for QA reports.
  */
+@Repository
 interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, String> {
     /**
      * Returns all QA reports for a specific dataId. Supports filtering by reporterUserId and active status.
