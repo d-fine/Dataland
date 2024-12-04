@@ -55,15 +55,15 @@
               class="uppercase p-button p-button-sm d-letters ml-3"
               aria-label="DOWNLOAD DATA"
               @click="isDownloadModalOpen = true"
-              data-test="DownloadButton"
+              data-test="downloadDataButton"
             >
               <span class="px-2">DOWNLOAD DATA</span>
             </PrimeButton>
 
             <DownloadDataSetModal
-              v-model:isDownloadModalOpen="isDownloadModalOpen"
+              v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
               :handleClose="closeModal"
-              :handleSave="getDatasetFromExportApi"
+              :handleDownload="getDatasetFromExportApi"
             ></DownloadDataSetModal>
 
             <PrimeButton

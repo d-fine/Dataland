@@ -2,7 +2,6 @@
   <PrimeDialog
     :dismissableMask="true"
     :modal="true"
-    v-if="isDownloadModalOpen"
     :visible="isDownloadModalOpen"
     :closable="true"
     style="text-align: center; width: 20%"
@@ -65,7 +64,7 @@ export default defineComponent({
       type: Function,
       required: true,
     },
-    handleSave: {
+    handleDownload: {
       type: Function,
       required: true,
     },
@@ -79,20 +78,14 @@ export default defineComponent({
   },
   methods: {
     /**
-     * Downloads the selected dataset
+     * Downloads the selected dataset and closes the modal
      */
     downloadData() {
       this.isSavingFile = true;
-      this.handleSave(this.selectedReportingYear, this.selectedFormat);
+      this.handleDownload(this.selectedReportingYear, this.selectedFormat);
 
-      this.closeModal();
-      this.isSavingFile = false;
-    },
-    /**
-     * Closes the download modal
-     */
-    closeModal() {
       this.handleClose();
+      this.isSavingFile = false;
     },
   },
 });
