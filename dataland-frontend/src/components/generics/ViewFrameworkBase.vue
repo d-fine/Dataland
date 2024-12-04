@@ -2,7 +2,7 @@
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
     <CompanyInfoSheet
-      :company-id="companyID"
+      :company-id="companyId"
       @fetched-company-information="handleFetchedCompanyInformation"
       :show-single-data-request-button="true"
       :framework="dataType"
@@ -52,8 +52,23 @@
             />
 
             <PrimeButton
+              class="uppercase p-button p-button-sm d-letters ml-3"
+              aria-label="DOWNLOAD DATA"
+              @click="isDownloadModalOpen = true"
+              data-test="DownloadButton"
+            >
+              <span class="px-2">DOWNLOAD DATA</span>
+            </PrimeButton>
+
+            <DownloadDataSetModal
+              v-model:isDownloadModalOpen="isDownloadModalOpen"
+              :handleClose="closeModal"
+              :handleSave="getDatasetFromExportApi"
+            ></DownloadDataSetModal>
+
+            <PrimeButton
               v-if="isEditableByCurrentUser"
-              class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
+              class="uppercase p-button p-button-sm d-letters ml-3"
               aria-label="EDIT DATA"
               @click="editDataset"
               data-test="editDatasetButton"
@@ -122,10 +137,12 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
+import DownloadDataSetModal from '@/components/general/DownloadDataSetModal.vue';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
   components: {
+    DownloadDataSetModal,
     CompanyInfoSheet,
     TheContent,
     TheHeader,
@@ -140,7 +157,7 @@ export default defineComponent({
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
-    companyID: {
+    companyId: {
       type: String,
       required: true,
     },
@@ -179,6 +196,7 @@ export default defineComponent({
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
+      isDownloadModalOpen: false,
     };
   },
   provide() {
@@ -205,7 +223,7 @@ export default defineComponent({
       );
     },
     targetLinkForAddingNewDataset() {
-      return `/companies/${this.companyID ?? ''}/frameworks/upload`;
+      return `/companies/${this.companyId ?? ''}/frameworks/upload`;
     },
   },
   created() {
@@ -242,7 +260,7 @@ export default defineComponent({
         }
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
-          assertDefined(this.companyID),
+          assertDefined(this.companyId),
           this.dataType,
           Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
         );
@@ -250,13 +268,13 @@ export default defineComponent({
     },
     /**
      * Navigates to the data update form
-     * @param companyID company ID
+     * @param companyId company Id
      * @param dataType data type
      * @param dataId data Id
      */
-    gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
+    gotoUpdateForm(companyId: string, dataType: DataTypeEnum, dataId: string) {
       void router.push(
-        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
+        `/companies/${assertDefined(companyId)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
       );
     },
     /**
@@ -284,7 +302,7 @@ export default defineComponent({
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
-        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
+        void router.push(`/companies/${this.companyId}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
     },
 
@@ -342,7 +360,7 @@ export default defineComponent({
       try {
         const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
         const metaDataControllerApi = backendClients.metaDataController;
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyId);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
@@ -373,7 +391,7 @@ export default defineComponent({
         })
         .then(() => {
           if (!this.hasUserUploaderRights) {
-            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyID, this.getKeycloakPromise).then(
+            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
               (hasUserUploaderRights) => {
                 this.hasUserUploaderRights = hasUserUploaderRights;
               }
@@ -388,6 +406,21 @@ export default defineComponent({
      */
     handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
       return router.push(reportingPeriodTableEntry.editUrl);
+    },
+    /**
+     * Downloads the dataset from the selected reporting period as a file in the selected format
+     * @param reportingYear
+     * @param fileFormat
+     */
+    getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
+      // this.dataType, this.companyId
+      return;
+    },
+    /**
+     * closes the download modal
+     */
+    closeModal() {
+      this.isDownloadModalOpen = false;
     },
   },
   watch: {
