@@ -177,7 +177,7 @@ jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
 freemarker = "org.freemarker:freemarker:2.3.33"
 
 
-flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.18.2"
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.22.0"
 
 jodconverter-core = "org.jodconverter:jodconverter-core:4.4.8"
 
