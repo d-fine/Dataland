@@ -270,6 +270,150 @@
         ]
       }
     },
+    "/metadata/nonSourceable": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Retrieve information about the sourceability of data sets",
+        "description": "Retrieve information about the sourceability of data sets by the filters.",
+        "operationId": "getInfoOnNonSourceabilityOfDataSets",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/DataTypeEnum"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nonSourceable",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data sets.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NonSourceableInfoResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Adds a data set with information on sourceability.",
+        "description": "A data set is added with information on its sourceability.",
+        "operationId": "postNonSourceabilityOfADataset",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NonSourceableInfo"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Invalid input parameters."
+          },
+          "200": {
+            "description": "Successfully added dataset."
+          },
+          "400": {
+            "description": "Bad request has been submitted."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/vsme": {
       "post": {
         "tags": [
@@ -1233,6 +1377,78 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}": {
+      "head": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Checks if a data set is non-sourceable.",
+        "description": "Checks if a specific data set is non-sourceable.",
+        "operationId": "isDataNonSourceable",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DataTypeEnum"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully checked that data set is non-sourceable."
+          },
+          "404": {
+            "description": "Successfully checked that data set is sourceable."
           },
           "default": {
             "description": "An error occurred",
@@ -4229,6 +4445,33 @@
             "items": {
               "$ref": "#/components/schemas/DataMetaInformation"
             }
+          }
+        }
+      },
+      "NonSourceableInfo": {
+        "required": [
+          "companyId",
+          "dataType",
+          "isNonSourceable",
+          "reason",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "isNonSourceable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
           }
         }
       },
@@ -18084,6 +18327,42 @@
           }
         }
       },
+      "NonSourceableInfoResponse": {
+        "required": [
+          "companyId",
+          "creationTime",
+          "dataType",
+          "isNonSourceable",
+          "reason",
+          "reportingPeriod",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/DataTypeEnum"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "isNonSourceable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "creationTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "string"
+          }
+        }
+      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -18243,6 +18522,10 @@
         ],
         "type": "object",
         "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -18251,10 +18534,6 @@
           },
           "headquarters": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "countryCode": {
             "type": "string"
