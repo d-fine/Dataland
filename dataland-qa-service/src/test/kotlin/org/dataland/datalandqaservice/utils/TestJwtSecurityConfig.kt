@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 @Configuration
 class TestJwtSecurityConfig {
     @Bean
-    fun jwtDecoder(properties: OAuth2ResourceServerProperties): JwtDecoder {
-        return NimbusJwtDecoder.withJwkSetUri(properties.jwt.jwkSetUri).build()
-    }
+    fun jwtDecoder(properties: OAuth2ResourceServerProperties): JwtDecoder =
+        NimbusJwtDecoder.withJwkSetUri(properties.jwt.jwkSetUri).build()
 }
