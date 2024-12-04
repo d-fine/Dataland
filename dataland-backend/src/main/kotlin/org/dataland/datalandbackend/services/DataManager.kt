@@ -8,18 +8,12 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
-import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -27,8 +21,9 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
  * @param companyQueryManager service for managing query regarding company data
  * @param metaDataManager service for managing metadata
  * @param storageClient service for managing data
- * @param cloudEventMessageHandler service for managing CloudEvents messages
  * @param dataManagerUtils holds util methods for handling of data
+ * @param companyRoleChecker service for checking company roles
+ * @param messageQueuePublications service for publishing messages to the message queue
 */
 @Service("DataManager")
 class DataManager
@@ -38,9 +33,9 @@ class DataManager
         @Autowired private val companyQueryManager: CompanyQueryManager,
         @Autowired private val metaDataManager: DataMetaInformationManager,
         @Autowired private val storageClient: StorageControllerApi,
-        @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
         @Autowired private val dataManagerUtils: DataManagerUtils,
         @Autowired private val companyRoleChecker: CompanyRoleChecker,
+        @Autowired private val messageQueuePublications: MessageQueuePublications,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -146,21 +141,12 @@ class DataManager
             bypassQa: Boolean,
             correlationId: String,
         ) {
-            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
             logger.info(
-                "Stored StorableDataSet of type '${storableDataSet.dataType}' " +
-                    "for company ID '${storableDataSet.companyId}' in temporary storage. " +
-                    "Data ID '$dataId'. Correlation ID: '$correlationId'.",
+                "Storing data of type '${storableDataSet.dataType}' for company ID '${storableDataSet.companyId}'" +
+                    " in temporary storage. Data ID '$dataId'. Correlation ID: '$correlationId'.",
             )
-
-            logger.info("Publishing message that data with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
-                type = MessageType.PUBLIC_DATA_RECEIVED,
-                correlationId = correlationId,
-                exchange = ExchangeName.BACKEND_DATASET_EVENTS,
-                routingKey = RoutingKeyNames.DATASET_UPLOAD,
-            )
+            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
+            messageQueuePublications.publishDataSetUploadedMessage(dataId, bypassQa, correlationId)
         }
 
         /**
@@ -224,14 +210,7 @@ class DataManager
                     "and of the reporting period ${metaInformation.reportingPeriod}.Correlation Id: $correlationId",
             )
             metaDataManager.deleteDataMetaInfo(dataId)
-            logger.info("Publish message that data with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
-                type = MessageType.DELETE_DATA,
-                correlationId = correlationId,
-                exchange = ExchangeName.BACKEND_DATASET_EVENTS,
-                routingKey = RoutingKeyNames.DATASET_DELETION,
-            )
+            messageQueuePublications.publishDataSetDeletionMessage(dataId, correlationId)
         }
 
         /**

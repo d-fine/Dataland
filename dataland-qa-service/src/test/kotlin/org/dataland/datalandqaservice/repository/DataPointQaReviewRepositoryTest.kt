@@ -26,17 +26,18 @@ class DataPointQaReviewRepositoryTest {
     @Test
     fun `test getAllEntriesForTheReviewQueue`() {
         // Given
-        val entity = DataPointQaReviewEntity(
-            dataId = "1",
-            companyId = "1",
-            dataPointIdentifier = "identifier",
-            reportingPeriod = "2023-01",
-            qaStatus = QaStatus.Pending,
-            timestamp = System.currentTimeMillis(),
-            companyName = "company",
-            triggeringUserId = "user",
-            comment = "comment"
-        )
+        val entity =
+            DataPointQaReviewEntity(
+                dataId = "1",
+                companyId = "1",
+                dataPointIdentifier = "identifier",
+                reportingPeriod = "2023-01",
+                qaStatus = QaStatus.Pending,
+                timestamp = System.currentTimeMillis(),
+                companyName = "company",
+                triggeringUserId = "user",
+                comment = "comment",
+            )
         dataPointQaReviewRepository.save(entity)
 
         // When

@@ -15,16 +15,17 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.anyBoolean
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
@@ -39,7 +40,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode
 import java.time.Instant
-import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @DirtiesContext(classMode = ClassMode.BEFORE_CLASS)
@@ -56,7 +56,7 @@ class DataManagerTest(
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
-    val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+    val messageQueuePublications: MessageQueuePublications = mock(MessageQueuePublications::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
@@ -69,7 +69,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, dataMetaInformationManager,
-                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
             )
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
@@ -217,8 +217,8 @@ class DataManagerTest(
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
 
         `when`(
-            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(), anyString(), anyString(), anyString(), anyString(),
+            messageQueuePublications.publishDataSetUploadedMessage(
+                anyString(), anyBoolean(), anyString(),
             ),
         ).thenThrow(AmqpException::class.java)
         assertThrows<AmqpException> {
@@ -244,7 +244,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, mockDataMetaInformationManager,
-                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
             )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(

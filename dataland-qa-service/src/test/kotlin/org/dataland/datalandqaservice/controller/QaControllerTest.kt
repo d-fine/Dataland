@@ -13,6 +13,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -27,7 +28,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import java.util.UUID
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as OpenApiClientQaStatus
 import org.dataland.datalandbackendutils.model.QaStatus as BackendUtilsQaStatus
 
@@ -104,17 +104,17 @@ class QaControllerTest(
             ),
         )
 
-    private fun getReviewEntries(onlyLatest: Boolean): List<DataPointQaReviewInformation> {
-        return qaController.getDataPointQaReviewInformation(
-            companyId = companyId,
-            dataPointIdentifier = dataPointIdentifier,
-            reportingPeriod = reportingPeriod,
-            qaStatus = null,
-            onlyLatest = onlyLatest,
-            chunkSize = 10,
-            chunkIndex = 0,
-        ).body!!
-    }
+    private fun getReviewEntries(onlyLatest: Boolean): List<DataPointQaReviewInformation> =
+        qaController
+            .getDataPointQaReviewInformation(
+                companyId = companyId,
+                dataPointIdentifier = dataPointIdentifier,
+                reportingPeriod = reportingPeriod,
+                qaStatus = null,
+                onlyLatest = onlyLatest,
+                chunkSize = 10,
+                chunkIndex = 0,
+            ).body!!
 
     @Test
     fun `verify that the various endpoints return the correct order and content for data point QA review entries`() {

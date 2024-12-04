@@ -1199,7 +1199,14 @@
         },
         "responses": {
           "204": {
-            "description": "Successfully verified specification conformity."
+            "description": "Successfully verified specification conformity.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unit"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -18195,6 +18202,9 @@
           }
         }
       },
+      "Unit": {
+        "type": "object"
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -18522,14 +18532,10 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
@@ -18537,6 +18543,10 @@
           },
           "countryCode": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -18563,10 +18573,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

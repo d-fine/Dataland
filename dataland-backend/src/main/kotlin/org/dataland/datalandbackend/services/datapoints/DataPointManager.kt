@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.model.DataPointDimensions
@@ -28,7 +29,7 @@ class DataPointManager(
     @Autowired private val dataManager: DataManager,
     @Autowired private val metaDataManager: DataPointMetaInformationManager,
     @Autowired private val storageClient: StorageControllerApi,
-    @Autowired private val messageQueueInteractionForDataPoints: MessageQueueInteractionForDataPoints,
+    @Autowired private val messageQueuePublications: MessageQueuePublications,
     @Autowired private val dataPointValidator: DataPointValidator,
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyRoleChecker: CompanyRoleChecker,
@@ -60,7 +61,7 @@ class DataPointManager(
         }
 
         val dataPointMetaInformation = storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, correlationId)
-        messageQueueInteractionForDataPoints.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
+        messageQueuePublications.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
         return dataPointMetaInformation
     }
 

@@ -7,9 +7,9 @@ import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
-import org.dataland.datalandbackend.services.datapoints.MessageQueueInteractionForDataPoints
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.model.DataPointDimensions
@@ -26,7 +26,7 @@ class DataPointManagerTest {
     private val dataManager = mock(DataManager::class.java)
     private val metaDataManager = mock(DataPointMetaInformationManager::class.java)
     private val storageClient = mock(StorageControllerApi::class.java)
-    private val messageQueueInteractionForDataPoints = mock(MessageQueueInteractionForDataPoints::class.java)
+    private val messageQueuePublications = mock(MessageQueuePublications::class.java)
     private val dataPointValidator = mock(DataPointValidator::class.java)
     private val objectMapper = mock(ObjectMapper::class.java)
     private val companyQueryManager = mock(CompanyQueryManager::class.java)
@@ -35,7 +35,7 @@ class DataPointManagerTest {
 
     private val dataPointManager =
         DataPointManager(
-            dataManager, metaDataManager, storageClient, messageQueueInteractionForDataPoints, dataPointValidator,
+            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
             companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder,
         )
 

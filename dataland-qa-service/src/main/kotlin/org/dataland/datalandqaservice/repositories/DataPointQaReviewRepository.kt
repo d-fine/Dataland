@@ -5,8 +5,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataP
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
-import java.util.UUID
 import org.springframework.stereotype.Repository
+import java.util.UUID
 
 /**
  * A JPA repository for accessing QA information of a data point
