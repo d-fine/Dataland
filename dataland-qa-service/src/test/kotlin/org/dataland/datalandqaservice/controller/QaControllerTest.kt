@@ -59,7 +59,7 @@ class QaControllerTest(
     val companyName = "some-company"
     val firstComment = "OriginalActive"
 
-    private fun specifyMocks(){
+    private fun specifyMocks() {
         `when`(dataPointControllerApi.getDataPointMetaInfo(any())).thenReturn(
             DataPointMetaInformation(
                 dataId = "dummy",
@@ -76,12 +76,12 @@ class QaControllerTest(
             StoredCompany(
                 companyId = companyId,
                 companyInformation =
-                CompanyInformation(
-                    companyName = companyName,
-                    headquarters = "some-headquarters",
-                    countryCode = "some-country",
-                    identifiers = mapOf("LEI" to listOf("some-lei")),
-                ),
+                    CompanyInformation(
+                        companyName = companyName,
+                        headquarters = "some-headquarters",
+                        countryCode = "some-country",
+                        identifiers = mapOf("LEI" to listOf("some-lei")),
+                    ),
                 dataRegisteredByDataland = emptyList(),
             ),
         )
@@ -90,15 +90,18 @@ class QaControllerTest(
             .thenAnswer { println("Sending message to queue") }
     }
 
-    private fun createMessageBody(dataId: String, updatedQaStatus: BackendUtilsQaStatus, currentlyActiveDataId: String): String {
-        return objectMapper.writeValueAsString(
+    private fun createMessageBody(
+        dataId: String,
+        updatedQaStatus: BackendUtilsQaStatus,
+        currentlyActiveDataId: String,
+    ): String =
+        objectMapper.writeValueAsString(
             QaStatusChangeMessage(
                 dataId = dataId,
                 updatedQaStatus = updatedQaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
             ),
         )
-    }
 
     @Test
     fun `verify that the various endpoints return the correct order and content for data point QA review entries`() {
