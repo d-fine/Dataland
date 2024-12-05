@@ -58,6 +58,42 @@ class KeycloakUserService(
     }
 
     /**
+     * Retrieves a list of users associated with a given Keycloak role.
+     *
+     * @param role the Keycloak role for which user information should be fetched.
+     *             This corresponds to the role name in the Keycloak realm.
+     * @param params additional parameters that may be required for the request.
+     * @return a list of `KeycloakUserInfo` objects containing user details
+     * @throws IOException if there is an issue with the HTTP request or response handling.
+     * @throws JacksonException if the response cannot be parsed into the expected structure.
+     */
+    fun getUsersByRole(role: String): List<KeycloakUserInfo> {
+        val request =
+            Request
+                .Builder()
+                .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/roles/$role/users/")
+                .build()
+        val response =
+            authenticatedOkHttpClient
+                .newCall(request)
+                .execute()
+                .body!!
+                .string()
+
+        return try {
+            val userList: List<KeycloakUserInfo> =
+                objectMapper.readValue(
+                    response,
+                    object : TypeReference<List<KeycloakUserInfo>>() {},
+                )
+            userList
+        } catch (e: JacksonException) {
+            logger.warn("Failed to parse response from Keycloak. Response $response, exception: $e")
+            emptyList()
+        }
+    }
+
+    /**
      * Search keycloak users by email address or parts thereof
      */
     fun searchUsers(emailAddressSearchString: String): List<KeycloakUserInfo> {
