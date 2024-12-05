@@ -69,7 +69,7 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
-                    key = [RoutingKeyNames.DATA_QA],
+                    key = [RoutingKeyNames.DATASET_UPLOAD],
                 ),
             ],
         )
@@ -224,7 +224,7 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.BACKEND_DATA_POINT_EVENTS, declare = "false"),
-                    key = [RoutingKeyNames.DATA_QA],
+                    key = [RoutingKeyNames.DATA_POINT_UPLOAD],
                 ),
             ],
         )
