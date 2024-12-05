@@ -1,7 +1,11 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.dataland.datalandbackend.api.DataApi
+import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
@@ -11,9 +15,12 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
+import org.springframework.http.ContentDisposition
+import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
@@ -75,22 +82,93 @@ abstract class DataController<T>(
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        this.verifyAccessOrThrow(metaInfo)
+        val companyId = metaInfo.company.companyId
+        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
+        val companyAssociatedData =
+            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
+        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
+        return ResponseEntity.ok(companyAssociatedData)
+    }
+
+    private fun buildCompanyAssociatedData(
+        dataId: String,
+        companyId: String,
+        reportingPeriod: String,
+        correlationId: String,
+    ): CompanyAssociatedData<T> {
+        logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
+        return CompanyAssociatedData(
+            companyId = companyId,
+            reportingPeriod = reportingPeriod,
+            data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
+        )
+    }
+
+    @Throws(AccessDeniedException::class)
+    private fun verifyAccessOrThrow(metaInfo: DataMetaInformationEntity) {
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
+    }
+
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        this.verifyAccessOrThrow(metaInfo)
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
-        logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
         val companyAssociatedData =
-            CompanyAssociatedData(
-                companyId = companyId,
-                reportingPeriod = metaInfo.reportingPeriod,
-                data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
-            )
-        logger.info(
-            logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
-        )
-        return ResponseEntity.ok(companyAssociatedData)
+            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
+        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
+
+        return ResponseEntity
+            .ok()
+            .headers(buildHttpHeadersForExport(companyAssociatedData, ExportFileType.JSON))
+            .body(companyAssociatedData)
+    }
+
+    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<String> {
+        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        this.verifyAccessOrThrow(metaInfo)
+        val companyId = metaInfo.company.companyId
+        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
+        val companyAssociatedData =
+            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
+        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
+
+        val companyAssociatedDataCsv = buildCsvFromCompanyAssociatedData(companyAssociatedData)
+
+        return ResponseEntity
+            .ok()
+            .headers(buildHttpHeadersForExport(companyAssociatedData, ExportFileType.CSV))
+            .body(companyAssociatedDataCsv)
+    }
+
+    private fun buildCsvFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): String {
+        val companyAssociatedDataJson = objectMapper.writeValueAsString(companyAssociatedData)
+//        val companyAssociatedDataInputStream = companyAssociatedDataJson.toByteArray()
+//        val jsonTree = objectMapper.readTree(companyAssociatedDataJson)
+
+        val csvMapper = CsvMapper().registerKotlinModule()
+        return csvMapper
+            .readerFor(CompanyAssociatedData::class.java)
+            .with(CsvSchema.emptySchema().withHeader())
+            .readValue(companyAssociatedDataJson, clazz)
+            .toString()
+    }
+
+    private fun buildHttpHeadersForExport(
+        companyAssociatedData: CompanyAssociatedData<T>,
+        exportFileType: ExportFileType,
+    ): HttpHeaders {
+        val headers = HttpHeaders()
+        headers.contentType = exportFileType.mediaType
+        headers.contentDisposition =
+            ContentDisposition
+                .attachment()
+                .filename("${companyAssociatedData.companyId}.${exportFileType.fileExtension}")
+                .build()
+        return headers
     }
 
     override fun getFrameworkDatasetsForCompany(
