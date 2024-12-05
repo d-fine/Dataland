@@ -177,15 +177,7 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or " +
-            "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
-            "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.isNotTryingToPatch(#accessStatus,#requestPriority, #adminComment) and " +
-            "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
-            "#dataRequestId, #requestStatus, #contacts, #message)" +
-            ") or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.isNotTryingToPatch(#requestStatus, #contacts, #message, #requestPriority, #adminComment)",
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchDataRequest(#dataRequestId, #dataRequestPatch)",
     )
     fun patchDataRequest(
         @PathVariable("dataRequestId") dataRequestId: UUID,
