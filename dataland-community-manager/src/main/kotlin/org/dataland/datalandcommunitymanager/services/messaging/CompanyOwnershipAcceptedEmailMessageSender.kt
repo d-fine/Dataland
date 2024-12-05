@@ -67,7 +67,6 @@ class CompanyOwnershipAcceptedEmailMessageSender(
                 identifierValue = datalandCompanyId,
                 dataTypes = null,
                 reportingPeriod = null,
-                aggregatedPriority = null,
             ).filter { it.count > 0 }
             .size
 }

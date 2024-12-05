@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -56,12 +56,11 @@ class RequestController(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
         aggregatedPriority: AggregatedRequestPriority?,
-    ): ResponseEntity<List<AggregatedDataRequest>> =
+    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>> =
         ResponseEntity.ok(
-            dataRequestQueryManager.getAggregatedOpenDataRequests(
-                identifierValue = null,
-                dataTypes,
-                reportingPeriod,
+            dataRequestQueryManager.getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
+                dataTypes = dataTypes,
+                reportingPeriod = reportingPeriod,
                 aggregatedPriority = aggregatedPriority,
             ),
         )

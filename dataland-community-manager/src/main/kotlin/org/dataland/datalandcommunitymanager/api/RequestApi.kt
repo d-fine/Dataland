@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
@@ -101,7 +101,7 @@ interface RequestApi {
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam reportingPeriod: String? = null,
         @RequestParam aggregatedPriority: AggregatedRequestPriority? = null,
-    ): ResponseEntity<List<AggregatedDataRequest>>
+    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>>
 
     /**
      * A method to post a single request to Dataland.
