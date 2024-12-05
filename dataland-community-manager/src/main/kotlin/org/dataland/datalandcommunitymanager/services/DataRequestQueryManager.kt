@@ -104,6 +104,7 @@ class DataRequestQueryManager
                         aggregatedDataRequestEntity.reportingPeriod,
                         aggregatedDataRequestEntity.datalandCompanyId,
                         RequestPriority.valueOf(aggregatedDataRequestEntity.priority),
+                        aggregatedDataRequestEntity.requestStatus,
                         aggregatedDataRequestEntity.count,
                     )
                 }
