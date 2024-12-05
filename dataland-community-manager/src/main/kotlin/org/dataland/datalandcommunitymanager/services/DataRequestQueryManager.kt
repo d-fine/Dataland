@@ -144,6 +144,8 @@ class DataRequestQueryManager
         ): List<ExtendedStoredDataRequest>? {
             val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
 
+            filter.setupEmailAddressFilter(keycloakUserControllerApiService)
+
             val extendedStoredDataRequests =
                 dataRequestRepository
                     .searchDataRequestEntity(

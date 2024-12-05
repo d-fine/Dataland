@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
@@ -321,5 +322,12 @@ class QueryDataRequestsTest {
                     chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, combinedQueryResults.size)
+    }
+
+    @Test
+    fun `test that querying by email does not throw an error due to the setupEmailAddressFilter not being called`() {
+        assertDoesNotThrow {
+            api.getDataRequests(emailAddress = "test@test.com", chunkSize = chunkSize)
+        }
     }
 }
