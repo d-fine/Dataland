@@ -76,10 +76,11 @@ class DataRequestQueryManager
          * @param reportingPeriod can be used to filter on reporting periods
          * @returns aggregated open data requests
          */
-        fun getAggregatedOpenDataRequests(
+        fun getAggregatedDataRequests(
             identifierValue: String?,
             dataTypes: Set<DataTypeEnum>?,
             reportingPeriod: String?,
+            requestStatus: RequestStatus?,
         ): List<AggregatedDataRequest> {
             val dataTypesFilterForQuery =
                 if (dataTypes != null && dataTypes.isEmpty()) {
@@ -91,7 +92,7 @@ class DataRequestQueryManager
                 dataRequestRepository.getAggregatedDataRequests(
                     GetAggregatedRequestsSearchFilter(
                         dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
-                        requestStatus = RequestStatus.Open.toString(),
+                        requestStatus = requestStatus.toString(),
                         reportingPeriodFilter = reportingPeriod,
                         priority = null,
                         datalandCompanyIdFilter = identifierValue,
@@ -124,9 +125,10 @@ class DataRequestQueryManager
             reportingPeriod: String?,
             aggregatedPriority: AggregatedRequestPriority?,
         ): List<AggregatedDataRequestWithAggregatedPriority> {
-            val aggregatedDataRequestsAllCompanies = getAggregatedOpenDataRequests(identifierValue = null, dataTypes, reportingPeriod)
+            val aggregatedOpenDataRequestsAllCompanies =
+                getAggregatedDataRequests(identifierValue = null, dataTypes, reportingPeriod, requestStatus = RequestStatus.Open)
             val aggregatedRequestsWithAggregatedPriority =
-                requestPriorityAggregator.aggregateRequestPriority(aggregatedDataRequestsAllCompanies)
+                requestPriorityAggregator.aggregateRequestPriority(aggregatedOpenDataRequestsAllCompanies)
 
             val filteredAggregatedRequestsWithAggregatedPriority =
                 requestPriorityAggregator.filterBasedOnAggregatedPriority(
