@@ -65,13 +65,13 @@ export async function patchDataRequest(
     if (keycloakPromiseGetter) {
       await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
         dataRequestId,
-        requestStatus,
-        accessStatus,
-        contacts,
-        message,
-        undefined,
-        undefined,
-        requestStatusChangeReason
+        {
+          requestStatus: requestStatus,
+          accessStatus: accessStatus,
+          contacts: contacts,
+          message: message,
+          requestStatusChangeReason: requestStatusChangeReason
+        }
       );
     }
   } catch (error) {
