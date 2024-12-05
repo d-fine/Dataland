@@ -170,37 +170,16 @@ class SecurityUtilsService(
         }
 
     /**
-     * Returns true if the user is not trying to patch the arguments
-     * @param accessStatus the accessStatus of the patch
-     * @param requestPriority the requestPriority of the patch
-     * @param adminComment the adminComment of the patch
-     *
+     * Returns true if all passed parameters are null, otherwise false.
      */
-    fun isNotTryingToPatch(
-        accessStatus: AccessStatus?,
-        requestPriority: RequestPriority?,
-        adminComment: String?,
-    ): Boolean = accessStatus == null && requestPriority == null && adminComment == null
-
-    /**
-     * Returns true if user is not trying to patch any of the arguments
-     * @param requestStatus the request status of the patch request
-     * @param contacts the contacts of the patch request
-     * @param message the message of the patch request
-     * @param requestPriority the requestPriority of the patch
-     * @param adminComment the adminComment of the patch request
-     */
-    fun isNotTryingToPatch(
-        requestStatus: RequestStatus?,
-        contacts: Set<String>?,
-        message: String?,
-        requestPriority: RequestPriority?,
-        adminComment: String?,
-    ): Boolean {
-        val isNotTryingToPatchStatusContactsMessage =
-            requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
-        val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
-        return isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
+    fun parametersUnset(vararg parameters: Any?): Boolean {
+        return parameters.all {
+            when (it) {
+                is String -> it.isNullOrBlank()
+                is Collection<*> -> it.isNullOrEmpty()
+                else -> it == null
+            }
+        }
     }
 
     /**
@@ -212,7 +191,7 @@ class SecurityUtilsService(
     fun canUserPatchDataRequest(dataRequestID: UUID, dataRequestPatch: DataRequestPatch): Boolean {
         val isOwnRequest = isUserAskingForOwnRequest(dataRequestID)
         val requestStatusChangeable = isRequestStatusChangeableByUser(dataRequestID, dataRequestPatch.requestStatus)
-        val notPatchingStatusPriorityComment = isNotTryingToPatch(
+        val notPatchingStatusPriorityComment = parametersUnset(
             dataRequestPatch.accessStatus, dataRequestPatch.requestPriority, dataRequestPatch.adminComment
         )
         val messageHistoryChangeable = isRequestMessageHistoryChangeableByUser(
@@ -227,7 +206,7 @@ class SecurityUtilsService(
         )
 
         val isCompanyOwner = isUserCompanyOwnerForRequestId(dataRequestID.toString());
-        val pathingOnlyAccessStatus = isNotTryingToPatch(
+        val pathingOnlyAccessStatus = parametersUnset(
             dataRequestPatch.requestStatus,
             dataRequestPatch.contacts,
             dataRequestPatch.message,
