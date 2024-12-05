@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
+import org.dataland.datalandbackendutils.model.DataPointDimensions
 
 /**
  * A service class for managing QA related information for data points
@@ -128,11 +129,10 @@ class DataPointQaReviewManager(
                 "data point identifier $dataPointIdentifier, and reportingPeriod $reportingPeriod",
         )
         val searchFilter =
-            DataPointQaReviewItemFilter(
+            DataPointDimensions(
                 companyId = companyId,
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,
-                qaStatus = QaStatus.Accepted.toString(),
             )
 
         return dataPointQaReviewRepository.getDataIdOfCurrentlyActiveDataPoint(searchFilter)

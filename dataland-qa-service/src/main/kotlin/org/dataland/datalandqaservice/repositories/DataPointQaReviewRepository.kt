@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.UUID
+import org.dataland.datalandbackendutils.model.DataPointDimensions
 
 /**
  * A JPA repository for accessing QA information of a data point
@@ -30,7 +31,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "LIMIT 1",
     )
     fun getDataIdOfCurrentlyActiveDataPoint(
-        @Param("filter") filter: DataPointQaReviewItemFilter,
+        @Param("filter") filter: DataPointDimensions,
     ): String?
 
     /**

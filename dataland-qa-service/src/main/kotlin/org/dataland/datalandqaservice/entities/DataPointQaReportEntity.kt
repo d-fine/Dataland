@@ -1,25 +1,26 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.converters.QaReportDataPointVerdictConverter
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
 
 /**
  * The database entity for storing metadata regarding QA reports uploaded to dataland
  */
 @Entity
-@Table(
-    name = "data_point_qa_reports",
-)
+@Table(name = "data_point_qa_reports")
 data class DataPointQaReportEntity(
     @Id
     @Column(name = "qa_report_id")
     val qaReportId: String,
     @Column(name = "comment", columnDefinition = "TEXT", nullable = false)
     var comment: String,
+    @Convert(converter = QaReportDataPointVerdictConverter::class)
     @Column(name = "verdict", nullable = false)
     var verdict: QaReportDataPointVerdict,
     @Column(name = "corrected_data", columnDefinition = "TEXT", nullable = true)

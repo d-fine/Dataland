@@ -44,7 +44,7 @@ class MessageQueueListenerForDataPointManager(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.DATA_POINT_QA_CHANGED,
+                        QueueNames.BACKEND_DATA_POINT_QA_CHANGED,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),

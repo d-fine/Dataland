@@ -7,7 +7,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 /**
  * Converts QaReportDataPointVerdict entries in Entities to database values and vice versa
  */
-@Converter(autoApply = true)
+@Converter
 class QaReportDataPointVerdictConverter : AttributeConverter<QaReportDataPointVerdict, String> {
     override fun convertToDatabaseColumn(qaStatus: QaReportDataPointVerdict?): String? = qaStatus?.toString()
 

@@ -59,7 +59,7 @@ class DatabaseStringDataStore(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.DATASET_STORAGE,
+                        QueueNames.INTERNAL_STORAGE_DATASET_STORAGE,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -99,7 +99,7 @@ class DatabaseStringDataStore(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.DATASET_DELETION,
+                        QueueNames.INTERNAL_STORAGE_DATASET_DELETION,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -135,7 +135,7 @@ class DatabaseStringDataStore(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.DATA_POINT_STORAGE,
+                        QueueNames.INTERNAL_STORAGE_DATA_POINT_STORAGE,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),

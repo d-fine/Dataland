@@ -61,7 +61,7 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            QueueNames.DATASET_QA,
+                            QueueNames.QA_SERVICE_DATASET_QA,
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -179,7 +179,7 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            QueueNames.DATASET_QA_DELETION,
+                            QueueNames.QA_SERVICE_DATASET_QA_DELETION,
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -216,7 +216,7 @@ class QaEventListenerQaService
                 QueueBinding(
                     value =
                         Queue(
-                            QueueNames.DATA_POINT_QA,
+                            QueueNames.QA_SERVICE_DATA_POINT_QA,
                             arguments = [
                                 Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                                 Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),

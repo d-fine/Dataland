@@ -27,6 +27,7 @@ class MessageQueuePublications(
     /**
      * Method to publish a message that a data point has been uploaded
      * @param dataId The ID of the uploaded data point
+     * @param bypassQa Whether the data point has been uploaded without QA
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataPointUploadedMessage(
@@ -47,6 +48,7 @@ class MessageQueuePublications(
     /**
      * Method to publish a message that a data set has been uploaded
      * @param dataId The ID of the uploaded data set
+     * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataSetUploadedMessage(

@@ -129,7 +129,7 @@ class MessageQueueListenerForDataManager(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.DATA_PERSISTED,
+                        QueueNames.BACKEND_DATA_PERSISTED,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
