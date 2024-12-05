@@ -64,7 +64,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
                 "dr.reporting_period AS reportingPeriod, " +
                 "dr.dataland_company_id AS datalandCompanyId, " +
                 "st.request_status AS requestStatus, " +
-                "dr.priority AS priority, " +
+                "dr.request_priority AS priority, " +
                 "COUNT(dr.user_id) AS count " +
                 "FROM data_requests dr " +
                 "JOIN status_table st ON dr.data_request_id = st.request_id " +
@@ -77,8 +77,8 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
                 "AND (:#{#searchFilter.requestStatusLength} = 0 " +
                 "OR st.request_status = :#{#searchFilter.requestStatus} ) " +
                 "AND (:#{#searchFilter.priorityLength} = 0 " +
-                "OR dr.priority = :#{#searchFilter.priority}) " +
-                "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, dr.priority ",
+                "OR dr.request_priority = :#{#searchFilter.priority}) " +
+                "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, dr.request_priority ",
     )
     fun getAggregatedDataRequests(
         @Param("searchFilter") searchFilter: GetAggregatedRequestsSearchFilter,
