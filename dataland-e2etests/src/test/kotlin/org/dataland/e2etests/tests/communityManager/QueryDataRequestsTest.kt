@@ -4,6 +4,7 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -174,7 +175,7 @@ class QueryDataRequestsTest {
         assertEquals(DataTypeEnum.p2p.value, storedDataRequestB.dataType)
         assertEquals("2023", storedDataRequestB.reportingPeriod)
 
-        api.patchDataRequest(dataRequestIdB, RequestStatus.Answered)
+        api.patchDataRequest(dataRequestIdB, DataRequestPatch(RequestStatus.Answered))
 
         val answeredDataRequests =
             api
