@@ -40,6 +40,7 @@ class DataRequestQueryManagerTest {
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockKeycloakUserService: KeycloakUserService
     private lateinit var mockDataRequestMasker: DataRequestMasker
+    private lateinit var mockRequestPriorityAggregator: RequestPriorityAggregator
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private val userId = "1234-221-1111elf"
 
@@ -118,6 +119,7 @@ class DataRequestQueryManagerTest {
 
     private fun setupMocks() {
         mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
+        mockRequestPriorityAggregator = mock(RequestPriorityAggregator::class.java)
 
         mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
         `when`(mockCompanyDataControllerApi.getCompanyInfo(testCompanyId))
@@ -168,6 +170,7 @@ class DataRequestQueryManagerTest {
                 processingUtils = mockDataRequestProcessingUtils,
                 keycloakUserControllerApiService = mockKeycloakUserService,
                 dataRequestMasker = mockDataRequestMasker,
+                requestPriorityAggregator = mockRequestPriorityAggregator,
             )
     }
 

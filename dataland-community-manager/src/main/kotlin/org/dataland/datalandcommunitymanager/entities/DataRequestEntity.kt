@@ -57,7 +57,12 @@ data class DataRequestEntity(
         messageHistory = listOf(),
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
-        requestPriority = RequestPriority.Low,
+        requestPriority =
+            if (DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+                RequestPriority.High
+            } else {
+                RequestPriority.Low
+            },
         adminComment = null,
     )
 
