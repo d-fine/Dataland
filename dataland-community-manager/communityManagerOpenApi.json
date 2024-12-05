@@ -1179,7 +1179,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AggregatedDataRequest"
+                    "$ref": "#/components/schemas/AggregatedDataRequestWithAggregatedPriority"
                   }
                 }
               }
@@ -1943,7 +1943,7 @@
           "Urgent"
         ]
       },
-      "AggregatedDataRequest": {
+      "AggregatedDataRequestWithAggregatedPriority": {
         "required": [
           "aggregatedPriority",
           "count",
@@ -1973,7 +1973,7 @@
             "type": "string"
           },
           "aggregatedPriority": {
-            "type": "string"
+            "$ref": "#/components/schemas/AggregatedRequestPriority"
           },
           "count": {
             "type": "integer",
