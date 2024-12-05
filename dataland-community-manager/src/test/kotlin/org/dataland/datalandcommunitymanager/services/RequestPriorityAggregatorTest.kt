@@ -12,21 +12,21 @@ class RequestPriorityAggregatorTest {
     private lateinit var requestPriorityAggregator: RequestPriorityAggregator
     private val dummyAggregatedRequests =
         listOf(
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.Low, 1),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.High, 0),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.Urgent, 0),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.Low, 2),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.High, 0),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.Urgent, 0),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.Low, 2),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.High, 1),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.Urgent, 0),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.Low, 2),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.High, 2),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.Urgent, 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.Low, 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.High, 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.Urgent, 1),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.Low, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.High, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.High, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.High, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.High, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.Low, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.High, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.Urgent, "Open", 1),
         )
 
     @BeforeEach
