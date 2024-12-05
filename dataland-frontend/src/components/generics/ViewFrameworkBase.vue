@@ -57,13 +57,16 @@
               @click="isDownloadModalOpen = true"
               data-test="downloadDataButton"
             >
-              <span class="px-2">DOWNLOAD DATA</span>
+              <span class="px-2 py-1">DOWNLOAD DATA</span>
             </PrimeButton>
 
             <DownloadDataSetModal
               v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
               :handleClose="closeModal"
               :handleDownload="getDatasetFromExportApi"
+              :dataType="dataType"
+              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              @update:isDownloadModalOpen="isDownloadModalOpen = $event"
             ></DownloadDataSetModal>
 
             <PrimeButton
@@ -409,11 +412,11 @@ export default defineComponent({
     },
     /**
      * Downloads the dataset from the selected reporting period as a file in the selected format
-     * @param reportingYear
-     * @param fileFormat
+     * @param reportingYear selected reporting year
+     * @param fileFormat selected file format
      */
     getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
-      // this.dataType, this.companyId
+      console.log(this.dataType, this.companyId, reportingYear, fileFormat);
       return;
     },
     /**
