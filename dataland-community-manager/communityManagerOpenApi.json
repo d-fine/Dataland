@@ -1753,9 +1753,7 @@
         "type": "string",
         "enum": [
           "Low",
-          "Normal",
           "High",
-          "VeryHigh",
           "Urgent"
         ]
       },

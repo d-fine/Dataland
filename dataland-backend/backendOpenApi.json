@@ -18394,20 +18394,20 @@
         ],
         "type": "object",
         "properties": {
-          "countryCode": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
+          "countryCode": {
+            "type": "string"
+          },
           "headquarters": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
             "type": "string"
           },
           "lei": {
