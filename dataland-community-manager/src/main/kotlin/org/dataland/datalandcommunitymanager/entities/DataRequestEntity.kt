@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import java.util.UUID
 
 /**
