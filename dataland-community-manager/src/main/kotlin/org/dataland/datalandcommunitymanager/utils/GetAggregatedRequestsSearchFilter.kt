@@ -7,6 +7,7 @@ package org.dataland.datalandcommunitymanager.utils
 data class GetAggregatedRequestsSearchFilter(
     val dataTypeFilter: Set<String>?,
     val requestStatus: String?,
+    val priority: String?,
     val reportingPeriodFilter: String?,
     val datalandCompanyIdFilter: String?,
 ) {
@@ -21,4 +22,7 @@ data class GetAggregatedRequestsSearchFilter(
 
     val requestStatusLength: Int
         get() = requestStatus?.length ?: 0
+
+    val priorityLength: Int
+        get() = priority?.length ?: 0
 }

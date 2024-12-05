@@ -1,7 +1,7 @@
 package org.dataland.batchmanager.service
 
 import org.apache.commons.io.FileUtils
-import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
@@ -11,6 +11,7 @@ import org.dataland.datalandbatchmanager.service.NorthDataAccessor
 import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
 import org.dataland.datalandbatchmanager.service.ProcessDataUpdates
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
+import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -29,6 +30,8 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.PrintWriter
 import java.net.ConnectException
+import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ProcessDataUpdatesTest {
@@ -40,7 +43,10 @@ class ProcessDataUpdatesTest {
     private val mockCompanyUploader = mock(CompanyUploader::class.java)
     private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
     private val mockRelationshipExtractor = mock(RelationshipExtractor::class.java)
-    private val mockActuatorApi = mock(ActuatorApi::class.java)
+    private val mockBackendActuatorApi = mock(BackendActuatorApi::class.java)
+    private val mockKeycloakUserService = mock(KeycloakUserService::class.java)
+    private val mockRequestControllerApi = mock(RequestControllerApi::class.java)
+    private val mockCommunityActuatorApi = mock(CommunityActuatorApi::class.java)
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
     private lateinit var companyIngestorNorthData: NorthdataDataIngestor
@@ -99,7 +105,7 @@ class ProcessDataUpdatesTest {
     fun setupTest() {
         reset(mockGleifApiAccessor)
         reset(mockCsvParser)
-        reset(mockActuatorApi)
+        reset(mockBackendActuatorApi)
         reset(mockGleifGoldenCopyIngestorTest)
     }
 
@@ -108,8 +114,14 @@ class ProcessDataUpdatesTest {
         val mockStaticFile = mockStatic(File::class.java)
         processDataUpdates =
             ProcessDataUpdates(
-                mockGleifApiAccessor, mockGleifGoldenCopyIngestorTest, mockNorthDataAccessor, mockNorthDataIngestorTest,
-                mockActuatorApi,
+                mockGleifApiAccessor,
+                mockGleifGoldenCopyIngestorTest,
+                mockNorthDataAccessor,
+                mockNorthDataIngestorTest,
+                mockBackendActuatorApi,
+                mockKeycloakUserService,
+                mockRequestControllerApi,
+                mockCommunityActuatorApi,
                 false, false,
                 null, null, oldFile,
             )
@@ -125,7 +137,7 @@ class ProcessDataUpdatesTest {
 
         val mockFileUtils = mockStatic(FileUtils::class.java)
 
-        `when`(mockActuatorApi.health()).thenThrow(ConnectException()).thenReturn(true)
+        `when`(mockBackendActuatorApi.health()).thenThrow(ConnectException()).thenReturn(true)
         mock(Thread::class.java)
 
         processDataUpdates.processExternalCompanyDataIfEnabled()
@@ -165,8 +177,9 @@ class ProcessDataUpdatesTest {
         processDataUpdates =
             ProcessDataUpdates(
                 mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
-                companyIngestorNorthData, mockActuatorApi,
-                false, false,
+                companyIngestorNorthData, mockBackendActuatorApi,
+                mockKeycloakUserService, mockRequestControllerApi,
+                mockCommunityActuatorApi, false, false,
                 flagFileGleif.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
             )
         val mockStaticFile = mockStatic(File::class.java)
