@@ -1,6 +1,10 @@
 package org.dataland.datalandbatchmanager.service
 
-import org.dataland.datalandbackend.openApiClient.api.ActuatorApi
+import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.model.ExtendedStoredDataRequest
+import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
+import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -11,6 +15,9 @@ import org.springframework.stereotype.Component
 import java.io.File
 import java.net.ConnectException
 import java.time.Instant
+import java.util.UUID
+import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
+import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
 
 /**
  * Class to execute scheduled tasks, like the import of the GLEIF or NorthData golden copy files
@@ -18,7 +25,7 @@ import java.time.Instant
  * @param gleifGoldenCopyIngestor reads in the csv file from GLEIF and creates GleifCompanyInformation objects
  * @param northDataAccessor downloads the golden copy files from NorthData
  * @param northdataDataIngestor reads in the csv file from NorthData and creates NorthDataCompanyInformation objects
- * @param actuatorApi the actuatorApi of the backend
+ * @param backendActuatorApi the actuatorApi of the backend
  */
 @Suppress("LongParameterList")
 @Component
@@ -27,7 +34,10 @@ class ProcessDataUpdates(
     @Autowired private val gleifGoldenCopyIngestor: GleifGoldenCopyIngestor,
     @Autowired private val northDataAccessor: NorthDataAccessor,
     @Autowired private val northdataDataIngestor: NorthdataDataIngestor,
-    @Autowired private val actuatorApi: ActuatorApi,
+    @Autowired private val backendActuatorApi: BackendActuatorApi,
+    @Autowired private val keycloakUserService: KeycloakUserService,
+    @Autowired private val requestControllerApi: RequestControllerApi,
+    @Autowired private val communityActuatorApi: CommunityActuatorApi,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
     private val allGleifCompaniesForceIngest: Boolean,
     @Value("\${dataland.dataland-batch-manager.get-all-northdata-companies.force:false}")
@@ -131,6 +141,54 @@ class ProcessDataUpdates(
         northdataDataIngestor.processNorthdataFile(northDataAccessor::getFullGoldenCopy)
     }
 
+    @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
+    @Scheduled(cron = "0 0 2 * * *")
+    private fun processRequestPriorityUpdates() {
+        logger.info("Running scheduled update of request priorities.")
+        waitForCommunityManager()
+        val premiumUserIds =
+            keycloakUserService
+                .getUsersByRole("ROLE_PREMIUM_USER")
+                .map { it.userId }
+                .toSet()
+
+        updateRequestPriorities(
+            currentPriority = RequestPriority.Low,
+            newPriority = RequestPriority.High,
+        ) { request -> request.userId in premiumUserIds }
+
+        updateRequestPriorities(
+            currentPriority = RequestPriority.High,
+            newPriority = RequestPriority.Low,
+        ) { request -> request.userId !in premiumUserIds }
+    }
+
+    private fun updateRequestPriorities(
+        currentPriority: RequestPriority,
+        newPriority: RequestPriority,
+        filterCondition: (ExtendedStoredDataRequest) -> Boolean,
+    ) {
+        val requests =
+            requestControllerApi.getDataRequests(
+                requestStatus = setOf(RequestStatus.Open),
+                requestPriority = setOf(currentPriority),
+            )
+        requests
+            .filter(filterCondition)
+            .forEach { (dataRequestId) ->
+                runCatching {
+                    requestControllerApi.patchDataRequest(
+                        dataRequestId = UUID.fromString(dataRequestId),
+                        requestPriority = newPriority,
+                    )
+                }.onSuccess {
+                    logger.info("Updated request priority of request $dataRequestId to $newPriority.")
+                }.onFailure { e ->
+                    logger.warn("Failed to update request priority of request $dataRequestId: ${e.message}")
+                }
+            }
+    }
+
     /**
      * This method waits for the backend to be ready
      */
@@ -138,12 +196,31 @@ class ProcessDataUpdates(
         val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
         while (Instant.now().toEpochMilli() <= timeoutTime) {
             try {
-                actuatorApi.health()
+                backendActuatorApi.health()
                 break
             } catch (exception: ConnectException) {
                 logger.info(
                     "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s " +
                         "backend to be available. Exception was: ${exception.message}.",
+                )
+                Thread.sleep(WAIT_TIME_IN_MS)
+            }
+        }
+    }
+
+    /**
+     * This method waits for the community manager to be ready
+     */
+    fun waitForCommunityManager() {
+        val timeoutTime = Instant.now().toEpochMilli() + MAX_WAITING_TIME_IN_MS
+        while (Instant.now().toEpochMilli() <= timeoutTime) {
+            try {
+                communityActuatorApi.health()
+                break
+            } catch (exception: ConnectException) {
+                logger.info(
+                    "Waiting for ${WAIT_TIME_IN_MS / MS_PER_S}s " +
+                        "community manager to be available. Exception was: ${exception.message}.",
                 )
                 Thread.sleep(WAIT_TIME_IN_MS)
             }
