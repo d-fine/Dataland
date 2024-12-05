@@ -62,7 +62,6 @@
 
             <DownloadDataSetModal
               v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
-              :handleClose="closeModal"
               :handleDownload="getDatasetFromExportApi"
               :dataType="dataType"
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
@@ -240,7 +239,7 @@ export default defineComponent({
   methods: {
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
-     * @param fetchedCompanyInformation the company information for the current company Id
+     * @param fetchedCompanyInformation the company information for the current companyId
      */
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
@@ -333,7 +332,7 @@ export default defineComponent({
     },
 
     /**
-     * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
+     * Uses a list of data meta info to set a map which has the distinct reporting periods as keys, and the respective
      * active data meta info as value.
      * It only takes into account data meta info whose dataType equals the current dataType prop value.
      * @param listOfActiveDataMetaInfo The list to be used as input for the map.
@@ -387,10 +386,8 @@ export default defineComponent({
         .then((hasUserReviewerRights) => {
           this.hasUserReviewerRights = hasUserReviewerRights;
         })
-        .then(() => {
-          return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((hasUserUploaderRights) => {
-            this.hasUserUploaderRights = hasUserUploaderRights;
-          });
+        .then(async () => {
+          this.hasUserUploaderRights = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
         })
         .then(() => {
           if (!this.hasUserUploaderRights) {
@@ -418,12 +415,6 @@ export default defineComponent({
     getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
       console.log(this.dataType, this.companyId, reportingYear, fileFormat);
       return;
-    },
-    /**
-     * closes the download modal
-     */
-    closeModal() {
-      this.isDownloadModalOpen = false;
     },
   },
   watch: {

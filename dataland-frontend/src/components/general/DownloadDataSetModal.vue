@@ -13,7 +13,7 @@
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
       <FormKit
-        v-model="selectedReportingYear"
+        v-model="selectedReportingPeriod"
         type="select"
         name="reportingYearSelector"
         data-test="reportingYearSelector"
@@ -37,7 +37,7 @@
         data-test="downloadDataButton"
         @click="downloadData()"
         style="width: 100%; justify-content: center"
-        :disabled="selectedFormat === '' || selectedReportingYear === ''"
+        :disabled="selectedFormat === '' || selectedReportingPeriod === ''"
       >
         <span class="d-letters" style="text-align: center" data-test="downloadButton"> DOWNLOAD </span>
       </PrimeButton>
@@ -91,7 +91,7 @@ export default defineComponent({
     });
 
     const isModalVisible = ref(props.isDownloadModalOpen);
-    const selectedReportingYear = ref('');
+    const selectedReportingPeriod = ref('');
     const selectedFormat = ref('');
 
     watch(
@@ -102,26 +102,30 @@ export default defineComponent({
     );
 
     const downloadData = (): void => {
-      if ((selectedReportingYear.value, selectedFormat.value)) {
-        props.handleDownload(selectedReportingYear, selectedFormat);
+      if (selectedReportingPeriod.value && selectedFormat.value) {
+        props.handleDownload(selectedReportingPeriod, selectedFormat);
       }
       closeModal();
+      resetSelection();
     };
 
     const closeModal = (): void => {
       isModalVisible.value = false;
       emit('update:isDownloadModalOpen', false);
     };
+    const resetSelection = (): void => {
+      selectedReportingPeriod.value = '';
+      selectedFormat.value = '';
+    };
 
     return {
       isModalVisible,
       reportingPeriodOptions,
-      selectedReportingYear,
+      selectedReportingPeriod,
       selectedFormat,
       downloadData,
     };
   },
-  methods: {},
 });
 </script>
 
