@@ -78,7 +78,7 @@ interface DataRequestRepository : JpaRepository<DataRequestEntity, String> {
                 "OR st.request_status = :#{#searchFilter.requestStatus} ) " +
                 "AND (:#{#searchFilter.priorityLength} = 0 " +
                 "OR dr.request_priority = :#{#searchFilter.priority}) " +
-                "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, dr.request_priority ",
+                "GROUP BY dr.data_type, dr.reporting_period, dr.dataland_company_id, st.request_status, dr.request_priority ",
     )
     fun getAggregatedDataRequests(
         @Param("searchFilter") searchFilter: GetAggregatedRequestsSearchFilter,
