@@ -15,6 +15,7 @@ import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.DataPointQaReportController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.utils.NoBackendRequestQaReportConfiguration
 import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.junit.jupiter.api.BeforeEach
@@ -134,6 +135,16 @@ class DataPointQaReportTest(
             dataPointQaReportController.postQaReport(dummyDataId, dummyQaReportDataPoint)
             val retrievedDataPointMetaInformation = qaController.getDataPointQaReviewInformationByDataId(dummyDataId)
             assert(retrievedDataPointMetaInformation.body!![0].qaStatus == UtilsQaStatus.Accepted)
+        }
+    }
+
+    @Test
+    fun `setting the QA report status should work`() {
+        UtilityFunctions.withReviewerAuthentication {
+            val qaReportObject = dataPointQaReportController.postQaReport(dummyDataId, dummyQaReportDataPoint)
+            dataPointQaReportController.setQaReportStatus(dummyDataId, qaReportObject.body!!.qaReportId, QaReportStatusPatch(false))
+            val retrievedQaReportObject = dataPointQaReportController.getQaReport(dummyDataId, qaReportObject.body!!.qaReportId)
+            assert(!retrievedQaReportObject.body!!.active)
         }
     }
 }
