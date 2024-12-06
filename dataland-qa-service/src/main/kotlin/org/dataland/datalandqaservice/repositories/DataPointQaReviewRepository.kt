@@ -1,5 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories
 
+import org.dataland.datalandbackendutils.model.DataPointDimensions
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.springframework.data.jpa.repository.JpaRepository
@@ -7,7 +8,6 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.UUID
-import org.dataland.datalandbackendutils.model.DataPointDimensions
 
 /**
  * A JPA repository for accessing QA information of a data point

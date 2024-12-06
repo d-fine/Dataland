@@ -36,27 +36,28 @@ class DataPointQaReviewRepositoryTest {
         reportingPeriod: String = dummyReportingPeriod,
         qaStatus: QaStatus = QaStatus.Accepted,
         timestamp: Long = System.currentTimeMillis(),
-        companyName: String = "dummy-company",
-        triggeringUserId: String = "dummy-user",
-        comment: String = "dummy-comment",
     ): DataPointQaReviewEntity {
         Thread.sleep(5)
-        return DataPointQaReviewEntity(null, dataId, companyId, companyName, dataPointIdentifier, reportingPeriod,
-            timestamp, qaStatus, triggeringUserId, comment)
+        return DataPointQaReviewEntity(
+            null, dataId, companyId, "dummy-company", dataPointIdentifier, reportingPeriod,
+            timestamp, qaStatus, "dummy-user", "dummy-comment",
+        )
     }
 
-    private val dummyDataPointDimensions = DataPointDimensions(
-        companyId = dummyCompanyId,
-        dataPointIdentifier = dummyDataPointIdentifier,
-        reportingPeriod = dummyReportingPeriod,
-    )
+    private val dummyDataPointDimensions =
+        DataPointDimensions(
+            companyId = dummyCompanyId,
+            dataPointIdentifier = dummyDataPointIdentifier,
+            reportingPeriod = dummyReportingPeriod,
+        )
 
-    private val emptyFilter= DataPointQaReviewItemFilter(
-        companyId = null,
-        dataPointIdentifier = null,
-        reportingPeriod = null,
-        qaStatus = null,
-    )
+    private val emptyFilter =
+        DataPointQaReviewItemFilter(
+            companyId = null,
+            dataPointIdentifier = null,
+            reportingPeriod = null,
+            qaStatus = null,
+        )
 
     @Test
     fun `test getAllEntriesForTheReviewQueue`() {

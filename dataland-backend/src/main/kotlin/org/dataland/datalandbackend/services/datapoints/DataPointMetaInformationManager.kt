@@ -88,7 +88,7 @@ class DataPointMetaInformationManager(
         if (dataId == null) {
             return
         }
-        require(newCurrentlyActiveValue != false) {"Currently active can only be true or null due to a constraint in the data base."}
+        require(newCurrentlyActiveValue != false) { "Currently active can only be true or null due to a constraint in the data base." }
         val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
         dataPointMetaInformation.currentlyActive = newCurrentlyActiveValue
         dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
