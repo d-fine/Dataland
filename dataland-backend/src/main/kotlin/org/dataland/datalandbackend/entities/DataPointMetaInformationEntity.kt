@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformati
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 
 /**
  * The database entity for storing metadata regarding data points uploaded to dataland
@@ -43,6 +44,21 @@ data class DataPointMetaInformationEntity(
     @Convert(converter = QaStatusConverter::class)
     var qaStatus: QaStatus,
 ) : ApiModelConversion<DataPointMetaInformation> {
+    /**
+     * The viewingUser can view information about the dataset or the dataset itself if
+     * (a) the dataset is QAd
+     * (b) the user has uploaded the dataset
+     * (c) the user is an admin or a reviewer
+     * This function checks these conditions.
+     */
+    fun isDatasetViewableByUser(viewingUser: DatalandAuthentication?): Boolean =
+        this.qaStatus == QaStatus.Accepted ||
+            this.uploaderUserId == viewingUser?.userId ||
+            isDatasetViewableByUserViaRole(viewingUser?.roles ?: emptySet())
+
+    private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
+        roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
+
     override fun toApiModel(viewingUser: DatalandAuthentication?): DataPointMetaInformation =
         DataPointMetaInformation(
             dataId = dataId,
