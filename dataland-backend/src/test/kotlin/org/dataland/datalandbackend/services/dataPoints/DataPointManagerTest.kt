@@ -94,7 +94,7 @@ class DataPointManagerTest {
         `when`(metaDataManager.getCurrentlyActiveDataId(returnDifferentId)).thenReturn(someId)
 
         dataPointManager.updateCurrentlyActiveDataPoint(returnDifferentId, newActiveDataId, correlationId)
-        verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(someId, false)
+        verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(someId, null)
         verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
     }
 

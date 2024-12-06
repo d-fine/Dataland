@@ -28,6 +28,7 @@ class DataPointQaReviewRepositoryTest {
     private val dummyCompanyId = "dummy-company-id"
     private val dummyDataPointIdentifier = "dummy-identifier"
     private val dummyReportingPeriod = "2023"
+    private val differentDataId = "different-data-id"
 
     private fun getDummyEntity(
         dataId: String = "dummy-data-id",
@@ -87,7 +88,7 @@ class DataPointQaReviewRepositoryTest {
     @Test
     fun `check that the currently active data ID is null if no accepted data sets exist`() {
         dataPointQaReviewRepository.save(getDummyEntity(qaStatus = QaStatus.Pending))
-        dataPointQaReviewRepository.save(getDummyEntity(dataId = "another-id", qaStatus = QaStatus.Pending))
+        dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId, qaStatus = QaStatus.Pending))
         val results = dataPointQaReviewRepository.getDataIdOfCurrentlyActiveDataPoint(dummyDataPointDimensions)
         assertEquals(null, results)
     }
@@ -95,8 +96,8 @@ class DataPointQaReviewRepositoryTest {
     @Test
     fun `check that the previously active data ID is returned if the later data set is rejected`() {
         val firstEntity = dataPointQaReviewRepository.save(getDummyEntity())
-        dataPointQaReviewRepository.save(getDummyEntity(dataId = "another-id"))
-        dataPointQaReviewRepository.save(getDummyEntity(dataId = "another-id", qaStatus = QaStatus.Rejected))
+        dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId))
+        dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId, qaStatus = QaStatus.Rejected))
         val results = dataPointQaReviewRepository.getDataIdOfCurrentlyActiveDataPoint(dummyDataPointDimensions)
         assertEquals(firstEntity.dataId, results)
     }
