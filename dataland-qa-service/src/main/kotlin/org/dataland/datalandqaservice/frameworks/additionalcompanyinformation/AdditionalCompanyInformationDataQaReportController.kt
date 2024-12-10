@@ -8,6 +8,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.LegoBrickQaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class AdditionalCompanyInformationDataQaReportController(
     @Autowired objectMapper: ObjectMapper,
-    @Autowired qaReportManager: QaReportManager,
+    @Autowired qaReportManager: LegoBrickQaReportManager,
     @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<AdditionalCompanyInformationData>(
         objectMapper = objectMapper,

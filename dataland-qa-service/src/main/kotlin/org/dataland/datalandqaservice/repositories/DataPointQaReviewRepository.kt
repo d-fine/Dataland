@@ -105,11 +105,11 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
      */
     @Query(
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
-                "WHERE dataPointQaReview.timestamp = " +
-                "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-                "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
-                "AND  dataPointQaReview.dataId IN :#{#dataIds} " +
-                "ORDER BY dataPointQaReview.timestamp DESC "
+            "WHERE dataPointQaReview.timestamp = " +
+            "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
+            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "AND  dataPointQaReview.dataId IN :#{#dataIds} " +
+            "ORDER BY dataPointQaReview.timestamp DESC ",
     )
     fun findLatestWhereDataIdIn(dataIds: List<String>): List<DataPointQaReviewEntity>
 }

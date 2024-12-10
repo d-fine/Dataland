@@ -30,7 +30,7 @@ class DataPointQaReviewManager(
     @Autowired private val dataPointControllerApi: DataPointControllerApi,
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired private val compositionService: DataPointCompositionService
+    @Autowired private val compositionService: DataPointCompositionService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -54,6 +54,14 @@ class DataPointQaReviewManager(
         return reviewEntity
     }
 
+    /**
+     * Review a lego dataset and change the QA status of all data points in the dataset if they are not already reviewed
+     * @param dataId dataId of dataset of which to change qaStatus
+     * @param qaStatus new qaStatus to be set
+     * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
+     * @param correlationId the ID for the process triggering the change
+     * @param overwriteDataPointQaStatus if true, the QA status of all data points in the dataset will be overwritten
+     */
     @Transactional
     fun reviewLegoDataset(
         dataId: String,

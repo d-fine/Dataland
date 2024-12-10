@@ -2,22 +2,24 @@ package org.dataland.datalandbackendutils.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.fasterxml.jackson.databind.node.NullNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 
+/**
+ * A leaf node in a JSON specification, containing the data point ID, the JSON path, and the content.
+ */
 data class JsonSpecificationLeaf(
     val dataPointId: String,
     val jsonPath: String,
-    val content: JsonNode
+    val content: JsonNode,
 )
 
 /**
  * Utilities for working with JSON framework specifications.
  */
 object JsonSpecificationUtils {
-    private fun isTerminalNode(node: ObjectNode): Boolean {
-        return node.fieldNames().asSequence().toSet() == setOf("id", "ref")
-    }
+    private fun isTerminalNode(node: ObjectNode): Boolean = node.fieldNames().asSequence().toSet() == setOf("id", "ref")
 
     /**
      * Hydrates a JSON specification with data from a data function. During hydration, leaf nodes of the
@@ -26,13 +28,14 @@ object JsonSpecificationUtils {
      * @param dataFunction A function that takes a dataPointId and returns the data for that key
      * @return The hydrated JSON specification (i.e., the constructed dataset)
      */
-    fun hydrateJsonSpecification(jsonSpecification: ObjectNode, dataFunction: (String) -> JsonNode?): JsonNode? {
-        return hydrateJsonSpecificationRecursive(jsonSpecification, dataFunction)
-    }
+    fun hydrateJsonSpecification(
+        jsonSpecification: ObjectNode,
+        dataFunction: (String) -> JsonNode?,
+    ): JsonNode? = hydrateJsonSpecificationRecursive(jsonSpecification, dataFunction)
 
     private fun hydrateJsonSpecificationRecursive(
         currentSpecificationNode: ObjectNode,
-        dataFunction: (String) -> JsonNode?
+        dataFunction: (String) -> JsonNode?,
     ): JsonNode? {
         if (isTerminalNode(currentSpecificationNode)) {
             val dataPointId = currentSpecificationNode.get("id").asText()
@@ -61,47 +64,54 @@ object JsonSpecificationUtils {
      * @param dataObject The data object to dehydrate
      * @return A map of dataPointIds to data
      */
-    fun dehydrateJsonSpecification(jsonSpecification: ObjectNode, dataObject: ObjectNode): Map<String, JsonSpecificationLeaf> {
+    fun dehydrateJsonSpecification(
+        jsonSpecification: ObjectNode,
+        dataObject: ObjectNode,
+    ): Map<String, JsonSpecificationLeaf> {
         val returnMap = mutableMapOf<String, JsonSpecificationLeaf>()
         dehydrateJsonSpecificationRecursive("", jsonSpecification, dataObject, returnMap)
         return returnMap
     }
 
-
-
     private fun dehydrateJsonSpecificationRecursive(
         currentPath: String,
         currentSpecificationNode: ObjectNode,
         currentDataNode: JsonNode,
-        dataMap: MutableMap<String, JsonSpecificationLeaf>
+        dataMap: MutableMap<String, JsonSpecificationLeaf>,
     ) {
         if (isTerminalNode(currentSpecificationNode)) {
             val dataPointId = currentSpecificationNode.get("id").asText()
             dataMap[dataPointId] = JsonSpecificationLeaf(dataPointId, currentPath, currentDataNode)
         } else {
+            if (currentDataNode.isNull) {
+                return
+            }
             if (currentDataNode !is ObjectNode) {
                 throw InvalidInputApiException(
                     summary = "Data object does not match specification",
-                    "Unexpected leaf at JSON path: $currentPath"
+                    "Unexpected leaf at JSON path: $currentPath",
                 )
             }
             for ((fieldName, jsonNode) in currentDataNode.fields()) {
-                val matchingSpecificationNode = currentSpecificationNode.get(fieldName)
-                    ?: throw InvalidInputApiException(
-                    summary = "Data object does not match specification",
-                    "Unexpected field at JSON path: $currentPath.$fieldName"
-                )
+                if (jsonNode.isNull) {
+                    continue
+                }
+                val matchingSpecificationNode =
+                    currentSpecificationNode.get(fieldName)
+                        ?: throw InvalidInputApiException(
+                            summary = "Data object does not match specification",
+                            "Unexpected field at JSON path: $currentPath.$fieldName",
+                        )
                 require(matchingSpecificationNode is ObjectNode) {
                     "Specification node must be an object node"
                 }
                 dehydrateJsonSpecificationRecursive(
-                    currentPath="$currentPath.$fieldName",
-                    currentSpecificationNode=matchingSpecificationNode,
-                    currentDataNode=jsonNode,
-                    dataMap=dataMap
+                    currentPath = "$currentPath.$fieldName",
+                    currentSpecificationNode = matchingSpecificationNode,
+                    currentDataNode = jsonNode,
+                    dataMap = dataMap,
                 )
             }
-
         }
     }
 }

@@ -63,7 +63,7 @@ class QaController(
         dataId: String,
         qaStatus: QaStatus,
         comment: String?,
-        overwriteDataPointQaStatus: Boolean
+        overwriteDataPointQaStatus: Boolean,
     ) {
         val correlationId = randomUUID().toString()
         val reviewerId = DatalandAuthentication.fromContext().userId
