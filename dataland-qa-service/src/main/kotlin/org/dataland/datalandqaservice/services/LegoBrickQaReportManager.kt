@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.treeToValue
+import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
@@ -15,6 +16,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositorie
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils.generateUUID
 import org.dataland.datalandspecificationservice.openApiClient.api.SpecificationControllerApi
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -25,14 +27,17 @@ import org.springframework.stereotype.Service
 @Suppress("LongParameterList")
 class LegoBrickQaReportManager(
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired qaReportRepository: QaReportRepository,
-    @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
+    @Autowired override val qaReportRepository: QaReportRepository,
+    @Autowired override val qaReportSecurityPolicy: QaReportSecurityPolicy,
     @Autowired private val datalandBackendAccessor: DatalandBackendAccessor,
     @Autowired private val specificationControllerApi: SpecificationControllerApi,
     @Autowired private val dataPointCompositionService: DataPointCompositionService,
     @Autowired private val dataPointQaReportManager: DataPointQaReportManager,
     @Autowired private val dataPointQaReportRepository: DataPointQaReportRepository,
 ) : DatasetQaReportService(qaReportRepository = qaReportRepository, qaReportSecurityPolicy = qaReportSecurityPolicy) {
+    override val logger = LoggerFactory.getLogger(javaClass)
+
+    @Transactional
     override fun <QaReportType> createQaReport(
         report: QaReportType,
         dataId: String,
@@ -87,14 +92,18 @@ class LegoBrickQaReportManager(
         }
 
         val dataPointQaReportIds = mutableListOf<String>()
+        print(decomposedQaReport)
         for ((dataPointId, dataPointReport) in decomposedQaReport) {
             val dataPointDataId = associatedDataPoints[dataPointId]!!
-            val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any>>(dataPointReport.content)
-            val translatedQaReport = QaReportDataPoint<String?>(
-                comment=parsedQaReport.comment,
-                verdict=parsedQaReport.verdict,
-                correctedData = objectMapper.writeValueAsString(parsedQaReport.correctedData),
-            )
+            print(dataPointReport.content)
+            val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
+            val translatedQaReport =
+                QaReportDataPoint<String?>(
+                    comment = parsedQaReport.comment,
+                    verdict = parsedQaReport.verdict,
+                    correctedData = objectMapper.writeValueAsString(parsedQaReport.correctedData),
+                )
+            print(translatedQaReport)
 
             dataPointQaReportIds.add(
                 dataPointQaReportManager

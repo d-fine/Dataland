@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory
  * Abstract class for managing QA reports for datasets
  */
 abstract class DatasetQaReportService(
-    protected val qaReportRepository: QaReportRepository,
-    protected val qaReportSecurityPolicy: QaReportSecurityPolicy,
+    open val qaReportRepository: QaReportRepository,
+    open val qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) {
-    protected val logger = LoggerFactory.getLogger(javaClass)
+    open val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Method to make the QA report manager create a new QA report

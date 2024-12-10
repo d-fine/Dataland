@@ -6,6 +6,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,10 +17,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class QaReportManager(
     @Autowired private val objectMapper: ObjectMapper,
-    @Autowired qaReportRepository: QaReportRepository,
-    @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
+    @Autowired override val qaReportRepository: QaReportRepository,
+    @Autowired override val qaReportSecurityPolicy: QaReportSecurityPolicy,
     @Autowired private val datalandBackendAccessor: DatalandBackendAccessor,
 ) : DatasetQaReportService(qaReportRepository, qaReportSecurityPolicy) {
+    override val logger = LoggerFactory.getLogger(javaClass)
+
     /**
      * Method to make the QA report manager create a new QA report
      * @param report the QA report to be stored
