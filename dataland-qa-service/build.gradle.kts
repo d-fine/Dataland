@@ -107,17 +107,53 @@ tasks.register("generateBackendClient", org.openapitools.generator.gradle.plugin
     )
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.register("generateSpecificationClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the specification service."
+    group = "clients"
+    val specificationServicePackage = "org.dataland.datalandspecificationservice.openApiClient"
+    input = project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/specification-service")
+            .get()
+            .toString(),
+    )
+    packageName.set(specificationServicePackage)
+    modelPackage.set("$specificationServicePackage.model")
+    apiPackage.set("$specificationServicePackage.api")
+    generatorName.set("kotlin")
+
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+    configOptions.set(
+        mapOf(
+            "serializationLibrary" to "jackson",
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+        ),
+    )
+}
+
+tasks.register("generateClients") {
     dependsOn("generateBackendClient")
+    dependsOn("generateSpecificationClient")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn("generateClients")
 }
 
 tasks.getByName("runKtlintCheckOverMainSourceSet") {
-    dependsOn("generateBackendClient")
+    dependsOn("generateClients")
 }
 
 sourceSets {
     val main by getting
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/backend/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/specification-service/src/main/kotlin"))
 }
 
 ktlint {

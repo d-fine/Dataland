@@ -121,6 +121,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "overwriteDataPointQaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
