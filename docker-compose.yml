@@ -689,7 +689,7 @@ services:
     volumes:
       - loki_data:/loki
       - ./config:/mnt/config:ro
-    command: -config.file=/mnt/config/loki/config.yaml
+    command: -config.file=/mnt/config/loki-config.yaml
     networks:
       - loki
     logging:
@@ -702,7 +702,7 @@ services:
     volumes:
       - ./config:/mnt/config:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /mnt/config/alloy/config.alloy
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /mnt/config/alloy-config.alloy
     depends_on:
       - loki
     networks:
