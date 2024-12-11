@@ -12,20 +12,6 @@ loki.source.file "system" {
 	legacy_positions_file = "/tmp/positions.yaml"
 }
 
-local.file_match "containers" {
-	path_targets = [{
-		__address__ = "localhost",
-		__path__    = "/var/lib/docker/containers/*/*log",
-		job         = "containerlogs",
-	}]
-}
-
-loki.source.file "containers" {
-	targets               = local.file_match.containers.targets
-	forward_to            = [loki.write.local_loki.receiver]
-	legacy_positions_file = "/tmp/positions.yaml"
-}
-
 discovery.docker "containers" {
   host = "unix:///var/run/docker.sock"
 }
