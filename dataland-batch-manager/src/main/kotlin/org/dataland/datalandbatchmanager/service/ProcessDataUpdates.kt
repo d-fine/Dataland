@@ -1,10 +1,5 @@
 package org.dataland.datalandbatchmanager.service
 
-import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
-import org.dataland.datalandcommunitymanager.openApiClient.model.ExtendedStoredDataRequest
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
-import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -15,7 +10,6 @@ import org.springframework.stereotype.Component
 import java.io.File
 import java.net.ConnectException
 import java.time.Instant
-import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.api.ActuatorApi as BackendActuatorApi
 import org.dataland.datalandcommunitymanager.openApiClient.api.ActuatorApi as CommunityActuatorApi
 
@@ -35,8 +29,7 @@ class ProcessDataUpdates(
     @Autowired private val northDataAccessor: NorthDataAccessor,
     @Autowired private val northdataDataIngestor: NorthdataDataIngestor,
     @Autowired private val backendActuatorApi: BackendActuatorApi,
-    @Autowired private val keycloakUserService: KeycloakUserService,
-    @Autowired private val requestControllerApi: RequestControllerApi,
+    @Autowired private val requestPriorityUpdater: RequestPriorityUpdater,
     @Autowired private val communityActuatorApi: CommunityActuatorApi,
     @Value("\${dataland.dataland-batch-manager.get-all-gleif-companies.force:false}")
     private val allGleifCompaniesForceIngest: Boolean,
@@ -146,47 +139,7 @@ class ProcessDataUpdates(
     private fun processRequestPriorityUpdates() {
         logger.info("Running scheduled update of request priorities.")
         waitForCommunityManager()
-        val premiumUserIds =
-            keycloakUserService
-                .getUsersByRole("ROLE_PREMIUM_USER")
-                .map { it.userId }
-                .toSet()
-
-        updateRequestPriorities(
-            currentPriority = RequestPriority.Low,
-            newPriority = RequestPriority.High,
-        ) { request -> request.userId in premiumUserIds }
-
-        updateRequestPriorities(
-            currentPriority = RequestPriority.High,
-            newPriority = RequestPriority.Low,
-        ) { request -> request.userId !in premiumUserIds }
-    }
-
-    private fun updateRequestPriorities(
-        currentPriority: RequestPriority,
-        newPriority: RequestPriority,
-        filterCondition: (ExtendedStoredDataRequest) -> Boolean,
-    ) {
-        val requests =
-            requestControllerApi.getDataRequests(
-                requestStatus = setOf(RequestStatus.Open),
-                requestPriority = setOf(currentPriority),
-            )
-        requests
-            .filter(filterCondition)
-            .forEach { (dataRequestId) ->
-                runCatching {
-                    requestControllerApi.patchDataRequest(
-                        dataRequestId = UUID.fromString(dataRequestId),
-                        requestPriority = newPriority,
-                    )
-                }.onSuccess {
-                    logger.info("Updated request priority of request $dataRequestId to $newPriority.")
-                }.onFailure { e ->
-                    logger.warn("Failed to update request priority of request $dataRequestId: ${e.message}")
-                }
-            }
+        requestPriorityUpdater.processRequestPriorityUpdates()
     }
 
     /**
