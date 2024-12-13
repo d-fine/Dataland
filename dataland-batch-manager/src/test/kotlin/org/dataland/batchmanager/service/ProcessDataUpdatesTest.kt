@@ -1,7 +1,6 @@
 package org.dataland.batchmanager.service
 
 import org.apache.commons.io.FileUtils
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandbatchmanager.service.CompanyUploader
 import org.dataland.datalandbatchmanager.service.CsvParser
 import org.dataland.datalandbatchmanager.service.GleifApiAccessor
@@ -11,7 +10,7 @@ import org.dataland.datalandbatchmanager.service.NorthDataAccessor
 import org.dataland.datalandbatchmanager.service.NorthdataDataIngestor
 import org.dataland.datalandbatchmanager.service.ProcessDataUpdates
 import org.dataland.datalandbatchmanager.service.RelationshipExtractor
-import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -44,8 +43,7 @@ class ProcessDataUpdatesTest {
     private val mockIsinDeltaBuilder = mock(IsinDeltaBuilder::class.java)
     private val mockRelationshipExtractor = mock(RelationshipExtractor::class.java)
     private val mockBackendActuatorApi = mock(BackendActuatorApi::class.java)
-    private val mockKeycloakUserService = mock(KeycloakUserService::class.java)
-    private val mockRequestControllerApi = mock(RequestControllerApi::class.java)
+    private val mockRequestPriorityUpdater = mock(RequestPriorityUpdater::class.java)
     private val mockCommunityActuatorApi = mock(CommunityActuatorApi::class.java)
     private lateinit var processDataUpdates: ProcessDataUpdates
     private lateinit var companyIngestor: GleifGoldenCopyIngestor
@@ -119,8 +117,7 @@ class ProcessDataUpdatesTest {
                 mockNorthDataAccessor,
                 mockNorthDataIngestorTest,
                 mockBackendActuatorApi,
-                mockKeycloakUserService,
-                mockRequestControllerApi,
+                mockRequestPriorityUpdater,
                 mockCommunityActuatorApi,
                 false, false,
                 null, null, oldFile,
@@ -178,7 +175,7 @@ class ProcessDataUpdatesTest {
             ProcessDataUpdates(
                 mockGleifApiAccessor, companyIngestor, mockNorthDataAccessor,
                 companyIngestorNorthData, mockBackendActuatorApi,
-                mockKeycloakUserService, mockRequestControllerApi,
+                mockRequestPriorityUpdater,
                 mockCommunityActuatorApi, false, false,
                 flagFileGleif.absolutePath, flagFileNorthdata.absolutePath, isinMappingFile,
             )
