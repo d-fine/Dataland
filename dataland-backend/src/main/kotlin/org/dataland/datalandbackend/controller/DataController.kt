@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -26,10 +27,11 @@ import java.time.Instant
  */
 
 abstract class DataController<T>(
-    var dataManager: DataManager,
+    private var dataManager: DataManager,
     var dataMetaInformationManager: DataMetaInformationManager,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
+    private var dataPointManager: DataPointManager,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -47,7 +49,17 @@ abstract class DataController<T>(
         val uploadTime = Instant.now().toEpochMilli()
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
-        val dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
+
+        val dataPointFrameworks = dataPointManager.getAllDataPointFrameworks()
+        val dataIdOfPostedData: String
+        if (dataPointFrameworks.contains(datasetToStore.dataType.toString())) {
+            logger.info("Breaking down the data.")
+            dataIdOfPostedData = dataPointManager.processDataSet(datasetToStore, bypassQa, correlationId)
+        } else {
+            logger.info("Storing the data set as a whole.")
+            dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
+        }
+
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
 
         return ResponseEntity.ok(
@@ -81,16 +93,36 @@ abstract class DataController<T>(
         val companyId = metaInfo.company.companyId
         val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
+
+        val data = getDataAsString(dataId, correlationId)
+
         val companyAssociatedData =
             CompanyAssociatedData(
                 companyId = companyId,
                 reportingPeriod = metaInfo.reportingPeriod,
-                data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
+                data = objectMapper.readValue(data, clazz),
             )
         logger.info(
             logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId),
         )
         return ResponseEntity.ok(companyAssociatedData)
+    }
+
+    private fun getDataAsString(
+        dataId: String,
+        correlationId: String,
+    ): String {
+        val dataAsString: String
+        val dataTypeString = dataType.toString()
+        val dataPointFrameworks = dataPointManager.getAllDataPointFrameworks()
+        if (dataPointFrameworks.contains(dataTypeString)) {
+            logger.info("Assemble data set from data points.")
+            dataAsString = dataPointManager.getDataSetFromId(dataId, dataTypeString, correlationId)
+        } else {
+            logger.info("Retrieving the data set as a whole.")
+            dataAsString = dataManager.getPublicDataSet(dataId, dataType, correlationId).data
+        }
+        return dataAsString
     }
 
     override fun getFrameworkDatasetsForCompany(
@@ -108,12 +140,8 @@ abstract class DataController<T>(
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
-            val dataAsString =
-                dataManager
-                    .getPublicDataSet(
-                        it.dataId, DataType.valueOf(it.dataType),
-                        correlationId,
-                    ).data
+
+            val dataAsString = getDataAsString(it.dataId, correlationId)
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),
