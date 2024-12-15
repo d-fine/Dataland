@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.services.dataPoints
+package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
@@ -9,8 +9,6 @@ import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
-import org.dataland.datalandbackend.services.datapoints.DataPointManager
-import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.model.DataPointDimensions

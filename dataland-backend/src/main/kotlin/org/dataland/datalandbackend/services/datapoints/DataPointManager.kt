@@ -281,7 +281,12 @@ class DataPointManager(
      * @return a list of data point IDs that are contained in the dataset
      */
     fun getDataPointIdsForDataSet(dataSetId: String): List<String> {
-        val dataPoints = datasetDatapointRepository.findById(dataSetId).getOrNull()?.dataPoints?.split(",") ?: emptyList()
+        val dataPoints =
+            datasetDatapointRepository
+                .findById(dataSetId)
+                .getOrNull()
+                ?.dataPoints
+                ?.split(",") ?: emptyList()
         require(dataPoints.isNotEmpty()) { "There is no record of a data set with ID $dataSetId." }
         return dataPoints
     }
