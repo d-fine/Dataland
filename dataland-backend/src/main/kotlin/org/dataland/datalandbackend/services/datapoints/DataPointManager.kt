@@ -271,17 +271,19 @@ class DataPointManager(
         framework: String,
         correlationId: String,
     ): String {
-        val dataPoints =
-            datasetDatapointRepository
-                .findById(dataSetId)
-                .getOrNull()
-                ?.dataPoints
-                ?.split(",")
-                ?: throw InvalidInputApiException(
-                    "Data set not found.",
-                    "There is no record of a data set of type $framework and ID $dataSetId.",
-                )
+        val dataPoints = getDataPointIdsForDataSet(dataSetId)
         return assembleDataSetFromDataPoints(dataPoints, framework, correlationId)
+    }
+
+    /**
+     * Retrieves the list of IDs of the data points contained in a dataset
+     * @param dataSetId the ID of the dataset
+     * @return a list of data point IDs that are contained in the dataset
+     */
+    fun getDataPointIdsForDataSet(dataSetId: String): List<String> {
+        val dataPoints = datasetDatapointRepository.findById(dataSetId).getOrNull()?.dataPoints?.split(",") ?: emptyList()
+        require(dataPoints.isNotEmpty()) { "There is no record of a data set with ID $dataSetId." }
+        return dataPoints
     }
 
     /**

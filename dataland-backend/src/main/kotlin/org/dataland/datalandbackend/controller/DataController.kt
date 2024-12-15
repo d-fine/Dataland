@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import java.time.Instant
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
@@ -50,10 +51,9 @@ abstract class DataController<T>(
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
 
-        val dataPointFrameworks = dataPointManager.getAllDataPointFrameworks()
         val dataIdOfPostedData: String
-        if (dataPointFrameworks.contains(datasetToStore.dataType.toString())) {
-            logger.info("Breaking down the data.")
+        if (frameworkConsistsOfDataPoints()) {
+            logger.info("Breaking down the data set.")
             dataIdOfPostedData = dataPointManager.processDataSet(datasetToStore, bypassQa, correlationId)
         } else {
             logger.info("Storing the data set as a whole.")
@@ -69,6 +69,21 @@ abstract class DataController<T>(
                 currentlyActive = false, qaStatus = QaStatus.Pending,
             ),
         )
+    }
+
+    override fun getContainedDataPoints(dataId: String): ResponseEntity<List<String>> {
+        if (!frameworkConsistsOfDataPoints()) {
+            return ResponseEntity.ok(dataPointManager.getDataPointIdsForDataSet(dataId))
+        } else {
+            throw InvalidInputApiException(
+                "Data point breakdown is not implemented.",
+                "Datasets of type $dataType are currently not stored as data points.",
+            )
+        }
+    }
+
+    private fun frameworkConsistsOfDataPoints(): Boolean {
+        return dataPointManager.getAllDataPointFrameworks().contains(dataType.toString())
     }
 
     private fun buildStorableDataset(
