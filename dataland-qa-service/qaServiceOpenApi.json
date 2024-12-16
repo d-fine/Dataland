@@ -1237,7 +1237,6 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "integrationTesting",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
@@ -1335,7 +1334,6 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "integrationTesting",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
@@ -5499,7 +5497,6 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "integrationTesting",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
