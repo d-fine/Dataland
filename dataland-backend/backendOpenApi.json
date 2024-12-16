@@ -18394,16 +18394,6 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
@@ -18413,6 +18403,16 @@
           "lei": {
             "type": "string",
             "nullable": true
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
           }
         }
       },
