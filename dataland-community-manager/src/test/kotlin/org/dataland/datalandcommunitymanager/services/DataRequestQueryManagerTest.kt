@@ -204,7 +204,7 @@ class DataRequestQueryManagerTest {
                 null,
             )
 
-        verify(mockKeycloakUserService, times(1)).searchUsers(emailAddressSubstring)
+        verify(mockKeycloakUserService, times(2)).searchUsers(emailAddressSubstring)
         verify(mockKeycloakUserService, times(0)).getUser(anyString())
         assertEquals(1, queryResults!!.size)
         assertEquals(keycloakUserBeta.email, queryResults[0].userEmailAddress)
