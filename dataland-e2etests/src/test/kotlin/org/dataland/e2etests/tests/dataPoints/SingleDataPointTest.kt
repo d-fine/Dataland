@@ -19,7 +19,7 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus as QaStatusBack
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaStatusQaService
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class SingleDataPoint {
+class SingleDataPointTest {
     private val apiAccessor = ApiAccessor()
     private val dummyDatapointContent =
         """

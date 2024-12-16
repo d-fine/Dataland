@@ -3,21 +3,21 @@ package org.dataland.datalandbackend.services.datapoints
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.DataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 /**
  * A service class for managing data meta-information
  */
-@Component
+@Service
 class DataPointMetaInformationManager(
     @Autowired private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
 ) {
     /**
-     * Method to make the data manager get meta info about one specific data point
+     * Get meta info about one specific data point
      * @param dataId filters the requested meta info to one specific data ID
      * @return meta info about data behind the dataId
      */
@@ -30,11 +30,11 @@ class DataPointMetaInformationManager(
         }
 
     /**
-     * Method to get the currently active data id for a specific data point dimension
+     * Get the currently active data id for a specific data point dimensions
      * @param dataPointDimensions the data point dimension to get the currently active data id for
      * @return the id of the currently active data point
      */
-    fun getCurrentlyActiveDataId(dataPointDimensions: DataPointDimensions): String? =
+    fun getCurrentlyActiveDataId(dataPointDimensions: BasicDataPointDimensions): String? =
         dataPointMetaInformationRepositoryInterface.getActiveDataPointId(dataPointDimensions)
 
     /**
@@ -42,9 +42,9 @@ class DataPointMetaInformationManager(
      * @param dataId the id of the data point
      * @return the data point dimension
      */
-    fun getDataPointDimensionFromId(dataId: String): DataPointDimensions {
+    fun getDataPointDimensionFromId(dataId: String): BasicDataPointDimensions {
         val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
-        return DataPointDimensions(
+        return BasicDataPointDimensions(
             reportingPeriod = dataPointMetaInformation.reportingPeriod,
             companyId = dataPointMetaInformation.companyId,
             dataPointIdentifier = dataPointMetaInformation.dataPointIdentifier,

@@ -35,7 +35,7 @@ interface DataPointQaReportApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully added QA report to dataland."),
+            ApiResponse(responseCode = "201", description = "Successfully added QA report to dataland."),
         ],
     )
     @PostMapping(

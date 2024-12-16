@@ -61,7 +61,7 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
         val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {

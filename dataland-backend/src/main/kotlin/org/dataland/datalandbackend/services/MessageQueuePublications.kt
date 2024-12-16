@@ -9,15 +9,15 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
 /**
- * Component that bundles the message queue interactions of the data pint manager
+ * Component that bundles the message queue interactions of the data point manager
  * @param cloudEventMessageHandler cloud event message handler used for sending messages to the message queue
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
 */
 
-@Component
+@Service
 class MessageQueuePublications(
     @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
     @Autowired private val objectMapper: ObjectMapper,
@@ -75,7 +75,7 @@ class MessageQueuePublications(
         dataId: String,
         correlationId: String,
     ) {
-        logger.info("Publish message that data with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
+        logger.info("Publish message that data set with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
             type = MessageType.DELETE_DATA,

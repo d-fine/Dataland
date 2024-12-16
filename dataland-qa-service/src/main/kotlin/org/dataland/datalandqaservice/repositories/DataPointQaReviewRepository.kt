@@ -1,6 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories
 
-import org.dataland.datalandbackendutils.model.DataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.springframework.data.jpa.repository.JpaRepository
@@ -31,7 +31,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "LIMIT 1",
     )
     fun getDataIdOfCurrentlyActiveDataPoint(
-        @Param("filter") filter: DataPointDimensions,
+        @Param("filter") filter: BasicDataPointDimensions,
     ): String?
 
     /**

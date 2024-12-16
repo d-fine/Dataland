@@ -107,7 +107,7 @@ class DataPointValidator(
         } catch (ex: JsonParseException) {
             logger.error("Unable to parse JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
             throw InvalidInputApiException(
-                summary = "Validation failed for data point: Invalid JSON",
+                summary = "Validation failed for data point due to invalid JSON",
                 message = "Validation failed for data point due to ${ex.message}.",
                 cause = ex,
             )

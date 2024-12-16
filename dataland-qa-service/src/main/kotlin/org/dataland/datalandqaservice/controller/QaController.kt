@@ -80,7 +80,7 @@ class QaController(
                 correlationId = correlationId,
             )
 
-        qaReviewManager.sendQaStatusChangeMessage(
+        qaReviewManager.sendQaStatusUpdateMessage(
             qaReviewEntity = qaReviewEntity, correlationId = correlationId,
         )
     }

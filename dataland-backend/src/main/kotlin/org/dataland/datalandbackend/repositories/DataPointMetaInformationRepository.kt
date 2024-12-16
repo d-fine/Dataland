@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.repositories
 
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
-import org.dataland.datalandbackendutils.model.DataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -21,6 +21,6 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
             "AND dataPointMetaInformation.currentlyActive = true ",
     )
     fun getActiveDataPointId(
-        @Param("searchFilter") searchFilter: DataPointDimensions,
+        @Param("searchFilter") searchFilter: BasicDataPointDimensions,
     ): String?
 }

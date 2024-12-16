@@ -46,7 +46,7 @@ data class DataPointMetaInformationEntity(
 ) : ApiModelConversion<DataPointMetaInformation> {
     /**
      * The viewingUser can view information about the dataset or the dataset itself if
-     * (a) the dataset is QAd
+     * (a) the dataset has successfully passed QA
      * (b) the user has uploaded the dataset
      * (c) the user is an admin or a reviewer
      * This function checks these conditions.

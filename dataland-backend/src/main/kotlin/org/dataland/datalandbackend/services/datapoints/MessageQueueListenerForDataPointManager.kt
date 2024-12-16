@@ -17,14 +17,14 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.handler.annotation.Header
 import org.springframework.messaging.handler.annotation.Payload
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
  * @param objectMapper object mapper used for converting data classes to strings and vice versa
  * @param dataPointMetaInformationManager service for managing metadata
  */
-@Component
+@Service
 class MessageQueueListenerForDataPointManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired private val dataPointMetaInformationManager: DataPointMetaInformationManager,
@@ -44,7 +44,7 @@ class MessageQueueListenerForDataPointManager(
             QueueBinding(
                 value =
                     Queue(
-                        QueueNames.BACKEND_DATA_POINT_QA_CHANGED,
+                        QueueNames.BACKEND_DATA_POINT_QA_STATUS_UPDATED,
                         arguments = [
                             Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
                             Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
@@ -56,12 +56,12 @@ class MessageQueueListenerForDataPointManager(
             ),
         ],
     )
-    fun changeQaStatus(
+    fun updateQaStatus(
         @Payload payload: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
         logger.info("Received QA status change message (correlationId: $correlationId)")
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(payload, objectMapper)
 
@@ -73,7 +73,7 @@ class MessageQueueListenerForDataPointManager(
             val dataPointDimension = dataPointMetaInformationManager.getDataPointDimensionFromId(updatedDataId)
 
             dataPointMetaInformationManager.updateQaStatusOfDataPoint(updatedDataId, newQaStatus)
-            logger.info("QA status for dataID $updatedDataId changed to $newQaStatus (correlationId: $correlationId)")
+            logger.info("QA status for dataID $updatedDataId updated to $newQaStatus (correlationId: $correlationId)")
 
             dataPointManager.updateCurrentlyActiveDataPoint(dataPointDimension, newActiveDataId, correlationId)
         }

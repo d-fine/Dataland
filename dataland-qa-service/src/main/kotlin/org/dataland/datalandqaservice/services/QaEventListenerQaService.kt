@@ -107,7 +107,7 @@ class QaEventListenerQaService
                         correlationId = correlationId,
                     )
 
-                qaReviewManager.sendQaStatusChangeMessage(
+                qaReviewManager.sendQaStatusUpdateMessage(
                     qaReviewEntity = qaReviewEntity, correlationId = correlationId,
                 )
             }
@@ -161,7 +161,7 @@ class QaEventListenerQaService
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    messageToSend, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                    messageToSend, MessageType.QA_STATUS_UPDATED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
                     RoutingKeyNames.DOCUMENT,
                 )
             }

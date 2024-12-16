@@ -31,7 +31,7 @@ interface DataPointApi {
      */
     @Operation(
         summary = "Verify data point content.",
-        description = "The uploaded data point is verified to conform to it's specification",
+        description = "The uploaded data point is verified to conform to its specification",
     )
     @ApiResponses(
         value = [

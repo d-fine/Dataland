@@ -37,7 +37,7 @@ class PublicDataUploadProcessor(
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
 ) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
     override val elementaryEventType = ElementaryEventType.UploadEvent
-    override val messageType = MessageType.QA_STATUS_CHANGED
+    override val messageType = MessageType.QA_STATUS_UPDATED
     override val actionType = null
     override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
 

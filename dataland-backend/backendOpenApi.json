@@ -1185,7 +1185,7 @@
           "data-point-controller"
         ],
         "summary": "Verify data point content.",
-        "description": "The uploaded data point is verified to conform to it\u0027s specification",
+        "description": "The uploaded data point is verified to conform to its specification",
         "operationId": "validateDataPointContent",
         "requestBody": {
           "content": {
@@ -18532,21 +18532,21 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -18573,10 +18573,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
