@@ -42,7 +42,7 @@ describe('Component test for the admin-requests-overview page', () => {
       userEmailAddress: userEmailAddress,
       creationTimestamp: Date.now(),
       dataType: framework,
-      reportingPeriod: faker.helpers.arrayElement(['2020', '2021', '2022', '2023']),
+      reportingPeriod: faker.helpers.arrayElement(['2020', '2021', '2023']),
       datalandCompanyId: crypto.randomUUID(),
       companyName: faker.company.name(),
       lastModifiedDate: Date.now(),
@@ -180,7 +180,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via email address substring works as expected
    */
   function validateEmailAddressFilter(): void {
-    const mockResponse = [mockRequests[0], mockRequests[3]];
+    const mockResponse = [mockRequests[0], mockRequests[2]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
       `**/community/requests?emailAddress=${mailSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
@@ -273,7 +273,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via admin comment substring works as expected
    */
   function validateAdminCommentFilter(): void {
-    const mockResponse = [mockRequests[1], mockRequests[3]];
+    const mockResponse = [mockRequests[1], mockRequests[2]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
       `**/community/requests?adminComment=${commentSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,
@@ -297,7 +297,7 @@ describe('Component test for the admin-requests-overview page', () => {
     validateEmailAddressFilter();
     const frameworkToFilterFor = DataTypeEnum.Sfdr;
     const frameworkHumanReadableName = humanizeStringOrNumber(frameworkToFilterFor);
-    const mockResponse = [mockRequests[3]];
+    const mockResponse = [mockRequests[2]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
       `**/community/requests?dataType=${frameworkToFilterFor}&emailAddress=${mailSearchTerm}&chunkSize=${chunkSize}&chunkIndex=0`,

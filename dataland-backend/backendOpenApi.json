@@ -18760,6 +18760,13 @@
         ],
         "type": "object",
         "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyName": {
+            "type": "string"
+          },
           "companyId": {
             "type": "string"
           },
@@ -18768,13 +18775,6 @@
           },
           "countryCode": {
             "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -18801,10 +18801,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
