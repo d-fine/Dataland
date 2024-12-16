@@ -5,13 +5,11 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
-import org.springframework.stereotype.Service
 
 /**
  * Implementation of a request priority aggregator to determine the aggregated priority
  * and filter for a certain aggregated priority
  */
-@Service
 class RequestPriorityAggregator {
     /**
      * This method determines the aggregated priorities of aggregated data requests.

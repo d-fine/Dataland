@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class RequestPriorityAggregatorTest {
-    private lateinit var requestPriorityAggregator: RequestPriorityAggregator
+    private var requestPriorityAggregator = RequestPriorityAggregator()
     private val companyIdLowPriority = "Test Low"
     private val companyIdNormalPriority = "Test Normal"
     private val companyIdHighPriority = "Test High"
