@@ -170,7 +170,6 @@ class DataRequestQueryManagerTest {
                 processingUtils = mockDataRequestProcessingUtils,
                 keycloakUserControllerApiService = mockKeycloakUserService,
                 dataRequestMasker = mockDataRequestMasker,
-                requestPriorityAggregator = mockRequestPriorityAggregator,
             )
     }
 
