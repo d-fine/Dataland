@@ -10,23 +10,29 @@ import org.junit.jupiter.api.Test
 
 class RequestPriorityAggregatorTest {
     private lateinit var requestPriorityAggregator: RequestPriorityAggregator
+    private val companyIdLowPriority = "Test Low"
+    private val companyIdNormalPriority = "Test Normal"
+    private val companyIdHighPriority = "Test High"
+    private val companyIdVeryHighPriority = "Test Very High"
+    private val companyIdUrgentPriority = "Test Urgent"
+
     private val dummyAggregatedRequests =
         listOf(
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.Low, "Open", 1),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", "Test Low", RequestPriority.Urgent, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.Low, "Open", 2),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", "Test Normal", RequestPriority.Urgent, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.Low, "Open", 2),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.High, "Open", 1),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2023", "Test High", RequestPriority.Urgent, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.Low, "Open", 2),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.High, "Open", 2),
-            AggregatedDataRequest(DataTypeEnum.p2p, "2024", "Test Very High", RequestPriority.Urgent, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.Low, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(DataTypeEnum.vsme, "2023", "Test Urgent", RequestPriority.Urgent, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Low, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.High, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.High, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.High, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.High, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Low, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.High, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Urgent, "Open", 1),
         )
 
     @BeforeEach
@@ -41,11 +47,11 @@ class RequestPriorityAggregatorTest {
 
         val expectedPriorities =
             mapOf(
-                "Test Low" to AggregatedRequestPriority.Low,
-                "Test Normal" to AggregatedRequestPriority.Normal,
-                "Test High" to AggregatedRequestPriority.High,
-                "Test Very High" to AggregatedRequestPriority.VeryHigh,
-                "Test Urgent" to AggregatedRequestPriority.Urgent,
+                companyIdLowPriority to AggregatedRequestPriority.Low,
+                companyIdNormalPriority to AggregatedRequestPriority.Normal,
+                companyIdHighPriority to AggregatedRequestPriority.High,
+                companyIdVeryHighPriority to AggregatedRequestPriority.VeryHigh,
+                companyIdUrgentPriority to AggregatedRequestPriority.Urgent,
             )
 
         expectedPriorities.forEach { (companyId, expectedPriority) ->

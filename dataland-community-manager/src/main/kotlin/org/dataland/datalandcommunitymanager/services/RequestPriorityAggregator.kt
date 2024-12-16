@@ -14,13 +14,12 @@ import org.springframework.stereotype.Service
 @Service
 class RequestPriorityAggregator {
     /**
-     * This method determines the aggregated priorities aggregated data requests.
+     * This method determines the aggregated priorities of aggregated data requests.
      * @param aggregatedDataRequests the aggregated data requests
      * @returns aggregated data requests with their aggregated priority
      */
     fun aggregateRequestPriority(aggregatedDataRequests: List<AggregatedDataRequest>): List<AggregatedDataRequestWithAggregatedPriority> {
         val aggregatedMap = createAggregatedMap(aggregatedDataRequests)
-
         return aggregatedMap
             .map { (key, priorityCounts) ->
                 createAggregatedDataRequestWithPriority(key, priorityCounts)
@@ -36,7 +35,7 @@ class RequestPriorityAggregator {
      */
     private fun createAggregatedMap(
         aggregatedDataRequests: List<AggregatedDataRequest>,
-    ): MutableMap<Triple<DataTypeEnum?, String?, String>, MutableMap<RequestPriority, Long>> {
+    ): Map<Triple<DataTypeEnum?, String?, String>, Map<RequestPriority, Long>> {
         val aggregatedMap = mutableMapOf<Triple<DataTypeEnum?, String?, String>, MutableMap<RequestPriority, Long>>()
 
         for (request in aggregatedDataRequests) {
@@ -46,7 +45,7 @@ class RequestPriorityAggregator {
                 .merge(request.priority, request.count) { oldCount, newCount -> oldCount + newCount }
         }
 
-        return aggregatedMap
+        return aggregatedMap.mapValues { it.value.toMap() }
     }
 
     /**
@@ -58,7 +57,7 @@ class RequestPriorityAggregator {
      */
     private fun createAggregatedDataRequestWithPriority(
         key: Triple<DataTypeEnum?, String?, String>,
-        priorityCounts: MutableMap<RequestPriority, Long>,
+        priorityCounts: Map<RequestPriority, Long>,
     ): AggregatedDataRequestWithAggregatedPriority {
         val aggregatedPriority = calculateAggregatedPriority(priorityCounts)
         val totalCount = priorityCounts.values.sum()
@@ -80,18 +79,18 @@ class RequestPriorityAggregator {
      * @param priorityCounts a map of request priorities to their counts
      * @returns the aggregated request priority or null if no valid priority can be determined
      */
-    private fun calculateAggregatedPriority(priorityCounts: MutableMap<RequestPriority, Long>): AggregatedRequestPriority? =
+    private fun calculateAggregatedPriority(priorityCounts: Map<RequestPriority, Long>): AggregatedRequestPriority? =
         when {
             priorityCounts[RequestPriority.Urgent]?.let { it > 0 } == true -> AggregatedRequestPriority.Urgent
             priorityCounts[RequestPriority.High]?.let { it > 1 } == true -> AggregatedRequestPriority.VeryHigh
             priorityCounts[RequestPriority.High]?.let { it.toInt() == 1 } == true -> AggregatedRequestPriority.High
             priorityCounts[RequestPriority.Low]?.let { it > 1 } == true -> AggregatedRequestPriority.Normal
             priorityCounts[RequestPriority.Low]?.let { it.toInt() == 1 } == true -> AggregatedRequestPriority.Low
-
             else -> null
         }
 
-    /** This method filters the results for a certain aggregated priority
+    /**
+     * This method filters the results for a certain aggregated priority
      * @param aggregatedDataRequestsWithAggregatedPriority the aggregated data requests with their aggregated priority
      * @returns filtered list with only the chosen aggregated priority
      */
