@@ -71,16 +71,7 @@ abstract class DataController<T>(
         )
     }
 
-    override fun getContainedDataPoints(dataId: String): ResponseEntity<List<String>> {
-        if (!frameworkConsistsOfDataPoints()) {
-            return ResponseEntity.ok(dataPointManager.getDataPointIdsForDataSet(dataId))
-        } else {
-            throw InvalidInputApiException(
-                "Data point breakdown is not implemented.",
-                "Datasets of type $dataType are currently not stored as data points.",
-            )
-        }
-    }
+
 
     private fun frameworkConsistsOfDataPoints(): Boolean = dataPointManager.getAllDataPointFrameworks().contains(dataType.toString())
 

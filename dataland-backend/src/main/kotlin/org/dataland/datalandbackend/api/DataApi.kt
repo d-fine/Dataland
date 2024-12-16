@@ -72,29 +72,6 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to retrieve a list of all data IDs of the data-points contained in the dataset
-     * @param dataId identifier used to uniquely specify the dataset in question
-     * @return a list of data point IDs contained in the dataset
-     */
-    @Operation(
-        summary = "Retrieve list of data point IDs the dataset is composed of.",
-        description = "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data point IDs."),
-        ],
-    )
-    @GetMapping(
-        value = ["/{dataId}/data-points"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
-    fun getContainedDataPoints(
-        @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<List<String>>
-
-    /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its
      * company ID, optionally filtered to one specific reporting period
      * @param companyId identifier of the company in Dataland

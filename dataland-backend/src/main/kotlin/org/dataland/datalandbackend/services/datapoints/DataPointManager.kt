@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services.datapoints
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
+import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
@@ -167,6 +168,9 @@ class DataPointManager(
      * @return a list of the names of all data point frameworks
      */
     fun getAllDataPointFrameworks(): List<String> = specificationClient.listFrameworkSpecifications().map { it.name }
+
+
+    fun frameworkConsistsOfDataPoints(dataType: DataType): Boolean = getAllDataPointFrameworks().contains(dataType.toString())
 
     /**
      * Processes a data set by breaking it up and storing its data points in the internal storage
