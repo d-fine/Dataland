@@ -15,6 +15,7 @@ import router from '@/router';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];
+  let mockRequestsLarge: ExtendedStoredDataRequest[];
   const chunkSize = 100;
 
   /**
@@ -79,7 +80,7 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestStatus.Answered,
         AccessStatus.Public,
         commentBeta,
-        RequestPriority.High
+        RequestPriority.Urgent
       ),
       generateExtendedStoredDataRequest(
         mailGamma,
@@ -87,7 +88,7 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestStatus.Answered,
         AccessStatus.Declined,
         commentGamma,
-        RequestPriority.Low
+        RequestPriority.High
       ),
       generateExtendedStoredDataRequest(
         mailDelta,
@@ -98,6 +99,26 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Low
       ),
     ];
+    mockRequestsLarge = [];
+    for (let num = 1; num <= 104; num++) {
+      const dataType = faker.helpers.arrayElement([DataTypeEnum.Lksg, DataTypeEnum.P2p, DataTypeEnum.Vsme]);
+      const email = faker.helpers.arrayElement([mailAlpha, mailBeta, mailGamma, mailDelta]);
+      const requestStatus = faker.helpers.arrayElement([
+        RequestStatus.Open,
+        RequestStatus.Answered,
+        RequestStatus.Withdrawn,
+      ]);
+      const comment = faker.helpers.arrayElement([commentAlpha, commentBeta, commentGamma, commentDelta]);
+      const requestPriority = faker.helpers.arrayElement([
+        RequestPriority.Low,
+        RequestPriority.High,
+        RequestPriority.Urgent,
+        RequestPriority.Urgent,
+      ]);
+      mockRequestsLarge.push(
+        generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public, comment, requestPriority)
+      );
+    }
   });
 
   /**
@@ -128,6 +149,24 @@ describe('Component test for the admin-requests-overview page', () => {
       }
     });
     return mountedComponent;
+  }
+
+  /**
+   *
+   */
+  function mountAdminAllRequestsPageWithManyMocks(): void {
+    const expectedNumberOfRequests = mockRequestsLarge.length;
+    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=0`, mockRequestsLarge.slice(0, chunkSize));
+    cy.intercept('**/community/requests/numberOfRequests', expectedNumberOfRequests.toString());
+
+    getMountingFunction({
+      keycloak: minimalKeycloakMock({
+        authenticated: true,
+        roles: [KEYCLOAK_ROLE_ADMIN],
+        userId: crypto.randomUUID(),
+      }),
+    })(AdminAllRequestsOverview);
+    assertNumberOfSearchResults(chunkSize);
   }
 
   /**
@@ -219,8 +258,8 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via priority dropdown filter works as expected
    */
   function validateRequestPriorityFilter(): void {
-    const priorityToFilterFor = RequestPriority.High; // Changed to High
-    const mockResponse = [mockRequests[1]];
+    const priorityToFilterFor = RequestPriority.Urgent;
+    const mockResponse = [mockRequests[0], mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
       `**/community/requests?requestPriority=${priorityToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
@@ -236,6 +275,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailBeta);
   }
 
@@ -310,15 +350,18 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates onPage Event
    */
   function validateOnPageEvent(): void {
-    // Example: Setup for more than 3 requests for pagination related tests can be added here.
-    const expectedNumberOfRequests = mockRequests.length;
-    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=1`, []).as('fetchRequests');
+    const secondPageMockResponse = mockRequestsLarge.slice(chunkSize);
+    const expectedNumberOfRequests = mockRequestsLarge.length;
+    const expectedNumberOfRows = secondPageMockResponse.length;
+    cy.intercept(`**/community/requests?chunkSize=${chunkSize}&chunkIndex=1`, secondPageMockResponse).as(
+      'fetchRequests'
+    );
     cy.intercept(`**/community/requests/numberOfRequests`, expectedNumberOfRequests.toString());
 
     cy.get(`button[aria-label="Page 2"]`).click();
 
     cy.wait('@fetchRequests');
-    assertNumberOfSearchResults(0); // Adjusted for clarity in this simplified test with less data
+    assertNumberOfSearchResults(expectedNumberOfRows);
   }
 
   /**
@@ -354,7 +397,7 @@ describe('Component test for the admin-requests-overview page', () => {
     validateRequestStatusFilter();
   });
 
-  it('Filtering for request priority works as expected', () => {
+  it('Filtering for request priority works as exprected', () => {
     mountAdminAllRequestsPageWithMocks();
     validateRequestPriorityFilter();
   });
@@ -377,7 +420,7 @@ describe('Component test for the admin-requests-overview page', () => {
   });
 
   it('Check the functionality of the onPage event', () => {
-    mountAdminAllRequestsPageWithMocks();
+    mountAdminAllRequestsPageWithManyMocks();
     validateOnPageEvent();
   });
 
