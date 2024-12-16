@@ -75,14 +75,6 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Urgent
       ),
       generateExtendedStoredDataRequest(
-        mailBeta,
-        DataTypeEnum.P2p,
-        RequestStatus.Answered,
-        AccessStatus.Public,
-        commentBeta,
-        RequestPriority.VeryHigh
-      ),
-      generateExtendedStoredDataRequest(
         mailGamma,
         DataTypeEnum.Vsme,
         RequestStatus.Answered,
@@ -113,7 +105,6 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Low,
         RequestPriority.High,
         RequestPriority.Urgent,
-        RequestPriority.VeryHigh,
       ]);
       mockRequestsLarge.push(
         generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public, comment, requestPriority)
@@ -258,7 +249,7 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via priority dropdown filter works as expected
    */
   function validateRequestPriorityFilter(): void {
-    const priorityToFilterFor = RequestPriority.VeryHigh;
+    const priorityToFilterFor = RequestPriority.High;
     const mockResponse = [mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
