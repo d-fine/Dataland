@@ -93,8 +93,8 @@ interface MetaDataApi {
      * @return a list of data point IDs contained in the dataset
      */
     @Operation(
-        summary = "Retrieve list of data point IDs the dataset is composed of.",
-        description = "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
+        summary = "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
+        description = "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
     )
     @ApiResponses(
         value = [
@@ -108,7 +108,7 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun getContainedDataPoints(
         @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<List<String>>
+    ): ResponseEntity<Map<String, String>>
 
     /**
      * A method to retrieve information about the sourceability of data sets.

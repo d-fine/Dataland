@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.services.datapoints
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
@@ -169,9 +168,6 @@ class DataPointManager(
      */
     fun getAllDataPointFrameworks(): List<String> = specificationClient.listFrameworkSpecifications().map { it.name }
 
-
-    fun frameworkConsistsOfDataPoints(dataType: DataType): Boolean = getAllDataPointFrameworks().contains(dataType.toString())
-
     /**
      * Processes a data set by breaking it up and storing its data points in the internal storage
      * @param uploadedDataSet the data set to process
@@ -190,25 +186,25 @@ class DataPointManager(
 
         val expectedDataPoints = JsonOperations.extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
         val companyId = uploadedDataSet.companyId
-        val dataSetContent = JsonOperations.getJsonNodeFromString(uploadedDataSet.data)
+        val datasetContent = JsonOperations.getJsonNodeFromString(uploadedDataSet.data)
 
-        valideDataSet(expectedDataPoints, dataSetContent, correlationId)
+        valideDataSet(expectedDataPoints, datasetContent, correlationId)
 
-        val dataSetId = IdUtils.generateUUID()
-        dataManager.storeMetaDataFrom(dataSetId, uploadedDataSet, correlationId)
-        dataManager.storeDataSetInTemporaryStoreAndSendMessage(dataSetId, uploadedDataSet, bypassQa, correlationId)
+        val datasetId = IdUtils.generateUUID()
+        dataManager.storeMetaDataFrom(datasetId, uploadedDataSet, correlationId)
+        dataManager.storeDataSetInTemporaryStoreAndSendMessage(datasetId, uploadedDataSet, bypassQa, correlationId)
 
-        logger.info("Processing data set with id $dataSetId for framework ${uploadedDataSet.dataType}")
+        logger.info("Processing data set with id $datasetId for framework ${uploadedDataSet.dataType}")
 
         val fileReferenceToPublicationDateMapping =
             JsonOperations.getFileReferenceToPublicationDateMapping(
-                dataSetContent = dataSetContent,
+                datasetContent = datasetContent,
                 jsonPath = referencedReportsPath,
             )
 
-        val createdDataIds = mutableListOf<String>()
+        val createdDataIds = mutableMapOf<String, String>()
         expectedDataPoints.forEach { (dataPointJsonPath, dataPointIdentifier) ->
-            val dataPointContent = JsonOperations.getValueFromJsonNode(dataSetContent, dataPointJsonPath)
+            val dataPointContent = JsonOperations.getValueFromJsonNode(datasetContent, dataPointJsonPath)
             if (dataPointContent.isEmpty()) return@forEach
             val contentJsonNode = JsonOperations.objectMapper.readTree(dataPointContent)
 
@@ -220,7 +216,7 @@ class DataPointManager(
             logger.info("Storing value found for $dataPointIdentifier under $dataPointJsonPath (correlation ID: $correlationId)")
 
             val dataId = IdUtils.generateUUID()
-            createdDataIds += dataId
+            createdDataIds[dataPointIdentifier] = dataId
             storeDataPoint(
                 UploadedDataPoint(
                     dataPointContent = JsonOperations.objectMapper.writeValueAsString(contentJsonNode),
@@ -234,19 +230,19 @@ class DataPointManager(
             )
         }
         this.datasetDatapointRepository.save(
-            DatasetDatapointEntity(dataId = dataSetId, dataPoints = createdDataIds.joinToString(",")),
+            DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
         )
         logger.info("Completed processing data set (correlation ID: $correlationId).")
-        return dataSetId
+        return datasetId
     }
 
     private fun valideDataSet(
         expectedDataPoints: Map<String, String>,
-        dataSetContent: JsonNode,
+        datasetContent: JsonNode,
         correlationId: String,
     ) {
         expectedDataPoints.forEach { (dataPointJsonPath, dataPointIdentifier) ->
-            val dataPointContent = JsonOperations.getValueFromJsonNode(dataSetContent, dataPointJsonPath)
+            val dataPointContent = JsonOperations.getValueFromJsonNode(datasetContent, dataPointJsonPath)
             if (dataPointContent.isEmpty()) return@forEach
             dataPointValidator.validateDataPoint(dataPointIdentifier, dataPointContent, correlationId)
         }
@@ -265,33 +261,32 @@ class DataPointManager(
 
     /**
      * Retrieves a data set by assembling the data points from the internal storage
-     * @param dataSetId the id of the data set
+     * @param datasetId the id of the data set
      * @param framework the type of data set
      * @param correlationId the correlation id for the operation
      * @return the data set in form of a JSON string
      */
     fun getDataSetFromId(
-        dataSetId: String,
+        datasetId: String,
         framework: String,
         correlationId: String,
     ): String {
-        val dataPoints = getDataPointIdsForDataSet(dataSetId)
-        return assembleDataSetFromDataPoints(dataPoints, framework, correlationId)
+        val dataPoints = getDataPointIdsForDataSet(datasetId)
+        return assembleDataSetFromDataPoints(dataPoints.values.toList(), framework, correlationId)
     }
 
     /**
-     * Retrieves the list of IDs of the data points contained in a dataset
-     * @param dataSetId the ID of the dataset
-     * @return a list of data point IDs that are contained in the dataset
+     * Retrieves a key value map containing the IDs of the data points contained in a dataset mapped to their technical IDs
+     * @param datasetId the ID of the dataset
+     * @return a map of data point IDs to the corresponding technical IDs that are contained in the dataset
      */
-    fun getDataPointIdsForDataSet(dataSetId: String): List<String> {
+    fun getDataPointIdsForDataSet(datasetId: String): Map<String, String> {
         val dataPoints =
             datasetDatapointRepository
-                .findById(dataSetId)
+                .findById(datasetId)
                 .getOrNull()
                 ?.dataPoints
-                ?.split(",") ?: emptyList()
-        require(dataPoints.isNotEmpty()) { "There is no record of a data set with ID $dataSetId." }
+                ?: emptyMap()
         return dataPoints
     }
 

@@ -1,8 +1,12 @@
 package org.dataland.datalandbackend.entities
 
+import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.MapKeyColumn
 import jakarta.persistence.Table
 
 /**
@@ -12,8 +16,11 @@ import jakarta.persistence.Table
 @Table(name = "dataset_datapoint")
 data class DatasetDatapointEntity(
     @Id
-    @Column(name = "data_id")
-    val dataId: String,
-    @Column(name = "data_points")
-    val dataPoints: String,
+    @Column(name = "dataset_id")
+    val datasetId: String,
+    @ElementCollection
+    @CollectionTable(name = "data_point_uuid_map", joinColumns = [JoinColumn(name = "dataset_id")])
+    @MapKeyColumn(name = "data_point_identifier")
+    @Column(name = "data_point_uuid")
+    val dataPoints: Map<String, String>
 )

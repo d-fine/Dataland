@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -70,8 +69,6 @@ abstract class DataController<T>(
             ),
         )
     }
-
-
 
     private fun frameworkConsistsOfDataPoints(): Boolean = dataPointManager.getAllDataPointFrameworks().contains(dataType.toString())
 

@@ -165,19 +165,19 @@ object JsonOperations {
 
     /**
      * Extracts the mapping of file references to publication dates from a data set.
-     * @param dataSetContent The content of the data set as JSON node
+     * @param datasetContent The content of the data set as JSON node
      * @param jsonPath The JSON path to the referenced reports
      * @return The mapping of file references to publication dates
      */
     fun getFileReferenceToPublicationDateMapping(
-        dataSetContent: JsonNode,
+        datasetContent: JsonNode,
         jsonPath: String,
     ): Map<String, LocalDate> {
         val result = mutableMapOf<String, LocalDate>()
         val referencedReportsNode: JsonNode
 
         try {
-            referencedReportsNode = navigateToNode(dataSetContent, jsonPath)
+            referencedReportsNode = navigateToNode(datasetContent, jsonPath)
         } catch (ex: IllegalArgumentException) {
             logger.warn("Could not extract the fileReference to publicationDate mapping: ${ex.message}")
             return result

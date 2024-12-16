@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -106,14 +105,14 @@ class MetaDataController(
         }
     }
 
-    override fun getContainedDataPoints(dataId: String): ResponseEntity<List<String>> {
-        if (!frameworkConsistsOfDataPoints()) {
-            return ResponseEntity.ok(dataPointManager.getDataPointIdsForDataSet(dataId))
-        } else {
-            throw InvalidInputApiException(
-                "Data point breakdown is not implemented.",
-                "Datasets of type $dataType are currently not stored as data points.",
+    override fun getContainedDataPoints(dataId: String): ResponseEntity<Map<String, String>> {
+        val dataPoints = dataPointManager.getDataPointIdsForDataSet(dataId)
+        if (dataPoints.isEmpty()) {
+            throw ResourceNotFoundApiException(
+                summary = "No data point mapping found for dataset.",
+                message = "Either the provided dataset ID $dataId is invalid or the corresponding framework does not support data points.",
             )
         }
+        return ResponseEntity.ok(dataPoints)
     }
 }
