@@ -2285,6 +2285,7 @@
           {
             "name": "onlyLatest",
             "in": "query",
+            "description": "If set, only show the most recent QA review information for each data point (independent of whether the data point is active or not).",
             "required": false,
             "schema": {
               "type": "boolean",
