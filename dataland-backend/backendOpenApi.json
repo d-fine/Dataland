@@ -1179,7 +1179,7 @@
         ]
       }
     },
-    "/data-points/verify": {
+    "/data-points/validator": {
       "post": {
         "tags": [
           "data-point-controller"

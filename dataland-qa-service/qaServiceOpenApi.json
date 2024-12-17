@@ -1122,7 +1122,7 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Successfully added QA report to dataland.",
             "content": {
               "application/json": {

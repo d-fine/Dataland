@@ -39,7 +39,7 @@ interface DataPointApi {
         ],
     )
     @PostMapping(
-        value = ["/verify"],
+        value = ["/validator"],
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
