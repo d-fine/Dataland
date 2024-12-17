@@ -31,16 +31,16 @@ class DataPointMetaInformationManager(
 
     /**
      * Get the currently active data id for a specific data point dimensions
-     * @param dataPointDimensions the data point dimension to get the currently active data id for
+     * @param dataPointDimensions the data point dimensions to get the currently active data id for
      * @return the id of the currently active data point
      */
     fun getCurrentlyActiveDataId(dataPointDimensions: BasicDataPointDimensions): String? =
         dataPointMetaInformationRepositoryInterface.getActiveDataPointId(dataPointDimensions)
 
     /**
-     * Method to get the data point dimension from a data id
+     * Method to get the data point dimensions from a data id
      * @param dataId the id of the data point
-     * @return the data point dimension
+     * @return the data point dimensions
      */
     fun getDataPointDimensionFromId(dataId: String): BasicDataPointDimensions {
         val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)

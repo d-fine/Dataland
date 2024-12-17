@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.api
 
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -154,6 +155,11 @@ interface QaApi {
         @RequestParam dataPointIdentifier: String?,
         @RequestParam reportingPeriod: String?,
         @RequestParam qaStatus: QaStatus?,
+        @Parameter(
+            description =
+                "If set, only show the most recent QA review information for each data point " +
+                    "(independent of whether the data point is active or not).",
+        )
         @RequestParam(defaultValue = true.toString()) onlyLatest: Boolean?,
         @RequestParam(defaultValue = "10") chunkSize: Int?,
         @RequestParam(defaultValue = "0") chunkIndex: Int?,
