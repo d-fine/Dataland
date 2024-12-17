@@ -142,7 +142,7 @@ class QaController(
                 companyId = companyId,
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,
-                qaStatus = qaStatus?.toString(),
+                qaStatus = qaStatus,
             )
         return ResponseEntity.ok(
             dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(
