@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -166,7 +167,7 @@ class DataPointManager(
      * Retrieves all data point frameworks from the specification service
      * @return a list of the names of all data point frameworks
      */
-    fun getAllDataPointFrameworks(): List<String> = specificationClient.listFrameworkSpecifications().map { it.name }
+    fun getAllDataPointFrameworks(): List<String> = specificationClient.listFrameworkSpecifications().map { it.frameworkSpecification.id }
 
     /**
      * Processes a data set by breaking it up and storing its data points in the internal storage
@@ -266,6 +267,7 @@ class DataPointManager(
      * @param correlationId the correlation id for the operation
      * @return the data set in form of a JSON string
      */
+    @Transactional(readOnly = true)
     fun getDataSetFromId(
         datasetId: String,
         framework: String,
@@ -280,6 +282,7 @@ class DataPointManager(
      * @param datasetId the ID of the dataset
      * @return a map of data point IDs to the corresponding technical IDs that are contained in the dataset
      */
+    @Transactional(readOnly = true)
     fun getDataPointIdsForDataSet(datasetId: String): Map<String, String> {
         val dataPoints =
             datasetDatapointRepository
