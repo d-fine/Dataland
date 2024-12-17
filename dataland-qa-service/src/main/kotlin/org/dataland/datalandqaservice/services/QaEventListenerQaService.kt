@@ -86,7 +86,7 @@ class QaEventListenerQaService
                 MessageQueueUtils.validateDataId(dataId)
                 val bypassQa: Boolean = dataUploadedPayload.bypassQa
                 logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
-                val triggeringUserId = metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+                val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
                 val qaStatus: QaStatus
                 var comment: String? = null
 
@@ -228,7 +228,7 @@ class QaEventListenerQaService
                 ),
             ],
         )
-        fun addDataPointToDataPointQaReviewRepository(
+        fun addReviewEntityForUploadedDataPoint(
             @Payload payload: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
             @Header(MessageHeaderKey.TYPE) type: String,
@@ -259,7 +259,7 @@ class QaEventListenerQaService
         ): DataPointQaReviewEntity {
             val dataId = dataUploadedPayload.dataId
             val bypassQa = dataUploadedPayload.bypassQa
-            val triggeringUserId = dataPointControllerApi.getDataPointMetaInfo(dataId).uploaderUserId ?: "No Uploader available"
+            val triggeringUserId = requireNotNull(dataPointControllerApi.getDataPointMetaInfo(dataId).uploaderUserId)
 
             val (qaStatus, comment) =
                 when (bypassQa) {

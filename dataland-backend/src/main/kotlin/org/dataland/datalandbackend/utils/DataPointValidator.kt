@@ -1,8 +1,8 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.core.JsonParseException
+import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import jakarta.validation.Validation
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -77,8 +77,7 @@ class DataPointValidator(
             )
         }
         val classForValidation = Class.forName(className).kotlin.java
-        checkCastIntoClass(jsonData, classForValidation, className, correlationId)
-        val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
+        val dataPointObject = checkCastIntoClass(jsonData, classForValidation, className, correlationId)
         checkForViolations(dataPointObject, className, correlationId)
     }
 
@@ -94,14 +93,14 @@ class DataPointValidator(
         classForValidation: Class<out Any>,
         className: String,
         correlationId: String,
-    ) {
+    ): Any {
         try {
-            objectMapper.readValue(jsonData, classForValidation)
-        } catch (ex: UnrecognizedPropertyException) {
+            return objectMapper.readValue(jsonData, classForValidation)
+        } catch (ex: JsonMappingException) {
             logger.error("Unable to cast JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
             throw InvalidInputApiException(
                 summary = "Validation failed for data point.",
-                message = "Validation failed for data point due to ${ex.propertyName}. Known properties are ${ex.knownPropertyIds}.",
+                message = ex.message ?: "Validation failed for data point.",
                 cause = ex,
             )
         } catch (ex: JsonParseException) {

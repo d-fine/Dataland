@@ -9,6 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -94,7 +95,7 @@ class DataPointQaReportManager(
         reporterUserId: String,
         uploadTime: Long,
         correlationId: String,
-    ): DataPointQaReportEntity {
+    ): DataPointQaReport {
         val dataPointMetaInfo = ensureDatalandDataPointExists(dataId)
         ensureQaReportConformsToSpecification(report, dataPointMetaInfo)
         qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
@@ -110,19 +111,20 @@ class DataPointQaReportManager(
             )
         }
 
-        return qaReportRepository.save(
-            DataPointQaReportEntity(
-                qaReportId = IdUtils.generateUUID(),
-                dataId = dataId,
-                dataPointIdentifier = dataPointMetaInfo.dataPointIdentifier,
-                reporterUserId = reporterUserId,
-                uploadTime = uploadTime,
-                active = true,
-                comment = report.comment,
-                verdict = report.verdict,
-                correctedData = report.correctedData,
-            ),
-        )
+        return qaReportRepository
+            .save(
+                DataPointQaReportEntity(
+                    qaReportId = IdUtils.generateUUID(),
+                    dataId = dataId,
+                    dataPointIdentifier = dataPointMetaInfo.dataPointIdentifier,
+                    reporterUserId = reporterUserId,
+                    uploadTime = uploadTime,
+                    active = true,
+                    comment = report.comment,
+                    verdict = report.verdict,
+                    correctedData = report.correctedData,
+                ),
+            ).toApiModel()
     }
 
     /**
@@ -138,8 +140,8 @@ class DataPointQaReportManager(
         dataId: String,
         statusToSet: Boolean,
         requestingUser: DatalandAuthentication,
-    ): DataPointQaReportEntity {
-        val storedQaReportEntity = getQaReportById(dataId, qaReportId)
+    ): DataPointQaReport {
+        val storedQaReportEntity = getQaReportEntity(dataId, qaReportId)
         if (!qaReportSecurityPolicy.canUserSetQaReportStatus(storedQaReportEntity, requestingUser)) {
             throw InsufficientRightsApiException(
                 "Missing required access rights",
@@ -149,15 +151,10 @@ class DataPointQaReportManager(
         logger.info("Setting report with ID $qaReportId to active=$statusToSet")
         storedQaReportEntity.active = statusToSet
 
-        return qaReportRepository.save(storedQaReportEntity)
+        return qaReportRepository.save(storedQaReportEntity).toApiModel()
     }
 
-    /**
-     * Method to make the QA report manager get meta info about one specific QA report
-     * @param qaReportId filters the requested meta info to one specific QA report ID
-     * @return meta info about QA report behind the qaReportId
-     */
-    fun getQaReportById(
+    private fun getQaReportEntity(
         dataId: String,
         qaReportId: String,
     ): DataPointQaReportEntity {
@@ -180,6 +177,16 @@ class DataPointQaReportManager(
     }
 
     /**
+     * Method to make the QA report manager get meta info about one specific QA report
+     * @param qaReportId filters the requested meta info to one specific QA report ID
+     * @return meta info about QA report behind the qaReportId
+     */
+    fun getQaReportById(
+        dataId: String,
+        qaReportId: String,
+    ): DataPointQaReport = getQaReportEntity(dataId, qaReportId).toApiModel()
+
+    /**
      * Method to make the QA report manager get all meta infos associated with a data set
      * @param dataId filters the requested meta info to one specific data ID
      * @return a list of meta info about QA reports associated to the data set
@@ -188,10 +195,11 @@ class DataPointQaReportManager(
         dataId: String,
         showInactive: Boolean,
         reporterUserId: String?,
-    ): List<DataPointQaReportEntity> =
-        qaReportRepository.searchQaReportMetaInformation(
-            dataId = dataId,
-            reporterUserId = reporterUserId,
-            showInactive = showInactive,
-        )
+    ): List<DataPointQaReport> =
+        qaReportRepository
+            .searchQaReportMetaInformation(
+                dataId = dataId,
+                reporterUserId = reporterUserId,
+                showInactive = showInactive,
+            ).map { it.toApiModel() }
 }

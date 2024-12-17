@@ -69,7 +69,7 @@ class QaReportSecurityPolicy(
      * @param dataId the ID of the data set the QA report is associated with
      * @param user the user requesting the view
      */
-    fun ensureUserCanViewDataPointQaReportForDataId(
+    fun ensureUserCanViewDataPointForDataId(
         dataId: String,
         user: DatalandAuthentication,
     ) {

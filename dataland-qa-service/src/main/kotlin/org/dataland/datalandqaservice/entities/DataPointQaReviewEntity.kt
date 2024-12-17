@@ -13,7 +13,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataP
 import java.util.UUID
 
 /**
- * The entity storing the changes in the QA status over time for eac individual data point
+ * The entity storing the changes in the QA status over time for each individual data point
  */
 @Entity
 @Table(name = "data_point_qa_review")

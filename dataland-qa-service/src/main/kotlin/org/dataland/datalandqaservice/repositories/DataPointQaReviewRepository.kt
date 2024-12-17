@@ -26,7 +26,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "AND dataPointQaReview.companyId = :#{#filter.companyId} " +
             "AND dataPointQaReview.dataPointIdentifier = :#{#filter.dataPointIdentifier} " +
             "AND dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod} " +
-            "AND dataPointQaReview.qaStatus = 'Accepted' " +
+            "AND dataPointQaReview.qaStatus = org.dataland.datalandbackendutils.model.QaStatus.Accepted " +
             "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT 1",
     )
@@ -48,7 +48,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
             "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
-            "AND dataPointQaReview.qaStatus = 'Pending' " +
+            "AND dataPointQaReview.qaStatus = org.dataland.datalandbackendutils.model.QaStatus.Pending " +
             "ORDER BY dataPointQaReview.timestamp DESC",
     )
     fun getAllEntriesForTheReviewQueue(): List<DataPointQaReviewEntity>
