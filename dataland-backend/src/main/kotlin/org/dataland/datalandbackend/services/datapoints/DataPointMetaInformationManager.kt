@@ -21,6 +21,7 @@ class DataPointMetaInformationManager(
      * @param dataId filters the requested meta info to one specific data ID
      * @return meta info about data behind the dataId
      */
+    @Transactional(readOnly = true)
     fun getDataPointMetaInformationByDataId(dataId: String): DataPointMetaInformationEntity =
         dataPointMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
@@ -34,6 +35,7 @@ class DataPointMetaInformationManager(
      * @param dataPointDimensions the data point dimensions to get the currently active data id for
      * @return the id of the currently active data point
      */
+    @Transactional(readOnly = true)
     fun getCurrentlyActiveDataId(dataPointDimensions: BasicDataPointDimensions): String? =
         dataPointMetaInformationRepositoryInterface.getActiveDataPointId(dataPointDimensions)
 
@@ -42,6 +44,7 @@ class DataPointMetaInformationManager(
      * @param dataId the id of the data point
      * @return the data point dimensions
      */
+    @Transactional(readOnly = true)
     fun getDataPointDimensionFromId(dataId: String): BasicDataPointDimensions {
         val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
         return BasicDataPointDimensions(
