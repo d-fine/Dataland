@@ -101,13 +101,13 @@ describe('Component tests for the data request review buttons', function (): voi
     );
     assert(requestFor2022 !== undefined);
 
-    cy.intercept("GET",`**/community/requests/${requestFor2022!.dataRequestId}`, {
+    cy.intercept('GET', `**/community/requests/${requestFor2022!.dataRequestId}`, {
       body: {
         messageHistory: messageHistory,
       },
       status: 200,
     }).as('fetchSingleDataRequests');
-    cy.intercept("GET",`**/community/requests/user`, {
+    cy.intercept('GET', `**/community/requests/user`, {
       body: mockedRequests,
     }).as('fetchUserRequests');
   }
@@ -115,23 +115,23 @@ describe('Component tests for the data request review buttons', function (): voi
    * Mocks the answer for patching the request status
    */
   function interceptPatchRequestsOnMounted(): void {
-    cy.intercept("PATCH", "**/community/requests/*", (request) => {
-      if (request.body.requestStatus === "Resolved") {
-        request.alias = "closeUserRequest";
+    cy.intercept('PATCH', '**/community/requests/*', (request) => {
+      if (request.body.requestStatus === 'Resolved') {
+        request.alias = 'closeUserRequest';
         request.reply({
           body: {
             requestStatus: RequestStatus.Resolved,
           } as StoredDataRequest,
           status: 200,
-        })
-      } else if (request.body.requestStatus === "Open") {
-        request.alias = "reOpenUserRequest";
+        });
+      } else if (request.body.requestStatus === 'Open') {
+        request.alias = 'reOpenUserRequest';
         request.reply({
           body: {
             requestStatus: RequestStatus.Open,
           } as StoredDataRequest,
           status: 200,
-        })
+        });
       }
     });
   }

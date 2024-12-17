@@ -70,7 +70,7 @@ export async function patchDataRequest(
           accessStatus: accessStatus,
           contacts: contacts,
           message: message,
-          requestStatusChangeReason: requestStatusChangeReason
+          requestStatusChangeReason: requestStatusChangeReason,
         }
       );
     }
