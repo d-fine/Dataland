@@ -1896,6 +1896,69 @@
         ]
       }
     },
+    "/metadata/{dataId}/data-points": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
+        "description": "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+        "operationId": "getContainedDataPoints",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of data point IDs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/internal/cached/public/{dataId}": {
       "get": {
         "tags": [
@@ -2328,69 +2391,6 @@
         ]
       }
     },
-    "/data/sfdr/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "sfdr-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/sfdr/companies/{companyId}": {
       "get": {
         "tags": [
@@ -2492,69 +2492,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/p2p/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "p-2p-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_1",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
                 }
               }
             }
@@ -2726,69 +2663,6 @@
         ]
       }
     },
-    "/data/nuclear-and-gas/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "nuclear-and-gas-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_2",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/nuclear-and-gas/companies/{companyId}": {
       "get": {
         "tags": [
@@ -2890,69 +2764,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/lksg/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "lksg-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_3",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
                 }
               }
             }
@@ -3124,69 +2935,6 @@
         ]
       }
     },
-    "/data/heimathafen/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "heimathafen-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_4",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/heimathafen/companies/{companyId}": {
       "get": {
         "tags": [
@@ -3288,69 +3036,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/eutaxonomy-non-financials/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "eutaxonomy-non-financials-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_5",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
                 }
               }
             }
@@ -3522,69 +3207,6 @@
         ]
       }
     },
-    "/data/eutaxonomy-financials/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "eutaxonomy-financials-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_6",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/eutaxonomy-financials/companies/{companyId}": {
       "get": {
         "tags": [
@@ -3721,69 +3343,6 @@
         ]
       }
     },
-    "/data/esg-datenkatalog/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "esg-datenkatalog-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_7",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/esg-datenkatalog/companies/{companyId}": {
       "get": {
         "tags": [
@@ -3885,69 +3444,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/data/additional-company-information/{dataId}/data-points": {
-      "get": {
-        "tags": [
-          "additional-company-information-data-controller"
-        ],
-        "summary": "Retrieve list of data point IDs the dataset is composed of.",
-        "description": "The IDs of the data points contained in the dataset specified are returned as a list of strings.",
-        "operationId": "getContainedDataPoints_8",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved list of data point IDs.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
                 }
               }
             }
@@ -19099,21 +18595,21 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
           },
           "lei": {
             "type": "string",
@@ -19140,10 +18636,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

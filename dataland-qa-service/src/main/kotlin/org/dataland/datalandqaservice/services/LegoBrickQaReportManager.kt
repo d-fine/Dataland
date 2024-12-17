@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import jakarta.transaction.Transactional
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
@@ -76,7 +77,8 @@ class LegoBrickQaReportManager(
     ): MutableList<String> {
         val specification = getFrameworkSpecification(dataType)
 
-        val associatedDataPoints = dataPointCompositionService.getCompositionOfDataSet(dataId)
+        val associatedDataPoints = dataPointCompositionService.getCompositionOfDataSet(dataId) ?: throw
+                IllegalStateException("The dataset with id $dataId is not a composition of data points")
         val decomposedQaReport =
             JsonSpecificationUtils.dehydrateJsonSpecification(
                 specification, objectMapper.valueToTree(report),
@@ -127,6 +129,7 @@ class LegoBrickQaReportManager(
         return specification
     }
 
+    @Transactional
     override fun setQaReportStatusInt(
         qaReportEntity: QaReportEntity,
         statusToSet: Boolean,

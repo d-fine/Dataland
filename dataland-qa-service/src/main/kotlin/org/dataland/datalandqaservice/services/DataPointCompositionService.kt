@@ -1,25 +1,33 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.stereotype.Service
 
 /**
  * A service class for managing the composition of datasets
  */
 @Service
-class DataPointCompositionService {
-    /**
-     * Checks if a dataset is a lego brick dataset
-     */
-    fun isLegoBrickDataset(dataId: String): Boolean {
-        // TODO: REPLACE WITH ACTUAL LOGIC!!!!
-        return false
-    }
+class DataPointCompositionService @Autowired constructor(
+    private val metaDataControllerApi: MetaDataControllerApi
+){
 
     /**
      * Gets the composition of a dataset as a map of DataPointId to DataPointDataId
+     * Returns null if the dataset is not a composition of data points
      */
-    fun getCompositionOfDataSet(dataId: String): Map<String, String> {
-        // TODO: REPLACE WITH ACTUAL LOGIC!!!!
-        return mapOf("extendedCurrencyEquity" to "3cca1283-2a75-4a23-93d6-2d2469cf139f")
+    fun getCompositionOfDataSet(dataId: String): Map<String, String>? {
+        return try {
+            metaDataControllerApi.getContainedDataPoints(dataId)
+        } catch (ex: ClientException) {
+            if (ex.statusCode == HttpStatus.NOT_FOUND.value()) {
+                null
+            } else {
+                throw ex
+            }
+        }
     }
 }

@@ -71,11 +71,7 @@ class DataPointQaReviewManager(
         correlationId: String,
         overwriteDataPointQaStatus: Boolean,
     ) {
-        if (!compositionService.isLegoBrickDataset(dataId)) {
-            return
-        }
-
-        val composition = compositionService.getCompositionOfDataSet(dataId)
+        val composition = compositionService.getCompositionOfDataSet(dataId) ?: return
         val allDataIds = composition.values.toList()
 
         if (overwriteDataPointQaStatus) {
