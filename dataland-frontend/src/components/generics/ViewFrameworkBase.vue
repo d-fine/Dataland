@@ -8,6 +8,7 @@
       :framework="dataType"
       :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
+
     <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
@@ -62,6 +63,9 @@
 
             <DownloadDatasetModal
               v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
+              :dataType="dataType"
+              :handleDownload="getDatasetFromExportApi"
+              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
               @update:isDownloadModalOpen="isDownloadModalOpen = $event"
             >
             </DownloadDatasetModal>
@@ -406,6 +410,16 @@ export default defineComponent({
      */
     handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
       return router.push(reportingPeriodTableEntry.editUrl);
+    },
+
+    /**
+     * Downloads the dataset from the selected reporting period as a file in the selected format
+     * @param reportingYear selected reporting year
+     * @param fileFormat selected file format
+     */
+    getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
+      console.log(this.dataType, this.companyID, reportingYear, fileFormat);
+      return;
     },
   },
   watch: {
