@@ -2,7 +2,7 @@
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
     <CompanyInfoSheet
-      :company-id="companyId"
+      :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
       :show-single-data-request-button="true"
       :framework="dataType"
@@ -52,25 +52,8 @@
             />
 
             <PrimeButton
-              class="uppercase p-button p-button-sm d-letters ml-3"
-              aria-label="DOWNLOAD DATA"
-              @click="isDownloadModalOpen = true"
-              data-test="downloadDataButton"
-            >
-              <span class="px-2 py-1">DOWNLOAD DATA</span>
-            </PrimeButton>
-
-            <DownloadDataSetModal
-              v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
-              :handleDownload="getDatasetFromExportApi"
-              :dataType="dataType"
-              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
-              @update:isDownloadModalOpen="isDownloadModalOpen = $event"
-            ></DownloadDataSetModal>
-
-            <PrimeButton
               v-if="isEditableByCurrentUser"
-              class="uppercase p-button p-button-sm d-letters ml-3"
+              class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
               aria-label="EDIT DATA"
               @click="editDataset"
               data-test="editDatasetButton"
@@ -139,12 +122,10 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
-import DownloadDataSetModal from '@/components/general/DownloadDataSetModal.vue';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
   components: {
-    DownloadDataSetModal,
     CompanyInfoSheet,
     TheContent,
     TheHeader,
@@ -159,7 +140,7 @@ export default defineComponent({
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
-    companyId: {
+    companyID: {
       type: String,
       required: true,
     },
@@ -198,7 +179,6 @@ export default defineComponent({
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
-      isDownloadModalOpen: false,
     };
   },
   provide() {
@@ -225,7 +205,7 @@ export default defineComponent({
       );
     },
     targetLinkForAddingNewDataset() {
-      return `/companies/${this.companyId ?? ''}/frameworks/upload`;
+      return `/companies/${this.companyID ?? ''}/frameworks/upload`;
     },
   },
   created() {
@@ -239,7 +219,7 @@ export default defineComponent({
   methods: {
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
-     * @param fetchedCompanyInformation the company information for the current companyId
+     * @param fetchedCompanyInformation the company information for the current company Id
      */
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
@@ -262,7 +242,7 @@ export default defineComponent({
         }
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
-          assertDefined(this.companyId),
+          assertDefined(this.companyID),
           this.dataType,
           Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
         );
@@ -270,13 +250,13 @@ export default defineComponent({
     },
     /**
      * Navigates to the data update form
-     * @param companyId company Id
+     * @param companyID company ID
      * @param dataType data type
      * @param dataId data Id
      */
-    gotoUpdateForm(companyId: string, dataType: DataTypeEnum, dataId: string) {
+    gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
       void router.push(
-        `/companies/${assertDefined(companyId)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
+        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
       );
     },
     /**
@@ -304,7 +284,7 @@ export default defineComponent({
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
-        void router.push(`/companies/${this.companyId}/frameworks/${this.chosenDataTypeInDropdown}`);
+        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
     },
 
@@ -332,7 +312,7 @@ export default defineComponent({
     },
 
     /**
-     * Uses a list of data meta info to set a map which has the distinct reporting periods as keys, and the respective
+     * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
      * active data meta info as value.
      * It only takes into account data meta info whose dataType equals the current dataType prop value.
      * @param listOfActiveDataMetaInfo The list to be used as input for the map.
@@ -362,7 +342,7 @@ export default defineComponent({
       try {
         const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
         const metaDataControllerApi = backendClients.metaDataController;
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyId);
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
         this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
           listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
@@ -386,12 +366,14 @@ export default defineComponent({
         .then((hasUserReviewerRights) => {
           this.hasUserReviewerRights = hasUserReviewerRights;
         })
-        .then(async () => {
-          this.hasUserUploaderRights = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
+        .then(() => {
+          return checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise).then((hasUserUploaderRights) => {
+            this.hasUserUploaderRights = hasUserUploaderRights;
+          });
         })
         .then(() => {
           if (!this.hasUserUploaderRights) {
-            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
+            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyID, this.getKeycloakPromise).then(
               (hasUserUploaderRights) => {
                 this.hasUserUploaderRights = hasUserUploaderRights;
               }
@@ -406,15 +388,6 @@ export default defineComponent({
      */
     handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
       return router.push(reportingPeriodTableEntry.editUrl);
-    },
-    /**
-     * Downloads the dataset from the selected reporting period as a file in the selected format
-     * @param reportingYear selected reporting year
-     * @param fileFormat selected file format
-     */
-    getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
-      console.log(this.dataType, this.companyId, reportingYear, fileFormat);
-      return;
     },
   },
   watch: {
