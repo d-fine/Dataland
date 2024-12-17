@@ -88,6 +88,29 @@ interface MetaDataApi {
     ): ResponseEntity<DataMetaInformation>
 
     /**
+     * A method to retrieve a list of all data IDs of the data-points contained in the dataset
+     * @param dataId identifier used to uniquely specify the dataset in question
+     * @return a list of data point IDs contained in the dataset
+     */
+    @Operation(
+        summary = "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
+        description = "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data point IDs."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}/data-points"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    fun getContainedDataPoints(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<Map<String, String>>
+
+    /**
      * A method to retrieve information about the sourceability of data sets.
      * @param companyId if set, filters the requested info by companyId
      * @param dataType if set, filters the requested info by data type.

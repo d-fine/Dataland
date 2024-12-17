@@ -41,20 +41,7 @@ interface DataApi<T> {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize(
-        "hasRole('ROLE_UPLOADER') or " +
-            "(hasRole('ROLE_USER') and " +
-            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#companyAssociatedData.companyId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
-            ") or " +
-            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#companyAssociatedData.companyId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
-            ")" +
-            ")" +
-            ")",
-    )
+    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId)")
     fun postCompanyAssociatedData(
         @Valid @RequestBody
         companyAssociatedData: CompanyAssociatedData<T>,

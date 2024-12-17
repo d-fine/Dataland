@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoRespo
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
+import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -29,6 +30,7 @@ class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired val dataPointManager: DataPointManager,
 ) : MetaDataApi {
     override fun getListOfDataMetaInfo(
         companyId: String?,
@@ -101,5 +103,16 @@ class MetaDataController(
                         "and reportingPeriod $reportingPeriod.",
             )
         }
+    }
+
+    override fun getContainedDataPoints(dataId: String): ResponseEntity<Map<String, String>> {
+        val dataPoints = dataPointManager.getDataPointIdsForDataSet(dataId)
+        if (dataPoints.isEmpty()) {
+            throw ResourceNotFoundApiException(
+                summary = "No data point mapping found for dataset.",
+                message = "Either the provided dataset ID $dataId is invalid or the corresponding framework does not support data points.",
+            )
+        }
+        return ResponseEntity.ok(dataPoints)
     }
 }
