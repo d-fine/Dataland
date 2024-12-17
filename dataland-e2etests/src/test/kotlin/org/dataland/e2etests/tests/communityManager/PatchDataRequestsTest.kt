@@ -91,7 +91,7 @@ class PatchDataRequestsTest {
         val clientException =
             assertThrows<ClientException> {
                 requestControllerApi.patchDataRequest(
-                    dataRequestId, DataRequestPatch(requestPriority = testRequestPriority)
+                    dataRequestId, DataRequestPatch(requestPriority = testRequestPriority),
                 )
             }
         assertEquals(clientErrorMessage403, clientException.message)

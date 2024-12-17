@@ -170,15 +170,14 @@ class SecurityUtilsService(
     /**
      * Returns true if all passed parameters are null, otherwise false.
      */
-    fun parametersUnset(vararg parameters: Any?): Boolean {
-        return parameters.all {
+    fun parametersUnset(vararg parameters: Any?): Boolean =
+        parameters.all {
             when (it) {
                 is String -> it.isNullOrBlank()
                 is Collection<*> -> it.isNullOrEmpty()
                 else -> it == null
             }
         }
-    }
 
     /**
      * Returns true if the user is allowed to patch given the passed request body
@@ -186,31 +185,39 @@ class SecurityUtilsService(
      * @param dataRequestPatch
      */
     @Transactional(readOnly = true)
-    fun canUserPatchDataRequest(dataRequestID: UUID, dataRequestPatch: DataRequestPatch): Boolean {
+    fun canUserPatchDataRequest(
+        dataRequestID: UUID,
+        dataRequestPatch: DataRequestPatch,
+    ): Boolean {
         val isOwnRequest = isUserAskingForOwnRequest(dataRequestID)
         val requestStatusChangeable = isRequestStatusChangeableByUser(dataRequestID, dataRequestPatch.requestStatus)
-        val notPatchingStatusPriorityComment = parametersUnset(
-            dataRequestPatch.accessStatus, dataRequestPatch.requestPriority, dataRequestPatch.adminComment
-        )
-        val messageHistoryChangeable = isRequestMessageHistoryChangeableByUser(
-            dataRequestID,
-            dataRequestPatch.requestStatus,
-            dataRequestPatch.contacts,
-            dataRequestPatch.message
-        )
+        val notPatchingStatusPriorityComment =
+            parametersUnset(
+                dataRequestPatch.accessStatus,
+                dataRequestPatch.requestPriority,
+                dataRequestPatch.adminComment,
+            )
+        val messageHistoryChangeable =
+            isRequestMessageHistoryChangeableByUser(
+                dataRequestID,
+                dataRequestPatch.requestStatus,
+                dataRequestPatch.contacts,
+                dataRequestPatch.message,
+            )
 
         val ownRequestPatchAllowed = (
             isOwnRequest && requestStatusChangeable && notPatchingStatusPriorityComment && messageHistoryChangeable
         )
 
-        val isCompanyOwner = isUserCompanyOwnerForRequestId(dataRequestID.toString());
-        val pathingOnlyAccessStatus = parametersUnset(
-            dataRequestPatch.requestStatus,
-            dataRequestPatch.contacts,
-            dataRequestPatch.message,
-            dataRequestPatch.requestPriority,
-            dataRequestPatch.adminComment
-        )
+        val isCompanyOwner = isUserCompanyOwnerForRequestId(dataRequestID.toString())
+        val pathingOnlyAccessStatus =
+            parametersUnset(
+                dataRequestPatch.requestStatus,
+                dataRequestPatch.contacts,
+                dataRequestPatch.message,
+                dataRequestPatch.requestPriority,
+                dataRequestPatch.adminComment,
+            )
 
         return ownRequestPatchAllowed || (isCompanyOwner && pathingOnlyAccessStatus)
     }
