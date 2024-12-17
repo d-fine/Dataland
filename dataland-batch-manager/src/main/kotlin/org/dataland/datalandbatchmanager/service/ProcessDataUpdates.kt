@@ -135,7 +135,7 @@ class ProcessDataUpdates(
     }
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(cron = "0 0 16 * * *")
+    @Scheduled(cron = "0 30 15 * * *")
     private fun processRequestPriorityUpdates() {
         logger.info("Running scheduled update of request priorities.")
         waitForCommunityManager()
