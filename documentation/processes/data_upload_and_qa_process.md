@@ -21,7 +21,7 @@ sequenceDiagram
     activate backend
     backend ->> backend: Store Meta-Data
     backend ->> backend: Store Dataset in Temporary Storage
-    backend --) mq: Send 'Public Data received' and 'QA Requested'
+    backend --) mq: Send 'Public Data received'
     activate mq
     backend -->> Uploader: Upload completed
     deactivate backend
@@ -44,7 +44,7 @@ sequenceDiagram
     backend ->> backend: Remove Dataset from Temporary Storage
     deactivate backend
     alt bypassQa is false
-        mq -) qaService: Receive 'QA Requested'
+        mq -) qaService: Receive 'Public Data received'
         deactivate mq
         activate qaService
         qaService ->> qaService: Store entry in QA-DB table
@@ -65,7 +65,7 @@ sequenceDiagram
 
     else bypassQa is true
         activate mq
-        mq -) qaService: Receive 'QA Requested'
+        mq -) qaService: Receive 'Public Data received'
         deactivate mq
         activate qaService
         qaService ->> qaService: Store entry in QA-DB table

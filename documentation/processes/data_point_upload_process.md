@@ -43,7 +43,7 @@ sequenceDiagram
     backend ->> backend: Remove Data Point from Temporary Storage
     deactivate backend
     alt bypassQa is false
-        mq -) qaService: Receive 'QA Requested'
+        mq -) qaService: Receive 'Public Data received'
         deactivate mq
         activate qaService
         qaService ->> qaService: Store entry in QA-DB table
@@ -76,4 +76,3 @@ sequenceDiagram
     backend ->> backend: Update QA Decision in Metadata
     deactivate backend
 ```
-

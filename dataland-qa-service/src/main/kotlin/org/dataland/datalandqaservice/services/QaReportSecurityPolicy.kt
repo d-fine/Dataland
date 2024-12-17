@@ -47,7 +47,7 @@ class QaReportSecurityPolicy(
         when (apiRequestException.statusCode) {
             HttpStatus.FORBIDDEN.value() -> {
                 InsufficientRightsApiException(
-                    "Missing required access rights",
+                    "Required access rights missing",
                     "You do not have the required access rights to view the data id: $dataId",
                     apiRequestException,
                 )

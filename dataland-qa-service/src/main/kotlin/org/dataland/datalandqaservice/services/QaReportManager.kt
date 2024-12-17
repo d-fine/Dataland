@@ -109,7 +109,7 @@ class QaReportManager(
         val storedQaReportEntity = getQaReportById(dataId, dataType, qaReportId)
         if (!qaReportSecurityPolicy.canUserSetQaReportStatus(storedQaReportEntity, requestingUser)) {
             throw InsufficientRightsApiException(
-                "Missing required access rights",
+                "Required access rights missing",
                 "You do not have the required access rights to update QA report with the id: $qaReportId",
             )
         }
