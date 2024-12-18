@@ -77,6 +77,7 @@ services:
       - qa-service-db
       - community-manager-db
       - email-service-db
+      - grafana
     ports:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5440:5433-5440"
@@ -666,28 +667,29 @@ services:
       <<: *loki-logging
   grafana:
     restart: always
-    image: grafana/grafana:latest
+    image: grafana/grafana:11.4.0@sha256:d8ea37798ccc41061a62ab080f2676dda6bf7815558499f901bdb0f533a456fb
     environment:
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_BASIC_ENABLED=false
-      - GF_FEATURE_TOGGLES_ENABLE=accessControlOnCall
-      - GF_INSTALL_PLUGINS=https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
-    ports:
-      - 3000:3000/tcp
+      - GF_PATHS_CONFIG=/config/grafana-custom.ini
+    expose:
+      - "3000"
     volumes:
-      - grafana_data:/var/lib/grafana
+      - grafana_data:/var/lib/grafana/data
+      - ./dataland-grafana/config:/config
     networks:
+      - grafana
       - loki
     logging:
       <<: *loki-logging
   loki:
     restart: always
-    image: grafana/loki:main
-    ports:
-      - 3100:3100
+    image: grafana/loki:3.2.2@sha256:030eee702c799da359c76e1fe305f03b522112ee34926b6c656495768fd5cb70
+    expose:
+      - "3100"
+    environment:
+      INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-      - loki_data:/loki
+#      - loki_data:/loki
+#      - loki_data:/var/lib/loki/data
       - ./dataland-loki/config:/config
     command: -config.file=/config/loki-config.yaml
     networks:
@@ -696,13 +698,16 @@ services:
       <<: *loki-logging
   alloy:
     restart: always
-    image: grafana/alloy:latest
-    ports:
-      - 12345:12345
+    image: grafana/alloy:v1.5.1@sha256:01a63f4e032ce54ee94b22049bc27f597e74f85566478c377f4b5c7f020c1eb3
+    expose:
+      - "8080"
+    environment:
+      INTERNAL_ALLOY_URL: ${INTERNAL_ALLOY_URL:-http://alloy:8080}
     volumes:
       - ./dataland-alloy/config:/config
       - /var/run/docker.sock:/var/run/docker.sock
-    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /config/alloy-config.alloy
+      - alloy_data:/var/lib/alloy/data
+    command: run --server.http.listen-addr=alloy:8080 --storage.path=/var/lib/alloy/data /config/alloy-config.alloy
     depends_on:
       - loki
     networks:
@@ -721,6 +726,7 @@ networks:
   community-manager-db:
   email-service-db:
   loki:
+  grafana:
 volumes:
   keycloak_data:
     driver: local
@@ -750,5 +756,12 @@ volumes:
     driver: local
   grafana_data:
     driver: local
-  loki_data:
+#  loki_data:
+#    driver: local
+  #  driver_opts:
+#      type: "nfs"
+   #   o: "size=100m"
+#      device: "/var/lib/docker/volumes/dataland_loki_data/_data"
+      # device: "/var/lib/loki/data"
+  alloy_data:
     driver: local
