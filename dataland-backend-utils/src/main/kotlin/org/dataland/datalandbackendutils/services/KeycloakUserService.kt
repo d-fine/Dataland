@@ -80,16 +80,16 @@ class KeycloakUserService(
                 .body!!
                 .string()
 
-        return try {
-            val userList: List<KeycloakUserInfo> =
+        try {
+            val listOfUsers: List<KeycloakUserInfo> =
                 objectMapper.readValue(
                     response,
                     object : TypeReference<List<KeycloakUserInfo>>() {},
                 )
-            userList
+            return listOfUsers
         } catch (e: JacksonException) {
             logger.warn("Failed to parse response from Keycloak. Response $response, exception: $e")
-            emptyList()
+            return emptyList()
         }
     }
 
