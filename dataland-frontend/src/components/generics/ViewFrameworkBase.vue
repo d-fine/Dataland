@@ -67,6 +67,7 @@
               :handleDownload="getDatasetFromExportApi"
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
               @update:isDownloadModalOpen="isDownloadModalOpen = $event"
+              data-test="downloadModal"
             >
             </DownloadDatasetModal>
 
@@ -417,7 +418,7 @@ export default defineComponent({
      * @param reportingYear selected reporting year
      * @param fileFormat selected file format
      */
-    getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
+    async getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
       console.log(this.dataType, this.companyID, reportingYear, fileFormat);
       return;
     },

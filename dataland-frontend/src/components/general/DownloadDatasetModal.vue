@@ -7,6 +7,7 @@
     :closable="true"
     :dismissable-mask="true"
     @hide="closeModal"
+    data-test="downloadModal"
   >
     <FormKit type="form" :actions="false" class="formkit-wrapper">
       <label for="Download">
@@ -40,7 +41,11 @@
     </FormKit>
 
     <div>
-      <PrimeButton data-test="downloadDataButton" @click="downloadFile()" style="width: 100%; justify-content: center">
+      <PrimeButton
+        data-test="downloadDataButtonInModal"
+        @click="downloadFile()"
+        style="width: 100%; justify-content: center"
+      >
         <span class="d-letters" style="text-align: center" data-test="downloadButton"> DOWNLOAD </span>
       </PrimeButton>
     </div>

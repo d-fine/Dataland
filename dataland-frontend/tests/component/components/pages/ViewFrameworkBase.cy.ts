@@ -4,6 +4,7 @@ import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
+import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 
 describe('Component test for ViewFrameworkBase', () => {
   it('Should proper set the drop down options based on data', () => {
@@ -102,4 +103,22 @@ describe('Component test for ViewFrameworkBase', () => {
       });
     }
   );
+
+  it('Should display the download data button for data reader ' + 'and open download modal', () => {
+    cy.intercept('**/api/metadata*', { fixture: 'MetaInfoDataMocksForOneCompany', times: 1 }).as('metaDataFetch');
+    cy.mountWithPlugins(ViewFrameworkBase, {
+      keycloak: minimalKeycloakMock({}),
+      global: {
+        stubs: ['CompanyInformation'],
+      },
+    }).then((mounted) => {
+      void mounted.wrapper.setProps({
+        dataType: DataTypeEnum.EutaxonomyFinancials,
+        companyID: 'mock-company-id',
+      });
+
+      cy.get('button[data-test=downloadDataButton]').should('exist').click();
+      cy.get('[data-test=downloadModal]').should('exist');
+    });
+  });
 });
