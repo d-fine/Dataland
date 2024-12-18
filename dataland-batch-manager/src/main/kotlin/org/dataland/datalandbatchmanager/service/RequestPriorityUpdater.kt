@@ -29,14 +29,15 @@ class RequestPriorityUpdater(
                 .getUsersByRole("ROLE_PREMIUM_USER")
                 .map { it.userId }
                 .toSet()
-        val adminUserIDs =
-            keycloakUserService
-                .getUsersByRole("ROLE_ADMIN")
-                .map { it.userId }
-                .toSet()
 
-        logger.info("Received PremiumUser IDs: $premiumUserIds")
-        logger.info("Received Admin IDs: $adminUserIDs")
+        logger.info("Premium user IDs: $premiumUserIds")
+
+        val test =
+            keycloakUserService.searchUsers("")
+
+        val userIdsMatchingEmailAddress = test.map { it.userId }.toSet()
+
+        logger.info("All user email addresses $userIdsMatchingEmailAddress")
 
         updateRequestPriorities(
             currentPriority = RequestPriority.Low,
