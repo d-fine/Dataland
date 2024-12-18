@@ -130,7 +130,12 @@ import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_EDIT_FUNCTIONALITY, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
+import {
+  type DataMetaInformation,
+  type CompanyInformation,
+  type DataTypeEnum,
+  type ExportFileType,
+} from '@clients/backend';
 
 import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -415,12 +420,30 @@ export default defineComponent({
 
     /**
      * Downloads the dataset from the selected reporting period as a file in the selected format
-     * @param reportingYear selected reporting year
+     * @param reportingPeriod selected reporting year
      * @param fileFormat selected file format
      */
-    async getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
-      console.log(this.dataType, this.companyID, reportingYear, fileFormat);
-      return;
+    async getDatasetFromExportApi(reportingPeriod: string, fileFormat: ExportFileType) {
+      const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+      const dataId = this.getDataIdBySelectedReportingPeriod(this.mapOfReportingPeriodToActiveDataset, reportingPeriod);
+      if (dataId != null) {
+        await backendClients.exportController.exportData(fileFormat, dataId);
+      }
+    },
+    /**
+     * Returns the dataId as a string for the selected reportingPeriod for this company and data framework
+     * @param datasetMap the map that combines the reportingPeriod with the metaData of the dataset
+     * @param reportingPeriod the requested reportingPeriod
+     * @returns the dataId of the requested dataset or null if reportingPeriod is invalid
+     */
+    getDataIdBySelectedReportingPeriod(datasetMap: Map<string, DataMetaInformation>, reportingPeriod: string) {
+      if (datasetMap.has(reportingPeriod)) {
+        const metaData = datasetMap.get(reportingPeriod);
+        if (metaData != undefined) {
+          return metaData.dataId;
+        }
+      }
+      return null;
     },
   },
   watch: {
