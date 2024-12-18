@@ -85,6 +85,52 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
+     * A method to export the CompanyAssociatedData for a dataId to CSV
+     * @param dataId identifier used to uniquely identify a dataset
+     * @return
+     */
+    @Operation(
+        summary = "Export data identified by dataId to CSV.",
+        description = "Export data identified by dataId to CSV.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully exported dataset as CSV file."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}/csv"],
+        produces = ["text/csv"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    fun exportCompanyAssociatedDataToCsv(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<String>
+
+    /**
+     * A method to export the CompanyAssociatedData for a dataId to JSON
+     * @param dataId identifier used to uniquely identify a dataset
+     * @return
+     */
+    @Operation(
+        summary = "Export data identified by dataId to JSON.",
+        description = "Export data identified by dataId to JSON.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully exported dataset as JSON file."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    fun exportCompanyAssociatedDataToJson(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<CompanyAssociatedData<T>>
+
+    /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its
      * company ID, optionally filtered to one specific reporting period
      * @param companyId identifier of the company in Dataland

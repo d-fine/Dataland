@@ -48,6 +48,18 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
+    @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToJson")
+    override fun exportCompanyAssociatedDataToJson(dataId: String):
+        ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
+        return super.exportCompanyAssociatedDataToJson(dataId)
+    }
+
+    @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToCsv")
+    override fun exportCompanyAssociatedDataToCsv(dataId: String):
+        ResponseEntity<String> {
+        return super.exportCompanyAssociatedDataToCsv(dataId)
+    }
+
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,

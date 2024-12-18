@@ -12,19 +12,24 @@ import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.ArgumentMatchers.notNull
-import org.mockito.Mockito.mock
+import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Spy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -33,20 +38,20 @@ import org.springframework.security.core.context.SecurityContextHolder
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 internal class DataControllerTest(
     @Autowired @Spy
-    var objectMapper: ObjectMapper,
+    val objectMapper: ObjectMapper,
 ) {
-    val testDataProvider = TestDataProvider(objectMapper)
+    private final val testDataProvider = TestDataProvider(objectMapper)
 
-    val testDataType = DataType.valueOf("eutaxonomy-non-financials")
-    val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
-    val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
-    val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
+    private final val testDataType = DataType.valueOf("eutaxonomy-non-financials")
+    private final val storedCompanyEntity = testDataProvider.getEmptyStoredCompanyEntity()
+    private final val someEuTaxoData = testDataProvider.getEuTaxonomyNonFinancialsDataset()
+    private val someEuTaxoDataAsString = objectMapper.writeValueAsString(someEuTaxoData)!!
 
-    val testUserId = "testuser"
-    val otherUserId = "otheruser"
-    val testUserPendingDataId = "testuser_pending"
-    val otherUserPendingDataId = "otheruser_pending"
-    val otherUserAcceptedDataId = "otheruser_accepted"
+    private final val testUserId = "testuser"
+    private final val otherUserId = "otheruser"
+    private final val testUserPendingDataId = "testuser_pending"
+    private final val otherUserPendingDataId = "otheruser_pending"
+    private final val otherUserAcceptedDataId = "otheruser_accepted"
     val testUserPendingDataMetaInformationEntity =
         buildDataMetaInformationEntity(testUserPendingDataId, testUserId, QaStatus.Pending)
     val otherUserPendingDataMetaInformationEntity =
@@ -54,32 +59,18 @@ internal class DataControllerTest(
     val otherUserAcceptedDataMetaInformationEntity =
         buildDataMetaInformationEntity(otherUserAcceptedDataId, otherUserId, QaStatus.Accepted)
 
+    @Mock
     lateinit var mockSecurityContext: SecurityContext
+
+    @Mock
     lateinit var mockDataManager: DataManager
+
+    @Mock
     lateinit var mockDataMetaInformationManager: DataMetaInformationManager
     lateinit var dataController: EutaxonomyNonFinancialsDataController
 
     @BeforeEach
-    fun resetMocks() {
-        mockSecurityContext = mock(SecurityContext::class.java)
-        mockDataManager = mock(DataManager::class.java)
-        mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
-        dataController =
-            EutaxonomyNonFinancialsDataController(
-                mockDataManager,
-                mockDataMetaInformationManager, objectMapper,
-            )
-    }
-
-    @Test
-    fun `test that the correct datasets are filtered`() {
-        mockDataMetaInformationManager()
-        mockDataManager()
-        testGetCompanyAssociatedDataEndpoint()
-        testGetAllCompanyDataEndpoint()
-    }
-
-    private fun mockDataMetaInformationManager() {
+    fun setup() {
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(testUserPendingDataId)).thenReturn(
             testUserPendingDataMetaInformationEntity,
         )
@@ -99,9 +90,6 @@ internal class DataControllerTest(
                 otherUserAcceptedDataMetaInformationEntity,
             ),
         )
-    }
-
-    private fun mockDataManager() {
         `when`(mockDataManager.getPublicDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
             StorableDataSet(
                 "",
@@ -112,6 +100,38 @@ internal class DataControllerTest(
                 someEuTaxoDataAsString,
             ),
         )
+        dataController =
+            EutaxonomyNonFinancialsDataController(
+                mockDataManager,
+                mockDataMetaInformationManager, objectMapper,
+            )
+    }
+
+    @AfterEach
+    fun resetMocks() = Mockito.reset(mockSecurityContext, mockDataManager, mockDataMetaInformationManager)
+
+    @Test
+    fun `test that the correct datasets are filtered`() {
+        testGetCompanyAssociatedDataEndpoint()
+        testGetAllCompanyDataEndpoint()
+    }
+
+    @Test
+    fun `test that the json export works as expected`() {
+        this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
+        assertDoesNotThrow {
+            dataController.exportCompanyAssociatedDataToJson(otherUserAcceptedDataId)
+        }
+    }
+
+    @Test
+    fun `test that the csv export works as expected`() {
+        this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
+        var response: ResponseEntity<String>? = null
+        assertDoesNotThrow {
+            response = dataController.exportCompanyAssociatedDataToCsv(otherUserAcceptedDataId)
+        }
+        assertEquals(someEuTaxoDataAsString, response?.body)
     }
 
     private fun buildDataMetaInformationEntity(
