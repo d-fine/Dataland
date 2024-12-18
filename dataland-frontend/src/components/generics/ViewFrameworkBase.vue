@@ -8,6 +8,7 @@
       :framework="dataType"
       :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
+
     <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
@@ -52,13 +53,31 @@
             />
 
             <PrimeButton
+              class="uppercase p-button p-button-sm d-letters ml-3"
+              aria-label="DOWNLOAD DATA"
+              @click="isDownloadModalOpen = true"
+              data-test="downloadDataButton"
+            >
+              <span class="px-2 py-1">DOWNLOAD DATA</span>
+            </PrimeButton>
+
+            <DownloadDatasetModal
+              v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
+              :dataType="dataType"
+              :handleDownload="getDatasetFromExportApi"
+              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              @update:isDownloadModalOpen="isDownloadModalOpen = $event"
+            >
+            </DownloadDatasetModal>
+
+            <PrimeButton
               v-if="isEditableByCurrentUser"
-              class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
+              class="uppercase p-button p-button-sm d-letters ml-3"
               aria-label="EDIT DATA"
               @click="editDataset"
               data-test="editDatasetButton"
             >
-              <span class="px-2">EDIT DATA</span>
+              <span class="px-2 py-1">EDIT DATA</span>
               <span
                 v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
                 class="material-icons-outlined"
@@ -122,10 +141,12 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
+import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
   components: {
+    DownloadDatasetModal,
     CompanyInfoSheet,
     TheContent,
     TheHeader,
@@ -179,6 +200,7 @@ export default defineComponent({
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
+      isDownloadModalOpen: false,
     };
   },
   provide() {
@@ -388,6 +410,16 @@ export default defineComponent({
      */
     handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
       return router.push(reportingPeriodTableEntry.editUrl);
+    },
+
+    /**
+     * Downloads the dataset from the selected reporting period as a file in the selected format
+     * @param reportingYear selected reporting year
+     * @param fileFormat selected file format
+     */
+    getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
+      console.log(this.dataType, this.companyID, reportingYear, fileFormat);
+      return;
     },
   },
   watch: {
