@@ -30,15 +30,6 @@ class RequestPriorityUpdater(
                 .map { it.userId }
                 .toSet()
 
-        logger.info("Premium user IDs: $premiumUserIds")
-
-        val test =
-            keycloakUserService.searchUsers("")
-
-        val userIdsMatchingEmailAddress = test.map { it.userId }.toSet()
-
-        logger.info("All user email addresses $userIdsMatchingEmailAddress")
-
         updateRequestPriorities(
             currentPriority = RequestPriority.Low,
             newPriority = RequestPriority.High,

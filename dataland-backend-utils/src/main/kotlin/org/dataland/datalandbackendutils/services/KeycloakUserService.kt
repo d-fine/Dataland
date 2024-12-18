@@ -58,14 +58,9 @@ class KeycloakUserService(
     }
 
     /**
-     * Retrieves a list of users associated with a given Keycloak role.
-     *
-     * @param role the Keycloak role for which user information should be fetched.
-     *             This corresponds to the role name in the Keycloak realm.
-     * @param params additional parameters that may be required for the request.
-     * @return a list of `KeycloakUserInfo` objects containing user details
-     * @throws IOException if there is an issue with the HTTP request or response handling.
-     * @throws JacksonException if the response cannot be parsed into the expected structure.
+     * get list of user information by keycloak role
+     * @param role the keycloak role for which user information should be fetched.
+     * @returns the list of keycloak user info for the corresponding role
      */
     fun getUsersByRole(role: String): List<KeycloakUserInfo> {
         val request =
@@ -95,6 +90,8 @@ class KeycloakUserService(
 
     /**
      * Search keycloak users by email address or parts thereof
+     * @param emailAddressSearchString the email address string to search for
+     * @returns the list of keycloak user info matching the email search string
      */
     fun searchUsers(emailAddressSearchString: String): List<KeycloakUserInfo> {
         val request =

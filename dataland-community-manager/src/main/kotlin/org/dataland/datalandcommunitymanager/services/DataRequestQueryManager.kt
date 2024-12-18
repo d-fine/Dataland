@@ -73,6 +73,7 @@ class DataRequestQueryManager
          * @param identifierValue can be used to filter via substring matching
          * @param dataTypes can be used to filter on frameworks
          * @param reportingPeriod can be used to filter on reporting periods
+         * @param requestStatus can be used to filter on request status
          * @returns aggregated open data requests
          */
         fun getAggregatedDataRequests(
