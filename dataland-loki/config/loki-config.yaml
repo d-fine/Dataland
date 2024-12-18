@@ -1,31 +1,27 @@
+# This is a complete configuration to deploy Loki backed by the filesystem.
+# Please refer to https://grafana.com/docs/loki/latest/configure/
+# The index will be shipped to the storage via tsdb-shipper.
+
+
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
-#
-# Statistics help us better understand how Loki is used, and they show us performance
-# levels for most users. This helps us prioritize features and documentation.
-# For more information on what's sent, look at
-# https://github.com/grafana/loki/blob/main/pkg/usagestats/stats.go
-# Refer to the buildReport method to see what goes into a report.
-#
 # Disable reporting
 analytics:
   reporting_enabled: false
 
-# This is a complete configuration to deploy Loki backed by the filesystem.
-# The index will be shipped to the storage via tsdb-shipper.
-
+# Enables authentication through the X-Scope-OrgID header, which must be present
+# if true. If false, the OrgID will always be set to 'fake'.
 auth_enabled: false
 
-limits_config:
-  allow_structured_metadata: true
-  volume_enabled: true
-
+# Configures the server of the launched module(s).
 server:
-  http_listen_port: 3100
+  http_listen_port: 3100  # default 3100
 
+# Common configuration to be shared between multiple modules. If a more specific
+# configuration is given in other sections, the related configuration within
+# this section will be ignored.
 common:
   instance_addr: 127.0.0.1
-#  path_prefix: /tmp/loki
   path_prefix: /loki
   storage:
     filesystem:
@@ -48,15 +44,17 @@ schema_config:
         prefix: index_
         period: 24h
 
+# TODO ????
 storage_config:
   tsdb_shipper:
+    # Directory where ingesters would write index files which would then be
+    # uploaded by shipper to configured storage
     active_index_directory: /tmp/loki/index
+    # Cache location for restoring index files from storage for queries
     cache_location: /tmp/loki/index_cache
   filesystem:
     directory: /tmp/loki/chunks
 
-ruler:
-  alertmanager_url: http://localhost:9093
-
-pattern_ingester:
-  enabled: true
+# TODO
+#pattern_ingester:
+#  enabled: true
