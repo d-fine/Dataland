@@ -63,10 +63,14 @@ class KeycloakUserService(
      * @returns the list of keycloak user info for the corresponding role
      */
     fun getUsersByRole(role: String): List<KeycloakUserInfo> {
+        val enabledParam = "enabled=true"
+        val maxParam = "max=10000"
+        val completeUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/roles/$role/users/?$enabledParam&$maxParam"
+
         val request =
             Request
                 .Builder()
-                .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/roles/$role/users/")
+                .url(completeUrl)
                 .build()
         val response =
             authenticatedOkHttpClient
