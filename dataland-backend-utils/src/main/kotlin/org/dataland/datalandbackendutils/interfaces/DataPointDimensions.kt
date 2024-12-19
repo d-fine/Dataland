@@ -5,7 +5,7 @@ package org.dataland.datalandbackendutils.interfaces
  * Interface containing the three dimensions of a data point (associated company, reporting Period and which data point it is)
  */
 interface DataPointDimensions {
-    val dataPointIdentifier: String
     val companyId: String
+    val dataPointIdentifier: String
     val reportingPeriod: String
 }

@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import okhttp3.OkHttpClient
+import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Value
@@ -32,5 +33,13 @@ class UserAuthenticatedBackendClient(
     fun getMetaDataControllerApiForUserAuthentication(authentication: DatalandAuthentication): MetaDataControllerApi {
         val userAuthenticatedApiClient = getUserAuthenticatedHttpClient(authentication)
         return MetaDataControllerApi(backendBaseUrl, userAuthenticatedApiClient)
+    }
+
+    /**
+     * Builds a DataPointControllerApi that is authenticated as the given Dataland User.
+     */
+    fun getDataPointControllerApiForUserAuthentication(authentication: DatalandAuthentication): DataPointControllerApi {
+        val userAuthenticatedApiClient = getUserAuthenticatedHttpClient(authentication)
+        return DataPointControllerApi(backendBaseUrl, userAuthenticatedApiClient)
     }
 }

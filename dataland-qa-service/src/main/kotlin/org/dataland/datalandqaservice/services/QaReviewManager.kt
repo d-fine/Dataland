@@ -140,12 +140,12 @@ class QaReviewManager(
     }
 
     /**
-     * Send the information that the QA status changed to the message queue
+     * Send the information that the QA status was updated to the message queue
      * @param qaReviewEntity qaReviewEntity for which to send the QaStatusChangeMessage
      * @param correlationId the ID for the process triggering the change
      */
     @Transactional
-    fun sendQaStatusChangeMessage(
+    fun sendQaStatusUpdateMessage(
         qaReviewEntity: QaReviewEntity,
         correlationId: String,
     ) {
@@ -163,11 +163,11 @@ class QaReviewManager(
                 currentlyActiveDataId = currentlyActiveDataId,
             )
 
-        logger.info("Send QA status change message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
+        logger.info("Send QA status update message for dataId ${qaStatusChangeMessage.dataId} to messageQueue.")
         val messageBody = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            messageBody, MessageType.QA_STATUS_CHANGED, correlationId, ExchangeName.DATA_QUALITY_ASSURED,
+            messageBody, MessageType.QA_STATUS_UPDATED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
             RoutingKeyNames.DATA,
         )
     }
@@ -187,8 +187,10 @@ class QaReviewManager(
     }
 
     /**
-     * Retrieve dataId of currently active dataset for same triple (companyId, dataType, reportingPeriod)
-     * @param qaReviewEntity qaReviewEntity as baseline for finding active dataset
+     * Retrieve dataId of currently active dataset for some triple ([companyId], [dataType], [reportingPeriod])
+     * @param companyId the ID of the company
+     * @param dataType the dataType of the dataset
+     * @param reportingPeriod the reportingPeriod of the dataset
      * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
      */
     private fun getDataIdOfCurrentlyActiveDataset(

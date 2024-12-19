@@ -14,8 +14,10 @@ sequenceDiagram
     participant mq as Message Queue
     participant backend as Dataland Backend
     participant storage as Internal Storage
+    participant qaService as QA Service
+    actor qaler as QA Provider
 
-    Uploader ->> backend: Upload dataset
+    Uploader ->> backend: Upload Data Point
     activate backend
     backend ->> backend: Store Meta-Data
     backend ->> backend: Store Data Point in Temporary Storage
@@ -39,5 +41,33 @@ sequenceDiagram
     mq -) backend: Receive 'Item Stored'
     activate backend
     backend ->> backend: Remove Data Point from Temporary Storage
+    deactivate backend
+    mq -) qaService: Receive 'Public Data received'
+    deactivate mq
+    activate qaService
+
+    opt bypassQa is false
+        qaService ->> qaService: Store Pending entry in QA-DB table
+        deactivate qaService
+
+        qaler ->> qaService: Get Data Points to QA
+        activate qaService
+        activate qaler
+        qaService -->> qaler: Data Point List
+        deactivate qaService
+        qaler ->> qaService: Quality Assured
+        deactivate qaler
+        activate qaService
+    end
+
+    qaService ->> qaService: Store decision in QA-DB table
+
+    qaService --) mq: Send 'QA status updated'
+    deactivate qaService
+    activate mq
+
+    mq -) backend: Receive 'QA status updated'
+    activate backend
+    backend ->> backend: Update QA Decision in Metadata
     deactivate backend
 ```

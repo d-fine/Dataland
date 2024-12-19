@@ -158,6 +158,23 @@ class CompanyRoleChecker(
     }
 
     /**
+     * Checks if the requesting user has the rights to upload data for the specified company
+     */
+    @Suppress("ReturnCount")
+    fun canUserUploadDataForCompany(companyId: String): Boolean {
+        val user = DatalandAuthentication.fromContextOrNull() ?: return false
+        val canUserUploadByGlobalRole = user.roles.contains(DatalandRealmRole.ROLE_UPLOADER)
+        if (canUserUploadByGlobalRole) {
+            // Early return to avoid unnecessary API calls
+            return true
+        }
+        val canUserUploadByCompanyRole =
+            hasCurrentUserGivenRoleForCompany(companyId, CompanyRole.CompanyOwner) ||
+                hasCurrentUserGivenRoleForCompany(companyId, CompanyRole.DataUploader)
+        return canUserUploadByCompanyRole
+    }
+
+    /**
      * Checks if the requesting user has the rights to do the desired patch of the company
      * @param companyInformationPatch contains the patched data
      * @param companyId defines the company that will be patched

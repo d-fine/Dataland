@@ -873,6 +873,296 @@
         ]
       }
     },
+    "/data-points/{dataId}": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get the QA review information of an uploaded dataset for a given id.",
+        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins and reviewer can get the review information for all datasets.",
+        "operationId": "getDataPointQaReviewInformationByDataId",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found QA review information corresponding the id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataPointQaReviewInformation"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Found no QA review information corresponding the id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataPointQaReviewInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Assign a QA review status to a dataset.",
+        "description": "Assign a QA review status to a dataset.",
+        "operationId": "changeDataPointQaStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaStatus",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/QaStatus"
+            }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully assigned QA review status to dataset."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/{dataId}/reports": {
+      "get": {
+        "tags": [
+          "data-point-qa-report-controller"
+        ],
+        "summary": "Retrieve all QA reports.",
+        "description": "Retrieve all QA reports associated to given dataset.",
+        "operationId": "getAllQaReportsForDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showInactive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "reporterUserId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all QA reports.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataPointQaReport"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "data-point-qa-report-controller"
+        ],
+        "summary": "Upload new QA report.",
+        "description": "The uploaded QA report is added to the database, the generated QA report id is returned.",
+        "operationId": "postQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportDataPointString"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully added QA report to dataland.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointQaReport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/sfdr/{dataId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
@@ -1155,6 +1445,77 @@
           "additional-company-information-data-qa-report-controller"
         ],
         "operationId": "setAdditionalCompanyInformationDataQaReportStatus",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QaReportStatusPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully marked QA report as active or inactive."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/{dataId}/reports/{qaReportId}/status": {
+      "patch": {
+        "tags": [
+          "data-point-qa-report-controller"
+        ],
+        "summary": "Change the status of a QA report.",
+        "description": "The specified QA report is marked as active or inactive.",
+        "operationId": "setQaReportStatus",
         "parameters": [
           {
             "name": "dataId",
@@ -1845,6 +2206,244 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/QaReportWithMetaInformationAdditionalCompanyInformationData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get QA review information for data points filtered by various filters.",
+        "description": "Gets a filtered and chronologically ordered list of relevant QA review information.",
+        "operationId": "getDataPointQaReviewInformation",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataPointIdentifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/QaStatus"
+            }
+          },
+          {
+            "name": "onlyLatest",
+            "in": "query",
+            "description": "If set, only show the most recent QA review information for each data point (independent of whether the data point is active or not).",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data point QA review information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataPointQaReviewInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/{dataId}/reports/{qaReportId}": {
+      "get": {
+        "tags": [
+          "data-point-qa-report-controller"
+        ],
+        "summary": "Retrieve a QA report.",
+        "description": "Retrieve the information about a QA report.",
+        "operationId": "getQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "qaReportId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved QA report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointQaReport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/queue": {
+      "get": {
+        "tags": [
+          "qa-controller"
+        ],
+        "summary": "Get the content of the data point review queue.",
+        "description": "Retrieves an ordered list of all QA review items currently in status \u0027Pending\u0027 in reverse chronological order.",
+        "operationId": "getDataPointReviewQueue",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved queue of QA review items for data points.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataPointQaReviewInformation"
+                  }
                 }
               }
             }
@@ -5393,6 +5992,67 @@
           }
         }
       },
+      "QaReportDataPointString": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "string"
+          }
+        }
+      },
+      "DataPointQaReport": {
+        "required": [
+          "active",
+          "comment",
+          "dataId",
+          "dataPointIdentifier",
+          "qaReportId",
+          "uploadTime",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "qaReportId": {
+            "type": "string"
+          },
+          "reporterUserId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "string"
+          }
+        }
+      },
       "QaReportStatusPatch": {
         "required": [
           "active"
@@ -5589,6 +6249,48 @@
           },
           "report": {
             "$ref": "#/components/schemas/AdditionalCompanyInformationData"
+          }
+        }
+      },
+      "DataPointQaReviewInformation": {
+        "required": [
+          "companyId",
+          "companyName",
+          "dataId",
+          "dataPointIdentifier",
+          "qaStatus",
+          "reportingPeriod",
+          "timestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "reviewerId": {
+            "type": "string"
           }
         }
       },

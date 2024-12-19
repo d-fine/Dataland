@@ -5,7 +5,5 @@ package org.dataland.datalandmessagequeueutils.constants
  */
 
 object ActionType {
-    const val STORE_PUBLIC_DATA = "storePublicData"
-    const val DELETE_DATA = "deleteData"
     const val STORE_PRIVATE_DATA_AND_DOCUMENTS = "storePrivateDataAndDocuments"
 }

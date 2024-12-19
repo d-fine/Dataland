@@ -58,7 +58,7 @@ class MessageQueueListenerTest(
             )
         val thrown =
             assertThrows<MessageQueueRejectException> {
-                messageQueueListener.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QA_STATUS_CHANGED)
+                messageQueueListener.updateDocumentMetaData(messageWithEmptyDocumentID, "", MessageType.QA_STATUS_UPDATED)
             }
         assertEquals("Message was rejected: Provided document ID is empty", thrown.message)
     }
@@ -88,7 +88,7 @@ class MessageQueueListenerTest(
                 ),
             )
 
-        assertDoesNotThrow { messageQueueListener.updateDocumentMetaData(message, "", MessageType.QA_STATUS_CHANGED) }
+        assertDoesNotThrow { messageQueueListener.updateDocumentMetaData(message, "", MessageType.QA_STATUS_UPDATED) }
     }
 
     @Test

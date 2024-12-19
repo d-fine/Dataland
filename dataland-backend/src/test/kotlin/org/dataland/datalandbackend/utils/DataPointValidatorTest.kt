@@ -23,6 +23,7 @@ class DataPointValidatorTest {
     private val currencyDataPoint = "./dataPointValidation/currencyDataPoint.json"
     private val invalidCurrencyDataPoint = "./dataPointValidation/invalidCurrencyDataPoint.json"
     private val currencyDataPointWithUnknownProperty = "./dataPointValidation/currencyDataPointWithUnknownProperty.json"
+    private val currencyDataPointWithBrokenEnum = "./dataPointValidation/currencyDataPointWithBrokenEnum.json"
 
     private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
 
@@ -68,6 +69,13 @@ class DataPointValidatorTest {
 
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateDataPoint(dataPointIdentifier, dataPointContent, correlationId)
+        }
+    }
+
+    @Test
+    fun `check that parsing a data point with a broken enum results in the expected exception`() {
+        assertThrows<InvalidInputApiException> {
+            dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithBrokenEnum), validationClass, correlationId)
         }
     }
 }

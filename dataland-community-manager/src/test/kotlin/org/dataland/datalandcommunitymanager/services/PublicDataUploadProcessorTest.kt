@@ -94,7 +94,7 @@ class PublicDataUploadProcessorTest {
             )
         val payload = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
-        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_CHANGED)
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_UPDATED)
 
         Mockito.verifyNoInteractions(elementaryEventRepositoryMock)
     }
@@ -109,7 +109,7 @@ class PublicDataUploadProcessorTest {
             )
         val payload = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
-        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_CHANGED)
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_UPDATED)
 
         verify(elementaryEventRepositoryMock, times(1)).saveAndFlush(any())
     }
