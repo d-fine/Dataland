@@ -55,7 +55,7 @@ describe('Component tests for the view data request page', function (): void {
       lastModifiedDate: dummyLastModifiedDate,
       requestStatus: requestStatus,
       accessStatus: AccessStatus.Public,
-      requestPriority: RequestPriority.Normal,
+      requestPriority: RequestPriority.Low,
     };
   }
   /**

@@ -8,15 +8,13 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * @param dataType contains the enum of the framework for which the count is valid
  * @param reportingPeriod reporting periods for which the user wants to request framework data
  * @param datalandCompanyId contains the companyID  stored on dataland
- * @param priority contains the request priority for which the count is valid
- * @param requestStatus contains the request status for which the count is valid
+ * @param aggregatedPriority contains the aggregated request priority for which the count is valid
  * @param count the count of existing data requests for this framework, identifierType and identifierValue
  */
-data class AggregatedDataRequest(
+data class AggregatedDataRequestWithAggregatedPriority(
     val dataType: DataTypeEnum?,
     val reportingPeriod: String?,
     val datalandCompanyId: String,
-    val priority: RequestPriority,
-    val requestStatus: String,
+    val aggregatedPriority: AggregatedRequestPriority,
     val count: Long,
 )

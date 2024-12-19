@@ -80,7 +80,7 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestStatus.Answered,
         AccessStatus.Public,
         commentBeta,
-        RequestPriority.VeryHigh
+        RequestPriority.Urgent
       ),
       generateExtendedStoredDataRequest(
         mailGamma,
@@ -113,7 +113,7 @@ describe('Component test for the admin-requests-overview page', () => {
         RequestPriority.Low,
         RequestPriority.High,
         RequestPriority.Urgent,
-        RequestPriority.VeryHigh,
+        RequestPriority.Urgent,
       ]);
       mockRequestsLarge.push(
         generateExtendedStoredDataRequest(email, dataType, requestStatus, AccessStatus.Public, comment, requestPriority)
@@ -258,8 +258,8 @@ describe('Component test for the admin-requests-overview page', () => {
    * Validates if filtering via priority dropdown filter works as expected
    */
   function validateRequestPriorityFilter(): void {
-    const priorityToFilterFor = RequestPriority.VeryHigh;
-    const mockResponse = [mockRequests[1]];
+    const priorityToFilterFor = RequestPriority.Urgent;
+    const mockResponse = [mockRequests[0], mockRequests[1]];
     const expectedNumberOfRequests = mockResponse.length;
     cy.intercept(
       `**/community/requests?requestPriority=${priorityToFilterFor}&chunkSize=${chunkSize}&chunkIndex=0`,
@@ -275,6 +275,7 @@ describe('Component test for the admin-requests-overview page', () => {
     cy.get(`button[data-test="trigger-filtering-requests"]`).click();
 
     assertNumberOfSearchResults(expectedNumberOfRequests);
+    assertEmailAddressExistsInSearchResults(mailAlpha);
     assertEmailAddressExistsInSearchResults(mailBeta);
   }
 

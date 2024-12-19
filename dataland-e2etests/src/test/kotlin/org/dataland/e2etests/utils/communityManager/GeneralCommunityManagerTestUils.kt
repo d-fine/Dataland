@@ -3,7 +3,7 @@ package org.dataland.e2etests.utils.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
-import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
+import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
@@ -31,13 +31,15 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
     return timestamp
 }
 
-fun findAggregatedDataRequestDataTypeForFramework(framework: BulkDataRequest.DataTypes): AggregatedDataRequest.DataType =
-    AggregatedDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
+fun findAggregatedDataRequestDataTypeForFramework(
+    framework: BulkDataRequest.DataTypes,
+): AggregatedDataRequestWithAggregatedPriority.DataType =
+    AggregatedDataRequestWithAggregatedPriority.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 
 fun findRequestControllerApiDataTypeForFramework(
     framework: BulkDataRequest.DataTypes,
-): RequestControllerApi.DataTypesGetAggregatedDataRequests =
-    RequestControllerApi.DataTypesGetAggregatedDataRequests.entries.find { dataType ->
+): RequestControllerApi.DataTypesGetAggregatedOpenDataRequests =
+    RequestControllerApi.DataTypesGetAggregatedOpenDataRequests.entries.find { dataType ->
         dataType.value == framework.value
     }!!
 
@@ -162,7 +164,7 @@ fun check400ClientExceptionErrorMessage(clientException: ClientException) {
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-    aggregatedDataRequests: List<AggregatedDataRequest>,
+    aggregatedDataRequestsWithAggregatedPriority: List<AggregatedDataRequestWithAggregatedPriority>,
     framework: BulkDataRequest.DataTypes,
     reportingPeriod: String,
     identifierValue: String,
@@ -170,10 +172,10 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
 ) {
     val companyIdForIdentifierValue = getUniqueDatalandCompanyIdForIdentifierValue(identifierValue)
     val matchingAggregatedRequests =
-        aggregatedDataRequests.filter { aggregatedDataRequest ->
-            aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
-                aggregatedDataRequest.reportingPeriod == reportingPeriod &&
-                aggregatedDataRequest.datalandCompanyId == companyIdForIdentifierValue
+        aggregatedDataRequestsWithAggregatedPriority.filter { aggregatedDataRequestWithAggregatedPriority ->
+            aggregatedDataRequestWithAggregatedPriority.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
+                aggregatedDataRequestWithAggregatedPriority.reportingPeriod == reportingPeriod &&
+                aggregatedDataRequestWithAggregatedPriority.datalandCompanyId == companyIdForIdentifierValue
         }
     assertEquals(
         1,
@@ -190,7 +192,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
 }
 
 fun iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
-    aggregatedDataRequests: List<AggregatedDataRequest>,
+    aggregatedDataRequestWithAggregatedPriority: List<AggregatedDataRequestWithAggregatedPriority>,
     frameworks: Set<BulkDataRequest.DataTypes>,
     reportingPeriods: Set<String>,
     identifiers: Set<String>,
@@ -200,7 +202,7 @@ fun iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
         reportingPeriods.forEach { reportingPeriod ->
             identifiers.forEach { identifier ->
                 checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                    aggregatedDataRequests, framework, reportingPeriod, identifier, count,
+                    aggregatedDataRequestWithAggregatedPriority, framework, reportingPeriod, identifier, count,
                 )
             }
         }

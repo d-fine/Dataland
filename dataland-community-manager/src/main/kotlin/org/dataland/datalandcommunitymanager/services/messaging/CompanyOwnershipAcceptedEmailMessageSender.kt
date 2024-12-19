@@ -68,7 +68,7 @@ class CompanyOwnershipAcceptedEmailMessageSender(
                 identifierValue = datalandCompanyId,
                 dataTypes = null,
                 reportingPeriod = null,
-                status = RequestStatus.Open,
+                requestStatus = RequestStatus.Open,
             ).filter { it.count > 0 }
             .size
 }

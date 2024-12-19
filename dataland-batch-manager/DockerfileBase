@@ -5,6 +5,7 @@ WORKDIR /app
 COPY ./dataland-batch-manager/ ./dataland-batch-manager/
 COPY ./dataland-backend-utils/ ./dataland-backend-utils/
 COPY ./dataland-backend/backendOpenApi.json ./dataland-backend/backendOpenApi.json
+COPY ./dataland-community-manager/communityManagerOpenApi.json ./dataland-community-manager/communityManagerOpenApi.json
 COPY ./.git/ ./.git
 RUN --mount=type=secret,id=DOCKER_SECRET,target=/root/.gradle/gradle.properties,required=true \
      ./gradlew dataland-batch-manager:bootJar --no-daemon --stacktrace

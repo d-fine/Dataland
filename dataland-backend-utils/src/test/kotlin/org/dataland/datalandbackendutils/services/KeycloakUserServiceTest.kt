@@ -56,6 +56,8 @@ class KeycloakUserServiceTest {
         }
         """.trimIndent()
 
+    private val applicationJsonString = "application/json"
+
     @Test
     fun `getUser should return valid KeycloakUserInfo on successful parse`() {
         val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
@@ -67,7 +69,7 @@ class KeycloakUserServiceTest {
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
                 .message("OK")
-                .body(firstUserJson.toResponseBody("application/json".toMediaTypeOrNull()))
+                .body(firstUserJson.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
                 .build()
 
         val call = mock<Call>()
@@ -92,7 +94,7 @@ class KeycloakUserServiceTest {
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
                 .message("OK")
-                .body(json.toResponseBody("application/json".toMediaTypeOrNull()))
+                .body(json.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
                 .build()
 
         val call = mock<Call>()
@@ -100,6 +102,33 @@ class KeycloakUserServiceTest {
         whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl })).thenReturn(call)
 
         val result = service.searchUsers(emailSearch)
+
+        assertTrue(result.contains(firstUser))
+        assertTrue(result.contains(secondUser))
+    }
+
+    @Test
+    fun `getUsersByRole should return a list of KeycloakUserInfo on successful parse`() {
+        val role = "ROLE_PREMIUM_USER"
+        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/roles/$role/users/"
+
+        val json = "[$firstUserJson, $secondUserJson]"
+
+        val response =
+            Response
+                .Builder()
+                .request(Request.Builder().url(expectedUrl).build())
+                .protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .body(json.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
+                .build()
+
+        val call = mock<Call>()
+        whenever(call.execute()).thenReturn(response)
+        whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl })).thenReturn(call)
+
+        val result = service.getUsersByRole(role)
 
         assertTrue(result.contains(firstUser))
         assertTrue(result.contains(secondUser))
