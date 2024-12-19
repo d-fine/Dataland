@@ -8,10 +8,10 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import java.util.UUID
-import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 
 /**
  * The entity storing the changes in the QA status over time for each individual data point
