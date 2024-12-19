@@ -110,7 +110,7 @@ class KeycloakUserServiceTest {
     @Test
     fun `getUsersByRole should return a list of KeycloakUserInfo on successful parse`() {
         val role = "ROLE_PREMIUM_USER"
-        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/roles/$role/users/"
+        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/roles/$role/users/"
 
         val json = "[$firstUserJson, $secondUserJson]"
 
