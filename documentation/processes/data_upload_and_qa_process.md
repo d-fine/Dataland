@@ -37,17 +37,16 @@ sequenceDiagram
     activate mq
     deactivate storage
 
-
-
     mq -) backend: Receive 'Item Stored'
     activate backend
     backend ->> backend: Remove Dataset from Temporary Storage
     deactivate backend
-    alt bypassQa is false
-        mq -) qaService: Receive 'Public Data received'
-        deactivate mq
-        activate qaService
-        qaService ->> qaService: Store entry in QA-DB table
+    mq -) qaService: Receive 'Public Data received'
+    deactivate mq
+    activate qaService
+   
+    opt bypassQa is false
+        qaService ->> qaService: Store Pending entry in QA-DB table
         deactivate qaService
 
         qaler ->> qaService: Get Datasets to QA
@@ -58,28 +57,20 @@ sequenceDiagram
         qaler ->> qaService: Quality Assured
         deactivate qaler
         activate qaService
-        qaService ->> qaService: Store decision in QA-DB table
-
-        qaService --) mq: Send 'QA Completed'
-        deactivate qaService
-
-    else bypassQa is true
-        activate mq
-        mq -) qaService: Receive 'Public Data received'
-        deactivate mq
-        activate qaService
-        qaService ->> qaService: Store entry in QA-DB table
-        qaService --) mq: Send 'QA Completed'
-        activate mq
-        deactivate qaService
     end
+    
+    qaService ->> qaService: Store decision in QA-DB table
 
-    mq -) backend: Receive 'QA Completed'
+    qaService --) mq: Send 'QA status updated'
+    deactivate qaService
+
+    activate mq
+    mq -) backend: Receive 'QA status updated'
     activate backend
     backend ->> backend: Update QA Decision in Metadata
     deactivate backend
 
-    mq -) community: Receive 'QA Completed'
+    mq -) community: Receive 'QA status updated'
     deactivate mq
     activate community
     community ->> community: Update Data Requests and send notifications
