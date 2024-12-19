@@ -16,7 +16,7 @@ object JsonUtils {
     fun getNonArrayLeafNodeFieldNames(
         node: JsonNode,
         currentPath: String = "",
-    ): MutableList<String> {
+    ): List<String> {
         val leafNodeFieldNames = mutableListOf<String>()
 
         when {
@@ -31,7 +31,6 @@ object JsonUtils {
                     leafNodeFieldNames.addAll(getNonArrayLeafNodeFieldNames(value, newPath))
                 }
             }
-            else -> {}
         }
         return leafNodeFieldNames
     }

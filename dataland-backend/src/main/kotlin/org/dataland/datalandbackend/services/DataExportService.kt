@@ -28,8 +28,8 @@ class DataExportService
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
         fun <T> buildCsvStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
-            val jsonTree = convertDataToJson(companyAssociatedData)
-            val headers = JsonUtils.getNonArrayLeafNodeFieldNames(jsonTree)
+            val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
+            val headers: List<String> = JsonUtils.getNonArrayLeafNodeFieldNames(jsonTree)
             require(headers.isNotEmpty()) { "After filtering, CSV data is empty." }
 
             val csvData = mutableMapOf<String, String>()

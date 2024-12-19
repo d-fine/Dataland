@@ -418,9 +418,8 @@ export default defineComponent({
      * @param reportingYear selected reporting year
      * @param fileFormat selected file format
      */
-    async getDatasetFromExportApi(reportingYear: String, fileFormat: String) {
+    async getDatasetFromExportApi(reportingYear: string, fileFormat: string) {
       console.log(this.dataType, this.companyID, reportingYear, fileFormat);
-      return;
     },
   },
   watch: {

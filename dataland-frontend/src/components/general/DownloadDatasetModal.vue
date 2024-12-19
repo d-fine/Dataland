@@ -85,7 +85,7 @@ export default defineComponent({
     };
   },
   setup(props, { emit }) {
-    const getReportingPeriods = (mapping: Map<String, DataMetaInformation>): string[] => {
+    const getReportingPeriods = (mapping: Map<string, DataMetaInformation>): string[] => {
       const reportingPeriods = new Set<string>();
       mapping.forEach((dataMetaInfo) => {
         if (dataMetaInfo.dataType === props.dataType) {
