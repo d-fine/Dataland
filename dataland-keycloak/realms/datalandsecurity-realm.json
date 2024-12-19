@@ -672,9 +672,27 @@
       ],
       "clientRoles": {
         "realm-management": [
-          "view-users"
+          "manage-clients",
+          "manage-authorization",
+          "manage-realm",
+          "query-clients",
+          "create-client",
+          "manage-identity-providers",
+          "query-realms",
+          "query-users",
+          "view-realm",
+          "view-events",
+          "impersonation",
+          "manage-users",
+          "view-users",
+          "manage-events",
+          "view-identity-providers",
+          "view-clients",
+          "view-authorization",
+          "query-groups"
         ]
       },
+
       "notBefore": 0,
       "groups": []
     },
