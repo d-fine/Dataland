@@ -672,8 +672,15 @@
       ],
       "clientRoles": {
         "realm-management": [
-          "view-users",
+          "query-clients",
+          "query-realms",
           "query-users",
+          "view-realm",
+          "view-events",
+          "view-users",
+          "view-identity-providers",
+          "view-clients",
+          "view-authorization",
           "view-groups",
           "query-groups"
         ]
