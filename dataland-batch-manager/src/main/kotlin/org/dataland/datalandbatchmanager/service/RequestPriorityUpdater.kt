@@ -24,10 +24,10 @@ class RequestPriorityUpdater(
      * This function processes the request priority update
      */
     fun processRequestPriorityUpdates() {
-        val premiumUserIds: Set<String> = mutableSetOf()
+        val premiumUserIds = mutableSetOf<String>()
         for (roleName in listOf("ROLE_PREMIUM_USER", "ROLE_ADMIN")) {
-            premiumUserIds.plus(
-                keycloakUserService.getUsersByRole(roleName).map { it.userId }.toSet(),
+            premiumUserIds.addAll(
+                keycloakUserService.getUsersByRole(roleName).map { it.userId },
             )
         }
 
