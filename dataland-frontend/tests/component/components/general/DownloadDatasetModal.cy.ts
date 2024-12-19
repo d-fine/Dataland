@@ -1,4 +1,4 @@
-//@ts no-check
+//@ts-nocheck
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 import { DataTypeEnum } from '@clients/backend';
 

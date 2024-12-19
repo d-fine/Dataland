@@ -6,6 +6,7 @@
     header="Download dataset"
     :closable="true"
     :dismissable-mask="true"
+    :modal="true"
     @hide="closeModal"
     data-test="downloadModal"
   >
