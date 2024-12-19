@@ -18,15 +18,20 @@ object JsonUtils {
         currentPath: String = "",
     ): MutableList<String> {
         val leafNodeFieldNames = mutableListOf<String>()
-        if (node.isValueNode) {
-            if (!node.isNull) {
-                leafNodeFieldNames.add(currentPath)
+
+        when {
+            node.isValueNode -> {
+                if (!node.isNull) {
+                    leafNodeFieldNames.add(currentPath)
+                }
             }
-        } else if (node.isObject) {
-            node.fields().forEachRemaining { (fieldName, value) ->
-                val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
-                leafNodeFieldNames.addAll(getNonArrayLeafNodeFieldNames(value, newPath))
+            node.isObject -> {
+                node.fields().forEachRemaining { (fieldName, value) ->
+                    val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
+                    leafNodeFieldNames.addAll(getNonArrayLeafNodeFieldNames(value, newPath))
+                }
             }
+            else -> {}
         }
         return leafNodeFieldNames
     }
