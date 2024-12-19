@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.p2p.PathwaysToParisData
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,10 +24,12 @@ import org.springframework.web.bind.annotation.RestController
 class P2pDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<PathwaysToParisData>(
         myDataManager,
         myMetaDataManager,
+        myDataExportService,
         myObjectMapper,
         PathwaysToParisData::class.java,
     ) {

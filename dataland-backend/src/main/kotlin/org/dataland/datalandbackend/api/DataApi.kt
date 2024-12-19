@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -105,7 +106,7 @@ interface DataApi<T> {
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun exportCompanyAssociatedDataToCsv(
         @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<String>
+    ): ResponseEntity<InputStreamResource>
 
     /**
      * A method to export the CompanyAssociatedData for a dataId to JSON

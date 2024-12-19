@@ -36,16 +36,8 @@ class TransformationUtilsTest {
     private val expectedHeaders =
         listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
             listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
-    private val expectedJsonPaths = listOf("presentMapping", "notMapped", "nested.nestedMapping")
     private val expectedCsvData =
         mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
-
-    @Test
-    fun `check that the retrieved JSON paths are as expected`() {
-        val jsonNode = ObjectMapper().readTree(inputJson)
-        val result = TransformationUtils.getNonArrayLeafNodeFieldNames(jsonNode, "")
-        assertEquals(expectedJsonPaths, result)
-    }
 
     @Test
     fun `check that a duplicated header entry in the transformation rules throws an error`() {
@@ -78,12 +70,6 @@ class TransformationUtilsTest {
     fun `check that referenced reports are filtered out for the consistency check`() {
         val jsonNode = ObjectMapper().readTree(referencedReportJson)
         assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules) }
-    }
-
-    @Test
-    fun `check that null valued fields are extracted as empty strings`() {
-        val jsonNode = ObjectMapper().readTree("{\"nullValued\": null}")
-        assertEquals("", TransformationUtils.getValueFromJsonNode(jsonNode, "nullValued"))
     }
 
     @Test

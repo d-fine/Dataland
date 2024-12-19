@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.frameworks.esgdatenkatalog.model.EsgDatenkat
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,10 +26,12 @@ import org.springframework.web.bind.annotation.RestController
 class EsgDatenkatalogDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<EsgDatenkatalogData>(
         myDataManager,
         myMetaDataManager,
+        myDataExportService,
         myObjectMapper,
         EsgDatenkatalogData::class.java,
     ) {

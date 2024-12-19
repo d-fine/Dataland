@@ -2348,9 +2348,7 @@
         "tags": [
           "sfdr-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson",
+        "operationId": "exportCompanyAssociatedSfdrDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2408,9 +2406,7 @@
         "tags": [
           "sfdr-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv",
+        "operationId": "exportCompanyAssociatedSfdrDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2427,7 +2423,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2606,7 +2603,7 @@
         ],
         "summary": "Export data identified by dataId to JSON.",
         "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_1",
+        "operationId": "exportCompanyAssociatedDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2666,7 +2663,7 @@
         ],
         "summary": "Export data identified by dataId to CSV.",
         "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_1",
+        "operationId": "exportCompanyAssociatedDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2683,7 +2680,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2860,9 +2858,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_2",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2920,9 +2916,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_2",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2939,7 +2933,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3116,9 +3111,7 @@
         "tags": [
           "lksg-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_3",
+        "operationId": "exportCompanyAssociatedLksgDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3176,9 +3169,7 @@
         "tags": [
           "lksg-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_3",
+        "operationId": "exportCompanyAssociatedLksgDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3195,7 +3186,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3374,7 +3366,7 @@
         ],
         "summary": "Export data identified by dataId to JSON.",
         "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_4",
+        "operationId": "exportCompanyAssociatedDataToJson_1",
         "parameters": [
           {
             "name": "dataId",
@@ -3434,7 +3426,7 @@
         ],
         "summary": "Export data identified by dataId to CSV.",
         "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_4",
+        "operationId": "exportCompanyAssociatedDataToCsv_1",
         "parameters": [
           {
             "name": "dataId",
@@ -3451,7 +3443,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3628,9 +3621,7 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_5",
+        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3688,9 +3679,7 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_5",
+        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3707,7 +3696,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3884,9 +3874,7 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_6",
+        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3944,9 +3932,7 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_6",
+        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3963,7 +3949,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4142,7 +4129,7 @@
         ],
         "summary": "Export data identified by dataId to JSON.",
         "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_7",
+        "operationId": "exportCompanyAssociatedDataToJson_2",
         "parameters": [
           {
             "name": "dataId",
@@ -4202,7 +4189,7 @@
         ],
         "summary": "Export data identified by dataId to CSV.",
         "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_7",
+        "operationId": "exportCompanyAssociatedDataToCsv_2",
         "parameters": [
           {
             "name": "dataId",
@@ -4219,7 +4206,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4471,7 +4459,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -19545,20 +19534,20 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "headquarters": {
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "lei": {
@@ -19586,10 +19575,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

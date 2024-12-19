@@ -1,9 +1,6 @@
 package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.csv.CsvMapper
-import com.fasterxml.jackson.dataformat.csv.CsvSchema
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.dataland.datalandbackend.api.DataApi
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
@@ -11,14 +8,16 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
-import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -35,6 +34,7 @@ import java.time.Instant
 abstract class DataController<T>(
     var dataManager: DataManager,
     var dataMetaInformationManager: DataMetaInformationManager,
+    var dataExportService: DataExportService,
     var objectMapper: ObjectMapper,
     private val clazz: Class<T>,
 ) : DataApi<T> {
@@ -53,7 +53,7 @@ abstract class DataController<T>(
 
         val uploadTime = Instant.now().toEpochMilli()
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
-        val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
+        val correlationId = IdUtils.generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
         val dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
 
@@ -82,9 +82,9 @@ abstract class DataController<T>(
 
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        this.verifyAccessOrThrow(metaInfo)
+        this.verifyAccess(metaInfo)
         val companyId = metaInfo.company.companyId
-        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
+        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
         val companyAssociatedData =
             this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
@@ -106,7 +106,7 @@ abstract class DataController<T>(
     }
 
     @Throws(AccessDeniedException::class)
-    private fun verifyAccessOrThrow(metaInfo: DataMetaInformationEntity) {
+    private fun verifyAccess(metaInfo: DataMetaInformationEntity) {
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
@@ -114,11 +114,12 @@ abstract class DataController<T>(
 
     override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        this.verifyAccessOrThrow(metaInfo)
+        this.verifyAccess(metaInfo)
         val companyId = metaInfo.company.companyId
-        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
+        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
         val companyAssociatedData =
             this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
+
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
 
         return ResponseEntity
@@ -127,34 +128,22 @@ abstract class DataController<T>(
             .body(companyAssociatedData)
     }
 
-    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<String> {
+    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        this.verifyAccessOrThrow(metaInfo)
+        this.verifyAccess(metaInfo)
         val companyId = metaInfo.company.companyId
-        val correlationId = generateCorrelationId(companyId = companyId, dataId = dataId)
+        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
         val companyAssociatedData =
             this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
+
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
 
-        val companyAssociatedDataCsv = buildCsvFromCompanyAssociatedData(companyAssociatedData)
+        val companyAssociatedDataCsv = dataExportService.buildCsvStreamFromCompanyAssociatedData(companyAssociatedData)
 
         return ResponseEntity
             .ok()
             .headers(buildHttpHeadersForExport(companyAssociatedData, ExportFileType.CSV))
             .body(companyAssociatedDataCsv)
-    }
-
-    private fun buildCsvFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): String {
-        val companyAssociatedDataJson = objectMapper.writeValueAsString(companyAssociatedData)
-//        val companyAssociatedDataInputStream = companyAssociatedDataJson.toByteArray()
-//        val jsonTree = objectMapper.readTree(companyAssociatedDataJson)
-
-        val csvMapper = CsvMapper().registerKotlinModule()
-        return csvMapper
-            .readerFor(CompanyAssociatedData::class.java)
-            .with(CsvSchema.emptySchema().withHeader())
-            .readValue(companyAssociatedDataJson, clazz)
-            .toString()
     }
 
     private fun buildHttpHeadersForExport(
@@ -185,7 +174,7 @@ abstract class DataController<T>(
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-            val correlationId = generateCorrelationId(companyId = companyId, dataId = null)
+            val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null)
             val dataAsString =
                 dataManager
                     .getPublicDataSet(

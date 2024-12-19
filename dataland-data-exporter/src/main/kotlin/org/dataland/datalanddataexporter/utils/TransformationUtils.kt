@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
+import org.dataland.datalandbackendutils.utils.JsonUtils
 import java.text.SimpleDateFormat
 
 /**
@@ -67,58 +68,10 @@ object TransformationUtils {
         node: JsonNode,
         transformationRules: Map<String, String>,
     ) {
-        val leafNodesInJsonNode: List<String> = getNonArrayLeafNodeFieldNames(node, "")
+        val leafNodesInJsonNode: List<String> = JsonUtils.getNonArrayLeafNodeFieldNames(node)
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {
             "Transformation rules do not cover all leaf nodes in the data."
-        }
-    }
-
-    /**
-     * Gets all leaf node field names from a JSON node ignoring entries in arrays.
-     * @param node The JSON node
-     * @param currentPath The current path
-     * @return A list of leaf node field names
-     */
-    fun getNonArrayLeafNodeFieldNames(
-        node: JsonNode,
-        currentPath: String,
-    ): MutableList<String> {
-        val leafNodeFieldNames = mutableListOf<String>()
-        if (node.isValueNode) {
-            if (!node.isNull) {
-                leafNodeFieldNames.add(currentPath)
-            }
-        } else {
-            // This does not handle arrays (they are skipped)
-            node.fields().forEachRemaining { (fieldName, value) ->
-                val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath.$fieldName"
-                leafNodeFieldNames.addAll(getNonArrayLeafNodeFieldNames(value, newPath))
-            }
-        }
-        return leafNodeFieldNames
-    }
-
-    /**
-     * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
-     * @param jsonNode The JSON node
-     * @param jsonPath The JSON path identifying the value
-     * @return The string representation of the value
-     */
-    fun getValueFromJsonNode(
-        jsonNode: JsonNode,
-        jsonPath: String,
-    ): String {
-        var currentNode = jsonNode
-        jsonPath.split(".").forEach { path ->
-            currentNode = currentNode.get(path) ?: return ""
-        }
-        return if (currentNode.isNull) {
-            ""
-        } else if (currentNode.isTextual) {
-            currentNode.textValue()
-        } else {
-            currentNode.toString()
         }
     }
 
@@ -135,7 +88,7 @@ object TransformationUtils {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (jsonPath, csvHeader) ->
             if (csvHeader.isEmpty()) return@forEach
-            csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
+            csvData[csvHeader] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, jsonPath)
         }
         return csvData
     }

@@ -7,9 +7,11 @@ import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -26,10 +28,12 @@ import org.springframework.web.bind.annotation.RestController
 class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
     myDataManager,
     myMetaDataManager,
+    myDataExportService,
     myObjectMapper,
     ${frameworkDataType.shortenedQualifier}::class.java,
 ) {
@@ -56,7 +60,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
 
     @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToCsv")
     override fun exportCompanyAssociatedDataToCsv(dataId: String):
-        ResponseEntity<String> {
+        ResponseEntity<InputStreamResource> {
         return super.exportCompanyAssociatedDataToCsv(dataId)
     }
 
@@ -66,6 +70,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         showOnlyActive: Boolean,
         reportingPeriod: String?,
     ): ResponseEntity<List<DataAndMetaInformation<${frameworkDataType.shortenedQualifier}>>> {
-        return super.getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+        return super
+            .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
     }
 }
