@@ -63,7 +63,7 @@ class KeycloakUserService(
      * @returns the list of keycloak user info for the corresponding role
      */
     fun getUsersByRole(role: String): List<KeycloakUserInfo> {
-        val completeUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/roles/$role/users"
+        val completeUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/roles/$role/users/"
 
         val request =
             Request
