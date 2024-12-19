@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @param message The new message to set
  * @param requestPriority The new request priority to set
  * @param adminComment The new admin comment to set
- * @return the modified data request
+ * @param requestStatusChangeReason The reason for the change
  */
 data class DataRequestPatch(
     val requestStatus: RequestStatus?,

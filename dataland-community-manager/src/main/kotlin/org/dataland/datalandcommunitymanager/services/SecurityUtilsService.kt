@@ -169,8 +169,11 @@ class SecurityUtilsService(
 
     /**
      * Returns true if all passed parameters are null, otherwise false.
+     *
+     * @param parameters A vararg list of function parameters
+     * @return whether any of the provided parameters is not null
      */
-    fun parametersUnset(vararg parameters: Any?): Boolean =
+    fun areAllParametersUnset(vararg parameters: Any?): Boolean =
         parameters.all {
             when (it) {
                 is String -> it.isNullOrBlank()
@@ -192,7 +195,7 @@ class SecurityUtilsService(
         val isOwnRequest = isUserAskingForOwnRequest(dataRequestID)
         val requestStatusChangeable = isRequestStatusChangeableByUser(dataRequestID, dataRequestPatch.requestStatus)
         val notPatchingStatusPriorityComment =
-            parametersUnset(
+            areAllParametersUnset(
                 dataRequestPatch.accessStatus,
                 dataRequestPatch.requestPriority,
                 dataRequestPatch.adminComment,
@@ -211,7 +214,7 @@ class SecurityUtilsService(
 
         val isCompanyOwner = isUserCompanyOwnerForRequestId(dataRequestID.toString())
         val pathingOnlyAccessStatus =
-            parametersUnset(
+            areAllParametersUnset(
                 dataRequestPatch.requestStatus,
                 dataRequestPatch.contacts,
                 dataRequestPatch.message,

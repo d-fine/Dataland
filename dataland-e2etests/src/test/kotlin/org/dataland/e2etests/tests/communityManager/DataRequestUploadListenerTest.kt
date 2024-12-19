@@ -271,8 +271,8 @@ class DataRequestUploadListenerTest {
     fun `add a message to an open request do not change the status and assert success`() {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val dataRequestPatch = DataRequestPatch(contacts = contacts, message = message)
-        val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, dataRequestPatch)
+        val messageDataRequestPatch = DataRequestPatch(contacts = contacts, message = message)
+        val newMessageDataRequest = requestControllerApi.patchDataRequest(dataRequestId, messageDataRequestPatch)
 
         assertEquals(
             message, newMessageDataRequest.messageHistory.last().message,
@@ -291,14 +291,14 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val dataRequestPatch =
+        val addMessageAndOpenDataRequestPatch =
             DataRequestPatch(
                 requestStatus = RequestStatus.Open,
                 contacts = contacts,
                 message = message,
             )
         val newMessageAndOpenDataRequest =
-            requestControllerApi.patchDataRequest(dataRequestId, dataRequestPatch)
+            requestControllerApi.patchDataRequest(dataRequestId, addMessageAndOpenDataRequestPatch)
         assertEquals(
             message, newMessageAndOpenDataRequest.messageHistory.last().message,
             "The message was not patched correctly.",
