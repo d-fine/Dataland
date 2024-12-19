@@ -158,8 +158,8 @@ class DataRequestUploadListenerTest {
         patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(dataRequestId, RequestStatus.Answered)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Resolved)
-        val closedDataRequest = requestControllerApi.patchDataRequest(dataRequestId, dataRequestPatch)
+        val requestToResolvedPatch = DataRequestPatch(requestStatus = RequestStatus.Resolved)
+        val closedDataRequest = requestControllerApi.patchDataRequest(dataRequestId, requestToResolvedPatch)
         assertEquals(
             RequestStatus.Resolved,
             closedDataRequest.requestStatus,
@@ -220,10 +220,10 @@ class DataRequestUploadListenerTest {
         val nonExistingDataRequestId = UUID.randomUUID()
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        val dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered)
+        val answeredDataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered)
         val clientException =
             assertThrows<ClientException> {
-                requestControllerApi.patchDataRequest(nonExistingDataRequestId, dataRequestPatch)
+                requestControllerApi.patchDataRequest(nonExistingDataRequestId, answeredDataRequestPatch)
             }
         val responseBody = (clientException.response as ClientError<*>).body as String
 
@@ -238,8 +238,8 @@ class DataRequestUploadListenerTest {
         val dataRequestId = postSingleDataRequestAsTechnicalUserAndReturnDataRequestId(TechnicalUser.PremiumUser)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        val dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Withdrawn)
-        val openToWithdrawnDataRequest = requestControllerApi.patchDataRequest(dataRequestId, dataRequestPatch)
+        val withdrawDataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Withdrawn)
+        val openToWithdrawnDataRequest = requestControllerApi.patchDataRequest(dataRequestId, withdrawDataRequestPatch)
         assertEquals(
             RequestStatus.Withdrawn,
             openToWithdrawnDataRequest.requestStatus,
@@ -255,7 +255,7 @@ class DataRequestUploadListenerTest {
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val answeredToWithdrawnDataRequest =
-            requestControllerApi.patchDataRequest(dataRequestId, dataRequestPatch)
+            requestControllerApi.patchDataRequest(dataRequestId, withdrawDataRequestPatch)
         assertEquals(
             RequestStatus.Withdrawn,
             answeredToWithdrawnDataRequest.requestStatus,
