@@ -24,11 +24,12 @@ class RequestPriorityUpdater(
      * This function processes the request priority update
      */
     fun processRequestPriorityUpdates() {
-        val premiumUserIds =
-            keycloakUserService
-                .getUsersByRole("ROLE_PREMIUM_USER")
-                .map { it.userId }
-                .toSet()
+        val premiumUserIds: Set<String> = mutableSetOf()
+        for (roleName in listOf("ROLE_PREMIUM_USER", "ROLE_ADMIN")) {
+            premiumUserIds.plus(
+                keycloakUserService.getUsersByRole(roleName).map { it.userId }.toSet(),
+            )
+        }
 
         updateRequestPriorities(
             currentPriority = RequestPriority.Low,
