@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -51,4 +52,12 @@ class P2pDataController(
     ): ResponseEntity<List<DataAndMetaInformation<PathwaysToParisData>>> =
         super
             .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
+
+    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToJson")
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> =
+        super.exportCompanyAssociatedDataToJson(dataId)
+
+    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToCsv")
+    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToCsv(dataId)
 }

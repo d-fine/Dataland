@@ -62,11 +62,11 @@
             </PrimeButton>
 
             <DownloadDatasetModal
-              v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
+              :isDownloadModalOpen="isDownloadModalOpen"
               :dataType="dataType"
-              :handleDownload="getDatasetFromExportApi"
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
-              @update:isDownloadModalOpen="isDownloadModalOpen = $event"
+              @close-download-modal="onCloseDownloadModal"
+              @download-dataset="handleDatasetDownload"
               data-test="downloadModal"
             >
             </DownloadDatasetModal>
@@ -240,6 +240,13 @@ export default defineComponent({
     window.addEventListener('scroll', this.windowScrollHandler);
   },
   methods: {
+    /**
+     *
+     */
+    onCloseDownloadModal() {
+      this.isDownloadModalOpen = false;
+    },
+
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
      * @param fetchedCompanyInformation the company information for the current company Id
@@ -418,8 +425,33 @@ export default defineComponent({
      * @param reportingYear selected reporting year
      * @param fileFormat selected file format
      */
-    async getDatasetFromExportApi(reportingYear: string, fileFormat: string) {
-      console.log(this.dataType, this.companyID, reportingYear, fileFormat);
+    async handleDatasetDownload(reportingYear: string, fileFormat: string) {
+      console.log(`DataType: ${this.dataType}\n,
+       CompanyId: ${this.companyID}\n,
+       ReportingPeriod: ${reportingYear}\n,
+       FileFormat: ${fileFormat}`);
+      /*TODO: CONTINUE HERE
+          - how do you get the export endpoint included here?
+          - export endpoint needs to be accessed depending on dataType to be downloaded
+       */
+
+      try {
+        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
+        const metaDataControllerApi = backendClients.metaDataController;
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
+        this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
+        );
+        this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
+          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
+        );
+        this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
+        this.isDataProcessedSuccessfully = true;
+      } catch (error) {
+        this.isDataProcessedSuccessfully = false;
+        console.error(error);
+      }
     },
   },
   watch: {

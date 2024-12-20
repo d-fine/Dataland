@@ -2000,74 +2000,6 @@
         }
       }
     },
-    "/export/{format}/{dataId}": {
-      "get": {
-        "tags": [
-          "data-export-controller"
-        ],
-        "summary": "Export data identified by dataId.",
-        "description": "Export data identified by dataId.",
-        "operationId": "exportData",
-        "parameters": [
-          {
-            "name": "format",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/vsme/{dataId}": {
       "get": {
         "tags": [
@@ -2601,9 +2533,7 @@
         "tags": [
           "p-2p-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2661,9 +2591,7 @@
         "tags": [
           "p-2p-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2858,7 +2786,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson_1",
         "parameters": [
           {
             "name": "dataId",
@@ -2916,7 +2844,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv_1",
         "parameters": [
           {
             "name": "dataId",
@@ -3366,7 +3294,7 @@
         ],
         "summary": "Export data identified by dataId to JSON.",
         "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_1",
+        "operationId": "exportCompanyAssociatedDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3426,7 +3354,7 @@
         ],
         "summary": "Export data identified by dataId to CSV.",
         "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_1",
+        "operationId": "exportCompanyAssociatedDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -4129,7 +4057,7 @@
         ],
         "summary": "Export data identified by dataId to JSON.",
         "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_2",
+        "operationId": "exportCompanyAssociatedDataToJson_1",
         "parameters": [
           {
             "name": "dataId",
@@ -4189,7 +4117,7 @@
         ],
         "summary": "Export data identified by dataId to CSV.",
         "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_2",
+        "operationId": "exportCompanyAssociatedDataToCsv_1",
         "parameters": [
           {
             "name": "dataId",
@@ -19368,13 +19296,6 @@
           }
         }
       },
-      "ExportFileType": {
-        "type": "string",
-        "enum": [
-          "CSV",
-          "JSON"
-        ]
-      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -19534,20 +19455,20 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "lei": {
@@ -19575,10 +19496,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
