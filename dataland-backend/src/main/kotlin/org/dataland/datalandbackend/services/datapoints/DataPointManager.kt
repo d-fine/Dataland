@@ -193,7 +193,7 @@ class DataPointManager(
 
         val datasetId = IdUtils.generateUUID()
         dataManager.storeMetaDataFrom(datasetId, uploadedDataSet, correlationId)
-        dataManager.storeDataSetInTemporaryStoreAndSendMessage(datasetId, uploadedDataSet, bypassQa, correlationId)
+        messageQueuePublications.publishDataSetQaRequiredMessage(datasetId, bypassQa, correlationId)
 
         logger.info("Processing data set with id $datasetId for framework ${uploadedDataSet.dataType}")
 
@@ -229,6 +229,7 @@ class DataPointManager(
                 uploadedDataSet.uploaderUserId,
                 correlationId,
             )
+            messageQueuePublications.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
         }
         this.datasetDatapointRepository.save(
             DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
