@@ -45,7 +45,8 @@
 							"page": "213",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
+							"tagName": "e-business",
+							"publicationDate": "2023-05-03"
 						},
 						"comment": "generate primary application",
 						"quality": null
@@ -56,7 +57,8 @@
 							"page": "270-1149",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
+							"tagName": "channels",
+							"publicationDate": null
 						},
 						"comment": "reboot solid state firewall",
 						"quality": "Reported"
@@ -100,7 +102,8 @@
 							"page": "252-258",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
+							"tagName": "solutions",
+							"publicationDate": "2023-05-03"
 						},
 						"comment": "compress cross-platform microchip",
 						"quality": "Audited",
@@ -112,7 +115,8 @@
 							"page": "729-941",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
+							"tagName": "lifetime value",
+							"publicationDate": "2023-11-04"
 						},
 						"comment": "connect haptic alarm",
 						"quality": "Estimated",
@@ -159,7 +163,8 @@
 							"page": "550-1011",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": "2024-01-07"
 						},
 						"comment": null,
 						"quality": null
@@ -170,7 +175,8 @@
 							"page": "1172-1292",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"tagName": "initiatives",
+							"publicationDate": "2024-01-07"
 						},
 						"comment": "parse primary port",
 						"quality": "NoDataFound"
@@ -200,7 +206,8 @@
 							"page": "617-842",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
+							"tagName": "mindshare",
+							"publicationDate": "2024-01-07"
 						},
 						"comment": "generate redundant microchip",
 						"quality": "Reported",
@@ -212,7 +219,8 @@
 							"page": "472",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"tagName": "paradigms",
+							"publicationDate": "2024-01-07"
 						},
 						"comment": "navigate cross-platform bandwidth",
 						"quality": "Audited",
@@ -224,7 +232,8 @@
 							"page": "453",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
+							"tagName": "lifetime value",
+							"publicationDate": "2024-01-07"
 						},
 						"comment": "back up bluetooth bus",
 						"quality": "Audited",
@@ -236,7 +245,8 @@
 							"page": "499-1006",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"tagName": "paradigms",
+							"publicationDate": "2023-05-08"
 						},
 						"comment": "reboot auxiliary bus",
 						"quality": "Reported",
@@ -296,7 +306,8 @@
 							"page": "1181",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "users",
+							"publicationDate": "2023-12-19"
 						},
 						"comment": "parse virtual port",
 						"quality": "NoDataFound"
@@ -307,7 +318,8 @@
 							"page": "100",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-02-13"
 						},
 						"comment": "input virtual port",
 						"quality": "Incomplete"
@@ -342,7 +354,8 @@
 							"page": "431-562",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "bandwidth"
+							"tagName": "bandwidth",
+							"publicationDate": "2023-11-20"
 						},
 						"comment": "bypass 1080p capacitor",
 						"quality": "NoDataFound",
@@ -354,7 +367,8 @@
 							"page": "240-1248",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"tagName": "synergies",
+							"publicationDate": "2023-06-04"
 						},
 						"comment": "bypass haptic alarm",
 						"quality": "Audited",
@@ -366,7 +380,8 @@
 							"page": "255-480",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
+							"tagName": "experiences",
+							"publicationDate": "2023-02-13"
 						},
 						"comment": "compress virtual monitor",
 						"quality": "NoDataFound",
@@ -432,7 +447,8 @@
 							"page": "48",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
+							"tagName": "blockchains",
+							"publicationDate": "2023-01-24"
 						},
 						"comment": "override primary system",
 						"quality": "Estimated"
@@ -443,7 +459,8 @@
 							"page": "273",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
+							"tagName": "relationships",
+							"publicationDate": "2023-12-20"
 						},
 						"comment": "hack neural microchip",
 						"quality": "Incomplete"
@@ -478,7 +495,8 @@
 							"page": "252-724",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "web services",
+							"publicationDate": "2023-02-13"
 						},
 						"comment": "index digital protocol",
 						"quality": "Incomplete",
@@ -492,7 +510,8 @@
 							"page": "204-1231",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": "2023-01-24"
 						},
 						"comment": "compress open-source microchip",
 						"quality": "Estimated",
@@ -547,7 +566,8 @@
 							"page": "861",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
+							"tagName": "convergence",
+							"publicationDate": "2023-08-11"
 						},
 						"comment": "override wireless firewall",
 						"quality": "Estimated"
@@ -558,7 +578,8 @@
 							"page": "681",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": "2023-01-28"
 						},
 						"comment": "generate back-end transmitter",
 						"quality": "Reported"
@@ -589,7 +610,8 @@
 							"page": "567",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": "2023-08-11"
 						},
 						"comment": "navigate mobile driver",
 						"quality": "Incomplete",
@@ -601,7 +623,8 @@
 							"page": "111",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
+							"tagName": "e-business",
+							"publicationDate": "2023-08-11"
 						},
 						"comment": "parse virtual matrix",
 						"quality": null,
@@ -613,7 +636,8 @@
 							"page": "958-1108",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "users",
+							"publicationDate": "2023-08-11"
 						},
 						"comment": "connect wireless monitor",
 						"quality": "Reported",
@@ -670,7 +694,8 @@
 							"page": "683-776",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "systems",
+							"publicationDate": "2023-09-11"
 						},
 						"comment": "program optical firewall",
 						"quality": "Audited"
@@ -695,7 +720,8 @@
 							"page": "478",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "architectures",
+							"publicationDate": "2023-09-11"
 						},
 						"comment": "synthesize solid state feed",
 						"quality": "NoDataFound",
@@ -707,7 +733,8 @@
 							"page": "1064",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "schemas"
+							"tagName": "schemas",
+							"publicationDate": "2023-09-11"
 						},
 						"comment": "transmit cross-platform application",
 						"quality": "NoDataFound",
@@ -719,7 +746,8 @@
 							"page": "748-1041",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": "2023-09-11"
 						},
 						"comment": "parse optical interface",
 						"quality": "Reported",
@@ -777,7 +805,8 @@
 							"page": "1029",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"tagName": "markets",
+							"publicationDate": "2023-05-01"
 						},
 						"comment": "quantify back-end matrix",
 						"quality": "Audited"
@@ -808,7 +837,8 @@
 							"page": "871",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
+							"tagName": "convergence",
+							"publicationDate": "2023-07-27"
 						},
 						"comment": "index 1080p microchip",
 						"quality": "NoDataFound",
@@ -821,7 +851,8 @@
 							"page": "790",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
+							"tagName": "experiences",
+							"publicationDate": "2023-08-06"
 						},
 						"comment": "reboot bluetooth hard drive",
 						"quality": "Incomplete",
@@ -877,7 +908,8 @@
 							"page": "686-801",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "interfaces",
+							"publicationDate": "2024-01-09"
 						},
 						"comment": "parse bluetooth panel",
 						"quality": "Estimated"
@@ -888,7 +920,8 @@
 							"page": "777-1161",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"tagName": "initiatives",
+							"publicationDate": "2024-01-09"
 						},
 						"comment": "calculate haptic firewall",
 						"quality": null
@@ -913,7 +946,8 @@
 							"page": "296",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"tagName": "synergies",
+							"publicationDate": "2024-01-09"
 						},
 						"comment": null,
 						"quality": "Reported",
@@ -926,7 +960,8 @@
 							"page": "219",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": "2023-04-17"
 						},
 						"comment": "back up back-end sensor",
 						"quality": "Reported",
@@ -938,7 +973,8 @@
 							"page": "785-1159",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": "2024-01-09"
 						},
 						"comment": "quantify cross-platform interface",
 						"quality": "NoDataFound",
@@ -995,7 +1031,8 @@
 							"page": "763-1151",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"tagName": "synergies",
+							"publicationDate": "2023-06-20"
 						},
 						"comment": "generate virtual sensor",
 						"quality": "Audited"
@@ -1031,7 +1068,8 @@
 							"page": "1087-1280",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-05-20"
 						},
 						"comment": "program redundant monitor",
 						"quality": "NoDataFound",
@@ -1043,7 +1081,8 @@
 							"page": "452-912",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "metrics",
+							"publicationDate": "2023-02-18"
 						},
 						"comment": null,
 						"quality": "Reported",
@@ -1055,7 +1094,8 @@
 							"page": "314-893",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-05-20"
 						},
 						"comment": "reboot mobile panel",
 						"quality": null,
@@ -1108,7 +1148,8 @@
 							"page": "812-978",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "metrics",
+							"publicationDate": "2024-01-11"
 						},
 						"comment": "bypass bluetooth card",
 						"quality": "Audited"
@@ -1140,7 +1181,8 @@
 							"page": "445-1086",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
+							"tagName": "mindshare",
+							"publicationDate": "2024-01-11"
 						},
 						"comment": "quantify virtual card",
 						"quality": "NoDataFound",
@@ -1152,7 +1194,8 @@
 							"page": "369",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"tagName": "initiatives",
+							"publicationDate": "2023-07-09"
 						},
 						"comment": "bypass solid state microchip",
 						"quality": "Reported",
@@ -1164,7 +1207,8 @@
 							"page": "82",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": "2023-07-09"
 						},
 						"comment": "synthesize mobile bus",
 						"quality": "Reported",
@@ -1221,7 +1265,8 @@
 							"page": "2-1043",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "metrics",
+							"publicationDate": "2023-05-04"
 						},
 						"comment": null,
 						"quality": "Reported"
@@ -1232,7 +1277,8 @@
 							"page": "684-1109",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": "2023-09-10"
 						},
 						"comment": "copy solid state hard drive",
 						"quality": "Reported"
@@ -1316,7 +1362,8 @@
 							"page": "744-845",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "ROI",
+							"publicationDate": "2023-10-10"
 						},
 						"comment": "compress open-source capacitor",
 						"quality": "Reported",
@@ -1329,7 +1376,8 @@
 							"page": "804-986",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": "2023-10-10"
 						},
 						"comment": "index digital sensor",
 						"quality": "Reported",
@@ -1415,7 +1463,8 @@
 							"page": "1114",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": "2023-03-04"
 						},
 						"comment": "program optical panel",
 						"quality": "NoDataFound",
@@ -1427,7 +1476,8 @@
 							"page": "150",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": null
 						},
 						"comment": null,
 						"quality": "NoDataFound",
@@ -1439,7 +1489,8 @@
 							"page": "878",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
+							"tagName": "lifetime value",
+							"publicationDate": null
 						},
 						"comment": null,
 						"quality": "Audited",
@@ -1500,7 +1551,8 @@
 							"page": "17",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "schemas"
+							"tagName": "schemas",
+							"publicationDate": "2023-10-16"
 						},
 						"comment": "connect redundant transmitter",
 						"quality": "NoDataFound"
@@ -1511,7 +1563,8 @@
 							"page": "915-1253",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"tagName": "initiatives",
+							"publicationDate": null
 						},
 						"comment": null,
 						"quality": "Reported"
@@ -1546,7 +1599,8 @@
 							"page": "1071-1086",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
+							"tagName": "e-markets",
+							"publicationDate": "2023-10-16"
 						},
 						"comment": "transmit bluetooth hard drive",
 						"quality": "NoDataFound",
@@ -1565,7 +1619,8 @@
 							"page": "447",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": "2023-10-16"
 						},
 						"comment": "synthesize cross-platform port",
 						"quality": null,
@@ -1577,7 +1632,8 @@
 							"page": "263",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "networks",
+							"publicationDate": "2023-07-11"
 						},
 						"comment": "hack haptic driver",
 						"quality": null,
@@ -1643,7 +1699,8 @@
 							"page": "1076-1157",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
+							"tagName": "blockchains",
+							"publicationDate": "2023-08-08"
 						},
 						"comment": "generate haptic monitor",
 						"quality": "NoDataFound"
@@ -1654,7 +1711,8 @@
 							"page": "450",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "partnerships"
+							"tagName": "partnerships",
+							"publicationDate": "2023-08-08"
 						},
 						"comment": null,
 						"quality": null
@@ -1684,7 +1742,8 @@
 							"page": "775-1029",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-08-08"
 						},
 						"comment": "copy 1080p matrix",
 						"quality": "Incomplete",
@@ -1697,7 +1756,8 @@
 							"page": "647",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": "2023-07-19"
 						},
 						"comment": "bypass 1080p hard drive",
 						"quality": "Incomplete",
@@ -1709,7 +1769,8 @@
 							"page": "618-842",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
+							"tagName": "eyeballs",
+							"publicationDate": "2023-10-20"
 						},
 						"comment": null,
 						"quality": "Audited",
@@ -1759,7 +1820,8 @@
 							"page": "1164",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
+							"tagName": "deliverables",
+							"publicationDate": "2023-09-25"
 						},
 						"comment": "synthesize primary application",
 						"quality": "Incomplete"
@@ -1792,7 +1854,8 @@
 							"page": "287-626",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "bandwidth"
+							"tagName": "bandwidth",
+							"publicationDate": "2023-10-21"
 						},
 						"comment": "transmit 1080p bandwidth",
 						"quality": "Audited",
@@ -1846,7 +1909,8 @@
 							"page": "504-1274",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": "2023-05-25"
 						},
 						"comment": null,
 						"quality": null
@@ -1857,7 +1921,8 @@
 							"page": "758-910",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": "2023-05-25"
 						},
 						"comment": "back up 1080p sensor",
 						"quality": "Reported"
@@ -1884,7 +1949,8 @@
 							"page": "917",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": "2023-05-25"
 						},
 						"comment": "calculate haptic program",
 						"quality": "Audited",
@@ -1896,7 +1962,8 @@
 							"page": "343-670",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"tagName": "paradigms",
+							"publicationDate": "2023-05-25"
 						},
 						"comment": "parse primary transmitter",
 						"quality": "Estimated",
@@ -1908,7 +1975,8 @@
 							"page": "369",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
+							"tagName": "e-business",
+							"publicationDate": "2023-05-25"
 						},
 						"comment": "connect open-source hard drive",
 						"quality": "NoDataFound",
@@ -1964,7 +2032,8 @@
 							"page": "410",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
+							"tagName": "deliverables",
+							"publicationDate": "2023-03-27"
 						},
 						"comment": null,
 						"quality": "NoDataFound"
@@ -1975,7 +2044,8 @@
 							"page": "979-1252",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "action-items",
+							"publicationDate": "2023-03-27"
 						},
 						"comment": null,
 						"quality": null
@@ -1995,7 +2065,8 @@
 							"page": "883-1080",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
+							"tagName": "convergence",
+							"publicationDate": "2023-03-27"
 						},
 						"comment": "input solid state program",
 						"quality": null,
@@ -2008,7 +2079,8 @@
 							"page": "1145-1211",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
+							"tagName": "functionalities",
+							"publicationDate": "2023-03-27"
 						},
 						"comment": null,
 						"quality": "Reported",
@@ -2020,7 +2092,8 @@
 							"page": "788-1157",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "bandwidth"
+							"tagName": "bandwidth",
+							"publicationDate": "2023-03-27"
 						},
 						"comment": "hack wireless interface",
 						"quality": "Reported",
@@ -2078,7 +2151,8 @@
 							"page": "166",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": "2023-02-15"
 						},
 						"comment": "connect redundant system",
 						"quality": "Reported"
@@ -2089,7 +2163,8 @@
 							"page": "138",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": null
 						},
 						"comment": "quantify wireless firewall",
 						"quality": null
@@ -2124,7 +2199,8 @@
 							"page": "1041",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "interfaces",
+							"publicationDate": "2023-08-11"
 						},
 						"comment": "hack optical card",
 						"quality": "Audited",
@@ -2136,7 +2212,8 @@
 							"page": "1151-1292",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "web services",
+							"publicationDate": "2023-02-15"
 						},
 						"comment": "synthesize solid state hard drive",
 						"quality": "Estimated",
@@ -2149,7 +2226,8 @@
 							"page": "28",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": "2023-08-11"
 						},
 						"comment": "quantify multi-byte transmitter",
 						"quality": null,
@@ -2212,7 +2290,8 @@
 							"page": "177-268",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "architectures",
+							"publicationDate": "2023-09-10"
 						},
 						"comment": "back up neural microchip",
 						"quality": null
@@ -2247,7 +2326,8 @@
 							"page": "900",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "architectures",
+							"publicationDate": "2023-09-10"
 						},
 						"comment": "reboot open-source microchip",
 						"quality": "Incomplete",
@@ -2259,7 +2339,8 @@
 							"page": "173-221",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
+							"tagName": "mindshare",
+							"publicationDate": "2023-07-21"
 						},
 						"comment": "index neural monitor",
 						"quality": "NoDataFound",
@@ -2272,7 +2353,8 @@
 							"page": "1014",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "architectures",
+							"publicationDate": "2023-09-10"
 						},
 						"comment": null,
 						"quality": "NoDataFound",
@@ -2328,7 +2410,8 @@
 							"page": "813",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": "2023-06-01"
 						},
 						"comment": "program 1080p capacitor",
 						"quality": "Audited"
@@ -2339,7 +2422,8 @@
 							"page": "305-463",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
+							"tagName": "deliverables",
+							"publicationDate": "2023-06-01"
 						},
 						"comment": null,
 						"quality": "Audited"
@@ -2369,7 +2453,8 @@
 							"page": "905",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
+							"tagName": "blockchains",
+							"publicationDate": null
 						},
 						"comment": "bypass online card",
 						"quality": "Estimated",
@@ -2381,7 +2466,8 @@
 							"page": "556",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
+							"tagName": "channels",
+							"publicationDate": null
 						},
 						"comment": "calculate optical driver",
 						"quality": "Incomplete",
@@ -2443,7 +2529,8 @@
 							"page": "779",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "action-items",
+							"publicationDate": "2023-08-21"
 						},
 						"comment": "compress back-end feed",
 						"quality": "NoDataFound"
@@ -2454,7 +2541,8 @@
 							"page": "405-1268",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": "2023-09-17"
 						},
 						"comment": null,
 						"quality": null
@@ -2480,7 +2568,8 @@
 							"page": "417-1206",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "metrics",
+							"publicationDate": "2023-09-17"
 						},
 						"comment": "transmit back-end application",
 						"quality": "Reported",
@@ -2492,7 +2581,8 @@
 							"page": "456",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": "2023-08-21"
 						},
 						"comment": "generate open-source protocol",
 						"quality": "Incomplete",
@@ -2504,7 +2594,8 @@
 							"page": "221",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": "2023-09-17"
 						},
 						"comment": "navigate multi-byte interface",
 						"quality": "Audited",
@@ -2558,7 +2649,8 @@
 							"page": "63-636",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": "2023-09-01"
 						},
 						"comment": "calculate open-source matrix",
 						"quality": "Reported"
@@ -2569,7 +2661,8 @@
 							"page": "856-1258",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-09-01"
 						},
 						"comment": "copy primary panel",
 						"quality": "Audited"
@@ -2589,7 +2682,8 @@
 							"page": "325-546",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"tagName": "markets",
+							"publicationDate": "2023-09-01"
 						},
 						"comment": null,
 						"quality": "Incomplete",
@@ -2601,7 +2695,8 @@
 							"page": "250",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
+							"tagName": "solutions",
+							"publicationDate": "2023-09-01"
 						},
 						"comment": null,
 						"quality": "Incomplete",
@@ -2620,7 +2715,8 @@
 							"page": "536",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-markets"
+							"tagName": "e-markets",
+							"publicationDate": "2023-09-01"
 						},
 						"comment": "parse wireless program",
 						"quality": "Audited",
@@ -2683,7 +2779,8 @@
 							"page": "613",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
+							"tagName": "applications",
+							"publicationDate": "2023-10-17"
 						},
 						"comment": null,
 						"quality": "Audited"
@@ -2709,7 +2806,8 @@
 							"page": "1197-1276",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
+							"tagName": "relationships",
+							"publicationDate": "2023-10-17"
 						},
 						"comment": "input multi-byte sensor",
 						"quality": null,
@@ -2722,7 +2820,8 @@
 							"page": "684",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
+							"tagName": "niches",
+							"publicationDate": "2023-10-17"
 						},
 						"comment": "synthesize primary bus",
 						"quality": "Reported",
@@ -2734,7 +2833,8 @@
 							"page": "996",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "architectures",
+							"publicationDate": "2023-12-04"
 						},
 						"comment": "reboot virtual port",
 						"quality": "Reported",
@@ -2809,7 +2909,8 @@
 							"page": "277",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": null
 						},
 						"comment": "hack haptic feed",
 						"quality": "NoDataFound",
@@ -2822,7 +2923,8 @@
 							"page": "685-884",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
+							"tagName": "niches",
+							"publicationDate": null
 						},
 						"comment": "override neural panel",
 						"quality": "Audited",
@@ -2878,7 +2980,8 @@
 							"page": "1121",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
+							"tagName": "e-business",
+							"publicationDate": null
 						},
 						"comment": "reboot auxiliary transmitter",
 						"quality": "Audited"
@@ -2908,7 +3011,8 @@
 							"page": "1125-1144",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "bandwidth"
+							"tagName": "bandwidth",
+							"publicationDate": "2024-01-03"
 						},
 						"comment": "hack auxiliary capacitor",
 						"quality": "Incomplete",
@@ -2920,7 +3024,8 @@
 							"page": "950",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "interfaces",
+							"publicationDate": "2024-01-03"
 						},
 						"comment": "calculate digital card",
 						"quality": "Estimated",
@@ -2932,7 +3037,8 @@
 							"page": "325",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "partnerships"
+							"tagName": "partnerships",
+							"publicationDate": "2024-01-03"
 						},
 						"comment": "program 1080p hard drive",
 						"quality": "Incomplete",
@@ -2944,7 +3050,8 @@
 							"page": "321",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": null
 						},
 						"comment": "copy multi-byte interface",
 						"quality": "Estimated",
@@ -2997,7 +3104,8 @@
 							"page": "15",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "metrics",
+							"publicationDate": "2023-12-22"
 						},
 						"comment": "generate cross-platform matrix",
 						"quality": "Incomplete"
@@ -3008,7 +3116,8 @@
 							"page": "502-740",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
+							"tagName": "lifetime value",
+							"publicationDate": "2023-10-28"
 						},
 						"comment": "connect online circuit",
 						"quality": "Audited"
@@ -3043,7 +3152,8 @@
 							"page": "1058",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
+							"tagName": "mindshare",
+							"publicationDate": "2023-06-05"
 						},
 						"comment": "generate digital card",
 						"quality": "Audited",
@@ -3056,7 +3166,8 @@
 							"page": "733",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": "2023-03-31"
 						},
 						"comment": "quantify cross-platform system",
 						"quality": "Audited",
@@ -3117,7 +3228,8 @@
 							"page": "155-1047",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "web services",
+							"publicationDate": "2024-01-05"
 						},
 						"comment": "generate redundant protocol",
 						"quality": "Audited"
@@ -3153,7 +3265,8 @@
 							"page": "299-1155",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": "2023-10-14"
 						},
 						"comment": "compress neural interface",
 						"quality": null,
@@ -3172,7 +3285,8 @@
 							"page": "397",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
+							"tagName": "content",
+							"publicationDate": "2023-10-14"
 						},
 						"comment": null,
 						"quality": "Reported",
@@ -3247,7 +3361,8 @@
 							"page": "768-950",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
+							"tagName": "communities",
+							"publicationDate": null
 						},
 						"comment": "input mobile bus",
 						"quality": "Estimated",
@@ -3259,7 +3374,8 @@
 							"page": "1076",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": null
 						},
 						"comment": "calculate back-end feed",
 						"quality": "Audited",
@@ -3272,7 +3388,8 @@
 							"page": "781-972",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": null
 						},
 						"comment": null,
 						"quality": "Incomplete",
@@ -3327,7 +3444,8 @@
 							"page": "1128",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
+							"tagName": "deliverables",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": "copy optical microchip",
 						"quality": "NoDataFound"
@@ -3338,7 +3456,8 @@
 							"page": "566",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "interfaces",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": "program virtual matrix",
 						"quality": "NoDataFound"
@@ -3358,7 +3477,8 @@
 							"page": "763",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": "program virtual protocol",
 						"quality": "NoDataFound",
@@ -3370,7 +3490,8 @@
 							"page": "1014",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"tagName": "initiatives",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": "generate cross-platform bus",
 						"quality": "Estimated",
@@ -3382,7 +3503,8 @@
 							"page": "676-777",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "systems",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": "back up redundant array",
 						"quality": null,
@@ -3394,7 +3516,8 @@
 							"page": "940-973",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "experiences"
+							"tagName": "experiences",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": null,
 						"quality": "Audited",
@@ -3453,7 +3576,8 @@
 							"page": "1189",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "convergence"
+							"tagName": "convergence",
+							"publicationDate": "2023-04-29"
 						},
 						"comment": "index redundant panel",
 						"quality": null
@@ -3491,7 +3615,8 @@
 							"page": "423",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": "2023-08-17"
 						},
 						"comment": "compress auxiliary alarm",
 						"quality": "Audited",
@@ -3503,7 +3628,8 @@
 							"page": "572-1098",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
+							"tagName": "infrastructures",
+							"publicationDate": "2023-01-29"
 						},
 						"comment": "compress back-end protocol",
 						"quality": "Estimated",
@@ -3564,7 +3690,8 @@
 							"page": "278-406",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
+							"tagName": "content",
+							"publicationDate": "2023-09-27"
 						},
 						"comment": "compress mobile system",
 						"quality": "Reported"
@@ -3575,7 +3702,8 @@
 							"page": "257",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "networks",
+							"publicationDate": "2023-09-27"
 						},
 						"comment": "index open-source alarm",
 						"quality": "Audited"
@@ -3614,7 +3742,8 @@
 							"page": "612",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "systems",
+							"publicationDate": "2023-09-27"
 						},
 						"comment": "calculate solid state microchip",
 						"quality": "Incomplete",
@@ -3666,7 +3795,8 @@
 							"page": "184",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
+							"tagName": "e-business",
+							"publicationDate": "2024-01-03"
 						},
 						"comment": "compress virtual monitor",
 						"quality": "Reported"
@@ -3677,7 +3807,8 @@
 							"page": "984",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": "2023-07-09"
 						},
 						"comment": null,
 						"quality": "Incomplete"
@@ -3712,7 +3843,8 @@
 							"page": "1015",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "networks",
+							"publicationDate": "2023-07-09"
 						},
 						"comment": "program haptic bus",
 						"quality": "Audited",
@@ -3725,7 +3857,8 @@
 							"page": "646",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"tagName": "architectures",
+							"publicationDate": "2023-07-09"
 						},
 						"comment": "connect primary bus",
 						"quality": "Reported",
@@ -3789,7 +3922,8 @@
 							"page": "942",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": "2023-04-06"
 						},
 						"comment": "hack haptic hard drive",
 						"quality": "Estimated"
@@ -3809,7 +3943,8 @@
 							"page": "168",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
+							"tagName": "applications",
+							"publicationDate": "2023-04-06"
 						},
 						"comment": "calculate open-source protocol",
 						"quality": "Estimated",
@@ -3821,7 +3956,8 @@
 							"page": "552",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "action-items",
+							"publicationDate": "2023-04-06"
 						},
 						"comment": "calculate redundant feed",
 						"quality": "Incomplete",
@@ -3833,7 +3969,8 @@
 							"page": "430",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": "2023-04-06"
 						},
 						"comment": "quantify open-source capacitor",
 						"quality": "Audited",
@@ -3845,7 +3982,8 @@
 							"page": "627",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": "2023-04-06"
 						},
 						"comment": null,
 						"quality": "Incomplete",
@@ -3909,7 +4047,8 @@
 							"page": "375",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
+							"tagName": "channels",
+							"publicationDate": "2024-01-15"
 						},
 						"comment": "calculate optical monitor",
 						"quality": "Audited"
@@ -3920,7 +4059,8 @@
 							"page": "269",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "interfaces",
+							"publicationDate": "2024-01-15"
 						},
 						"comment": "override back-end panel",
 						"quality": "NoDataFound"
@@ -3955,7 +4095,8 @@
 							"page": "1047",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
+							"tagName": "e-business",
+							"publicationDate": "2024-01-15"
 						},
 						"comment": "hack 1080p card",
 						"quality": "Incomplete",
@@ -3967,7 +4108,8 @@
 							"page": "653",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
+							"tagName": "deliverables",
+							"publicationDate": "2024-01-15"
 						},
 						"comment": "synthesize auxiliary interface",
 						"quality": "Estimated",
@@ -3979,7 +4121,8 @@
 							"page": "411-797",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": "2023-03-02"
 						},
 						"comment": "index solid state interface",
 						"quality": null,
@@ -3991,7 +4134,8 @@
 							"page": "1193-1291",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
+							"tagName": "channels",
+							"publicationDate": "2024-01-15"
 						},
 						"comment": null,
 						"quality": null,
@@ -4053,7 +4197,8 @@
 							"page": "224-554",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"tagName": "synergies",
+							"publicationDate": "2023-07-12"
 						},
 						"comment": "navigate open-source driver",
 						"quality": null
@@ -4088,7 +4233,8 @@
 							"page": "1110-1176",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
+							"tagName": "communities",
+							"publicationDate": "2023-05-28"
 						},
 						"comment": "hack mobile program",
 						"quality": "Audited",
@@ -4100,7 +4246,8 @@
 							"page": "1123-1157",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": "2023-07-12"
 						},
 						"comment": "override optical pixel",
 						"quality": "Reported",
@@ -4112,7 +4259,8 @@
 							"page": "438",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
+							"tagName": "infrastructures",
+							"publicationDate": "2023-03-31"
 						},
 						"comment": "parse wireless hard drive",
 						"quality": null,
@@ -4124,7 +4272,8 @@
 							"page": "541",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
+							"tagName": "functionalities",
+							"publicationDate": "2023-07-12"
 						},
 						"comment": "input auxiliary feed",
 						"quality": null,
@@ -4181,7 +4330,8 @@
 							"page": "845-1056",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "ROI",
+							"publicationDate": "2023-07-14"
 						},
 						"comment": "synthesize 1080p protocol",
 						"quality": "Audited"
@@ -4208,7 +4358,8 @@
 							"page": "962",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "metrics"
+							"tagName": "metrics",
+							"publicationDate": "2023-10-22"
 						},
 						"comment": "compress solid state pixel",
 						"quality": "Reported",
@@ -4220,7 +4371,8 @@
 							"page": "851-1239",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "platforms"
+							"tagName": "platforms",
+							"publicationDate": "2023-07-14"
 						},
 						"comment": null,
 						"quality": "Audited",
@@ -4232,7 +4384,8 @@
 							"page": "862-990",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
+							"tagName": "niches",
+							"publicationDate": "2023-07-14"
 						},
 						"comment": "compress redundant feed",
 						"quality": "Reported",
@@ -4288,7 +4441,8 @@
 							"page": "361",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
+							"tagName": "infrastructures",
+							"publicationDate": "2023-12-18"
 						},
 						"comment": "input bluetooth array",
 						"quality": "Reported"
@@ -4321,7 +4475,8 @@
 							"page": "600",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
+							"tagName": "content",
+							"publicationDate": "2023-12-18"
 						},
 						"comment": "navigate haptic driver",
 						"quality": "Incomplete",
@@ -4333,7 +4488,8 @@
 							"page": "1084",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": "2023-12-18"
 						},
 						"comment": "calculate mobile transmitter",
 						"quality": "Reported",
@@ -4427,7 +4583,8 @@
 							"page": "156-776",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "interfaces",
+							"publicationDate": "2023-08-16"
 						},
 						"comment": "calculate open-source sensor",
 						"quality": "Incomplete",
@@ -4439,7 +4596,8 @@
 							"page": "930",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
+							"tagName": "functionalities",
+							"publicationDate": "2023-04-06"
 						},
 						"comment": "back up optical firewall",
 						"quality": "Reported",
@@ -4451,7 +4609,8 @@
 							"page": "803",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
+							"tagName": "functionalities",
+							"publicationDate": null
 						},
 						"comment": "navigate primary program",
 						"quality": null,
@@ -4517,7 +4676,8 @@
 							"page": "435-725",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "schemas"
+							"tagName": "schemas",
+							"publicationDate": "2023-12-26"
 						},
 						"comment": "quantify multi-byte protocol",
 						"quality": "Estimated"
@@ -4528,7 +4688,8 @@
 							"page": "745",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-business"
+							"tagName": "e-business",
+							"publicationDate": "2023-12-26"
 						},
 						"comment": null,
 						"quality": "Audited"
@@ -4553,7 +4714,8 @@
 							"page": "352",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": "2023-04-30"
 						},
 						"comment": "transmit auxiliary firewall",
 						"quality": "Audited",
@@ -4565,7 +4727,8 @@
 							"page": "767-825",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-12-26"
 						},
 						"comment": "transmit virtual system",
 						"quality": "Reported",
@@ -4577,7 +4740,8 @@
 							"page": "842",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "users",
+							"publicationDate": "2023-12-26"
 						},
 						"comment": "index open-source interface",
 						"quality": "Audited",
@@ -4589,7 +4753,8 @@
 							"page": "845-1224",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"tagName": "paradigms",
+							"publicationDate": "2023-04-30"
 						},
 						"comment": "calculate optical alarm",
 						"quality": null,
@@ -4644,7 +4809,8 @@
 							"page": "1042-1087",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
+							"tagName": "niches",
+							"publicationDate": "2023-09-02"
 						},
 						"comment": "program redundant panel",
 						"quality": "Reported"
@@ -4670,7 +4836,8 @@
 							"page": "421",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "action-items",
+							"publicationDate": "2023-09-02"
 						},
 						"comment": null,
 						"quality": "Audited",
@@ -4690,7 +4857,8 @@
 							"page": "780-1286",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
+							"tagName": "deliverables",
+							"publicationDate": "2023-09-02"
 						},
 						"comment": "program haptic bus",
 						"quality": "NoDataFound",
@@ -4741,7 +4909,8 @@
 							"page": "33",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "methodologies"
+							"tagName": "methodologies",
+							"publicationDate": null
 						},
 						"comment": "synthesize mobile pixel",
 						"quality": "NoDataFound"
@@ -4752,7 +4921,8 @@
 							"page": "72",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "content"
+							"tagName": "content",
+							"publicationDate": null
 						},
 						"comment": "parse online transmitter",
 						"quality": null
@@ -4772,7 +4942,8 @@
 							"page": "1189-1201",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "schemas"
+							"tagName": "schemas",
+							"publicationDate": null
 						},
 						"comment": "input solid state system",
 						"quality": null,
@@ -4784,7 +4955,8 @@
 							"page": "627-1180",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
+							"tagName": "niches",
+							"publicationDate": null
 						},
 						"comment": "hack auxiliary alarm",
 						"quality": null,
@@ -4797,7 +4969,8 @@
 							"page": "639-1010",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
+							"tagName": "relationships",
+							"publicationDate": null
 						},
 						"comment": null,
 						"quality": "Estimated",
@@ -4850,7 +5023,8 @@
 							"page": "504-1191",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": null
 						},
 						"comment": "copy auxiliary circuit",
 						"quality": "Incomplete"
@@ -4861,7 +5035,8 @@
 							"page": "590",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "action-items",
+							"publicationDate": null
 						},
 						"comment": "reboot solid state port",
 						"quality": "NoDataFound"
@@ -4881,7 +5056,8 @@
 							"page": "114",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": null
 						},
 						"comment": null,
 						"quality": "Reported",
@@ -4893,7 +5069,8 @@
 							"page": "473",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
+							"tagName": "mindshare",
+							"publicationDate": null
 						},
 						"comment": "bypass mobile transmitter",
 						"quality": "NoDataFound",
@@ -4905,7 +5082,8 @@
 							"page": "982",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
+							"tagName": "relationships",
+							"publicationDate": null
 						},
 						"comment": "quantify mobile port",
 						"quality": "Reported",
@@ -4917,7 +5095,8 @@
 							"page": "687",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
+							"tagName": "communities",
+							"publicationDate": null
 						},
 						"comment": "back up digital array",
 						"quality": "Audited",
@@ -4999,7 +5178,8 @@
 							"page": "422-822",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"tagName": "models",
+							"publicationDate": "2023-10-17"
 						},
 						"comment": "back up wireless transmitter",
 						"quality": null,
@@ -5011,7 +5191,8 @@
 							"page": "1192",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": "2023-10-17"
 						},
 						"comment": null,
 						"quality": "Audited",
@@ -5023,7 +5204,8 @@
 							"page": "800-1033",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "deliverables"
+							"tagName": "deliverables",
+							"publicationDate": "2023-10-17"
 						},
 						"comment": "parse bluetooth microchip",
 						"quality": "Reported",
@@ -5086,7 +5268,8 @@
 							"page": "1111-1263",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"tagName": "paradigms",
+							"publicationDate": "2023-02-17"
 						},
 						"comment": null,
 						"quality": null
@@ -5121,7 +5304,8 @@
 							"page": "440-1251",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "systems",
+							"publicationDate": "2023-02-17"
 						},
 						"comment": null,
 						"quality": "NoDataFound",
@@ -5133,7 +5317,8 @@
 							"page": "145-367",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "channels"
+							"tagName": "channels",
+							"publicationDate": "2023-10-27"
 						},
 						"comment": "parse cross-platform panel",
 						"quality": "NoDataFound",
@@ -5152,7 +5337,8 @@
 							"page": "923",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"tagName": "markets",
+							"publicationDate": "2023-03-16"
 						},
 						"comment": "copy back-end application",
 						"quality": "NoDataFound",
@@ -5213,7 +5399,8 @@
 							"page": "1111",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"tagName": "synergies",
+							"publicationDate": "2023-06-25"
 						},
 						"comment": "parse open-source bus",
 						"quality": "Estimated"
@@ -5249,7 +5436,8 @@
 							"page": "526-924",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"tagName": "markets",
+							"publicationDate": "2023-06-25"
 						},
 						"comment": "hack digital transmitter",
 						"quality": "Audited",
@@ -5261,7 +5449,8 @@
 							"page": "1147-1165",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
+							"tagName": "mindshare",
+							"publicationDate": "2023-12-31"
 						},
 						"comment": "reboot back-end port",
 						"quality": "Reported",
@@ -5273,7 +5462,8 @@
 							"page": "1129",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"tagName": "initiatives",
+							"publicationDate": "2023-06-25"
 						},
 						"comment": "copy neural interface",
 						"quality": "Audited",
@@ -5285,7 +5475,8 @@
 							"page": "532",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "technologies"
+							"tagName": "technologies",
+							"publicationDate": "2023-12-31"
 						},
 						"comment": "synthesize redundant monitor",
 						"quality": null,
@@ -5338,7 +5529,8 @@
 							"page": "866-1044",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
+							"tagName": "applications",
+							"publicationDate": "2024-01-11"
 						},
 						"comment": "compress cross-platform transmitter",
 						"quality": null
@@ -5349,7 +5541,8 @@
 							"page": "316",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
+							"tagName": "solutions",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": null,
 						"quality": null
@@ -5374,7 +5567,8 @@
 							"page": "919-1292",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "action-items",
+							"publicationDate": "2024-01-11"
 						},
 						"comment": null,
 						"quality": null,
@@ -5387,7 +5581,8 @@
 							"page": "197-625",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": null,
 						"quality": null,
@@ -5399,7 +5594,8 @@
 							"page": "192-913",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "functionalities"
+							"tagName": "functionalities",
+							"publicationDate": "2023-04-27"
 						},
 						"comment": "calculate multi-byte system",
 						"quality": null,
@@ -5463,7 +5659,8 @@
 							"page": "932",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
+							"tagName": "eyeballs",
+							"publicationDate": "2023-07-14"
 						},
 						"comment": "override auxiliary alarm",
 						"quality": "Incomplete"
@@ -5484,7 +5681,8 @@
 							"page": "704",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "mindshare"
+							"tagName": "mindshare",
+							"publicationDate": "2023-07-14"
 						},
 						"comment": "transmit open-source protocol",
 						"quality": "Estimated",
@@ -5549,7 +5747,8 @@
 							"page": "465-773",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "interfaces"
+							"tagName": "interfaces",
+							"publicationDate": "2023-09-28"
 						},
 						"comment": "override optical matrix",
 						"quality": "Reported"
@@ -5585,7 +5784,8 @@
 							"page": "126",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
+							"tagName": "eyeballs",
+							"publicationDate": "2023-05-06"
 						},
 						"comment": "compress neural array",
 						"quality": "NoDataFound",
@@ -5597,7 +5797,8 @@
 							"page": "71",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "relationships"
+							"tagName": "relationships",
+							"publicationDate": "2023-05-06"
 						},
 						"comment": null,
 						"quality": "Incomplete",
@@ -5609,7 +5810,8 @@
 							"page": "392",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "users",
+							"publicationDate": "2023-09-28"
 						},
 						"comment": "back up back-end circuit",
 						"quality": "Incomplete",
@@ -5621,7 +5823,8 @@
 							"page": "699",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "networks",
+							"publicationDate": "2023-09-28"
 						},
 						"comment": "parse solid state sensor",
 						"quality": "Estimated",
@@ -5676,7 +5879,8 @@
 							"page": "593-1051",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"tagName": "users",
+							"publicationDate": "2023-08-30"
 						},
 						"comment": null,
 						"quality": "Estimated"
@@ -5687,7 +5891,8 @@
 							"page": "955-1189",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
+							"tagName": "applications",
+							"publicationDate": "2023-08-30"
 						},
 						"comment": "program 1080p port",
 						"quality": "Reported"
@@ -5724,7 +5929,8 @@
 							"page": "302",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "eyeballs"
+							"tagName": "eyeballs",
+							"publicationDate": "2023-04-14"
 						},
 						"comment": "index auxiliary bus",
 						"quality": "Incomplete",

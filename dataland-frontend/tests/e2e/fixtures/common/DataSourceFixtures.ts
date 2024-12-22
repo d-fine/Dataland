@@ -17,12 +17,14 @@ export function generateDataSource(referencedReports: ReferencedDocuments): Exte
     fileName: chosenReport,
     fileReference: chosenReportReference.fileReference,
     tagName: faker.company.buzzNoun(),
+    publicationDate: chosenReportReference.publicationDate,
   });
   const pageRangeScheme = (): ExtendedDocumentReference => ({
     page: `${startPage}-${endPage}`,
     fileName: chosenReport,
     fileReference: chosenReportReference.fileReference,
     tagName: faker.company.buzzNoun(),
+    publicationDate: chosenReportReference.publicationDate,
   });
   const chosenPageNumberScheme = pickOneElement([singlePageNumberScheme, pageRangeScheme]);
   return chosenPageNumberScheme();
