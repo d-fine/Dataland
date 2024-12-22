@@ -133,7 +133,7 @@
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "platforms",
-							"publicationDate": "2023-07-05"
+							"publicationDate": null
 						},
 						"comment": "bypass multi-byte protocol",
 						"quality": "Reported"
@@ -147,7 +147,7 @@
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "ROI",
-							"publicationDate": "2023-03-20"
+							"publicationDate": null
 						},
 						"comment": "copy mobile application",
 						"quality": "Reported"
@@ -159,7 +159,7 @@
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "e-markets",
-							"publicationDate": "2023-12-29"
+							"publicationDate": null
 						},
 						"comment": "override virtual program",
 						"quality": "Estimated"
@@ -171,7 +171,7 @@
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "architectures",
-							"publicationDate": "2023-12-29"
+							"publicationDate": null
 						},
 						"comment": "compress redundant sensor",
 						"quality": "Audited"
@@ -183,7 +183,7 @@
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "channels",
-							"publicationDate": "2023-03-20"
+							"publicationDate": null
 						},
 						"comment": "transmit optical circuit",
 						"quality": "NoDataFound"
@@ -304,7 +304,7 @@
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "applications",
-							"publicationDate": "2023-12-29"
+							"publicationDate": null
 						},
 						"comment": "program redundant pixel",
 						"quality": "Audited"

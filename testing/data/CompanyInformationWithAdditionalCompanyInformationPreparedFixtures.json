@@ -43,7 +43,7 @@
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services",
-							"publicationDate": "2023-08-18"
+							"publicationDate": null
 						},
 						"comment": "parse optical driver",
 						"quality": "Estimated"
@@ -55,7 +55,7 @@
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "portals",
-							"publicationDate": "2023-04-01"
+							"publicationDate": null
 						},
 						"comment": "synthesize mobile pixel",
 						"quality": "Reported"
@@ -81,7 +81,7 @@
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "web services",
-							"publicationDate": "2023-04-01"
+							"publicationDate": null
 						},
 						"comment": "input mobile microchip",
 						"quality": "Estimated",
@@ -94,7 +94,7 @@
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "ROI",
-							"publicationDate": "2023-08-18"
+							"publicationDate": null
 						},
 						"comment": "index 1080p bus",
 						"quality": "Reported",
@@ -107,7 +107,7 @@
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "systems",
-							"publicationDate": "2023-04-01"
+							"publicationDate": null
 						},
 						"comment": "program primary monitor",
 						"quality": "Incomplete",
@@ -120,7 +120,7 @@
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "markets",
-							"publicationDate": "2023-04-01"
+							"publicationDate": null
 						},
 						"comment": "copy optical array",
 						"quality": "NoDataFound",
