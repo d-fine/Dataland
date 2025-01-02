@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.model.datapoints.DataPointContent
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.springframework.http.ResponseEntity
@@ -25,6 +26,28 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface DataPointApi {
     /**
+     * A method to validate the content of a data point
+     * @param dataPoint the data point content to be validated
+     */
+    @Operation(
+        summary = "Verify data point content.",
+        description = "The uploaded data point is verified to conform to its specification",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Successfully verified specification conformity."),
+        ],
+    )
+    @PostMapping(
+        value = ["/validator"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun validateDataPointContent(
+        @Valid @RequestBody dataPoint: DataPointContent,
+    ): ResponseEntity<Unit>
+
+    /**
      * A method to store a data point via Dataland into a data store
      * @param uploadedDataPoint consisting of the triple data point identifier, company ID and reporting period and the actual data
      * @param bypassQa if set to true, the data will be stored without going through the QA process
@@ -43,7 +66,7 @@ interface DataPointApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#uploadedDataPoint.companyId)")
     fun postDataPoint(
         @Valid @RequestBody
         uploadedDataPoint: UploadedDataPoint,
@@ -68,8 +91,31 @@ interface DataPointApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataId)")
     fun getDataPoint(
         @PathVariable dataId: String,
     ): ResponseEntity<UploadedDataPoint>
+
+    /**
+     * A method to retrieve meta-information about a data point by providing its ID
+     * @param dataId the unique identifier for the data point
+     * @return the meta-information of the data point identified by the ID
+     */
+    @Operation(
+        summary = "Retrieve meta-information about data points by ID.",
+        description = "Meta-information about a data point identified by its ID is retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta-information about data point."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}/metadata"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataId)")
+    fun getDataPointMetaInfo(
+        @PathVariable dataId: String,
+    ): ResponseEntity<DataPointMetaInformation>
 }
