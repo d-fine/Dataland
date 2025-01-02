@@ -182,4 +182,28 @@ class ProcessDataUpdatesTest {
         val mockStaticFile = mockStatic(File::class.java)
         return Pair(bufferedReader, mockStaticFile)
     }
+
+    @Test
+    fun `waitForCommunityManager should stop on first successful health check`() {
+        val communityActuatorApi = mock(CommunityActuatorApi::class.java)
+
+        `when`(communityActuatorApi.health()).thenReturn(Any())
+
+        processDataUpdates =
+            ProcessDataUpdates(
+                mockGleifApiAccessor,
+                mockGleifGoldenCopyIngestorTest,
+                mockNorthDataAccessor,
+                mockNorthDataIngestorTest,
+                mockBackendActuatorApi,
+                mockRequestPriorityUpdater,
+                communityActuatorApi,
+                false, false,
+                null, null, oldFile,
+            )
+
+        processDataUpdates.waitForCommunityManager()
+
+        verify(communityActuatorApi, times(1)).health()
+    }
 }
