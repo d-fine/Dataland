@@ -4,6 +4,7 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
@@ -59,7 +60,7 @@ class AccessRequestTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         requestControllerApi.patchDataRequest(
             dataRequestId,
-            accessStatus = AccessStatus.Granted,
+            DataRequestPatch(accessStatus = AccessStatus.Granted),
         )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
 
@@ -157,7 +158,7 @@ class AccessRequestTest {
             )
         requestControllerApi.patchDataRequest(
             dataRequestId,
-            accessStatus = AccessStatus.Declined,
+            DataRequestPatch(accessStatus = AccessStatus.Declined),
         )
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
@@ -186,7 +187,7 @@ class AccessRequestTest {
                 val responseBody =
                     requestControllerApi.patchDataRequest(
                         dataRequestId = UUID.fromString(newlyStoredRequests[0].dataRequestId),
-                        accessStatus = AccessStatus.Declined,
+                        DataRequestPatch(accessStatus = AccessStatus.Declined),
                     )
                 assertEquals(AccessStatus.Declined, responseBody.accessStatus)
             } else {
@@ -194,7 +195,7 @@ class AccessRequestTest {
                     assertThrows<ClientException> {
                         requestControllerApi.patchDataRequest(
                             dataRequestId = UUID.fromString(newlyStoredRequests[0].dataRequestId),
-                            accessStatus = AccessStatus.Declined,
+                            DataRequestPatch(accessStatus = AccessStatus.Declined),
                         )
                     }
                 assertAccessDeniedResponseBodyInCommunityManagerClientException(responseException)

@@ -3,6 +3,7 @@ package org.dataland.e2etests.tests.frameworks
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.datalandbackend.openApiClient.api.VsmeDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataVsmeData
@@ -270,7 +271,8 @@ class Vsme {
         val requestId = createSingleDataVsmeRequest()
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.patchDataRequest(
-            dataRequestId = UUID.fromString(requestId), accessStatus = AccessStatus.Granted,
+            dataRequestId = UUID.fromString(requestId),
+            DataRequestPatch(accessStatus = AccessStatus.Granted),
         )
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val retrievedCompanyAssociatedVsmeData =
@@ -285,7 +287,8 @@ class Vsme {
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Uploader)
         requestControllerApi.patchDataRequest(
-            dataRequestId = UUID.fromString(requestId), accessStatus = AccessStatus.Revoked,
+            dataRequestId = UUID.fromString(requestId),
+            DataRequestPatch(accessStatus = AccessStatus.Revoked),
         )
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
