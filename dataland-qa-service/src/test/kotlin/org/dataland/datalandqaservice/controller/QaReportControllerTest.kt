@@ -16,8 +16,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
 import org.dataland.datalandqaservice.utils.NoBackendRequestQaReportConfiguration
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock.withAuthenticationMock
+import org.dataland.datalandqaservice.utils.UtilityFunctions
 import org.hibernate.validator.internal.util.Contracts.assertTrue
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -46,19 +45,6 @@ class QaReportControllerTest(
     @MockBean
     private lateinit var metaDataControllerApi: MetaDataControllerApi
 
-    private inline fun withReviewerAuthentication(
-        userId: String = "some-reviewer",
-        block: () -> Unit,
-    ) {
-        withAuthenticationMock(
-            userId,
-            userId,
-            setOf(DatalandRealmRole.ROLE_REVIEWER, DatalandRealmRole.ROLE_USER),
-        ) {
-            block()
-        }
-    }
-
     private fun createMockDataIdForAnSfdrDataset(): String {
         val dataId = UUID.randomUUID().toString()
         Mockito.`when`(metaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(
@@ -82,7 +68,7 @@ class QaReportControllerTest(
 
     @Test
     fun `post a qa report and make sure its status can be changed`() {
-        withReviewerAuthentication {
+        UtilityFunctions.withReviewerAuthentication {
             val qaMetaInfo = createEmptyQaReport()
 
             assertEquals(
@@ -120,11 +106,11 @@ class QaReportControllerTest(
     @Test
     fun `make sure changing the status of a report as a reviewer other than the reporter throws an exception`() {
         var qaMetaInfo: QaReportMetaInformation? = null
-        withReviewerAuthentication {
+        UtilityFunctions.withReviewerAuthentication {
             qaMetaInfo = createEmptyQaReport()
         }
 
-        withReviewerAuthentication(
+        UtilityFunctions.withReviewerAuthentication(
             "some-other-reviewer",
         ) {
             assertThrows<InsufficientRightsApiException> {
@@ -139,7 +125,7 @@ class QaReportControllerTest(
 
     @Test
     fun `check that requesting a non existent report id on an existing data id throws a not found error`() {
-        withReviewerAuthentication {
+        UtilityFunctions.withReviewerAuthentication {
             val qaMetaInfo = createEmptyQaReport()
             assertThrows<ResourceNotFoundApiException> {
                 qaReportController.getQaReport(
@@ -152,7 +138,7 @@ class QaReportControllerTest(
 
     @Test
     fun `check that using a report id associated with a different data id throws an exception`() {
-        withReviewerAuthentication {
+        UtilityFunctions.withReviewerAuthentication {
             val qaReport1 = createEmptyQaReport()
             val qaReport2 = createEmptyQaReport()
 
@@ -176,7 +162,7 @@ class QaReportControllerTest(
     @Test
     fun `check that the reviewer user id filter works`() {
         val dataId = createMockDataIdForAnSfdrDataset()
-        withReviewerAuthentication("reviewer-1") {
+        UtilityFunctions.withReviewerAuthentication("reviewer-1") {
             createEmptyQaReport(dataId)
             assertEquals(
                 1,
@@ -199,7 +185,7 @@ class QaReportControllerTest(
 
     @Test
     fun `posting a qa report for a non matching data type should fail`() {
-        withReviewerAuthentication {
+        UtilityFunctions.withReviewerAuthentication {
             val dataId = UUID.randomUUID().toString()
             Mockito.`when`(metaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(
                 DataMetaInformation(
@@ -241,7 +227,7 @@ class QaReportControllerTest(
             ),
         )
 
-        withReviewerAuthentication {
+        UtilityFunctions.withReviewerAuthentication {
             val ex =
                 assertThrows<InvalidInputApiException> {
                     qaReportController.getQaReport(dataId, reportId)

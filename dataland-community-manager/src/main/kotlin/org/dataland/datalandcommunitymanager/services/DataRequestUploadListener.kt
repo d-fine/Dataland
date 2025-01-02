@@ -50,7 +50,7 @@ class DataRequestUploadListener(
                             Argument(name = "defaultRequeueRejected", value = "false"),
                         ],
                     ),
-                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                exchange = Exchange(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS, declare = "false"),
                 key = [RoutingKeyNames.DATA],
             ),
         ],
@@ -61,7 +61,7 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
         val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
         val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {
@@ -80,7 +80,7 @@ class DataRequestUploadListener(
     /**
      * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered and handles the update of the access status
-     * @param dataId the dataId of the uploaded data
+     * @param payload the message body containing the dataId of the uploaded data
      * @param type the type of the message
      */
     @RabbitListener(

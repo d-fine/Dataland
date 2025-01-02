@@ -87,7 +87,7 @@ class DatabaseBlobDataStore(
                     ),
                 )
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body, MessageType.MANUAL_QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED,
+                body, MessageType.QA_REQUESTED, correlationId, ExchangeName.ITEM_STORED,
                 RoutingKeyNames.DOCUMENT_QA,
             )
         }
