@@ -1179,6 +1179,66 @@
         ]
       }
     },
+    "/data-points/validator": {
+      "post": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Verify data point content.",
+        "description": "The uploaded data point is verified to conform to its specification",
+        "operationId": "validateDataPointContent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataPointContent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully verified specification conformity.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unit"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -3466,6 +3526,66 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UploadedDataPoint"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/{dataId}/metadata": {
+      "get": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Retrieve meta-information about data points by ID.",
+        "description": "Meta-information about a data point identified by its ID is retrieved.",
+        "operationId": "getDataPointMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta-information about data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointMetaInformation"
                 }
               }
             }
@@ -18067,6 +18187,24 @@
           }
         }
       },
+      "DataPointContent": {
+        "required": [
+          "dataPointContent",
+          "dataPointIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointContent": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          }
+        }
+      },
+      "Unit": {
+        "type": "object"
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -18394,10 +18532,6 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyName": {
             "type": "string"
           },
@@ -18406,6 +18540,10 @@
           },
           "headquarters": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "countryCode": {
             "type": "string"
