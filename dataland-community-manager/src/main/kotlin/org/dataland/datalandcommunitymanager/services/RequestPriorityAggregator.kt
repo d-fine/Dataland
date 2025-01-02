@@ -5,11 +5,13 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
+import org.springframework.stereotype.Service
 
 /**
  * Implementation of a request priority aggregator to determine the aggregated priority
  * and filter for a certain aggregated priority
  */
+@Service
 class RequestPriorityAggregator {
     /**
      * This method determines the aggregated priorities of aggregated data requests.
@@ -17,10 +19,10 @@ class RequestPriorityAggregator {
      * @returns aggregated data requests with their aggregated priority
      */
     fun aggregateRequestPriority(aggregatedDataRequests: List<AggregatedDataRequest>): List<AggregatedDataRequestWithAggregatedPriority> {
-        val aggregatedMap = createAggregatedMap(aggregatedDataRequests)
+        val aggregatedMap = createMapOfCumulatedPriorities(aggregatedDataRequests)
         return aggregatedMap
-            .map { (key, priorityCounts) ->
-                createAggregatedDataRequestWithPriority(key, priorityCounts)
+            .map { (key, priorityCountMap) ->
+                createAggregatedDataRequestWithPriority(key, priorityCountMap)
             }
     }
 
@@ -31,34 +33,38 @@ class RequestPriorityAggregator {
      * @param aggregatedDataRequests the list of aggregated data requests to process
      * @returns a map of request counts for each dataset
      */
-    private fun createAggregatedMap(
+    private fun createMapOfCumulatedPriorities(
         aggregatedDataRequests: List<AggregatedDataRequest>,
     ): Map<Triple<DataTypeEnum?, String?, String>, Map<RequestPriority, Long>> {
-        val aggregatedMap = mutableMapOf<Triple<DataTypeEnum?, String?, String>, MutableMap<RequestPriority, Long>>()
+        val cumulatedPrioritiesMap =
+            mutableMapOf<Triple<DataTypeEnum?, String?, String>, MutableMap<RequestPriority, Long>>()
 
         for (request in aggregatedDataRequests) {
             val key = Triple(request.dataType, request.reportingPeriod, request.datalandCompanyId)
-            aggregatedMap
+            cumulatedPrioritiesMap
                 .getOrPut(key) { mutableMapOf() }
-                .merge(request.priority, request.count) { oldCount, newCount -> oldCount + newCount }
+                .merge(
+                    request.priority,
+                    request.count,
+                ) { oldCount, newCount -> oldCount + newCount }
         }
 
-        return aggregatedMap.mapValues { it.value.toMap() }
+        return cumulatedPrioritiesMap.mapValues { it.value.toMap() }
     }
 
     /**
      * Creates an instance of AggregatedDataRequestWithAggregatedPriority from the provided key and priority counts.
      *
      * @param key a tuple containing data type, reporting period, and company ID
-     * @param priorityCounts a map of request priorities and their counts for the aggregated data request
+     * @param priorityCountMap a map of request priorities and their counts for the aggregated data request
      * @returns an AggregatedDataRequestWithAggregatedPriority instance or null if no valid priority is found
      */
     private fun createAggregatedDataRequestWithPriority(
         key: Triple<DataTypeEnum?, String?, String>,
-        priorityCounts: Map<RequestPriority, Long>,
+        priorityCountMap: Map<RequestPriority, Long>,
     ): AggregatedDataRequestWithAggregatedPriority {
-        val aggregatedPriority = calculateAggregatedPriority(priorityCounts)
-        val totalCount = priorityCounts.values.sum()
+        val aggregatedPriority = calculateAggregatedPriority(priorityCountMap)
+        val totalCount = priorityCountMap.values.sum()
 
         return aggregatedPriority?.let {
             AggregatedDataRequestWithAggregatedPriority(
@@ -74,16 +80,16 @@ class RequestPriorityAggregator {
     /**
      * Determines the aggregated priority based on the counts of request priorities.
      *
-     * @param priorityCounts a map of request priorities to their counts
+     * @param priorityCountMap a map of request priorities to their counts
      * @returns the aggregated request priority or null if no valid priority can be determined
      */
-    private fun calculateAggregatedPriority(priorityCounts: Map<RequestPriority, Long>): AggregatedRequestPriority? =
+    private fun calculateAggregatedPriority(priorityCountMap: Map<RequestPriority, Long>): AggregatedRequestPriority? =
         when {
-            priorityCounts[RequestPriority.Urgent]?.let { it > 0 } == true -> AggregatedRequestPriority.Urgent
-            priorityCounts[RequestPriority.High]?.let { it > 1 } == true -> AggregatedRequestPriority.VeryHigh
-            priorityCounts[RequestPriority.High]?.let { it.toInt() == 1 } == true -> AggregatedRequestPriority.High
-            priorityCounts[RequestPriority.Low]?.let { it > 1 } == true -> AggregatedRequestPriority.Normal
-            priorityCounts[RequestPriority.Low]?.let { it.toInt() == 1 } == true -> AggregatedRequestPriority.Low
+            priorityCountMap[RequestPriority.Urgent]?.let { it > 0L } == true -> AggregatedRequestPriority.Urgent
+            priorityCountMap[RequestPriority.High]?.let { it > 1L } == true -> AggregatedRequestPriority.VeryHigh
+            priorityCountMap[RequestPriority.High]?.let { it == 1L } == true -> AggregatedRequestPriority.High
+            priorityCountMap[RequestPriority.Low]?.let { it > 1L } == true -> AggregatedRequestPriority.Normal
+            priorityCountMap[RequestPriority.Low]?.let { it == 1L } == true -> AggregatedRequestPriority.Low
             else -> null
         }
 

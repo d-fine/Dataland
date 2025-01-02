@@ -59,7 +59,7 @@ class KeycloakUserService(
 
     /**
      * get list of user information by keycloak role
-     * @param role the keycloak role for which user information should be fetched.
+     * @param role the keycloak role for which user information should be fetched
      * @returns the list of keycloak user info for the corresponding role
      */
     fun getUsersByRole(role: String): List<KeycloakUserInfo> {

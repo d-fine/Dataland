@@ -17,20 +17,23 @@ import org.mockito.Mockito.`when`
 import java.util.UUID
 
 class RequestPriorityUpdaterTest {
-    private val mockKeycloakUserService = mock(KeycloakUserService::class.java)
-    private val mockRequestControllerApi = mock(RequestControllerApi::class.java)
-
+    private lateinit var mockKeycloakUserService: KeycloakUserService
+    private lateinit var mockRequestControllerApi: RequestControllerApi
     private lateinit var requestPriorityUpdater: RequestPriorityUpdater
 
-    private val premiumUserUUID = UUID.randomUUID()
-    private val premiumUserId = premiumUserUUID.toString()
-    private val normalUserUUID = UUID.randomUUID()
-    private val normalUserId = normalUserUUID.toString()
+    private val premiumUserId = UUID.randomUUID().toString()
+    private val normalUserId = UUID.randomUUID().toString()
+    private val requestIdPremiumUserPrioHigh = UUID.randomUUID()
+    private val requestIdPremiumUserPrioLow = UUID.randomUUID()
+    private val requestIdNormalUserPrioHigh = UUID.randomUUID()
+    private val requestIdNormalUserPrioLow = UUID.randomUUID()
 
     private val adminUser = KeycloakUserInfo("admin@dataland.com", premiumUserId, "Admin", "Doe")
 
     @BeforeEach
     fun setup() {
+        mockKeycloakUserService = mock(KeycloakUserService::class.java)
+        mockRequestControllerApi = mock(RequestControllerApi::class.java)
         requestPriorityUpdater = RequestPriorityUpdater(mockKeycloakUserService, mockRequestControllerApi)
     }
 
@@ -55,21 +58,16 @@ class RequestPriorityUpdaterTest {
 
     @Test
     fun `validate the request priorities are updated correctly`() {
+        val extendedRequestPremiumUserPrioHigh = createRequest(premiumUserId, requestIdPremiumUserPrioHigh, RequestPriority.High)
+        val extendedRequestPremiumUserPrioLow = createRequest(premiumUserId, requestIdPremiumUserPrioLow, RequestPriority.Low)
+        val extendedRequestNormalUserPrioHigh = createRequest(normalUserId, requestIdNormalUserPrioHigh, RequestPriority.High)
+        val extendedRequestNormalUserPrioLow = createRequest(normalUserId, requestIdNormalUserPrioLow, RequestPriority.Low)
+
         `when`(mockKeycloakUserService.getUsersByRole("ROLE_PREMIUM_USER"))
             .thenReturn(listOf(adminUser))
 
         `when`(mockKeycloakUserService.getUsersByRole("ROLE_ADMIN"))
             .thenReturn(listOf())
-
-        val requestIdPremiumUserPrioHigh = UUID.randomUUID()
-        val requestIdPremiumUserPrioLow = UUID.randomUUID()
-        val requestIdNormalUserPrioHigh = UUID.randomUUID()
-        val requestIdNormalUserPrioLow = UUID.randomUUID()
-
-        val extendedRequestPremiumUserPrioHigh = createRequest(premiumUserId, requestIdPremiumUserPrioHigh, RequestPriority.High)
-        val extendedRequestPremiumUserPrioLow = createRequest(premiumUserId, requestIdPremiumUserPrioLow, RequestPriority.Low)
-        val extendedRequestNormalUserPrioHigh = createRequest(normalUserId, requestIdNormalUserPrioHigh, RequestPriority.High)
-        val extendedRequestNormalUserPrioLow = createRequest(normalUserId, requestIdNormalUserPrioLow, RequestPriority.Low)
 
         `when`(
             mockRequestControllerApi.getDataRequests(

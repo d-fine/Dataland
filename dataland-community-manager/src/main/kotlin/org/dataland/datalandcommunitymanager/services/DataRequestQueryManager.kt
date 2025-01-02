@@ -38,6 +38,7 @@ class DataRequestQueryManager
         private val processingUtils: DataRequestProcessingUtils,
         private val keycloakUserControllerApiService: KeycloakUserService,
         private val dataRequestMasker: DataRequestMasker,
+        private val requestPriorityAggregator: RequestPriorityAggregator,
     ) {
         /** This method retrieves all the data requests for the current user from the database and logs a message.
          * @returns all data requests for the current user
@@ -125,7 +126,6 @@ class DataRequestQueryManager
             reportingPeriod: String?,
             aggregatedPriority: AggregatedRequestPriority?,
         ): List<AggregatedDataRequestWithAggregatedPriority> {
-            val requestPriorityAggregator = RequestPriorityAggregator()
             val aggregatedOpenDataRequestsAllCompanies =
                 getAggregatedDataRequests(identifierValue = null, dataTypes, reportingPeriod, requestStatus = RequestStatus.Open)
             val aggregatedRequestsWithAggregatedPriority =
