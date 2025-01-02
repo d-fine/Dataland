@@ -15,16 +15,17 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
-import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.anyBoolean
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
@@ -55,7 +56,7 @@ class DataManagerTest(
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) {
     val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
-    val mockCloudEventMessageHandler: CloudEventMessageHandler = mock(CloudEventMessageHandler::class.java)
+    val messageQueuePublications: MessageQueuePublications = mock(MessageQueuePublications::class.java)
     val testDataProvider = TestDataProvider(objectMapper)
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
@@ -68,7 +69,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, dataMetaInformationManager,
-                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
             )
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
@@ -120,7 +121,9 @@ class DataManagerTest(
             )
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
+        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+        )
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
                 dataManager.getPublicDataSet(dataId, DataType("eutaxonomy-non-financials"), correlationId)
@@ -140,7 +143,9 @@ class DataManagerTest(
             getExpectedDataTypeName(
                 storableEuTaxonomyDataSetForNonFinancials, dataId, "eutaxonomy-financials",
             )
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
+        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+        )
         val thrown =
             assertThrows<InternalServerErrorApiException> {
                 dataManager.getPublicDataSet(dataId, DataType(expectedDataTypeName), correlationId)
@@ -176,7 +181,9 @@ class DataManagerTest(
             buildReturnOfMockDataSelect(storableDataSetForNonFinancials),
         )
 
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(dataId, "", MessageType.DATA_STORED)
+        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+        )
         val thrown =
             assertThrows<InternalServerErrorApiException> {
                 dataManager.getPublicDataSet(dataId, storableDataSetForNonFinancials.dataType, correlationId)
@@ -197,9 +204,11 @@ class DataManagerTest(
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
-                messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore("", "", MessageType.DATA_STORED)
+                messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+                    objectMapper.writeValueAsString(DataIdPayload("")), "", MessageType.DATA_STORED,
+                )
             }
-        assertEquals("Message was rejected: Provided data ID is empty", thrown.message)
+        assertEquals("Invalid UUID string: ", thrown.message)
     }
 
     @Test
@@ -208,8 +217,8 @@ class DataManagerTest(
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
 
         `when`(
-            mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                anyString(), anyString(), anyString(), anyString(), anyString(),
+            messageQueuePublications.publishDataSetUploadedMessage(
+                anyString(), anyBoolean(), anyString(),
             ),
         ).thenThrow(AmqpException::class.java)
         assertThrows<AmqpException> {
@@ -235,7 +244,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, mockDataMetaInformationManager,
-                mockStorageClient, mockCloudEventMessageHandler, dataManagerUtils, companyRoleChecker,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
             )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataSet(
@@ -266,7 +275,7 @@ class DataManagerTest(
                 messageQueueListenerForDataManager.changeQaStatus(
                     messageWithChangedQAStatus,
                     "",
-                    MessageType.QA_STATUS_CHANGED,
+                    MessageType.QA_STATUS_UPDATED,
                 )
             }
         assertEquals(
@@ -296,7 +305,7 @@ class DataManagerTest(
             messageQueueListenerForDataManager.changeQaStatus(
                 messageWithEmptyCurrentlyActiveDataId,
                 "",
-                MessageType.QA_STATUS_CHANGED,
+                MessageType.QA_STATUS_UPDATED,
             )
         }
     }
@@ -316,7 +325,7 @@ class DataManagerTest(
                 messageQueueListenerForDataManager.changeQaStatus(
                     messageWithEmptyDataIDs,
                     "",
-                    MessageType.QA_STATUS_CHANGED,
+                    MessageType.QA_STATUS_UPDATED,
                 )
             }
         assertEquals(
@@ -366,7 +375,7 @@ class DataManagerTest(
             messageQueueListenerForDataManager.changeQaStatus(
                 messageWithChangedQAStatus,
                 "",
-                MessageType.QA_STATUS_CHANGED,
+                MessageType.QA_STATUS_UPDATED,
             )
         }
 
@@ -397,7 +406,7 @@ class DataManagerTest(
             messageQueueListenerForDataManager.changeQaStatus(
                 messageWithChangedQAStatus,
                 "",
-                MessageType.QA_STATUS_CHANGED,
+                MessageType.QA_STATUS_UPDATED,
             )
         }
 
