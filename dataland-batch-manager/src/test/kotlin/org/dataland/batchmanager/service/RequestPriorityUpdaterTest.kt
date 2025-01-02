@@ -28,7 +28,6 @@ class RequestPriorityUpdaterTest {
     private val normalUserId = normalUserUUID.toString()
 
     private val adminUser = KeycloakUserInfo("admin@dataland.com", premiumUserId, "Admin", "Doe")
-    private val normalUser = KeycloakUserInfo("example@test.com", normalUserId, "Normal", "Doe")
 
     @BeforeEach
     fun setup() {
@@ -60,7 +59,7 @@ class RequestPriorityUpdaterTest {
             .thenReturn(listOf(adminUser))
 
         `when`(mockKeycloakUserService.getUsersByRole("ROLE_ADMIN"))
-            .thenReturn(listOf(normalUser))
+            .thenReturn(listOf())
 
         val requestIdPremiumUserPrioHigh = UUID.randomUUID()
         val requestIdPremiumUserPrioLow = UUID.randomUUID()
