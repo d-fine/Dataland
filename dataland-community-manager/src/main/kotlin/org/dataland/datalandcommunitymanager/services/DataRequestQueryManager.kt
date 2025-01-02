@@ -110,7 +110,6 @@ class DataRequestQueryManager
                         aggregatedDataRequestEntity.count,
                     )
                 }
-
             return aggregatedDataRequests
         }
 
@@ -130,13 +129,11 @@ class DataRequestQueryManager
                 getAggregatedDataRequests(identifierValue = null, dataTypes, reportingPeriod, requestStatus = RequestStatus.Open)
             val aggregatedRequestsWithAggregatedPriority =
                 requestPriorityAggregator.aggregateRequestPriority(aggregatedOpenDataRequestsAllCompanies)
-
             val filteredAggregatedRequestsWithAggregatedPriority =
                 requestPriorityAggregator.filterBasedOnAggregatedPriority(
                     aggregatedRequestsWithAggregatedPriority,
                     aggregatedPriority,
                 )
-
             return filteredAggregatedRequestsWithAggregatedPriority
         }
 
