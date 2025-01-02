@@ -18532,25 +18532,25 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
+          "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -18573,10 +18573,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
