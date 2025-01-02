@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 /**
- * Class for handling the upload of the company information retrieved from GLEIF to the Dataland backend
+ * Service class for managing and updating the priorities of data requests in the Dataland community manager.
  */
 @Service
 class RequestPriorityUpdater(
@@ -21,7 +21,11 @@ class RequestPriorityUpdater(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
-     * This function processes the request priority update
+     * Processes request priority updates for data requests.
+     *
+     * This method identifies premium users and administrators by their roles and updates the priority
+     * of their associated requests to high. Similarly, it lowers the priority of requests for users
+     * who do not belong to these roles.
      */
     fun processRequestPriorityUpdates() {
         val premiumUserIds = mutableSetOf<String>()
@@ -43,7 +47,12 @@ class RequestPriorityUpdater(
     }
 
     /**
-     * This function updates request priorities.
+     * Updates the priority of data requests based on specified criteria.
+     *
+     * @param currentPriority the current priority of requests to filter.
+     * @param newPriority the new priority to assign to the filtered requests.
+     * @param filterCondition a lambda function that determines whether a request's priority should be updated.
+     *                        It takes an [ExtendedStoredDataRequest] as input and returns a boolean.
      */
     private fun updateRequestPriorities(
         currentPriority: RequestPriority,
