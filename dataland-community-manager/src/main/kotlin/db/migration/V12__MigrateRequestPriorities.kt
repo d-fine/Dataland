@@ -17,16 +17,16 @@ class V12__MigrateRequestPriorities : BaseJavaMigration() {
                 "SET request_priority = CASE " +
                 "WHEN request_priority = 'Normal' THEN 'Low' " +
                 "WHEN request_priority = 'Very High' THEN 'High' " +
-                "ELSE request_priority END" +
+                "ELSE request_priority END " +
                 "WHERE data_request_id IN (" +
-                "SELECT H1.data_request_id" +
-                "FROM data_requests AS R" +
-                "INNER JOIN request_status_history AS H1" +
-                "ON R.data_request_id = H1.data_request_id" +
-                "LEFT JOIN request_status_history AS H2" +
-                "ON (R.data_request_id = H2.data_request_id)" +
-                "AND (H1.creation_timestamp < H2.creation_timestamp)" +
-                "WHERE (H2.data_request_id IS NULL)" +
+                "SELECT H1.data_request_id " +
+                "FROM data_requests AS R " +
+                "INNER JOIN request_status_history AS H1 " +
+                "ON R.data_request_id = H1.data_request_id " +
+                "LEFT JOIN request_status_history AS H2 " +
+                "ON (R.data_request_id = H2.data_request_id) " +
+                "AND (H1.creation_timestamp < H2.creation_timestamp) " +
+                "WHERE (H2.data_request_id IS NULL) " +
                 "AND (H1.request_status = 'Open')" +
                 ")",
         )
