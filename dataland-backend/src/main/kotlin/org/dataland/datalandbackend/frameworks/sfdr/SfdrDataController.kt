@@ -47,7 +47,7 @@ class SfdrDataController(
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "exportCompanyAssociatedSfdrDataToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToJson(dataId)
 
     @Operation(operationId = "exportCompanyAssociatedSfdrDataToCsv")

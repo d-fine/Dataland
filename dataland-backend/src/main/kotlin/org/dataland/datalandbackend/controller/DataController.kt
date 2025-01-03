@@ -112,7 +112,7 @@ abstract class DataController<T>(
         }
     }
 
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         this.verifyAccess(metaInfo)
         val companyId = metaInfo.company.companyId
@@ -122,10 +122,12 @@ abstract class DataController<T>(
 
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
 
+        val companyAssociatedDataJson = dataExportService.buildJsonStreamFromCompanyAssociatedData(companyAssociatedData)
+
         return ResponseEntity
             .ok()
             .headers(buildHttpHeadersForExport(companyAssociatedData, ExportFileType.JSON))
-            .body(companyAssociatedData)
+            .body(companyAssociatedDataJson)
     }
 
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> {

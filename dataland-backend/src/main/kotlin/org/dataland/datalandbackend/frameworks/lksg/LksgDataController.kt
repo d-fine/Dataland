@@ -47,7 +47,7 @@ class LksgDataController(
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "exportCompanyAssociatedLksgDataToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<LksgData>> =
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToJson(dataId)
 
     @Operation(operationId = "exportCompanyAssociatedLksgDataToCsv")

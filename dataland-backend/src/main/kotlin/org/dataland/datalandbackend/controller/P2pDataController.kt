@@ -53,11 +53,11 @@ class P2pDataController(
         super
             .getFrameworkDatasetsForCompany(companyId, showOnlyActive, reportingPeriod)
 
-    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> =
+    @Operation(operationId = "exportCompanyAssociatedP2pDataToJson")
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToJson(dataId)
 
-    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToCsv")
+    @Operation(operationId = "exportCompanyAssociatedP2pDataToCsv")
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToCsv(dataId)
 }

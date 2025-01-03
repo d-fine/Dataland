@@ -47,9 +47,8 @@ class AdditionalCompanyInformationDataController(
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataToJson")
-    override fun exportCompanyAssociatedDataToJson(
-        dataId: String,
-    ): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> = super.exportCompanyAssociatedDataToJson(dataId)
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToJson(dataId)
 
     @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataToCsv")
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =

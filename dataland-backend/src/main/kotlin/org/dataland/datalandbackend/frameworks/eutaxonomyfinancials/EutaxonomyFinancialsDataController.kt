@@ -47,7 +47,7 @@ class EutaxonomyFinancialsDataController(
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "exportCompanyAssociatedEutaxonomyFinancialsDataToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<CompanyAssociatedData<EutaxonomyFinancialsData>> =
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToJson(dataId)
 
     @Operation(operationId = "exportCompanyAssociatedEutaxonomyFinancialsDataToCsv")

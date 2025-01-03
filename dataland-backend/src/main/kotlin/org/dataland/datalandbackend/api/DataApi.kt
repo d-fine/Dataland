@@ -116,7 +116,7 @@ interface DataApi<T> {
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun exportCompanyAssociatedDataToJson(
         @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<CompanyAssociatedData<T>>
+    ): ResponseEntity<InputStreamResource>
 
     /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its

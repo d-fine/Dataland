@@ -2357,7 +2357,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2593,7 +2594,7 @@
         "tags": [
           "p-2p-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson",
+        "operationId": "exportCompanyAssociatedP2pDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2610,7 +2611,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2651,7 +2653,7 @@
         "tags": [
           "p-2p-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv",
+        "operationId": "exportCompanyAssociatedP2pDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2846,7 +2848,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson_1",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2863,7 +2865,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2904,7 +2907,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv_1",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3116,7 +3119,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3352,9 +3356,7 @@
         "tags": [
           "heimathafen-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson",
+        "operationId": "exportCompanyAssociatedHeimathafenDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3371,7 +3373,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataHeimathafenData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3412,9 +3415,7 @@
         "tags": [
           "heimathafen-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv",
+        "operationId": "exportCompanyAssociatedHeimathafenDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3626,7 +3627,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3879,7 +3881,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4115,9 +4118,7 @@
         "tags": [
           "esg-datenkatalog-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_1",
+        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -4134,7 +4135,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgDatenkatalogData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4175,9 +4177,7 @@
         "tags": [
           "esg-datenkatalog-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_1",
+        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -4389,7 +4389,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -19593,23 +19594,23 @@
         ],
         "type": "object",
         "properties": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
           "countryCode": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "headquarters": {
+            "type": "string"
           },
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
           }

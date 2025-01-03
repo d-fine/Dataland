@@ -51,6 +51,22 @@ class DataExportService
         }
 
         /**
+         * Create a ByteStream to be used for JSON Export from CompanyAssociatedData.
+         * @param companyAssociatedData passed companyAssociatedData to be exported
+         * @return InputStreamResource byteStream for export.
+         * Note that swagger only supports InputStreamResources and not OutputStreams
+         */
+        fun <T> buildJsonStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
+            val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
+            val outputStream = ByteArrayOutputStream()
+
+            objectMapper
+                .writerFor(JsonNode::class.java)
+                .writeValue(outputStream, jsonTree)
+            return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
+        }
+
+        /**
          * Converts the data class into a JSON object.
          * @param companyAssociatedData The company associated data
          * @return The JSON node representation of the data

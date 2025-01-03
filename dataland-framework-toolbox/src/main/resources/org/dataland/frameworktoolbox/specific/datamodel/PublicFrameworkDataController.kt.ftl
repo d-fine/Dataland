@@ -54,7 +54,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
 
     @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToJson")
     override fun exportCompanyAssociatedDataToJson(dataId: String):
-        ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
+        ResponseEntity<InputStreamResource> {
         return super.exportCompanyAssociatedDataToJson(dataId)
     }
 

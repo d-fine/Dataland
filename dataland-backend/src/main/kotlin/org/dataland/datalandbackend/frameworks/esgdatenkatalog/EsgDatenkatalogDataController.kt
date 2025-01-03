@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -44,6 +45,14 @@ class EsgDatenkatalogDataController(
         companyAssociatedData: CompanyAssociatedData<EsgDatenkatalogData>,
         bypassQa: Boolean,
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+
+    @Operation(operationId = "exportCompanyAssociatedEsgDatenkatalogDataToJson")
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToJson(dataId)
+
+    @Operation(operationId = "exportCompanyAssociatedEsgDatenkatalogDataToCsv")
+    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToCsv(dataId)
 
     @Operation(operationId = "getAllCompanyEsgDatenkatalogData")
     override fun getFrameworkDatasetsForCompany(

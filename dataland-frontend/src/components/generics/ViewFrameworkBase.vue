@@ -128,9 +128,9 @@ import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_EDIT_FUNCTIONALITY, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 
 import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -143,6 +143,10 @@ import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/u
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { type AxiosResponse } from 'axios';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -241,7 +245,7 @@ export default defineComponent({
   },
   methods: {
     /**
-     *
+     * Triggered by event "closeDownloadModal" emitted by the DownloadDatasetModal component
      */
     onCloseDownloadModal() {
       this.isDownloadModalOpen = false;
@@ -421,37 +425,79 @@ export default defineComponent({
     },
 
     /**
-     * Downloads the dataset from the selected reporting period as a file in the selected format
-     * @param reportingYear selected reporting year
-     * @param fileFormat selected file format
+     * Download the dataset from the selected reporting period as a file in the selected format
+     * @param selectedYear selected reporting year
+     * @param selectedFormat selected file format
      */
-    async handleDatasetDownload(reportingYear: string, fileFormat: string) {
-      console.log(`DataType: ${this.dataType}\n,
-       CompanyId: ${this.companyID}\n,
-       ReportingPeriod: ${reportingYear}\n,
-       FileFormat: ${fileFormat}`);
-      /*TODO: CONTINUE HERE
-          - how do you get the export endpoint included here?
-          - export endpoint needs to be accessed depending on dataType to be downloaded
-       */
+    async handleDatasetDownload(selectedYear: string, selectedFormat: string) {
+      console.log(`DataType: ${this.dataType},\n
+       CompanyId: ${this.companyID},\n
+       ReportingPeriod: ${selectedYear},\n
+       DataId: ${this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId},\n
+       FileFormat: ${selectedFormat}`);
+
+      const dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
+
+      if (!dataId) {
+        throw new ReferenceError(`DataId does not exist.`);
+      }
 
       try {
-        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
-        const metaDataControllerApi = backendClients.metaDataController;
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
-        this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
-        );
-        this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
-        );
-        this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
-        this.isDataProcessedSuccessfully = true;
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDefinition = getBasePublicFrameworkDefinition(this.dataType);
+        const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = frameworkDefinition
+          ? frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance)
+          : null;
+
+        if (!frameworkDataApi) {
+          throw new ReferenceError('Retrieving dataApi for framework failed.');
+        }
+
+        console.log(frameworkDataApi);
+
+        let dataResponse;
+        let filename = `${dataId}.${selectedFormat}`;
+        switch (selectedFormat) {
+          case 'csv':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToCsv(dataId);
+            break;
+          case 'json':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToJson(dataId);
+            break;
+        }
+
+        if (!dataResponse) {
+          throw new Error(`Retrieving frameworkData for dataId ${dataId} failed.`);
+        }
+
+        console.log(dataResponse);
+
+        this.forceFileDownload(dataResponse, filename);
       } catch (error) {
-        this.isDataProcessedSuccessfully = false;
         console.error(error);
       }
+    },
+
+    /**
+     * In order to download a file via frontend, it is necessary to create a link, attach the file to it, and click
+     * the link to trigger the file download. Afterward, the created element is deleted from the DOM.
+     * @param response response object retrieved from backend
+     * @param filename name of file to be downloaded
+     */
+    forceFileDownload(response: AxiosResponse, filename: string) {
+      console.log('Create ObjectURL');
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      console.log(`Created ObjectURL ${url}.\nCreate link.`);
+      const link = document.createElement('a');
+      console.log(`Created Link ${link}.`);
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      console.log('Remove Link.');
+      link.remove();
+      console.log('Revoke url.');
+      window.URL.revokeObjectURL(url);
     },
   },
   watch: {
