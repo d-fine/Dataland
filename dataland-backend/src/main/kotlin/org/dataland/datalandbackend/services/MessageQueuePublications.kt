@@ -60,6 +60,7 @@ class MessageQueuePublications(
             dataId = dataId,
             bypassQa = bypassQa,
             correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_UPLOAD,
         )
     }
