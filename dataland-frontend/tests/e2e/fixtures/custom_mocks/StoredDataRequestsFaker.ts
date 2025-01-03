@@ -94,7 +94,7 @@ export function generateStoredDataRequest(): StoredDataRequest {
     lastModifiedDate: lastModifiedTime,
     requestStatus: status,
     accessStatus: accessStatus,
-    requestPriority: RequestPriority.Normal,
+    requestPriority: RequestPriority.Low,
   };
 }
 /**

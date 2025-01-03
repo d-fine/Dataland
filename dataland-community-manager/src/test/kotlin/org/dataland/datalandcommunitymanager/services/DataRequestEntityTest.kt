@@ -28,7 +28,7 @@ class DataRequestEntityTest {
 
     @Test
     fun `validate that a new request has priority initialized to normal`() {
-        assertEquals(RequestPriority.Normal, dataRequest.requestPriority)
+        assertEquals(RequestPriority.Low, dataRequest.requestPriority)
     }
 
     @Test
