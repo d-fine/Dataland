@@ -56,10 +56,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, type PropType, computed } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
-import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { type DataMetaInformation } from '@clients/backend';
 
 export default defineComponent({
   components: { PrimeDialog, PrimeButton },

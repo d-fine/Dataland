@@ -69,14 +69,12 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
 } & {
   [K in `exportCompanyAssociated${string & keyof FrameworkNameObject}ToJson`]: (
     dataId: string,
-    options?: AxiosRequestConfig
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 } & {
   [K in `exportCompanyAssociated${string & keyof FrameworkNameObject}ToCsv`]: (
     dataId: string,
-    options?: AxiosRequestConfig
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 };
 
@@ -132,16 +130,16 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
   exportCompanyAssociatedDataToJson(
     dataId: string,
     options?: AxiosRequestConfig
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): AxiosPromise<any> {
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
     return this.openApiDataController[`exportCompanyAssociated${this.apiSuffix}ToJson`](dataId, options);
   }
 
   exportCompanyAssociatedDataToCsv(
     dataId: string,
     options?: AxiosRequestConfig
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): AxiosPromise<any> {
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
     return this.openApiDataController[`exportCompanyAssociated${this.apiSuffix}ToCsv`](dataId, options);
   }
 }
