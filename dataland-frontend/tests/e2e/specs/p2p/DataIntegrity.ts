@@ -80,7 +80,9 @@ describeIf(
                           object
                         >;
                         const originallyUploadedP2pDataset = p2pFixtureForTest.t as unknown as Record<string, object>;
-                        compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset);
+                        compareObjectKeysAndValuesDeep(originallyUploadedP2pDataset, frontendSubmittedP2pDataset, '', [
+                          'publicationDate',
+                        ]);
                       });
                   }
                 );

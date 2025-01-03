@@ -1199,14 +1199,7 @@
         },
         "responses": {
           "204": {
-            "description": "Successfully verified specification conformity.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Unit"
-                }
-              }
-            }
+            "description": "Successfully verified specification conformity."
           },
           "default": {
             "description": "An error occurred",
@@ -1868,6 +1861,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/metadata/{dataId}/data-points": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
+        "description": "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+        "operationId": "getContainedDataPoints",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of data point IDs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -4566,6 +4622,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -4658,6 +4719,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -18201,9 +18267,6 @@
             "type": "string"
           }
         }
-      },
-      "Unit": {
-        "type": "object"
       },
       "CompanyInformationPatch": {
         "type": "object",

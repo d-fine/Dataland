@@ -42,7 +42,8 @@
 							"page": "109-1241",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "web services",
+							"publicationDate": null
 						},
 						"comment": "parse optical driver",
 						"quality": "Estimated"
@@ -53,7 +54,8 @@
 							"page": "1197-1214",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": null
 						},
 						"comment": "synthesize mobile pixel",
 						"quality": "Reported"
@@ -78,7 +80,8 @@
 							"page": "689",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "web services",
+							"publicationDate": null
 						},
 						"comment": "input mobile microchip",
 						"quality": "Estimated",
@@ -90,7 +93,8 @@
 							"page": "752-1062",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"tagName": "ROI",
+							"publicationDate": null
 						},
 						"comment": "index 1080p bus",
 						"quality": "Reported",
@@ -102,7 +106,8 @@
 							"page": "300-1131",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"tagName": "systems",
+							"publicationDate": null
 						},
 						"comment": "program primary monitor",
 						"quality": "Incomplete",
@@ -114,7 +119,8 @@
 							"page": "599",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"tagName": "markets",
+							"publicationDate": null
 						},
 						"comment": "copy optical array",
 						"quality": "NoDataFound",

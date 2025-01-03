@@ -65,7 +65,8 @@
 							"page": "596",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
+							"tagName": "blockchains",
+							"publicationDate": null
 						},
 						"comment": "bypass wireless application",
 						"quality": "Reported"
@@ -76,7 +77,8 @@
 							"page": "1066",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "networks",
+							"publicationDate": null
 						},
 						"comment": "navigate back-end pixel",
 						"quality": "Reported"
@@ -87,7 +89,8 @@
 							"page": "1076",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "web services",
+							"publicationDate": null
 						},
 						"comment": "compress multi-byte transmitter",
 						"quality": "Incomplete"
@@ -98,7 +101,8 @@
 							"page": "230",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
+							"tagName": "communities",
+							"publicationDate": null
 						},
 						"comment": "generate 1080p card",
 						"quality": "Audited"
@@ -109,7 +113,8 @@
 							"page": "1106-1157",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
+							"tagName": "action-items",
+							"publicationDate": null
 						},
 						"comment": "bypass online bus",
 						"quality": "Audited"
@@ -120,7 +125,8 @@
 							"page": "219",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "infrastructures"
+							"tagName": "infrastructures",
+							"publicationDate": null
 						},
 						"comment": "hack redundant program",
 						"quality": "Estimated"
@@ -174,7 +180,8 @@
 							"page": "673-1029",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
+							"tagName": "niches",
+							"publicationDate": null
 						},
 						"comment": "hack optical bus",
 						"quality": "Incomplete"
@@ -226,7 +233,8 @@
 							"page": "587",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
+							"tagName": "solutions",
+							"publicationDate": null
 						},
 						"comment": "calculate 1080p card",
 						"quality": "Reported"
@@ -280,7 +288,8 @@
 							"page": "94",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "supply-chains",
+							"publicationDate": null
 						},
 						"comment": "program primary driver",
 						"quality": "Incomplete"
@@ -332,7 +341,8 @@
 							"page": "1184-1300",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
+							"tagName": "applications",
+							"publicationDate": null
 						},
 						"comment": "navigate auxiliary firewall",
 						"quality": "Incomplete"
@@ -386,7 +396,8 @@
 							"page": "1113",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "e-commerce",
+							"publicationDate": null
 						},
 						"comment": "synthesize mobile firewall",
 						"quality": "Incomplete"
@@ -438,7 +449,8 @@
 							"page": "1153-1266",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "portals",
+							"publicationDate": null
 						},
 						"comment": "parse primary driver",
 						"quality": "Incomplete"
@@ -460,7 +472,8 @@
 							"page": "1169",
 							"fileName": "IntegratedReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "networks",
+							"publicationDate": null
 						},
 						"comment": "transmit solid state bus",
 						"quality": "NoDataFound"
@@ -480,7 +493,8 @@
 							"page": "1123-1283",
 							"fileName": "ESEFReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
+							"tagName": "lifetime value",
+							"publicationDate": null
 						},
 						"comment": "back up primary microchip",
 						"quality": "Estimated"

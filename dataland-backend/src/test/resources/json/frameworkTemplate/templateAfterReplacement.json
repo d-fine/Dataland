@@ -1,0 +1,20 @@
+{
+  "category": {
+    "subcategory": {
+      "field": {
+        "value": "1.5",
+        "currency": "USD"
+      }
+    }
+  },
+  "anotherCategory": {
+    "field2": {
+      "id": "anotherDataPoint",
+      "ref": "reference"
+    },
+    "field3": {
+      "id": "yetAnotherDataPoint",
+      "ref": "reference"
+    }
+  }
+}

@@ -25,11 +25,12 @@ import java.time.Instant
  */
 @Service
 class DataPointQaReviewManager(
-    @Autowired val dataPointQaReviewRepository: DataPointQaReviewRepository,
-    @Autowired val companyDataControllerApi: CompanyDataControllerApi,
-    @Autowired val dataPointControllerApi: DataPointControllerApi,
-    @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-    @Autowired var objectMapper: ObjectMapper,
+    @Autowired private val dataPointQaReviewRepository: DataPointQaReviewRepository,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
+    @Autowired private val dataPointControllerApi: DataPointControllerApi,
+    @Autowired private val cloudEventMessageHandler: CloudEventMessageHandler,
+    @Autowired private val objectMapper: ObjectMapper,
+    @Autowired private val compositionService: DataPointCompositionService,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -51,6 +52,45 @@ class DataPointQaReviewManager(
         val reviewEntity = saveDataPointQaReviewEntity(dataId, qaStatus, triggeringUserId, comment, correlationId)
         sendDataPointQaStatusChangeMessage(reviewEntity, correlationId)
         return reviewEntity
+    }
+
+    /**
+     * Review a lego dataset and change the QA status of all data points in the dataset if they are not already reviewed
+     * @param dataId dataId of dataset of which to change qaStatus
+     * @param qaStatus new qaStatus to be set
+     * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
+     * @param correlationId the ID for the process triggering the change
+     * @param overwriteDataPointQaStatus if true, the QA status of all data points in the dataset will be overwritten
+     */
+    @Transactional
+    fun reviewLegoDataset(
+        dataId: String,
+        qaStatus: QaStatus,
+        triggeringUserId: String,
+        comment: String?,
+        correlationId: String,
+        overwriteDataPointQaStatus: Boolean,
+    ) {
+        if (!compositionService.isLegoBrickDataset(dataId)) {
+            return
+        }
+
+        val composition = compositionService.getCompositionOfDataSet(dataId)
+        val allDataIds = composition.values.toList()
+
+        if (overwriteDataPointQaStatus) {
+            allDataIds.forEach {
+                reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)
+            }
+        } else {
+            val qaStatusOfAllDataIds =
+                dataPointQaReviewRepository.findLatestWhereDataIdIn(allDataIds).associate { it.dataId to it.qaStatus }
+            allDataIds.forEach {
+                if (it !in qaStatusOfAllDataIds || qaStatusOfAllDataIds[it] == QaStatus.Pending) {
+                    reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)
+                }
+            }
+        }
     }
 
     private fun saveDataPointQaReviewEntity(
