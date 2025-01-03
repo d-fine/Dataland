@@ -56,6 +56,8 @@ class KeycloakUserServiceTest {
         }
         """.trimIndent()
 
+    private val applicationJsonString = "application/json"
+
     @Test
     fun `getUser should return valid KeycloakUserInfo on successful parse`() {
         val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
@@ -67,7 +69,7 @@ class KeycloakUserServiceTest {
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
                 .message("OK")
-                .body(firstUserJson.toResponseBody("application/json".toMediaTypeOrNull()))
+                .body(firstUserJson.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
                 .build()
 
         val call = mock<Call>()
@@ -92,7 +94,7 @@ class KeycloakUserServiceTest {
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
                 .message("OK")
-                .body(json.toResponseBody("application/json".toMediaTypeOrNull()))
+                .body(json.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
                 .build()
 
         val call = mock<Call>()
@@ -119,7 +121,7 @@ class KeycloakUserServiceTest {
                 .protocol(Protocol.HTTP_1_1)
                 .code(200)
                 .message("OK")
-                .body(json.toResponseBody("application/json".toMediaTypeOrNull()))
+                .body(json.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
                 .build()
 
         val call = mock<Call>()
