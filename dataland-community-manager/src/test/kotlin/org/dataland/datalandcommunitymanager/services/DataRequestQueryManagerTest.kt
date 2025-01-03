@@ -285,7 +285,7 @@ class DataRequestQueryManagerTest {
         verify(mockDataRequestRepository, times(1)).findByUserId(keycloakUserAlpha.userId)
         verify(mockDataRequestRepository, times(1)).fetchStatusHistory(any())
         verify(mockCompanyDataControllerApi, times(1)).getCompanyInfo(dataRequestEntityAlpha.datalandCompanyId)
-        assertEquals(1, queryResults!!.size)
+        assertEquals(1, queryResults.size)
         assertEquals(testCompanyInformation.companyName, queryResults[0].companyName)
     }
 
