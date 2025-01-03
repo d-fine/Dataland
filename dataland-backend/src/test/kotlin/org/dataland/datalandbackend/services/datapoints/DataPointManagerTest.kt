@@ -1,19 +1,19 @@
-package org.dataland.datalandbackend.services.datapoints
+package org.dataland.datalandbackend.services.dataPoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
-import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
+import org.dataland.datalandbackend.services.datapoints.DataPointManager
+import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
@@ -32,13 +32,11 @@ class DataPointManagerTest {
     private val companyQueryManager = mock(CompanyQueryManager::class.java)
     private val companyRoleChecker = mock(CompanyRoleChecker::class.java)
     private val logMessageBuilder = mock(LogMessageBuilder::class.java)
-    private val specificationClient = mock(SpecificationControllerApi::class.java)
-    private val datasetDatapointRepository = mock(DatasetDatapointRepository::class.java)
 
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder, specificationClient, datasetDatapointRepository,
+            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder,
         )
 
     private val correlationId = "test-correlation-id"
