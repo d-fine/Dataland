@@ -8,12 +8,13 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.converter.QaStatusConverter
+import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import java.util.UUID
 
 /**
- * The entity storing the changes in the QA status over time for eac individual data point
+ * The entity storing the changes in the QA status over time for each individual data point
  */
 @Entity
 @Table(name = "data_point_qa_review")
@@ -24,13 +25,13 @@ data class DataPointQaReviewEntity(
     @Column(name = "data_id", nullable = false)
     val dataId: String,
     @Column(name = "company_id", nullable = false)
-    val companyId: String,
+    override val companyId: String,
     @Column(name = "company_name", nullable = false)
     val companyName: String,
     @Column(name = "data_point_identifier", nullable = false)
-    val dataPointIdentifier: String,
+    override val dataPointIdentifier: String,
     @Column(name = "reporting_period", nullable = false)
-    val reportingPeriod: String,
+    override val reportingPeriod: String,
     @Column(name = "timestamp", nullable = false)
     val timestamp: Long,
     @Convert(converter = QaStatusConverter::class)
@@ -40,7 +41,7 @@ data class DataPointQaReviewEntity(
     val triggeringUserId: String,
     @Column(name = "comment", columnDefinition = "TEXT", nullable = true)
     val comment: String?,
-) {
+) : DataPointDimensions {
     /**
      * Converts the entity into a DataPointQaReviewInformation object, which is used for API responses
      */

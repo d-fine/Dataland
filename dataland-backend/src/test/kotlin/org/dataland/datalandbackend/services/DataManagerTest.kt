@@ -275,7 +275,7 @@ class DataManagerTest(
                 messageQueueListenerForDataManager.changeQaStatus(
                     messageWithChangedQAStatus,
                     "",
-                    MessageType.QA_STATUS_CHANGED,
+                    MessageType.QA_STATUS_UPDATED,
                 )
             }
         assertEquals(
@@ -305,7 +305,7 @@ class DataManagerTest(
             messageQueueListenerForDataManager.changeQaStatus(
                 messageWithEmptyCurrentlyActiveDataId,
                 "",
-                MessageType.QA_STATUS_CHANGED,
+                MessageType.QA_STATUS_UPDATED,
             )
         }
     }
@@ -325,7 +325,7 @@ class DataManagerTest(
                 messageQueueListenerForDataManager.changeQaStatus(
                     messageWithEmptyDataIDs,
                     "",
-                    MessageType.QA_STATUS_CHANGED,
+                    MessageType.QA_STATUS_UPDATED,
                 )
             }
         assertEquals(
@@ -375,7 +375,7 @@ class DataManagerTest(
             messageQueueListenerForDataManager.changeQaStatus(
                 messageWithChangedQAStatus,
                 "",
-                MessageType.QA_STATUS_CHANGED,
+                MessageType.QA_STATUS_UPDATED,
             )
         }
 
@@ -406,7 +406,7 @@ class DataManagerTest(
             messageQueueListenerForDataManager.changeQaStatus(
                 messageWithChangedQAStatus,
                 "",
-                MessageType.QA_STATUS_CHANGED,
+                MessageType.QA_STATUS_UPDATED,
             )
         }
 

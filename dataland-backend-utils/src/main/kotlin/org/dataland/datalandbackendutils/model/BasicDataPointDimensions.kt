@@ -8,7 +8,7 @@ import org.dataland.datalandbackendutils.interfaces.DataPointDimensions
  * @param dataPointIdentifier unique identifier for the type of data point itself
  * @param reportingPeriod the year for which the data point was provided
  */
-data class DataPointDimensions(
+data class BasicDataPointDimensions(
     override val companyId: String,
     override val dataPointIdentifier: String,
     override val reportingPeriod: String,

@@ -31,7 +31,7 @@ interface DataPointApi {
      */
     @Operation(
         summary = "Verify data point content.",
-        description = "The uploaded data point is verified to conform to it's specification",
+        description = "The uploaded data point is verified to conform to its specification",
     )
     @ApiResponses(
         value = [
@@ -39,7 +39,7 @@ interface DataPointApi {
         ],
     )
     @PostMapping(
-        value = ["/verify"],
+        value = ["/validator"],
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")

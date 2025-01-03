@@ -88,7 +88,7 @@ class QaController(
             correlationId = correlationId,
             overwriteDataPointQaStatus = overwriteDataPointQaStatus,
         )
-        qaReviewManager.sendQaStatusChangeMessage(
+        qaReviewManager.sendQaStatusUpdateMessage(
             qaReviewEntity = qaReviewEntity, correlationId = correlationId,
         )
     }
@@ -150,7 +150,7 @@ class QaController(
                 companyId = companyId,
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,
-                qaStatus = qaStatus?.toString(),
+                qaStatus = qaStatus,
             )
         return ResponseEntity.ok(
             dataPointQaReviewManager.getFilteredDataPointQaReviewInformation(

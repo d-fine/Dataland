@@ -129,7 +129,7 @@ class QaControllerTest(
 
             verify(cloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
                 eq(expectedBodyForNewSetToActive),
-                eq(MessageType.QA_STATUS_CHANGED),
+                eq(MessageType.QA_STATUS_UPDATED),
                 any(),
                 eq(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS),
                 eq(RoutingKeyNames.DATA_POINT_QA),
@@ -137,7 +137,7 @@ class QaControllerTest(
 
             verify(cloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
                 eq(expectedBodyForOriginalSetToActive),
-                eq(MessageType.QA_STATUS_CHANGED),
+                eq(MessageType.QA_STATUS_UPDATED),
                 any(),
                 eq(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS),
                 eq(RoutingKeyNames.DATA_POINT_QA),

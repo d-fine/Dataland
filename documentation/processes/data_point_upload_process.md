@@ -17,7 +17,7 @@ sequenceDiagram
     participant qaService as QA Service
     actor qaler as QA Provider
 
-    Uploader ->> backend: Upload dataset
+    Uploader ->> backend: Upload Data Point
     activate backend
     backend ->> backend: Store Meta-Data
     backend ->> backend: Store Data Point in Temporary Storage
@@ -42,11 +42,12 @@ sequenceDiagram
     activate backend
     backend ->> backend: Remove Data Point from Temporary Storage
     deactivate backend
-    alt bypassQa is false
-        mq -) qaService: Receive 'QA Requested'
-        deactivate mq
-        activate qaService
-        qaService ->> qaService: Store entry in QA-DB table
+    mq -) qaService: Receive 'Public Data received'
+    deactivate mq
+    activate qaService
+
+    opt bypassQa is false
+        qaService ->> qaService: Store Pending entry in QA-DB table
         deactivate qaService
 
         qaler ->> qaService: Get Data Points to QA
@@ -57,23 +58,16 @@ sequenceDiagram
         qaler ->> qaService: Quality Assured
         deactivate qaler
         activate qaService
-        qaService ->> qaService: Store decision in QA-DB table
-
-        qaService --) mq: Send 'QA Completed'
-        deactivate qaService
-
-    else bypassQa is true
-        mq -) qaService: Receive 'Public Data received'
-        activate qaService
-        qaService ->> qaService: Store entry in QA-DB table
-        qaService --) mq: Send 'QA Completed'
-        activate mq
-        deactivate qaService
     end
 
-    mq -) backend: Receive 'QA Completed'
+    qaService ->> qaService: Store decision in QA-DB table
+
+    qaService --) mq: Send 'QA status updated'
+    deactivate qaService
+    activate mq
+
+    mq -) backend: Receive 'QA status updated'
     activate backend
     backend ->> backend: Update QA Decision in Metadata
     deactivate backend
 ```
-

@@ -47,7 +47,7 @@ class QaReportSecurityPolicy(
         when (apiRequestException.statusCode) {
             HttpStatus.FORBIDDEN.value() -> {
                 InsufficientRightsApiException(
-                    "Missing required access rights",
+                    "Required access rights missing",
                     "You do not have the required access rights to view the data id: $dataId",
                     apiRequestException,
                 )
@@ -69,7 +69,7 @@ class QaReportSecurityPolicy(
      * @param dataId the ID of the data set the QA report is associated with
      * @param user the user requesting the view
      */
-    fun ensureUserCanViewDataPointQaReportForDataId(
+    fun ensureUserCanViewDataPointForDataId(
         dataId: String,
         user: DatalandAuthentication,
     ) {

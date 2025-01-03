@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.model.DataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.junit.jupiter.api.Test
@@ -87,15 +87,15 @@ class DataPointManagerTest {
     fun `check that the new data id is set to active and the previous one set to inactive`() {
         val newActiveDataId = "test-new-active-data-id"
         val someId = "dummy"
-        val returnDifferentId =
-            DataPointDimensions(
+        val differentIdDataPoint =
+            BasicDataPointDimensions(
                 companyId = "different-id",
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,
             )
-        `when`(metaDataManager.getCurrentlyActiveDataId(returnDifferentId)).thenReturn(someId)
+        `when`(metaDataManager.getCurrentlyActiveDataId(differentIdDataPoint)).thenReturn(someId)
 
-        dataPointManager.updateCurrentlyActiveDataPoint(returnDifferentId, newActiveDataId, correlationId)
+        dataPointManager.updateCurrentlyActiveDataPoint(differentIdDataPoint, newActiveDataId, correlationId)
         verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(someId, null)
         verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
     }
@@ -104,13 +104,13 @@ class DataPointManagerTest {
     fun `check that no update happens to the active data id if it does not change or the new id is null`() {
         val newActiveDataId = "test-new-active-data-id"
         val returnNewActiveId =
-            DataPointDimensions(
+            BasicDataPointDimensions(
                 companyId = "same-id",
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,
             )
         val returnNull =
-            DataPointDimensions(
+            BasicDataPointDimensions(
                 companyId = "no-id",
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,

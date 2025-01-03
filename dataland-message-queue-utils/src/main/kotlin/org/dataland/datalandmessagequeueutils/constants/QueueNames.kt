@@ -10,7 +10,7 @@ object QueueNames {
     const val INTERNAL_STORAGE_DATASET_DELETION = "internal-storage.deleteDatasets"
     const val QA_SERVICE_DATASET_QA = "qa-service.qaDatasets"
     const val QA_SERVICE_DATA_POINT_QA = "qa-service.qaDataPoints"
-    const val BACKEND_DATA_PERSISTED = "backend.removeDataFromMemory"
-    const val BACKEND_DATA_POINT_QA_CHANGED = "backend.dataPointQaStatusChange"
     const val QA_SERVICE_DATASET_QA_DELETION = "qa-service.deleteDatasets"
+    const val BACKEND_DATA_PERSISTED = "backend.removeDataFromMemory"
+    const val BACKEND_DATA_POINT_QA_STATUS_UPDATED = "backend.updateDataPointQaStatus"
 }
