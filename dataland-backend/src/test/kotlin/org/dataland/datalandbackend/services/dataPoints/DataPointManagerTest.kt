@@ -37,12 +37,10 @@ class DataPointManagerTest {
     private val specificationClient = mock(SpecificationControllerApi::class.java)
     private val datasetDatapointRepository = mock(DatasetDatapointRepository::class.java)
 
-
-
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder, specificationClient, datasetDatapointRepository
+            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder, specificationClient, datasetDatapointRepository,
         )
 
     private val correlationId = "test-correlation-id"

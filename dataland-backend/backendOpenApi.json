@@ -4668,7 +4668,13 @@
             "nullable": true
           }
         },
-        "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "publicationDate": "2023-10-12"
+          }
+        }
       },
       "ExtendedDataPointBigDecimal": {
         "type": "object",
@@ -4862,7 +4868,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -6503,7 +6515,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -8632,7 +8650,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           },
           "nuclearEnergyRelatedActivitiesSection426": {
             "nullable": true,
@@ -13860,7 +13884,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -15592,7 +15622,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           },
           "areAllGroupEntitiesCovered": {
             "nullable": true,
@@ -18127,7 +18163,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
