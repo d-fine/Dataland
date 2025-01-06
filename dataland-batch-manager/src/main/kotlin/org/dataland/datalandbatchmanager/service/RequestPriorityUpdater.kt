@@ -2,6 +2,7 @@ package org.dataland.datalandbatchmanager.service
 
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.datalandcommunitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
@@ -9,7 +10,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
-import org.dataland.datalandcommunitymanager.openApiClient.model.DataRequestPatch
 
 /**
  * Service class for managing and updating the priorities of data requests in the Dataland community manager.
@@ -73,9 +73,10 @@ class RequestPriorityUpdater
                     runCatching {
                         requestControllerApi.patchDataRequest(
                             dataRequestId = UUID.fromString(dataRequestId),
-                            dataRequestPatch = DataRequestPatch(
-                                requestPriority = newPriority,
-                            ),
+                            dataRequestPatch =
+                                DataRequestPatch(
+                                    requestPriority = newPriority,
+                                ),
                         )
                     }.onSuccess {
                         logger.info("Updated request priority of request $dataRequestId to $newPriority.")
