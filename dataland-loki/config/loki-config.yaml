@@ -20,8 +20,6 @@ server:
 # configuration is given in other sections, the related configuration within
 # this section will be ignored.
 common:
-  instance_addr: 127.0.0.1
-  path_prefix: /loki
   storage:
     filesystem:
       chunks_directory: /loki/chunks
