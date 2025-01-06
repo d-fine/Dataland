@@ -58,7 +58,7 @@ class PatchDataRequestsTest {
     @Test
     fun `post a single data request and validate that patching the admin comment does not update the last modified date`() {
         val testAdminComment = "test"
-        assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
+        assertPriorityForDataRequestId(dataRequestId, RequestPriority.High)
         assertAdminCommentForDataRequestId(dataRequestId, null)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated(dataRequestId, testAdminComment)
@@ -66,8 +66,8 @@ class PatchDataRequestsTest {
 
     @Test
     fun `post a single data request and validate that patching the request priority updates the last modified date`() {
-        val testRequestPriority = RequestPriority.High
-        assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
+        val testRequestPriority = RequestPriority.Urgent
+        assertPriorityForDataRequestId(dataRequestId, RequestPriority.High)
         assertAdminCommentForDataRequestId(dataRequestId, null)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestPriorityAndAssertLastModifiedUpdated(dataRequestId, testRequestPriority)

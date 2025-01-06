@@ -4,7 +4,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
@@ -52,18 +53,16 @@ class RequestController(
             dataRequestQueryManager.getDataRequestsForRequestingUser(),
         )
 
-    override fun getAggregatedDataRequests(
-        identifierValue: String?,
+    override fun getAggregatedOpenDataRequests(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
-        status: RequestStatus?,
-    ): ResponseEntity<List<AggregatedDataRequest>> =
+        aggregatedPriority: AggregatedRequestPriority?,
+    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>> =
         ResponseEntity.ok(
-            dataRequestQueryManager.getAggregatedDataRequests(
-                identifierValue,
-                dataTypes,
-                reportingPeriod,
-                status,
+            dataRequestQueryManager.getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
+                dataTypes = dataTypes,
+                reportingPeriod = reportingPeriod,
+                aggregatedPriority = aggregatedPriority,
             ),
         )
 

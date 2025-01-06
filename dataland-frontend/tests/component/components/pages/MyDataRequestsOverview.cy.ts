@@ -57,7 +57,7 @@ before(function () {
       'compA',
       RequestStatus.Answered,
       AccessStatus.Pending,
-      RequestPriority.Normal
+      RequestPriority.Low
     )
   );
 
@@ -69,7 +69,7 @@ before(function () {
       'someId',
       RequestStatus.Open,
       AccessStatus.Pending,
-      RequestPriority.Normal
+      RequestPriority.Low
     )
   );
 
@@ -81,7 +81,7 @@ before(function () {
       'someId',
       RequestStatus.Resolved,
       AccessStatus.Pending,
-      RequestPriority.Normal
+      RequestPriority.Low
     )
   );
 
@@ -93,7 +93,7 @@ before(function () {
       'someId',
       RequestStatus.Open,
       AccessStatus.Pending,
-      RequestPriority.Normal
+      RequestPriority.Low
     )
   );
 
@@ -105,7 +105,7 @@ before(function () {
       'someId',
       RequestStatus.Answered,
       AccessStatus.Pending,
-      RequestPriority.Normal
+      RequestPriority.Low
     )
   );
 });
