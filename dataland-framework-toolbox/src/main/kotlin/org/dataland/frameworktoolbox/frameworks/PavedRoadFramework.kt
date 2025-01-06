@@ -204,6 +204,7 @@ abstract class PavedRoadFramework(
 
         qaModelBuilder.build(
             into = datalandProject,
+            assembledDataset = enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications),
         )
     }
 

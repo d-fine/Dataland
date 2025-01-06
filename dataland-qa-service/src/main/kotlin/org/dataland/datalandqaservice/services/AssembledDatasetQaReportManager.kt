@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service
  */
 @Service
 @Suppress("LongParameterList")
-class LegoBrickQaReportManager(
+class AssembledDatasetQaReportManager(
     @Autowired private val objectMapper: ObjectMapper,
     @Autowired override val qaReportRepository: QaReportRepository,
     @Autowired override val qaReportSecurityPolicy: QaReportSecurityPolicy,
