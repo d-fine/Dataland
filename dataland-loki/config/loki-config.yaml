@@ -5,9 +5,8 @@
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
-# Disable reporting
 analytics:
-  reporting_enabled: false
+  reporting_enabled: false # Disable reporting
 
 # Enables authentication through the X-Scope-OrgID header, which must be present
 # if true. If false, the OrgID will always be set to 'fake'.
@@ -27,13 +26,25 @@ common:
     filesystem:
       chunks_directory: /loki/chunks
       rules_directory: /loki/rules
-  replication_factor: 1
+  replication_factor: 3 # offers a robust level of data redundancy and reliability
   ring:
-#    instance_addr: 0.0.0.0
     kvstore:
-      store: inmemory
+      # Backend storage to use for the ring. Supported values are: consul, etcd,
+      # inmemory, memberlist, multi.
+      store: inmemory # default: consul
 
+# The storage_config block configures one of many possible stores for both the
+# index and chunks. Which configuration to be picked should be defined in
+# schema_config block.
+storage_config:
+  tsdb_shipper:
+    # Directory where ingesters would write index files which would then be
+    # uploaded by shipper to configured storage
+    active_index_directory: /loki/index
+    # Cache location for restoring index files from storage for queries
+    cache_location: /loki/index_cache
 
+# Configures the chunk index schema and where it is stored
 schema_config:
   configs:
     - from: 2020-10-24
@@ -44,17 +55,14 @@ schema_config:
         prefix: index_
         period: 24h
 
-# TODO ????
-storage_config:
-  tsdb_shipper:
-    # Directory where ingesters would write index files which would then be
-    # uploaded by shipper to configured storage
-    active_index_directory: /tmp/loki/index
-    # Cache location for restoring index files from storage for queries
-    cache_location: /tmp/loki/index_cache
-  filesystem:
-    directory: /tmp/loki/chunks
+# Enabling better organization and retrieval of log information. (depends on module ring)
+pattern_ingester:
+  enabled: true
 
-# TODO
-#pattern_ingester:
-#  enabled: true
+# The ingester WAL (Write Ahead Log) records incoming logs and stores them on
+# the local file systems in order to guarantee persistence of acknowledged data
+# in the event of a process crash.
+ingester:
+  wal:
+    enabled: true
+    dir: /loki/wal
