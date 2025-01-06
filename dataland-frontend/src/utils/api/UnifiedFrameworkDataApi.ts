@@ -11,6 +11,7 @@ export interface BaseFrameworkDataApi<FrameworkDataType> {
     reportingPeriod?: string,
     options?: AxiosRequestConfig
   ): AxiosPromise<Array<DataAndMetaInformation<FrameworkDataType>>>;
+
   getFrameworkData(
     dataId: string,
     options?: AxiosRequestConfig
@@ -23,10 +24,23 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     bypassQa?: boolean,
     options?: AxiosRequestConfig
   ): AxiosPromise<DataMetaInformation>;
+
+  exportCompanyAssociatedDataToJson(
+    dataId: string,
+    options?: AxiosRequestConfig
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): AxiosPromise<any>;
+
+  exportCompanyAssociatedDataToCsv(
+    dataId: string,
+    options?: AxiosRequestConfig
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): AxiosPromise<any>;
 }
 
 export interface PrivateFrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
   getPrivateDocument(dataId: string, hash: string, options?: AxiosRequestConfig): AxiosPromise<File>;
+
   postFrameworkData(
     companyAssociatedSmeData: CompanyAssociatedData<FrameworkDataType>,
     documents: Array<File>,
@@ -52,6 +66,16 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
     bypassQa?: boolean,
     options?: AxiosRequestConfig
   ) => AxiosPromise<DataMetaInformation>;
+} & {
+  [K in `exportCompanyAssociated${string & keyof FrameworkNameObject}ToJson`]: (
+    dataId: string,
+    options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ) => AxiosPromise<any>;
+} & {
+  [K in `exportCompanyAssociated${string & keyof FrameworkNameObject}ToCsv`]: (
+    dataId: string,
+    options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ) => AxiosPromise<any>;
 };
 
 class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
@@ -101,6 +125,22 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
     options?: AxiosRequestConfig
   ): AxiosPromise<DataMetaInformation> {
     return this.openApiDataController[`postCompanyAssociated${this.apiSuffix}`](data, bypassQa, options);
+  }
+
+  exportCompanyAssociatedDataToJson(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController[`exportCompanyAssociated${this.apiSuffix}ToJson`](dataId, options);
+  }
+
+  exportCompanyAssociatedDataToCsv(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController[`exportCompanyAssociated${this.apiSuffix}ToCsv`](dataId, options);
   }
 }
 

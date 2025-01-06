@@ -62,11 +62,12 @@
             </PrimeButton>
 
             <DownloadDatasetModal
-              v-model:isDownloadModalOpen.sync="isDownloadModalOpen"
+              :isDownloadModalOpen="isDownloadModalOpen"
               :dataType="dataType"
               :handleDownload="getDatasetFromExportApi"
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
-              @update:isDownloadModalOpen="isDownloadModalOpen = $event"
+              @close-download-modal="onCloseDownloadModal"
+              @download-dataset="handleDatasetDownload"
               data-test="downloadModal"
             >
             </DownloadDatasetModal>
@@ -128,14 +129,9 @@ import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_EDIT_FUNCTIONALITY, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import {
-  type DataMetaInformation,
-  type CompanyInformation,
-  type DataTypeEnum,
-  type ExportFileType,
-} from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 
 import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -148,6 +144,10 @@ import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/u
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { type AxiosResponse } from 'axios';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -245,6 +245,13 @@ export default defineComponent({
     window.addEventListener('scroll', this.windowScrollHandler);
   },
   methods: {
+    /**
+     * Triggered by event "closeDownloadModal" emitted by the DownloadDatasetModal component
+     */
+    onCloseDownloadModal() {
+      this.isDownloadModalOpen = false;
+    },
+
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
      * @param fetchedCompanyInformation the company information for the current company Id
@@ -419,31 +426,79 @@ export default defineComponent({
     },
 
     /**
-     * Downloads the dataset from the selected reporting period as a file in the selected format
-     * @param reportingPeriod selected reporting year
-     * @param fileFormat selected file format
+     * Download the dataset from the selected reporting period as a file in the selected format
+     * @param selectedYear selected reporting year
+     * @param selectedFormat selected file format
      */
-    async getDatasetFromExportApi(reportingPeriod: string, fileFormat: ExportFileType) {
-      const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
-      const dataId = this.getDataIdBySelectedReportingPeriod(this.mapOfReportingPeriodToActiveDataset, reportingPeriod);
-      if (dataId != null) {
-        await backendClients.exportController.exportData(fileFormat, dataId);
+    async handleDatasetDownload(selectedYear: string, selectedFormat: string) {
+      console.log(`DataType: ${this.dataType},\n
+       CompanyId: ${this.companyID},\n
+       ReportingPeriod: ${selectedYear},\n
+       DataId: ${this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId},\n
+       FileFormat: ${selectedFormat}`);
+
+      const dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
+
+      if (!dataId) {
+        throw new ReferenceError(`DataId does not exist.`);
+      }
+
+      try {
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDefinition = getBasePublicFrameworkDefinition(this.dataType);
+        const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = frameworkDefinition
+          ? frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance)
+          : null;
+
+        if (!frameworkDataApi) {
+          throw new ReferenceError('Retrieving dataApi for framework failed.');
+        }
+
+        console.log(frameworkDataApi);
+
+        let dataResponse;
+        let filename = `${dataId}.${selectedFormat}`;
+        switch (selectedFormat) {
+          case 'csv':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToCsv(dataId);
+            break;
+          case 'json':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToJson(dataId);
+            break;
+        }
+
+        if (!dataResponse) {
+          throw new Error(`Retrieving frameworkData for dataId ${dataId} failed.`);
+        }
+
+        console.log(dataResponse);
+
+        this.forceFileDownload(dataResponse, filename);
+      } catch (error) {
+        console.error(error);
       }
     },
+
     /**
-     * Returns the dataId as a string for the selected reportingPeriod for this company and data framework
-     * @param datasetMap the map that combines the reportingPeriod with the metaData of the dataset
-     * @param reportingPeriod the requested reportingPeriod
-     * @returns the dataId of the requested dataset or null if reportingPeriod is invalid
+     * In order to download a file via frontend, it is necessary to create a link, attach the file to it, and click
+     * the link to trigger the file download. Afterward, the created element is deleted from the DOM.
+     * @param response response object retrieved from backend
+     * @param filename name of file to be downloaded
      */
-    getDataIdBySelectedReportingPeriod(datasetMap: Map<string, DataMetaInformation>, reportingPeriod: string) {
-      if (datasetMap.has(reportingPeriod)) {
-        const metaData = datasetMap.get(reportingPeriod);
-        if (metaData != undefined) {
-          return metaData.dataId;
-        }
-      }
-      return null;
+    forceFileDownload(response: AxiosResponse, filename: string) {
+      console.log('Create ObjectURL');
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      console.log(`Created ObjectURL ${url}.\nCreate link.`);
+      const link = document.createElement('a');
+      console.log(`Created Link ${link}.`);
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      console.log('Remove Link.');
+      link.remove();
+      console.log('Revoke url.');
+      window.URL.revokeObjectURL(url);
     },
   },
   watch: {

@@ -1179,6 +1179,66 @@
         ]
       }
     },
+    "/data-points/validator": {
+      "post": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Verify data point content.",
+        "description": "The uploaded data point is verified to conform to its specification",
+        "operationId": "validateDataPointContent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataPointContent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully verified specification conformity.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unit"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/companies": {
       "get": {
         "tags": [
@@ -2000,74 +2060,6 @@
         }
       }
     },
-    "/export/{format}/{dataId}": {
-      "get": {
-        "tags": [
-          "data-export-controller"
-        ],
-        "summary": "Export data identified by dataId.",
-        "description": "Export data identified by dataId.",
-        "operationId": "exportData",
-        "parameters": [
-          {
-            "name": "format",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ExportFileType"
-            }
-          },
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully exported dataset.",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/data/vsme/{dataId}": {
       "get": {
         "tags": [
@@ -2348,9 +2340,7 @@
         "tags": [
           "sfdr-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson",
+        "operationId": "exportCompanyAssociatedSfdrDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2367,7 +2357,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2408,9 +2399,7 @@
         "tags": [
           "sfdr-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv",
+        "operationId": "exportCompanyAssociatedSfdrDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2427,7 +2416,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2604,9 +2594,7 @@
         "tags": [
           "p-2p-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_1",
+        "operationId": "exportCompanyAssociatedP2pDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2623,7 +2611,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2664,9 +2653,7 @@
         "tags": [
           "p-2p-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_1",
+        "operationId": "exportCompanyAssociatedP2pDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2683,7 +2670,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2860,9 +2848,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_2",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -2879,7 +2865,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2920,9 +2907,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_2",
+        "operationId": "exportCompanyAssociatedNuclearAndGasDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -2939,7 +2924,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3116,9 +3102,7 @@
         "tags": [
           "lksg-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_3",
+        "operationId": "exportCompanyAssociatedLksgDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3135,7 +3119,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3176,9 +3161,7 @@
         "tags": [
           "lksg-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_3",
+        "operationId": "exportCompanyAssociatedLksgDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3195,7 +3178,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3372,9 +3356,7 @@
         "tags": [
           "heimathafen-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_4",
+        "operationId": "exportCompanyAssociatedHeimathafenDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3391,7 +3373,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataHeimathafenData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3432,9 +3415,7 @@
         "tags": [
           "heimathafen-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_4",
+        "operationId": "exportCompanyAssociatedHeimathafenDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3451,7 +3432,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3628,9 +3610,7 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_5",
+        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3647,7 +3627,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3688,9 +3669,7 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_5",
+        "operationId": "exportCompanyAssociatedEutaxonomyNonFinancialsDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3707,7 +3686,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3884,9 +3864,7 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_6",
+        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -3903,7 +3881,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -3944,9 +3923,7 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_6",
+        "operationId": "exportCompanyAssociatedEutaxonomyFinancialsDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -3963,7 +3940,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4140,9 +4118,7 @@
         "tags": [
           "esg-datenkatalog-data-controller"
         ],
-        "summary": "Export data identified by dataId to JSON.",
-        "description": "Export data identified by dataId to JSON.",
-        "operationId": "exportCompanyAssociatedDataToJson_7",
+        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataToJson",
         "parameters": [
           {
             "name": "dataId",
@@ -4159,7 +4135,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgDatenkatalogData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4200,9 +4177,7 @@
         "tags": [
           "esg-datenkatalog-data-controller"
         ],
-        "summary": "Export data identified by dataId to CSV.",
-        "description": "Export data identified by dataId to CSV.",
-        "operationId": "exportCompanyAssociatedDataToCsv_7",
+        "operationId": "exportCompanyAssociatedEsgDatenkatalogDataToCsv",
         "parameters": [
           {
             "name": "dataId",
@@ -4219,7 +4194,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4413,7 +4389,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4471,7 +4448,8 @@
             "content": {
               "text/csv": {
                 "schema": {
-                  "type": "string"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -4610,6 +4588,66 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UploadedDataPoint"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data-points/{dataId}/metadata": {
+      "get": {
+        "tags": [
+          "data-point-controller"
+        ],
+        "summary": "Retrieve meta-information about data points by ID.",
+        "description": "Meta-information about a data point identified by its ID is retrieved.",
+        "operationId": "getDataPointMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta-information about data point.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointMetaInformation"
                 }
               }
             }
@@ -19211,6 +19249,24 @@
           }
         }
       },
+      "DataPointContent": {
+        "required": [
+          "dataPointContent",
+          "dataPointIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "dataPointContent": {
+            "type": "string"
+          },
+          "dataPointIdentifier": {
+            "type": "string"
+          }
+        }
+      },
+      "Unit": {
+        "type": "object"
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -19379,13 +19435,6 @@
           }
         }
       },
-      "ExportFileType": {
-        "type": "string",
-        "enum": [
-          "CSV",
-          "JSON"
-        ]
-      },
       "DataAndMetaInformationVsmeData": {
         "required": [
           "data",
@@ -19549,16 +19598,16 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
+          "countryCode": {
             "type": "string"
           },
           "lei": {

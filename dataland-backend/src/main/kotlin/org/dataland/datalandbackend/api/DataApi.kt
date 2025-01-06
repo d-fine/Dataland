@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
@@ -41,20 +42,7 @@ interface DataApi<T> {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize(
-        "hasRole('ROLE_UPLOADER') or " +
-            "(hasRole('ROLE_USER') and " +
-            "(@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#companyAssociatedData.companyId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).CompanyOwner" +
-            ") or " +
-            "@CompanyRoleChecker.hasCurrentUserGivenRoleForCompany(" +
-            "#companyAssociatedData.companyId, " +
-            "T(org.dataland.datalandcommunitymanager.openApiClient.model.CompanyRole).DataUploader" +
-            ")" +
-            ")" +
-            ")",
-    )
+    @PreAuthorize("@CompanyRoleChecker.canUserUploadDataForCompany(#companyAssociatedData.companyId)")
     fun postCompanyAssociatedData(
         @Valid @RequestBody
         companyAssociatedData: CompanyAssociatedData<T>,
@@ -105,7 +93,7 @@ interface DataApi<T> {
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun exportCompanyAssociatedDataToCsv(
         @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<String>
+    ): ResponseEntity<InputStreamResource>
 
     /**
      * A method to export the CompanyAssociatedData for a dataId to JSON
@@ -128,7 +116,7 @@ interface DataApi<T> {
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun exportCompanyAssociatedDataToJson(
         @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<CompanyAssociatedData<T>>
+    ): ResponseEntity<InputStreamResource>
 
     /**
      * A method to retrieve framework datasets together with their meta info for one specific company identified by its

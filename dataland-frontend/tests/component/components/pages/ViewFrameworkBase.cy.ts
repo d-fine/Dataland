@@ -4,7 +4,6 @@ import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
-import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 
 describe('Component test for ViewFrameworkBase', () => {
   it('Should proper set the drop down options based on data', () => {

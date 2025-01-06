@@ -32,4 +32,20 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
   ): AxiosPromise<DataMetaInformation> {
     return this.openApiDataController.postCompanyAssociatedSfdrData(data, bypassQa, options);
   }
+
+  exportCompanyAssociatedDataToJson(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedSfdrDataToJson(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToCsv(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedSfdrDataToCsv(dataId, options);
+  }
 }

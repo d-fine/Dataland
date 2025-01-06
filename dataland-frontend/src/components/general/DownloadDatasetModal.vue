@@ -2,15 +2,17 @@
   <PrimeDialog
     v-model:visible="isModalVisible"
     style="text-align: center; width: 20%"
-    :show-header="true"
     header="Download dataset"
+    :show-header="true"
     :closable="true"
     :dismissable-mask="true"
-    @hide="closeModal"
+    :modal="true"
+    :close-on-escape="true"
     data-test="downloadModal"
+    @after-hide="closeDialog"
   >
-    <FormKit type="form" :actions="false" class="formkit-wrapper">
-      <label for="Download">
+    <FormKit type="form" class="formkit-wrapper" :actions="false">
+      <label for="reportingYearSelector">
         <b style="margin-bottom: 8px; font-weight: normal">Reporting year</b>
       </label>
       <FormKit
@@ -18,13 +20,13 @@
         type="select"
         name="reportingYearSelector"
         data-test="reportingYearSelector"
-        :options="reportingPeriodOptions"
+        :options="reportingPeriods"
         placeholder="Select a reporting year"
       />
       <p v-show="showReportingPeriodError" class="text-danger text-xs" data-test="noReportingYearError">
         Please select a reporting period.
       </p>
-      <label for="Download">
+      <label for="formatSelector">
         <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File format</b>
       </label>
       <FormKit
@@ -32,7 +34,7 @@
         type="select"
         name="formatSelector"
         data-test="formatSelector"
-        :options="['json', 'csv']"
+        :options="fileFormats"
         placeholder="Select a file format"
       />
       <p v-show="showFileFormatError" class="text-danger text-xs" data-test="noFileFormatError">
@@ -43,20 +45,21 @@
     <div>
       <PrimeButton
         data-test="downloadDataButtonInModal"
-        @click="downloadFile()"
+        @click="onDownloadButtonClick()"
         style="width: 100%; justify-content: center"
+        label="DOWNLOAD"
+        class="d-letters"
       >
-        <span class="d-letters" style="text-align: center" data-test="downloadButton"> DOWNLOAD </span>
       </PrimeButton>
     </div>
   </PrimeDialog>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, type PropType, computed } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
-import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { type DataMetaInformation } from '@clients/backend';
 
 export default defineComponent({
   components: { PrimeDialog, PrimeButton },
@@ -64,98 +67,88 @@ export default defineComponent({
   props: {
     isDownloadModalOpen: {
       type: Boolean,
-      required: true,
-    },
-    handleDownload: {
-      type: Function,
-      required: true,
-    },
-    dataType: {
-      type: String as PropType<DataTypeEnum>,
-      required: true,
+      required: false,
+      default: false,
     },
     mapOfReportingPeriodToActiveDataset: {
       type: Map as PropType<Map<string, DataMetaInformation>>,
+      required: true,
     },
   },
+  emits: ['closeDownloadModal', 'downloadDataset'],
   data() {
     return {
+      reportingPeriods: [] as Array<string>,
+      fileFormats: ['csv', 'json'],
+      selectedReportingPeriod: '',
+      selectedFileFormat: '',
+      isModalVisible: false,
       showReportingPeriodError: false,
       showFileFormatError: false,
     };
   },
-  setup(props, { emit }) {
-    const getReportingPeriods = (mapping: Map<String, DataMetaInformation>): string[] => {
-      const reportingPeriods = new Set<string>();
-      mapping.forEach((dataMetaInfo) => {
-        if (dataMetaInfo.dataType === props.dataType) {
-          if (dataMetaInfo.currentlyActive) {
-            reportingPeriods.add(dataMetaInfo.reportingPeriod);
-          }
-        }
-      });
-      return Array.from(reportingPeriods);
-    };
-    const reportingPeriodOptions = computed(() => {
-      if (!props.mapOfReportingPeriodToActiveDataset) {
-        return [];
-      }
-      return getReportingPeriods(props.mapOfReportingPeriodToActiveDataset).sort();
-    });
 
-    const isModalVisible = ref(props.isDownloadModalOpen);
-    const selectedReportingPeriod = ref('');
-    const selectedFileFormat = ref('');
-
-    watch(
-      () => props.isDownloadModalOpen,
-      (newValue) => {
-        isModalVisible.value = newValue;
-      }
-    );
-
-    const onHide = (): void => {
-      closeModal();
-      resetSelection();
-    };
-
-    const closeModal = (): void => {
-      isModalVisible.value = false;
-      emit('update:isDownloadModalOpen', false);
-    };
-
-    const resetSelection = (): void => {
-      selectedReportingPeriod.value = '';
-      selectedFileFormat.value = '';
-    };
-
-    return {
-      isModalVisible,
-      selectedReportingPeriod,
-      selectedFileFormat,
-      reportingPeriodOptions,
-      onHide,
-    };
+  watch: {
+    isDownloadModalOpen(newValue: boolean): void {
+      this.isModalVisible = newValue;
+    },
+    mapOfReportingPeriodToActiveDataset() {
+      this.updateReportingPeriods();
+    },
+    selectedReportingPeriod() {
+      this.showReportingPeriodError = false;
+    },
+    selectedFileFormat() {
+      this.showFileFormatError = false;
+    },
   },
+
   methods: {
     /**
-     * downloads the requested dataset as a file with the selected file format
+     * Update the reportingPeriods whenever the DataMetaInformation has finished loading and the passed prop
+     * 'mapOfReportingPeriodToActiveDataset' is filled
      */
-    downloadFile() {
-      if (this.selectedReportingPeriod && this.selectedFileFormat) {
-        this.handleDownload(this.selectedReportingPeriod, this.selectedFileFormat);
+    updateReportingPeriods() {
+      this.reportingPeriods = Array.from(this.mapOfReportingPeriodToActiveDataset.keys()).sort();
+    },
 
-        this.closeModal();
+    /**
+     * Handle the clickEvent of the Download Button
+     */
+    onDownloadButtonClick() {
+      this.checkIfShowErrors();
+
+      if (this.showReportingPeriodError || this.showFileFormatError) {
         return;
       }
-      this.showReportingPeriodError = true;
-      this.showFileFormatError = true;
+
+      this.$emit('downloadDataset', this.selectedReportingPeriod, this.selectedFileFormat);
+      this.closeDialog();
     },
+
     /**
-     * closes the download modal and removed error messages (if format or reporting period were not selected)
+     * Validates the form's fields and displays errors if necessary
      */
-    closeModal() {
-      this.onHide();
+    checkIfShowErrors() {
+      this.showReportingPeriodError = this.selectedReportingPeriod.length === 0;
+      this.showFileFormatError = this.selectedFileFormat.length === 0;
+    },
+
+    /**
+     * Resets selections and error messages and closes the download modal
+     */
+    closeDialog() {
+      this.resetProps();
+      this.isModalVisible = false;
+      this.$emit('closeDownloadModal');
+    },
+
+    /**
+     * Resets the props, e.g. the selections and error messages.
+     */
+    resetProps() {
+      this.selectedReportingPeriod = '';
+      this.selectedFileFormat = '';
       this.showReportingPeriodError = false;
       this.showFileFormatError = false;
     },

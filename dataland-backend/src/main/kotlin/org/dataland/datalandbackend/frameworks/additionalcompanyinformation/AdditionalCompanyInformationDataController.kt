@@ -8,9 +8,11 @@ import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mode
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -25,10 +27,12 @@ import org.springframework.web.bind.annotation.RestController
 class AdditionalCompanyInformationDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<AdditionalCompanyInformationData>(
         myDataManager,
         myMetaDataManager,
+        myDataExportService,
         myObjectMapper,
         AdditionalCompanyInformationData::class.java,
     ) {
@@ -43,12 +47,12 @@ class AdditionalCompanyInformationDataController(
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
 
     @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataToJson")
-    override fun exportCompanyAssociatedDataToJson(
-        dataId: String,
-    ): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> = super.exportCompanyAssociatedDataToJson(dataId)
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToJson(dataId)
 
     @Operation(operationId = "exportCompanyAssociatedAdditionalCompanyInformationDataToCsv")
-    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<String> = super.exportCompanyAssociatedDataToCsv(dataId)
+    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToCsv(dataId)
 
     @Operation(operationId = "getAllCompanyAdditionalCompanyInformationData")
     override fun getFrameworkDatasetsForCompany(

@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -14,7 +15,6 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -29,16 +29,18 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 internal class DataControllerTest(
     @Autowired @Spy
     val objectMapper: ObjectMapper,
+    @Autowired
+    val dataExportService: DataExportService,
 ) {
     private final val testDataProvider = TestDataProvider(objectMapper)
 
@@ -52,6 +54,9 @@ internal class DataControllerTest(
     private final val testUserPendingDataId = "testuser_pending"
     private final val otherUserPendingDataId = "otheruser_pending"
     private final val otherUserAcceptedDataId = "otheruser_accepted"
+    private final val testCompanyId = UUID.randomUUID().toString()
+    private final val testReportingPeriod = "2023"
+
     val testUserPendingDataMetaInformationEntity =
         buildDataMetaInformationEntity(testUserPendingDataId, testUserId, QaStatus.Pending)
     val otherUserPendingDataMetaInformationEntity =
@@ -82,7 +87,14 @@ internal class DataControllerTest(
         )
         `when`(
             mockDataMetaInformationManager
-                .searchDataMetaInfo("", testDataType, false, "", uploaderUserIds = null, qaStatus = null),
+                .searchDataMetaInfo(
+                    testCompanyId,
+                    testDataType,
+                    false,
+                    testReportingPeriod,
+                    uploaderUserIds = null,
+                    qaStatus = null,
+                ),
         ).thenReturn(
             listOf(
                 testUserPendingDataMetaInformationEntity,
@@ -92,18 +104,20 @@ internal class DataControllerTest(
         )
         `when`(mockDataManager.getPublicDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
             StorableDataSet(
-                "",
+                testCompanyId,
                 testDataType,
                 "",
                 0,
-                "",
+                testReportingPeriod,
                 someEuTaxoDataAsString,
             ),
         )
         dataController =
             EutaxonomyNonFinancialsDataController(
                 mockDataManager,
-                mockDataMetaInformationManager, objectMapper,
+                mockDataMetaInformationManager,
+                dataExportService,
+                objectMapper,
             )
     }
 
@@ -117,7 +131,7 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun `test that the json export works as expected`() {
+    fun `test that the json export does not throw an error`() {
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
         assertDoesNotThrow {
             dataController.exportCompanyAssociatedDataToJson(otherUserAcceptedDataId)
@@ -125,13 +139,11 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun `test that the csv export works as expected`() {
+    fun `test that the csv export does not throw an error`() {
         this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
-        var response: ResponseEntity<String>? = null
         assertDoesNotThrow {
-            response = dataController.exportCompanyAssociatedDataToCsv(otherUserAcceptedDataId)
+            dataController.exportCompanyAssociatedDataToCsv(otherUserAcceptedDataId)
         }
-        assertEquals(someEuTaxoDataAsString, response?.body)
     }
 
     private fun buildDataMetaInformationEntity(
@@ -145,7 +157,7 @@ internal class DataControllerTest(
             testDataType.toString(),
             uploaderId,
             0,
-            "",
+            testReportingPeriod,
             null,
             qaStatus,
         )
@@ -186,7 +198,7 @@ internal class DataControllerTest(
     }
 
     private fun assertDatasetsContainExactly(dataIds: List<String>) {
-        val datasetsWithMetaInfo = dataController.getFrameworkDatasetsForCompany("", false, "").body!!
+        val datasetsWithMetaInfo = dataController.getFrameworkDatasetsForCompany(testCompanyId, false, testReportingPeriod).body!!
         Assertions.assertEquals(datasetsWithMetaInfo.size, dataIds.size)
         dataIds.forEach { dataId ->
             assert(datasetsWithMetaInfo.any { it.metaInfo.dataId == dataId })
