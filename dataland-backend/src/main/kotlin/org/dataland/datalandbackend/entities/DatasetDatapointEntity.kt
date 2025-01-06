@@ -23,5 +23,5 @@ data class DatasetDatapointEntity(
     @CollectionTable(name = "data_point_uuid_map", joinColumns = [JoinColumn(name = "dataset_id")])
     @MapKeyColumn(name = "data_point_identifier")
     @Column(name = "data_point_uuid")
-    val dataPoints: Map<String, String>
+    val dataPoints: Map<String, String>,
 )

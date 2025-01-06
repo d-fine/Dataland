@@ -165,6 +165,7 @@ class CompanyRoleChecker(
         val user = DatalandAuthentication.fromContextOrNull() ?: return false
         val canUserUploadByGlobalRole = user.roles.contains(DatalandRealmRole.ROLE_UPLOADER)
         if (canUserUploadByGlobalRole) {
+            // Early return to avoid unnecessary API calls
             return true
         }
         val canUserUploadByCompanyRole =

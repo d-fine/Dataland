@@ -1,6 +1,6 @@
 package org.dataland.datalandqaservice.repository
 
-import org.dataland.datalandbackendutils.model.DataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
@@ -46,7 +46,7 @@ class DataPointQaReviewRepositoryTest {
     }
 
     private val dummyDataPointDimensions =
-        DataPointDimensions(
+        BasicDataPointDimensions(
             companyId = dummyCompanyId,
             dataPointIdentifier = dummyDataPointIdentifier,
             reportingPeriod = dummyReportingPeriod,

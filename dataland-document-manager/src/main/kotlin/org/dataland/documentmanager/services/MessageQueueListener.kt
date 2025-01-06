@@ -107,7 +107,7 @@ class MessageQueueListener(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
         val message = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
         val documentId = message.dataId
         if (documentId.isEmpty()) {

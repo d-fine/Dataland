@@ -18,7 +18,7 @@ const queues = [
   'internal-storage.storeDatapoints',
   'internal-storage.deleteDatasets',
   'backend.removeDataFromMemory',
-  'backend.dataPointQaStatusChange',
+  'backend.updateDataPointQaStatus',
   'qa-service.deleteDatasets',
   'qa-service.qaDatasets',
   'qa-service.qaDataPoints',

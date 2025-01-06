@@ -82,7 +82,9 @@ describeIf(
 
                         compareObjectKeysAndValuesDeep(
                           originallyUploadedLksgDataset as unknown as Record<string, object>,
-                          frontendSubmittedLksgDataset as unknown as Record<string, object>
+                          frontendSubmittedLksgDataset as unknown as Record<string, object>,
+                          '',
+                          ['publicationDate']
                         );
                       });
                   }

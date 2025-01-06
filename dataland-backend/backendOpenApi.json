@@ -1179,13 +1179,13 @@
         ]
       }
     },
-    "/data-points/verify": {
+    "/data-points/validator": {
       "post": {
         "tags": [
           "data-point-controller"
         ],
         "summary": "Verify data point content.",
-        "description": "The uploaded data point is verified to conform to it\u0027s specification",
+        "description": "The uploaded data point is verified to conform to its specification",
         "operationId": "validateDataPointContent",
         "requestBody": {
           "content": {

@@ -33,9 +33,9 @@ class DataPointQaReportController(
         val correlationId = IdUtils.generateUUID()
         val reportingUser = DatalandAuthentication.fromContext()
         logger.info(qaLogMessageBuilder.postQaReportMessage(dataId, reportingUser.userId, correlationId))
-        qaReportSecurityPolicy.ensureUserCanViewDataPointQaReportForDataId(dataId, reportingUser)
+        qaReportSecurityPolicy.ensureUserCanViewDataPointForDataId(dataId, reportingUser)
         val uploadTime = Instant.now().toEpochMilli()
-        val reportEntity =
+        val report =
             dataPointQaReportManager.createQaReport(
                 report = qaReport,
                 dataId = dataId,
@@ -43,7 +43,7 @@ class DataPointQaReportController(
                 uploadTime = uploadTime,
                 correlationId = correlationId,
             )
-        return ResponseEntity.ok(reportEntity.toApiModel())
+        return ResponseEntity.ok(report)
     }
 
     override fun setQaReportStatus(
@@ -67,9 +67,9 @@ class DataPointQaReportController(
     ): ResponseEntity<DataPointQaReport> {
         val user = DatalandAuthentication.fromContext()
         logger.info(qaLogMessageBuilder.getQaReportMessage(qaReportId, dataId))
-        qaReportSecurityPolicy.ensureUserCanViewDataPointQaReportForDataId(dataId, user)
-        val reportEntity = dataPointQaReportManager.getQaReportById(dataId, qaReportId)
-        return ResponseEntity.ok(reportEntity.toApiModel())
+        qaReportSecurityPolicy.ensureUserCanViewDataPointForDataId(dataId, user)
+        val report = dataPointQaReportManager.getQaReportById(dataId, qaReportId)
+        return ResponseEntity.ok(report)
     }
 
     override fun getAllQaReportsForDataset(
@@ -78,19 +78,15 @@ class DataPointQaReportController(
         reporterUserId: String?,
     ): ResponseEntity<List<DataPointQaReport>> {
         val user = DatalandAuthentication.fromContext()
-        qaReportSecurityPolicy.ensureUserCanViewDataPointQaReportForDataId(dataId, user)
+        qaReportSecurityPolicy.ensureUserCanViewDataPointForDataId(dataId, user)
         logger.info(qaLogMessageBuilder.getAllQaReportsForDataIdMessage(dataId, reporterUserId))
-        val reportEntities =
+        val reports =
             dataPointQaReportManager.searchQaReportMetaInfo(
                 dataId = dataId,
                 reporterUserId = reporterUserId,
                 showInactive = showInactive ?: false,
             )
-        val apiModel =
-            reportEntities.map {
-                it.toApiModel()
-            }
 
-        return ResponseEntity.ok(apiModel)
+        return ResponseEntity.ok(reports)
     }
 }

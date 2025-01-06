@@ -69,7 +69,7 @@ class MessageQueueListenerForDataManager(
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_CHANGED)
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
 
         val qaStatusChangeMessage =
             MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)

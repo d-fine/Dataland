@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
-import org.dataland.datalandbackendutils.model.DataPointDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -141,7 +141,7 @@ class DataPointQaReviewManager(
         logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(qaStatusChangeMessage),
-            type = MessageType.QA_STATUS_CHANGED,
+            type = MessageType.QA_STATUS_UPDATED,
             correlationId = correlationId,
             exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
             routingKey = RoutingKeyNames.DATA_POINT_QA,
@@ -165,7 +165,7 @@ class DataPointQaReviewManager(
                 "data point identifier $dataPointIdentifier, and reportingPeriod $reportingPeriod",
         )
         val searchFilter =
-            DataPointDimensions(
+            BasicDataPointDimensions(
                 companyId = companyId,
                 dataPointIdentifier = dataPointIdentifier,
                 reportingPeriod = reportingPeriod,

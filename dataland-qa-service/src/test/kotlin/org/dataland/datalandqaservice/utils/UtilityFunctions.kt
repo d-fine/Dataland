@@ -7,6 +7,9 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock.withAuthenticationM
  * Utility functions to be used in the tests.
  */
 object UtilityFunctions {
+    /**
+     * Run the given block authenticated as a mock reviewer user.
+     */
     inline fun withReviewerAuthentication(
         userId: String = "some-reviewer",
         block: () -> Unit,
