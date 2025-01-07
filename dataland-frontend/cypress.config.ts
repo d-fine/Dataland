@@ -32,6 +32,8 @@ export default defineConfig({
       process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES !== undefined
         ? process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES
         : '2',
+    LOGGING_OPTIONS_MAX_SIZE: process.env.LOGGING_OPTIONS_MAX_SIZE,
+    LOGGING_OPTIONS_MAX_FILE: process.env.LOGGING_OPTIONS_MAX_FILE,
   },
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,

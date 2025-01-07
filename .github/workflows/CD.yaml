@@ -274,6 +274,8 @@ jobs:
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
           GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
+          LOGGING_OPTIONS_MAX_SIZE: ${{ vars.LOGGING_OPTIONS_MAX_SIZE }}
+          LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
       - name: Move Cypress Results
         if: always()
         run: |
