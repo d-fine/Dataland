@@ -92,6 +92,19 @@ class AssembledDataSetTest {
         }
     }
 
+    @Test
+    fun `ensure that accepting an assembled dataset also accepts all datapoints`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = false)
+        QaService.QaControllerApi.changeQaStatus(dataMetaInformation.dataId, QaStatus.Accepted)
+        val allUploadedFacts = Backend.metaDataControllerApi.getContainedDataPoints(dataMetaInformation.dataId).values
+        allUploadedFacts.forEach { factId ->
+            QaService.QaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
+                assertEquals(QaStatus.Accepted, it[0].qaStatus)
+            }
+        }
+    }
+
     data class LinkedQaReportMetaInfo(
         val companyId: String,
         val dataId: String,
