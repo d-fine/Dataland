@@ -142,6 +142,7 @@ jobs:
           COMMUNITY_MANAGER_DB_PASSWORD: ${{ secrets.COMMUNITY_MANAGER_DB_PASSWORD }}
           EMAIL_SERVICE_DB_PASSWORD: ${{ secrets.EMAIL_SERVICE_DB_PASSWORD }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
+          GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
           KEYCLOAK_DATALAND_ADMIN_VALUE: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_VALUE }}
           KEYCLOAK_DATALAND_ADMIN_SALT: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_SALT }}
           DATALAND_BATCH_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_BATCH_MANAGER_CLIENT_SECRET }}
@@ -272,6 +273,7 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
       - name: Move Cypress Results
         if: always()
         run: |
