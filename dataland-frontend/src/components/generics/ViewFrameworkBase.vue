@@ -63,7 +63,6 @@
 
             <DownloadDatasetModal
               :isDownloadModalOpen="isDownloadModalOpen"
-              :dataType="dataType"
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
               @close-download-modal="onCloseDownloadModal"
               @download-dataset="handleDatasetDownload"
