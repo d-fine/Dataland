@@ -670,6 +670,22 @@
         "ROLE_ADMIN",
         "default-roles-datalandsecurity"
       ],
+      "clientRoles": {
+        "realm-management": [
+          "query-clients",
+          "query-realms",
+          "query-users",
+          "view-realm",
+          "view-events",
+          "view-users",
+          "view-identity-providers",
+          "view-clients",
+          "view-authorization",
+          "view-groups",
+          "query-groups"
+        ]
+      },
+
       "notBefore": 0,
       "groups": []
     },

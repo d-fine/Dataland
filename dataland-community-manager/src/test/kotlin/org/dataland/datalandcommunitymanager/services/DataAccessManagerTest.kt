@@ -133,19 +133,22 @@ class DataAccessManagerTest {
 
     private fun createDataRequestRepository(): DataRequestRepository {
         val dataRequestRepository = mock(DataRequestRepository::class.java)
+        val vsmeRequestWithGrantedAccess = setupVsmeRequestWithGrantedAccess()
+        val vsmeRequestWithRevokedAccess = setupVsmeRequestWithRevokedAccess()
+
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 userId = userId, datalandCompanyId = companyId, dataType = DataTypeEnum.vsme.toString(),
                 reportingPeriod = grantedAccessReportingYear,
             ),
-        ).thenReturn(setupVsmeRequestWithGrantedAccess())
+        ).thenReturn(vsmeRequestWithGrantedAccess)
 
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 userId = userId, datalandCompanyId = companyId, dataType = DataTypeEnum.vsme.toString(),
                 reportingPeriod = revokedAccessReportingYear,
             ),
-        ).thenReturn(setupVsmeRequestWithRevokedAccess())
+        ).thenReturn(vsmeRequestWithRevokedAccess)
 
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
