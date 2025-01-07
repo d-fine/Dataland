@@ -126,7 +126,9 @@ class DataRequestProcessingUtils
                 } else {
                     AccessStatus.Public
                 }
-            addNewRequestStatusToHistory(dataRequestEntity, RequestStatus.Open, accessStatus, creationTime)
+            addNewRequestStatusToHistory(
+                dataRequestEntity, RequestStatus.Open, accessStatus, null, creationTime,
+            )
 
             if (!contacts.isNullOrEmpty()) {
                 addMessageToMessageHistory(dataRequestEntity, contacts, message, creationTime)
@@ -164,9 +166,11 @@ class DataRequestProcessingUtils
             dataRequestEntity: DataRequestEntity,
             requestStatus: RequestStatus,
             accessStatus: AccessStatus,
+            requestStatusChangeReason: String?,
             modificationTime: Long,
         ) {
-            val requestStatusObject = StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus)
+            val requestStatusObject =
+                StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus, requestStatusChangeReason)
             val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
 
             requestStatusRepository.save(requestStatusEntity)

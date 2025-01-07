@@ -49,6 +49,7 @@ export async function getAnsweredDataRequestsForViewPage(
  * @param accessStatus the desired access status
  * @param contacts set of email contacts
  * @param message context of the email
+ * @param requestStatusChangeReason provided reason why data should be available
  * @param keycloakPromiseGetter the getter-function which returns a Keycloak-Promise
  */
 export async function patchDataRequest(
@@ -57,6 +58,7 @@ export async function patchDataRequest(
   accessStatus: AccessStatus | undefined,
   contacts: Set<string> | undefined,
   message: string | undefined,
+  requestStatusChangeReason: string | undefined,
   keycloakPromiseGetter?: () => Promise<Keycloak>
 ): Promise<void> {
   try {
@@ -66,7 +68,10 @@ export async function patchDataRequest(
         requestStatus,
         accessStatus,
         contacts,
-        message
+        message,
+        undefined,
+        undefined,
+        requestStatusChangeReason
       );
     }
   } catch (error) {
@@ -91,6 +96,8 @@ export function badgeClass(requestStatus: RequestStatus): string {
       return 'p-badge badge-gray outline rounded';
     case 'Closed':
       return 'p-badge badge-brown outline rounded';
+    case 'NonSourceable':
+      return 'p-badge badge-gray outline rounded';
     default:
       return 'p-badge outline rounded';
   }
@@ -125,16 +132,21 @@ export function accessStatusBadgeClass(accessStatus: AccessStatus): string {
 export function priorityBadgeClass(priority: RequestPriority): string {
   switch (priority) {
     case 'Low':
-      return 'p-badge badge-light-green outline rounded';
-    case 'Normal':
       return 'p-badge badge-blue outline rounded';
     case 'High':
-      return 'p-badge badge-yellow outline rounded';
-    case 'VeryHigh':
       return 'p-badge badge-orange outline rounded';
     case 'Urgent':
       return 'p-badge badge-red outline rounded';
     default:
       return 'p-badge outline rounded';
   }
+}
+
+/**
+ * Gives back a different string for status nonSourceable, otherwise a string that similar to requestStatus
+ * @param requestStatus request status of a request
+ * @returns the label of the request status
+ */
+export function getRequestStatusLabel(requestStatus: RequestStatus): string {
+  return requestStatus === RequestStatus.NonSourceable ? 'No sources available' : requestStatus;
 }

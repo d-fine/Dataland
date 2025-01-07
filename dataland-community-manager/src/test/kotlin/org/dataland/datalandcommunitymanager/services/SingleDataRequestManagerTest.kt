@@ -140,7 +140,7 @@ class SingleDataRequestManagerTest {
                 messageHistory = mutableListOf(),
                 dataRequestStatusHistory = emptyList(),
                 userId = "user-id",
-                requestPriority = RequestPriority.Normal,
+                requestPriority = RequestPriority.Low,
                 adminComment = "dummyAdminComment",
             )
         }

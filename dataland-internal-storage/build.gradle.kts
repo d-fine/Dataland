@@ -27,6 +27,7 @@ plugins {
 
 dependencies {
     implementation(libs.springdoc.openapi.ui)
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)

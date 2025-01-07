@@ -131,7 +131,8 @@ class DataAccessManager(
             ) {
                 dataRequestProcessingUtils.addNewRequestStatusToHistory(
                     dataRequestEntity = dataRequestEntity, requestStatus = dataRequestEntity.requestStatus,
-                    accessStatus = AccessStatus.Pending, modificationTime = modificationTime,
+                    accessStatus = AccessStatus.Pending, requestStatusChangeReason = null,
+                    modificationTime = modificationTime,
                 )
                 logger.info("Patching request ${dataRequestEntity.dataRequestId} with status ${AccessStatus.Pending}")
             }
@@ -173,7 +174,8 @@ class DataAccessManager(
 
         dataRequestProcessingUtils.addNewRequestStatusToHistory(
             dataRequestEntity = dataRequestEntity, requestStatus = RequestStatus.Answered,
-            accessStatus = AccessStatus.Pending, modificationTime = creationTime,
+            accessStatus = AccessStatus.Pending, requestStatusChangeReason = null,
+            modificationTime = creationTime,
         )
 
         if (!contacts.isNullOrEmpty()) {

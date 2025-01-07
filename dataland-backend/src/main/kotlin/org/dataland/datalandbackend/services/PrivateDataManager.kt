@@ -88,11 +88,11 @@ class PrivateDataManager(
         storeJsonInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
-        val documentHashes =
+        val documentHashes: Map<String, String> =
             documents
                 ?.takeIf { it.isNotEmpty() }
                 ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
-                ?: mutableMapOf()
+                ?: mapOf()
         sendReceptionMessage(dataId, storableDataSet, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
@@ -226,7 +226,7 @@ class PrivateDataManager(
                 eurodatId = "JSON",
             )
         dataIdAndHashToEurodatIdMappingRepository.save(dataIdToJsonMappingEntity)
-        val documentHashes = documentHashesInMemoryStorage[dataId]
+        val documentHashes: Map<String, String>? = documentHashesInMemoryStorage[dataId]
         if (!documentHashes.isNullOrEmpty()) {
             val dataIdToDocumentHashMappingEntities =
                 documentHashes.map { documentHash ->

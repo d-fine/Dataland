@@ -66,20 +66,21 @@ class SecurityUtilsService(
     ): Boolean {
         if (requestStatusToPatch == null) return true
         val currentRequestStatus = dataRequestRepository.findById(requestId.toString()).get().requestStatus
-        val statusChangeFromAnsweredToResolved =
-            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Resolved
-        val statusChangeFromAnsweredToOpen =
-            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Open
-        val statusChangeFromAnsweredToWithdrawn =
-            currentRequestStatus == RequestStatus.Answered && requestStatusToPatch == RequestStatus.Withdrawn
-        val statusChangeFromOpenToWithdrawn =
-            currentRequestStatus == RequestStatus.Open && requestStatusToPatch == RequestStatus.Withdrawn
-        return (
-            statusChangeFromAnsweredToResolved ||
-                statusChangeFromAnsweredToOpen ||
-                statusChangeFromAnsweredToWithdrawn ||
-                statusChangeFromOpenToWithdrawn
-        )
+
+        return when (currentRequestStatus) {
+            RequestStatus.Answered -> {
+                requestStatusToPatch in listOf(RequestStatus.Resolved, RequestStatus.Open, RequestStatus.Withdrawn)
+            }
+            RequestStatus.Open -> {
+                requestStatusToPatch == RequestStatus.Withdrawn
+            }
+            RequestStatus.NonSourceable -> {
+                requestStatusToPatch == RequestStatus.Open
+            }
+            else -> {
+                false
+            }
+        }
     }
 
     /**
@@ -195,7 +196,8 @@ class SecurityUtilsService(
         requestPriority: RequestPriority?,
         adminComment: String?,
     ): Boolean {
-        val isNotTryingToPatchStatusContactsMessage = requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
+        val isNotTryingToPatchStatusContactsMessage =
+            requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
         val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
         return isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
     }

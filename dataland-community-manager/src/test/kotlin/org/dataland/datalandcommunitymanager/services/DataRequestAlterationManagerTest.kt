@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.ArgumentMatchers.anySet
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.doNothing
@@ -37,6 +39,7 @@ import java.util.UUID
 
 class DataRequestAlterationManagerTest {
     private lateinit var dataRequestAlterationManager: DataRequestAlterationManager
+    private lateinit var nonSourceableDataManager: NonSourceableDataManager
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestRepository: DataRequestRepository
     private lateinit var mockMetaControllerApi: MetaDataControllerApi
@@ -62,8 +65,37 @@ class DataRequestAlterationManagerTest {
                 creationTimestamp = 123456,
                 datalandCompanyId = "dummyCompanyId",
             ),
+            DataRequestEntity(
+                userId = "1234",
+                dataType = "p2p",
+                reportingPeriod = "dummyPeriod",
+                creationTimestamp = 0,
+                datalandCompanyId = "dummyCompanyId",
+            ),
         )
+
+    private val dummyRequestChangeReason = "dummy reason"
+
+    private val dummyNonSourceableInfo =
+        NonSourceableInfo(
+            companyId = "",
+            dataType = DataTypeEnum.p2p,
+            reportingPeriod = "",
+            isNonSourceable = true,
+            reason = dummyRequestChangeReason,
+        )
+
+    private val dummySourceableInfo =
+        NonSourceableInfo(
+            companyId = "",
+            dataType = DataTypeEnum.p2p,
+            reportingPeriod = "",
+            isNonSourceable = false,
+            reason = dummyRequestChangeReason,
+        )
+
     private val dummyDataRequestEntity: DataRequestEntity = dummyDataRequestEntities[0]
+
     private val metaData =
         DataMetaInformation(
             dataId = UUID.randomUUID().toString(),
@@ -98,15 +130,24 @@ class DataRequestAlterationManagerTest {
                 searchFilter =
                     DataRequestsFilter(
                         setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
-                        setOf(RequestStatus.Open), null, null, null,
+                        setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)
 
+        `when`(
+            mockDataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
+                datalandCompanyId = dummyNonSourceableInfo.companyId,
+                dataType = dummyNonSourceableInfo.dataType.toString(),
+                reportingPeriod = dummyNonSourceableInfo.reportingPeriod,
+            ),
+        ).thenReturn(listOf(dummyDataRequestEntity))
+
         mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
             any(), any(),
-            any(), any(),
+            any(), anyString(),
+            any(),
         )
         doNothing().`when`(mockDataRequestProcessingUtils).addMessageToMessageHistory(
             any(), anySet(), anyString(), any(),
@@ -172,7 +213,8 @@ class DataRequestAlterationManagerTest {
         verify(mockDataRequestProcessingUtils, times(2))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), eq(null),
+                any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
@@ -191,7 +233,8 @@ class DataRequestAlterationManagerTest {
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), eq(null),
+                any(),
             )
 
         verify(mockDataRequestProcessingUtils, times(0))
@@ -202,7 +245,7 @@ class DataRequestAlterationManagerTest {
 
     @Test
     fun `validate that a request answered email is sent when request statuses are patched from open to answered`() {
-        dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(metaData.dataId, correlationId)
+        dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
             verify(mockRequestEmailManager)
                 .sendEmailsWhenStatusChanged(eq(it), eq(RequestStatus.Answered), eq(null), anyString())
@@ -210,7 +253,8 @@ class DataRequestAlterationManagerTest {
         verify(mockDataRequestProcessingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), eq(null),
+                any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
@@ -241,7 +285,8 @@ class DataRequestAlterationManagerTest {
         verify(mockDataRequestProcessingUtils, times(0))
             .addNewRequestStatusToHistory(
                 any(), any(),
-                any(), any(),
+                any(), anyString(),
+                any(),
             )
     }
 
@@ -287,5 +332,35 @@ class DataRequestAlterationManagerTest {
 
         assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)
         assertEquals(RequestPriority.High, dummyDataRequestEntity.requestPriority)
+    }
+
+    @Test
+    fun `validate that patching corresponding requests for a dataset only changed the corresponding requests`() {
+        nonSourceableDataManager =
+            NonSourceableDataManager(
+                dataRequestAlterationManager = dataRequestAlterationManager,
+                dataRequestRepository = mockDataRequestRepository,
+            )
+        nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummyNonSourceableInfo, correlationId)
+
+        verify(mockDataRequestProcessingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                any(), any(),
+                any(), anyString(),
+                any(),
+            )
+    }
+
+    @Test
+    fun `validate that providing information about a dataset that is sourceable throws an IllegalArgumentException`() {
+        nonSourceableDataManager =
+            NonSourceableDataManager(
+                dataRequestAlterationManager = dataRequestAlterationManager,
+                dataRequestRepository = mockDataRequestRepository,
+            )
+
+        assertThrows<IllegalArgumentException> {
+            nonSourceableDataManager.patchAllRequestsForThisDatasetToStatusNonSourceable(dummySourceableInfo, correlationId)
+        }
     }
 }

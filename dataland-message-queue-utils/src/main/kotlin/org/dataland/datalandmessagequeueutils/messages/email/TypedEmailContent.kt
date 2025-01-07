@@ -231,6 +231,26 @@ data class DataRequestClosed(
 }
 
 /**
+ * A class for the DataRequestNonSourceable email.
+ */
+data class DataRequestNonSourceable(
+    val companyName: String,
+    val dataTypeLabel: String,
+    val reportingPeriod: String,
+    val creationDate: String,
+    val dataRequestId: String,
+    val nonSourceableComment: String?,
+) : TypedEmailContent(),
+    InitializeBaseUrlLater {
+    override val subject = "There are no sources for your requested data available!"
+    override val textTemplate = "/text/data_request_non_sourceable.ftl"
+    override val htmlTemplate = "/html/data_request_non_sourceable.ftl"
+
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+/**
  * A class for the KeyValueTable email. User for internal purposes.
  */
 data class InternalEmailContentTable(

@@ -16,7 +16,10 @@ class QaLogMessageBuilder {
     fun postQaReportMessage(
         dataId: String,
         reporterUserId: String,
-    ): String = "Received a request from user '$reporterUserId' to post a QA report for data ID '$dataId'"
+        correlationId: String? = null,
+    ): String =
+        "Received a request from user '$reporterUserId' to post a QA report for data ID '$dataId'" +
+            " (correlation ID: $correlationId)."
 
     /**
      * Generates a message to inform that a request was received to return a QA report by its ID

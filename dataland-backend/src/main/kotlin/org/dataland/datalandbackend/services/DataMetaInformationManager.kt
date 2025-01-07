@@ -2,16 +2,15 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
-import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
-import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 /**
@@ -21,20 +20,14 @@ import java.util.UUID
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
-    @Autowired private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
 ) {
     /**
      * Method to associate data information with a specific company
      * @param dataMetaInformation The data meta information which should be stored
      */
+    @Transactional
     fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
         dataMetaInformationRepositoryInterface.save(dataMetaInformation)
-
-    /**
-     * Method to store data point meta information
-     */
-    fun storeDataPointMetaInformation(dataPointMetaInformation: DataPointMetaInformationEntity): DataPointMetaInformationEntity =
-        dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
 
     /**
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
@@ -82,19 +75,6 @@ class DataMetaInformationManager(
         }
 
     /**
-     * Method to make the data manager get meta info about one specific data point
-     * @param dataId filters the requested meta info to one specific data ID
-     * @return meta info about data behind the dataId
-     */
-    fun getDataPointMetaInformationByDataId(dataId: String): DataPointMetaInformationEntity =
-        dataPointMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
-            ResourceNotFoundApiException(
-                "Data point not found",
-                "No data point with the id: $dataId could be found in the data store.",
-            )
-        }
-
-    /**
      * Method to make the data manager search for meta info
      * @param companyId if not empty, it filters the requested meta info to a specific company
      * @param dataType if not empty, it filters the requested meta info to a specific data type
@@ -129,6 +109,7 @@ class DataMetaInformationManager(
      * Method to delete the data meta information for a given dataId
      * @param dataId of the dataset that should be deleted
      */
+    @Transactional
     fun deleteDataMetaInfo(dataId: String) {
         val dataMetaInformation = getDataMetaInformationByDataId(dataId)
         dataMetaInformationRepositoryInterface.delete(dataMetaInformation)

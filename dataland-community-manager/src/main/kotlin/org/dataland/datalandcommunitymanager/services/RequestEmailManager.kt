@@ -42,6 +42,9 @@ class RequestEmailManager(
         if (requestStatus == RequestStatus.Closed) {
             dataRequestResponseEmailMessageSender.sendDataRequestClosedEmail(dataRequestEntity, correlationId)
         }
+        if (requestStatus == RequestStatus.NonSourceable) {
+            dataRequestResponseEmailMessageSender.sendDataRequestNonSourceableEmail(dataRequestEntity, correlationId)
+        }
         if (accessStatus == AccessStatus.Granted) {
             accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
                 AccessRequestEmailSender.GrantedEmailInformation(dataRequestEntity),

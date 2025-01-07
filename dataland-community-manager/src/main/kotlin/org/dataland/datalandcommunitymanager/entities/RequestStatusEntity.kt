@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.entities
 
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -7,6 +8,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import org.dataland.datalandcommunitymanager.converters.RequestStatusEnumAttributeConverter
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestStatusObject
@@ -20,7 +22,7 @@ import java.util.UUID
 data class RequestStatusEntity(
     @Id
     val statusHistoryId: String,
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = RequestStatusEnumAttributeConverter::class)
     val requestStatus: RequestStatus,
     @Enumerated(EnumType.STRING)
     val accessStatus: AccessStatus,
@@ -28,6 +30,7 @@ data class RequestStatusEntity(
     @ManyToOne(optional = false)
     @JoinColumn(name = "data_request_id")
     var dataRequest: DataRequestEntity,
+    val requestStatusChangeReason: String? = null,
 ) {
     constructor(
         statusObject: StoredDataRequestStatusObject,
@@ -37,6 +40,7 @@ data class RequestStatusEntity(
         requestStatus = statusObject.status,
         accessStatus = statusObject.accessStatus,
         creationTimestamp = statusObject.creationTimestamp,
+        requestStatusChangeReason = statusObject.requestStatusChangeReason,
         dataRequest = dataRequest,
     )
 
@@ -49,5 +53,6 @@ data class RequestStatusEntity(
             status = requestStatus,
             accessStatus = accessStatus,
             creationTimestamp = creationTimestamp,
+            requestStatusChangeReason = requestStatusChangeReason,
         )
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JacksonException
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.json.JSONObject
+import java.util.UUID
 
 /**
  * MessageQueueUtils provides utility functions to be used with the processing of messages
@@ -63,5 +64,13 @@ object MessageQueueUtils {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         return dataId
+    }
+
+    /**
+     * Validates a data ID by checking if it is a valid UUID
+     * @throws IllegalArgumentException if the data ID is not a valid UUID
+     */
+    fun validateDataId(dataId: String) {
+        UUID.fromString(dataId)
     }
 }

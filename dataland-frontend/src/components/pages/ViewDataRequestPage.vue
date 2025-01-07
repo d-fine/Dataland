@@ -56,6 +56,74 @@
         </PrimeButton>
       </PrimeDialog>
 
+      <PrimeDialog
+        id="reopenModal"
+        :dismissableMask="true"
+        :modal="true"
+        v-model:visible="reopenModalIsVisible"
+        :closable="true"
+        style="text-align: left; height: fit-content; width: 21vw"
+        data-test="reopenModal"
+        class="modal pl-2"
+      >
+        <template #header>
+          <span style="font-weight: bold; margin-right: auto">REOPEN REQUEST</span>
+        </template>
+
+        <FormKit type="form" :actions="false" class="formkit-wrapper">
+          <label for="Message">
+            <b style="margin-bottom: 8px">Message</b>
+          </label>
+          <FormKit v-model="reopenMessage" type="textarea" name="reopenMessage" data-test="reopenMessage" />
+          <p
+            v-show="reopenMessageError && reopenMessage.length < 10"
+            class="text-danger text-xs"
+            data-test="noMessageErrorMessage"
+          >
+            You have not provided a sufficient reason yet. Please provide a reason.
+          </p>
+          <p class="gray-text font-italic" style="text-align: left">
+            Please enter the reason why you think that the dataset should be available. Your message will be forwarded
+            to the data provider.
+          </p>
+        </FormKit>
+        <div>
+          <PrimeButton
+            data-test="reopenRequestButton"
+            @click="reopenRequest()"
+            style="width: 100%; justify-content: center"
+          >
+            <span class="d-letters" style="text-align: center" data-test="reopenButton"> REOPEN REQUEST </span>
+          </PrimeButton>
+        </div>
+      </PrimeDialog>
+
+      <PrimeDialog
+        id="reopenedModal"
+        :dismissableMask="true"
+        :modal="true"
+        v-model:visible="reopenedModalIsVisible"
+        :closable="false"
+        style="border-radius: 0.75rem; text-align: center"
+        :show-header="false"
+        data-test="reopenedModal"
+      >
+        <div class="text-center" style="display: flex; flex-direction: column">
+          <div style="margin: 10px">
+            <em class="material-icons info-icon green-text" style="font-size: 2.5em"> check_circle </em>
+          </div>
+          <div style="margin: 10px">
+            <h2 class="m-0" data-test="successText">Reopened</h2>
+          </div>
+        </div>
+        <div class="text-block" style="margin: 15px; white-space: pre">
+          You have successfully reopened your data request.
+        </div>
+        <div style="margin: 10px">
+          <PrimeButton label="CLOSE" @click="reopenedModalIsVisible = false" class="p-button-outlined" />
+        </div>
+      </PrimeDialog>
+
       <div class="py-4 paper-section">
         <div class="grid col-9 justify-content-around">
           <div class="col-4">
@@ -95,18 +163,18 @@
             <div class="col-12">
               <div class="card" data-test="card_requestIs">
                 <span style="display: flex; align-items: center">
-                  <div class="card__title">Request is:</div>
-                  <div :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
-                    {{ storedDataRequest.requestStatus }}
-                  </div>
-                  <div class="card__title">and Access is:</div>
-                  <div :class="accessStatusBadgeClass(storedDataRequest.accessStatus)" style="display: inline-flex">
+                  <span class="card__title">Request is:</span>
+                  <span :class="badgeClass(storedDataRequest.requestStatus)" style="display: inline-flex">
+                    {{ getRequestStatusLabel(storedDataRequest.requestStatus) }}
+                  </span>
+                  <span class="card__title">and Access is:</span>
+                  <span :class="accessStatusBadgeClass(storedDataRequest.accessStatus)" style="display: inline-flex">
                     {{ storedDataRequest.accessStatus }}
-                  </div>
-                  <div class="card__subtitle">
+                  </span>
+                  <span class="card__subtitle">
                     since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
-                  </div>
-                  <div style="margin-left: auto">
+                  </span>
+                  <span style="margin-left: auto">
                     <PrimeButton
                       data-test="resolveRequestButton"
                       v-show="isUsersOwnRequest && isRequestStatusAnswered()"
@@ -114,23 +182,23 @@
                     >
                       <span class="d-letters pl-2"> Resolve Request </span>
                     </PrimeButton>
-                  </div>
+                  </span>
                 </span>
                 <div class="card__separator" />
                 <StatusHistory :status-history="storedDataRequest.dataRequestStatusHistory" />
               </div>
               <div class="card" data-test="card_providedContactDetails" v-if="isUsersOwnRequest">
                 <span style="display: flex; align-items: center">
-                  <div class="card__title" style="margin-right: auto">Provided Contact Details & Messages</div>
-                  <div
+                  <span class="card__title" style="margin-right: auto">Provided Contact Details and Messages</span>
+                  <span
                     v-show="isNewMessageAllowed()"
                     style="cursor: pointer; display: flex; align-items: center"
                     @click="openMessageDialog()"
                     data-test="newMessage"
                   >
                     <i class="pi pi-file-edit pl-3 pr-3" aria-hidden="true" />
-                    <div style="font-weight: bold">NEW MESSAGE</div>
-                  </div>
+                    <span style="font-weight: bold">NEW MESSAGE</span>
+                  </span>
                 </span>
                 <div class="card__separator" />
                 <div v-for="message in storedDataRequest.messageHistory" :key="message.creationTimestamp">
@@ -146,18 +214,35 @@
                   </div>
                 </div>
               </div>
+              <div class="card" v-show="isRequestReopenable(storedDataRequest.requestStatus)" data-test="card_reopen">
+                <div class="card__title">Reopen Request</div>
+                <div class="card__separator" />
+                <div>
+                  Currently, your request has the status non-sourceable. If you believe that your data should be
+                  available, you can reopen the request and comment why you believe the data should be available.<br />
+                  <br />
+                  <a
+                    class="link"
+                    style="display: inline-flex; font-weight: bold; color: #e67f3f"
+                    @click="openModalReopenRequest()"
+                  >
+                    Reopen request</a
+                  >
+                </div>
+              </div>
               <div class="card" v-show="isRequestWithdrawable()" data-test="card_withdrawn">
                 <div class="card__title">Withdraw Request</div>
                 <div class="card__separator" />
                 <div>
                   Once a data request is withdrawn, it will be removed from your data request list. The company owner
-                  will not be notified anymore.
+                  will not be notified anymore.<br />
+                  <br />
                   <a
                     class="link"
-                    style="display: inline-flex; font-weight: bold; color: black"
+                    style="display: inline-flex; font-weight: bold; color: #e67f3f"
                     @click="withdrawRequest()"
                   >
-                    Withdraw request.</a
+                    Withdraw request</a
                   >
                 </div>
               </div>
@@ -180,7 +265,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import type Keycloak from 'keycloak-js';
 import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@/utils/StringFormatter';
-import { accessStatusBadgeClass, badgeClass, patchDataRequest } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, patchDataRequest, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
@@ -220,6 +305,9 @@ export default defineComponent({
       toggleEmailDetailsError: false,
       successModalIsVisible: false,
       isDatasetAvailable: false,
+      reopenModalIsVisible: false,
+      reopenMessage: '',
+      reopenedModalIsVisible: false,
       isUsersOwnRequest: false,
       isUserKeycloakAdmin: false,
       storedDataRequest: {} as StoredDataRequest,
@@ -228,6 +316,7 @@ export default defineComponent({
       emailContacts: undefined as Set<string> | undefined,
       emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
+      reopenMessageError: false,
     };
   },
   mounted() {
@@ -242,6 +331,7 @@ export default defineComponent({
       .catch((error) => console.error(error));
   },
   methods: {
+    getRequestStatusLabel,
     accessStatusBadgeClass,
     convertUnixTimeInMsToDateString,
     badgeClass,
@@ -319,6 +409,46 @@ export default defineComponent({
       }
     },
     /**
+     * Method to check if a request can be reopened (only for nonSourceable requests)
+     * @param requestStatus request status of the dataland request
+     * @returns true if request status is non sourceable otherwise false
+     */
+    isRequestReopenable(requestStatus: RequestStatus) {
+      return requestStatus == RequestStatus.NonSourceable;
+    },
+    /**
+     * Opens a pop-up window to get the users message why the nonSourceable request should be reopened
+     */
+    openModalReopenRequest() {
+      this.reopenModalIsVisible = true;
+    },
+    /**
+     * Method to reopen the non sourceable data request
+     */
+    async reopenRequest() {
+      if (this.reopenMessage.length > 10) {
+        try {
+          await patchDataRequest(
+            this.storedDataRequest.dataRequestId,
+            RequestStatus.Open as RequestStatus,
+            undefined,
+            undefined,
+            undefined,
+            this.reopenMessage,
+            this.getKeycloakPromise
+          );
+          this.reopenModalIsVisible = false;
+          this.reopenedModalIsVisible = true;
+          this.storedDataRequest.requestStatus = RequestStatus.Open;
+          this.reopenMessage = '';
+        } catch (error) {
+          console.log(error);
+        }
+        return;
+      }
+      this.reopenMessageError = true;
+    },
+    /**
      * Method to withdraw the request when clicking on the button
      */
     async withdrawRequest() {
@@ -326,6 +456,7 @@ export default defineComponent({
         await patchDataRequest(
           this.requestId,
           RequestStatus.Withdrawn as RequestStatus,
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -365,6 +496,7 @@ export default defineComponent({
           undefined,
           this.emailContacts,
           this.emailMessage,
+          undefined,
           this.getKeycloakPromise
         )
           .then(() => {
@@ -383,7 +515,8 @@ export default defineComponent({
     isRequestWithdrawable() {
       return (
         this.storedDataRequest.requestStatus == RequestStatus.Open ||
-        this.storedDataRequest.requestStatus == RequestStatus.Answered
+        this.storedDataRequest.requestStatus == RequestStatus.Answered ||
+        this.storedDataRequest.requestStatus == RequestStatus.NonSourceable
       );
     },
     /**
