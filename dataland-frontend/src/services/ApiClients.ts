@@ -22,7 +22,6 @@ interface ApiBackendClients {
   companyDataController: backendApis.CompanyDataControllerApiInterface;
   metaDataController: backendApis.MetaDataControllerApiInterface;
   userUploadsController: backendApis.UserUploadsControllerApiInterface;
-  exportController: backendApis.DataExportControllerApiInterface;
 }
 
 interface ApiClients {
@@ -79,7 +78,6 @@ export class ApiClientProvider {
       companyDataController: backendClientFactory(backendApis.CompanyDataControllerApi),
       metaDataController: backendClientFactory(backendApis.MetaDataControllerApi),
       userUploadsController: backendClientFactory(backendApis.UserUploadsControllerApi),
-      exportController: backendClientFactory(backendApis.DataExportControllerApi),
     };
   }
 
