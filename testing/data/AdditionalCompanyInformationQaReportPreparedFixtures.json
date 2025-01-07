@@ -1,0 +1,104 @@
+{
+	"data": {
+		"general": {
+			"general": {
+				"referencedReports": {
+					"IntegratedReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-03-24"
+					},
+					"AnnualReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-05-13"
+					},
+					"SustainabilityReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "SustainabilityReport",
+						"publicationDate": "2023-06-29"
+					},
+					"ESEFReport": {
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-02-06"
+					}
+				}
+			},
+			"financialInformation": {
+				"equity": {
+					"value": 6334094591.44,
+					"dataSource": {
+						"page": "830",
+						"fileName": "IntegratedReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "e-business",
+						"publicationDate": null
+					},
+					"comment": "calculate redundant monitor",
+					"quality": "Incomplete",
+					"currency": "CRC"
+				},
+				"debt": {
+					"value": 7493476124.95,
+					"dataSource": {
+						"page": "1094",
+						"fileName": "ESEFReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "networks",
+						"publicationDate": null
+					},
+					"comment": "generate mobile pixel",
+					"quality": "Estimated",
+					"currency": "CDF"
+				},
+				"evic": {
+					"value": 5121667243.07,
+					"dataSource": {
+						"page": "1026",
+						"fileName": "AnnualReport",
+						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"tagName": "architectures",
+						"publicationDate": null
+					},
+					"comment": "navigate virtual system",
+					"quality": "Audited",
+					"currency": "ILS"
+				}
+			}
+		}
+	},
+	"qaReport": {
+		"general": {
+			"financialInformation": {
+				"equity": {
+					"verdict": "QaAccepted",
+					"comment": "Equity is fine",
+					"correctedData": {}
+				},
+				"debt": {
+					"verdict": "QaNotAttempted",
+					"comment": "Qa for debt was inconclusive",
+					"correctedData": {}
+				},
+				"evic": {
+					"verdict": "QaRejected",
+					"comment": "EVIC is not correct",
+					"correctedData": {
+						"value": 8778058944.74,
+						"dataSource": {
+							"page": "526-1268",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems",
+							"publicationDate": null
+						},
+						"comment": "navigate multi-byte array",
+						"quality": "Incomplete",
+						"currency": "BAM"
+					}
+				}
+			}
+		}
+	}
+}
