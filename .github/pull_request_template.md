@@ -8,10 +8,10 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] If this PR includes work on the frontend, at least one `@ts-nocheck` is removed. Additionally, there should not be any `@ts-nocheck` in files modified by this PR. If no `@ts-nocheck` are left: Celebrate :tada: :confetti_ball: type-safety and remove this entry. 
 - [ ] The PR actually implements what is described in the JIRA-Issue
 - [ ] At least one test exists testing the new feature
-  - [ ] If you have created new test files, make sure that they are included in a test container and actually run in the CI
+  - [ ] Make sure that tests meaningfully cover all added functionality.
+  - [ ] Make sure that new test files are included in a test container and actually run in the CI
 - [ ] At least 3 consecutive CI runs are successfully executed to ensure that there are no flaky tests.
-- [ ] Documentation is updated as required
-- [ ] The automated deployment is updated if required
+- [ ] Documentation is updated as required. If unsure whether or what to update, ask a fellow developer.
 - [ ] If there was a database entity class added, there must also be a migration script for creating the corresponding database if flyway is already used by the service
 - [ ] IF there are changes done to the framework data models or to a database entity class, the following steps were completed in order
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
