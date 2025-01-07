@@ -21,11 +21,6 @@ x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
   POSTGRES_DB: eurodat_db_name
   POSTGRES_USER: eurodat_db_user
   POSTGRES_PASSWORD: eurodat_db_password
-x-logging-options: &logging-options
-  driver: json-file
-  options:
-    max-size: ${LOGGING_OPTIONS_MAX_SIZE}
-    max-file: ${LOGGING_OPTIONS_MAX_FILE}
 x-logging: &loki-logging
   driver: json-file
   options:
@@ -224,6 +219,7 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
@@ -669,7 +665,9 @@ services:
     restart: always
     image: grafana/grafana:11.4.0@sha256:d8ea37798ccc41061a62ab080f2676dda6bf7815558499f901bdb0f533a456fb
     environment:
-      - GF_PATHS_CONFIG=/config/grafana-custom.ini
+      - GF_SECURITY_ADMIN_USER=admin@dataland.com
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SERVER_ROOT_URL=%(protocol)s://dataland-admin/grafana/
     expose:
       - "3000"
     volumes:
@@ -688,8 +686,7 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-#      - loki_data:/loki
-#      - loki_data:/var/lib/loki/data
+      - loki_data:/var/lib/loki/data
       - ./dataland-loki/config:/config
     command: -config.file=/config/loki-config.yaml
     networks:
@@ -756,12 +753,12 @@ volumes:
     driver: local
   grafana_data:
     driver: local
-#  loki_data:
-#    driver: local
-  #  driver_opts:
-#      type: "nfs"
-   #   o: "size=100m"
-#      device: "/var/lib/docker/volumes/dataland_loki_data/_data"
-      # device: "/var/lib/loki/data"
+  loki_data:
+    driver: local
+#    driver_opts:
+#      type: none
+#      o: bind
+#      size: 100M
+#      device: ${DATALAND_HOST_DATA_DIR}dataland-loki-data
   alloy_data:
     driver: local
