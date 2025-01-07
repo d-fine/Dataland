@@ -430,12 +430,6 @@ export default defineComponent({
      * @param selectedFormat selected file format
      */
     async handleDatasetDownload(selectedYear: string, selectedFormat: string) {
-      console.log(`DataType: ${this.dataType},\n
-       CompanyId: ${this.companyID},\n
-       ReportingPeriod: ${selectedYear},\n
-       DataId: ${this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId},\n
-       FileFormat: ${selectedFormat}`);
-
       const dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
 
       if (!dataId) {
@@ -453,8 +447,6 @@ export default defineComponent({
           throw new ReferenceError('Retrieving dataApi for framework failed.');
         }
 
-        console.log(frameworkDataApi);
-
         let dataResponse;
         let filename = `${dataId}.${selectedFormat}`;
         switch (selectedFormat) {
@@ -470,8 +462,6 @@ export default defineComponent({
           throw new Error(`Retrieving frameworkData for dataId ${dataId} failed.`);
         }
 
-        console.log(dataResponse);
-
         this.forceFileDownload(dataResponse, filename);
       } catch (error) {
         console.error(error);
@@ -485,18 +475,13 @@ export default defineComponent({
      * @param filename name of file to be downloaded
      */
     forceFileDownload(response: AxiosResponse, filename: string) {
-      console.log('Create ObjectURL');
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      console.log(`Created ObjectURL ${url}.\nCreate link.`);
       const link = document.createElement('a');
-      console.log(`Created Link ${link}.`);
       link.href = url;
       link.setAttribute('download', filename);
       document.body.appendChild(link);
       link.click();
-      console.log('Remove Link.');
       link.remove();
-      console.log('Revoke url.');
       window.URL.revokeObjectURL(url);
     },
   },
