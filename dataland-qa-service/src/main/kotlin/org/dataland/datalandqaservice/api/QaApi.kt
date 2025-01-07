@@ -171,11 +171,11 @@ interface QaApi {
      * @param dataId the dataId
      */
     @Operation(
-        summary = "Get the QA review information of an uploaded dataset for a given id.",
+        summary = "Get the QA review information of an uploaded data point for a given id.",
         description =
-            "Get the QA review information of uploaded dataset for a given id." +
-                "Users can get the review information of their own datasets." +
-                "Admins and reviewer can get the review information for all datasets.",
+            "Get the QA review information of uploaded data point for a given id." +
+                "Users can get the review information of their own data points." +
+                "Admins and reviewer can get the review information for all data points.",
     )
     @ApiResponses(
         value = [
