@@ -35,10 +35,10 @@ object JsonSpecificationUtils {
     private fun hydrateJsonSpecificationRecursive(
         currentSpecificationNode: ObjectNode,
         dataFunction: (String) -> JsonNode?,
-    ): JsonNode? {
+    ): JsonNode? =
         if (isTerminalNode(currentSpecificationNode)) {
             val dataPointId = currentSpecificationNode.get("id").asText()
-            return dataFunction(dataPointId)
+            dataFunction(dataPointId)
         } else {
             val returnNode = JsonNodeFactory.instance.objectNode()
             var allNull = true
@@ -52,9 +52,8 @@ object JsonSpecificationUtils {
                     returnNode.set<JsonNode>(fieldName, hydratedChild)
                 }
             }
-            return if (allNull) null else returnNode
+            if (allNull) null else returnNode
         }
-    }
 
     /**
      * Dehydrates a JSON specification into a map of dataPointIds to data. During dehydration, the data

@@ -94,10 +94,8 @@ class AssembledDatasetQaReportManager(
         }
 
         val dataPointQaReportIds = mutableListOf<String>()
-        print(decomposedQaReport)
         for ((dataPointId, dataPointReport) in decomposedQaReport) {
-            val dataPointDataId = associatedDataPoints[dataPointId]!!
-            print(dataPointReport.content)
+            val dataPointDataId = requireNotNull(associatedDataPoints[dataPointId])
             val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
             val translatedQaReport =
                 QaReportDataPoint<String?>(
@@ -105,7 +103,6 @@ class AssembledDatasetQaReportManager(
                     verdict = parsedQaReport.verdict,
                     correctedData = objectMapper.writeValueAsString(parsedQaReport.correctedData),
                 )
-            print(translatedQaReport)
 
             dataPointQaReportIds.add(
                 dataPointQaReportManager
