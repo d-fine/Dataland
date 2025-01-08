@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
@@ -18,15 +18,19 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonOperations
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
+import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
+import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -185,15 +189,26 @@ class DataPointManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            val framework = uploadedDataSet.dataType.toString()
-            val referencedReportsPath = specificationClient.getFrameworkSpecification(framework).referencedReportJsonPath ?: ""
-            val frameworkTemplate = getFrameworkTemplate(framework)
-
-            val expectedDataPoints = JsonOperations.extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
+            val frameworkSpecification = getFrameworkSpecification(uploadedDataSet.dataType.toString())
+            val frameworkTemplate = JsonOperations.getJsonNodeFromString(frameworkSpecification.schema)
             val companyId = uploadedDataSet.companyId
-            val datasetContent = JsonOperations.getJsonNodeFromString(uploadedDataSet.data)
 
-            valideDataSet(expectedDataPoints, datasetContent, correlationId)
+            val dataContent =
+                JsonSpecificationUtils
+                    .dehydrateJsonSpecification(
+                        frameworkTemplate as ObjectNode,
+                        objectMapper.readTree(uploadedDataSet.data) as ObjectNode,
+                        frameworkSpecification.referencedReportJsonPath,
+                    ).toMutableMap()
+
+            val fileReferenceToPublicationDateMapping = mutableMapOf<String, LocalDate>()
+            if (dataContent.containsKey(JsonSpecificationUtils.REFERENCED_REPORTS_ID)) {
+                fileReferenceToPublicationDateMapping +=
+                    JsonOperations.getFileReferenceToPublicationDateMapping(dataContent[JsonSpecificationUtils.REFERENCED_REPORTS_ID])
+                dataContent.remove(JsonSpecificationUtils.REFERENCED_REPORTS_ID)
+            }
+
+            valideDataSet(dataContent, correlationId)
 
             val datasetId = IdUtils.generateUUID()
             dataManager.storeMetaDataFrom(datasetId, uploadedDataSet, correlationId)
@@ -201,30 +216,26 @@ class DataPointManager
 
             logger.info("Processing data set with id $datasetId for framework ${uploadedDataSet.dataType}")
 
-            val fileReferenceToPublicationDateMapping =
-                JsonOperations.getFileReferenceToPublicationDateMapping(
-                    datasetContent = datasetContent,
-                    jsonPath = referencedReportsPath,
-                )
-
             val createdDataIds = mutableMapOf<String, String>()
-            expectedDataPoints.forEach { (dataPointJsonPath, dataPointIdentifier) ->
-                val dataPointContent = JsonOperations.getValueFromJsonNode(datasetContent, dataPointJsonPath)
-                if (dataPointContent.isEmpty()) return@forEach
-                val contentJsonNode = JsonOperations.objectMapper.readTree(dataPointContent)
+            dataContent.forEach { (dataPointIdentifier, dataPointJsonLeaf) ->
+                val dataPointContent = dataPointJsonLeaf.content
+                if (dataPointContent.isEmpty) return@forEach
 
                 JsonOperations.updatePublicationDateInJsonNode(
-                    contentJsonNode,
+                    dataPointContent,
                     fileReferenceToPublicationDateMapping,
                     "dataSource",
                 )
-                logger.info("Storing value found for $dataPointIdentifier under $dataPointJsonPath (correlation ID: $correlationId)")
+                logger.info(
+                    "Storing value found for $dataPointIdentifier " +
+                        "under ${dataPointJsonLeaf.jsonPath} (correlation ID: $correlationId)",
+                )
 
                 val dataId = IdUtils.generateUUID()
                 createdDataIds[dataPointIdentifier] = dataId
                 storeDataPoint(
                     UploadedDataPoint(
-                        dataPointContent = JsonOperations.objectMapper.writeValueAsString(contentJsonNode),
+                        dataPointContent = JsonOperations.objectMapper.writeValueAsString(dataPointContent),
                         dataPointIdentifier = dataPointIdentifier,
                         companyId = companyId,
                         reportingPeriod = uploadedDataSet.reportingPeriod,
@@ -243,20 +254,19 @@ class DataPointManager
         }
 
         private fun valideDataSet(
-            expectedDataPoints: Map<String, String>,
-            datasetContent: JsonNode,
+            datasetContent: Map<String, JsonSpecificationLeaf>,
             correlationId: String,
         ) {
-            expectedDataPoints.forEach { (dataPointJsonPath, dataPointIdentifier) ->
-                val dataPointContent = JsonOperations.getValueFromJsonNode(datasetContent, dataPointJsonPath)
+            datasetContent.forEach { (dataPointIdentifier, dataPointJsonLeaf) ->
+                val dataPointContent = JsonOperations.objectMapper.writeValueAsString(dataPointJsonLeaf.content)
                 if (dataPointContent.isEmpty()) return@forEach
                 dataPointValidator.validateDataPoint(dataPointIdentifier, dataPointContent, correlationId)
             }
         }
 
-        private fun getFrameworkTemplate(framework: String): JsonNode =
+        private fun getFrameworkSpecification(framework: String): FrameworkSpecificationDto =
             try {
-                JsonOperations.getJsonNodeFromString(specificationClient.getFrameworkSpecification(framework).schema)
+                specificationClient.getFrameworkSpecification(framework)
             } catch (clientException: ClientException) {
                 logger.error("Framework $framework not found: ${clientException.message}.")
                 throw InvalidInputApiException(
@@ -312,7 +322,7 @@ class DataPointManager
             correlationId: String,
         ): String {
             val dataPoints = mutableListOf<String>()
-            val frameworkTemplate = getFrameworkTemplate(framework)
+            val frameworkTemplate = JsonOperations.getJsonNodeFromString(getFrameworkSpecification(framework).schema)
             val referencedReportsPath = specificationClient.getFrameworkSpecification(framework).referencedReportJsonPath ?: ""
             val allDataPointsInTemplate = JsonOperations.extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
             val referencedReports = mutableMapOf<String, CompanyReport>()

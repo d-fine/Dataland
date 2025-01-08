@@ -1,8 +1,7 @@
 package org.dataland.datalandbackend.utils
 
-import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
@@ -16,6 +15,9 @@ import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
+import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -43,42 +45,38 @@ class JsonOperationsTest {
     private val templateWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
     private val templateWithNullReferencedReports = "./json/frameworkTemplate/templateWithNullReferencedReports.json"
     private val referencedReports = "./json/frameworkTemplate/referencedReports.json"
+    private val frameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
 
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
     private val referencedReportsPath = "general.general.referencedReports"
     private val fieldPath = "category.subcategory.field"
 
-    private fun getJsonString(resourceFile: String): String = getJsonNode(resourceFile).toString()
-
-    private fun getJsonNode(resourceFile: String): JsonNode =
-        objectMapper
-            .readTree(
-                this.javaClass.classLoader.getResourceAsStream(resourceFile)
-                    ?: throw IllegalArgumentException("Could not load the resource file"),
-            )
-
-    private inline fun <reified T> getKotlinObject(resourceFile: String): T =
-        this.javaClass.classLoader
-            .getResourceAsStream(resourceFile)
-            ?.let { objectMapper.readValue<T>(it) } ?: throw IllegalArgumentException("Could not load the object")
+    private fun readDataContent(resourceFile: String): Map<String, JsonSpecificationLeaf> {
+        val schema = TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification).schema
+        return JsonSpecificationUtils.dehydrateJsonSpecification(
+            objectMapper.readTree(schema) as ObjectNode,
+            TestResourceFileReader.getJsonNode(resourceFile) as ObjectNode,
+            referencedReportsPath,
+        )
+    }
 
     @Test
     fun `check that a valid input passes the validation`() {
-        assertDoesNotThrow { validateConsistency(getJsonString(currencyDataPoint), validationClass, correlationId) }
+        assertDoesNotThrow { validateConsistency(TestResourceFileReader.getJsonString(currencyDataPoint), validationClass, correlationId) }
     }
 
     @Test
     fun `check that unrecognized properties are rejected`() {
         assertThrows<InvalidInputApiException> {
-            validateConsistency(getJsonString(currencyDataPointWithUnknownProperty), validationClass, correlationId)
+            validateConsistency(TestResourceFileReader.getJsonString(currencyDataPointWithUnknownProperty), validationClass, correlationId)
         }
     }
 
     @Test
     fun `check that invalid inputs are rejected`() {
         assertThrows<InvalidInputApiException> {
-            validateConsistency(getJsonString(invalidCurrencyDataPoint), validationClass, correlationId)
+            validateConsistency(TestResourceFileReader.getJsonString(invalidCurrencyDataPoint), validationClass, correlationId)
         }
     }
 
@@ -90,7 +88,7 @@ class JsonOperationsTest {
 
     @Test
     fun `check that parsing of a framework template yields the expected results`() {
-        val frameworkTemplate = getJsonNode(frameworkTemplate)
+        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
         val expectedResults =
             mapOf(
                 fieldPath to "dataPoint",
@@ -104,9 +102,9 @@ class JsonOperationsTest {
 
     @Test
     fun `check that replacement of a single data point yields the expected result`() {
-        val frameworkTemplate = getJsonNode(frameworkTemplate)
-        val replacementValue = getJsonNode(replacementValue)
-        val expectedTemplate = getJsonNode(frameworkTemplateAfterReplacement)
+        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
+        val replacementValue = TestResourceFileReader.getJsonNode(replacementValue)
+        val expectedTemplate = TestResourceFileReader.getJsonNode(frameworkTemplateAfterReplacement)
 
         replaceFieldInTemplate(frameworkTemplate, fieldPath, "", replacementValue)
         assertEquals(expectedTemplate, frameworkTemplate)
@@ -114,7 +112,7 @@ class JsonOperationsTest {
 
     @Test
     fun `check that extraction of the referenced report works as expected`() {
-        val dataPointContent = getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
         val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
             CompanyReport(
@@ -128,15 +126,15 @@ class JsonOperationsTest {
 
     @Test
     fun `check that a data point without data source yields null`() {
-        val dataPointContent = getJsonString(currencyDataPoint)
+        val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPoint)
         val companyReport = getCompanyReportFromDataSource(dataPointContent)
         assertEquals(null, companyReport)
     }
 
     @Test
     fun `check that the extracted mapping is as expected`() {
-        val inputNode = getJsonNode(frameworkWithReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(inputNode, referencedReportsPath)
+        val dataContent = readDataContent(frameworkWithReferencedReports)
+        val extracted = getFileReferenceToPublicationDateMapping(dataContent[JsonSpecificationUtils.REFERENCED_REPORTS_ID])
         val expected =
             mapOf(
                 "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
@@ -147,8 +145,8 @@ class JsonOperationsTest {
 
     @Test
     fun `check that a framework without referenced reports yields an empty map`() {
-        val inputNode = getJsonNode(frameworkWithoutReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(inputNode, referencedReportsPath)
+        val dataContent = readDataContent(frameworkWithoutReferencedReports)
+        val extracted = getFileReferenceToPublicationDateMapping(dataContent[JsonSpecificationUtils.REFERENCED_REPORTS_ID])
         assertTrue(extracted.isEmpty())
     }
 
@@ -156,7 +154,7 @@ class JsonOperationsTest {
     fun `check that updating a single data point with a publication date works as expected`() {
         val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val dataPointContent = getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
 
         val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
         val contentNode = jacksonObjectMapper().readTree(dataPointContent)
@@ -191,8 +189,8 @@ class JsonOperationsTest {
         val objectMapper = jacksonObjectMapper().findAndRegisterModules()
         objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
 
-        val frameworkContent = getJsonNode(frameworkWithDataSource)
-        val expected = getJsonNode(expectedFrameworkWithDataSource)
+        val frameworkContent = TestResourceFileReader.getJsonNode(frameworkWithDataSource)
+        val expected = TestResourceFileReader.getJsonNode(expectedFrameworkWithDataSource)
 
         val fileReferenceToPublicationDateMapping =
             mapOf(
@@ -211,38 +209,38 @@ class JsonOperationsTest {
 
     @Test
     fun `check that the referenced reports are correctly inserted into the framework template`() {
-        val frameworkTemplate = getJsonNode(frameworkTemplate)
+        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
         val targetPath = "category.subcategory.referencedReports"
-        val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
+        val referencedReports = TestResourceFileReader.getKotlinObject<Map<String, CompanyReport>>(referencedReports)
 
         insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
-        val expected = getJsonNode(templateWithReferencedReports)
+        val expected = TestResourceFileReader.getJsonNode(templateWithReferencedReports)
         assertEquals(frameworkTemplate, expected)
     }
 
     @Test
     fun `check that empty referenced reports are inserted as null into the framework template`() {
-        val frameworkTemplate = getJsonNode(frameworkTemplate)
+        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
         val targetPath = "category.subcategory.referencedReports"
         val referencedReports = emptyMap<String, CompanyReport>()
 
         insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
-        val expected = getJsonNode(templateWithNullReferencedReports)
+        val expected = TestResourceFileReader.getJsonNode(templateWithNullReferencedReports)
         assertEquals(frameworkTemplate, expected)
     }
 
     @Test
     fun `check that inserting a path that does not exist throws an exception `() {
-        val frameworkTemplate = getJsonNode(frameworkTemplate)
+        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
         val targetPath = "does.not.exist"
-        val referencedReports = getKotlinObject<Map<String, CompanyReport>>(referencedReports)
+        val referencedReports = TestResourceFileReader.getKotlinObject<Map<String, CompanyReport>>(referencedReports)
 
         assertThrows<IllegalArgumentException> { insertReferencedReports(frameworkTemplate, targetPath, referencedReports) }
     }
 
     @Test
     fun `check that the extraction of the values from a json node are as expected`() {
-        val jsonNode = getJsonNode(frameworkTemplate)
+        val jsonNode = TestResourceFileReader.getJsonNode(frameworkTemplate)
         val expectedValues =
             mapOf(
                 "$fieldPath.id" to "dataPoint",

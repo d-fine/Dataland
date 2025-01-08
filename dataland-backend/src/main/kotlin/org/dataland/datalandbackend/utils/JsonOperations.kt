@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.slf4j.LoggerFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -165,36 +167,20 @@ object JsonOperations {
 
     /**
      * Extracts the mapping of file references to publication dates from a data set.
-     * @param datasetContent The content of the data set as JSON node
-     * @param jsonPath The JSON path to the referenced reports
+     * @param referencedReportsLeaf The entry of the referenced reports as a JsonSpecificationLeaf
      * @return The mapping of file references to publication dates
      */
-    fun getFileReferenceToPublicationDateMapping(
-        datasetContent: JsonNode,
-        jsonPath: String,
-    ): Map<String, LocalDate> {
+    fun getFileReferenceToPublicationDateMapping(referencedReportsLeaf: JsonSpecificationLeaf?): Map<String, LocalDate> {
         val result = mutableMapOf<String, LocalDate>()
-        val referencedReportsNode: JsonNode
-
-        try {
-            referencedReportsNode = navigateToNode(datasetContent, jsonPath)
-        } catch (ex: IllegalArgumentException) {
-            logger.warn("Could not extract the fileReference to publicationDate mapping: ${ex.message}")
+        if (referencedReportsLeaf == null) {
             return result
         }
-
-        val fields = referencedReportsNode.fields()
-        while (fields.hasNext()) {
-            val referencedReport = fields.next().value
-            if (referencedReport is ObjectNode) {
-                val publicationDate = referencedReport.get(PUBLICATION_DATE_FIELD)
-                val fileReference = referencedReport.get(FILE_REFERENCE_FIELD)
-                if (publicationDate != null && publicationDate.isTextual) {
-                    result[fileReference.asText()] = LocalDate.parse(publicationDate.asText())
-                }
+        val referencedReports = objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
+        referencedReports.values.forEach { companyReport ->
+            if (companyReport.publicationDate != null) {
+                result[companyReport.fileReference] = companyReport.publicationDate
             }
         }
-
         return result
     }
 
