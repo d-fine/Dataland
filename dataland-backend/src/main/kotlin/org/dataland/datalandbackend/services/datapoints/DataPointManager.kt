@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services.datapoints
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
@@ -321,45 +322,28 @@ class DataPointManager
             framework: String,
             correlationId: String,
         ): String {
-            val dataPoints = mutableListOf<String>()
-            val frameworkTemplate = JsonOperations.getJsonNodeFromString(getFrameworkSpecification(framework).schema)
-            val referencedReportsPath = specificationClient.getFrameworkSpecification(framework).referencedReportJsonPath ?: ""
-            val allDataPointsInTemplate = JsonOperations.extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
-            val referencedReports = mutableMapOf<String, CompanyReport>()
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = JsonOperations.getJsonNodeFromString(frameworkSpecification.schema)
+            val referencedReportsPath = frameworkSpecification.referencedReportJsonPath
 
-            logger.info("Filling template with stored data (correlation ID: $correlationId).")
+            val referencedReports = mutableMapOf<String, CompanyReport>()
+            val allDataPoints = mutableMapOf<String, JsonNode>()
+
             dataIds.forEach { dataId ->
-                val currentDataPoint = metaDataManager.getDataPointMetaInformationByDataId(dataId).dataPointIdentifier
-                require(allDataPointsInTemplate.containsValue(currentDataPoint)) {
-                    "Data point $currentDataPoint is not part of the framework template for $framework " +
-                        "(correlation ID $correlationId)."
-                }
-                dataPoints.add(currentDataPoint)
-                val dataPointContent = retrieveDataPoint(dataId, correlationId).dataPointContent
-                val replacementValue = JsonOperations.getJsonNodeFromString(dataPointContent)
-                val companyReport = JsonOperations.getCompanyReportFromDataSource(dataPointContent)
+                val dataPoint = retrieveDataPoint(dataId, correlationId)
+                allDataPoints[dataPoint.dataPointIdentifier] = JsonOperations.getJsonNodeFromString(dataPoint.dataPointContent)
+                val companyReport = JsonOperations.getCompanyReportFromDataSource(dataPoint.dataPointContent)
                 if (companyReport != null) {
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }
-
-                val jsonPaths = allDataPointsInTemplate.filterValues { it == currentDataPoint }.keys
-                jsonPaths.forEach {
-                    JsonOperations.replaceFieldInTemplate(frameworkTemplate, it, "", replacementValue)
-                }
             }
 
-            if (referencedReportsPath.isNotEmpty()) {
+            val datasetAsJsonNode = JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) { allDataPoints[it] }
+            if (referencedReportsPath != null && datasetAsJsonNode != null) {
                 logger.info("Inserting referenced reports (correlation ID $correlationId).")
-                JsonOperations.insertReferencedReports(frameworkTemplate, referencedReportsPath, referencedReports)
+                JsonOperations.insertReferencedReports(datasetAsJsonNode, referencedReportsPath, referencedReports)
             }
 
-            logger.info("Removing fields from the template where no data was provided (correlation ID $correlationId).")
-            allDataPointsInTemplate.forEach {
-                if (!dataPoints.contains(it.value)) {
-                    JsonOperations.replaceFieldInTemplate(frameworkTemplate, it.key, "", JsonOperations.getJsonNodeFromString("null"))
-                }
-            }
-            logger.info("Completed framework assembly from data points (correlation ID $correlationId)")
-            return frameworkTemplate.toString()
+            return datasetAsJsonNode.toString()
         }
     }

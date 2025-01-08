@@ -2,21 +2,16 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
-import org.slf4j.LoggerFactory
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 object JsonOperations {
-    private val logger = LoggerFactory.getLogger(javaClass)
     private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
     private const val PUBLICATION_DATE_FIELD = "publicationDate"
     private const val FILE_REFERENCE_FIELD = "fileReference"
@@ -30,121 +25,6 @@ object JsonOperations {
      * @return The JSON node
      */
     fun getJsonNodeFromString(json: String): JsonNode = objectMapper.readTree(json)
-
-    /**
-     * Gets the string value of the JSON node identified by the (possibly) nested JSON path.
-     * @param jsonNode The JSON node
-     * @param jsonPath The JSON path identifying the value
-     * @return The string representation of the value or an empty string if the value is not found
-     */
-    fun getValueFromJsonNode(
-        jsonNode: JsonNode,
-        jsonPath: String,
-    ): String {
-        var currentNode = jsonNode
-        jsonPath.split(".").forEach { path ->
-            currentNode = currentNode.get(path) ?: return ""
-        }
-        return if (currentNode.isNull) {
-            ""
-        } else if (currentNode.isTextual) {
-            currentNode.textValue()
-        } else {
-            currentNode.toString()
-        }
-    }
-
-    /**
-     * Extracts all data points referenced in a framework template.
-     * @param jsonNode A JSON node (the framework template as JSON node in the initial call)
-     * @param fullJsonPath The full JSON path to the current node
-     * @return A map of the data points
-     */
-    fun extractDataPointsFromFrameworkTemplate(
-        jsonNode: JsonNode,
-        fullJsonPath: String,
-    ): Map<String, String> {
-        val results = mutableMapOf<String, String>()
-
-        if (jsonNode.has("id") && jsonNode.has("ref")) {
-            results[fullJsonPath] = jsonNode.get("id").asText()
-        } else {
-            val fields = jsonNode.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                val extendedJsonPath = if (fullJsonPath.isEmpty()) jsonField.key else "$fullJsonPath.${jsonField.key}"
-                results += extractDataPointsFromFrameworkTemplate(jsonField.value, extendedJsonPath)
-            }
-        }
-
-        return results
-    }
-
-    /**
-     * Replaces a field in a framework template with a new value.
-     * @param frameworkTemplate The JSON node representation of a framework template
-     * @param fullFieldName The full name of the field to replace
-     * @param currentJsonPath The current JSON path
-     * @param replacementValue The new value
-     */
-    fun replaceFieldInTemplate(
-        frameworkTemplate: JsonNode,
-        fullFieldName: String,
-        currentJsonPath: String,
-        replacementValue: JsonNode,
-    ) {
-        val simpleFieldName = fullFieldName.split(".").last()
-        val expectedFullPath = "$currentJsonPath.$simpleFieldName"
-
-        if (frameworkTemplate.has(simpleFieldName) && expectedFullPath == fullFieldName) {
-            (frameworkTemplate as ObjectNode).set<JsonNode?>(simpleFieldName, replacementValue)
-        } else {
-            val fields = frameworkTemplate.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                val jsonPath = if (currentJsonPath.isEmpty()) jsonField.key else "$currentJsonPath.${jsonField.key}"
-                replaceFieldInTemplate(jsonField.value, fullFieldName, jsonPath, replacementValue)
-            }
-        }
-    }
-
-    /**
-     * Validates the consistency of a JSON string with a given class.
-     * @param jsonData The JSON string to validate
-     * @param className The name of the class to validate against
-     * @param correlationId The correlation ID of the operation
-     */
-    fun validateConsistency(
-        jsonData: String,
-        className: String,
-        correlationId: String,
-    ) {
-        val classForValidation = Class.forName(className).kotlin.java
-        val validator = Validation.buildDefaultValidatorFactory().validator
-        try {
-            objectMapper.readValue(jsonData, classForValidation)
-        } catch (ex: UnrecognizedPropertyException) {
-            logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): ${ex.message}")
-            throw InvalidInputApiException(
-                summary = "Validation failed for data point.",
-                message = "Validation failed for data point due to ${ex.propertyName}. Known properties are ${ex.knownPropertyIds}.",
-                cause = ex,
-            )
-        }
-        val dataPointObject = objectMapper.readValue(jsonData, classForValidation)
-        val violations = validator.validate(dataPointObject)
-        if (violations.isNotEmpty()) {
-            logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): $violations")
-            var errorMessage = "Validation failed for data point. "
-            violations.forEach {
-                errorMessage += (it.message)
-            }
-            throw InvalidInputApiException(
-                summary = "Validation failed for data point.",
-                message = errorMessage,
-            )
-        }
-    }
 
     /**
      * Extracts the company report from an extended data source.
@@ -171,17 +51,17 @@ object JsonOperations {
      * @return The mapping of file references to publication dates
      */
     fun getFileReferenceToPublicationDateMapping(referencedReportsLeaf: JsonSpecificationLeaf?): Map<String, LocalDate> {
-        val result = mutableMapOf<String, LocalDate>()
+        val fileToPublicationDateMapping = mutableMapOf<String, LocalDate>()
         if (referencedReportsLeaf == null) {
-            return result
+            return fileToPublicationDateMapping
         }
         val referencedReports = objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
         referencedReports.values.forEach { companyReport ->
             if (companyReport.publicationDate != null) {
-                result[companyReport.fileReference] = companyReport.publicationDate
+                fileToPublicationDateMapping[companyReport.fileReference] = companyReport.publicationDate
             }
         }
-        return result
+        return fileToPublicationDateMapping
     }
 
     /**
@@ -190,7 +70,7 @@ object JsonOperations {
      * @param jsonPath The JSON path to the target node
      * @return The target JSON node
      */
-    fun navigateToNode(
+    private fun navigateToNode(
         jsonNode: JsonNode,
         jsonPath: String,
     ): JsonNode {

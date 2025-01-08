@@ -4,38 +4,25 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
-import org.dataland.datalandbackend.utils.JsonOperations.extractDataPointsFromFrameworkTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
 import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
-import org.dataland.datalandbackend.utils.JsonOperations.getValueFromJsonNode
 import org.dataland.datalandbackend.utils.JsonOperations.insertReferencedReports
 import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
-import org.dataland.datalandbackend.utils.JsonOperations.replaceFieldInTemplate
 import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
-import org.dataland.datalandbackend.utils.JsonOperations.validateConsistency
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 
 class JsonOperationsTest {
-    private val correlationId = "correlationId"
-    private val validationClass = "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint"
-
     private val currencyDataPoint = "./json/validation/currencyDataPoint.json"
     private val currencyDataPointWithExtendedDocumentReference =
         "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
-    private val invalidCurrencyDataPoint = "./json/validation/invalidCurrencyDataPoint.json"
-    private val currencyDataPointWithUnknownProperty = "./json/validation/currencyDataPointWithUnknownProperty.json"
     private val frameworkTemplate = "./json/frameworkTemplate/template.json"
-    private val frameworkTemplateAfterReplacement = "./json/frameworkTemplate/templateAfterReplacement.json"
-    private val replacementValue = "./json/frameworkTemplate/replacementValue.json"
     private val frameworkWithReferencedReports = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val frameworkWithoutReferencedReports = "./json/frameworkTemplate/frameworkWithoutReferencedReports.json"
     private val frameworkWithDataSource = "./json/frameworkTemplate/frameworkWithDataSources.json"
@@ -48,7 +35,6 @@ class JsonOperationsTest {
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
     private val referencedReportsPath = "general.general.referencedReports"
-    private val fieldPath = "category.subcategory.field"
 
     private fun readDataContent(resourceFile: String): Map<String, JsonSpecificationLeaf> {
         val schema = TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification).schema
@@ -57,55 +43,6 @@ class JsonOperationsTest {
             TestResourceFileReader.getJsonNode(resourceFile) as ObjectNode,
             referencedReportsPath,
         )
-    }
-
-    @Test
-    fun `check that a valid input passes the validation`() {
-        assertDoesNotThrow { validateConsistency(TestResourceFileReader.getJsonString(currencyDataPoint), validationClass, correlationId) }
-    }
-
-    @Test
-    fun `check that unrecognized properties are rejected`() {
-        assertThrows<InvalidInputApiException> {
-            validateConsistency(TestResourceFileReader.getJsonString(currencyDataPointWithUnknownProperty), validationClass, correlationId)
-        }
-    }
-
-    @Test
-    fun `check that invalid inputs are rejected`() {
-        assertThrows<InvalidInputApiException> {
-            validateConsistency(TestResourceFileReader.getJsonString(invalidCurrencyDataPoint), validationClass, correlationId)
-        }
-    }
-
-    @Test
-    fun `check that invalid classes are rejected`() {
-        val className = "org.dataland.datalandbackend.model.datapoints.standard.DummyDataPoint"
-        assertThrows<ClassNotFoundException> { validateConsistency("{}", className, correlationId) }
-    }
-
-    @Test
-    fun `check that parsing of a framework template yields the expected results`() {
-        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
-        val expectedResults =
-            mapOf(
-                fieldPath to "dataPoint",
-                "anotherCategory.field2" to "anotherDataPoint",
-                "anotherCategory.field3" to "yetAnotherDataPoint",
-            )
-
-        val results = extractDataPointsFromFrameworkTemplate(frameworkTemplate, "")
-        assertEquals(expectedResults, results)
-    }
-
-    @Test
-    fun `check that replacement of a single data point yields the expected result`() {
-        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
-        val replacementValue = TestResourceFileReader.getJsonNode(replacementValue)
-        val expectedTemplate = TestResourceFileReader.getJsonNode(frameworkTemplateAfterReplacement)
-
-        replaceFieldInTemplate(frameworkTemplate, fieldPath, "", replacementValue)
-        assertEquals(expectedTemplate, frameworkTemplate)
     }
 
     @Test
@@ -229,23 +166,5 @@ class JsonOperationsTest {
         val referencedReports = TestResourceFileReader.getKotlinObject<Map<String, CompanyReport>>(referencedReports)
 
         assertThrows<IllegalArgumentException> { insertReferencedReports(frameworkTemplate, targetPath, referencedReports) }
-    }
-
-    @Test
-    fun `check that the extraction of the values from a json node are as expected`() {
-        val jsonNode = TestResourceFileReader.getJsonNode(frameworkTemplate)
-        val expectedValues =
-            mapOf(
-                "$fieldPath.id" to "dataPoint",
-                "anotherCategory.field2.ref" to "reference",
-                "dummy" to "",
-                "does.not.exist" to "",
-                fieldPath to "{\"id\":\"dataPoint\",\"ref\":\"reference\"}",
-            )
-
-        expectedValues.forEach { (key, value) ->
-            val extractedValue = getValueFromJsonNode(jsonNode, key)
-            assertEquals(value, extractedValue)
-        }
     }
 }

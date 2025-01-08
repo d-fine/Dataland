@@ -248,6 +248,6 @@ class DataPointManagerTest {
         dataPointContent.forEach {
             assert(assembledDataSet.contains(it))
         }
-        assert(!assembledDataSet.contains("\"referencedReports\":null}"))
+        assert(assembledDataSet.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 }
