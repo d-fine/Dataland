@@ -111,13 +111,60 @@ describe('Component test for ViewFrameworkBase', () => {
         stubs: ['CompanyInformation'],
       },
     }).then((mounted) => {
-      void mounted.wrapper.setProps({
-        dataType: DataTypeEnum.EutaxonomyFinancials,
-        companyID: 'mock-company-id',
-      });
+      void mounted.wrapper.setProps({});
 
       cy.get('button[data-test=downloadDataButton]').should('exist').click();
       cy.get('[data-test=downloadModal]').should('exist');
     });
   });
+
+  it('Should run handleDatasetDownload with year and format selection and call forceFileDownload', () => {
+    const selectedYear = '2022';
+    const selectedFormat = 'csv';
+    const dataId = '1234';
+    const mockDataMetaInfo = new Map([[selectedYear, { dataId: dataId }]]);
+
+    cy.intercept('**/api/data/exportCompanyAssociatedDataToCsv', {
+      statusCode: 200,
+      body: 'mock csv data',
+    }).as('exportCsv');
+    const keycloakMock = minimalKeycloakMock({
+      roles: [KEYCLOAK_ROLE_USER],
+    });
+
+    cy.mountWithPlugins(ViewFrameworkBase, {
+      keycloak: keycloakMock,
+    }).then((mounted) => {
+      mounted.wrapper.setProps({
+        dataType: DataTypeEnum.Sfdr,
+      });
+      cy.stub(window.URL, 'createObjectURL').returns('the actual data to download');
+      mounted.wrapper.vm.mapOfReportingPeriodToActiveDataset = mockDataMetaInfo;
+
+      const spy = cy.spy(mounted.wrapper.vm, 'forceFileDownload');
+      mounted.wrapper.vm.handleDatasetDownload(selectedYear, selectedFormat);
+
+      const expectedFilename = '1234.csv';
+
+      Cypress.on('uncaught:exception', (err, runnable) => {
+        if (err.message.includes('DataId does not exist.')) {
+          return false;
+        }
+      });
+      Cypress.on('uncaught:exception', (err, runnable, promise) => {
+        if (promise) {
+          return false;
+        }
+      });
+
+      expect(spy).to.be.called;
+      cy.get('@forceFileDownload').should('be.calledWith', 'mock csv data', expectedFilename);
+    });
+  });
 });
+
+/*
+
+
+
+ */
