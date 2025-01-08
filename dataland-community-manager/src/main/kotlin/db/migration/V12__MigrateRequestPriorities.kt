@@ -4,7 +4,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script migrates open requests to the following priorities:
+ * This migration script migrates requests to the following priorities:
  * Normal -> Low
  * Very High -> High
  * all other request priorites remain unchanged
