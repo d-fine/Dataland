@@ -67,7 +67,7 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val workplaceAccidentPreventionPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()
-    val rateOfAccidentsInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val rateOfAccidents: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val workdaysLostInDays: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()

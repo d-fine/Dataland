@@ -1464,12 +1464,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent?.value,
-                  'Percent'
-                ),
+                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.rateOfAccidents?.value, ''),
                 'Rate Of Accidents',
-                dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent
+                dataset.social?.socialAndEmployeeMatters?.rateOfAccidents
               ),
           },
           {

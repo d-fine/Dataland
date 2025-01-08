@@ -1081,16 +1081,15 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'rateOfAccidentsInPercent',
+            name: 'rateOfAccidents',
             label: 'Rate Of Accidents',
             description:
               'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000',
 
-            unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
-            validation: 'between:0,100',
+            validation: 'min:0',
           },
           {
             name: 'workdaysLostInDays',

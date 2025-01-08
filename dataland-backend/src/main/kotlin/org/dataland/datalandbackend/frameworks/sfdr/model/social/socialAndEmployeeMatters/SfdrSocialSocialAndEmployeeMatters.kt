@@ -81,9 +81,8 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val workplaceAccidentPreventionPolicy: ExtendedDataPoint<YesNo?>? = null,
     @field:MinimumValue(minimumValue = 0)
-    @field:MaximumValue(maximumValue = 100)
     @field:Valid()
-    val rateOfAccidentsInPercent: ExtendedDataPoint<BigDecimal?>? = null,
+    val rateOfAccidents: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
     val workdaysLostInDays: ExtendedDataPoint<BigDecimal?>? = null,

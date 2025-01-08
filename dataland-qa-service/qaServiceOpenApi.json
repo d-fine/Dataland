@@ -3396,7 +3396,7 @@
           "workplaceAccidentPreventionPolicy": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "rateOfAccidentsInPercent": {
+          "rateOfAccidents": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "workdaysLostInDays": {

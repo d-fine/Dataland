@@ -179,7 +179,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         ),
         controversialWeaponsExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         workplaceAccidentPreventionPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
-        rateOfAccidentsInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0, 100)),
+        rateOfAccidents: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         workdaysLostInDays: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         supplierCodeOfConduct: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         grievanceHandlingMechanism: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),

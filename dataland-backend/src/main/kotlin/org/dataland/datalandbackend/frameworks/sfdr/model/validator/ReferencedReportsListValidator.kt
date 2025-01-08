@@ -143,7 +143,7 @@ class ReferencedReportsListConstraintValidator :
             dataset.social?.socialAndEmployeeMatters?.boardGenderDiversityBoardOfDirectorsInPercent?.dataSource?.fileReference,
             dataset.social?.socialAndEmployeeMatters?.controversialWeaponsExposure?.dataSource?.fileReference,
             dataset.social?.socialAndEmployeeMatters?.workplaceAccidentPreventionPolicy?.dataSource?.fileReference,
-            dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent?.dataSource?.fileReference,
+            dataset.social?.socialAndEmployeeMatters?.rateOfAccidents?.dataSource?.fileReference,
             dataset.social?.socialAndEmployeeMatters?.workdaysLostInDays?.dataSource?.fileReference,
             dataset.social?.socialAndEmployeeMatters?.supplierCodeOfConduct?.dataSource?.fileReference,
             dataset.social?.socialAndEmployeeMatters?.grievanceHandlingMechanism?.dataSource?.fileReference,
