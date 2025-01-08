@@ -18,23 +18,58 @@
               <div class="p-column-header-content">
                 <span class="p-column-title" style="display: flex; align-items: center">
                   {{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
-                  <i
-                    class="material-icons info-icon pl-2"
-                    aria-hidden="true"
-                    :title="singleDataAndMetaInfo.metaInfo.reportingPeriod"
-                    data-pd-tooltip="true"
-                    v-tooltip.top="{
-                      value: reportingYearToolTip(singleDataAndMetaInfo),
-                      class: 'd-tooltip',
-                    }"
-                    >info</i
-                  >
                 </span>
               </div>
             </th>
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
+        <tr>
+          <td class="headers-bg pl-4 vertical-align-top header-column-width">
+            <span class="table-left-label">Publication date of the dataset on Dataland</span>
+            <em
+                class="material-icons info-icon"
+                aria-hidden="true"
+                v-tooltip.top="{
+              value: 'Timestamp of data upload'
+            }"
+            >info</em
+            >
+          </td>
+          <td
+              v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo"
+              :key="idx"
+              class="vertical-align-top">
+             <span class="p-column-title" style="display: flex; align-items: center">
+                  {{convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime)}}
+             </span>
+          </td>
+        </tr>
+        <tr
+        >
+          <td
+              class="headers-bg pl-4 vertical-align-top header-column-width"
+              data-row-header="true"
+          >
+            <span class="table-left-label">Publication date of most recent report</span>
+            <em
+                class="material-icons info-icon"
+                aria-hidden="true"
+                v-tooltip.top="{
+              value: 'Date when the latest version of the report was published',
+            }"
+            >info</em
+            >
+          </td>
+          <td
+              v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo"
+              :key="idx"
+              class="vertical-align-top">
+            <span class="p-column-title" style="display: flex; align-items: center">
+                  {{latestDate(singleDataAndMetaInfo)}}
+             </span>
+          </td>
+        </tr>
           <MultiLayerDataTableBody
             :dataAndMetaInfo="dataAndMetaInfo"
             :inReviewMode="inReviewMode"
@@ -56,11 +91,11 @@
 </style>
 
 <script setup lang="ts" generic="T">
-import { type MLDTConfig } from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
+import {type MLDTConfig} from '@/components/resources/dataTable/MultiLayerDataTableConfiguration';
 import MultiLayerDataTableBody from '@/components/resources/dataTable/MultiLayerDataTableBody.vue';
-import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import {type DataAndMetaInformation} from '@/api-models/DataAndMetaInformation';
 import Tooltip from 'primevue/tooltip';
-import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils';
+import {convertUnixTimeInMsToDateString, dateStringFormatter} from '@/utils/DataFormatUtils';
 import {
   type CompanyReport,
   DataTypeEnum,
@@ -72,11 +107,11 @@ import {
 const vTooltip = Tooltip;
 
 /**
- * Generates the toolTip for reportingYear given DataAndMetaInformation.
+ * Extracts the publication date of the most recent report given DataAndMetaInformation.
  * @param singleDataAndMetaInfo the DataAndMetaInformation of a framework.
- * @returns string the toolTip.
+ * @returns publication date as string.
  */
-function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
+function latestDate(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
   let latestDate = null;
   let referencedReports;
   switch (singleDataAndMetaInfo.metaInfo.dataType) {
@@ -102,13 +137,9 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
       }
     }
   }
-  const mostRecentSourceToolTip = latestDate
-    ? `Publication date of most recent report:\n ${dateStringFormatter(latestDate)}\n\n`
-    : '';
-  const datasetPublishedToolTip =
-    'Publication date of the dataset on Dataland:\n ' +
-    convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
-  return mostRecentSourceToolTip + datasetPublishedToolTip;
+  return latestDate
+      ? dateStringFormatter(latestDate)
+      : '';
 }
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const props = defineProps<{
