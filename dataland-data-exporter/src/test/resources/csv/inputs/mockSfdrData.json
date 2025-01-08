@@ -1208,7 +1208,7 @@
         "comment": "navigate virtual feed",
         "quality": "Estimated"
       },
-      "rateOfAccidentsInPercent": {
+      "rateOfAccidents": {
         "value": 68.14,
         "dataSource": {
           "page": 196,
