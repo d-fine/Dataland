@@ -686,7 +686,8 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-      - /var/lib/docker/volumes/dataland_loki_data/_data:/var/lib/loki/data
+      - loki_data:/var/lib/loki/data
+#      - /var/lib/docker/volumes/dataland_loki_data/_data:/var/lib/loki/data
       - ./dataland-loki/config/loki-config.yaml:/config/loki-config.yaml
     command: -config.file=/config/loki-config.yaml
     networks:
