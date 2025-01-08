@@ -20,6 +20,7 @@ on:
         description: 'Ignore errors due to external factors on startup of the external storage'
         required: false
         type: boolean
+        default: true
       whichEnvironment:
         description: "Choose environment"
         required: true
