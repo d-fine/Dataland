@@ -63,7 +63,7 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "loki_data" "$target_server_url" "$location"
 fi
 
-docker volume rm dataland_loki_data
+#docker volume rm dataland_loki_data
 docker volume create --driver local --opt type=ext4 --opt device=ext4 --opt o=size=100k,uid=1000 dataland_loki_data
 
 #echo "Create limited volume in btrfs filesystem for Loki data (all logs)"
@@ -114,8 +114,8 @@ ssh ubuntu@"$target_server_url" "echo "${EURODAT_CLIENT_KEYSTORE_INT_BASE64}" | 
 scp ./dataland-eurodat-client/write_secret_files.sh ubuntu@"$target_server_url":"$location"/dataland-eurodat-client
 ssh ubuntu@"$target_server_url" "$location/dataland-eurodat-client/write_secret_files.sh"
 
-#ssh ubuntu@"$target_server_url" "cd $location; sudo docker volume create --driver local --opt type=ext4 --opt device=/dev/vda1 --opt o=size=10k,uid=1000 test_grafana_data"
-#ssh ubuntu@"$target_server_url" "cd $location; sudo docker volume create --driver local --opt type=ext4 --opt device=/dev/vda1 --opt o=size=10k,uid=1000 dataland_loki_data"
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker volume create --driver local --opt type=ext4 --opt device=/dev/vda1 --opt o=size=10k,uid=1000 test_grafana_data"
+ssh ubuntu@"$target_server_url" "cd $location; sudo docker volume create --driver local --opt type=ext4 --opt device=/dev/vda1 --opt o=size=10k,uid=1000 dataland_loki_data"
 
 
 echo "Starting docker compose stack."
