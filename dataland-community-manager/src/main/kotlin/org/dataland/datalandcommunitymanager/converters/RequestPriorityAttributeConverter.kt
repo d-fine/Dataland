@@ -14,6 +14,6 @@ class RequestPriorityAttributeConverter : AttributeConverter<RequestPriority, St
 
     override fun convertToEntityAttribute(string: String?): RequestPriority? =
         string?.let {
-            RequestPriority.entries.find { it.name == string } ?: throw IllegalArgumentException("Unknown dataType $string")
+            RequestPriority.entries.find { it.name == string } ?: throw IllegalArgumentException("Unknown requestPriority $string")
         }
 }
