@@ -15,8 +15,8 @@ class V12__MigrateRequestPriorities : BaseJavaMigration() {
         context!!.connection.createStatement().execute(
             "UPDATE data_requests " +
                 "SET request_priority = CASE " +
-                "WHEN request_priority = 'Normal' AND request_status = 'Open' THEN 'Low' " +
-                "WHEN request_priority = 'Very High' AND request_status = 'Open' THEN 'High' " +
+                "WHEN request_priority = 'Normal' THEN 'Low' " +
+                "WHEN request_priority = 'Very High' THEN 'High' " +
                 "ELSE request_priority END",
         )
     }

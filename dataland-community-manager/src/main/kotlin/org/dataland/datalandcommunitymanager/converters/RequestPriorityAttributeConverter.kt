@@ -10,7 +10,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
  */
 @Converter(autoApply = true)
 class RequestPriorityAttributeConverter : AttributeConverter<RequestPriority, String> {
-    override fun convertToDatabaseColumn(dataType: RequestPriority?): String? = dataType?.name
+    override fun convertToDatabaseColumn(requestPriority: RequestPriority?): String? = requestPriority?.name
 
     override fun convertToEntityAttribute(string: String?): RequestPriority? =
         string?.let {
