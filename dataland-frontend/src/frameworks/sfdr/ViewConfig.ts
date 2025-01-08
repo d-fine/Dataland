@@ -603,7 +603,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Crude Oil',
-            explanation: 'Energy consumption from crude oil (non-renewable energy source)',
+            explanation:
+              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1474,7 +1475,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Workdays Lost',
-            explanation: 'Number of workdays lost to injuries, accidents, fatalities or illness',
+            explanation: 'Number of workdays lost to injuries, accidents, fatalities or illness in total',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(

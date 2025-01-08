@@ -454,7 +454,8 @@ export const sfdrDataModel = [
           {
             name: 'nonRenewableEnergyConsumptionCrudeOilInGWh',
             label: 'Non-Renewable Energy Consumption Crude Oil',
-            description: 'Energy consumption from crude oil (non-renewable energy source)',
+            description:
+              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source)',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -1094,7 +1095,7 @@ export const sfdrDataModel = [
           {
             name: 'workdaysLostInDays',
             label: 'Workdays Lost',
-            description: 'Number of workdays lost to injuries, accidents, fatalities or illness',
+            description: 'Number of workdays lost to injuries, accidents, fatalities or illness in total',
 
             unit: 'Days',
             component: 'BigDecimalExtendedDataPointFormField',
