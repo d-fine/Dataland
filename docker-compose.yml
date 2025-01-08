@@ -671,8 +671,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - grafana_data:/var/lib/grafana/data
-      - ./dataland-grafana/config:/config
+      - test_grafana_data/_data:/var/lib/grafana/data
     networks:
       - grafana
       - loki
@@ -686,8 +685,8 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-      - /var/lib/docker/volumes/dataland_loki_data/_data:/loki/data
-      - ./dataland-loki/config:/config
+      - /var/lib/docker/volumes/dataland_loki_data/_data:/var/lib/loki/data
+      - ./dataland-loki/config/loki-config.yaml:/config/loki-config.yaml
     command: -config.file=/config/loki-config.yaml
     networks:
       - loki
@@ -701,7 +700,7 @@ services:
     environment:
       INTERNAL_ALLOY_URL: ${INTERNAL_ALLOY_URL:-http://alloy:8080}
     volumes:
-      - ./dataland-alloy/config:/config
+      - ./dataland-alloy/config/alloy-config.alloy:/config/alloy-config.alloy
       - /var/run/docker.sock:/var/run/docker.sock
       - alloy_data:/var/lib/alloy/data
     command: run --server.http.listen-addr=alloy:8080 --storage.path=/var/lib/alloy/data /config/alloy-config.alloy
@@ -751,9 +750,11 @@ volumes:
     driver: local
   email_service_data:
     driver: local
-  grafana_data:
-    driver: local
-  dataland_loki_data: {}
+  test_grafana_data:
+#    driver: local
+#  pgadmin_config:
+#    driver: local
+  dataland_loki_data:
 #    driver: local
 #    driver_opts:
 #      type: none
