@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
@@ -23,7 +22,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 class JsonOperationsTest {
@@ -113,12 +111,12 @@ class JsonOperationsTest {
     @Test
     fun `check that extraction of the referenced report works as expected`() {
         val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
-        val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
+        val dataSource = objectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
             CompanyReport(
                 fileReference = dataSource?.fileReference ?: "dummy",
                 fileName = dataSource?.fileName,
-                publicationDate = null,
+                publicationDate = LocalDate.parse(testDate),
             )
         val companyReport = getCompanyReportFromDataSource(dataPointContent)
         assertEquals(expectedCompanyReport, companyReport)
@@ -152,12 +150,10 @@ class JsonOperationsTest {
 
     @Test
     fun `check that updating a single data point with a publication date works as expected`() {
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
-        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
         val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
 
-        val dataSource = jacksonObjectMapper().readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
-        val contentNode = jacksonObjectMapper().readTree(dataPointContent)
+        val dataSource = objectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
+        val contentNode = objectMapper.readTree(dataPointContent)
 
         requireNotNull(dataSource) { "Data point does not contain a proper data source" }
 
@@ -186,9 +182,6 @@ class JsonOperationsTest {
 
     @Test
     fun `check that updating a framework with a publication date works as expected`() {
-        val objectMapper = jacksonObjectMapper().findAndRegisterModules()
-        objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
         val frameworkContent = TestResourceFileReader.getJsonNode(frameworkWithDataSource)
         val expected = TestResourceFileReader.getJsonNode(expectedFrameworkWithDataSource)
 
