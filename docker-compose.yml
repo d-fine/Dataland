@@ -758,14 +758,15 @@ volumes:
 #    driver: local
 #  pgadmin_config:
 #    driver: local
+#  loki_data:
+#    driver: local
+#  dataland_loki_data:
   loki_data:
     driver: local
-  dataland_loki_data:
-#    driver: local
 #    driver_opts:
 #      type: none
 #      o: bind
-#      size: 100M
+#      size: 10k
 ##      device: ${DATALAND_HOST_DATA_DIR}dataland-loki-data
 #      device: \\wsl$\Ubuntu\mnt\restricted_folder
   alloy_data:
