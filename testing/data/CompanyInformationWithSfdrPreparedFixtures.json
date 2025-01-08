@@ -1333,8 +1333,8 @@
 						"comment": "hack neural sensor",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 31.82,
+					"rateOfAccidents": {
+						"value": 31826.42,
 						"dataSource": {
 							"page": "406-916",
 							"fileName": "AnnualReport",
@@ -2740,8 +2740,8 @@
 						"comment": "hack neural feed",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 15.31,
+					"rateOfAccidents": {
+						"value": 15311.26,
 						"dataSource": {
 							"page": "1089",
 							"fileName": "ESEFReport",
@@ -4284,8 +4284,8 @@
 						"comment": "compress open-source bus",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 38.68,
+					"rateOfAccidents": {
+						"value": 38684.36,
 						"dataSource": {
 							"page": "1040",
 							"fileName": "ESEFReport",
@@ -5600,8 +5600,8 @@
 						"comment": "transmit solid state capacitor",
 						"quality": "Audited"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 30.86,
+					"rateOfAccidents": {
+						"value": 30865.17,
 						"dataSource": {
 							"page": "918",
 							"fileName": "IntegratedReport",
@@ -7053,8 +7053,8 @@
 						"comment": "transmit online sensor",
 						"quality": "Estimated"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 5.35,
+					"rateOfAccidents": {
+						"value": 5355.73,
 						"dataSource": {
 							"page": "852-921",
 							"fileName": "ESEFReport",
@@ -8383,8 +8383,8 @@
 						"comment": "back up 1080p protocol",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 81.8,
+					"rateOfAccidents": {
+						"value": 81794.3,
 						"dataSource": {
 							"page": "422",
 							"fileName": "SustainabilityReport",
@@ -9795,8 +9795,8 @@
 						"comment": "navigate redundant array",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 45.9,
+					"rateOfAccidents": {
+						"value": 45904.69,
 						"dataSource": {
 							"page": "359-1102",
 							"fileName": "IntegratedReport",
@@ -11165,8 +11165,8 @@
 						"comment": "back up wireless program",
 						"quality": "Audited"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 120,
+					"rateOfAccidents": {
+						"value": -1,
 						"dataSource": {
 							"page": "931-1109",
 							"fileName": "IntegratedReport",
@@ -12519,8 +12519,8 @@
 						"comment": "hack auxiliary bus",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 120,
+					"rateOfAccidents": {
+						"value": -1,
 						"dataSource": {
 							"page": "448-1143",
 							"fileName": "IntegratedReport",
@@ -13877,8 +13877,8 @@
 						"comment": "index online interface",
 						"quality": "Estimated"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 13.22,
+					"rateOfAccidents": {
+						"value": 13220.41,
 						"dataSource": {
 							"page": "3",
 							"fileName": "AnnualReport",

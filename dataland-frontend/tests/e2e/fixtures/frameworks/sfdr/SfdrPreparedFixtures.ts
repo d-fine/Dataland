@@ -81,7 +81,7 @@ function manipulateFixtureForInvalidLongDataPointInput(input: FixtureData<SfdrDa
  */
 function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'Sfdr-dataset-with-invalid-percentage-input';
-  input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  input.t.social!.socialAndEmployeeMatters!.rateOfAccidents!.value = -1;
   return input;
 }
 
@@ -93,7 +93,7 @@ function manipulateFixtureForInvalidPercentageInput(input: FixtureData<SfdrData>
  */
 function manipulateFixtureForTwoInvalidInputs(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'Sfdr-dataset-with-two-invalid-inputs';
-  input.t.social!.socialAndEmployeeMatters!.rateOfAccidentsInPercent!.value = 120;
+  input.t.social!.socialAndEmployeeMatters!.rateOfAccidents!.value = -1;
   input.t.social!.antiCorruptionAndAntiBribery!.reportedConvictionsOfBriberyAndCorruption!.value = -1;
   return input;
 }

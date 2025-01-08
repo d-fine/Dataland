@@ -1019,7 +1019,7 @@
 						"comment": "index cross-platform pixel",
 						"quality": "Estimated"
 					},
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": null,
 						"dataSource": {
@@ -2183,7 +2183,7 @@
 						"comment": "parse online circuit",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "445-1211",
@@ -3281,8 +3281,8 @@
 						"comment": null,
 						"quality": null
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 15.42,
+					"rateOfAccidents": {
+						"value": 15421.09,
 						"dataSource": {
 							"page": "297",
 							"fileName": "SustainabilityReport",
@@ -4300,8 +4300,8 @@
 						"comment": "back up back-end interface",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 99.02,
+					"rateOfAccidents": {
+						"value": 99014.47,
 						"dataSource": null,
 						"comment": "program neural array",
 						"quality": null
@@ -5362,7 +5362,7 @@
 						"comment": "navigate mobile microchip",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "144",
@@ -6561,7 +6561,7 @@
 						"comment": "transmit optical microchip",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": 15121.86,
 						"dataSource": {
@@ -7665,8 +7665,8 @@
 						"quality": "Reported"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
-						"value": 28.79,
+					"rateOfAccidents": {
+						"value": 28788.15,
 						"dataSource": null,
 						"comment": "program auxiliary microchip",
 						"quality": "Incomplete"
@@ -8745,7 +8745,7 @@
 						"quality": "Audited"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": null,
 						"dataSource": {
@@ -9909,7 +9909,7 @@
 						"quality": "Estimated"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "1113",
@@ -11064,7 +11064,7 @@
 						"comment": "transmit back-end hard drive",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "578-1005",
@@ -12245,7 +12245,7 @@
 						"comment": "hack cross-platform panel",
 						"quality": "Estimated"
 					},
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": null,
 						"dataSource": {
@@ -13388,7 +13388,7 @@
 						"comment": "hack neural system",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": null,
 						"dataSource": {
@@ -14451,7 +14451,7 @@
 						"quality": "Estimated"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "264",
@@ -15540,8 +15540,8 @@
 						"comment": "hack bluetooth firewall",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 35.72,
+					"rateOfAccidents": {
+						"value": 35721.76,
 						"dataSource": {
 							"page": "10",
 							"fileName": "SustainabilityReport",
@@ -16503,8 +16503,8 @@
 						"comment": "parse mobile pixel",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 47.47,
+					"rateOfAccidents": {
+						"value": 47471.74,
 						"dataSource": {
 							"page": "854",
 							"fileName": "IntegratedReport",
@@ -17477,7 +17477,7 @@
 						"comment": "transmit multi-byte program",
 						"quality": null
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "358-759",
@@ -18491,7 +18491,7 @@
 						"comment": "override virtual bus",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": null,
 						"dataSource": {
@@ -19644,8 +19644,8 @@
 						"comment": "hack online array",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 57.35,
+					"rateOfAccidents": {
+						"value": 57353.4,
 						"dataSource": {
 							"page": "881",
 							"fileName": "AnnualReport",
@@ -20761,7 +20761,7 @@
 						"quality": null
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "366",
@@ -21912,8 +21912,8 @@
 						"comment": "back up neural panel",
 						"quality": null
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 3.99,
+					"rateOfAccidents": {
+						"value": 3997.44,
 						"dataSource": {
 							"page": "712",
 							"fileName": "IntegratedReport",
@@ -23111,8 +23111,8 @@
 						"comment": "compress back-end panel",
 						"quality": null
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 61.57,
+					"rateOfAccidents": {
+						"value": 61573.24,
 						"dataSource": null,
 						"comment": "reboot redundant microchip",
 						"quality": "Estimated"
@@ -24095,7 +24095,7 @@
 					},
 					"controversialWeaponsExposure": null,
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": null,
 						"dataSource": null,
@@ -25258,7 +25258,7 @@
 						"quality": "Reported"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "1104",
@@ -26362,7 +26362,7 @@
 						"comment": "calculate 1080p transmitter",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "877-1043",
@@ -27492,7 +27492,7 @@
 						"comment": "copy bluetooth panel",
 						"quality": null
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "1109-1255",
@@ -28577,8 +28577,8 @@
 						"comment": "compress primary transmitter",
 						"quality": "Estimated"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 18.61,
+					"rateOfAccidents": {
+						"value": 18615.07,
 						"dataSource": {
 							"page": "1070-1104",
 							"fileName": "SustainabilityReport",
@@ -29764,8 +29764,8 @@
 						"comment": "index auxiliary monitor",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 10.25,
+					"rateOfAccidents": {
+						"value": 10249.03,
 						"dataSource": null,
 						"comment": null,
 						"quality": "NoDataFound"
@@ -30864,7 +30864,7 @@
 						"comment": "compress online bandwidth",
 						"quality": null
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": null,
 						"comment": "input auxiliary matrix",
@@ -31972,8 +31972,8 @@
 						"comment": "parse digital protocol",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 0.63,
+					"rateOfAccidents": {
+						"value": 633.79,
 						"dataSource": {
 							"page": "593",
 							"fileName": "AnnualReport",
@@ -33009,7 +33009,7 @@
 						"quality": "NoDataFound"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "533-618",
@@ -34054,8 +34054,8 @@
 						"quality": "Incomplete"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
-						"value": 2.96,
+					"rateOfAccidents": {
+						"value": 2961.91,
 						"dataSource": {
 							"page": "1150-1188",
 							"fileName": "ESEFReport",
@@ -35097,8 +35097,8 @@
 						"comment": "parse 1080p panel",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 32.32,
+					"rateOfAccidents": {
+						"value": 32322.28,
 						"dataSource": {
 							"page": "37",
 							"fileName": "ESEFReport",
@@ -36178,7 +36178,7 @@
 						"quality": "NoDataFound"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "122-463",
@@ -37312,8 +37312,8 @@
 						"comment": "transmit virtual bandwidth",
 						"quality": null
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 95.06,
+					"rateOfAccidents": {
+						"value": 95055.05,
 						"dataSource": {
 							"page": "726-1222",
 							"fileName": "ESEFReport",
@@ -38450,8 +38450,8 @@
 						"comment": "compress auxiliary feed",
 						"quality": "Audited"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 40.17,
+					"rateOfAccidents": {
+						"value": 40166.01,
 						"dataSource": {
 							"page": "271-1286",
 							"fileName": "IntegratedReport",
@@ -39640,8 +39640,8 @@
 						"comment": "program wireless sensor",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 54.49,
+					"rateOfAccidents": {
+						"value": 54488.88,
 						"dataSource": {
 							"page": "1118",
 							"fileName": "ESEFReport",
@@ -40768,8 +40768,8 @@
 						"comment": "program open-source system",
 						"quality": "Estimated"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 40.96,
+					"rateOfAccidents": {
+						"value": 40963.59,
 						"dataSource": {
 							"page": "656-1099",
 							"fileName": "ESEFReport",
@@ -41835,8 +41835,8 @@
 						"comment": "copy mobile alarm",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 57.12,
+					"rateOfAccidents": {
+						"value": 57123.47,
 						"dataSource": {
 							"page": "333-759",
 							"fileName": "SustainabilityReport",
@@ -42901,7 +42901,7 @@
 						"comment": "input wireless feed",
 						"quality": "Reported"
 					},
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": 37218.52,
 						"dataSource": {
@@ -43997,7 +43997,7 @@
 						"quality": "Estimated"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": null,
 						"dataSource": {
@@ -44981,7 +44981,7 @@
 						"comment": "input cross-platform hard drive",
 						"quality": "Audited"
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": null,
 						"comment": "compress open-source array",
@@ -46034,8 +46034,8 @@
 						"comment": "hack virtual alarm",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 21.04,
+					"rateOfAccidents": {
+						"value": 21038.68,
 						"dataSource": {
 							"page": "574",
 							"fileName": "SustainabilityReport",
@@ -47183,8 +47183,8 @@
 						"comment": "back up auxiliary bandwidth",
 						"quality": "Incomplete"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 31.13,
+					"rateOfAccidents": {
+						"value": 31136.46,
 						"dataSource": {
 							"page": "260-876",
 							"fileName": "IntegratedReport",
@@ -48368,8 +48368,8 @@
 						"comment": "input neural protocol",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 33.91,
+					"rateOfAccidents": {
+						"value": 33912.15,
 						"dataSource": {
 							"page": "1198",
 							"fileName": "SustainabilityReport",
@@ -49614,8 +49614,8 @@
 						"quality": "Incomplete"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
-						"value": 20.95,
+					"rateOfAccidents": {
+						"value": 20948.99,
 						"dataSource": {
 							"page": "905",
 							"fileName": "SustainabilityReport",
@@ -50776,7 +50776,7 @@
 						"comment": null,
 						"quality": "Audited"
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "576-1075",
@@ -51879,8 +51879,8 @@
 						"comment": "bypass multi-byte panel",
 						"quality": "NoDataFound"
 					},
-					"rateOfAccidentsInPercent": {
-						"value": 13.05,
+					"rateOfAccidents": {
+						"value": 13056.67,
 						"dataSource": {
 							"page": "871-1218",
 							"fileName": "AnnualReport",
@@ -52871,7 +52871,7 @@
 						"quality": "Audited"
 					},
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": null,
+					"rateOfAccidents": null,
 					"workdaysLostInDays": {
 						"value": 34209.72,
 						"dataSource": {
@@ -54033,7 +54033,7 @@
 					},
 					"controversialWeaponsExposure": null,
 					"workplaceAccidentPreventionPolicy": null,
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "699",
@@ -55125,7 +55125,7 @@
 						"comment": "synthesize digital application",
 						"quality": "Audited"
 					},
-					"rateOfAccidentsInPercent": {
+					"rateOfAccidents": {
 						"value": null,
 						"dataSource": {
 							"page": "469",
