@@ -686,7 +686,7 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-      - loki_data:/var/lib/loki/data
+      - /var/lib/docker/volumes/dataland_loki_data/_data:/loki/data
       - ./dataland-loki/config:/config
     command: -config.file=/config/loki-config.yaml
     networks:
@@ -753,12 +753,16 @@ volumes:
     driver: local
   grafana_data:
     driver: local
-  loki_data:
-    driver: local
+  dataland_loki_data: {}
+#    driver: local
 #    driver_opts:
 #      type: none
 #      o: bind
 #      size: 100M
-#      device: ${DATALAND_HOST_DATA_DIR}dataland-loki-data
+##      device: ${DATALAND_HOST_DATA_DIR}dataland-loki-data
+#      device: \\wsl$\Ubuntu\mnt\restricted_folder
   alloy_data:
     driver: local
+
+#x-project:
+#  name: dataland
