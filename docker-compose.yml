@@ -758,6 +758,8 @@ volumes:
 #    driver: local
 #  pgadmin_config:
 #    driver: local
+  loki_data:
+    driver: local
   dataland_loki_data:
 #    driver: local
 #    driver_opts:
