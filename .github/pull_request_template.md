@@ -2,16 +2,16 @@
 `<Description here>`
 ## Things to do during Peer Review
 Please check all boxes before the Pull Request is merged. In case you skip a box, describe in the PRs description (that means: here) why the check is skipped.
-- [x] The GitHub Actions (including Sonarqube Gateway and Lint Checks) are green. This is enforced by GitHub. 
+- [x] The GitHub Actions for the CI are green. This is enforced by GitHub. 
 - [ ] The PR has been peer-reviewed
   - [ ] The code has been manually inspected by someone who did not implement the feature
   - [ ] If this PR includes work on the frontend, at least one `@ts-nocheck` is removed. Additionally, there should not be any `@ts-nocheck` in files modified by this PR. If no `@ts-nocheck` are left: Celebrate :tada: :confetti_ball: type-safety and remove this entry. 
 - [ ] The PR actually implements what is described in the JIRA-Issue
 - [ ] At least one test exists testing the new feature
-  - [ ] If you have created new test files, make sure that they are included in a test container and actually run in the CI
+  - [ ] Make sure all newly added functionality (especially user facing) is tested
+  - [ ] Make sure that new test files are included in a test container and actually run in the CI
 - [ ] At least 3 consecutive CI runs are successfully executed to ensure that there are no flaky tests.
-- [ ] Documentation is updated as required
-- [ ] The automated deployment is updated if required
+- [ ] Documentation is updated as required. If unsure whether or what to update, ask a fellow developer.
 - [ ] If there was a database entity class added, there must also be a migration script for creating the corresponding database if flyway is already used by the service
 - [ ] IF there are changes done to the framework data models or to a database entity class, the following steps were completed in order
   - [ ] A fresh clone of dataland.com is generated (see Wiki page on "OTC" for details)
@@ -24,4 +24,4 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
   - [ ] The new feature is manually used/tested/observed on dev server. Testing of the new feature should (also) be done by a second, independent reviewer from the dev team
-- [ ] Confirm that the latest version of the feature is deployed to the dev server "dev1" using this branch (no longer enforced by GitHub)
+- [ ] Confirm that the latest version (use the /gitinfo endpoint) of the feature branch is deployed to one of the dev servers (no longer enforced by GitHub)
