@@ -8,7 +8,7 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] If this PR includes work on the frontend, at least one `@ts-nocheck` is removed. Additionally, there should not be any `@ts-nocheck` in files modified by this PR. If no `@ts-nocheck` are left: Celebrate :tada: :confetti_ball: type-safety and remove this entry. 
 - [ ] The PR actually implements what is described in the JIRA-Issue
 - [ ] At least one test exists testing the new feature
-  - [ ] Make sure that tests meaningfully cover all added functionality.
+  - [ ] Make sure all newly added functionality (especially user facing) is tested
   - [ ] Make sure that new test files are included in a test container and actually run in the CI
 - [ ] At least 3 consecutive CI runs are successfully executed to ensure that there are no flaky tests.
 - [ ] Documentation is updated as required. If unsure whether or what to update, ask a fellow developer.
@@ -24,4 +24,4 @@ Please check all boxes before the Pull Request is merged. In case you skip a box
   - [ ] It's verified that this version actually is the one deployed (check gitinfo for branch name and commit id!)
   - [ ] It's verified that the CD run is green
   - [ ] The new feature is manually used/tested/observed on dev server. Testing of the new feature should (also) be done by a second, independent reviewer from the dev team
-- [ ] Confirm that the latest version of the feature is deployed to the dev server "dev1" using this branch (no longer enforced by GitHub)
+- [ ] Confirm that the latest version (use the /gitinfo endpoint) of the feature branch is deployed to one of the dev servers (no longer enforced by GitHub)
