@@ -5,4 +5,4 @@ COPY ./dataland-alloy/config /etc/alloy
 
 CMD ["run", "--server.http.listen-addr=alloy:8080", "--storage.path=/var/lib/alloy/data", "/etc/alloy/alloy-config.alloy"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/alloy/health | tee /dev/stderr | grep -q 'ready' || false
+#HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:8080/alloy/health | tee /dev/stderr | grep -q 'ready' || false

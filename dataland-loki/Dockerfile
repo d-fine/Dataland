@@ -8,4 +8,4 @@ COPY ./dataland-loki/config /etc/loki
 
 CMD ["-config.file=/etc/loki/loki-config.yaml"]
 
-HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:3100/ready | tee /dev/stderr | grep -q 'ready' || false
+#HEALTHCHECK --interval=30s --timeout=3s CMD curl -f http://localhost:3100/ready | tee /dev/stderr | grep -q 'ready' || false
