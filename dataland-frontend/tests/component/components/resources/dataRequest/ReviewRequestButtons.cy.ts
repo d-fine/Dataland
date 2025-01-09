@@ -5,6 +5,7 @@ import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
+import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 describe('Component tests for the data request review buttons', function (): void {
   const mockCompanyId: string = 'Mock-Company-Id';
   const parentComponentOfEmailDetails = 'updateRequestModal';
@@ -116,6 +117,12 @@ describe('Component tests for the data request review buttons', function (): voi
    */
   function interceptPatchRequestsOnMounted(): void {
     cy.intercept('PATCH', '**/community/requests/*', (request) => {
+      if (request.body.contacts) {
+        assert(request.body.contacts.length);
+      }
+      if (request.body.message) {
+        assert(request.body.message.length);
+      }
       if (request.body.requestStatus === 'Resolved') {
         request.alias = 'closeUserRequest';
         request.reply({
