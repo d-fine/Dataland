@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
@@ -203,10 +204,10 @@ class DataPointManager
                     ).toMutableMap()
 
             val fileReferenceToPublicationDateMapping = mutableMapOf<String, LocalDate>()
-            if (dataContent.containsKey(ReferencedReportsUtilities.REFERENCED_REPORTS_ID)) {
+            if (dataContent.containsKey(REFERENCED_REPORTS_ID)) {
                 fileReferenceToPublicationDateMapping +=
-                    ReferencedReportsUtilities.getFileReferenceToPublicationDateMapping(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
-                dataContent.remove(ReferencedReportsUtilities.REFERENCED_REPORTS_ID)
+                    ReferencedReportsUtilities.getFileReferenceToPublicationDateMapping(dataContent[REFERENCED_REPORTS_ID])
+                dataContent.remove(REFERENCED_REPORTS_ID)
             }
 
             valideDataSet(dataContent, correlationId)
@@ -337,7 +338,7 @@ class DataPointManager
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }
             }
-            allDataPoints[ReferencedReportsUtilities.REFERENCED_REPORTS_ID] =
+            allDataPoints[REFERENCED_REPORTS_ID] =
                 ReferencedReportsUtilities.objectMapper.valueToTree(referencedReports)
 
             val datasetAsJsonNode = JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) { allDataPoints[it] }
