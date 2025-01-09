@@ -9,7 +9,7 @@ import org.flywaydb.core.api.migration.Context
  * This migration script updates all sfdr datasets to match the new sfdr data model.
  */
 @Suppress("ClassName")
-class V25__Update_Sfdr_model : BaseJavaMigration() {
+class V25__UpdateSfdrModel : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
