@@ -104,7 +104,7 @@ describe('Component test for ViewFrameworkBase', () => {
   );
 
   it('Should display the download data button for data reader ' + 'and open download modal', () => {
-    cy.intercept('**/api/metadata*', { fixture: 'MetaInfoDataMocksForOneCompany', times: 1 }).as('metaDataFetch');
+    cy.intercept('**/api/metadata*', []);
     cy.mountWithPlugins(ViewFrameworkBase, {
       keycloak: minimalKeycloakMock({}),
       global: {
@@ -124,47 +124,26 @@ describe('Component test for ViewFrameworkBase', () => {
     const dataId = '1234';
     const mockDataMetaInfo = new Map([[selectedYear, { dataId: dataId }]]);
 
-    cy.intercept('**/api/data/exportCompanyAssociatedDataToCsv', {
-      statusCode: 200,
-      body: 'mock csv data',
-    }).as('exportCsv');
+    cy.intercept('**/api/data/**/**/csv/*', { requestStatus: 200, times: 1 }).as('exportCsv');
     const keycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_USER],
     });
 
     cy.mountWithPlugins(ViewFrameworkBase, {
       keycloak: keycloakMock,
-    }).then((mounted) => {
+    }).then(async (mounted) => {
       mounted.wrapper.setProps({
         dataType: DataTypeEnum.Sfdr,
       });
       cy.stub(window.URL, 'createObjectURL').returns('the actual data to download');
       mounted.wrapper.vm.mapOfReportingPeriodToActiveDataset = mockDataMetaInfo;
 
-      const spy = cy.spy(mounted.wrapper.vm, 'forceFileDownload');
-      mounted.wrapper.vm.handleDatasetDownload(selectedYear, selectedFormat);
+      cy.spy(mounted.wrapper.vm, 'forceFileDownload').as('forceFileDownload');
+      await mounted.wrapper.vm.handleDatasetDownload(selectedYear, selectedFormat);
+      const expectedFilename = `${dataId}.${selectedFormat}`;
 
-      const expectedFilename = '1234.csv';
-
-      Cypress.on('uncaught:exception', (err, runnable) => {
-        if (err.message.includes('DataId does not exist.')) {
-          return false;
-        }
-      });
-      Cypress.on('uncaught:exception', (err, runnable, promise) => {
-        if (promise) {
-          return false;
-        }
-      });
-
-      expect(spy).to.be.called;
+      cy.get('@forceFileDownload').should('be.called');
       cy.get('@forceFileDownload').should('be.calledWith', 'mock csv data', expectedFilename);
     });
   });
 });
-
-/*
-
-
-
- */
