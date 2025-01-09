@@ -5,7 +5,7 @@ import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
-import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+
 describe('Component tests for the data request review buttons', function (): void {
   const mockCompanyId: string = 'Mock-Company-Id';
   const parentComponentOfEmailDetails = 'updateRequestModal';
