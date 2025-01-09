@@ -663,6 +663,7 @@ services:
       <<: *loki-logging
   grafana:
     restart: always
+    profiles: [ "production", "testing", "development" ]
     image: grafana/grafana:11.4.0@sha256:d8ea37798ccc41061a62ab080f2676dda6bf7815558499f901bdb0f533a456fb
     environment:
       - GF_SECURITY_ADMIN_USER=admin@dataland.com
@@ -672,40 +673,40 @@ services:
       - "3000"
     volumes:
       - grafana_data:/var/lib/grafana/data
-#      - test_grafana_data/_data:/var/lib/grafana/data
     networks:
       - grafana
       - loki
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 3s
     logging:
       <<: *loki-logging
   loki:
     restart: always
-    image: grafana/loki:3.2.2@sha256:030eee702c799da359c76e1fe305f03b522112ee34926b6c656495768fd5cb70
+    profiles: [ "production", "testing", "development" ]
+    image: ${LOKI_IMAGE:-ghcr.io/d-fine/dataland/dataland_loki:${DATALAND_LOKI_VERSION}}
     expose:
       - "3100"
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
       - loki_data:/var/lib/loki/data
-#      - /var/lib/docker/volumes/dataland_loki_data/_data:/var/lib/loki/data
-      - ./dataland-loki/config/loki-config.yaml:/config/loki-config.yaml
-    command: -config.file=/config/loki-config.yaml
     networks:
       - loki
     logging:
       <<: *loki-logging
   alloy:
     restart: always
-    image: grafana/alloy:v1.5.1@sha256:01a63f4e032ce54ee94b22049bc27f597e74f85566478c377f4b5c7f020c1eb3
+    profiles: [ "production", "testing", "development" ]
+    image: ${ALLOY_IMAGE:-ghcr.io/d-fine/dataland/dataland_alloy:${DATALAND_ALLOY_VERSION}}
     expose:
       - "8080"
     environment:
       INTERNAL_ALLOY_URL: ${INTERNAL_ALLOY_URL:-http://alloy:8080}
     volumes:
-      - ./dataland-alloy/config/alloy-config.alloy:/config/alloy-config.alloy
       - /var/run/docker.sock:/var/run/docker.sock
       - alloy_data:/var/lib/alloy/data
-    command: run --server.http.listen-addr=alloy:8080 --storage.path=/var/lib/alloy/data /config/alloy-config.alloy
     depends_on:
       - loki
     networks:
