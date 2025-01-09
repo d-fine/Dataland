@@ -16,7 +16,7 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.JsonOperations
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
@@ -191,7 +191,8 @@ class DataPointManager
             correlationId: String,
         ): String {
             val frameworkSpecification = getFrameworkSpecification(uploadedDataSet.dataType.toString())
-            val frameworkTemplate = JsonOperations.getJsonNodeFromString(frameworkSpecification.schema)
+            val frameworkTemplate = ReferencedReportsUtilities.getJsonNodeFromString(frameworkSpecification.schema)
+            ReferencedReportsUtilities.insertReferencedReports(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
             val companyId = uploadedDataSet.companyId
 
             val dataContent =
@@ -199,14 +200,13 @@ class DataPointManager
                     .dehydrateJsonSpecification(
                         frameworkTemplate as ObjectNode,
                         objectMapper.readTree(uploadedDataSet.data) as ObjectNode,
-                        frameworkSpecification.referencedReportJsonPath,
                     ).toMutableMap()
 
             val fileReferenceToPublicationDateMapping = mutableMapOf<String, LocalDate>()
-            if (dataContent.containsKey(JsonSpecificationUtils.REFERENCED_REPORTS_ID)) {
+            if (dataContent.containsKey(ReferencedReportsUtilities.REFERENCED_REPORTS_ID)) {
                 fileReferenceToPublicationDateMapping +=
-                    JsonOperations.getFileReferenceToPublicationDateMapping(dataContent[JsonSpecificationUtils.REFERENCED_REPORTS_ID])
-                dataContent.remove(JsonSpecificationUtils.REFERENCED_REPORTS_ID)
+                    ReferencedReportsUtilities.getFileReferenceToPublicationDateMapping(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
+                dataContent.remove(ReferencedReportsUtilities.REFERENCED_REPORTS_ID)
             }
 
             valideDataSet(dataContent, correlationId)
@@ -222,7 +222,7 @@ class DataPointManager
                 val dataPointContent = dataPointJsonLeaf.content
                 if (dataPointContent.isEmpty) return@forEach
 
-                JsonOperations.updatePublicationDateInJsonNode(
+                ReferencedReportsUtilities.updatePublicationDateInJsonNode(
                     dataPointContent,
                     fileReferenceToPublicationDateMapping,
                     "dataSource",
@@ -236,7 +236,7 @@ class DataPointManager
                 createdDataIds[dataPointIdentifier] = dataId
                 storeDataPoint(
                     UploadedDataPoint(
-                        dataPointContent = JsonOperations.objectMapper.writeValueAsString(dataPointContent),
+                        dataPointContent = ReferencedReportsUtilities.objectMapper.writeValueAsString(dataPointContent),
                         dataPointIdentifier = dataPointIdentifier,
                         companyId = companyId,
                         reportingPeriod = uploadedDataSet.reportingPeriod,
@@ -259,7 +259,7 @@ class DataPointManager
             correlationId: String,
         ) {
             datasetContent.forEach { (dataPointIdentifier, dataPointJsonLeaf) ->
-                val dataPointContent = JsonOperations.objectMapper.writeValueAsString(dataPointJsonLeaf.content)
+                val dataPointContent = ReferencedReportsUtilities.objectMapper.writeValueAsString(dataPointJsonLeaf.content)
                 if (dataPointContent.isEmpty()) return@forEach
                 dataPointValidator.validateDataPoint(dataPointIdentifier, dataPointContent, correlationId)
             }
@@ -323,26 +323,24 @@ class DataPointManager
             correlationId: String,
         ): String {
             val frameworkSpecification = getFrameworkSpecification(framework)
-            val frameworkTemplate = JsonOperations.getJsonNodeFromString(frameworkSpecification.schema)
-            val referencedReportsPath = frameworkSpecification.referencedReportJsonPath
+            val frameworkTemplate = ReferencedReportsUtilities.getJsonNodeFromString(frameworkSpecification.schema)
+            ReferencedReportsUtilities.insertReferencedReports(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
 
             val referencedReports = mutableMapOf<String, CompanyReport>()
             val allDataPoints = mutableMapOf<String, JsonNode>()
 
             dataIds.forEach { dataId ->
                 val dataPoint = retrieveDataPoint(dataId, correlationId)
-                allDataPoints[dataPoint.dataPointIdentifier] = JsonOperations.getJsonNodeFromString(dataPoint.dataPointContent)
-                val companyReport = JsonOperations.getCompanyReportFromDataSource(dataPoint.dataPointContent)
+                allDataPoints[dataPoint.dataPointIdentifier] = ReferencedReportsUtilities.getJsonNodeFromString(dataPoint.dataPointContent)
+                val companyReport = ReferencedReportsUtilities.getCompanyReportFromDataSource(dataPoint.dataPointContent)
                 if (companyReport != null) {
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }
             }
+            allDataPoints[ReferencedReportsUtilities.REFERENCED_REPORTS_ID] =
+                ReferencedReportsUtilities.objectMapper.valueToTree(referencedReports)
 
             val datasetAsJsonNode = JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) { allDataPoints[it] }
-            if (referencedReportsPath != null && datasetAsJsonNode != null) {
-                logger.info("Inserting referenced reports (correlation ID $correlationId).")
-                JsonOperations.insertReferencedReports(datasetAsJsonNode, referencedReportsPath, referencedReports)
-            }
 
             return datasetAsJsonNode.toString()
         }

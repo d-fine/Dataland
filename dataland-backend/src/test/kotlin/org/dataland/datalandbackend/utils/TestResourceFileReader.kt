@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.objectMapper
 
 object TestResourceFileReader {
     fun getJsonString(resourceFile: String): String = this.getJsonNode(resourceFile).toString()

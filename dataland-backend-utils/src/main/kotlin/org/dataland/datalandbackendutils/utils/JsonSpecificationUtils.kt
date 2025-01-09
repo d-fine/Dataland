@@ -18,8 +18,6 @@ data class JsonSpecificationLeaf(
  * Utilities for working with JSON framework specifications.
  */
 object JsonSpecificationUtils {
-    const val REFERENCED_REPORTS_ID = "referencedReports"
-
     private fun isTerminalNode(node: ObjectNode): Boolean = node.fieldNames().asSequence().toSet() == setOf("id", "ref")
 
     /**
@@ -67,10 +65,9 @@ object JsonSpecificationUtils {
     fun dehydrateJsonSpecification(
         jsonSpecification: ObjectNode,
         dataObject: ObjectNode,
-        referencedReportsPath: String? = null,
     ): Map<String, JsonSpecificationLeaf> {
         val returnMap = mutableMapOf<String, JsonSpecificationLeaf>()
-        dehydrateJsonSpecificationRecursive("", jsonSpecification, dataObject, returnMap, referencedReportsPath)
+        dehydrateJsonSpecificationRecursive("", jsonSpecification, dataObject, returnMap)
         return returnMap
     }
 
@@ -79,7 +76,6 @@ object JsonSpecificationUtils {
         currentSpecificationNode: ObjectNode,
         currentDataNode: JsonNode,
         dataMap: MutableMap<String, JsonSpecificationLeaf>,
-        referencedReportsPath: String?,
     ) {
         if (isTerminalNode(currentSpecificationNode)) {
             val dataPointId = currentSpecificationNode.get("id").asText()
@@ -95,7 +91,7 @@ object JsonSpecificationUtils {
                 )
             }
             for ((fieldName, jsonNode) in currentDataNode.fields()) {
-                processNode(fieldName, jsonNode, currentPath, referencedReportsPath, dataMap, currentSpecificationNode)
+                processNode(fieldName, jsonNode, currentPath, dataMap, currentSpecificationNode)
             }
         }
     }
@@ -104,16 +100,11 @@ object JsonSpecificationUtils {
         fieldName: String,
         jsonNode: JsonNode,
         currentPath: String,
-        referencedReportsPath: String?,
         dataMap: MutableMap<String, JsonSpecificationLeaf>,
         currentSpecificationNode: ObjectNode,
     ) {
         if (!jsonNode.isNull) {
             val upcomingPath = if (currentPath.isEmpty()) fieldName else "$currentPath.$fieldName"
-            if (upcomingPath == referencedReportsPath) {
-                dataMap[REFERENCED_REPORTS_ID] = JsonSpecificationLeaf(REFERENCED_REPORTS_ID, upcomingPath, jsonNode)
-                return
-            }
             val matchingSpecificationNode =
                 currentSpecificationNode.get(fieldName)
                     ?: throw InvalidInputApiException(
@@ -128,7 +119,6 @@ object JsonSpecificationUtils {
                 currentSpecificationNode = matchingSpecificationNode,
                 currentDataNode = jsonNode,
                 dataMap = dataMap,
-                referencedReportsPath = referencedReportsPath,
             )
         }
     }

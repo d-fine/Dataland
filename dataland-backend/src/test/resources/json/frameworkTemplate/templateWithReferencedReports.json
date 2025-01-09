@@ -6,16 +6,8 @@
         "ref": "reference"
       },
       "referencedReports": {
-        "Filename1": {
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "fileName": "Filename1",
-          "publicationDate": "2022-12-05"
-        },
-        "Filename2": {
-          "fileReference": "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "fileName": "Filename2",
-          "publicationDate": "2023-11-04"
-        }
+        "id": "referencedReports",
+        "ref": "dummy"
       }
     }
   },

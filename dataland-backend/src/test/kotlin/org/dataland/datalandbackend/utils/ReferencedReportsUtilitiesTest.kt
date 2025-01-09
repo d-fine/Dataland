@@ -4,21 +4,20 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
-import org.dataland.datalandbackend.utils.JsonOperations.getCompanyReportFromDataSource
-import org.dataland.datalandbackend.utils.JsonOperations.getFileReferenceToPublicationDateMapping
-import org.dataland.datalandbackend.utils.JsonOperations.insertReferencedReports
-import org.dataland.datalandbackend.utils.JsonOperations.objectMapper
-import org.dataland.datalandbackend.utils.JsonOperations.updatePublicationDateInJsonNode
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.getCompanyReportFromDataSource
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.getFileReferenceToPublicationDateMapping
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.insertReferencedReports
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.objectMapper
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.updatePublicationDateInJsonNode
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 
-class JsonOperationsTest {
+class ReferencedReportsUtilitiesTest {
     private val currencyDataPoint = "./json/validation/currencyDataPoint.json"
     private val currencyDataPointWithExtendedDocumentReference =
         "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
@@ -28,20 +27,17 @@ class JsonOperationsTest {
     private val frameworkWithDataSource = "./json/frameworkTemplate/frameworkWithDataSources.json"
     private val expectedFrameworkWithDataSource = "./json/frameworkTemplate/expectedFrameworkWithDataSources.json"
     private val templateWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
-    private val templateWithNullReferencedReports = "./json/frameworkTemplate/templateWithNullReferencedReports.json"
-    private val referencedReports = "./json/frameworkTemplate/referencedReports.json"
     private val frameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
 
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
-    private val referencedReportsPath = "general.general.referencedReports"
 
     private fun readDataContent(resourceFile: String): Map<String, JsonSpecificationLeaf> {
-        val schema = TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification).schema
+        val schema = objectMapper.readTree(TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification).schema)
+        insertReferencedReports(schema, "general.general.referencedReports")
         return JsonSpecificationUtils.dehydrateJsonSpecification(
-            objectMapper.readTree(schema) as ObjectNode,
+            schema as ObjectNode,
             TestResourceFileReader.getJsonNode(resourceFile) as ObjectNode,
-            referencedReportsPath,
         )
     }
 
@@ -69,7 +65,7 @@ class JsonOperationsTest {
     @Test
     fun `check that the extracted mapping is as expected`() {
         val dataContent = readDataContent(frameworkWithReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(dataContent[JsonSpecificationUtils.REFERENCED_REPORTS_ID])
+        val extracted = getFileReferenceToPublicationDateMapping(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
         val expected =
             mapOf(
                 "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
@@ -81,7 +77,7 @@ class JsonOperationsTest {
     @Test
     fun `check that a framework without referenced reports yields an empty map`() {
         val dataContent = readDataContent(frameworkWithoutReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(dataContent[JsonSpecificationUtils.REFERENCED_REPORTS_ID])
+        val extracted = getFileReferenceToPublicationDateMapping(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
         assertTrue(extracted.isEmpty())
     }
 
@@ -139,32 +135,18 @@ class JsonOperationsTest {
 
     @Test
     fun `check that the referenced reports are correctly inserted into the framework template`() {
-        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
+        val testNode = TestResourceFileReader.getJsonNode(frameworkTemplate)
         val targetPath = "category.subcategory.referencedReports"
-        val referencedReports = TestResourceFileReader.getKotlinObject<Map<String, CompanyReport>>(referencedReports)
 
-        insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
+        insertReferencedReports(testNode, targetPath)
         val expected = TestResourceFileReader.getJsonNode(templateWithReferencedReports)
-        assertEquals(frameworkTemplate, expected)
+        assertEquals(testNode, expected)
     }
 
     @Test
-    fun `check that empty referenced reports are inserted as null into the framework template`() {
-        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
-        val targetPath = "category.subcategory.referencedReports"
-        val referencedReports = emptyMap<String, CompanyReport>()
-
-        insertReferencedReports(frameworkTemplate, targetPath, referencedReports)
-        val expected = TestResourceFileReader.getJsonNode(templateWithNullReferencedReports)
-        assertEquals(frameworkTemplate, expected)
-    }
-
-    @Test
-    fun `check that inserting a path that does not exist throws an exception `() {
-        val frameworkTemplate = TestResourceFileReader.getJsonNode(frameworkTemplate)
-        val targetPath = "does.not.exist"
-        val referencedReports = TestResourceFileReader.getKotlinObject<Map<String, CompanyReport>>(referencedReports)
-
-        assertThrows<IllegalArgumentException> { insertReferencedReports(frameworkTemplate, targetPath, referencedReports) }
+    fun `check that an empty referenced reports path is not inserted into the json node`() {
+        val testNode = TestResourceFileReader.getJsonNode(frameworkTemplate)
+        insertReferencedReports(testNode, null)
+        assertEquals(testNode, TestResourceFileReader.getJsonNode(frameworkTemplate))
     }
 }

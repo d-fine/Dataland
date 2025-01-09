@@ -8,14 +8,18 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 
-object JsonOperations {
+object ReferencedReportsUtilities {
     private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
+
     private const val PUBLICATION_DATE_FIELD = "publicationDate"
     private const val FILE_REFERENCE_FIELD = "fileReference"
     private const val DATA_SOURCE_FIELD = "dataSource"
+
+    const val REFERENCED_REPORTS_ID = "referencedReports"
 
     val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
 
@@ -113,23 +117,18 @@ object JsonOperations {
     }
 
     /**
-     * Inserts the referenced reports into a JSON node.
-     * @param inputJsonNode The JSON node to update
-     * @param targetPath The path to the target node
-     * @param referencedReports The referencedReports object to be inserted
+     * Inserts the referenced reports entry into the JSON node representation of a specification schema.
+     * @param inputJsonNode The schema as JSON node to be updated
+     * @param targetPath The path specifying where to insert the entry
      */
     fun insertReferencedReports(
         inputJsonNode: JsonNode,
-        targetPath: String,
-        referencedReports: Map<String, CompanyReport>,
+        targetPath: String?,
     ) {
+        if (targetPath == null) return
         val insertLocation = targetPath.split(".").dropLast(1).joinToString(".")
         val insertName = targetPath.split(".").last()
-        val referencedReportsNode = navigateToNode(inputJsonNode, insertLocation)
-        if (referencedReports.isEmpty()) {
-            (referencedReportsNode as ObjectNode).set<JsonNode>(insertName, getJsonNodeFromString("null"))
-        } else {
-            (referencedReportsNode as ObjectNode).set<JsonNode>(insertName, objectMapper.valueToTree(referencedReports))
-        }
+        val parentNode = navigateToNode(inputJsonNode, insertLocation)
+        (parentNode as ObjectNode).set<JsonNode>(insertName, objectMapper.valueToTree(IdWithRef(REFERENCED_REPORTS_ID, "dummy")))
     }
 }
