@@ -1153,23 +1153,11 @@ export const sfdrDataModel = [
             validation: 'integer|min:0',
           },
           {
-            name: 'ceoToEmployeePayGapRatio',
-            label: 'CEO to Employee Pay Gap Ratio',
-            description:
-              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).',
-
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
-            name: 'excessiveCeoPayRatioInPercent',
+            name: 'excessiveCeoPayRatio',
             label: 'Excessive CEO pay ratio',
             description:
-              'Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)',
+              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual)',
 
-            unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,

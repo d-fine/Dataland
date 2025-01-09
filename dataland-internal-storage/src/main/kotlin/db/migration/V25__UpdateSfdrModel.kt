@@ -16,6 +16,11 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
             "sfdr",
             this::migrateRateOfAccidents,
         )
+        migrateCompanyAssociatedDataOfDatatype(
+            context,
+            "sfdr",
+            this::migrateExcessiveCeoPayGapRatio,
+        )
     }
 
     private val oldToNewRateOfAccidentsKey =
@@ -24,7 +29,7 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
         )
 
     /**
-     * Migrates sfdr data to the new sfdr data model.
+     * Migrates the rate of accidents in the sfdr data
      */
     fun migrateRateOfAccidents(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
@@ -36,6 +41,38 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
             val oldValue = socialAndEmployeeMattersObject.remove(oldKey) ?: continue
             socialAndEmployeeMattersObject.put(newKey, oldValue)
         }
+
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+    }
+
+    /**
+     * Migrates the excessive ceo pay ratio in the sfdr data
+     */
+    fun migrateExcessiveCeoPayGapRatio(dataTableEntity: DataTableEntity) {
+        val excessiveCeoPayRatioInPercentKey = "excessiveCeoPayRatioInPercent"
+        val ceoToEmployeePayGapRatioKey = "ceoToEmployeePayGapRatio"
+        val newKey = "excessiveCeoPayRatio"
+
+        val dataset = dataTableEntity.dataJsonObject
+
+        val socialObject = dataset.optJSONObject("social") ?: return
+        val socialAndEmployeeMattersObject = socialObject.optJSONObject("socialAndEmployeeMatters") ?: return
+
+        val excessiveCeoPayRatioInPercentValue = socialAndEmployeeMattersObject.remove(excessiveCeoPayRatioInPercentKey)
+        val ceoToEmployeePayGapRatioValue = socialAndEmployeeMattersObject.remove(ceoToEmployeePayGapRatioKey)
+
+        // how to extract value?
+        val excessiveCeoPayRatioInPercentIsNumber = excessiveCeoPayRatioInPercentValue is Number
+        val ceoToEmployeePayGapRatioValueisNumber = ceoToEmployeePayGapRatioValue is Number
+
+        val newValue =
+            when {
+                excessiveCeoPayRatioInPercentIsNumber -> excessiveCeoPayRatioInPercentValue
+                ceoToEmployeePayGapRatioValueisNumber -> ceoToEmployeePayGapRatioValue
+                else -> null
+            }
+
+        socialAndEmployeeMattersObject.put(newKey, newValue)
 
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }

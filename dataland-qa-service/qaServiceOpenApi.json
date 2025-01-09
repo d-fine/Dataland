@@ -3417,10 +3417,7 @@
           "sanctionedIncidentsOfDiscrimination": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
           },
-          "ceoToEmployeePayGapRatio": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "excessiveCeoPayRatioInPercent": {
+          "excessiveCeoPayRatio": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }

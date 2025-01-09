@@ -186,8 +186,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         whistleblowerProtectionPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         reportedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
         sanctionedIncidentsOfDiscrimination: dataGenerator.randomExtendedDataPoint(dataGenerator.randomInt(0)),
-        ceoToEmployeePayGapRatio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        excessiveCeoPayRatioInPercent: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
+        excessiveCeoPayRatio: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
       },
       greenSecurities: {
         securitiesNotCertifiedAsGreen: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),

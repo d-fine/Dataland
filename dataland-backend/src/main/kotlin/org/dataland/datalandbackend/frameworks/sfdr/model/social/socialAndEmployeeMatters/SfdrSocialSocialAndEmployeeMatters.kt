@@ -100,8 +100,5 @@ data class SfdrSocialSocialAndEmployeeMatters(
     val sanctionedIncidentsOfDiscrimination: ExtendedDataPoint<BigInteger?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val ceoToEmployeePayGapRatio: ExtendedDataPoint<BigDecimal?>? = null,
-    @field:MinimumValue(minimumValue = 0)
-    @field:Valid()
-    val excessiveCeoPayRatioInPercent: ExtendedDataPoint<BigDecimal?>? = null,
+    val excessiveCeoPayRatio: ExtendedDataPoint<BigDecimal?>? = null,
 )

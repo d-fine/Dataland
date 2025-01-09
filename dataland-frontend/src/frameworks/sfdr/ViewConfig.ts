@@ -1555,31 +1555,15 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'CEO to Employee Pay Gap Ratio',
-            explanation:
-              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.ceoToEmployeePayGapRatio?.value, ''),
-                'CEO to Employee Pay Gap Ratio',
-                dataset.social?.socialAndEmployeeMatters?.ceoToEmployeePayGapRatio
-              ),
-          },
-          {
-            type: 'cell',
             label: 'Excessive CEO pay ratio',
             explanation:
-              'Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)',
+              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent?.value,
-                  'Percent'
-                ),
+                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio?.value, ''),
                 'Excessive CEO pay ratio',
-                dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent
+                dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio
               ),
           },
         ],

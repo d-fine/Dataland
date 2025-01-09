@@ -81,7 +81,5 @@ data class SfdrSocialSocialAndEmployeeMatters(
     @field:Valid()
     val sanctionedIncidentsOfDiscrimination: QaReportDataPoint<ExtendedDataPointBigInteger?>? = null,
     @field:Valid()
-    val ceoToEmployeePayGapRatio: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val excessiveCeoPayRatioInPercent: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val excessiveCeoPayRatio: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
 )
