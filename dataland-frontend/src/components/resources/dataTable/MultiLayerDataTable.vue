@@ -24,7 +24,8 @@
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
-        <tr>
+        <tr
+        v-show="!hideEmptyFields || dataAndMetaInfo.some(singleDataAndMetaInfo => singleDataAndMetaInfo.metaInfo.uploadTime != null)">
           <td class="headers-bg pl-4 vertical-align-top header-column-width">
             <span class="table-left-label">Publication date of the dataset on Dataland</span>
             <em
@@ -46,6 +47,7 @@
           </td>
         </tr>
         <tr
+            v-show="!hideEmptyFields || hasPublicationDate()"
         >
           <td
               class="headers-bg pl-4 vertical-align-top header-column-width"
@@ -65,6 +67,12 @@
               v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo"
               :key="idx"
               class="vertical-align-top">
+            <i
+                v-if="!hasPublicationDate() && inReviewMode"
+                class="pi pi-eye-slash pr-1 text-red-500"
+                aria-hidden="true"
+                data-test="hidden-icon"
+            />
             <span class="p-column-title" style="display: flex; align-items: center">
                   {{latestDate(singleDataAndMetaInfo)}}
              </span>
@@ -107,6 +115,35 @@ import {
 const vTooltip = Tooltip;
 
 /**
+ *  Checks if at least one singleDataAndMetaInfo has a publication date.
+ *  @returns boolean - true if at least one publicationDate exists, false otherwise.
+ */
+function hasPublicationDate(): boolean {
+  return props.dataAndMetaInfo.some(singleDataAndMetaInfo => {
+    // Check for existing publication date
+    let referencedReports;
+
+    switch (singleDataAndMetaInfo.metaInfo.dataType) {
+      case DataTypeEnum.Sfdr:
+        referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
+        break;
+      case DataTypeEnum.EutaxonomyFinancials:
+        referencedReports = (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general?.referencedReports;
+        break;
+      case DataTypeEnum.EutaxonomyNonFinancials:
+        referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
+        break;
+      default:
+        referencedReports = null;
+        break;
+    }
+    // Check if there is at least one valid publicationDate
+    return referencedReports && Object.keys(referencedReports).length > 0 &&
+        Object.values(referencedReports).some(companyReport => companyReport?.publicationDate != null);
+  });
+}
+
+/**
  * Extracts the publication date of the most recent report given DataAndMetaInformation.
  * @param singleDataAndMetaInfo the DataAndMetaInformation of a framework.
  * @returns publication date as string.
@@ -147,5 +184,6 @@ const props = defineProps<{
   dataAndMetaInfo: Array<DataAndMetaInformation<T>>;
   ariaLabel: string;
   inReviewMode: boolean;
+  hideEmptyFields: boolean;
 }>();
 </script>
