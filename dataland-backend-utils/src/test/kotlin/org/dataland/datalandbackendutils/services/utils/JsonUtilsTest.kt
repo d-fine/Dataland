@@ -16,13 +16,22 @@ class JsonUtilsTest {
             "data.general.general.fiscalYearDeviation.dataSource.page",
             "data.general.general.fiscalYearDeviation.dataSource.fileReference",
             "data.general.general.fiscalYearEnd",
+            "data.general.general.arrayField.0",
         )
+    private val expectedJsonPathsWithoutArray = expectedJsonPaths.dropLast(1)
 
     @Test
     fun `check that the retrieved JSON paths are as expected`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
-        val result = JsonUtils.getNonArrayLeafNodeFieldNames(jsonNode, "")
+        val result = JsonUtils.getLeafNodeFieldNames(jsonNode)
         assertEquals(expectedJsonPaths, result)
+    }
+
+    @Test
+    fun `check that arrays are ignored if ignoreArray is set to true`() {
+        val jsonNode = ObjectMapper().readTree(inputJson)
+        val result = JsonUtils.getNonArrayLeafNodeFieldNames(jsonNode)
+        assertEquals(expectedJsonPathsWithoutArray, result)
     }
 
     @Test

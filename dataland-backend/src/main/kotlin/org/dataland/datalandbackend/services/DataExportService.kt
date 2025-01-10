@@ -29,7 +29,7 @@ class DataExportService
          */
         fun <T> buildCsvStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
             val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
-            val headers: List<String> = JsonUtils.getNonArrayLeafNodeFieldNames(jsonTree)
+            val headers: List<String> = JsonUtils.getLeafNodeFieldNames(jsonTree)
             require(headers.isNotEmpty()) { "After filtering, CSV data is empty." }
 
             val csvData = mutableMapOf<String, String>()
