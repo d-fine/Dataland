@@ -48,4 +48,12 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedLksgDataToCsv(dataId, options);
   }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedLksgDataToExcel(dataId, options);
+  }
 }

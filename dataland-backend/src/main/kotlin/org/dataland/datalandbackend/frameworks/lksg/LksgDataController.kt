@@ -54,6 +54,10 @@ class LksgDataController(
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToCsv(dataId)
 
+    @Operation(operationId = "exportCompanyAssociatedLksgDataToExcel")
+    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToExcel(dataId)
+
     @Operation(operationId = "getAllCompanyLksgData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,

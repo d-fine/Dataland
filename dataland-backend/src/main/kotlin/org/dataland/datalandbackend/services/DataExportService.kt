@@ -29,24 +29,40 @@ class DataExportService
          */
         fun <T> buildCsvStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
             val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
-            val headers: List<String> = JsonUtils.getLeafNodeFieldNames(jsonTree)
-            require(headers.isNotEmpty()) { "After filtering, CSV data is empty." }
 
-            val csvData = mutableMapOf<String, String>()
-            val csvSchemaBuilder = CsvSchema.builder()
-
-            headers.forEach {
-                csvData[it] = JsonUtils.getValueFromJsonNodeByPath(jsonTree, it)
-                csvSchemaBuilder.addColumn(it)
-            }
-
-            val csvSchema = csvSchemaBuilder.build().withHeader()
+            val csvSchemaAndData = createCsvSchemaAndDataFromJson(jsonTree)
+            val csvSchema = csvSchemaAndData.first
+            val csvData = csvSchemaAndData.second
             val outputStream = ByteArrayOutputStream()
 
             CsvMapper()
                 .writerFor(Map::class.java)
                 .with(csvSchema)
                 .writeValue(outputStream, csvData)
+            return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
+        }
+
+        /**
+         * Create a ByteStream to be used for Excel Export from CompanyAssociatedData.
+         * @param companyAssociatedData passed companyAssociatedData to be exported
+         * @return InputStreamResource byteStream for export.
+         * Note that swagger only supports InputStreamResources and not OutputStreams
+         */
+        fun <T> buildExcelStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
+            val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
+
+            val csvSchemaAndData = createCsvSchemaAndDataFromJson(jsonTree)
+            val csvSchema = csvSchemaAndData.first
+            val csvData = csvSchemaAndData.second
+            val outputStream = ByteArrayOutputStream()
+
+            val csvDataAsString =
+                "sep=,\n" +
+                    CsvMapper()
+                        .writerFor(Map::class.java)
+                        .with(csvSchema)
+                        .writeValueAsString(csvData)
+            objectMapper.writeValue(outputStream, csvDataAsString)
             return InputStreamResource(ByteArrayInputStream(outputStream.toByteArray()))
         }
 
@@ -74,5 +90,26 @@ class DataExportService
         private fun <T> convertDataToJson(companyAssociatedData: CompanyAssociatedData<T>): JsonNode {
             val companyAssociatedDataJson = objectMapper.writeValueAsString(companyAssociatedData)
             return objectMapper.readTree(companyAssociatedDataJson)
+        }
+
+        /**
+         * Creates the CSV schema and the CSV data used for CSV and Excel Export from JSON object
+         * @param jsonNode The JSON node to create the CSV schema and data from
+         * @return Pair of CsvSchema and a MutableMap<String, String> representing the CSV data
+         */
+        private fun createCsvSchemaAndDataFromJson(jsonNode: JsonNode): Pair<CsvSchema, MutableMap<String, String>> {
+            val headers: List<String> = JsonUtils.getLeafNodeFieldNames(jsonNode)
+            require(headers.isNotEmpty()) { "After filtering, CSV data is empty." }
+
+            val csvData = mutableMapOf<String, String>()
+            val csvSchemaBuilder = CsvSchema.builder()
+
+            headers.forEach {
+                csvData[it] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, it)
+                csvSchemaBuilder.addColumn(it)
+            }
+
+            val csvSchema = csvSchemaBuilder.build().withHeader()
+            return Pair(csvSchema, csvData)
         }
     }

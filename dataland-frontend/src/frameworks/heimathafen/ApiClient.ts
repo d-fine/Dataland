@@ -53,4 +53,12 @@ export class HeimathafenApiClient implements PublicFrameworkDataApi<HeimathafenD
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToCsv(dataId, options);
   }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToExcel(dataId, options);
+  }
 }

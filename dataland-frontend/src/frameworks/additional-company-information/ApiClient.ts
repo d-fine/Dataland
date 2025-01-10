@@ -65,4 +65,12 @@ export class AdditionalCompanyInformationApiClient implements PublicFrameworkDat
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedAdditionalCompanyInformationDataToCsv(dataId, options);
   }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedAdditionalCompanyInformationDataToExcel(dataId, options);
+  }
 }

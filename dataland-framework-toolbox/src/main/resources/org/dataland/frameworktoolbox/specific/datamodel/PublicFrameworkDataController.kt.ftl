@@ -64,6 +64,12 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         return super.exportCompanyAssociatedDataToCsv(dataId)
     }
 
+    @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToExcel")
+    override fun exportCompanyAssociatedDataToExcel(dataId: String):
+        ResponseEntity<InputStreamResource> {
+        return super.exportCompanyAssociatedDataToExcel(dataId)
+    }
+
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,

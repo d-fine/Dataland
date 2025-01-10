@@ -54,6 +54,10 @@ class EsgDatenkatalogDataController(
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToCsv(dataId)
 
+    @Operation(operationId = "exportCompanyAssociatedEsgDatenkatalogDataToExcel")
+    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToExcel(dataId)
+
     @Operation(operationId = "getAllCompanyEsgDatenkatalogData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,

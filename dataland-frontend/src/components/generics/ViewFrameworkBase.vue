@@ -145,7 +145,6 @@ import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue'
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { type AxiosResponse } from 'axios';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',

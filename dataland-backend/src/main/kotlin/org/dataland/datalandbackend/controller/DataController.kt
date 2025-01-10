@@ -148,6 +148,26 @@ abstract class DataController<T>(
             .body(companyAssociatedDataCsv)
     }
 
+    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> {
+        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        this.verifyAccess(metaInfo)
+        val companyId = metaInfo.company.companyId
+        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
+        val companyAssociatedData =
+            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
+
+        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
+
+        val companyAssociatedDataExcel = dataExportService.buildExcelStreamFromCompanyAssociatedData(companyAssociatedData)
+
+        logger.info("Creation of Excel for export successful.")
+
+        return ResponseEntity
+            .ok()
+            .headers(buildHttpHeadersForExport(dataId, ExportFileType.EXCEL))
+            .body(companyAssociatedDataExcel)
+    }
+
     private fun buildHttpHeadersForExport(
         dataId: String,
         exportFileType: ExportFileType,

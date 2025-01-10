@@ -54,6 +54,10 @@ class NuclearAndGasDataController(
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToCsv(dataId)
 
+    @Operation(operationId = "exportCompanyAssociatedNuclearAndGasDataToExcel")
+    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToExcel(dataId)
+
     @Operation(operationId = "getAllCompanyNuclearAndGasData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,

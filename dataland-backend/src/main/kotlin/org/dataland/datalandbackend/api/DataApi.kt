@@ -96,6 +96,29 @@ interface DataApi<T> {
     ): ResponseEntity<InputStreamResource>
 
     /**
+     * A method to export the CompanyAssociatedData for a dataId to Excel
+     * @param dataId identifier used to uniquely identify a dataset
+     * @return Excel of companyAssociatedData in form of InputStreamResource
+     */
+    @Operation(
+        summary = "Export data identified by dataId to Excel.",
+        description = "Export data identified by dataId to Excel.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully exported dataset as Excel file."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}/excel"],
+        produces = ["application/vnd.ms-excel"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    fun exportCompanyAssociatedDataToExcel(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<InputStreamResource>
+
+    /**
      * A method to export the CompanyAssociatedData for a dataId to JSON
      * @param dataId identifier used to uniquely identify a dataset
      * @return JSON of companyAssociatedData in form of InputStreamResource

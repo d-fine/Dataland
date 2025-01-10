@@ -54,6 +54,10 @@ class EutaxonomyNonFinancialsDataController(
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToCsv(dataId)
 
+    @Operation(operationId = "exportCompanyAssociatedEutaxonomyNonFinancialsDataToExcel")
+    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToExcel(dataId)
+
     @Operation(operationId = "getAllCompanyEutaxonomyNonFinancialsData")
     override fun getFrameworkDatasetsForCompany(
         companyId: String,

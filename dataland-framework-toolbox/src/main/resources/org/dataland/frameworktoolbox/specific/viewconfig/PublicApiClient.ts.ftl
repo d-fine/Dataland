@@ -49,4 +49,10 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
     AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataToCsv(dataId, options);
   }
+
+  exportCompanyAssociatedDataToExcel(dataId: string, options?: AxiosRequestConfig):
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataToExcel(dataId, options);
+  }
 }

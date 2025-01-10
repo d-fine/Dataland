@@ -61,4 +61,12 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedEutaxonomyNonFinancialsDataToCsv(dataId, options);
   }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedEutaxonomyNonFinancialsDataToExcel(dataId, options);
+  }
 }

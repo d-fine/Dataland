@@ -60,4 +60,8 @@ class P2pDataController(
     @Operation(operationId = "exportCompanyAssociatedP2pDataToCsv")
     override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
         super.exportCompanyAssociatedDataToCsv(dataId)
+
+    @Operation(operationId = "exportCompanyAssociatedP2pDataToExcel")
+    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToExcel(dataId)
 }
