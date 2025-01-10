@@ -1,9 +1,11 @@
 package org.dataland.datalandbackendutils.utils
 
 import com.fasterxml.jackson.databind.JsonNode
+import org.slf4j.LoggerFactory
 
 object JsonUtils {
     private const val JSON_PATH_SEPARATOR = "."
+    val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Get all leaf node field names from a JSON node.
@@ -19,6 +21,7 @@ object JsonUtils {
         currentPath: String = "",
         ignoreArrays: Boolean = false,
     ): List<String> {
+        logger.info("IgnoreArrays is set to $ignoreArrays")
         val leafNodeFieldNames = mutableListOf<String>()
 
         when {
@@ -27,16 +30,18 @@ object JsonUtils {
                     leafNodeFieldNames.add(currentPath)
                 }
             }
+
             node.isObject -> {
                 node.fields().forEachRemaining { (fieldName, value) ->
                     val newPath = if (currentPath.isEmpty()) fieldName else "$currentPath$JSON_PATH_SEPARATOR$fieldName"
-                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(value, newPath))
+                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(value, newPath, ignoreArrays))
                 }
             }
+
             node.isArray && !ignoreArrays -> {
                 node.elements().withIndex().forEachRemaining { (index, element) ->
                     val newPath = if (currentPath.isEmpty()) "$index" else "$currentPath$JSON_PATH_SEPARATOR$index"
-                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(element, newPath))
+                    leafNodeFieldNames.addAll(getLeafNodeFieldNames(element, newPath, ignoreArrays))
                 }
             }
         }
