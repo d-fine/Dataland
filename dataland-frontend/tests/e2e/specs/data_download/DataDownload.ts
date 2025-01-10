@@ -15,6 +15,7 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
   const reportingPeriod = '2021';
   const dataType = DataTypeEnum.Lksg;
   let lksgFixtureWithNoNullFields: FixtureData<LksgData>;
+  const minumumFileSizeInByte = 5000;
 
   beforeEach(() => {
     cy.fixture('CompanyInformationWithLksgPreparedFixtures').then((jsonContent) => {
@@ -69,8 +70,66 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
     cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
 
     cy.task('getFileSize', filePath).then((size) => {
-      const minimumFileSize = 5000; // in bytes
-      expect(size).to.be.greaterThan(minimumFileSize);
+      expect(size).to.be.greaterThan(minumumFileSizeInByte);
+    });
+
+    cy.task('deleteFile', filePath).then(() => {
+      cy.readFile(filePath).should('not.exist');
+    });
+  });
+
+  it('should download data as csv file ment to open in excel, check for appropriate size and delete it afterwards', () => {
+    const fileFormat = 'json';
+    const fileName = `${dataId}.${fileFormat}`;
+
+    cy.visit(getBaseUrl() + `/companies/${companyId}/frameworks/${dataType}`);
+
+    cy.get('button[data-test=downloadDataButton]').should('exist').click();
+    cy.get('[data-test=downloadModal]')
+      .should('exist')
+      .within(() => {
+        cy.get('[data-test="reportingYearSelector"]').select(reportingPeriod);
+        cy.get('[data-test="formatSelector"]').select(fileFormat);
+        cy.get('button[data-test=downloadDataButtonInModal]').click();
+      });
+
+    const filePath = join(Cypress.config('downloadsFolder'), fileName);
+    cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
+
+    const termToCheck = 'sep=,';
+    cy.task('checkFileContent', { path: filePath, term: termToCheck }).then((isFound) => {
+      expect(isFound).to.be.true;
+    });
+
+    cy.task('getFileSize', filePath).then((size) => {
+      expect(size).to.be.greaterThan(minumumFileSizeInByte);
+    });
+
+    cy.task('deleteFile', filePath).then(() => {
+      cy.readFile(filePath).should('not.exist');
+    });
+  });
+
+  it('should download data as json file, check for appropriate size and delete it afterwards', () => {
+    const fileFormat = 'json';
+    const fileName = `${dataId}.${fileFormat}`;
+
+    cy.visit(getBaseUrl() + `/companies/${companyId}/frameworks/${dataType}`);
+
+    cy.get('button[data-test=downloadDataButton]').should('exist').click();
+    cy.get('[data-test=downloadModal]')
+      .should('exist')
+      .within(() => {
+        cy.get('[data-test="reportingYearSelector"]').select(reportingPeriod);
+        cy.get('[data-test="formatSelector"]').select(fileFormat);
+        cy.get('button[data-test=downloadDataButtonInModal]').click();
+      });
+
+    const filePath = join(Cypress.config('downloadsFolder'), fileName);
+    cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
+
+    cy.task('getFileSize', filePath).then((size) => {
+      expect(size).to.be.greaterThan(minumumFileSizeInByte);
     });
 
     cy.task('deleteFile', filePath).then(() => {
@@ -107,13 +166,3 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
     submitButton.clickButton();
   }
 });
-
-/*
-für json check
-
-    const termToCheck = '[object Object]'
-    cy.task('checkFileContent', {path: filePath, term: termToCheck}).then((isFound) => {
-      expect(isFound).to.be.false;
-    })
-
- */
