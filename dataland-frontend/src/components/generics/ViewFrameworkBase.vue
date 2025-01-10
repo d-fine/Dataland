@@ -447,13 +447,16 @@ export default defineComponent({
         }
 
         let dataResponse;
+        let dataContent;
         let filename = `${dataId}.${selectedFormat}`;
         switch (selectedFormat) {
           case 'csv':
             dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToCsv(dataId);
+            dataContent = dataResponse.data;
             break;
           case 'json':
             dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToJson(dataId);
+            dataContent = JSON.stringify(dataResponse.data);
             break;
         }
 
@@ -461,7 +464,7 @@ export default defineComponent({
           throw new Error(`Retrieving frameworkData for dataId ${dataId} failed.`);
         }
 
-        this.forceFileDownload(dataResponse, filename);
+        this.forceFileDownload(dataContent, filename);
       } catch (error) {
         console.error(error);
       }
@@ -470,11 +473,11 @@ export default defineComponent({
     /**
      * In order to download a file via frontend, it is necessary to create a link, attach the file to it, and click
      * the link to trigger the file download. Afterward, the created element is deleted from the DOM.
-     * @param response response object retrieved from backend
+     * @param content dataContent string to be downloaded to file
      * @param filename name of file to be downloaded
      */
-    forceFileDownload(response: AxiosResponse, filename: string) {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+    forceFileDownload(content: string, filename: string) {
+      const url = window.URL.createObjectURL(new Blob([content]));
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', filename);
