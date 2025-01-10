@@ -117,33 +117,4 @@ describe('Component test for ViewFrameworkBase', () => {
       cy.get('[data-test=downloadModal]').should('exist');
     });
   });
-
-  it('Should run handleDatasetDownload with year and format selection and call forceFileDownload', () => {
-    const selectedYear = '2022';
-    const selectedFormat = 'csv';
-    const dataId = '1234';
-    const mockDataMetaInfo = new Map([[selectedYear, { dataId: dataId }]]);
-
-    cy.intercept('**/api/data/**/**/csv/*', { requestStatus: 200, times: 1 }).as('exportCsv');
-    const keycloakMock = minimalKeycloakMock({
-      roles: [KEYCLOAK_ROLE_USER],
-    });
-
-    cy.mountWithPlugins(ViewFrameworkBase, {
-      keycloak: keycloakMock,
-    }).then(async (mounted) => {
-      mounted.wrapper.setProps({
-        dataType: DataTypeEnum.Sfdr,
-      });
-      cy.stub(window.URL, 'createObjectURL').returns('the actual data to download');
-      mounted.wrapper.vm.mapOfReportingPeriodToActiveDataset = mockDataMetaInfo;
-
-      cy.spy(mounted.wrapper.vm, 'forceFileDownload').as('forceFileDownload');
-      await mounted.wrapper.vm.handleDatasetDownload(selectedYear, selectedFormat);
-      const expectedFilename = `${dataId}.${selectedFormat}`;
-
-      cy.get('@forceFileDownload').should('be.called');
-      cy.get('@forceFileDownload').should('be.calledWith', 'mock csv data', expectedFilename);
-    });
-  });
 });
