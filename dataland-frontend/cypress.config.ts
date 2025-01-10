@@ -135,6 +135,13 @@ export default defineConfig({
         },
       });
 
+      on('task', {
+        async checkFileContent({ path, term }) {
+          const content = await promises.readFile(path, 'utf8');
+          return content.includes(term);
+        },
+      });
+
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',
