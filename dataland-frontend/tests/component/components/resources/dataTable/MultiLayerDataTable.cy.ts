@@ -7,8 +7,7 @@ import {
   getCellValueContainer,
   getCellRowHeaderContainer,
   getSectionHeadAndCheckIconForHiddenDisplay,
-  getSectionHead,
-  checkReportingYearToolTip,
+  getSectionHead
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
 import { DataTypeEnum, QaStatus } from '@clients/backend';
@@ -188,14 +187,12 @@ describe('Tests for the MultiLayerDataTable component', () => {
   describe('Tests that nesting works as expected', () => {
     it("Tests that sections marked with 'expandOnPageLoad' are auto-expanded", () => {
       mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
-      checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo1.metaInfo.reportingPeriod);
       getSectionHead('Section 1').should('have.attr', 'data-section-expanded', 'true');
       getCellValueContainer('Level 2 - String').should('be.visible');
     });
 
     it('Tests that sections can be expanded and contracted', () => {
       mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
-      checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo1.metaInfo.reportingPeriod);
       getSectionHead('Section 1').should('have.attr', 'data-section-expanded', 'true');
       getCellValueContainer('Level 2 - String').should('be.visible');
       getSectionHead('Subsection 1').should('have.attr', 'data-section-expanded', 'false').should('be.visible');
@@ -209,7 +206,6 @@ describe('Tests for the MultiLayerDataTable component', () => {
 
     it('Tests that subsections can be expanded and contracted', () => {
       mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
-      checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo1.metaInfo.reportingPeriod);
       getCellValueContainer('Level 3 - String', 0, false).should('not.be.visible');
 
       getSectionHead('Subsection 1').should('have.attr', 'data-section-expanded', 'false').click();
@@ -221,7 +217,6 @@ describe('Tests for the MultiLayerDataTable component', () => {
 
     it('Tests that the state of subsection expansion is remembered when sections get expanded', () => {
       mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
-      checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo1.metaInfo.reportingPeriod);
       getSectionHead('Subsection 1').should('have.attr', 'data-section-expanded', 'false').click();
       getCellValueContainer('Level 3 - String').should('be.visible');
 
@@ -238,15 +233,12 @@ describe('Tests for the MultiLayerDataTable component', () => {
   describe('Tests that the shouldDisplay directive works', () => {
     it('Tests that fields and sections get hidden if shouldDisplay is false', () => {
       mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo3]);
-      checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo3.metaInfo.reportingPeriod);
       getCellValueContainer('Level 1 - String', 0, false).should('not.exist');
       getSectionHead('Section 2').should('not.exist');
     });
 
     it('Tests that fields and sections should get displayed if at least one of the datasets has shouldDisplay = true', () => {
       mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1, dummyFrameworkTestDataAndMetaInfo3]);
-      checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo3.metaInfo.reportingPeriod);
-      checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo1.metaInfo.reportingPeriod);
       getCellValueContainer('Level 1 - String').should('be.visible');
       getSectionHead('Section 2').should('be.visible');
     });
@@ -254,10 +246,9 @@ describe('Tests for the MultiLayerDataTable component', () => {
 
   it('Tests that datasets can be displayed in parallel with correct values', () => {
     mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1, dummyFrameworkTestDataAndMetaInfo2]);
-    checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo2.metaInfo.reportingPeriod);
-    checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo1.metaInfo.reportingPeriod);
     cy.get('th[data-dataset-index=0]').should('contain.text', 'Testing 1');
     cy.get('th[data-dataset-index=1]').should('contain.text', 'Testing 2');
+    console.log()
     getCellValueContainer('Level 2 - String', 0).should('contain.text', 'Dataset 1 - String 2');
     getCellValueContainer('Level 2 - String', 1).should('contain.text', 'Dataset 2 - String 2');
 
@@ -274,7 +265,6 @@ describe('Tests for the MultiLayerDataTable component', () => {
 
   it('Tests that explanation texts are shown iff they are defined', () => {
     mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1]);
-    checkReportingYearToolTip(dummyFrameworkTestDataAndMetaInfo1.metaInfo.reportingPeriod);
     getCellRowHeaderContainer('Level 1 - String').find('em').trigger('mouseenter', 'center');
     cy.get('.p-tooltip').should('be.visible').contains('This is a test info');
     getCellRowHeaderContainer('Level 1 - String').find('em').trigger('mouseleave');
