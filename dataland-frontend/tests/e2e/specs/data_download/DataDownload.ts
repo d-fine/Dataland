@@ -1,4 +1,3 @@
-import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
 import { join } from 'path';
 import { type DataMetaInformation, DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress.ts';
@@ -16,8 +15,6 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
   const reportingPeriod = '2021';
   const dataType = DataTypeEnum.Lksg;
   let lksgFixtureWithNoNullFields: FixtureData<LksgData>;
-  let token: string;
-  let uploadedCompany: StoredCompany;
 
   beforeEach(() => {
     cy.fixture('CompanyInformationWithLksgPreparedFixtures').then((jsonContent) => {
