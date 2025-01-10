@@ -2,8 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
-import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.CompanyRoleAssignmentRepository
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -47,7 +46,7 @@ class SecurityUtilsService(
     /**
      * Returns true if and only if the currently authenticated user is asking for his/her own request
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun isUserAskingForOwnRequest(requestId: UUID): Boolean {
         val userIdOfRequest = dataRequestRepository.findById(requestId.toString()).get().userId
         val userIdRequester = SecurityContextHolder.getContext().authentication.name
@@ -59,7 +58,7 @@ class SecurityUtilsService(
      * This is the case when the request is to be changed from answered to either closed or open
      * or if the status is changed to withdrawn.
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun isRequestStatusChangeableByUser(
         requestId: UUID,
         requestStatusToPatch: RequestStatus?,
@@ -88,7 +87,7 @@ class SecurityUtilsService(
      * This is the case when no contacts are provided or
      * the request status is open or answered and patched to open as well
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun isRequestMessageHistoryChangeableByUser(
         requestId: UUID,
         requestStatusToPatch: RequestStatus?,
@@ -169,36 +168,60 @@ class SecurityUtilsService(
         }
 
     /**
-     * Returns true if the user is not trying to patch the arguments
-     * @param accessStatus the accessStatus of the patch
-     * @param requestPriority the requestPriority of the patch
-     * @param adminComment the adminComment of the patch
+     * Returns true if all passed parameters are null, otherwise false.
      *
+     * @param parameters A vararg list of function parameters
+     * @return whether any of the provided parameters is not null
      */
-    fun isNotTryingToPatch(
-        accessStatus: AccessStatus?,
-        requestPriority: RequestPriority?,
-        adminComment: String?,
-    ): Boolean = accessStatus == null && requestPriority == null && adminComment == null
+    fun areAllParametersUnset(vararg parameters: Any?): Boolean =
+        parameters.all {
+            when (it) {
+                is String -> it.isNullOrBlank()
+                is Collection<*> -> it.isNullOrEmpty()
+                else -> it == null
+            }
+        }
 
     /**
-     * Returns true if user is not trying to patch any of the arguments
-     * @param requestStatus the request status of the patch request
-     * @param contacts the contacts of the patch request
-     * @param message the message of the patch request
-     * @param requestPriority the requestPriority of the patch
-     * @param adminComment the adminComment of the patch request
+     * Returns true if the user is allowed to patch given the passed request body
+     * @param dataRequestID
+     * @param dataRequestPatch
      */
-    fun isNotTryingToPatch(
-        requestStatus: RequestStatus?,
-        contacts: Set<String>?,
-        message: String?,
-        requestPriority: RequestPriority?,
-        adminComment: String?,
+    @Transactional(readOnly = true)
+    fun canUserPatchDataRequest(
+        dataRequestID: UUID,
+        dataRequestPatch: DataRequestPatch,
     ): Boolean {
-        val isNotTryingToPatchStatusContactsMessage =
-            requestStatus == null && contacts.isNullOrEmpty() && message.isNullOrBlank()
-        val isNotTryingToPatchPriorityAdminComment = requestPriority == null && adminComment == null
-        return isNotTryingToPatchStatusContactsMessage && isNotTryingToPatchPriorityAdminComment
+        val isOwnRequest = isUserAskingForOwnRequest(dataRequestID)
+        val requestStatusChangeable = isRequestStatusChangeableByUser(dataRequestID, dataRequestPatch.requestStatus)
+        val notPatchingStatusPriorityComment =
+            areAllParametersUnset(
+                dataRequestPatch.accessStatus,
+                dataRequestPatch.requestPriority,
+                dataRequestPatch.adminComment,
+            )
+        val messageHistoryChangeable =
+            isRequestMessageHistoryChangeableByUser(
+                dataRequestID,
+                dataRequestPatch.requestStatus,
+                dataRequestPatch.contacts,
+                dataRequestPatch.message,
+            )
+
+        val ownRequestPatchAllowed = (
+            isOwnRequest && requestStatusChangeable && notPatchingStatusPriorityComment && messageHistoryChangeable
+        )
+
+        val isCompanyOwner = isUserCompanyOwnerForRequestId(dataRequestID.toString())
+        val pathingOnlyAccessStatus =
+            areAllParametersUnset(
+                dataRequestPatch.requestStatus,
+                dataRequestPatch.contacts,
+                dataRequestPatch.message,
+                dataRequestPatch.requestPriority,
+                dataRequestPatch.adminComment,
+            )
+
+        return ownRequestPatchAllowed || (isCompanyOwner && pathingOnlyAccessStatus)
     }
 }
