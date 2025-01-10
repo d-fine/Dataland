@@ -313,7 +313,7 @@ export default defineComponent({
       storedDataRequest: {} as StoredDataRequest,
       companyName: '',
       showNewMessageDialog: false,
-      emailContacts: undefined as Set<string> | undefined,
+      emailContacts: undefined as string[] | undefined,
       emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
       reopenMessageError: false,
@@ -344,7 +344,7 @@ export default defineComponent({
      * @param contacts email addresses
      * @param message the content
      */
-    updateEmailFields(hasValidForm: boolean, contacts: Set<string>, message: string) {
+    updateEmailFields(hasValidForm: boolean, contacts: string[], message: string) {
       this.hasValidEmailForm = hasValidForm;
       this.emailContacts = contacts;
       this.emailMessage = message;
@@ -494,7 +494,8 @@ export default defineComponent({
           this.requestId,
           undefined,
           undefined,
-          this.emailContacts,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          this.emailContacts as unknown as Set<string>,
           this.emailMessage,
           undefined,
           this.getKeycloakPromise
