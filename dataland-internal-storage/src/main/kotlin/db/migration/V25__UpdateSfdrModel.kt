@@ -1,6 +1,7 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
+import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
@@ -58,17 +59,16 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
         val socialObject = dataset.optJSONObject("social") ?: return
         val socialAndEmployeeMattersObject = socialObject.optJSONObject("socialAndEmployeeMatters") ?: return
 
-        val excessiveCeoPayRatioInPercentValue = socialAndEmployeeMattersObject.remove(excessiveCeoPayRatioInPercentKey)
-        val ceoToEmployeePayGapRatioValue = socialAndEmployeeMattersObject.remove(ceoToEmployeePayGapRatioKey)
+        val applicableExcessiveCeoPayRatioInPercentObject = socialAndEmployeeMattersObject.getOrJavaNull(excessiveCeoPayRatioInPercentKey)
+        socialAndEmployeeMattersObject.remove(excessiveCeoPayRatioInPercentKey)
 
-        // how to extract value?
-        val excessiveCeoPayRatioInPercentIsNumber = excessiveCeoPayRatioInPercentValue is Number
-        val ceoToEmployeePayGapRatioValueisNumber = ceoToEmployeePayGapRatioValue is Number
+        val applicableCeoToEmployeePayGapRatioObject = socialAndEmployeeMattersObject.getOrJavaNull(ceoToEmployeePayGapRatioKey)
+        socialAndEmployeeMattersObject.remove(ceoToEmployeePayGapRatioKey)
 
         val newValue =
             when {
-                excessiveCeoPayRatioInPercentIsNumber -> excessiveCeoPayRatioInPercentValue
-                ceoToEmployeePayGapRatioValueisNumber -> ceoToEmployeePayGapRatioValue
+                (applicableExcessiveCeoPayRatioInPercentObject != null) -> applicableExcessiveCeoPayRatioInPercentObject
+                (applicableCeoToEmployeePayGapRatioObject != null) -> applicableCeoToEmployeePayGapRatioObject
                 else -> null
             }
 
