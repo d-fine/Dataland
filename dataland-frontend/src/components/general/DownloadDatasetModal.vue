@@ -79,7 +79,7 @@ export default defineComponent({
   data() {
     return {
       reportingPeriods: [] as Array<string>,
-      fileFormats: ['csv', 'json'],
+      fileFormats: ['Comma-separated values (.csv)', 'Excel (.xlsx)', 'JavaScript Object Notation (.json)'],
       selectedReportingPeriod: '',
       selectedFileFormat: '',
       isModalVisible: false,

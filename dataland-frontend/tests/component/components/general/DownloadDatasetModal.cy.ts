@@ -8,7 +8,7 @@ describe('Component test for DownloadDatasetModal', () => {
       data() {
         return {
           reportingPeriods: ['2022', '2023'],
-          fileFormats: ['csv', 'json'],
+          fileFormats: ['Comma-separated values (.csv)', 'Excel (.xlsx)', 'JavaScript Object Notation (.json)'],
           selectedReportingPeriod: '',
           selectedFileFormat: '',
           isModalVisible: true,
@@ -29,7 +29,7 @@ describe('Component test for DownloadDatasetModal', () => {
       cy.get('p[data-test=fileFormatError]').should('be.visible').and('contain.text', 'Please select a file format.');
 
       cy.get('[data-test="reportingYearSelector"]').select('2022');
-      cy.get('[data-test="formatSelector"]').select('json');
+      cy.get('[data-test="formatSelector"]').select('JavaScript Object Notation (.json)');
       cy.get('button[data-test=downloadDataButtonInModal]').click();
       cy.get('[data-test=downloadModal]').should('not.exist');
     });

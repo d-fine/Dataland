@@ -453,6 +453,10 @@ export default defineComponent({
             dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToCsv(dataId);
             dataContent = dataResponse.data;
             break;
+          case 'xlsx':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToExcel(dataId);
+            dataContent = dataResponse.data;
+            break;
           case 'json':
             dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToJson(dataId);
             dataContent = JSON.stringify(dataResponse.data);
