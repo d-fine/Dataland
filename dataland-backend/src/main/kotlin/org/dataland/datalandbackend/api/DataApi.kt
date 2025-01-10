@@ -75,7 +75,7 @@ interface DataApi<T> {
     /**
      * A method to export the CompanyAssociatedData for a dataId to CSV
      * @param dataId identifier used to uniquely identify a dataset
-     * @return
+     * @return CSV of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
         summary = "Export data identified by dataId to CSV.",
@@ -98,7 +98,7 @@ interface DataApi<T> {
     /**
      * A method to export the CompanyAssociatedData for a dataId to JSON
      * @param dataId identifier used to uniquely identify a dataset
-     * @return
+     * @return JSON of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
         summary = "Export data identified by dataId to JSON.",
