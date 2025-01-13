@@ -693,7 +693,8 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-      - loki_data:/var/lib/loki/data
+      - /mnt/mybtrfs/dataland-loki-data:/loki
+#      - ./dataland-loki/dataland_loki_data:/loki
     networks:
       - loki
     logging:
@@ -757,23 +758,5 @@ volumes:
     driver: local
   grafana_data:
     driver: local
-#  test_grafana_data:
-#    driver: local
-#  pgadmin_config:
-#    driver: local
-#  loki_data:
-#    driver: local
-#  dataland_loki_data:
-  loki_data:
-    driver: local
-#    driver_opts:
-#      type: none
-#      o: bind
-#      size: 10k
-##      device: ${DATALAND_HOST_DATA_DIR}dataland-loki-data
-#      device: \\wsl$\Ubuntu\mnt\restricted_folder
   alloy_data:
     driver: local
-
-#x-project:
-#  name: dataland
