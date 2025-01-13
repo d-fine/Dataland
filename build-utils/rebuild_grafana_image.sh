@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+echo "{\"commit\":\"$(git rev-parse HEAD)\",\"time\":\"$(git show -s --format=%aI HEAD)\",\"branch\":\"$(git rev-parse --abbrev-ref HEAD)\"}" > gitinfo
+dependencies="./dataland-grafana/ ./gitinfo ./environments/.env.uncritical ./versions.properties /etc/grafana"
+
+./build-utils/base_rebuild_single_docker_image.sh dataland_grafana ./dataland-grafana/Dockerfile $dependencies
