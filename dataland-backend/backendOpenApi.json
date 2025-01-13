@@ -2412,9 +2412,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -2471,7 +2471,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -2725,9 +2725,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -2784,7 +2784,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -3038,9 +3038,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -3097,7 +3097,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -3351,9 +3351,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -3410,7 +3410,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -3664,9 +3664,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -3723,7 +3723,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -3977,9 +3977,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -4036,7 +4036,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -4290,9 +4290,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -4349,7 +4349,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -4603,9 +4603,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -4662,7 +4662,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -4916,9 +4916,9 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as Excel file.",
+            "description": "Successfully exported dataset as Excel-compatible CSV file.",
             "content": {
-              "application/vnd.ms-excel": {
+              "text/csv": {
                 "schema": {
                   "type": "string",
                   "format": "binary"
@@ -4975,7 +4975,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully exported dataset as CSV file.",
+            "description": "Successfully exported dataset as plain CSV file.",
             "content": {
               "text/csv": {
                 "schema": {
@@ -20125,6 +20125,10 @@
         ],
         "type": "object",
         "properties": {
+          "lei": {
+            "type": "string",
+            "nullable": true
+          },
           "companyName": {
             "type": "string"
           },
@@ -20138,10 +20142,6 @@
             "type": "string"
           },
           "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "lei": {
             "type": "string",
             "nullable": true
           }
