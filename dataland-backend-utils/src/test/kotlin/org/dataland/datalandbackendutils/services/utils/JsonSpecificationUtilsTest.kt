@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class JsonSpecificationUtilsTest {
-    private val objectmapper = jacksonObjectMapper()
+    private val objectMapper = jacksonObjectMapper()
     private val demoSpecification =
-        objectmapper.readTree(
+        objectMapper.readTree(
             """
         {
             "field": {
@@ -36,16 +36,16 @@ class JsonSpecificationUtilsTest {
 
     private val demoValueMap =
         mapOf(
-            "field1" to objectmapper.readTree("""{"value": "field1"}"""),
-            "groupfield" to objectmapper.readTree("12"),
-            "subgroupfield" to objectmapper.readTree("\"test\""),
+            "field1" to objectMapper.readTree("""{"value": "field1"}"""),
+            "groupfield" to objectMapper.readTree("12"),
+            "subgroupfield" to objectMapper.readTree("\"test\""),
         )
 
     @Test
     fun `hydration should work for a simple specification`() {
         val hydrated = JsonSpecificationUtils.hydrateJsonSpecification(demoSpecification) { demoValueMap[it] }
         val expected =
-            objectmapper.readTree(
+            objectMapper.readTree(
                 """
                 {
                     "field": {"value": "field1"},
@@ -66,7 +66,7 @@ class JsonSpecificationUtilsTest {
                 if (it == "subgroupfield") null else demoValueMap[it]
             }
         val expected =
-            objectmapper.readTree(
+            objectMapper.readTree(
                 """
                 {
                     "field": {"value": "field1"},
@@ -100,10 +100,10 @@ class JsonSpecificationUtilsTest {
     @Test
     fun `dehydration should fail on unexpected inputs`() {
         val unexpectedInput =
-            objectmapper.readTree(
+            objectMapper.readTree(
                 """
                 {
-                    "unexpectedGreeting": "Hello from Marc ;)"
+                    "unexpectedGreeting": "Hello!"
                 }
                 """.trimIndent(),
             )
