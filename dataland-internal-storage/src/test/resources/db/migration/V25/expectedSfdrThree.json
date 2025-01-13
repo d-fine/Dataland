@@ -378,7 +378,7 @@
                 "quality": "Estimated",
                 "value": 30.7
             },
-            "ceoToEmployeePayGapRatio": {
+            "excessiveCeoPayRatio": {
                 "comment": "The ratio of the annual total compensation for the highest-paid individual (CEO) to the median annual total compensation amount of all employees (excluding the highest-paid individual) is referred to as the CEO pay ratio. The CEO pay ratio for the last few years is as follows:\n\n- 2023: 42.3\n- 2022: 47.2\n- 2021: 44.5\n- 2020: 39.26\n\nThis information is taken from the OCI N.V. Annual Report 2023.",
                 "dataSource": {
                     "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
@@ -412,7 +412,6 @@
                 "quality": "Reported",
                 "value": "Yes"
             },
-            "excessiveCeoPayRatioInPercent": null,
             "fairBusinessMarketingAdvertisingPolicy": {
                 "comment": "Yes, OCI N.V. has implemented guidelines and procedures to adopt fair business, marketing, and advertising practices and to ensure the safety and quality of goods and services. This information can be found in the document \"oci-nv-code-of-conduct.pdf\".",
                 "dataSource": {
@@ -557,7 +556,7 @@
                 "quality": "Reported",
                 "value": "Yes"
             },
-            "rateOfAccidents": null,
+            "rateOfAccidentsInPercent": null,
             "reportedIncidentsOfDiscrimination": null,
             "sanctionedIncidentsOfDiscrimination": null,
             "supplierCodeOfConduct": {

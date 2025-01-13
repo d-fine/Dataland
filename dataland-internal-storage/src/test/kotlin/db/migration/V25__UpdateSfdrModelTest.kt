@@ -26,12 +26,12 @@ class V25__UpdateSfdrModelTest {
     }
 
     @Test
-    fun `check rate of accidents migration for SFDR three`() {
+    fun `check excessive ceo pay gap ratio migration for SFDR three`() {
         TestUtils().testMigrationOfSingleDataset(
             "sfdr",
             "V25/originalSfdrThree.json",
             "V25/expectedSfdrThree.json",
-            V25__UpdateSfdrModel()::migrateRateOfAccidents,
+            V25__UpdateSfdrModel()::migrateExcessiveCeoPayGapRatio,
         )
     }
 
@@ -41,16 +41,6 @@ class V25__UpdateSfdrModelTest {
             "sfdr",
             "V25/originalSfdrFour.json",
             "V25/expectedSfdrFour.json",
-            V25__UpdateSfdrModel()::migrateExcessiveCeoPayGapRatio,
-        )
-    }
-
-    @Test
-    fun `check excessive ceo pay gap ratio migration for SFDR five`() {
-        TestUtils().testMigrationOfSingleDataset(
-            "sfdr",
-            "V25/originalSfdrFive.json",
-            "V25/expectedSfdrFive.json",
             V25__UpdateSfdrModel()::migrateExcessiveCeoPayGapRatio,
         )
     }

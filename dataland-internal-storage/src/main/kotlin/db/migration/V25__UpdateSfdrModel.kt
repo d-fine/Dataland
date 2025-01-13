@@ -1,10 +1,10 @@
 package db.migration
 
 import db.migration.utils.DataTableEntity
-import db.migration.utils.getOrJavaNull
 import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
+import org.json.JSONObject
 
 /**
  * This migration script updates all sfdr datasets to match the new sfdr data model.
@@ -59,21 +59,29 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
         val socialObject = dataset.optJSONObject("social") ?: return
         val socialAndEmployeeMattersObject = socialObject.optJSONObject("socialAndEmployeeMatters") ?: return
 
-        val applicableExcessiveCeoPayRatioInPercentObject = socialAndEmployeeMattersObject.getOrJavaNull(excessiveCeoPayRatioInPercentKey)
-        socialAndEmployeeMattersObject.remove(excessiveCeoPayRatioInPercentKey)
+        val excessiveCeoPayRatioInPercentValue = socialAndEmployeeMattersObject.remove(excessiveCeoPayRatioInPercentKey) as? JSONObject
+        val ceoToEmployeePayGapRatioValue = socialAndEmployeeMattersObject.remove(ceoToEmployeePayGapRatioKey) as? JSONObject
 
-        val applicableCeoToEmployeePayGapRatioObject = socialAndEmployeeMattersObject.getOrJavaNull(ceoToEmployeePayGapRatioKey)
-        socialAndEmployeeMattersObject.remove(ceoToEmployeePayGapRatioKey)
+        if (excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue == null) {
+            socialAndEmployeeMattersObject.put(newKey, excessiveCeoPayRatioInPercentValue)
+        }
 
-        val newValue =
-            when {
-                (applicableExcessiveCeoPayRatioInPercentObject != null) -> applicableExcessiveCeoPayRatioInPercentObject
-                (applicableCeoToEmployeePayGapRatioObject != null) -> applicableCeoToEmployeePayGapRatioObject
-                else -> null
+        if (excessiveCeoPayRatioInPercentValue == null && ceoToEmployeePayGapRatioValue != null) {
+            socialAndEmployeeMattersObject.put(newKey, ceoToEmployeePayGapRatioValue)
+        }
+
+        if (excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue != null) {
+            if (ceoToEmployeePayGapRatioValue.has("value")) {
+                socialAndEmployeeMattersObject.put(newKey, ceoToEmployeePayGapRatioValue)
+            } else if (excessiveCeoPayRatioInPercentValue.has("value")) {
+                socialAndEmployeeMattersObject.put(newKey, excessiveCeoPayRatioInPercentValue)
+            } else {
+                socialAndEmployeeMattersObject.put(newKey, ceoToEmployeePayGapRatioValue)
             }
+        }
 
-        socialAndEmployeeMattersObject.put(newKey, newValue)
-
-        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+        if (excessiveCeoPayRatioInPercentValue != null || ceoToEmployeePayGapRatioValue != null) {
+            dataTableEntity.companyAssociatedData.put("data", dataset.toString())
+        }
     }
 }
