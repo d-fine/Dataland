@@ -693,8 +693,8 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-      - /mnt/mybtrfs/dataland-loki-data:/loki
-#      - ./dataland-loki/dataland_loki_data:/loki
+#      - /mnt/mybtrfs/dataland-loki-data:/loki
+      - ./dataland-loki/dataland_loki_data:/loki
     networks:
       - loki
     logging:
