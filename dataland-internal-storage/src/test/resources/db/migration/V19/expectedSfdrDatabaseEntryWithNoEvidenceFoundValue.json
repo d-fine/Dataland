@@ -888,7 +888,7 @@
         "comment": "calculate wireless array",
         "quality": null
       },
-      "rateOfAccidents": {
+      "rateOfAccidentsInPercent": {
         "value": 62.62,
         "dataSource": {
           "page": 815,
