@@ -34,7 +34,7 @@
         type="select"
         name="formatSelector"
         data-test="formatSelector"
-        :options="fileFormats"
+        :options="fileTypeSelectionOptions"
         placeholder="Select a file format"
       />
       <p v-show="showFileFormatError" class="text-danger text-xs" data-test="fileFormatError">
@@ -59,7 +59,8 @@
 import { defineComponent, type PropType } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
-import { type DataMetaInformation } from '@clients/backend';
+import type { DataMetaInformation } from '@clients/backend';
+import { ExportFileTypes, type FileType } from '@/types/ExportFileTypes.ts';
 
 export default defineComponent({
   components: { PrimeDialog, PrimeButton },
@@ -79,13 +80,22 @@ export default defineComponent({
   data() {
     return {
       reportingPeriods: [] as Array<string>,
-      fileFormats: ['Comma-separated values (.csv)', 'Excel (.xlsx)', 'JavaScript Object Notation (.json)'],
+      exportFileTypes: [ExportFileTypes.CsvFile, ExportFileTypes.ExcelFile, ExportFileTypes.JsonFile],
       selectedReportingPeriod: '',
       selectedFileFormat: '',
       isModalVisible: false,
       showReportingPeriodError: false,
       showFileFormatError: false,
     };
+  },
+
+  computed: {
+    fileTypeSelectionOptions() {
+      return Object.values(this.exportFileTypes).map((fileType: FileType) => ({
+        value: fileType.fileExtension,
+        label: `${fileType.description} (.${fileType.fileExtension})`,
+      }));
+    },
   },
 
   watch: {

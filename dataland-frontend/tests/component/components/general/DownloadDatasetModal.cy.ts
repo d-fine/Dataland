@@ -1,6 +1,7 @@
 //@ts-nocheck
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
+import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 
 describe('Component test for DownloadDatasetModal', () => {
   it('DownloadDatasetModal component works correctly', () => {
@@ -8,7 +9,7 @@ describe('Component test for DownloadDatasetModal', () => {
       data() {
         return {
           reportingPeriods: ['2022', '2023'],
-          fileFormats: ['Comma-separated values (.csv)', 'Excel (.xlsx)', 'JavaScript Object Notation (.json)'],
+          exportFileTypes = [ExportFileTypes.CsvFile, ExportFileTypes.ExcelFile, ExportFileTypes.JsonFile],
           selectedReportingPeriod: '',
           selectedFileFormat: '',
           isModalVisible: true,

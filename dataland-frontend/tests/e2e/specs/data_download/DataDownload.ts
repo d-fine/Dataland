@@ -10,12 +10,13 @@ import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils.ts';
 
 describe('As a user, I want to be able to download datasets from Dataland', () => {
-  let dataId: string;
-  let companyId: string;
   const reportingPeriod = '2021';
   const dataType = DataTypeEnum.Lksg;
+  const minimumFileSizeInByte = 5000;
+
+  let dataId: string;
+  let companyId: string;
   let lksgFixtureWithNoNullFields: FixtureData<LksgData>;
-  const minumumFileSizeInByte = 5000;
 
   beforeEach(() => {
     cy.fixture('CompanyInformationWithLksgPreparedFixtures').then((jsonContent) => {
@@ -70,7 +71,7 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
     cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
 
     cy.task('getFileSize', filePath).then((size) => {
-      expect(size).to.be.greaterThan(minumumFileSizeInByte);
+      expect(size).to.be.greaterThan(minimumFileSizeInByte);
     });
 
     cy.task('deleteFile', filePath).then(() => {
@@ -102,7 +103,7 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
     });
 
     cy.task('getFileSize', filePath).then((size) => {
-      expect(size).to.be.greaterThan(minumumFileSizeInByte);
+      expect(size).to.be.greaterThan(minimumFileSizeInByte);
     });
 
     cy.task('deleteFile', filePath).then(() => {
@@ -129,7 +130,7 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
     cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
 
     cy.task('getFileSize', filePath).then((size) => {
-      expect(size).to.be.greaterThan(minumumFileSizeInByte);
+      expect(size).to.be.greaterThan(minimumFileSizeInByte);
     });
 
     cy.task('deleteFile', filePath).then(() => {
@@ -138,7 +139,7 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
   });
 
   /**
-   * Defines interceps and submits data on the lksg upload for the lksg blanket test
+   * Defines intercepts and submits data on the LkSG upload for the LkSG blanket test
    * @param storedCompany stored company information
    * @param dataMetaInformation meta data information
    * @param testCompanyName name of the company
