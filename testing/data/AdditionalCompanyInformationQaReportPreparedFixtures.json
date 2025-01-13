@@ -3,67 +3,67 @@
 		"general": {
 			"general": {
 				"referencedReports": {
-					"IntegratedReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "IntegratedReport",
-						"publicationDate": "2023-03-24"
+					"ESEFReport": {
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-02-20"
 					},
 					"AnnualReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 						"fileName": "AnnualReport",
-						"publicationDate": "2023-05-13"
+						"publicationDate": "2023-04-02"
 					},
 					"SustainabilityReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
 						"fileName": "SustainabilityReport",
-						"publicationDate": "2023-06-29"
+						"publicationDate": "2023-11-07"
 					},
-					"ESEFReport": {
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"fileName": "ESEFReport",
-						"publicationDate": "2023-02-06"
+					"IntegratedReport": {
+						"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
+						"fileName": "IntegratedReport",
+						"publicationDate": "2023-04-18"
 					}
 				}
 			},
 			"financialInformation": {
 				"equity": {
-					"value": 6334094591.44,
+					"value": 8977719456.89,
 					"dataSource": {
-						"page": "830",
-						"fileName": "IntegratedReport",
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "e-business",
+						"page": "270",
+						"fileName": "SustainabilityReport",
+						"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+						"tagName": "convergence",
 						"publicationDate": null
 					},
-					"comment": "calculate redundant monitor",
-					"quality": "Incomplete",
-					"currency": "CRC"
-				},
-				"debt": {
-					"value": 7493476124.95,
-					"dataSource": {
-						"page": "1094",
-						"fileName": "ESEFReport",
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "networks",
-						"publicationDate": null
-					},
-					"comment": "generate mobile pixel",
+					"comment": "hack cross-platform array",
 					"quality": "Estimated",
 					"currency": "CDF"
 				},
-				"evic": {
-					"value": 5121667243.07,
+				"debt": {
+					"value": 5772355287.34,
 					"dataSource": {
-						"page": "1026",
+						"page": "42",
 						"fileName": "AnnualReport",
-						"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-						"tagName": "architectures",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "channels",
 						"publicationDate": null
 					},
-					"comment": "navigate virtual system",
+					"comment": "override open-source alarm",
 					"quality": "Audited",
-					"currency": "ILS"
+					"currency": "MRU"
+				},
+				"evic": {
+					"value": 6546095784.29,
+					"dataSource": {
+						"page": "716-1240",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "action-items",
+						"publicationDate": null
+					},
+					"comment": "bypass multi-byte transmitter",
+					"quality": "Reported",
+					"currency": "AWG"
 				}
 			}
 		}
@@ -85,17 +85,17 @@
 					"verdict": "QaRejected",
 					"comment": "EVIC is not correct",
 					"correctedData": {
-						"value": 8778058944.74,
+						"value": 3353245491.16,
 						"dataSource": {
-							"page": "526-1268",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems",
+							"page": "443-588",
+							"fileName": "IntegratedReport",
+							"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0",
+							"tagName": "networks",
 							"publicationDate": null
 						},
-						"comment": "navigate multi-byte array",
-						"quality": "Incomplete",
-						"currency": "BAM"
+						"comment": "override optical pixel",
+						"quality": "Audited",
+						"currency": "ISK"
 					}
 				}
 			}

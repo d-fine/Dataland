@@ -36,30 +36,16 @@
 		"t": {
 			"allgemein": {
 				"datum": {
-					"gueltigkeitsdatum": "2024-08-19"
+					"gueltigkeitsdatum": "2024-07-10"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategieVorhanden": "Yes",
+					"nachhaltigkeitsstrategieVorhanden": "No",
 					"dokumenteZurNachhaltigkeitsstrategie": [
-						{
-							"value": "mindshare",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
 						{
 							"value": "initiatives",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "users",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 							}
 						},
 						{
@@ -68,106 +54,108 @@
 						}
 					],
 					"massnahmenZurErreichungDes15GradCelsiusZiels": "Yes",
-					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Hic communis cultellus deorsum apostolus cura trans. Uberrime comis caelum molestiae causa demergo eius carpo capillus suscipio. Textor comes delectus cibus.",
-					"zugewieseneBudgetsBis2030": 17158.93,
-					"zugewieseneBudgetsAb2031": 48677.33,
-					"erwarteterFinanzierungsbedarfBis2030": 59779.25,
-					"erwarteterFinanzierungsbedarfAb2031": 81259.4,
-					"geplanteVollzeitaequivalenteBis2023": 88081.06,
-					"geplanteVollzeitaequivalenteAb2031": 43253.93,
-					"chancenOderHindernisse": "Sulum ventus caute deorsum infit. Ocer accedo animus verto facilis ventito annus thesis ultio bibo. Taedium sunt sustineo degusto crur iusto caecus."
+					"skizzierungVonMassnahmenZurErreichungDes15GradCelsiusZiels": "Aufero paens hic communis cultellus deorsum. Cura trans vulnus uberrime. Caelum molestiae causa demergo eius.",
+					"zugewieseneBudgetsBis2030": 24874.05,
+					"zugewieseneBudgetsAb2031": 23694.92,
+					"erwarteterFinanzierungsbedarfBis2030": 72764.57,
+					"erwarteterFinanzierungsbedarfAb2031": 16203.05,
+					"geplanteVollzeitaequivalenteBis2023": 79220.55,
+					"geplanteVollzeitaequivalenteAb2031": 31677.57,
+					"chancenOderHindernisse": "Cibus astrum depono patrocinor tonsor utrum. Coepi sulum ventus caute deorsum infit. Ocer accedo animus verto facilis ventito annus thesis ultio bibo."
 				},
 				"taxonomieKpisUndBestimmteAktivitaeten": {
 					"wirtschaftszweige": [
-						"32.1"
+						"61.30",
+						"63.12",
+						"64.3"
 					],
-					"gesamtumsatz": 49449.13,
-					"taxonomiefaehigerUmsatz": 99641.71,
-					"taxonomiekonformerUmsatz": 88014.88,
-					"anteilTaxonomiefaehigerUmsatz": 14.1,
-					"anteilTaxonomiekonformerUmsatz": 56.55,
-					"gesamtCapex": 42564.78,
-					"taxonomiefaehigeCapex": 95025.62,
-					"taxonomiekonformeCapex": 94135.98,
-					"anteilTaxonomiefaehigerCapex": 20.07,
-					"anteilTaxonomiekonformerCapex": 42.04,
+					"gesamtumsatz": 46121.52,
+					"taxonomiefaehigerUmsatz": 39524.53,
+					"taxonomiekonformerUmsatz": 55725.69,
+					"anteilTaxonomiefaehigerUmsatz": 22.4,
+					"anteilTaxonomiekonformerUmsatz": 30.83,
+					"gesamtCapex": 41168.24,
+					"taxonomiefaehigeCapex": 49449.13,
+					"taxonomiekonformeCapex": 99641.71,
+					"anteilTaxonomiefaehigerCapex": 88.02,
+					"anteilTaxonomiekonformerCapex": 14.1,
 					"taxonomiebezogeneCapexPlanung": "Yes",
-					"geplanteTaxonomiefaehigeCapexIn5Jahren": 12.88,
-					"geplanteTaxonomiekonformeCapexIn5Jahren": 98.74,
+					"geplanteTaxonomiefaehigeCapexIn5Jahren": 42.56,
+					"geplanteTaxonomiekonformeCapexIn5Jahren": 95.03,
 					"aktivitaetImSektorFossileBrennstoffe": "Yes",
-					"aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe": 70.41,
-					"geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030": 58.86,
-					"geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040": 97.98,
+					"aktuellerProzentualerUmsatzanteilImSektorFossileBrennstoffe": 20.07,
+					"geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2030": 42.04,
+					"geplanterProzentualerUmsatzanteilImSektorFossileBrennstoffeIn2040": 2.38,
 					"aktivitaetImSektorHerstellungVonChemikalien": "Yes",
-					"aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien": 30.77,
-					"geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030": 0.46,
-					"geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040": 72.45,
+					"aktuellerProzentualerUmsatzanteilImSektorHerstellungVonChemikalien": 98.74,
+					"geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2030": 17.87,
+					"geplanterProzentualerUmsatzanteilImSektorHerstellungVonChemikalienIn2040": 70.41,
 					"aktivitaetImSektorUmstritteneWaffen": "Yes",
-					"aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen": 99.6,
-					"geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030": 11.14,
-					"geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040": 83.77,
+					"aktuellerProzentualerUmsatzanteilImSektorUmstritteneWaffen": 97.98,
+					"geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2030": 87.11,
+					"geplanterProzentualerUmsatzanteilImSektorUmstritteneWaffenIn2040": 30.77,
 					"aktivitaetImSektorTabakanbauUndVerarbeitung": "Yes",
-					"aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung": 31.71,
-					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 43.2,
-					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 49.93
+					"aktuellerProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitung": 72.45,
+					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2030": 85.74,
+					"geplanterProzentualerUmsatzanteilImSektorTabakanbauUndVerarbeitungIn2040": 99.6
 				},
 				"esgRatingUndZertifizierung": {
 					"esgRating": {
 						"value": "Yes",
 						"dataSource": {
 							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
 						}
 					},
-					"ratingagentur": "paradigms",
-					"ergebnisDesEsgRatings": "paradigms",
+					"ratingagentur": "blockchains",
+					"ergebnisDesEsgRatings": "portals",
 					"iso14001": {
 						"value": "Yes",
 						"dataSource": {
-							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileName": "Certification",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 						}
 					},
 					"iso45001": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
 							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
 						}
 					},
 					"iso27001": {
 						"value": "Yes",
 						"dataSource": {
 							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 						}
 					},
 					"iso50001": {
 						"value": "Yes",
 						"dataSource": {
-							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileName": "Policy",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
 						}
 					},
 					"iso14040Ivm14044": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
 							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
 						}
 					},
 					"iso14064": {
 						"value": "Yes",
 						"dataSource": {
 							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 						}
 					},
 					"emas": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"fileName": "Policy",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileName": "Certification",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 						}
 					}
 				},
@@ -175,65 +163,77 @@
 					"mechanismenZurUeberwachungDerEinhaltungDerUngcp": "Yes",
 					"richtlinienZurEinhaltungDerUngcp": [
 						{
-							"value": "users",
+							"value": "technologies",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 							}
 						},
 						{
-							"value": "partnerships",
+							"value": "experiences",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
+							}
+						},
+						{
+							"value": "platforms",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
+							}
+						},
+						{
+							"value": "users",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 							}
 						}
 					],
-					"erklaerungDerEinhaltungDerUngcp": "Adsuesco coerceo tondeo amoveo tollo triduana cuius dedico auctor. Patior corrigo casso natus tenus patior curso abstergo. Confido cedo quis deduco suggero."
+					"erklaerungDerEinhaltungDerUngcp": "Clementia tertius adsuesco. Tondeo amoveo tollo triduana cuius. Auctor stips patior corrigo casso natus."
 				},
 				"oecdLeitsaetze": {
 					"mechanismenZurUeberwachungDerEinhaltungDerOecdLeitsaetze": "Yes",
 					"richtlinienZurEinhaltungDerOecdLeitsaetze": [
 						{
-							"value": "interfaces",
+							"value": "supply-chains",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 							}
 						},
 						{
-							"value": "mindshare",
+							"value": "action-items",
 							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileName": "Certification",
+								"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 							}
 						},
 						{
-							"value": "architectures",
+							"value": "ROI",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868"
 							}
 						}
 					],
-					"erklaerungDerEinhaltungDerOecdLeitsaetze": "Conculco tergum texo deinde vigor decretum creator. Sequi tolero venustas amoveo. Theologus clarus avarus adstringo comburo tempora curto."
+					"erklaerungDerEinhaltungDerOecdLeitsaetze": "Suggero angulus decerno eius defungo somnus. Desparatus tero harum conculco tergum texo deinde vigor. Creator audentia sequi tolero venustas amoveo."
 				},
 				"unSdgs": {
-					"ausrichtungNachDenUnSdgsUndAktivesVerfolgen": "Vitium adsidue vesica conatus sit catena caveo thorax copia voluptas. Testimonium tametsi arbustum sumptus cogito sto theologus surculus. Creptio succedo adeptio cenaculum viridis."
+					"ausrichtungNachDenUnSdgsUndAktivesVerfolgen": "Theologus clarus avarus adstringo comburo tempora curto. Vitium adsidue vesica conatus sit catena caveo thorax copia voluptas. Testimonium tametsi arbustum sumptus cogito sto theologus surculus."
 				},
 				"richtlinienDesUnternehmens": {
 					"existenzVonRichtlinienZuSpezifischenThemen": [
 						"DiversitaetAndInklusion",
-						"Menschenrechte",
-						"GesundheitAndSicherheit",
-						"AntiDiskriminierung",
-						"AntiKorruption"
+						"Whistleblowing",
+						"Interessenskonflikte"
 					],
-					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Tres currus cruciamentum verbum cinis conitor turba admitto aegrotatio calamitas. Tyrannus theologus vorax pecco stipes iste sollers brevis decor. Officia crastinus taedium abduco ab."
+					"beruecksichtigungVonNachhaltigkeitskriterienBeiDerLieferantenauswahl": "Viridis enim eaque bis natus. Admoveo volo tres currus cruciamentum verbum cinis conitor. Admitto aegrotatio calamitas theologus tyrannus theologus vorax pecco stipes."
 				},
 				"rechtsstreitigkeiten": {
 					"rechtsstreitigkeitenMitEsgBezug": "Yes",
-					"einzelheitenZuRechtsstreitigkeitenMitEsgBezug": "Corona acquiro patrocinor provident. Pauci curriculum absens. Bestia ara caritas triumphus."
+					"einzelheitenZuRechtsstreitigkeitenMitEsgBezug": "Brevis decor ciminatio officia crastinus taedium abduco ab. Atrocitas corona acquiro patrocinor provident annus. Curriculum absens argumentum bestia ara caritas triumphus."
 				},
 				"transaktionenMitNachhaltigkeitskomponenten": {
 					"emissionGruenerSozialerUndOderNachhaltigerSchuldtitel": "Yes",
@@ -281,7 +281,7 @@
 						"value": "Yes",
 						"dataSource": {
 							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e"
 						}
 					},
 					"transitorischeRisiken": "Velit amplitudo thesaurus. Ambulo creta valens. Creptio addo amplus aro degero titulus supplanto.",

@@ -2,35 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Keventown",
-			"headquartersPostalCode": "08624-9889",
-			"sector": "web services",
+			"headquarters": "Haleyboro",
+			"headquartersPostalCode": null,
+			"sector": "systems",
 			"identifiers": {
 				"Lei": [
-					"ZSW19V9gRjT8dOwHuHw8"
+					"AP05idM0RJksYGtvKgtS"
 				],
 				"Isin": [
-					"7isXp6iT68ka"
+					"TfrD2TkbrTKu",
+					"6ZeoENLmOPJw"
 				],
-				"PermId": [],
-				"Ticker": [
-					"NJ56EIw"
+				"PermId": [
+					"u9FpWBY6ie"
 				],
-				"Duns": [
-					"Uv5q40XAG"
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"J02o7tbqa"
 				],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"ZpBjhhkxNgn3BlA"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AE",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Abbott, Stroman and Rempel"
+			"countryCode": "MO",
+			"companyContactDetails": [
+				"Catharine.Gutkowski@example.com"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://reflecting-jungle.name",
+			"companyAlternativeNames": [
+				"Moen - Stamm",
+				"Muller Inc",
+				"Zulauf, Thiel and Wilderman"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://rare-alloy.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -39,96 +42,101 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "109-1241",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services",
-							"publicationDate": null
-						},
-						"comment": "parse optical driver",
-						"quality": "Estimated"
-					},
-					"fiscalYearEnd": {
-						"value": "2024-12-10",
-						"dataSource": {
-							"page": "1197-1214",
+							"page": "845",
 							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "lifetime value",
 							"publicationDate": null
 						},
-						"comment": "synthesize mobile pixel",
+						"comment": "transmit haptic feed",
 						"quality": "Reported"
 					},
-					"referencedReports": {
-						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"fiscalYearEnd": {
+						"value": "2024-08-05",
+						"dataSource": {
+							"page": "511-548",
 							"fileName": "IntegratedReport",
-							"publicationDate": "2023-04-01"
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "schemas",
+							"publicationDate": null
 						},
+						"comment": "hack mobile firewall",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
 						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-08-18"
+							"publicationDate": "2023-03-10"
+						},
+						"IntegratedReport": {
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2023-02-13"
+						},
+						"ESEFReport": {
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"fileName": "ESEFReport",
+							"publicationDate": "2024-01-16"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 9602059661.42,
+						"value": 7849110572.14,
 						"dataSource": {
-							"page": "689",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services",
+							"page": "388",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "architectures",
 							"publicationDate": null
 						},
-						"comment": "input mobile microchip",
-						"quality": "Estimated",
-						"currency": "LAK"
+						"comment": "copy solid state bandwidth",
+						"quality": "Audited",
+						"currency": "UZS"
 					},
 					"debt": {
-						"value": 1098737262.65,
+						"value": 8001542815.48,
 						"dataSource": {
-							"page": "752-1062",
-							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI",
+							"page": "890",
+							"fileName": "ESEFReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "models",
 							"publicationDate": null
 						},
-						"comment": "index 1080p bus",
+						"comment": "quantify optical array",
 						"quality": "Reported",
-						"currency": "CDF"
+						"currency": "IDR"
 					},
 					"balanceSheetTotal": {
-						"value": 4386258840.09,
+						"value": 5194294208.2,
 						"dataSource": {
-							"page": "300-1131",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems",
+							"page": "614",
+							"fileName": "ESEFReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "partnerships",
 							"publicationDate": null
 						},
-						"comment": "program primary monitor",
+						"comment": "back up mobile pixel",
 						"quality": "Incomplete",
-						"currency": "MAD"
+						"currency": "RWF"
 					},
 					"evic": {
-						"value": 5305528752.51,
+						"value": 8331670055.63,
 						"dataSource": {
-							"page": "599",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets",
+							"page": "285",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "platforms",
 							"publicationDate": null
 						},
-						"comment": "copy optical array",
+						"comment": "back up open-source system",
 						"quality": "NoDataFound",
-						"currency": "BWP"
+						"currency": "PLN"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	}
 ]

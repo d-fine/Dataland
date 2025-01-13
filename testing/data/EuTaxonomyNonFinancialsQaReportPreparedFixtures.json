@@ -2,34 +2,38 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "North Wallaceworth",
-			"headquartersPostalCode": "97416-7205",
-			"sector": "metrics",
+			"headquarters": "Williamsonburgh",
+			"headquartersPostalCode": null,
+			"sector": null,
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"7HGeUGSWEsdSpJDbTmfg"
+				],
 				"Isin": [
-					"Q3CoERJfyoUh"
+					"l6PvVZRklmfB",
+					"yuCjrEiPzYyH"
 				],
 				"PermId": [
-					"hWr3EB4NVC"
+					"06skvcJNsZ"
 				],
-				"Ticker": [],
+				"Ticker": [
+					"3pwLme6"
+				],
 				"Duns": [],
 				"VatNumber": [
-					"Y0KbP18Xg"
+					"BNbyNbiwW"
 				],
-				"CompanyRegistrationNumber": [
-					"2ZvCn2oatj9aSG1"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GU",
+			"countryCode": "LT",
 			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Hilll - Corkery",
-				"Rodriguez Inc"
+				"Dietrich - Schroeder",
+				"Fadel, Pacocha and Gulgowski",
+				"Lubowitz, Batz and Hahn"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": null,
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://agitated-evidence.name/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -97,6 +101,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2021"
 	}
 ]
