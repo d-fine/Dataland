@@ -7,8 +7,8 @@ import org.dataland.datalandbackendutils.model.QaStatus
 /**
  * --- API model ---
  * Meta information associated to data in the data store
- * @param dataId unique identifier to identify the data in the data store
- * @param dataPointIdentifier unique identifier for the data point itself
+ * @param dataPointId unique identifier to identify the data in the data store
+ * @param dataPointType unique identifier for the data point itself
  * @param companyId unique identifier to identify the company the data is associated with
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
  * @param uploaderUserId the user ID of the user who uploaded the data point
@@ -16,9 +16,9 @@ import org.dataland.datalandbackendutils.model.QaStatus
  */
 data class DataPointMetaInformation(
     @field:JsonProperty(required = true)
-    val dataId: String,
+    val dataPointId: String,
     @field:JsonProperty(required = true)
-    override val dataPointIdentifier: String,
+    override val dataPointType: String,
     @field:JsonProperty(required = true)
     override val companyId: String,
     @field:JsonProperty(required = true)

@@ -29,7 +29,7 @@ data class DataPointQaReviewEntity(
     @Column(name = "company_name", nullable = false)
     val companyName: String,
     @Column(name = "data_point_identifier", nullable = false)
-    override val dataPointIdentifier: String,
+    override val dataPointType: String,
     @Column(name = "reporting_period", nullable = false)
     override val reportingPeriod: String,
     @Column(name = "timestamp", nullable = false)
@@ -50,7 +50,7 @@ data class DataPointQaReviewEntity(
             dataId = this.dataId,
             companyId = this.companyId,
             companyName = this.companyName,
-            dataPointIdentifier = this.dataPointIdentifier,
+            dataPointType = this.dataPointType,
             reportingPeriod = this.reportingPeriod,
             timestamp = this.timestamp,
             qaStatus = this.qaStatus,

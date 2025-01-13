@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.controller
 
 import org.dataland.datalandbackend.api.DataPointApi
-import org.dataland.datalandbackend.model.datapoints.DataPointContent
+import org.dataland.datalandbackend.model.datapoints.DataPointToValidate
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -29,9 +29,9 @@ class DataPointController(
     @Autowired private val dataPointValidator: DataPointValidator,
     @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {
-    override fun validateDataPointContent(dataPoint: DataPointContent): ResponseEntity<Unit> {
+    override fun validateDataPoint(dataPoint: DataPointToValidate): ResponseEntity<Unit> {
         val correlationId = IdUtils.generateCorrelationId(null, null)
-        dataPointValidator.validateDataPoint(dataPoint.dataPointIdentifier, dataPoint.dataPointContent, correlationId)
+        dataPointValidator.validateDataPoint(dataPoint.dataPointType, dataPoint.dataPoint, correlationId)
         return ResponseEntity.noContent().build()
     }
 

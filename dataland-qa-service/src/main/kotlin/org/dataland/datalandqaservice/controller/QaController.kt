@@ -129,7 +129,7 @@ class QaController(
 
     override fun getDataPointQaReviewInformation(
         companyId: String?,
-        dataPointIdentifier: String?,
+        dataPointType: String?,
         reportingPeriod: String?,
         qaStatus: QaStatus?,
         onlyLatest: Boolean?,
@@ -140,7 +140,7 @@ class QaController(
         val searchFilter =
             DataPointQaReviewItemFilter(
                 companyId = companyId,
-                dataPointIdentifier = dataPointIdentifier,
+                dataPointType = dataPointType,
                 reportingPeriod = reportingPeriod,
                 qaStatus = qaStatus,
             )

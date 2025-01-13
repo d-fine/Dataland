@@ -14,10 +14,10 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
      * Retrieve the ID of the currently active data point for the given data point dimension
      */
     @Query(
-        "SELECT dataPointMetaInformation.dataId FROM DataPointMetaInformationEntity dataPointMetaInformation " +
+        "SELECT dataPointMetaInformation.dataPointId FROM DataPointMetaInformationEntity dataPointMetaInformation " +
             "WHERE dataPointMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriod} " +
             "AND dataPointMetaInformation.companyId = :#{#searchFilter.companyId} " +
-            "AND dataPointMetaInformation.dataPointIdentifier = :#{#searchFilter.dataPointIdentifier} " +
+                "AND dataPointMetaInformation.dataPointType = :#{#searchFilter.dataPointType} " +
             "AND dataPointMetaInformation.currentlyActive = true ",
     )
     fun getActiveDataPointId(

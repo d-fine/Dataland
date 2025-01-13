@@ -26,21 +26,21 @@ class DataPointQaReviewRepositoryTest {
     private lateinit var dataPointQaReviewRepository: DataPointQaReviewRepository
 
     private val dummyCompanyId = "dummy-company-id"
-    private val dummyDataPointIdentifier = "dummy-identifier"
+    private val dummyDataPointType = "dummy-type"
     private val dummyReportingPeriod = "2023"
     private val differentDataId = "different-data-id"
 
     private fun getDummyEntity(
         dataId: String = "dummy-data-id",
         companyId: String = dummyCompanyId,
-        dataPointIdentifier: String = dummyDataPointIdentifier,
+        dataPointType: String = dummyDataPointType,
         reportingPeriod: String = dummyReportingPeriod,
         qaStatus: QaStatus = QaStatus.Accepted,
         timestamp: Long = System.currentTimeMillis(),
     ): DataPointQaReviewEntity {
         Thread.sleep(5)
         return DataPointQaReviewEntity(
-            null, dataId, companyId, "dummy-company", dataPointIdentifier, reportingPeriod,
+            null, dataId, companyId, "dummy-company", dataPointType, reportingPeriod,
             timestamp, qaStatus, "dummy-user", "dummy-comment",
         )
     }
@@ -48,14 +48,14 @@ class DataPointQaReviewRepositoryTest {
     private val dummyDataPointDimensions =
         BasicDataPointDimensions(
             companyId = dummyCompanyId,
-            dataPointIdentifier = dummyDataPointIdentifier,
+            dataPointType = dummyDataPointType,
             reportingPeriod = dummyReportingPeriod,
         )
 
     private val emptyFilter =
         DataPointQaReviewItemFilter(
             companyId = null,
-            dataPointIdentifier = null,
+            dataPointType = null,
             reportingPeriod = null,
             qaStatus = null,
         )
