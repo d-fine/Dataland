@@ -11,6 +11,7 @@ import org.springframework.core.io.InputStreamResource
 import org.springframework.stereotype.Service
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
 
 /**
  * Data export service used for managing the logic behind the dataset export controller
@@ -21,6 +22,10 @@ class DataExportService
     constructor(
         private val objectMapper: ObjectMapper,
     ) {
+        init {
+            objectMapper.dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        }
+
         /**
          * Create a ByteStream to be used for CSV Export from CompanyAssociatedData.
          * @param companyAssociatedData passed companyAssociatedData to be exported
