@@ -3,7 +3,7 @@
     <div class="p-datatable-wrapper overflow-auto">
       <table class="p-datatable-table w-full" :aria-label="ariaLabel">
         <thead class="p-datatable-thead">
-          <tr class=" border-bottom-table">
+          <tr class="border-bottom-table">
             <th class="horizontal-headers-size">
               <div class="p-column-header-content">
                 <span class="p-column-title">KPIs</span>
@@ -42,7 +42,7 @@
               >
             </td>
             <td v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo" :key="idx" class="vertical-align-top">
-              <span class="table-left-label " style="display: flex; align-items: center">
+              <span class="table-left-label" style="display: flex; align-items: center">
                 {{ convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime) }}
               </span>
             </td>
