@@ -33,7 +33,6 @@ class SfdrDataController(
         myMetaDataManager,
         myObjectMapper,
         SfdrData::class.java,
-        myDataPointManager,
     ) {
     @Operation(operationId = "getCompanyAssociatedSfdrData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =

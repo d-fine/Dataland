@@ -7,14 +7,14 @@ import org.dataland.datalandbackend.controller.DataController
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 <#list frameworkDataType.imports as import>import ${import}
+</#list>
+<#list frameworkDataManager.imports as import>import ${import}
 </#list>
 
 /**
@@ -25,16 +25,14 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/data/${frameworkIdentifier}")
 @RestController
 class ${frameworkDataType.shortenedQualifier}Controller(
-    @Autowired var myDataManager: DataManager,
+    @Autowired var myDataManager: ${frameworkDataManager.shortenedQualifier},
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var myDataPointManager: DataPointManager
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
     myDataManager,
     myMetaDataManager,
     myObjectMapper,
     ${frameworkDataType.shortenedQualifier}::class.java,
-    myDataPointManager
 ) {
     @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")
     override fun getCompanyAssociatedData(dataId: String):

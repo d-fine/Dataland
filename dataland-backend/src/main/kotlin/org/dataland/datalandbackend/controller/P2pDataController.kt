@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.p2p.PathwaysToParisData
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,13 +24,11 @@ class P2pDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var myDataPointManager: DataPointManager,
 ) : DataController<PathwaysToParisData>(
         myDataManager,
         myMetaDataManager,
         myObjectMapper,
         PathwaysToParisData::class.java,
-        myDataPointManager,
     ) {
     @Operation(operationId = "getCompanyAssociatedP2pData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<PathwaysToParisData>> =

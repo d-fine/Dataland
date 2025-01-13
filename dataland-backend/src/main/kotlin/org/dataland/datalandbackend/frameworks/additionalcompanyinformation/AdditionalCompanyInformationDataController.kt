@@ -8,9 +8,8 @@ import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mode
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.datapoints.DataPointManager
+import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,16 +23,14 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/data/additional-company-information")
 @RestController
 class AdditionalCompanyInformationDataController(
-    @Autowired var myDataManager: DataManager,
+    @Autowired var myDataManager: AssembledDataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var myDataPointManager: DataPointManager,
 ) : DataController<AdditionalCompanyInformationData>(
         myDataManager,
         myMetaDataManager,
         myObjectMapper,
         AdditionalCompanyInformationData::class.java,
-        myDataPointManager,
     ) {
     @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =

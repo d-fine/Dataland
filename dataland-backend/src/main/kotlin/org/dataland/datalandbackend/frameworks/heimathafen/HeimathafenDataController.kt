@@ -33,7 +33,6 @@ class HeimathafenDataController(
         myMetaDataManager,
         myObjectMapper,
         HeimathafenData::class.java,
-        myDataPointManager,
     ) {
     @Operation(operationId = "getCompanyAssociatedHeimathafenData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<HeimathafenData>> =

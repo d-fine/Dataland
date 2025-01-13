@@ -97,7 +97,7 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId =
-            dataManager.processDataStorageRequest(
+            dataManager.storeDataset(
                 storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
             )
         val thrown =
@@ -116,7 +116,7 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId =
-            dataManager.processDataStorageRequest(
+            dataManager.storeDataset(
                 storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
             )
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
@@ -136,7 +136,7 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId =
-            dataManager.processDataStorageRequest(
+            dataManager.storeDataset(
                 storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
             )
         val expectedDataTypeName =
@@ -171,7 +171,7 @@ class DataManagerTest(
     fun `check that an exception is thrown if the received data from the storage has an unexpected uploading user`() {
         val storableDataSetForNonFinancials = addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId =
-            dataManager.processDataStorageRequest(
+            dataManager.storeDataset(
                 storableDataSetForNonFinancials,
                 false,
                 correlationId,
@@ -289,7 +289,7 @@ class DataManagerTest(
         val storableEuTaxonomyDataSetForNonFinancials: StorableDataSet =
             addCompanyAndReturnStorableEuTaxonomyDataSetForNonFinancialsForIt()
         val dataId =
-            dataManager.processDataStorageRequest(
+            dataManager.storeDataset(
                 storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
             )
         val messageWithEmptyCurrentlyActiveDataId =

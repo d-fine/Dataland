@@ -33,7 +33,6 @@ class NuclearAndGasDataController(
         myMetaDataManager,
         myObjectMapper,
         NuclearAndGasData::class.java,
-        myDataPointManager,
     ) {
     @Operation(operationId = "getCompanyAssociatedNuclearAndGasData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =

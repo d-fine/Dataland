@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
-import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -27,13 +26,11 @@ class EutaxonomyNonFinancialsDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Autowired var myDataPointManager: DataPointManager,
 ) : DataController<EutaxonomyNonFinancialsData>(
         myDataManager,
         myMetaDataManager,
         myObjectMapper,
         EutaxonomyNonFinancialsData::class.java,
-        myDataPointManager,
     ) {
     @Operation(operationId = "getCompanyAssociatedEutaxonomyNonFinancialsData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EutaxonomyNonFinancialsData>> =

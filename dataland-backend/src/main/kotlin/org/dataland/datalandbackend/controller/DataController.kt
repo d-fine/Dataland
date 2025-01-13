@@ -7,10 +7,9 @@ import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
-import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -21,17 +20,15 @@ import java.time.Instant
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
- * @param dataManager service to handle data
+ * @param datasetStorageService service to handle data storage
  * @param dataMetaInformationManager service for handling data meta information
  * @param objectMapper the mapper to transform strings into classes and vice versa
  */
-
 abstract class DataController<T>(
-    private var dataManager: DataManager,
-    var dataMetaInformationManager: DataMetaInformationManager,
-    var objectMapper: ObjectMapper,
+    private val datasetStorageService: DatasetStorageService,
+    private val dataMetaInformationManager: DataMetaInformationManager,
+    private val objectMapper: ObjectMapper,
     private val clazz: Class<T>,
-    private var dataPointManager: DataPointManager,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -50,14 +47,7 @@ abstract class DataController<T>(
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val correlationId = generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
 
-        val dataIdOfPostedData: String
-        if (frameworkConsistsOfDataPoints()) {
-            logger.info("Breaking down the data set.")
-            dataIdOfPostedData = dataPointManager.processDataSet(datasetToStore, bypassQa, correlationId)
-        } else {
-            logger.info("Storing the data set as a whole.")
-            dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
-        }
+        val dataIdOfPostedData = datasetStorageService.storeDataset(datasetToStore, bypassQa, correlationId)
 
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
 
@@ -69,8 +59,6 @@ abstract class DataController<T>(
             ),
         )
     }
-
-    private fun frameworkConsistsOfDataPoints(): Boolean = dataPointManager.getAllDataPointFrameworks().contains(dataType.toString())
 
     private fun buildStorableDataset(
         companyAssociatedData: CompanyAssociatedData<T>,
@@ -113,17 +101,8 @@ abstract class DataController<T>(
         dataId: String,
         correlationId: String,
     ): String {
-        val dataAsString: String
         val dataTypeString = dataType.toString()
-        val dataPointFrameworks = dataPointManager.getAllDataPointFrameworks()
-        if (dataPointFrameworks.contains(dataTypeString)) {
-            logger.info("Assemble data set from data points.")
-            dataAsString = dataPointManager.getDataSetFromId(dataId, dataTypeString, correlationId)
-        } else {
-            logger.info("Retrieving the data set as a whole.")
-            dataAsString = dataManager.getPublicDataSet(dataId, dataType, correlationId).data
-        }
-        return dataAsString
+        return datasetStorageService.getDatasetData(dataId, dataTypeString, correlationId)
     }
 
     override fun getFrameworkDatasetsForCompany(

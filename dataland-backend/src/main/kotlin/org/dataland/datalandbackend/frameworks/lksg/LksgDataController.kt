@@ -33,7 +33,6 @@ class LksgDataController(
         myMetaDataManager,
         myObjectMapper,
         LksgData::class.java,
-        myDataPointManager,
     ) {
     @Operation(operationId = "getCompanyAssociatedLksgData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<LksgData>> =
