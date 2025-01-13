@@ -9,7 +9,7 @@ describe('Component test for DownloadDatasetModal', () => {
       data() {
         return {
           reportingPeriods: ['2022', '2023'],
-          exportFileTypes = [ExportFileTypes.CsvFile, ExportFileTypes.ExcelFile, ExportFileTypes.JsonFile],
+          exportFileTypes: [ExportFileTypes.CsvFile, ExportFileTypes.ExcelFile, ExportFileTypes.JsonFile],
           selectedReportingPeriod: '',
           selectedFileFormat: '',
           isModalVisible: true,
@@ -18,11 +18,14 @@ describe('Component test for DownloadDatasetModal', () => {
         };
       },
       keycloak: minimalKeycloakMock({}),
-    }).then(() => {
+    }).then((mounted) => {
       cy.get('[data-test="downloadModal"]').should('exist').should('be.visible');
       cy.get('[data-test="reportingYearSelector"]').should('exist');
       cy.get('[data-test="formatSelector"]').should('exist');
       cy.get('button[data-test=downloadDataButtonInModal]').should('exist').click();
+
+      cy.wrap(mounted.component).its('showReportingPeriodError').should('eq', true);
+      cy.wrap(mounted.component).its('showFileFormatError').should('eq', true);
 
       cy.get('p[data-test=reportingYearError]')
         .should('be.visible')
