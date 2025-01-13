@@ -145,6 +145,7 @@ import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue'
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -425,9 +426,9 @@ export default defineComponent({
     /**
      * Download the dataset from the selected reporting period as a file in the selected format
      * @param selectedYear selected reporting year
-     * @param selectedFormat selected file format
+     * @param selectedFileTypeIdentifier selected export file type
      */
-    async handleDatasetDownload(selectedYear: string, selectedFormat: string) {
+    async handleDatasetDownload(selectedYear: string, selectedFileTypeIdentifier: string) {
       const dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
 
       if (!dataId) {
@@ -447,13 +448,24 @@ export default defineComponent({
 
         let dataResponse;
         let dataContent;
-        let filename = `${dataId}.${selectedFormat}`;
-        switch (selectedFormat) {
+
+        const exportFileType = Object.values(ExportFileTypes).find(
+          (fileType) => fileType.identifier === selectedFileTypeIdentifier
+        );
+
+        if (!exportFileType) {
+          throw new ReferenceError('ExportFileType undefined.');
+        }
+
+        const fileExtension = exportFileType.fileExtension;
+        const filename = `${dataId}.${fileExtension}`;
+
+        switch (exportFileType.identifier) {
           case 'csv':
             dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToCsv(dataId);
             dataContent = dataResponse.data;
             break;
-          case 'xlsx':
+          case 'excel':
             dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToExcel(dataId);
             dataContent = dataResponse.data;
             break;

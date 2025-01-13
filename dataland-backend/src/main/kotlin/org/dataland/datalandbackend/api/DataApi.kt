@@ -78,12 +78,12 @@ interface DataApi<T> {
      * @return CSV of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
-        summary = "Export data identified by dataId to CSV.",
-        description = "Export data identified by dataId to CSV.",
+        summary = "Export data identified by dataId to plain CSV.",
+        description = "Export data identified by dataId to plain CSV.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset as CSV file."),
+            ApiResponse(responseCode = "200", description = "Successfully exported dataset as plain CSV file."),
         ],
     )
     @GetMapping(
@@ -101,17 +101,17 @@ interface DataApi<T> {
      * @return Excel of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
-        summary = "Export data identified by dataId to Excel.",
-        description = "Export data identified by dataId to Excel.",
+        summary = "Export data identified by dataId to Excel-compatible CSV.",
+        description = "Export data identified by dataId to an Excel-compatible CSV file.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset as Excel file."),
+            ApiResponse(responseCode = "200", description = "Successfully exported dataset as Excel-compatible CSV file."),
         ],
     )
     @GetMapping(
         value = ["/{dataId}/excel"],
-        produces = ["application/vnd.ms-excel"],
+        produces = ["text/csv"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
     fun exportCompanyAssociatedDataToExcel(

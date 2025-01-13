@@ -1,13 +1,13 @@
 import { join } from 'path';
-import { type DataMetaInformation, DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
+import { DataTypeEnum, type LksgData } from '@clients/backend';
 import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
-import { submitButton } from '@sharedUtils/components/SubmitButton';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils.ts';
+import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 
 describe('As a user, I want to be able to download datasets from Dataland', () => {
   const reportingPeriod = '2021';
@@ -37,84 +37,63 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
             LksgBaseFrameworkDefinition,
             token,
             storedCompany.companyId,
-            '2021',
+            reportingPeriod,
             lksgFixtureWithNoNullFields.t
           ).then((dataMetaInformation) => {
             dataId = dataMetaInformation.dataId;
-            interceptsAndSubmitsDataset(storedCompany, dataMetaInformation, testCompanyName);
           });
         });
       });
     });
   });
 
-  afterEach(() => {
+  after(() => {
     Cypress.env('excludeBypassQaIntercept', false);
   });
 
-  it('should download data as csv file, check for appropriate size and delete it afterwards', () => {
-    const fileFormat = 'csv';
-    const fileName = `${dataId}.${fileFormat}`;
+  it('Download data as csv file, check for appropriate size and delete it afterwards', () => {
+    const exportFileType = ExportFileTypes.CsvFile;
+    const fileName = `${dataId}.${exportFileType.fileExtension}`;
 
-    cy.visit(getBaseUrl() + `/companies/${companyId}/frameworks/${dataType}`);
-
-    cy.get('button[data-test=downloadDataButton]').should('exist').click();
-    cy.get('[data-test=downloadModal]')
-      .should('exist')
-      .within(() => {
-        cy.get('[data-test="reportingYearSelector"]').select(reportingPeriod);
-        cy.get('[data-test="formatSelector"]').select(fileFormat);
-        cy.get('button[data-test=downloadDataButtonInModal]').click();
-      });
+    visitPageAndClickDownloadButton(exportFileType.identifier);
 
     const filePath = join(Cypress.config('downloadsFolder'), fileName);
-    cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
-
-    cy.task('getFileSize', filePath).then((size) => {
-      expect(size).to.be.greaterThan(minimumFileSizeInByte);
-    });
-
-    cy.task('deleteFile', filePath).then(() => {
-      cy.readFile(filePath).should('not.exist');
-    });
+    checkThatFileExists(filePath);
+    checkFileSizeAndDeleteAfterwards(filePath);
   });
 
-  it('should download data as csv file ment to open in excel, check for appropriate size and delete it afterwards', () => {
-    const fileFormat = 'json';
-    const fileName = `${dataId}.${fileFormat}`;
+  it('Download data as Excel-compatible csv file, check for appropriate size and delete it afterwards', () => {
+    const exportFileType = ExportFileTypes.ExcelFile;
+    const fileName = `${dataId}.${exportFileType.fileExtension}`;
 
-    cy.visit(getBaseUrl() + `/companies/${companyId}/frameworks/${dataType}`);
-
-    cy.get('button[data-test=downloadDataButton]').should('exist').click();
-    cy.get('[data-test=downloadModal]')
-      .should('exist')
-      .within(() => {
-        cy.get('[data-test="reportingYearSelector"]').select(reportingPeriod);
-        cy.get('[data-test="formatSelector"]').select(fileFormat);
-        cy.get('button[data-test=downloadDataButtonInModal]').click();
-      });
+    visitPageAndClickDownloadButton(exportFileType.identifier);
 
     const filePath = join(Cypress.config('downloadsFolder'), fileName);
-    cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
+    checkThatFileExists(filePath);
 
     const termToCheck = 'sep=,';
     cy.task('checkFileContent', { path: filePath, term: termToCheck }).then((isFound) => {
       expect(isFound).to.be.true;
     });
-
-    cy.task('getFileSize', filePath).then((size) => {
-      expect(size).to.be.greaterThan(minimumFileSizeInByte);
-    });
-
-    cy.task('deleteFile', filePath).then(() => {
-      cy.readFile(filePath).should('not.exist');
-    });
+    checkFileSizeAndDeleteAfterwards(filePath);
   });
 
-  it('should download data as json file, check for appropriate size and delete it afterwards', () => {
-    const fileFormat = 'json';
-    const fileName = `${dataId}.${fileFormat}`;
+  it('Download data as json file, check for appropriate size and delete it afterwards', () => {
+    const exportFileType = ExportFileTypes.JsonFile;
+    const fileName = `${dataId}.${exportFileType.fileExtension}`;
 
+    visitPageAndClickDownloadButton(exportFileType.identifier);
+
+    const filePath = join(Cypress.config('downloadsFolder'), fileName);
+    checkThatFileExists(filePath);
+    checkFileSizeAndDeleteAfterwards(filePath);
+  });
+
+  /**
+   * Visit framework data page, select download format and click download button
+   * @param fileFormat Needs to be one of the identifiers of an ExportFileTypes
+   */
+  function visitPageAndClickDownloadButton(fileFormat: string): void {
     cy.visit(getBaseUrl() + `/companies/${companyId}/frameworks/${dataType}`);
 
     cy.get('button[data-test=downloadDataButton]').should('exist').click();
@@ -125,10 +104,21 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
         cy.get('[data-test="formatSelector"]').select(fileFormat);
         cy.get('button[data-test=downloadDataButtonInModal]').click();
       });
+  }
 
-    const filePath = join(Cypress.config('downloadsFolder'), fileName);
+  /**
+   * Checks that the downloaded file does actually exist
+   * @param filePath path to file
+   */
+  function checkThatFileExists(filePath: string): void {
     cy.readFile(filePath, { timeout: Cypress.env('short_timeout_in_ms') as number }).should('exist');
+  }
 
+  /**
+   * Checks that the downloaded file has an appropriate size and delete afterward
+   * @param filePath path to file
+   */
+  function checkFileSizeAndDeleteAfterwards(filePath: string): void {
     cy.task('getFileSize', filePath).then((size) => {
       expect(size).to.be.greaterThan(minimumFileSizeInByte);
     });
@@ -136,34 +126,5 @@ describe('As a user, I want to be able to download datasets from Dataland', () =
     cy.task('deleteFile', filePath).then(() => {
       cy.readFile(filePath).should('not.exist');
     });
-  });
-
-  /**
-   * Defines intercepts and submits data on the LkSG upload for the LkSG blanket test
-   * @param storedCompany stored company information
-   * @param dataMetaInformation meta data information
-   * @param testCompanyName name of the company
-   */
-  function interceptsAndSubmitsDataset(
-    storedCompany: StoredCompany,
-    dataMetaInformation: DataMetaInformation,
-    testCompanyName: string
-  ): void {
-    cy.intercept('**/api/companies/' + storedCompany.companyId + '/info').as('getCompanyInformation');
-    cy.visitAndCheckAppMount(
-      '/companies/' +
-        storedCompany.companyId +
-        '/frameworks/' +
-        DataTypeEnum.Lksg +
-        '/upload?templateDataId=' +
-        dataMetaInformation.dataId
-    );
-    cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-    cy.get('h1').should('contain', testCompanyName);
-    cy.intercept({
-      url: `**/api/data/${DataTypeEnum.Lksg}*`,
-      times: 1,
-    }).as('postCompanyAssociatedData');
-    submitButton.clickButton();
   }
 });

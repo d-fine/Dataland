@@ -60,7 +60,7 @@ import { defineComponent, type PropType } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
 import type { DataMetaInformation } from '@clients/backend';
-import { ExportFileTypes, type FileType } from '@/types/ExportFileTypes.ts';
+import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 
 export default defineComponent({
   components: { PrimeDialog, PrimeButton },
@@ -91,8 +91,8 @@ export default defineComponent({
 
   computed: {
     fileTypeSelectionOptions() {
-      return Object.values(this.exportFileTypes).map((fileType: FileType) => ({
-        value: fileType.fileExtension,
+      return Object.values(this.exportFileTypes).map((fileType) => ({
+        value: fileType.identifier,
         label: `${fileType.description} (.${fileType.fileExtension})`,
       }));
     },
