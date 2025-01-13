@@ -7,7 +7,7 @@ import {
   getCellValueContainer,
   getCellRowHeaderContainer,
   getSectionHeadAndCheckIconForHiddenDisplay,
-  getSectionHead
+  getSectionHead,
 } from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { editMultiLayerDataTableConfigForHighlightingHiddenFields } from '@/components/resources/frameworkDataSearch/frameworkPanel/MultiLayerDataTableQaHighlighter';
 import { DataTypeEnum, QaStatus } from '@clients/backend';
@@ -248,7 +248,7 @@ describe('Tests for the MultiLayerDataTable component', () => {
     mountMultiLayerDataTableWithDatasets([dummyFrameworkTestDataAndMetaInfo1, dummyFrameworkTestDataAndMetaInfo2]);
     cy.get('th[data-dataset-index=0]').should('contain.text', 'Testing 1');
     cy.get('th[data-dataset-index=1]').should('contain.text', 'Testing 2');
-    console.log()
+    console.log();
     getCellValueContainer('Level 2 - String', 0).should('contain.text', 'Dataset 1 - String 2');
     getCellValueContainer('Level 2 - String', 1).should('contain.text', 'Dataset 2 - String 2');
 
