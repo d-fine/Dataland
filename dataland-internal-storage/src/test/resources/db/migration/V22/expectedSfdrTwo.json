@@ -308,7 +308,7 @@
                 "value": "Yes"
             },
             "policyAgainstForcedLabour": null,
-            "rateOfAccidents": null,
+            "rateOfAccidentsInPercent": null,
             "reportedIncidentsOfDiscrimination": null,
             "sanctionedIncidentsOfDiscrimination": null,
             "supplierCodeOfConduct": null,

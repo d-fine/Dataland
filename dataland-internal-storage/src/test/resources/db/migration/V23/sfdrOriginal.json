@@ -478,7 +478,7 @@
           "quality": "Reported",
           "value": "Yes"
         },
-        "rateOfAccidents": null,
+        "rateOfAccidentsInPercent": null,
         "reportedIncidentsOfDiscrimination": null,
         "sanctionedIncidentsOfDiscrimination": null,
         "supplierCodeOfConduct": {

@@ -161,7 +161,7 @@
             "policyAgainstChildLabour": null,
             "policyAgainstDiscriminationInTheWorkplace": null,
             "policyAgainstForcedLabour": null,
-            "rateOfAccidents": null,
+            "rateOfAccidentsInPercent": null,
             "reportedIncidentsOfDiscrimination": null,
             "sanctionedIncidentsOfDiscrimination": null,
             "supplierCodeOfConduct": null,
