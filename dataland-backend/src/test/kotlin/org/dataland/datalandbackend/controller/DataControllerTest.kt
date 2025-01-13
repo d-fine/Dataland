@@ -146,6 +146,14 @@ internal class DataControllerTest(
         }
     }
 
+    @Test
+    fun `test that the excel export does not throw an error`() {
+        this.mockJwtAuthentication(DatalandRealmRole.ROLE_ADMIN)
+        assertDoesNotThrow {
+            dataController.exportCompanyAssociatedDataToExcel(otherUserAcceptedDataId)
+        }
+    }
+
     private fun buildDataMetaInformationEntity(
         dataId: String,
         uploaderId: String,
