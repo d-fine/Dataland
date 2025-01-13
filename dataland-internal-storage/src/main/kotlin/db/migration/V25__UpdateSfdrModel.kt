@@ -47,41 +47,58 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
     }
 
     /**
-     * Migrates the excessive ceo pay ratio in the sfdr data
+     * Migrates the two fields excessiveCeoPayRatioInPercent and ceoToEmployeePayGapRatio into a single field
+     * called excessiveCeoPayRatio.
      */
     fun migrateExcessiveCeoPayGapRatio(dataTableEntity: DataTableEntity) {
-        val excessiveCeoPayRatioInPercentKey = "excessiveCeoPayRatioInPercent"
-        val ceoToEmployeePayGapRatioKey = "ceoToEmployeePayGapRatio"
-        val newKey = "excessiveCeoPayRatio"
-
         val dataset = dataTableEntity.dataJsonObject
 
         val socialObject = dataset.optJSONObject("social") ?: return
         val socialAndEmployeeMattersObject = socialObject.optJSONObject("socialAndEmployeeMatters") ?: return
 
-        val excessiveCeoPayRatioInPercentValue = socialAndEmployeeMattersObject.remove(excessiveCeoPayRatioInPercentKey) as? JSONObject
-        val ceoToEmployeePayGapRatioValue = socialAndEmployeeMattersObject.remove(ceoToEmployeePayGapRatioKey) as? JSONObject
+        val excessiveCeoPayRatioInPercentValue = socialAndEmployeeMattersObject.remove("excessiveCeoPayRatioInPercent") as? JSONObject
+        val ceoToEmployeePayGapRatioValue = socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
+        val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
 
-        if (excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue == null) {
-            socialAndEmployeeMattersObject.put(newKey, excessiveCeoPayRatioInPercentValue)
-        }
+        valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
 
-        if (excessiveCeoPayRatioInPercentValue == null && ceoToEmployeePayGapRatioValue != null) {
-            socialAndEmployeeMattersObject.put(newKey, ceoToEmployeePayGapRatioValue)
-        }
-
-        if (excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue != null) {
-            if (ceoToEmployeePayGapRatioValue.has("value")) {
-                socialAndEmployeeMattersObject.put(newKey, ceoToEmployeePayGapRatioValue)
-            } else if (excessiveCeoPayRatioInPercentValue.has("value")) {
-                socialAndEmployeeMattersObject.put(newKey, excessiveCeoPayRatioInPercentValue)
-            } else {
-                socialAndEmployeeMattersObject.put(newKey, ceoToEmployeePayGapRatioValue)
-            }
-        }
-
-        if (excessiveCeoPayRatioInPercentValue != null || ceoToEmployeePayGapRatioValue != null) {
+        if (valueToUse != null) {
             dataTableEntity.companyAssociatedData.put("data", dataset.toString())
         }
     }
+
+    /**
+     * Determine which value to use put into the new excessiveCeoPayRatio field
+     */
+    private fun determineValueToUse(
+        excessiveCeoPayRatioInPercentValue: JSONObject?,
+        ceoToEmployeePayGapRatioValue: JSONObject?,
+    ): JSONObject? =
+        when {
+            excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue == null -> excessiveCeoPayRatioInPercentValue
+            excessiveCeoPayRatioInPercentValue == null && ceoToEmployeePayGapRatioValue != null -> ceoToEmployeePayGapRatioValue
+            excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue != null -> {
+                when {
+                    isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue) -> ceoToEmployeePayGapRatioValue
+                    isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue) -> excessiveCeoPayRatioInPercentValue
+                    else -> null // If both are invalid, return null
+                }
+            }
+            else -> null
+        }
+
+    /**
+     * Checks if the given value is a number
+     */
+    fun isNumber(value: Any?): Boolean =
+        when (value) {
+            is Number -> true
+            is String -> value.toDoubleOrNull() != null
+            else -> false
+        }
+
+    /**
+     * Checks if the value of an object is a valid number
+     */
+    private fun isValueOfObjectAValidNumber(jsonObject: JSONObject): Boolean = jsonObject.has("value") && isNumber(jsonObject.get("value"))
 }

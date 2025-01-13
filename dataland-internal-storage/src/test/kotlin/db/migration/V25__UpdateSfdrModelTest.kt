@@ -44,4 +44,14 @@ class V25__UpdateSfdrModelTest {
             V25__UpdateSfdrModel()::migrateExcessiveCeoPayGapRatio,
         )
     }
+
+    @Test
+    fun `check excessive ceo pay gap ratio migration for SFDR five`() {
+        TestUtils().testMigrationOfSingleDataset(
+            "sfdr",
+            "V25/originalSfdrFive.json",
+            "V25/expectedSfdrFive.json",
+            V25__UpdateSfdrModel()::migrateExcessiveCeoPayGapRatio,
+        )
+    }
 }
