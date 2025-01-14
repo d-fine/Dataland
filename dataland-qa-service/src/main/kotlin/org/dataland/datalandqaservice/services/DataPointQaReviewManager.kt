@@ -135,7 +135,7 @@ class DataPointQaReviewManager(
                 reportingPeriod = reportingPeriod,
             )
 
-        return dataPointQaReviewRepository.getDataIdOfCurrentlyActiveDataPoint(searchFilter)
+        return dataPointQaReviewRepository.getDataPointIdOfCurrentlyActiveDataPoint(searchFilter)
     }
 
     /**
@@ -151,7 +151,7 @@ class DataPointQaReviewManager(
      */
     fun getDataPointQaReviewInformationByDataId(dataId: String): List<DataPointQaReviewInformation> =
         dataPointQaReviewRepository
-            .findByDataIdOrderByTimestampDesc(dataId)
+            .findByDataPointIdOrderByTimestampDesc(dataId)
             .map { it.toDataPointQaReviewInformation() }
 
     /**

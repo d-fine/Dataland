@@ -98,7 +98,7 @@ class DataPointQaReportManager(
     ): DataPointQaReport {
         val dataPointMetaInfo = ensureDatalandDataPointExists(dataId)
         ensureQaReportConformsToSpecification(report, dataPointMetaInfo)
-        qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
+        qaReportRepository.markAllReportsInactiveByDataPointIdAndReportingUserId(dataId, reporterUserId)
 
         val mappedQaStatus = report.verdict.toQaStatus()
         if (mappedQaStatus != null) {
@@ -198,7 +198,7 @@ class DataPointQaReportManager(
     ): List<DataPointQaReport> =
         qaReportRepository
             .searchQaReportMetaInformation(
-                dataId = dataId,
+                dataPointId = dataId,
                 reporterUserId = reporterUserId,
                 showInactive = showInactive,
             ).map { it.toApiModel() }
