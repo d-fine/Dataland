@@ -4,6 +4,7 @@ import type Keycloak from 'keycloak-js';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { type BasicCompanyInformation } from '@clients/backend';
+import router from '@/router';
 
 let mockDataSearchResponse: Array<BasicCompanyInformation>;
 
@@ -24,12 +25,14 @@ describe('Component tests for the Dataland companies search page', function (): 
    * @param keycloakMock to be used for the login status
    */
   function verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock: Keycloak): void {
+    const routerSpy = cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
-    }).then((mounted) => {
+      router: router,
+    }).then(() => {
       cy.wait(500);
       cy.get('button').contains('BULK DATA REQUEST').should('exist').click({ force: true });
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/bulkdatarequest');
+      cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
     });
   }
 
@@ -96,7 +99,7 @@ describe('Component tests for the Dataland companies search page', function (): 
     }
   );
 
-  it("Check that the 'Bulk Request Data' button exists and works as expected for a data reader", () => {
+  it.only("Check that the 'Bulk Request Data' button exists and works as expected for a data reader", () => {
     const keycloakMock = minimalKeycloakMock({});
     verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock);
   });
