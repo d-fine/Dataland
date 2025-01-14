@@ -89,6 +89,7 @@ async function submitDataRequestsForSelection(): Promise<void> {
       await requestController.postSingleDataRequest({
         companyIdentifier: props.companyId,
         dataType: props.dataType as SingleDataRequestDataTypeEnum,
+        // as unknown as Set<string> cast required to ensure proper json is created
         reportingPeriods: reportingPeriodsToRequest as unknown as Set<string>,
       });
       await router.push('/requests');

@@ -11,6 +11,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -152,12 +153,7 @@ interface RequestApi {
 
     /** A method to patch an existing data request
      * @param dataRequestId The request id of the data request to patch
-     * @param requestStatus The new request status to set
-     * @param accessStatus The new access status to set
-     * @param contacts The new contacts to set
-     * @param message The new message to set
-     * @param requestPriority The new request priority to set
-     * @param adminComment The new admin comment to set
+     * @param dataRequestPatch The data with which the request is updated
      * @return the modified data request
      */
     @Suppress("LongParameterList")
@@ -171,29 +167,17 @@ interface RequestApi {
         ],
     )
     @PatchMapping(
-        value = ["/{dataRequestId}/requestStatus"],
+        value = ["/{dataRequestId}"],
+        consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or " +
-            "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
-            "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.isNotTryingToPatch(#accessStatus,#requestPriority, #adminComment) and " +
-            "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
-            "#dataRequestId, #requestStatus, #contacts, #message)" +
-            ") or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.isNotTryingToPatch(#requestStatus, #contacts, #message, #requestPriority, #adminComment)",
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchDataRequest(#dataRequestId, #dataRequestPatch)",
     )
     fun patchDataRequest(
-        @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus?,
-        @RequestParam accessStatus: AccessStatus?,
-        @RequestParam contacts: Set<String>?,
-        @RequestParam message: String?,
-        @RequestParam requestPriority: RequestPriority?,
-        @RequestParam adminComment: String?,
-        @RequestParam requestStatusChangeReason: String?,
+        @PathVariable("dataRequestId") dataRequestId: UUID,
+        @Valid @RequestBody
+        dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.

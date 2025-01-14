@@ -133,9 +133,9 @@ export default defineComponent({
      * Method to emit the provided Input
      */
     emitInput() {
-      const contacts = ((): Set<string> | undefined => {
+      const contacts = ((): string[] | undefined => {
         if (this.areContactsValid()) {
-          return new Set<string>(this.selectedContacts);
+          return this.selectedContacts;
         } else {
           return undefined;
         }

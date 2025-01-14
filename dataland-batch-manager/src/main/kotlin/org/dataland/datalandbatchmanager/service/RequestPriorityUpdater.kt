@@ -2,6 +2,7 @@ package org.dataland.datalandbatchmanager.service
 
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
+import org.dataland.datalandcommunitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.datalandcommunitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
@@ -72,7 +73,10 @@ class RequestPriorityUpdater
                     runCatching {
                         requestControllerApi.patchDataRequest(
                             dataRequestId = UUID.fromString(dataRequestId),
-                            requestPriority = newPriority,
+                            dataRequestPatch =
+                                DataRequestPatch(
+                                    requestPriority = newPriority,
+                                ),
                         )
                     }.onSuccess {
                         logger.info("Updated request priority of request $dataRequestId to $newPriority.")

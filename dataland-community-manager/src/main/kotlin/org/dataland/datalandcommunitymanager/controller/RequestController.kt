@@ -8,6 +8,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataReq
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -156,25 +157,19 @@ class RequestController(
 
     override fun patchDataRequest(
         dataRequestId: UUID,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
-        contacts: Set<String>?,
-        message: String?,
-        requestPriority: RequestPriority?,
-        adminComment: String?,
-        requestStatusChangeReason: String?,
+        dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
-                requestStatus,
-                accessStatus,
-                contacts,
-                message,
+                dataRequestPatch.requestStatus,
+                dataRequestPatch.accessStatus,
+                dataRequestPatch.contacts,
+                dataRequestPatch.message,
                 correlationId = null,
-                requestPriority,
-                adminComment,
-                requestStatusChangeReason,
+                dataRequestPatch.requestPriority,
+                dataRequestPatch.adminComment,
+                dataRequestPatch.requestStatusChangeReason,
             ),
         )
 }
