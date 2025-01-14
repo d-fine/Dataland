@@ -197,7 +197,7 @@ class AssembledDataManager
             }
 
             if (referencedReports != null) {
-                val expectedObservedReferences = referencedReports.keys.toSet()
+                val expectedObservedReferences = referencedReports.values.map { it.fileReference }.toSet()
                 if (observedDocumentReferences != expectedObservedReferences) {
                     throw InvalidInputApiException(
                         "Mismatching document references",

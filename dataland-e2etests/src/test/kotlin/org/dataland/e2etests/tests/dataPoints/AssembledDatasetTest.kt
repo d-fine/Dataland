@@ -21,7 +21,7 @@ import java.io.File
 import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AssembledDataSetTest {
+class AssembledDatasetTest {
     private val testDataProvider = FrameworkTestDataProvider(AdditionalCompanyInformationData::class.java)
     private val dummyDataset = testDataProvider.getTData(1)[0]
     private val apiAccessor = ApiAccessor()

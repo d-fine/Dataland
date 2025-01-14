@@ -80,7 +80,8 @@ class ReferencedReportsUtilities(
             } else if (report.fileName != null && report.fileName != matchingReport.fileName) {
                 InvalidInputApiException(
                     "Inconsistent file name",
-                    "The file name of the report '${report.fileName}' is not consistent with the file name listed in the referenced reports.",
+                    "The file name of the report '${report.fileName}' is not consistent " +
+                        "with the file name listed in the referenced reports which is '${matchingReport.fileName}'.",
                 )
             } else {
                 null
