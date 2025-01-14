@@ -68,6 +68,10 @@ object TransformationUtils {
         transformationRules: Map<String, String>,
         legacyFields: Map<String, String>,
     ) {
+        println("transformation rules")
+        println(transformationRules)
+        println("legacy fields")
+        println(legacyFields)
         val leafNodesInJsonNode: List<String> = getNonArrayLeafNodeFieldNames(node, "")
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {

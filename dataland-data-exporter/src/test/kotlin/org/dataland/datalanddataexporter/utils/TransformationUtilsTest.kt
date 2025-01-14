@@ -35,7 +35,11 @@ class TransformationUtilsTest {
         )
     private val expectedlegacyFields =
         mapOf(
-            "legacyfield" to "presentMapping",
+            "newHeader" to "presentMapping",
+        )
+    private val inconsistentLegacyFields =
+        mapOf(
+            "presentHeader" to "newMapping",
         )
     private val expectedHeaders =
         listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
@@ -71,10 +75,16 @@ class TransformationUtilsTest {
     }
 
     @Test
-    fun `check that checkConsistency throws an exception for inconsistent data`() {
+    fun `check that checkConsistency does throw an exception for inconsistent `() {
+        val jsonNode = ObjectMapper().readTree(inputJson)
+        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields) }
+    }
+
+    @Test
+    fun `check that checkConsistency throws an exception for inconsistent legacy fields`() {
         val jsonNode = ObjectMapper().readTree(inconsistentJson)
         assertThrows<IllegalArgumentException> {
-            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields)
+            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, inconsistentLegacyFields)
         }
     }
 
