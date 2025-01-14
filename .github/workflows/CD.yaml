@@ -204,7 +204,7 @@ jobs:
         env:
           TARGETSERVER_URL: ${{ vars.TARGETSERVER_URL }}
   e2e-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: ${{ github.event.inputs.whichEnvironment }}
     needs:
       - deploy-to-server-with-latest-built-images
