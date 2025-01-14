@@ -1,9 +1,11 @@
-package org.dataland.datalandbatchmanager.service
+package org.dataland.batchmanager.service
 
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandbatchmanager.service.RequestPriorityUpdater
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.model.AccessStatus
+import org.dataland.datalandcommunitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.datalandcommunitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestPriority
 import org.dataland.datalandcommunitymanager.openApiClient.model.RequestStatus
@@ -62,6 +64,8 @@ class RequestPriorityUpdaterTest {
         val extendedRequestPremiumUserPrioLow = createRequest(premiumUserId, requestIdPremiumUserPrioLow, RequestPriority.Low)
         val extendedRequestNormalUserPrioHigh = createRequest(normalUserId, requestIdNormalUserPrioHigh, RequestPriority.High)
         val extendedRequestNormalUserPrioLow = createRequest(normalUserId, requestIdNormalUserPrioLow, RequestPriority.Low)
+        val patchLow = DataRequestPatch(requestPriority = RequestPriority.Low)
+        val patchHigh = DataRequestPatch(requestPriority = RequestPriority.High)
 
         `when`(mockKeycloakUserService.getUsersByRole("ROLE_PREMIUM_USER"))
             .thenReturn(listOf(adminUser))
@@ -86,15 +90,15 @@ class RequestPriorityUpdaterTest {
         requestPriorityUpdater.processRequestPriorityUpdates()
 
         verify(mockRequestControllerApi, times(1))
-            .patchDataRequest(dataRequestId = requestIdPremiumUserPrioLow, requestPriority = RequestPriority.High)
+            .patchDataRequest(dataRequestId = requestIdPremiumUserPrioLow, dataRequestPatch = patchHigh)
 
         verify(mockRequestControllerApi, times(1))
-            .patchDataRequest(dataRequestId = requestIdNormalUserPrioHigh, requestPriority = RequestPriority.Low)
+            .patchDataRequest(dataRequestId = requestIdNormalUserPrioHigh, dataRequestPatch = patchLow)
 
         verify(mockRequestControllerApi, never())
-            .patchDataRequest(dataRequestId = requestIdPremiumUserPrioHigh, requestPriority = RequestPriority.Low)
+            .patchDataRequest(dataRequestId = requestIdPremiumUserPrioHigh, dataRequestPatch = patchLow)
 
         verify(mockRequestControllerApi, never())
-            .patchDataRequest(dataRequestId = requestIdNormalUserPrioLow, requestPriority = RequestPriority.High)
+            .patchDataRequest(dataRequestId = requestIdNormalUserPrioLow, dataRequestPatch = patchHigh)
     }
 }

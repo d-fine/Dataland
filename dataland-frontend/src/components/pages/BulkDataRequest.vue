@@ -330,6 +330,7 @@ export default defineComponent({
      */
     collectDataToSend(): BulkDataRequest {
       return {
+        // as unknown as Set<string> cast required to ensure proper json is created
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
         companyIdentifiers: this.identifiers as unknown as Set<string>,
         dataTypes: this.selectedFrameworks as unknown as Set<BulkDataRequestDataTypesEnum>,
