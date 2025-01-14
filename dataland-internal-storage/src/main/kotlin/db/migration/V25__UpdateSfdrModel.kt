@@ -81,7 +81,7 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
                 when {
                     isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue) -> ceoToEmployeePayGapRatioValue
                     isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue) -> excessiveCeoPayRatioInPercentValue
-                    else -> null // If both are invalid, return null
+                    else -> null
                 }
             }
             else -> null
