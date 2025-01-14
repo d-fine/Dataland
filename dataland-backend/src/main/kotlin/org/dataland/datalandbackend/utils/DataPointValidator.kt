@@ -40,7 +40,7 @@ class DataPointValidator
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
             val dataPointSchemaId = specificationClient.getDataPointSpecification(dataPointType).validatedBy.id
-            val validationClass = specificationClient.getDataPointTypeSpecification(dataPointSchemaId).validatedBy
+            val validationClass = specificationClient.getDataPointSchema(dataPointSchemaId).validatedBy
             validateConsistency(dataPoint, validationClass, correlationId)
         }
 
