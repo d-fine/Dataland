@@ -25,7 +25,7 @@ describe('Component tests for the Dataland companies search page', function (): 
    * @param keycloakMock to be used for the login status
    */
   function verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock: Keycloak): void {
-    const routerSpy = cy.spy(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
       router: router,
