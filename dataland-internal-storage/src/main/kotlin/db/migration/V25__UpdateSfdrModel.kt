@@ -24,21 +24,15 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
         )
     }
 
-    private val oldToNewRateOfAccidentsKey =
-        mapOf(
-            "rateOfAccidentsInPercent" to "rateOfAccidents",
-        )
-
     /**
      * Migrates the rate of accidents in the sfdr data
      */
     fun migrateRateOfAccidents(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
 
-        val socialObject = dataset.optJSONObject("social") ?: return
-        val socialAndEmployeeMattersObject = socialObject.optJSONObject("socialAndEmployeeMatters") ?: return
+        val socialAndEmployeeMattersObject = dataset.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return
 
-        for ((oldKey, newKey) in oldToNewRateOfAccidentsKey) {
+        for ((oldKey, newKey) in mapOf("rateOfAccidentsInPercent" to "rateOfAccidents")) {
             val oldValue = socialAndEmployeeMattersObject.remove(oldKey) ?: continue
             socialAndEmployeeMattersObject.put(newKey, oldValue)
         }
@@ -53,8 +47,7 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
     fun migrateExcessiveCeoPayGapRatio(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
 
-        val socialObject = dataset.optJSONObject("social") ?: return
-        val socialAndEmployeeMattersObject = socialObject.optJSONObject("socialAndEmployeeMatters") ?: return
+        val socialAndEmployeeMattersObject = dataset.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return
 
         val excessiveCeoPayRatioInPercentValue = socialAndEmployeeMattersObject.remove("excessiveCeoPayRatioInPercent") as? JSONObject
         val ceoToEmployeePayGapRatioValue = socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
@@ -75,30 +68,20 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
         ceoToEmployeePayGapRatioValue: JSONObject?,
     ): JSONObject? =
         when {
-            excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue == null -> excessiveCeoPayRatioInPercentValue
-            excessiveCeoPayRatioInPercentValue == null && ceoToEmployeePayGapRatioValue != null -> ceoToEmployeePayGapRatioValue
             excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue != null -> {
                 when {
                     isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue) -> ceoToEmployeePayGapRatioValue
                     isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue) -> excessiveCeoPayRatioInPercentValue
-                    else -> null
+                    else -> ceoToEmployeePayGapRatioValue
                 }
             }
-            else -> null
-        }
 
-    /**
-     * Checks if the given value is a number
-     */
-    fun isNumber(value: Any?): Boolean =
-        when (value) {
-            is Number -> true
-            is String -> value.toDoubleOrNull() != null
-            else -> false
+            else -> excessiveCeoPayRatioInPercentValue ?: ceoToEmployeePayGapRatioValue
         }
 
     /**
      * Checks if the value of an object is a valid number
      */
-    private fun isValueOfObjectAValidNumber(jsonObject: JSONObject): Boolean = jsonObject.has("value") && isNumber(jsonObject.get("value"))
+    private fun isValueOfObjectAValidNumber(jsonObject: JSONObject): Boolean =
+        jsonObject.has("value") && jsonObject.get("value").toString().toDoubleOrNull() != null
 }
