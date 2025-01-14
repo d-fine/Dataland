@@ -3,8 +3,8 @@ package org.dataland.datalandspecification.database.fs
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandspecification.database.SpecificationDatabase
-import org.dataland.datalandspecification.specifications.DataPointSpecification
 import org.dataland.datalandspecification.specifications.DataPointSchema
+import org.dataland.datalandspecification.specifications.DataPointSpecification
 import org.dataland.datalandspecification.specifications.FrameworkSpecification
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

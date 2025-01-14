@@ -2,11 +2,11 @@ package org.dataland.datalandspecificationservice.controller
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandspecification.database.SpecificationDatabase
-import org.dataland.datalandspecification.specifications.DataPointSpecification
 import org.dataland.datalandspecification.specifications.DataPointSchema
+import org.dataland.datalandspecification.specifications.DataPointSpecification
 import org.dataland.datalandspecificationservice.api.SpecificationApi
-import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
 import org.dataland.datalandspecificationservice.model.DataPointSchemaDto
+import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
 import org.dataland.datalandspecificationservice.model.FrameworkSpecificationDto
 import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecificationDto
 import org.dataland.datalandspecificationservice.model.toDto

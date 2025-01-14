@@ -1,7 +1,7 @@
 package org.dataland.datalandspecification.database
 
-import org.dataland.datalandspecification.specifications.DataPointSpecification
 import org.dataland.datalandspecification.specifications.DataPointSchema
+import org.dataland.datalandspecification.specifications.DataPointSpecification
 import org.dataland.datalandspecification.specifications.FrameworkSpecification
 
 /**

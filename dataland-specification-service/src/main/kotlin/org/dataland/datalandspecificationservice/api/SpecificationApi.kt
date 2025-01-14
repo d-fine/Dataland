@@ -3,8 +3,8 @@ package org.dataland.datalandspecificationservice.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
 import org.dataland.datalandspecificationservice.model.DataPointSchemaDto
+import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
 import org.dataland.datalandspecificationservice.model.FrameworkSpecificationDto
 import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecificationDto
 import org.springframework.http.ResponseEntity
