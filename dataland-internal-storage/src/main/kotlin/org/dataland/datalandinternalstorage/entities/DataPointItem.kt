@@ -21,7 +21,7 @@ data class DataPointItem(
     override val companyId: String,
     @Column(name = "reporting_period")
     override val reportingPeriod: String,
-    @Column(name = "data_point_identifier")
+    @Column(name = "data_point_type")
     override val dataPointType: String,
     @Column(name = "data", columnDefinition = "TEXT")
     override val dataPoint: String,

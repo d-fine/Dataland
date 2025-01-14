@@ -28,7 +28,7 @@ data class DataPointQaReviewEntity(
     override val companyId: String,
     @Column(name = "company_name", nullable = false)
     val companyName: String,
-    @Column(name = "data_point_identifier", nullable = false)
+    @Column(name = "data_point_type", nullable = false)
     override val dataPointType: String,
     @Column(name = "reporting_period", nullable = false)
     override val reportingPeriod: String,
