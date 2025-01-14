@@ -75,14 +75,16 @@ class TransformationUtilsTest {
     }
 
     @Test
-    fun `check that checkConsistency does throw an exception for inconsistent `() {
-        val jsonNode = ObjectMapper().readTree(inputJson)
-        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields) }
+    fun `check that checkConsistency throws an exception for inconsistent data`() {
+        val jsonNode = ObjectMapper().readTree(inconsistentJson)
+        assertThrows<IllegalArgumentException> {
+            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, inconsistentLegacyFields)
+        }
     }
 
     @Test
     fun `check that checkConsistency throws an exception for inconsistent legacy fields`() {
-        val jsonNode = ObjectMapper().readTree(inconsistentJson)
+        val jsonNode = ObjectMapper().readTree(inputJson)
         assertThrows<IllegalArgumentException> {
             TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, inconsistentLegacyFields)
         }

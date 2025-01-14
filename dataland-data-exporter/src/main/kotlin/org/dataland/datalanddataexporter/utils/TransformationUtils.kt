@@ -68,10 +68,6 @@ object TransformationUtils {
         transformationRules: Map<String, String>,
         legacyFields: Map<String, String>,
     ) {
-        println("transformation rules")
-        println(transformationRules)
-        println("legacy fields")
-        println(legacyFields)
         val leafNodesInJsonNode: List<String> = getNonArrayLeafNodeFieldNames(node, "")
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {
@@ -80,12 +76,12 @@ object TransformationUtils {
 
         val legacyValuesNotCovered = legacyFields.values.filter { !transformationRules.keys.contains(it) }
         require(legacyValuesNotCovered.isEmpty()) {
-            "Legacy fields contain values that are not in the data: $legacyValuesNotCovered"
+            "Legacy headers require nodes that are not in the data: $legacyValuesNotCovered"
         }
 
         val legacyKeysInTransformationValues = legacyFields.keys.filter { transformationRules.values.contains(it) }
         require(legacyKeysInTransformationValues.isEmpty()) {
-            "Legacy field keys should not be present as values in transformation rules: $legacyKeysInTransformationValues"
+            "Legacy headers are already exist as headers: $legacyKeysInTransformationValues"
         }
     }
 
