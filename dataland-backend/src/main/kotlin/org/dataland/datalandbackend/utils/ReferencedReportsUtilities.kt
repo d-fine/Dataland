@@ -40,11 +40,17 @@ class ReferencedReportsUtilities(
         }
         val referencedReports = objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
         val observedFileReferences = mutableSetOf<String>()
-        for (companyReport in referencedReports.values) {
+        for ((key, companyReport) in referencedReports.entries) {
             if (companyReport.fileReference in observedFileReferences) {
                 throw InvalidInputApiException(
                     "Inconsistent reference reports field",
                     "The file reference ${companyReport.fileReference} is used multiple times.",
+                )
+            }
+            if (companyReport.fileName != key) {
+                throw InvalidInputApiException(
+                    "Inconsistent reference reports field",
+                    "The file name ${companyReport.fileName} does not match the dictionary key $key.",
                 )
             }
             observedFileReferences.add(companyReport.fileReference)
@@ -64,12 +70,23 @@ class ReferencedReportsUtilities(
                 "Data point report not listed in referenced reports",
                 "The report '${report.fileReference}' is not contained in the referenced reports field.",
             )
-        if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
-            throw InvalidInputApiException(
-                "Inconsistent publication date",
-                "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
-                    "but the publication date listed in the referenced reports is '${matchingReport.publicationDate}'.",
-            )
+        val exception =
+            if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
+                InvalidInputApiException(
+                    "Inconsistent publication date",
+                    "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
+                        "but the publication date listed in the referenced reports is '${matchingReport.publicationDate}'.",
+                )
+            } else if (report.fileName != null && report.fileName != matchingReport.fileName) {
+                InvalidInputApiException(
+                    "Inconsistent file name",
+                    "The file name of the report '${report.fileName}' is not consistent with the file name listed in the referenced reports.",
+                )
+            } else {
+                null
+            }
+        if (exception != null) {
+            throw exception
         }
     }
 
