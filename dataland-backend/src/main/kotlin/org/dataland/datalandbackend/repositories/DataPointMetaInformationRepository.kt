@@ -17,7 +17,7 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
         "SELECT dataPointMetaInformation.dataPointId FROM DataPointMetaInformationEntity dataPointMetaInformation " +
             "WHERE dataPointMetaInformation.reportingPeriod = :#{#searchFilter.reportingPeriod} " +
             "AND dataPointMetaInformation.companyId = :#{#searchFilter.companyId} " +
-                "AND dataPointMetaInformation.dataPointType = :#{#searchFilter.dataPointType} " +
+            "AND dataPointMetaInformation.dataPointType = :#{#searchFilter.dataPointType} " +
             "AND dataPointMetaInformation.currentlyActive = true ",
     )
     fun getActiveDataPointId(

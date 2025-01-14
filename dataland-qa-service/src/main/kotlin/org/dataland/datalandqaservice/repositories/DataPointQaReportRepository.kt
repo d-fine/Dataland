@@ -20,7 +20,7 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
      */
     @Query(
         "SELECT qaReport FROM DataPointQaReportEntity qaReport " +
-                "WHERE qaReport.dataPointId = :dataId " +
+            "WHERE qaReport.dataPointId = :dataId " +
             "AND (:showInactive = TRUE OR qaReport.active = TRUE) " +
             "AND (:reporterUserId IS NULL OR qaReport.reporterUserId = :reporterUserId)",
     )
@@ -38,7 +38,7 @@ interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, S
     @Query(
         "UPDATE DataPointQaReportEntity qaReport " +
             "SET qaReport.active = FALSE " +
-                "WHERE qaReport.dataPointId = :dataId " +
+            "WHERE qaReport.dataPointId = :dataId " +
             "AND qaReport.reporterUserId = :reporterUserId",
     )
     @Modifying

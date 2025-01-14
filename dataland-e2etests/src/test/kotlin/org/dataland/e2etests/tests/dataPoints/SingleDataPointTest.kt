@@ -50,7 +50,7 @@ class SingleDataPointTest {
     fun `ensure a data point can be uploaded and downloaded without inconsistencies`() {
         withTechnicalUser(TechnicalUser.Admin) {
             val companyId = createDummyCompany()
-            val dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataId
+            val dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataPointId
             val downloadedDataPoint = Backend.dataPointControllerApi.getDataPoint(dataPointId)
             assertEquals(dummyDatapoint, downloadedDataPoint.dataPoint)
         }
@@ -61,7 +61,7 @@ class SingleDataPointTest {
         val dataPointId =
             withTechnicalUser(TechnicalUser.Admin) {
                 val companyId = createDummyCompany()
-                uploadDummyDatapoint(companyId, bypassQa = true).dataId
+                uploadDummyDatapoint(companyId, bypassQa = true).dataPointId
             }
         withTechnicalUser(TechnicalUser.Reader) {
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
@@ -77,7 +77,7 @@ class SingleDataPointTest {
             withTechnicalUser(TechnicalUser.Admin) {
                 val companyId = createDummyCompany()
                 withTechnicalUser(TechnicalUser.Uploader) {
-                    uploadDummyDatapoint(companyId, bypassQa = false).dataId
+                    uploadDummyDatapoint(companyId, bypassQa = false).dataPointId
                 }
             }
         withTechnicalUser(TechnicalUser.Reader) {
@@ -126,7 +126,7 @@ class SingleDataPointTest {
         var dataPointId = ""
         withTechnicalUser(TechnicalUser.Admin) {
             val companyId = createDummyCompany()
-            dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataId
+            dataPointId = uploadDummyDatapoint(companyId, bypassQa = false).dataPointId
             val datapointMetaInformation = Backend.dataPointControllerApi.getDataPointMetaInfo(dataPointId)
             assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Pending)
         }
