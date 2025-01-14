@@ -30,11 +30,11 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
     fun migrateRateOfAccidents(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
 
-        val socialAndEmployeeMattersObject = dataset.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return
+        val socialAndEmployeeMattersObject =
+            dataset.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return
 
-        for ((oldKey, newKey) in mapOf("rateOfAccidentsInPercent" to "rateOfAccidents")) {
-            val oldValue = socialAndEmployeeMattersObject.remove(oldKey) ?: continue
-            socialAndEmployeeMattersObject.put(newKey, oldValue)
+        socialAndEmployeeMattersObject.remove("rateOfAccidentsInPercent")?.let {
+            socialAndEmployeeMattersObject.put("rateOfAccidents", it)
         }
 
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
@@ -47,10 +47,13 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
     fun migrateExcessiveCeoPayGapRatio(dataTableEntity: DataTableEntity) {
         val dataset = dataTableEntity.dataJsonObject
 
-        val socialAndEmployeeMattersObject = dataset.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return
+        val socialAndEmployeeMattersObject =
+            dataset.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return
 
-        val excessiveCeoPayRatioInPercentValue = socialAndEmployeeMattersObject.remove("excessiveCeoPayRatioInPercent") as? JSONObject
-        val ceoToEmployeePayGapRatioValue = socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
+        val excessiveCeoPayRatioInPercentValue =
+            socialAndEmployeeMattersObject.remove("excessiveCeoPayRatioInPercent") as? JSONObject
+        val ceoToEmployeePayGapRatioValue =
+            socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
         val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
 
         valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
@@ -66,18 +69,16 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
     private fun determineValueToUse(
         excessiveCeoPayRatioInPercentValue: JSONObject?,
         ceoToEmployeePayGapRatioValue: JSONObject?,
-    ): JSONObject? =
-        when {
-            excessiveCeoPayRatioInPercentValue != null && ceoToEmployeePayGapRatioValue != null -> {
-                when {
-                    isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue) -> ceoToEmployeePayGapRatioValue
-                    isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue) -> excessiveCeoPayRatioInPercentValue
-                    else -> ceoToEmployeePayGapRatioValue
-                }
-            }
-
-            else -> excessiveCeoPayRatioInPercentValue ?: ceoToEmployeePayGapRatioValue
+    ): JSONObject? {
+        if (excessiveCeoPayRatioInPercentValue == null || ceoToEmployeePayGapRatioValue == null) {
+            return excessiveCeoPayRatioInPercentValue ?: ceoToEmployeePayGapRatioValue
         }
+        return when {
+            isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue) -> ceoToEmployeePayGapRatioValue
+            isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue) -> excessiveCeoPayRatioInPercentValue
+            else -> ceoToEmployeePayGapRatioValue
+        }
+    }
 
     /**
      * Checks if the value of an object is a valid number
