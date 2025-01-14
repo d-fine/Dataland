@@ -99,6 +99,6 @@ class DataPointQaReviewRepositoryTest {
         dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId))
         dataPointQaReviewRepository.save(getDummyEntity(dataId = differentDataId, qaStatus = QaStatus.Rejected))
         val results = dataPointQaReviewRepository.getDataIdOfCurrentlyActiveDataPoint(dummyDataPointDimensions)
-        assertEquals(firstEntity.dataId, results)
+        assertEquals(firstEntity.dataPointId, results)
     }
 }

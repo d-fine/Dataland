@@ -161,7 +161,7 @@ class DatabaseStringDataStore(
             logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
             storeDataPointItemWithoutTransaction(
                 DataPointItem(
-                    dataId = dataId,
+                    dataPointId = dataId,
                     companyId = storableDataPoint.companyId,
                     reportingPeriod = storableDataPoint.reportingPeriod,
                     dataPointType = storableDataPoint.dataPointType,

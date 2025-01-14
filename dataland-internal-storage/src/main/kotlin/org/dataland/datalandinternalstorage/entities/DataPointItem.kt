@@ -15,8 +15,8 @@ import org.dataland.datalandinternalstorage.model.StorableDataPoint
 @Table(name = "data_point_items")
 data class DataPointItem(
     @Id
-    @Column(name = "data_id")
-    val dataId: String,
+    @Column(name = "data_point_id")
+    val dataPointId: String,
     @Column(name = "company_id")
     override val companyId: String,
     @Column(name = "reporting_period")

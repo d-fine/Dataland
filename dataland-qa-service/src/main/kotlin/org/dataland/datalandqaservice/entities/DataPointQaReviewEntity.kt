@@ -22,8 +22,8 @@ data class DataPointQaReviewEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val eventId: UUID? = null,
-    @Column(name = "data_id", nullable = false)
-    val dataId: String,
+    @Column(name = "data_point_id", nullable = false)
+    val dataPointId: String,
     @Column(name = "company_id", nullable = false)
     override val companyId: String,
     @Column(name = "company_name", nullable = false)
@@ -47,7 +47,7 @@ data class DataPointQaReviewEntity(
      */
     fun toDataPointQaReviewInformation() =
         DataPointQaReviewInformation(
-            dataId = this.dataId,
+            dataId = this.dataPointId,
             companyId = this.companyId,
             companyName = this.companyName,
             dataPointType = this.dataPointType,

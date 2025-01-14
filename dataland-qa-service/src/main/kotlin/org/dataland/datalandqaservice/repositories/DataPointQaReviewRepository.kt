@@ -19,10 +19,10 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
      * @param filter the filter to apply to the search containing the company ID, data type, reporting period and the QA status
      */
     @Query(
-        "SELECT dataPointQaReview.dataId FROM DataPointQaReviewEntity dataPointQaReview " +
+        "SELECT dataPointQaReview.dataPointId FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
             "AND dataPointQaReview.companyId = :#{#filter.companyId} " +
             "AND dataPointQaReview.dataPointType = :#{#filter.dataPointType} " +
             "AND dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod} " +
@@ -47,7 +47,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
             "AND dataPointQaReview.qaStatus = org.dataland.datalandbackendutils.model.QaStatus.Pending " +
             "ORDER BY dataPointQaReview.timestamp DESC",
     )
@@ -86,7 +86,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
             "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
             "AND (:#{#filter.dataPointType} IS NULL OR dataPointQaReview.dataPointType = :#{#filter.dataPointType}) " +
             "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +

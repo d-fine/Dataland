@@ -67,7 +67,7 @@ class DataPointQaReviewManager(
 
         val dataPointQaReviewEntity =
             DataPointQaReviewEntity(
-                dataId = dataId,
+                dataPointId = dataId,
                 companyId = dataMetaInfo.companyId,
                 companyName = companyName,
                 dataPointType = dataMetaInfo.dataPointType,
@@ -86,7 +86,7 @@ class DataPointQaReviewManager(
     ) {
         val currentlyActiveDataId =
             if (dataPointQaReviewEntity.qaStatus == QaStatus.Accepted) {
-                dataPointQaReviewEntity.dataId
+                dataPointQaReviewEntity.dataPointId
             } else {
                 getDataIdOfCurrentlyActiveDataPoint(
                     dataPointQaReviewEntity.companyId,
@@ -97,7 +97,7 @@ class DataPointQaReviewManager(
 
         val qaStatusChangeMessage =
             QaStatusChangeMessage(
-                dataId = dataPointQaReviewEntity.dataId,
+                dataId = dataPointQaReviewEntity.dataPointId,
                 updatedQaStatus = dataPointQaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
             )
