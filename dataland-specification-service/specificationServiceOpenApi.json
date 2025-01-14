@@ -272,17 +272,17 @@
         }
       }
     },
-    "/data-point-types/{dataPointTypeSpecificationId}": {
+    "/data-point-schemas/{dataPointSchemaId}": {
       "get": {
         "tags": [
           "specification-controller"
         ],
-        "summary": "Get the data type specification for a given id.",
-        "description": "Get the data type specification for a given id.",
-        "operationId": "getDataPointTypeSpecification",
+        "summary": "Get the data point schema for a given id.",
+        "description": "Get the data point schema for a given id.",
+        "operationId": "getDataPointSchema",
         "parameters": [
           {
-            "name": "dataPointTypeSpecificationId",
+            "name": "dataPointSchemaId",
             "in": "path",
             "required": true,
             "schema": {
@@ -296,7 +296,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataPointTypeSpecificationDto"
+                  "$ref": "#/components/schemas/DataPointSchemaDto"
                 }
               }
             }
@@ -324,17 +324,17 @@
         }
       }
     },
-    "/data-point-types/{dataPointTypeSpecificationId}/validated-by": {
+    "/data-point-schemas/{dataPointSchemaId}/validated-by": {
       "get": {
         "tags": [
           "specification-controller"
         ],
         "summary": "Get the kotlin class that validates the data point type.",
         "description": "Get the kotlin class that validates the data point type.",
-        "operationId": "getKotlinClassValidatingTheDataPointType",
+        "operationId": "getKotlinClassValidatingTheDataPointSchema",
         "parameters": [
           {
-            "name": "dataPointTypeSpecificationId",
+            "name": "dataPointSchemaId",
             "in": "path",
             "required": true,
             "schema": {
@@ -692,10 +692,10 @@
           }
         }
       },
-      "DataPointTypeSpecificationDto": {
+      "DataPointSchemaDto": {
         "required": [
           "businessDefinition",
-          "dataPointTypeSpecification",
+          "dataPointSchema",
           "example",
           "name",
           "usedBy",
@@ -703,7 +703,7 @@
         ],
         "type": "object",
         "properties": {
-          "dataPointTypeSpecification": {
+          "dataPointSchema": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {

@@ -54,7 +54,7 @@ class FileSystemSpecificationDatabase(
     }
 
     private fun loadFromDisk() {
-        loadSpecifications<DataPointSchema>(File(baseFolder, "dataPointTypes"), objectMapper, logger)
+        loadSpecifications<DataPointSchema>(File(baseFolder, "dataPointSchemas"), objectMapper, logger)
             .forEach { (id, specification) ->
                 dataPointSchemas[id] = specification
             }
@@ -92,7 +92,7 @@ class FileSystemSpecificationDatabase(
      */
     fun saveToDisk() {
         validateIntegrity()
-        saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointSchemas)
+        saveSpecifications(File(baseFolder, "dataPointSchemas"), objectMapper, dataPointSchemas)
         saveSpecifications(File(baseFolder, "dataPoints"), objectMapper, dataPointSpecifications)
         saveSpecifications(File(baseFolder, "frameworks"), objectMapper, frameworkSpecifications)
     }
