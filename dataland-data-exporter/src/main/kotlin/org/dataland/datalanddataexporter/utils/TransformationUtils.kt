@@ -159,10 +159,10 @@ object TransformationUtils {
      */
     fun mapJsonToLegacyCsvFields(
         jsonNode: JsonNode,
-        transformationRules: Map<String, String>,
+        legacyFields: Map<String, String>,
     ): Map<String, String> {
         val csvData = mutableMapOf<String, String>()
-        transformationRules.forEach { (csvHeader, jsonPath) ->
+        legacyFields.forEach { (csvHeader, jsonPath) ->
             if (csvHeader.isEmpty()) return@forEach
             csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
         }
