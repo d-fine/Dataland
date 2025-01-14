@@ -64,6 +64,7 @@
             <DownloadDatasetModal
               :isDownloadModalOpen="isDownloadModalOpen"
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
               @close-download-modal="onCloseDownloadModal"
               @download-dataset="handleDatasetDownload"
               data-test="downloadModal"
@@ -173,8 +174,12 @@ export default defineComponent({
       type: String as PropType<DataTypeEnum>,
       required: true,
     },
+    /**
+     * This object is filled if ViewFrameworkBase displays a single dataset.
+     * If ViewFrameworkBase is used to display multiple datasets, mapOfReportingPeriodToActiveDataset is populated instead.
+     */
     singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
+      type: Object as PropType<DataMetaInformation>,
     },
     viewInPreviewMode: {
       type: Boolean,
@@ -199,6 +204,10 @@ export default defineComponent({
       pageScrolled: false,
       scrollEmittedByToolbar: false,
       latestScrollPosition: 0,
+      /**
+       * This object is filled if ViewFrameworkBase displays multiple datasets.
+       * If ViewFrameworkBase is used to display a single dataset, singleDataMetaInfoToDisplay is populated instead.
+       */
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccessfully: true,
       hasUserUploaderRights: false,
@@ -249,7 +258,6 @@ export default defineComponent({
     onCloseDownloadModal() {
       this.isDownloadModalOpen = false;
     },
-
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
      * @param fetchedCompanyInformation the company information for the current company Id
@@ -429,7 +437,12 @@ export default defineComponent({
      * @param selectedFileTypeIdentifier selected export file type
      */
     async handleDatasetDownload(selectedYear: string, selectedFileTypeIdentifier: string) {
-      const dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
+      let dataId;
+      if (this.singleDataMetaInfoToDisplay) {
+        dataId = this.singleDataMetaInfoToDisplay.dataId;
+      } else {
+        dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
+      }
 
       if (!dataId) {
         throw new ReferenceError(`DataId does not exist.`);

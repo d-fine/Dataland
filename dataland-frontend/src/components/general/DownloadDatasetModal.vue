@@ -71,9 +71,16 @@ export default defineComponent({
       required: false,
       default: false,
     },
+    /**
+     * mapOfReportingPeriodToActiveDataset is filled if the ViewFrameworkBase component displays multiple datasets.
+     * If ViewFrameworkBase is used to display a single dataset, singleDataMetaInfoToDisplay is populated instead.
+     */
     mapOfReportingPeriodToActiveDataset: {
       type: Map as PropType<Map<string, DataMetaInformation>>,
       required: true,
+    },
+    singleDataMetaInfoToDisplay: {
+      type: Object as PropType<DataMetaInformation>,
     },
   },
   emits: ['closeDownloadModal', 'downloadDataset'],
@@ -105,6 +112,9 @@ export default defineComponent({
     mapOfReportingPeriodToActiveDataset() {
       this.updateReportingPeriods();
     },
+    singleDataMetaInfoToDisplay() {
+      this.updateReportingPeriods();
+    },
     selectedReportingPeriod() {
       this.showReportingPeriodError = false;
     },
@@ -119,7 +129,11 @@ export default defineComponent({
      * 'mapOfReportingPeriodToActiveDataset' is filled
      */
     updateReportingPeriods() {
-      this.reportingPeriods = Array.from(this.mapOfReportingPeriodToActiveDataset.keys()).sort();
+      if (this.singleDataMetaInfoToDisplay) {
+        this.reportingPeriods = [this.singleDataMetaInfoToDisplay.reportingPeriod];
+      } else {
+        this.reportingPeriods = Array.from(this.mapOfReportingPeriodToActiveDataset.keys()).sort();
+      }
     },
 
     /**
