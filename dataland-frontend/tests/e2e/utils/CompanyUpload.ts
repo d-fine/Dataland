@@ -5,7 +5,6 @@ import {
   Configuration,
   type StoredCompany,
 } from '@clients/backend';
-import { faker } from '@faker-js/faker';
 import { selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
 
 /**
@@ -64,7 +63,7 @@ export function generateDummyCompanyInformation(companyName: string, sector = 'I
     headquarters: 'Imaginary-City',
     sector: sector,
     identifiers: {
-      [IdentifierType.PermId]: [faker.string.alphanumeric(10)],
+      [IdentifierType.PermId]: [crypto.randomUUID()],
     },
     countryCode: 'DE',
     isTeaserCompany: false,

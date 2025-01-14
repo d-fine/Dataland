@@ -2,488 +2,477 @@
 	{
 		"companyInformation": {
 			"companyName": "All-fields-defined-for-EU-NuclearAndGas-Framework",
-			"headquarters": "North Estebanchester",
-			"headquartersPostalCode": "09509",
-			"sector": "portals",
+			"headquarters": "Allentown",
+			"headquartersPostalCode": "35399-1664",
+			"sector": "blockchains",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"qdkFy5G59xjM",
-					"qg8z6MGJoMcp"
+					"suTclwAP06rN"
 				],
 				"PermId": [
-					"iXEB7o6aV3"
+					"yuemsTtP0T"
 				],
 				"Ticker": [
-					"2bx1hfz"
+					"ItUumjr"
 				],
 				"Duns": [],
-				"VatNumber": [
-					"oJkJjWau0"
-				],
-				"CompanyRegistrationNumber": [
-					"yowDeoURvI1mWUG"
-				]
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MW",
-			"companyContactDetails": null,
+			"countryCode": "BT",
+			"companyContactDetails": [
+				"Rudolph_Kunze@example.com",
+				"Odessa84@example.com",
+				"Hank.Lebsack-Ziemann66@example.com"
+			],
 			"companyAlternativeNames": [
-				"Jenkins, Hackett and Wyman"
+				"Conroy - Howe"
 			],
 			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://amused-latency.biz",
+			"website": "https://defensive-horde.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
 					"referencedReports": {
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-08-29"
-						},
 						"AnnualReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"fileName": "AnnualReport",
-							"publicationDate": "2023-06-09"
+							"publicationDate": "2023-03-22"
 						},
-						"IntegratedReport": {
+						"SustainabilityReport": {
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "IntegratedReport",
-							"publicationDate": "2023-11-17"
-						},
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"publicationDate": "2023-05-15"
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2024-01-05"
 						}
 					},
 					"nuclearEnergyRelatedActivitiesSection426": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"page": "596",
+							"page": "849-1256",
 							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "blockchains"
+							"tagName": "methodologies"
 						},
-						"comment": "bypass wireless application",
-						"quality": "Reported"
+						"comment": "transmit bluetooth program",
+						"quality": "Estimated"
 					},
 					"nuclearEnergyRelatedActivitiesSection427": {
 						"value": "No",
 						"dataSource": {
-							"page": "1066",
-							"fileName": "IntegratedReport",
+							"page": "71",
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "AI"
 						},
-						"comment": "navigate back-end pixel",
-						"quality": "Reported"
+						"comment": "input virtual hard drive",
+						"quality": "NoDataFound"
 					},
 					"nuclearEnergyRelatedActivitiesSection428": {
-						"value": "No",
+						"value": "Yes",
 						"dataSource": {
-							"page": "1076",
-							"fileName": "ESEFReport",
+							"page": "354",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"tagName": "channels"
 						},
-						"comment": "compress multi-byte transmitter",
-						"quality": "Incomplete"
+						"comment": "connect wireless monitor",
+						"quality": "Reported"
 					},
 					"fossilGasRelatedActivitiesSection429": {
-						"value": "Yes",
+						"value": "No",
 						"dataSource": {
-							"page": "230",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "communities"
-						},
-						"comment": "generate 1080p card",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection430": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "1106-1157",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "action-items"
-						},
-						"comment": "bypass online bus",
-						"quality": "Audited"
-					},
-					"fossilGasRelatedActivitiesSection431": {
-						"value": "Yes",
-						"dataSource": {
-							"page": "219",
-							"fileName": "AnnualReport",
+							"page": "400",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
 							"tagName": "infrastructures"
 						},
-						"comment": "hack redundant program",
-						"quality": "Estimated"
+						"comment": "copy solid state firewall",
+						"quality": "Incomplete"
+					},
+					"fossilGasRelatedActivitiesSection430": {
+						"value": "No",
+						"dataSource": {
+							"page": "1031",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "generate solid state pixel",
+						"quality": "Reported"
+					},
+					"fossilGasRelatedActivitiesSection431": {
+						"value": "No",
+						"dataSource": {
+							"page": "1070",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "paradigms"
+						},
+						"comment": "calculate online card",
+						"quality": "Reported"
 					}
 				},
 				"taxonomyAlignedDenominator": {
 					"nuclearAndGasTaxonomyAlignedRevenueDenominator": {
 						"value": {
 							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 53.18,
-								"mitigation": 47.97,
-								"adaptation": 67.01
+								"mitigationAndAdaptation": 8.36,
+								"mitigation": 89.49,
+								"adaptation": 89.76
 							},
 							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 32.26,
-								"mitigation": 22.48,
-								"adaptation": 30.74
+								"mitigationAndAdaptation": 80.28,
+								"mitigation": 14.22,
+								"adaptation": 90.02
 							},
 							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 52.93,
-								"mitigation": 29.95,
-								"adaptation": 81.15
+								"mitigationAndAdaptation": 35.74,
+								"mitigation": 69.76,
+								"adaptation": 47.23
 							},
 							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 13.44,
-								"mitigation": 80.72,
-								"adaptation": 71.73
+								"mitigationAndAdaptation": 80.54,
+								"mitigation": 6.23,
+								"adaptation": 44.79
 							},
 							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 87.53,
-								"mitigation": 11.85,
-								"adaptation": 57.87
+								"mitigationAndAdaptation": 58.27,
+								"mitigation": 36.31,
+								"adaptation": 42.64
 							},
 							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 97.63,
-								"mitigation": 35.72,
-								"adaptation": 18.41
+								"mitigationAndAdaptation": 86.33,
+								"mitigation": 68.18,
+								"adaptation": 59.63
 							},
 							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 61.09,
-								"mitigation": 91.53,
-								"adaptation": 24.73
+								"mitigationAndAdaptation": 76.81,
+								"mitigation": 0.58,
+								"adaptation": 67.64
 							},
 							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 5.67,
-								"mitigation": 57.63,
-								"adaptation": 93.97
+								"mitigationAndAdaptation": 6.41,
+								"mitigation": 22.62,
+								"adaptation": 30.31
 							}
 						},
 						"dataSource": {
-							"page": "673-1029",
-							"fileName": "AnnualReport",
+							"page": "987-1218",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "niches"
+							"tagName": "deliverables"
 						},
-						"comment": "hack optical bus",
-						"quality": "Incomplete"
+						"comment": "compress open-source bus",
+						"quality": "Audited"
 					},
 					"nuclearAndGasTaxonomyAlignedCapexDenominator": {
 						"value": {
 							"taxonomyAlignedShareDenominatorNAndG426": {
-								"mitigationAndAdaptation": 11.02,
-								"mitigation": 18.13,
-								"adaptation": 31.14
+								"mitigationAndAdaptation": 53.97,
+								"mitigation": 36.19,
+								"adaptation": 30.32
 							},
 							"taxonomyAlignedShareDenominatorNAndG427": {
-								"mitigationAndAdaptation": 84.6,
-								"mitigation": 51.77,
-								"adaptation": 45.86
+								"mitigationAndAdaptation": 49.2,
+								"mitigation": 87.05,
+								"adaptation": 45.13
 							},
 							"taxonomyAlignedShareDenominatorNAndG428": {
-								"mitigationAndAdaptation": 46.92,
-								"mitigation": 55.8,
-								"adaptation": 59.11
+								"mitigationAndAdaptation": 16.31,
+								"mitigation": 85.37,
+								"adaptation": 17.52
 							},
 							"taxonomyAlignedShareDenominatorNAndG429": {
-								"mitigationAndAdaptation": 67.17,
-								"mitigation": 74.71,
-								"adaptation": 52.02
+								"mitigationAndAdaptation": 98.01,
+								"mitigation": 29.44,
+								"adaptation": 78.16
 							},
 							"taxonomyAlignedShareDenominatorNAndG430": {
-								"mitigationAndAdaptation": 99.07,
-								"mitigation": 82.77,
-								"adaptation": 7.14
+								"mitigationAndAdaptation": 44.41,
+								"mitigation": 91.32,
+								"adaptation": 36.19
 							},
 							"taxonomyAlignedShareDenominatorNAndG431": {
-								"mitigationAndAdaptation": 17.49,
-								"mitigation": 97.98,
-								"adaptation": 69.04
+								"mitigationAndAdaptation": 78.48,
+								"mitigation": 24.91,
+								"adaptation": 68.54
 							},
 							"taxonomyAlignedShareDenominatorOtherActivities": {
-								"mitigationAndAdaptation": 52.25,
-								"mitigation": 11.72,
-								"adaptation": 8.1
+								"mitigationAndAdaptation": 18.51,
+								"mitigation": 34.07,
+								"adaptation": 39.03
 							},
 							"taxonomyAlignedShareDenominator": {
-								"mitigationAndAdaptation": 7.7,
-								"mitigation": 13.35,
-								"adaptation": 99.08
+								"mitigationAndAdaptation": 61.84,
+								"mitigation": 47.57,
+								"adaptation": 61.9
 							}
 						},
 						"dataSource": {
-							"page": "587",
-							"fileName": "IntegratedReport",
+							"page": "458-761",
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "solutions"
+							"tagName": "synergies"
 						},
-						"comment": "calculate 1080p card",
-						"quality": "Reported"
+						"comment": "calculate online transmitter",
+						"quality": "Incomplete"
 					}
 				},
 				"taxonomyAlignedNumerator": {
 					"nuclearAndGasTaxonomyAlignedRevenueNumerator": {
 						"value": {
 							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 31.85,
-								"mitigation": 56.26,
-								"adaptation": 70.06
+								"mitigationAndAdaptation": 48.47,
+								"mitigation": 81.84,
+								"adaptation": 5.24
 							},
 							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 97.87,
-								"mitigation": 82.73,
-								"adaptation": 87.58
+								"mitigationAndAdaptation": 51.24,
+								"mitigation": 8.96,
+								"adaptation": 35.17
 							},
 							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 62.54,
-								"mitigation": 60.19,
-								"adaptation": 7.69
+								"mitigationAndAdaptation": 48.53,
+								"mitigation": 90.5,
+								"adaptation": 97.8
 							},
 							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 69.96,
-								"mitigation": 65.03,
-								"adaptation": 4.01
+								"mitigationAndAdaptation": 25.9,
+								"mitigation": 47.12,
+								"adaptation": 79.05
 							},
 							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 42.41,
-								"mitigation": 27.64,
-								"adaptation": 42.43
+								"mitigationAndAdaptation": 94.04,
+								"mitigation": 77.81,
+								"adaptation": 18.49
 							},
 							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 12.01,
-								"mitigation": 67.39,
-								"adaptation": 70.24
+								"mitigationAndAdaptation": 34.92,
+								"mitigation": 23.56,
+								"adaptation": 9.15
 							},
 							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 49.75,
-								"mitigation": 56.76,
-								"adaptation": 62.99
+								"mitigationAndAdaptation": 23.9,
+								"mitigation": 72.05,
+								"adaptation": 22.03
 							},
 							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 45.39,
-								"mitigation": 31.51,
-								"adaptation": 88.13
+								"mitigationAndAdaptation": 11.43,
+								"mitigation": 26.83,
+								"adaptation": 51.91
 							}
 						},
 						"dataSource": {
-							"page": "94",
-							"fileName": "IntegratedReport",
+							"page": "379-1055",
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "supply-chains"
+							"tagName": "experiences"
 						},
-						"comment": "program primary driver",
-						"quality": "Incomplete"
+						"comment": "program mobile protocol",
+						"quality": "NoDataFound"
 					},
 					"nuclearAndGasTaxonomyAlignedCapexNumerator": {
 						"value": {
 							"taxonomyAlignedShareNumeratorNAndG426": {
-								"mitigationAndAdaptation": 81.24,
-								"mitigation": 57.54,
-								"adaptation": 24.24
+								"mitigationAndAdaptation": 78.48,
+								"mitigation": 50.1,
+								"adaptation": 65.22
 							},
 							"taxonomyAlignedShareNumeratorNAndG427": {
-								"mitigationAndAdaptation": 52.43,
-								"mitigation": 73.08,
-								"adaptation": 18.92
+								"mitigationAndAdaptation": 2.95,
+								"mitigation": 11.4,
+								"adaptation": 5.22
 							},
 							"taxonomyAlignedShareNumeratorNAndG428": {
-								"mitigationAndAdaptation": 7.92,
-								"mitigation": 54,
-								"adaptation": 54.05
+								"mitigationAndAdaptation": 69.18,
+								"mitigation": 42.66,
+								"adaptation": 18.64
 							},
 							"taxonomyAlignedShareNumeratorNAndG429": {
-								"mitigationAndAdaptation": 2.99,
-								"mitigation": 61.1,
-								"adaptation": 82.81
+								"mitigationAndAdaptation": 39.67,
+								"mitigation": 45.67,
+								"adaptation": 62.16
 							},
 							"taxonomyAlignedShareNumeratorNAndG430": {
-								"mitigationAndAdaptation": 64.84,
-								"mitigation": 64.79,
-								"adaptation": 72.86
+								"mitigationAndAdaptation": 18.76,
+								"mitigation": 84.09,
+								"adaptation": 40.21
 							},
 							"taxonomyAlignedShareNumeratorNAndG431": {
-								"mitigationAndAdaptation": 69.1,
-								"mitigation": 74.01,
-								"adaptation": 58.02
+								"mitigationAndAdaptation": 36.29,
+								"mitigation": 27.64,
+								"adaptation": 67.49
 							},
 							"taxonomyAlignedShareNumeratorOtherActivities": {
-								"mitigationAndAdaptation": 84.36,
-								"mitigation": 29.52,
-								"adaptation": 73.46
+								"mitigationAndAdaptation": 13.28,
+								"mitigation": 38.84,
+								"adaptation": 54.09
 							},
 							"taxonomyAlignedShareNumerator": {
-								"mitigationAndAdaptation": 91.6,
-								"mitigation": 43.2,
-								"adaptation": 33.45
+								"mitigationAndAdaptation": 95.84,
+								"mitigation": 83.69,
+								"adaptation": 61.12
 							}
 						},
 						"dataSource": {
-							"page": "1184-1300",
-							"fileName": "ESEFReport",
+							"page": "1049-1127",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "applications"
+							"tagName": "systems"
 						},
-						"comment": "navigate auxiliary firewall",
-						"quality": "Incomplete"
+						"comment": "copy wireless bus",
+						"quality": "Estimated"
 					}
 				},
 				"taxonomyEligibleButNotAligned": {
 					"nuclearAndGasTaxonomyEligibleButNotAlignedRevenue": {
 						"value": {
 							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 14.28,
-								"mitigation": 41.04,
-								"adaptation": 47
+								"mitigationAndAdaptation": 58.8,
+								"mitigation": 28.85,
+								"adaptation": 25.07
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 50.8,
-								"mitigation": 86.28,
-								"adaptation": 69.77
+								"mitigationAndAdaptation": 46.24,
+								"mitigation": 59.73,
+								"adaptation": 98.01
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 49.02,
-								"mitigation": 20.95,
-								"adaptation": 20.22
+								"mitigationAndAdaptation": 27.27,
+								"mitigation": 52.31,
+								"adaptation": 51.26
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 59.02,
-								"mitigation": 40.41,
-								"adaptation": 80.53
+								"mitigationAndAdaptation": 83.74,
+								"mitigation": 86.32,
+								"adaptation": 10.4
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 5.3,
-								"mitigation": 64.63,
-								"adaptation": 44.84
+								"mitigationAndAdaptation": 88.47,
+								"mitigation": 87.75,
+								"adaptation": 47
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 14.68,
-								"mitigation": 57.48,
-								"adaptation": 45.28
+								"mitigationAndAdaptation": 2.16,
+								"mitigation": 67.32,
+								"adaptation": 94.25
 							},
 							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 47.06,
-								"mitigation": 88.37,
-								"adaptation": 69.81
+								"mitigationAndAdaptation": 4.73,
+								"mitigation": 22.49,
+								"adaptation": 25.2
 							},
 							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 17.01,
-								"mitigation": 9.97,
-								"adaptation": 21.26
+								"mitigationAndAdaptation": 32.03,
+								"mitigation": 15.45,
+								"adaptation": 87.57
 							}
 						},
 						"dataSource": {
-							"page": "1113",
+							"page": "281-579",
 							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "e-commerce"
+							"tagName": "web services"
 						},
-						"comment": "synthesize mobile firewall",
-						"quality": "Incomplete"
+						"comment": "back up neural array",
+						"quality": "NoDataFound"
 					},
 					"nuclearAndGasTaxonomyEligibleButNotAlignedCapex": {
 						"value": {
 							"taxonomyEligibleButNotAlignedShareNAndG426": {
-								"mitigationAndAdaptation": 16.73,
-								"mitigation": 65.56,
-								"adaptation": 73.88
+								"mitigationAndAdaptation": 21.68,
+								"mitigation": 66.63,
+								"adaptation": 9.48
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG427": {
-								"mitigationAndAdaptation": 91.6,
-								"mitigation": 91.31,
-								"adaptation": 0.25
+								"mitigationAndAdaptation": 98.6,
+								"mitigation": 59.09,
+								"adaptation": 59.43
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG428": {
-								"mitigationAndAdaptation": 21.88,
-								"mitigation": 90.24,
-								"adaptation": 0.92
+								"mitigationAndAdaptation": 62.25,
+								"mitigation": 40.73,
+								"adaptation": 2.32
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG429": {
-								"mitigationAndAdaptation": 9.59,
-								"mitigation": 8.02,
-								"adaptation": 79.35
+								"mitigationAndAdaptation": 75.3,
+								"mitigation": 72.67,
+								"adaptation": 71.96
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG430": {
-								"mitigationAndAdaptation": 55.32,
-								"mitigation": 34.17,
-								"adaptation": 76.51
+								"mitigationAndAdaptation": 6.07,
+								"mitigation": 58.68,
+								"adaptation": 73.53
 							},
 							"taxonomyEligibleButNotAlignedShareNAndG431": {
-								"mitigationAndAdaptation": 8.92,
-								"mitigation": 56.35,
-								"adaptation": 95.65
+								"mitigationAndAdaptation": 89.53,
+								"mitigation": 68.41,
+								"adaptation": 33.97
 							},
 							"taxonomyEligibleButNotAlignedShareOtherActivities": {
-								"mitigationAndAdaptation": 50.15,
-								"mitigation": 78.6,
-								"adaptation": 34.95
+								"mitigationAndAdaptation": 13.3,
+								"mitigation": 33.29,
+								"adaptation": 25.6
 							},
 							"taxonomyEligibleButNotAlignedShare": {
-								"mitigationAndAdaptation": 12.24,
-								"mitigation": 69.07,
-								"adaptation": 25.64
+								"mitigationAndAdaptation": 85.35,
+								"mitigation": 86.16,
+								"adaptation": 74.18
 							}
 						},
 						"dataSource": {
-							"page": "1153-1266",
-							"fileName": "IntegratedReport",
+							"page": "944-1162",
+							"fileName": "SustainabilityReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"tagName": "platforms"
 						},
-						"comment": "parse primary driver",
+						"comment": "index bluetooth monitor",
 						"quality": "Incomplete"
 					}
 				},
 				"taxonomyNonEligible": {
 					"nuclearAndGasTaxonomyNonEligibleRevenue": {
 						"value": {
-							"taxonomyNonEligibleShareNAndG426": 15.03,
-							"taxonomyNonEligibleShareNAndG427": 60.58,
-							"taxonomyNonEligibleShareNAndG428": 10.33,
-							"taxonomyNonEligibleShareNAndG429": 7.55,
-							"taxonomyNonEligibleShareNAndG430": 44.2,
-							"taxonomyNonEligibleShareNAndG431": 45.89,
-							"taxonomyNonEligibleShareOtherActivities": 85.71,
-							"taxonomyNonEligibleShare": 95.11
+							"taxonomyNonEligibleShareNAndG426": 19.65,
+							"taxonomyNonEligibleShareNAndG427": 91.94,
+							"taxonomyNonEligibleShareNAndG428": 91.76,
+							"taxonomyNonEligibleShareNAndG429": 39.91,
+							"taxonomyNonEligibleShareNAndG430": 59.01,
+							"taxonomyNonEligibleShareNAndG431": 85.74,
+							"taxonomyNonEligibleShareOtherActivities": 7.53,
+							"taxonomyNonEligibleShare": 31.85
 						},
 						"dataSource": {
-							"page": "1169",
-							"fileName": "IntegratedReport",
+							"page": "1080",
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "networks"
+							"tagName": "experiences"
 						},
-						"comment": "transmit solid state bus",
-						"quality": "NoDataFound"
+						"comment": "generate virtual protocol",
+						"quality": "Estimated"
 					},
 					"nuclearAndGasTaxonomyNonEligibleCapex": {
 						"value": {
-							"taxonomyNonEligibleShareNAndG426": 94.34,
-							"taxonomyNonEligibleShareNAndG427": 26.61,
-							"taxonomyNonEligibleShareNAndG428": 11.96,
-							"taxonomyNonEligibleShareNAndG429": 71.54,
-							"taxonomyNonEligibleShareNAndG430": 19.85,
-							"taxonomyNonEligibleShareNAndG431": 37.15,
-							"taxonomyNonEligibleShareOtherActivities": 31.89,
-							"taxonomyNonEligibleShare": 37.85
+							"taxonomyNonEligibleShareNAndG426": 96.55,
+							"taxonomyNonEligibleShareNAndG427": 8.46,
+							"taxonomyNonEligibleShareNAndG428": 98.52,
+							"taxonomyNonEligibleShareNAndG429": 57.77,
+							"taxonomyNonEligibleShareNAndG430": 21.08,
+							"taxonomyNonEligibleShareNAndG431": 18.31,
+							"taxonomyNonEligibleShareOtherActivities": 31.91,
+							"taxonomyNonEligibleShare": 84.01
 						},
 						"dataSource": {
-							"page": "1123-1283",
-							"fileName": "ESEFReport",
+							"page": "67-473",
+							"fileName": "AnnualReport",
 							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "lifetime value"
+							"tagName": "initiatives"
 						},
-						"comment": "back up primary microchip",
-						"quality": "Estimated"
+						"comment": "index cross-platform interface",
+						"quality": "Reported"
 					}
 				}
 			}
