@@ -48,15 +48,19 @@ class AssembledDatasetTest {
     private fun uploadDummyAdditionalCompanyInformationDataset(
         companyId: String,
         bypassQa: Boolean,
-    ): DataMetaInformation =
-        Backend.additionalCompanyInformationDataControllerApi.postCompanyAssociatedAdditionalCompanyInformationData(
-            CompanyAssociatedDataAdditionalCompanyInformationData(
-                companyId = companyId,
-                reportingPeriod = "2025",
-                data = dummyDataset,
-            ),
-            bypassQa = bypassQa,
-        )
+    ): DataMetaInformation {
+        val ret =
+            Backend.additionalCompanyInformationDataControllerApi.postCompanyAssociatedAdditionalCompanyInformationData(
+                CompanyAssociatedDataAdditionalCompanyInformationData(
+                    companyId = companyId,
+                    reportingPeriod = "2025",
+                    data = dummyDataset,
+                ),
+                bypassQa = bypassQa,
+            )
+        Thread.sleep(1000) // wait for the data to be processed
+        return ret
+    }
 
     @Test
     fun `ensure uploading and downloading an assembled dataset works consistently`() {
@@ -65,7 +69,21 @@ class AssembledDatasetTest {
         val downloadedDataset =
             Backend.additionalCompanyInformationDataControllerApi
                 .getCompanyAssociatedAdditionalCompanyInformationData(dataMetaInformation.dataId)
-        assertEquals(dummyDataset, downloadedDataset.data)
+
+        assertEquals(
+            dummyDataset.general?.general?.referencedReports,
+            downloadedDataset.data.general
+                ?.general
+                ?.referencedReports,
+        )
+        assertEquals(
+            dummyDataset.general?.financialInformation?.evic,
+            downloadedDataset.data.general
+                ?.financialInformation
+                ?.evic
+                // Ignore publication date as it is modified during referenced report processing
+                ?.let { it.copy(dataSource = it.dataSource?.copy(publicationDate = null)) },
+        )
     }
 
     @Test

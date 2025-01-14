@@ -2,38 +2,39 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Haleyboro",
-			"headquartersPostalCode": null,
-			"sector": "systems",
+			"headquarters": "Nienowshire",
+			"headquartersPostalCode": "02199-0994",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"AP05idM0RJksYGtvKgtS"
-				],
+				"Lei": [],
 				"Isin": [
-					"TfrD2TkbrTKu",
-					"6ZeoENLmOPJw"
+					"Dq6d8MiHRTZG"
 				],
 				"PermId": [
-					"u9FpWBY6ie"
+					"hj5snyfWes"
 				],
-				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"J02o7tbqa"
+				"Ticker": [
+					"EFUzYWQ"
 				],
+				"Duns": [
+					"SZ96gyHqy"
+				],
+				"VatNumber": [],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "MO",
+			"countryCode": "UA",
 			"companyContactDetails": [
-				"Catharine.Gutkowski@example.com"
+				"Torrance71@example.com",
+				"Candice15@example.com",
+				"Weston_Casper37@example.com",
+				"Modesto.Ruecker25@example.com"
 			],
 			"companyAlternativeNames": [
-				"Moen - Stamm",
-				"Muller Inc",
-				"Zulauf, Thiel and Wilderman"
+				"Brown Group",
+				"Kertzmann - Hintz"
 			],
-			"companyLegalForm": "Private Limited Company (Ltd)",
-			"website": "https://rare-alloy.name/",
+			"companyLegalForm": null,
+			"website": "https://variable-trumpet.com",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -42,101 +43,101 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "845",
-							"fileName": "IntegratedReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "lifetime value",
+							"page": "397-806",
+							"fileName": "SustainabilityReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "deliverables",
 							"publicationDate": null
 						},
-						"comment": "transmit haptic feed",
-						"quality": "Reported"
-					},
-					"fiscalYearEnd": {
-						"value": "2024-08-05",
-						"dataSource": {
-							"page": "511-548",
-							"fileName": "IntegratedReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "schemas",
-							"publicationDate": null
-						},
-						"comment": "hack mobile firewall",
+						"comment": "connect haptic application",
 						"quality": "NoDataFound"
 					},
-					"referencedReports": {
-						"SustainabilityReport": {
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+					"fiscalYearEnd": {
+						"value": "2024-04-30",
+						"dataSource": {
+							"page": "1034-1064",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-03-10"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "communities",
+							"publicationDate": null
 						},
+						"comment": "index bluetooth transmitter",
+						"quality": "Estimated"
+					},
+					"referencedReports": {
 						"IntegratedReport": {
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": "IntegratedReport",
-							"publicationDate": "2023-02-13"
+							"publicationDate": "2024-01-21"
 						},
 						"ESEFReport": {
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"fileName": "ESEFReport",
-							"publicationDate": "2024-01-16"
+							"publicationDate": "2023-12-23"
+						},
+						"SustainabilityReport": {
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-10-09"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 7849110572.14,
+						"value": 3590393294.58,
 						"dataSource": {
-							"page": "388",
+							"page": "873-1099",
 							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "architectures",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "ROI",
 							"publicationDate": null
 						},
-						"comment": "copy solid state bandwidth",
-						"quality": "Audited",
-						"currency": "UZS"
+						"comment": "connect bluetooth driver",
+						"quality": "NoDataFound",
+						"currency": "SHP"
 					},
 					"debt": {
-						"value": 8001542815.48,
+						"value": 3321109884.42,
 						"dataSource": {
-							"page": "890",
-							"fileName": "ESEFReport",
+							"page": "490-1253",
+							"fileName": "SustainabilityReport",
 							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "lifetime value",
+							"publicationDate": null
+						},
+						"comment": "navigate online panel",
+						"quality": "Audited",
+						"currency": "UGX"
+					},
+					"balanceSheetTotal": {
+						"value": 2933890086.13,
+						"dataSource": {
+							"page": "717-750",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "models",
 							"publicationDate": null
 						},
-						"comment": "quantify optical array",
+						"comment": "parse redundant matrix",
 						"quality": "Reported",
-						"currency": "IDR"
-					},
-					"balanceSheetTotal": {
-						"value": 5194294208.2,
-						"dataSource": {
-							"page": "614",
-							"fileName": "ESEFReport",
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
-							"tagName": "partnerships",
-							"publicationDate": null
-						},
-						"comment": "back up mobile pixel",
-						"quality": "Incomplete",
-						"currency": "RWF"
+						"currency": "BND"
 					},
 					"evic": {
-						"value": 8331670055.63,
+						"value": 761164708.52,
 						"dataSource": {
-							"page": "285",
-							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "platforms",
+							"page": "222",
+							"fileName": "ESEFReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "systems",
 							"publicationDate": null
 						},
-						"comment": "back up open-source system",
-						"quality": "NoDataFound",
-						"currency": "PLN"
+						"comment": "back up redundant bandwidth",
+						"quality": "Audited",
+						"currency": "MGA"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2020"
+		"reportingPeriod": "2021"
 	}
 ]

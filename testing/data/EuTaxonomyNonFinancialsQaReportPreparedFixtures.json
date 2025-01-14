@@ -2,38 +2,35 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Williamsonburgh",
-			"headquartersPostalCode": null,
-			"sector": null,
+			"headquarters": "Lake Marquiseburgh",
+			"headquartersPostalCode": "68964-2847",
+			"sector": "channels",
 			"identifiers": {
 				"Lei": [
-					"7HGeUGSWEsdSpJDbTmfg"
+					"mfgMyuCjrEiPzYyHl6Pv"
 				],
 				"Isin": [
-					"l6PvVZRklmfB",
-					"yuCjrEiPzYyH"
+					"ZRklmfBFn06s"
 				],
-				"PermId": [
-					"06skvcJNsZ"
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"wWWzed9VX"
 				],
-				"Ticker": [
-					"3pwLme6"
-				],
-				"Duns": [],
 				"VatNumber": [
-					"BNbyNbiwW"
+					"N2KFe0mD4"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "LT",
+			"countryCode": "BV",
 			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Dietrich - Schroeder",
-				"Fadel, Pacocha and Gulgowski",
-				"Lubowitz, Batz and Hahn"
+				"Effertz, Runte and Nitzsche",
+				"Fay, Ullrich and Prohaska",
+				"Hintz - Walsh"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://agitated-evidence.name/",
+			"companyLegalForm": null,
+			"website": "https://modern-necklace.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -101,6 +98,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	}
 ]

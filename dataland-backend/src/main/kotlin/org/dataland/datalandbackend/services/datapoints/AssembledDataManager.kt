@@ -198,11 +198,12 @@ class AssembledDataManager
 
             if (referencedReports != null) {
                 val expectedObservedReferences = referencedReports.values.map { it.fileReference }.toSet()
-                if (observedDocumentReferences != expectedObservedReferences) {
+                val unusedReferences = expectedObservedReferences - observedDocumentReferences
+                if (unusedReferences.isNotEmpty()) {
                     throw InvalidInputApiException(
                         "Mismatching document references",
-                        "The document references from the referenced reports ($expectedObservedReferences) " +
-                            "do not match the observed document references ($observedDocumentReferences).",
+                        "The following document references were not used " +
+                            "but listed in the referenced report field: $unusedReferences",
                     )
                 }
             }
