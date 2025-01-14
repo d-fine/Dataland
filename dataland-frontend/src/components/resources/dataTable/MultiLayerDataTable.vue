@@ -103,6 +103,7 @@ import {
   type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type SfdrData,
+  type NuclearAndGasData,
 } from '@clients/backend';
 
 const vTooltip = Tooltip;
@@ -126,6 +127,9 @@ function hasPublicationDate(): boolean {
         break;
       case DataTypeEnum.EutaxonomyNonFinancials:
         referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
+        break;
+      case DataTypeEnum.NuclearAndGas:
+        referencedReports = (singleDataAndMetaInfo.data as NuclearAndGasData).general?.general?.referencedReports;
         break;
       default:
         referencedReports = null;
@@ -157,6 +161,9 @@ function latestDate(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
       break;
     case DataTypeEnum.EutaxonomyNonFinancials:
       referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
+      break;
+    case DataTypeEnum.NuclearAndGas:
+      referencedReports = (singleDataAndMetaInfo.data as NuclearAndGasData).general?.general?.referencedReports;
       break;
     default:
       referencedReports = null;
