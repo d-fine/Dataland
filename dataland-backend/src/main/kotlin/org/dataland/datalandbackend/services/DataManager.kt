@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param messageQueuePublications service for publishing messages to the message queue
 */
 @Service("DataManager")
+@Suppress("TooManyFunctions")
 class DataManager
     @Suppress("LongParameterList")
     @Autowired
@@ -178,6 +179,11 @@ class DataManager
                     .valueOf(dataType),
                 correlationId,
             ).data
+
+        /**
+         * Method to get data from the cache or the internal storage
+         */
+        fun getDataFromCache(dataId: String): String? = publicDataInMemoryStorage[dataId]
 
         private fun getJsonStringFromCacheOrInternalStorage(
             dataId: String,

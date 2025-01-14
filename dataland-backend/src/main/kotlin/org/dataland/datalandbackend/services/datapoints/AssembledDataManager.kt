@@ -170,7 +170,6 @@ class AssembledDataManager
                 },
             )
 
-
             logger.info("Processing data set with id $datasetId for framework ${uploadedDataSet.dataType}")
 
             val createdDataIds = mutableMapOf<String, String>()
