@@ -21,6 +21,7 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataTo
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
+import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToLegacyCsvFields
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
@@ -58,6 +59,8 @@ class CsvExporter(
         val headers = getHeaders(transformationRules)
         val dataIds = getAllSfdrDataIds()
 
+        val legacyFields = readTransformationConfig("./transformationRules/SfdrLegacyCsvExportFields.config")
+
         dataIds.forEach { dataId ->
             logger.info("Exporting data with ID: $dataId")
 
@@ -67,7 +70,7 @@ class CsvExporter(
             val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
 
             try {
-                checkConsistency(data, transformationRules)
+                checkConsistency(data, transformationRules, legacyFields)
             } catch (exception: IllegalArgumentException) {
                 logger.error("Consistency check failed for data with ID $dataId and exception ${exception.message}.")
                 logger.warn("Skipping data with ID: $dataId")
@@ -77,8 +80,11 @@ class CsvExporter(
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
             dataToExport += mapJsonToCsv(data, transformationRules)
             dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
+            dataToExport += mapJsonToLegacyCsvFields(data, legacyFields)
             csvData.add(dataToExport)
         }
+        println("dataToExport")
+        print(csvData)
         writeCsvFiles(outputDirectory, csvData, isinData, headers)
     }
 

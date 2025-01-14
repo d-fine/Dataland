@@ -33,6 +33,10 @@ class TransformationUtilsTest {
             "mappedButNoData" to "mappedButNoDataHeader",
             "nested.nestedMapping" to "nestedHeader",
         )
+    private val expectedlegacyFields =
+        mapOf(
+            "legacyfield" to "presentMapping",
+        )
     private val expectedHeaders =
         listOf("presentHeader", "mappedButNoDataHeader", "nestedHeader") +
             listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
@@ -63,27 +67,27 @@ class TransformationUtilsTest {
     @Test
     fun `check that checkConsistency does not throw an exception for consistent data`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
-        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules) }
+        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields) }
     }
 
     @Test
     fun `check that checkConsistency throws an exception for inconsistent data`() {
         val jsonNode = ObjectMapper().readTree(inconsistentJson)
         assertThrows<IllegalArgumentException> {
-            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules)
+            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields)
         }
     }
 
     @Test
     fun `check that referenced reports are filtered out for the consistency check`() {
         val jsonNode = ObjectMapper().readTree(referencedReportJson)
-        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules) }
+        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields) }
     }
 
     @Test
     fun `check that null valued fields are extracted as empty strings`() {
         val jsonNode = ObjectMapper().readTree("{\"nullValued\": null}")
-        assertEquals("", TransformationUtils.getValueFromJsonNode(jsonNode, "nullValued"))
+        assertEquals("", TransformationUtils.mapJsonToLegacyCsvFields(jsonNode, "nullValued"))
     }
 
     @Test
@@ -121,6 +125,7 @@ class TransformationUtilsTest {
         val transformationRule =
             FileHandlingUtils.readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         val csvData = TransformationUtils.mapJsonToCsv(jsonNode, transformationRule)
+        val sortedCsvData = csvData.toSortedMap()
 
         val csvFile = File("./src/test/resources/csv/output.csv")
         val mapper = CsvMapper()
@@ -131,6 +136,7 @@ class TransformationUtilsTest {
                 .readerFor(MutableMap::class.java)
                 .with(schema)
                 .readValue<Map<String, String>>(csvFile)
-        assertEquals(csvData, expectedCsvData)
+
+        assertEquals(sortedCsvData, expectedCsvData)
     }
 }

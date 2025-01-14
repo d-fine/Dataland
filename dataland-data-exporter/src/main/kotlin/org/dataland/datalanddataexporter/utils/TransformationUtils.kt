@@ -66,11 +66,22 @@ object TransformationUtils {
     fun checkConsistency(
         node: JsonNode,
         transformationRules: Map<String, String>,
+        legacyFields: Map<String, String>,
     ) {
         val leafNodesInJsonNode: List<String> = getNonArrayLeafNodeFieldNames(node, "")
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {
             "Transformation rules do not cover all leaf nodes in the data."
+        }
+
+        val legacyValuesNotCovered = legacyFields.values.filter { !transformationRules.keys.contains(it) }
+        require(legacyValuesNotCovered.isEmpty()) {
+            "Legacy fields contain values that are not in the data: $legacyValuesNotCovered"
+        }
+
+        val legacyKeysInTransformationValues = legacyFields.keys.filter { transformationRules.values.contains(it) }
+        require(legacyKeysInTransformationValues.isEmpty()) {
+            "Legacy field keys should not be present as values in transformation rules: $legacyKeysInTransformationValues"
         }
     }
 
@@ -105,7 +116,7 @@ object TransformationUtils {
      * @param jsonPath The JSON path identifying the value
      * @return The string representation of the value
      */
-    fun getValueFromJsonNode(
+    fun mapJsonToLegacyCsvFields(
         jsonNode: JsonNode,
         jsonPath: String,
     ): String {
@@ -135,7 +146,25 @@ object TransformationUtils {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (jsonPath, csvHeader) ->
             if (csvHeader.isEmpty()) return@forEach
-            csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
+            csvData[csvHeader] = mapJsonToLegacyCsvFields(jsonNode, jsonPath)
+        }
+        return csvData
+    }
+
+    /**
+     * Maps a JSON node to a CSV.
+     * @param jsonNode The JSON node
+     * @param transformationRules The transformation rules
+     * @return A map of CSV headers to values
+     */
+    fun mapJsonToLegacyCsvFields(
+        jsonNode: JsonNode,
+        transformationRules: Map<String, String>,
+    ): Map<String, String> {
+        val csvData = mutableMapOf<String, String>()
+        transformationRules.forEach { (csvHeader, jsonPath) ->
+            if (csvHeader.isEmpty()) return@forEach
+            csvData[csvHeader] = mapJsonToLegacyCsvFields(jsonNode, jsonPath)
         }
         return csvData
     }
