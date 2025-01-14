@@ -58,9 +58,7 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
 
         valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
 
-        if (valueToUse != null) {
-            dataTableEntity.companyAssociatedData.put("data", dataset.toString())
-        }
+        dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
 
     /**
