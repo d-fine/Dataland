@@ -81,7 +81,6 @@ class DataPointManager
             uploaderUserId: String,
             correlationId: String,
         ): DataPointMetaInformation {
-            println(dataId)
             val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
             metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
             dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)

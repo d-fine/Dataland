@@ -98,8 +98,6 @@ class AssembledDatasetTest {
                 assertEquals(expectedQaStatus, it.qaStatus)
             }
 
-            Thread.sleep(1000) // wait for the data to be processed
-
             val allUploadedFacts = Backend.metaDataControllerApi.getContainedDataPoints(dataMetaInformation.dataId).values
 
             allUploadedFacts.forEach { factId ->

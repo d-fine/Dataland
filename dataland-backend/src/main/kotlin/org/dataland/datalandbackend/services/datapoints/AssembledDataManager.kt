@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
@@ -139,7 +141,14 @@ class AssembledDataManager
                 uploadedDataSet.uploaderUserId,
                 correlationId,
             )
-            messageQueuePublications.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
+
+            TransactionSynchronizationManager.registerSynchronization(
+                object : TransactionSynchronization {
+                    override fun afterCommit() {
+                        messageQueuePublications.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
+                    }
+                },
+            )
             return dataId
         }
 
@@ -152,7 +161,15 @@ class AssembledDataManager
         ): String {
             val datasetId = IdUtils.generateUUID()
             dataManager.storeMetaDataFrom(datasetId, uploadedDataSet, correlationId)
-            messageQueuePublications.publishDataSetQaRequiredMessage(datasetId, bypassQa, correlationId)
+
+            TransactionSynchronizationManager.registerSynchronization(
+                object : TransactionSynchronization {
+                    override fun afterCommit() {
+                        messageQueuePublications.publishDataSetQaRequiredMessage(datasetId, bypassQa, correlationId)
+                    }
+                },
+            )
+
 
             logger.info("Processing data set with id $datasetId for framework ${uploadedDataSet.dataType}")
 
