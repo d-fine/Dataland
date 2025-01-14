@@ -99,7 +99,7 @@ describe('Component tests for the Dataland companies search page', function (): 
     }
   );
 
-  it.only("Check that the 'Bulk Request Data' button exists and works as expected for a data reader", () => {
+  it("Check that the 'Bulk Request Data' button exists and works as expected for a data reader", () => {
     const keycloakMock = minimalKeycloakMock({});
     verifyExistenceAndFunctionalityOfBulkDataRequestButton(keycloakMock);
   });
