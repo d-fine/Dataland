@@ -11,6 +11,8 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import java.util.UUID
 
 /**
@@ -57,7 +59,12 @@ data class DataRequestEntity(
         messageHistory = listOf(),
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
-        requestPriority = RequestPriority.Normal,
+        requestPriority =
+            if (DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+                RequestPriority.High
+            } else {
+                RequestPriority.Low
+            },
         adminComment = null,
     )
 

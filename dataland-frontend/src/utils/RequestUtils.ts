@@ -65,13 +65,13 @@ export async function patchDataRequest(
     if (keycloakPromiseGetter) {
       await new ApiClientProvider(keycloakPromiseGetter()).apiClients.requestController.patchDataRequest(
         dataRequestId,
-        requestStatus,
-        accessStatus,
-        contacts,
-        message,
-        undefined,
-        undefined,
-        requestStatusChangeReason
+        {
+          requestStatus: requestStatus,
+          accessStatus: accessStatus,
+          contacts: contacts,
+          message: message,
+          requestStatusChangeReason: requestStatusChangeReason,
+        }
       );
     }
   } catch (error) {
@@ -132,12 +132,8 @@ export function accessStatusBadgeClass(accessStatus: AccessStatus): string {
 export function priorityBadgeClass(priority: RequestPriority): string {
   switch (priority) {
     case 'Low':
-      return 'p-badge badge-light-green outline rounded';
-    case 'Normal':
       return 'p-badge badge-blue outline rounded';
     case 'High':
-      return 'p-badge badge-yellow outline rounded';
-    case 'VeryHigh':
       return 'p-badge badge-orange outline rounded';
     case 'Urgent':
       return 'p-badge badge-red outline rounded';

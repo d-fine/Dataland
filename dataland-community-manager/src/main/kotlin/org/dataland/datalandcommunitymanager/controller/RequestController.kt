@@ -4,9 +4,11 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -51,18 +53,16 @@ class RequestController(
             dataRequestQueryManager.getDataRequestsForRequestingUser(),
         )
 
-    override fun getAggregatedDataRequests(
-        identifierValue: String?,
+    override fun getAggregatedOpenDataRequests(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
-        status: RequestStatus?,
-    ): ResponseEntity<List<AggregatedDataRequest>> =
+        aggregatedPriority: AggregatedRequestPriority?,
+    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>> =
         ResponseEntity.ok(
-            dataRequestQueryManager.getAggregatedDataRequests(
-                identifierValue,
-                dataTypes,
-                reportingPeriod,
-                status,
+            dataRequestQueryManager.getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
+                dataTypes = dataTypes,
+                reportingPeriod = reportingPeriod,
+                aggregatedPriority = aggregatedPriority,
             ),
         )
 
@@ -157,25 +157,19 @@ class RequestController(
 
     override fun patchDataRequest(
         dataRequestId: UUID,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
-        contacts: Set<String>?,
-        message: String?,
-        requestPriority: RequestPriority?,
-        adminComment: String?,
-        requestStatusChangeReason: String?,
+        dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
-                requestStatus,
-                accessStatus,
-                contacts,
-                message,
+                dataRequestPatch.requestStatus,
+                dataRequestPatch.accessStatus,
+                dataRequestPatch.contacts,
+                dataRequestPatch.message,
                 correlationId = null,
-                requestPriority,
-                adminComment,
-                requestStatusChangeReason,
+                dataRequestPatch.requestPriority,
+                dataRequestPatch.adminComment,
+                dataRequestPatch.requestStatusChangeReason,
             ),
         )
 }

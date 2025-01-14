@@ -2,6 +2,7 @@ package org.dataland.e2etests.tests.communityManager
 
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
+import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.RequestPriority
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
@@ -57,7 +58,7 @@ class PatchDataRequestsTest {
     @Test
     fun `post a single data request and validate that patching the admin comment does not update the last modified date`() {
         val testAdminComment = "test"
-        assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
+        assertPriorityForDataRequestId(dataRequestId, RequestPriority.High)
         assertAdminCommentForDataRequestId(dataRequestId, null)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated(dataRequestId, testAdminComment)
@@ -65,8 +66,8 @@ class PatchDataRequestsTest {
 
     @Test
     fun `post a single data request and validate that patching the request priority updates the last modified date`() {
-        val testRequestPriority = RequestPriority.High
-        assertPriorityForDataRequestId(dataRequestId, RequestPriority.Normal)
+        val testRequestPriority = RequestPriority.Urgent
+        assertPriorityForDataRequestId(dataRequestId, RequestPriority.High)
         assertAdminCommentForDataRequestId(dataRequestId, null)
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         patchDataRequestPriorityAndAssertLastModifiedUpdated(dataRequestId, testRequestPriority)
@@ -78,7 +79,7 @@ class PatchDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val clientException =
             assertThrows<ClientException> {
-                requestControllerApi.patchDataRequest(dataRequestId, adminComment = testAdminComment)
+                requestControllerApi.patchDataRequest(dataRequestId, DataRequestPatch(adminComment = testAdminComment))
             }
         assertEquals(clientErrorMessage403, clientException.message)
     }
@@ -89,7 +90,9 @@ class PatchDataRequestsTest {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
         val clientException =
             assertThrows<ClientException> {
-                requestControllerApi.patchDataRequest(dataRequestId, requestPriority = testRequestPriority)
+                requestControllerApi.patchDataRequest(
+                    dataRequestId, DataRequestPatch(requestPriority = testRequestPriority),
+                )
             }
         assertEquals(clientErrorMessage403, clientException.message)
     }

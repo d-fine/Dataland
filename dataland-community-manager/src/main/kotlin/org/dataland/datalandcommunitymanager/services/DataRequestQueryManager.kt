@@ -6,7 +6,10 @@ import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -35,6 +38,7 @@ class DataRequestQueryManager
         private val processingUtils: DataRequestProcessingUtils,
         private val keycloakUserControllerApiService: KeycloakUserService,
         private val dataRequestMasker: DataRequestMasker,
+        private val requestPriorityAggregator: RequestPriorityAggregator,
     ) {
         /** This method retrieves all the data requests for the current user from the database and logs a message.
          * @returns all data requests for the current user
@@ -66,18 +70,18 @@ class DataRequestQueryManager
             return ExtendedStoredDataRequest(dataRequestEntity, companyInformation.companyName, null)
         }
 
-        /** This method triggers a query to get aggregated data requests.
+        /** This method triggers a query to get aggregated open data requests.
          * @param identifierValue can be used to filter via substring matching
          * @param dataTypes can be used to filter on frameworks
          * @param reportingPeriod can be used to filter on reporting periods
-         * @param status can be used to filter on request status
-         * @returns aggregated data requests
+         * @param requestStatus can be used to filter on request status
+         * @returns aggregated open data requests
          */
         fun getAggregatedDataRequests(
             identifierValue: String?,
             dataTypes: Set<DataTypeEnum>?,
             reportingPeriod: String?,
-            status: RequestStatus?,
+            requestStatus: RequestStatus?,
         ): List<AggregatedDataRequest> {
             val dataTypesFilterForQuery =
                 if (dataTypes != null && dataTypes.isEmpty()) {
@@ -89,8 +93,9 @@ class DataRequestQueryManager
                 dataRequestRepository.getAggregatedDataRequests(
                     GetAggregatedRequestsSearchFilter(
                         dataTypeFilter = dataTypesFilterForQuery ?: setOf(),
+                        requestStatus = requestStatus.toString(),
                         reportingPeriodFilter = reportingPeriod,
-                        requestStatus = status?.name ?: "",
+                        priority = null,
                         datalandCompanyIdFilter = identifierValue,
                     ),
                 )
@@ -100,11 +105,36 @@ class DataRequestQueryManager
                         processingUtils.getDataTypeEnumForFrameworkName(aggregatedDataRequestEntity.dataType),
                         aggregatedDataRequestEntity.reportingPeriod,
                         aggregatedDataRequestEntity.datalandCompanyId,
+                        RequestPriority.valueOf(aggregatedDataRequestEntity.priority),
                         aggregatedDataRequestEntity.requestStatus,
                         aggregatedDataRequestEntity.count,
                     )
                 }
             return aggregatedDataRequests
+        }
+
+        /** This method triggers a query to get all aggregated open data requests
+         * including the aggregated request priority
+         * @param dataTypes can be used to filter on frameworks
+         * @param reportingPeriod can be used to filter on reporting periods
+         * @param aggregatedPriority can be used to filter on aggregated priorities
+         * @returns all aggregated open data requests with the aggregated request priority
+         */
+        fun getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
+            dataTypes: Set<DataTypeEnum>?,
+            reportingPeriod: String?,
+            aggregatedPriority: AggregatedRequestPriority?,
+        ): List<AggregatedDataRequestWithAggregatedPriority> {
+            val aggregatedOpenDataRequestsAllCompanies =
+                getAggregatedDataRequests(identifierValue = null, dataTypes, reportingPeriod, requestStatus = RequestStatus.Open)
+            val aggregatedRequestsWithAggregatedPriority =
+                requestPriorityAggregator.aggregateRequestPriority(aggregatedOpenDataRequestsAllCompanies)
+            val filteredAggregatedRequestsWithAggregatedPriority =
+                requestPriorityAggregator.filterBasedOnAggregatedPriority(
+                    aggregatedRequestsWithAggregatedPriority,
+                    aggregatedPriority,
+                )
+            return filteredAggregatedRequestsWithAggregatedPriority
         }
 
         /**
@@ -143,6 +173,8 @@ class DataRequestQueryManager
             chunkSize: Int?,
         ): List<ExtendedStoredDataRequest>? {
             val offset = (chunkIndex ?: 0) * (chunkSize ?: 0)
+
+            filter.setupEmailAddressFilter(keycloakUserControllerApiService)
 
             val extendedStoredDataRequests =
                 dataRequestRepository

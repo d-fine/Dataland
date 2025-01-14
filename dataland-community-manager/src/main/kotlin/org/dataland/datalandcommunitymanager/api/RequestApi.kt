@@ -7,9 +7,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
@@ -79,12 +81,12 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>>
 
-    /** Retrieves aggregated data requests by aggregating all userIds
-     * @return aggregated data requests that match the given filters
+    /** Retrieves aggregated open data requests by aggregating open requests over all userIds
+     * @return aggregated open data requests that match the given filters
      */
     @Operation(
-        summary = "Get aggregated data requests.",
-        description = "Gets all data requests that match the given filters, while aggregating userIDs.",
+        summary = "Get aggregated open data requests.",
+        description = "Gets aggregated open data requests based on the chosen filters.",
     )
     @ApiResponses(
         value = [
@@ -96,12 +98,11 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getAggregatedDataRequests(
-        @RequestParam identifierValue: String? = null,
+    fun getAggregatedOpenDataRequests(
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam status: RequestStatus? = null,
-    ): ResponseEntity<List<AggregatedDataRequest>>
+        @RequestParam aggregatedPriority: AggregatedRequestPriority? = null,
+    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>>
 
     /**
      * A method to post a single request to Dataland.
@@ -152,12 +153,7 @@ interface RequestApi {
 
     /** A method to patch an existing data request
      * @param dataRequestId The request id of the data request to patch
-     * @param requestStatus The new request status to set
-     * @param accessStatus The new access status to set
-     * @param contacts The new contacts to set
-     * @param message The new message to set
-     * @param requestPriority The new request priority to set
-     * @param adminComment The new admin comment to set
+     * @param dataRequestPatch The data with which the request is updated
      * @return the modified data request
      */
     @Suppress("LongParameterList")
@@ -171,29 +167,17 @@ interface RequestApi {
         ],
     )
     @PatchMapping(
-        value = ["/{dataRequestId}/requestStatus"],
+        value = ["/{dataRequestId}"],
+        consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or " +
-            "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
-            "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.isNotTryingToPatch(#accessStatus,#requestPriority, #adminComment) and " +
-            "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
-            "#dataRequestId, #requestStatus, #contacts, #message)" +
-            ") or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.isNotTryingToPatch(#requestStatus, #contacts, #message, #requestPriority, #adminComment)",
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchDataRequest(#dataRequestId, #dataRequestPatch)",
     )
     fun patchDataRequest(
-        @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus?,
-        @RequestParam accessStatus: AccessStatus?,
-        @RequestParam contacts: Set<String>?,
-        @RequestParam message: String?,
-        @RequestParam requestPriority: RequestPriority?,
-        @RequestParam adminComment: String?,
-        @RequestParam requestStatusChangeReason: String?,
+        @PathVariable("dataRequestId") dataRequestId: UUID,
+        @Valid @RequestBody
+        dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.

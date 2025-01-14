@@ -53,7 +53,7 @@ class DataRequestMaskerTest {
             lastModifiedDate = 0,
             requestStatus = RequestStatus.Open,
             accessStatus = AccessStatus.Pending,
-            requestPriority = RequestPriority.Normal,
+            requestPriority = RequestPriority.Low,
             adminComment = testComment,
             messageHistory = listOf(),
             dataRequestStatusHistory = listOf(),

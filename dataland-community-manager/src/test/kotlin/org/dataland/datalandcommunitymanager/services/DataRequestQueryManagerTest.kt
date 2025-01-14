@@ -5,7 +5,10 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.KeycloakUserInfo
 import org.dataland.datalandbackendutils.services.KeycloakUserService
+import org.dataland.datalandcommunitymanager.entities.AggregatedDataRequest
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
+import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -18,16 +21,19 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.eq
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
+import java.util.Optional
 import java.util.UUID
 
 /**
@@ -63,14 +69,7 @@ class DataRequestQueryManagerTest {
             firstName = "Michael",
             lastName = "Smith",
         )
-    private val dataRequestEntityAlpha =
-        DataRequestEntity(
-            userId = keycloakUserAlpha.userId,
-            dataType = DataTypeEnum.p2p.value,
-            reportingPeriod = testReportingPeriod,
-            creationTimestamp = Instant.now().toEpochMilli(),
-            datalandCompanyId = testCompanyId,
-        )
+    private lateinit var dataRequestEntityAlpha: DataRequestEntity
 
     private val keycloakUserBeta =
         KeycloakUserInfo(
@@ -79,14 +78,7 @@ class DataRequestQueryManagerTest {
             firstName = "Lisa",
             lastName = "Jackson",
         )
-    private val dataRequestEntityBeta =
-        DataRequestEntity(
-            userId = keycloakUserBeta.userId,
-            dataType = DataTypeEnum.lksg.value,
-            reportingPeriod = testReportingPeriod,
-            creationTimestamp = Instant.now().toEpochMilli(),
-            datalandCompanyId = testCompanyId,
-        )
+    private lateinit var dataRequestEntityBeta: DataRequestEntity
 
     private val filterWithoutEmailAddress =
         DataRequestsFilter(
@@ -116,6 +108,45 @@ class DataRequestQueryManagerTest {
             null,
         )
 
+    private val dummyAggregatedRequests =
+        listOf(
+            object : AggregatedDataRequest {
+                override val dataType: String = "sfdr"
+                override val reportingPeriod: String = "2023"
+                override val datalandCompanyId: String = testCompanyId
+                override val priority: String = RequestPriority.Low.toString()
+                override val requestStatus: String = RequestStatus.Open.toString()
+                override val count: Long = 1
+            },
+            object : AggregatedDataRequest {
+                override val dataType: String = "sfdr"
+                override val reportingPeriod: String = "2023"
+                override val datalandCompanyId: String = testCompanyId
+                override val priority: String = RequestPriority.High.toString()
+                override val requestStatus: String = RequestStatus.Open.toString()
+                override val count: Long = 0
+            },
+        )
+
+    private fun setupDataRequestEntities() {
+        dataRequestEntityAlpha =
+            DataRequestEntity(
+                userId = keycloakUserAlpha.userId,
+                dataType = DataTypeEnum.p2p.value,
+                reportingPeriod = testReportingPeriod,
+                creationTimestamp = Instant.now().toEpochMilli(),
+                datalandCompanyId = testCompanyId,
+            )
+        dataRequestEntityBeta =
+            DataRequestEntity(
+                userId = keycloakUserBeta.userId,
+                dataType = DataTypeEnum.lksg.value,
+                reportingPeriod = testReportingPeriod,
+                creationTimestamp = Instant.now().toEpochMilli(),
+                datalandCompanyId = testCompanyId,
+            )
+    }
+
     private fun setupMocks() {
         mockDataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
 
@@ -130,6 +161,27 @@ class DataRequestQueryManagerTest {
         `when`(
             mockDataRequestRepository.searchDataRequestEntity(eq(filterWithEmailAddressBeta), anyOrNull(), anyOrNull()),
         ).thenReturn(listOf(dataRequestEntityBeta))
+        `when`(
+            mockDataRequestRepository.findByUserId(eq(dataRequestEntityAlpha.userId)),
+        ).thenReturn(listOf(dataRequestEntityAlpha))
+        `when`(
+            mockDataRequestRepository.findByUserId(eq(dataRequestEntityBeta.userId)),
+        ).thenReturn(listOf(dataRequestEntityBeta))
+        `when`(
+            mockDataRequestRepository.fetchStatusHistory(eq(listOf(dataRequestEntityAlpha))),
+        ).thenReturn(listOf(dataRequestEntityAlpha))
+        `when`(
+            mockDataRequestRepository.fetchStatusHistory(eq(listOf(dataRequestEntityBeta))),
+        ).thenReturn(listOf(dataRequestEntityBeta))
+        `when`(
+            mockDataRequestRepository.findById(eq(dataRequestEntityAlpha.dataRequestId)),
+        ).thenReturn(Optional.empty())
+        `when`(
+            mockDataRequestRepository.findById(eq(dataRequestEntityBeta.dataRequestId)),
+        ).thenReturn(Optional.of(dataRequestEntityBeta))
+        `when`(
+            mockDataRequestRepository.getAggregatedDataRequests(any()),
+        ).thenReturn(dummyAggregatedRequests)
 
         mockKeycloakUserService = mock(KeycloakUserService::class.java)
         `when`(
@@ -141,6 +193,10 @@ class DataRequestQueryManagerTest {
         `when`(
             mockKeycloakUserService.searchUsers(emailAddressSubstring),
         ).thenReturn(listOf(keycloakUserBeta))
+
+        `when`(
+            mockDataRequestProcessingUtils.getDataTypeEnumForFrameworkName("sfdr"),
+        ).thenReturn(DataTypeEnum.sfdr)
     }
 
     private fun setupAdminAuthentication() {
@@ -156,8 +212,23 @@ class DataRequestQueryManagerTest {
         SecurityContextHolder.setContext(mockSecurityContext)
     }
 
+    private fun setupUserAuthentication(userInfo: KeycloakUserInfo) {
+        val mockSecurityContext = mock(SecurityContext::class.java)
+        mockAuthentication =
+            AuthenticationMock.mockJwtAuthentication(
+                userInfo.email ?: "userEmail",
+                userInfo.userId,
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
+        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
+        `when`(mockAuthentication.credentials).thenReturn("")
+        SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
     @BeforeEach
     fun setupDataRequestQueryManager() {
+        setupAdminAuthentication()
+        setupDataRequestEntities()
         setupMocks()
         mockDataRequestMasker = DataRequestMasker(mockKeycloakUserService)
         dataRequestQueryManager =
@@ -168,12 +239,12 @@ class DataRequestQueryManagerTest {
                 processingUtils = mockDataRequestProcessingUtils,
                 keycloakUserControllerApiService = mockKeycloakUserService,
                 dataRequestMasker = mockDataRequestMasker,
+                requestPriorityAggregator = RequestPriorityAggregator(),
             )
     }
 
     @Test
     fun `simulate getDataRequests call without email filter `() {
-        setupAdminAuthentication()
         val queryResults =
             dataRequestQueryManager.getDataRequests(
                 emptyList(),
@@ -192,7 +263,6 @@ class DataRequestQueryManagerTest {
 
     @Test
     fun `simulate getDataRequests call with email filter `() {
-        setupAdminAuthentication()
         val queryResults =
             dataRequestQueryManager.getDataRequests(
                 emptyList(),
@@ -201,9 +271,52 @@ class DataRequestQueryManagerTest {
                 null,
             )
 
-        verify(mockKeycloakUserService, times(1)).searchUsers(emailAddressSubstring)
+        verify(mockKeycloakUserService, times(2)).searchUsers(emailAddressSubstring)
         verify(mockKeycloakUserService, times(0)).getUser(anyString())
         assertEquals(1, queryResults!!.size)
         assertEquals(keycloakUserBeta.email, queryResults[0].userEmailAddress)
+    }
+
+    @Test
+    fun `simulate getDataRequestsForRequestingUser call `() {
+        setupUserAuthentication(keycloakUserAlpha)
+        val queryResults = dataRequestQueryManager.getDataRequestsForRequestingUser()
+
+        verify(mockDataRequestRepository, times(1)).findByUserId(keycloakUserAlpha.userId)
+        verify(mockDataRequestRepository, times(1)).fetchStatusHistory(any())
+        verify(mockCompanyDataControllerApi, times(1)).getCompanyInfo(dataRequestEntityAlpha.datalandCompanyId)
+        assertEquals(1, queryResults.size)
+        assertEquals(testCompanyInformation.companyName, queryResults[0].companyName)
+    }
+
+    @Test
+    fun `simulate getDataRequestsById call with valid Id `() {
+        val dataRequest = dataRequestQueryManager.getDataRequestById(dataRequestEntityBeta.dataRequestId)
+
+        verify(mockDataRequestRepository, times(1)).findById(dataRequestEntityBeta.dataRequestId)
+        verify(mockKeycloakUserService, times(1)).getUser(anyString())
+        assertEquals(keycloakUserBeta.email, dataRequest.userEmailAddress)
+        assertEquals(dataRequestEntityBeta.dataRequestId, dataRequest.dataRequestId)
+    }
+
+    @Test
+    fun `simulate getDataRequestsById call with invalid Id `() {
+        assertThrows<DataRequestNotFoundApiException> {
+            dataRequestQueryManager.getDataRequestById(dataRequestEntityAlpha.dataRequestId)
+        }
+
+        verify(mockDataRequestRepository, times(1)).findById(dataRequestEntityAlpha.dataRequestId)
+        verify(mockKeycloakUserService, times(0)).getUser(anyString())
+    }
+
+    @Test
+    fun `simulate getAggregatedOpenDataRequestsWithAggregatedRequestPriority call `() {
+        val aggregatedDataRequests =
+            dataRequestQueryManager.getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
+                setOf(DataTypeEnum.sfdr), "2023", null,
+            )
+
+        verify(mockDataRequestRepository, times(1)).getAggregatedDataRequests(any())
+        assertEquals(1, aggregatedDataRequests.size)
     }
 }
