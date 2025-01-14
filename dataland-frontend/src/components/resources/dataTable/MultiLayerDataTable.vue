@@ -3,7 +3,7 @@
     <div class="p-datatable-wrapper overflow-auto">
       <table class="p-datatable-table w-full" :aria-label="ariaLabel">
         <thead class="p-datatable-thead">
-          <tr>
+          <tr class="border-bottom-table">
             <th class="horizontal-headers-size">
               <div class="p-column-header-content">
                 <span class="p-column-title">KPIs</span>
@@ -18,23 +18,59 @@
               <div class="p-column-header-content">
                 <span class="p-column-title" style="display: flex; align-items: center">
                   {{ singleDataAndMetaInfo.metaInfo.reportingPeriod }}
-                  <i
-                    class="material-icons info-icon pl-2"
-                    aria-hidden="true"
-                    :title="singleDataAndMetaInfo.metaInfo.reportingPeriod"
-                    data-pd-tooltip="true"
-                    v-tooltip.top="{
-                      value: reportingYearToolTip(singleDataAndMetaInfo),
-                      class: 'd-tooltip',
-                    }"
-                    >info</i
-                  >
                 </span>
               </div>
             </th>
           </tr>
         </thead>
         <tbody class="p-datatable-tbody">
+          <tr
+            v-show="
+              !hideEmptyFields ||
+              dataAndMetaInfo.some((singleDataAndMetaInfo) => singleDataAndMetaInfo.metaInfo.uploadTime != null)
+            "
+          >
+            <td class="headers-bg pl-4 vertical-align-top header-column-width">
+              <span class="table-left-label">Publication date of the dataset on Dataland</span>
+              <em
+                class="material-icons info-icon"
+                aria-hidden="true"
+                v-tooltip.top="{
+                  value: 'Timestamp of data upload',
+                }"
+                >info</em
+              >
+            </td>
+            <td v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo" :key="idx" class="vertical-align-top">
+              <span class="table-left-label" style="display: flex; align-items: center">
+                {{ convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime) }}
+              </span>
+            </td>
+          </tr>
+          <tr v-show="!hideEmptyFields || hasPublicationDate()">
+            <td class="headers-bg pl-4 vertical-align-top header-column-width" data-row-header="true">
+              <span class="table-left-label">Publication date of most recent report</span>
+              <em
+                class="material-icons info-icon"
+                aria-hidden="true"
+                v-tooltip.top="{
+                  value: 'Date when the latest version of the report was published',
+                }"
+                >info</em
+              >
+            </td>
+            <td v-for="(singleDataAndMetaInfo, idx) in dataAndMetaInfo" :key="idx" class="vertical-align-top">
+              <i
+                v-if="!hasPublicationDate() && inReviewMode"
+                class="pi pi-eye-slash pr-1 text-red-500"
+                aria-hidden="true"
+                data-test="hidden-icon"
+              />
+              <span class="table-left-label" style="display: flex; align-items: center">
+                {{ latestDate(singleDataAndMetaInfo) }}
+              </span>
+            </td>
+          </tr>
           <MultiLayerDataTableBody
             :dataAndMetaInfo="dataAndMetaInfo"
             :inReviewMode="inReviewMode"
@@ -67,16 +103,53 @@ import {
   type EutaxonomyFinancialsData,
   type EutaxonomyNonFinancialsData,
   type SfdrData,
+  type NuclearAndGasData,
 } from '@clients/backend';
 
 const vTooltip = Tooltip;
 
 /**
- * Generates the toolTip for reportingYear given DataAndMetaInformation.
- * @param singleDataAndMetaInfo the DataAndMetaInformation of a framework.
- * @returns string the toolTip.
+ *  Checks if at least one singleDataAndMetaInfo has a publication date.
+ *  @returns boolean - true if at least one publicationDate exists, false otherwise.
  */
-function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
+function hasPublicationDate(): boolean {
+  return props.dataAndMetaInfo.some((singleDataAndMetaInfo) => {
+    // Check for existing publication date
+    let referencedReports;
+
+    switch (singleDataAndMetaInfo.metaInfo.dataType) {
+      case DataTypeEnum.Sfdr:
+        referencedReports = (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports;
+        break;
+      case DataTypeEnum.EutaxonomyFinancials:
+        referencedReports = (singleDataAndMetaInfo.data as EutaxonomyFinancialsData).general?.general
+          ?.referencedReports;
+        break;
+      case DataTypeEnum.EutaxonomyNonFinancials:
+        referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
+        break;
+      case DataTypeEnum.NuclearAndGas:
+        referencedReports = (singleDataAndMetaInfo.data as NuclearAndGasData).general?.general?.referencedReports;
+        break;
+      default:
+        referencedReports = null;
+        break;
+    }
+    // Check if there is at least one valid publicationDate
+    return (
+      referencedReports &&
+      Object.keys(referencedReports).length > 0 &&
+      Object.values(referencedReports).some((companyReport) => companyReport?.publicationDate != null)
+    );
+  });
+}
+
+/**
+ * Extracts the publication date of the most recent report given DataAndMetaInformation.
+ * @param singleDataAndMetaInfo the DataAndMetaInformation of a framework.
+ * @returns publication date as string.
+ */
+function latestDate(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
   let latestDate = null;
   let referencedReports;
   switch (singleDataAndMetaInfo.metaInfo.dataType) {
@@ -88,6 +161,9 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
       break;
     case DataTypeEnum.EutaxonomyNonFinancials:
       referencedReports = (singleDataAndMetaInfo.data as EutaxonomyNonFinancialsData).general?.referencedReports;
+      break;
+    case DataTypeEnum.NuclearAndGas:
+      referencedReports = (singleDataAndMetaInfo.data as NuclearAndGasData).general?.general?.referencedReports;
       break;
     default:
       referencedReports = null;
@@ -102,13 +178,7 @@ function reportingYearToolTip(singleDataAndMetaInfo: DataAndMetaInformation<T>):
       }
     }
   }
-  const mostRecentSourceToolTip = latestDate
-    ? `Publication date of most recent report:\n ${dateStringFormatter(latestDate)}\n\n`
-    : '';
-  const datasetPublishedToolTip =
-    'Publication date of the dataset on Dataland:\n ' +
-    convertUnixTimeInMsToDateString(singleDataAndMetaInfo.metaInfo.uploadTime);
-  return mostRecentSourceToolTip + datasetPublishedToolTip;
+  return latestDate ? dateStringFormatter(latestDate) : '';
 }
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const props = defineProps<{
@@ -116,5 +186,6 @@ const props = defineProps<{
   dataAndMetaInfo: Array<DataAndMetaInformation<T>>;
   ariaLabel: string;
   inReviewMode: boolean;
+  hideEmptyFields: boolean;
 }>();
 </script>
