@@ -45,7 +45,7 @@ class SpecificationControllerTest(
 
     @Test
     fun `retrieving a data point type specification should return a DTO with correct refs in usedBy`() {
-        val response = specificationController.getDataPointSchema("test-datapoint-type")
+        val response = specificationController.getDataPointSchema("test-datapoint-schema")
         assert(response.statusCode.is2xxSuccessful)
         val body = response.body!!
         assert(body.usedBy[0].ref == "https://local-dev.dataland.com/specifications/data-points/test-datapoint")
