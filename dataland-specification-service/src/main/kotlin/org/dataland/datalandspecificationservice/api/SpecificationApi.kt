@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
-import org.dataland.datalandspecificationservice.model.DataPointTypeSpecificationDto
+import org.dataland.datalandspecificationservice.model.DataPointSchemaDto
 import org.dataland.datalandspecificationservice.model.FrameworkSpecificationDto
 import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecificationDto
 import org.springframework.http.ResponseEntity
@@ -92,16 +92,16 @@ interface SpecificationApi {
      * Get the data type specification for a given id
      */
     @Operation(
-        summary = "Get the data type specification for a given id.",
-        description = "Get the data type specification for a given id.",
+        summary = "Get the data point schema for a given id.",
+        description = "Get the data point schema for a given id.",
     )
     @GetMapping(
-        value = ["/data-point-types/{dataPointTypeSpecificationId}"],
+        value = ["/data-point-schemas/{dataPointSchemaId}"],
         produces = ["application/json"],
     )
-    fun getDataPointTypeSpecification(
-        @PathVariable("dataPointTypeSpecificationId") dataPointTypeSpecificationId: String,
-    ): ResponseEntity<DataPointTypeSpecificationDto>
+    fun getDataPointSchema(
+        @PathVariable("dataPointSchemaId") dataPointSchemaId: String,
+    ): ResponseEntity<DataPointSchemaDto>
 
     /**
      * Get the java class that validates a data point
@@ -111,11 +111,11 @@ interface SpecificationApi {
         description = "Get the kotlin class that validates the data point type.",
     )
     @GetMapping(
-        value = ["/data-point-types/{dataPointTypeSpecificationId}/validated-by"],
+        value = ["/data-point-schemas/{dataPointSchemaId}/validated-by"],
         produces = ["text/plain", "*/*"],
     )
-    fun getKotlinClassValidatingTheDataPointType(
-        @PathVariable("dataPointTypeSpecificationId") dataPointTypeSpecificationId: String,
+    fun getKotlinClassValidatingTheDataPointSchema(
+        @PathVariable("dataPointSchemaId") dataPointSchemaId: String,
     ): ResponseEntity<String>
 
     /**

@@ -29,9 +29,9 @@ fun DataPointSpecification.toDto(
                     it.flattenedSchema.any { schemaEntry -> schemaEntry.dataPointId == this.id }
                 }.map { it.getRef(baseUrl) },
         validatedBy =
-            database.dataPointTypeSpecifications[this.dataPointTypeId]?.getRef(
+            database.dataPointSchemas[this.dataPointSchemaId]?.getRef(
                 baseUrl,
-            ) ?: error("Data point type id ${this.dataPointTypeId} does not exist in the database."),
+            ) ?: error("Data point type id ${this.dataPointSchemaId} does not exist in the database."),
     )
 
 /**

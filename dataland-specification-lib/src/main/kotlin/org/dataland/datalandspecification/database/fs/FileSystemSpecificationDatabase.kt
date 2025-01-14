@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandspecification.database.SpecificationDatabase
 import org.dataland.datalandspecification.specifications.DataPointSpecification
-import org.dataland.datalandspecification.specifications.DataPointTypeSpecification
+import org.dataland.datalandspecification.specifications.DataPointSchema
 import org.dataland.datalandspecification.specifications.FrameworkSpecification
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -54,11 +54,11 @@ class FileSystemSpecificationDatabase(
     }
 
     private fun loadFromDisk() {
-        loadSpecifications<DataPointTypeSpecification>(File(baseFolder, "dataPointTypes"), objectMapper, logger)
+        loadSpecifications<DataPointSchema>(File(baseFolder, "dataPointTypes"), objectMapper, logger)
             .forEach { (id, specification) ->
-                dataPointTypeSpecifications[id] = specification
+                dataPointSchemas[id] = specification
             }
-        logger.info("Loaded ${dataPointTypeSpecifications.size} data point type specifications")
+        logger.info("Loaded ${dataPointSchemas.size} data point type specifications")
         loadSpecifications<DataPointSpecification>(File(baseFolder, "dataPoints"), objectMapper, logger)
             .forEach { (id, specification) ->
                 dataPointSpecifications[id] = specification
@@ -77,7 +77,7 @@ class FileSystemSpecificationDatabase(
             it.value.validateIntegrity(this)
             assert(it.value.id == it.key) { "Framework ID does not match key: ${it.key}" }
         }
-        dataPointTypeSpecifications.forEach {
+        dataPointSchemas.forEach {
             it.value.validateIntegrity()
             assert(it.value.id == it.key) { "Data point type ID does not match key: ${it.key}" }
         }
@@ -92,7 +92,7 @@ class FileSystemSpecificationDatabase(
      */
     fun saveToDisk() {
         validateIntegrity()
-        saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointTypeSpecifications)
+        saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointSchemas)
         saveSpecifications(File(baseFolder, "dataPoints"), objectMapper, dataPointSpecifications)
         saveSpecifications(File(baseFolder, "frameworks"), objectMapper, frameworkSpecifications)
     }

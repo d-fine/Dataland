@@ -3,10 +3,10 @@ package org.dataland.datalandspecificationservice.controller
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandspecification.database.SpecificationDatabase
 import org.dataland.datalandspecification.specifications.DataPointSpecification
-import org.dataland.datalandspecification.specifications.DataPointTypeSpecification
+import org.dataland.datalandspecification.specifications.DataPointSchema
 import org.dataland.datalandspecificationservice.api.SpecificationApi
 import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
-import org.dataland.datalandspecificationservice.model.DataPointTypeSpecificationDto
+import org.dataland.datalandspecificationservice.model.DataPointSchemaDto
 import org.dataland.datalandspecificationservice.model.FrameworkSpecificationDto
 import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecificationDto
 import org.dataland.datalandspecificationservice.model.toDto
@@ -31,11 +31,11 @@ class SpecificationController(
                 "The data point specification with the given id was not found in the database.",
             )
 
-    private fun getRawDataPointTypeSpecification(dataPointTypeSpecificationId: String): DataPointTypeSpecification =
-        database.dataPointTypeSpecifications[dataPointTypeSpecificationId]
+    private fun getRawDataPointSchema(dataPointSchemaId: String): DataPointSchema =
+        database.dataPointSchemas[dataPointSchemaId]
             ?: throw ResourceNotFoundApiException(
-                "Data Point Type Specification with id $dataPointTypeSpecificationId not found",
-                "The data point type specification with the given id was not found in the database.",
+                "Data point schema with id $dataPointSchemaId not found",
+                "The data point schema with the given id was not found in the database.",
             )
 
     override fun doesFrameworkSpecificationExist(frameworkSpecificationId: String) {
@@ -66,19 +66,19 @@ class SpecificationController(
         return ResponseEntity.ok(dataPointSpecification.toDto(datalandPrimaryUrl, database))
     }
 
-    override fun getDataPointTypeSpecification(dataPointTypeSpecificationId: String): ResponseEntity<DataPointTypeSpecificationDto> {
-        val dataPointTypeSpecification = getRawDataPointTypeSpecification(dataPointTypeSpecificationId)
-        return ResponseEntity.ok(dataPointTypeSpecification.toDto(datalandPrimaryUrl, database))
+    override fun getDataPointSchema(dataPointSchemaId: String): ResponseEntity<DataPointSchemaDto> {
+        val dataPointSchema = getRawDataPointSchema(dataPointSchemaId)
+        return ResponseEntity.ok(dataPointSchema.toDto(datalandPrimaryUrl, database))
     }
 
-    override fun getKotlinClassValidatingTheDataPointType(dataPointTypeSpecificationId: String): ResponseEntity<String> {
-        val dataPointTypeSpecification = getRawDataPointTypeSpecification(dataPointTypeSpecificationId)
-        return ResponseEntity.ok(dataPointTypeSpecification.validatedBy)
+    override fun getKotlinClassValidatingTheDataPointSchema(dataPointSchemaId: String): ResponseEntity<String> {
+        val dataPointSchema = getRawDataPointSchema(dataPointSchemaId)
+        return ResponseEntity.ok(dataPointSchema.validatedBy)
     }
 
     override fun getKotlinClassValidatingTheDataPoint(dataPointSpecificationId: String): ResponseEntity<String> {
         val dataPointSpecification = getRawDataPointSpecification(dataPointSpecificationId)
-        val dataPointTypeSpecification = getRawDataPointTypeSpecification(dataPointSpecification.dataPointTypeId)
-        return ResponseEntity.ok(dataPointTypeSpecification.validatedBy)
+        val dataPointSchema = getRawDataPointSchema(dataPointSpecification.dataPointSchemaId)
+        return ResponseEntity.ok(dataPointSchema.validatedBy)
     }
 }

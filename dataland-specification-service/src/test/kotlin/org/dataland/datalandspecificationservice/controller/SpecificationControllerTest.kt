@@ -45,7 +45,7 @@ class SpecificationControllerTest(
 
     @Test
     fun `retrieving a data point type specification should return a DTO with correct refs in usedBy`() {
-        val response = specificationController.getDataPointTypeSpecification("test-datapoint-type")
+        val response = specificationController.getDataPointSchema("test-datapoint-type")
         assert(response.statusCode.is2xxSuccessful)
         val body = response.body!!
         assert(body.usedBy[0].ref == "https://local-dev.dataland.com/specifications/data-points/test-datapoint")
@@ -68,7 +68,7 @@ class SpecificationControllerTest(
     @Test
     fun `retrieving a non existing data point type specification should return 404`() {
         assertThrows<ResourceNotFoundApiException> {
-            specificationController.getDataPointTypeSpecification("non-existing-datapoint-type")
+            specificationController.getDataPointSchema("non-existing-datapoint-type")
         }
     }
 }
