@@ -14,7 +14,8 @@ import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.objectMapper
+import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
+import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
@@ -53,15 +54,15 @@ class AssembledDataManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder,
+            companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
         )
 
     private val spyDataPointManager = spy(dataPointManager)
 
     private val assembledDataManager =
         AssembledDataManager(
-            dataManager, messageQueuePublications, dataPointValidator, objectMapper,
-            specificationClient, datasetDatapointRepository, spyDataPointManager,
+            dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
+            specificationClient, datasetDatapointRepository, spyDataPointManager, ReferencedReportsUtilities(testObjectMapper),
         )
 
     private val correlationId = "test-correlation-id"

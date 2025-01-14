@@ -4,31 +4,74 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
-import java.text.SimpleDateFormat
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 import java.time.LocalDate
 
-object ReferencedReportsUtilities {
-    private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
+/**
+ * Utilities for handling referenced reports in a specification schema.
+ */
+@Service
+class ReferencedReportsUtilities(
+    @Autowired private val objectMapper: ObjectMapper,
+) {
+    companion object {
+        private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
 
-    private const val PUBLICATION_DATE_FIELD = "publicationDate"
-    private const val FILE_REFERENCE_FIELD = "fileReference"
-    private const val DATA_SOURCE_FIELD = "dataSource"
+        private const val PUBLICATION_DATE_FIELD = "publicationDate"
+        private const val FILE_REFERENCE_FIELD = "fileReference"
+        private const val DATA_SOURCE_FIELD = "dataSource"
 
-    const val REFERENCED_REPORTS_ID = "referencedReports"
-
-    val objectMapper: ObjectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+        const val REFERENCED_REPORTS_ID = "referencedReports"
+    }
 
     /**
-     * Converts a JSON string to a JSON node.
-     * @param json The JSON string
-     * @return The JSON node
+     * Validates the consistency of the referenced reports field.
+     * This includes checking for duplicate file references.
      */
-    fun getJsonNodeFromString(json: String): JsonNode = objectMapper.readTree(json)
+    fun validateReferencedReportConsistency(referencedReportsLeaf: JsonSpecificationLeaf?): Map<String, CompanyReport> {
+        if (referencedReportsLeaf == null) {
+            return emptyMap()
+        }
+        val referencedReports = objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
+        val observedFileReferences = mutableSetOf<String>()
+        for (companyReport in referencedReports.values) {
+            if (companyReport.fileReference in observedFileReferences) {
+                throw InvalidInputApiException(
+                    "Inconsistent reference reports field",
+                    "The file reference ${companyReport.fileReference} is used multiple times.",
+                )
+            }
+            observedFileReferences.add(companyReport.fileReference)
+        }
+        return referencedReports
+    }
+
+    /**
+     * Validates if a company report is consistent with referenced reports.
+     */
+    fun validateReportConsistencyWithGlobalList(
+        report: CompanyReport,
+        referencedReports: Map<String, CompanyReport>,
+    ) {
+        val matchingReport =
+            referencedReports.values.firstOrNull { it.fileReference == report.fileReference } ?: throw InvalidInputApiException(
+                "Data point report not listed in referenced reports",
+                "The report '${report.fileReference}' is not contained in the referenced reports field.",
+            )
+        if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
+            throw InvalidInputApiException(
+                "Inconsistent publication date",
+                "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
+                    "but the publication date listed in the referenced reports is '${matchingReport.publicationDate}'.",
+            )
+        }
+    }
 
     /**
      * Extracts the company report from an extended data source.
@@ -36,7 +79,7 @@ object ReferencedReportsUtilities {
      * @return The company report or null if it could not be extracted
      */
     fun getCompanyReportFromDataSource(dataPointContent: String): CompanyReport? {
-        val dataSource = getJsonNodeFromString(dataPointContent).get(DATA_SOURCE_FIELD)
+        val dataSource = objectMapper.readTree(dataPointContent).get(DATA_SOURCE_FIELD)
 
         if (dataSource == null || dataSource.isNull) {
             return null
@@ -47,25 +90,6 @@ object ReferencedReportsUtilities {
         } catch (ignore: Exception) {
             null
         }
-    }
-
-    /**
-     * Extracts the mapping of file references to publication dates from a data set.
-     * @param referencedReportsLeaf The entry of the referenced reports as a JsonSpecificationLeaf
-     * @return The mapping of file references to publication dates
-     */
-    fun getFileReferenceToPublicationDateMapping(referencedReportsLeaf: JsonSpecificationLeaf?): Map<String, LocalDate> {
-        val fileToPublicationDateMapping = mutableMapOf<String, LocalDate>()
-        if (referencedReportsLeaf == null) {
-            return fileToPublicationDateMapping
-        }
-        val referencedReports = objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
-        referencedReports.values.forEach { companyReport ->
-            if (companyReport.publicationDate != null) {
-                fileToPublicationDateMapping[companyReport.fileReference] = companyReport.publicationDate
-            }
-        }
-        return fileToPublicationDateMapping
     }
 
     /**
@@ -121,7 +145,7 @@ object ReferencedReportsUtilities {
      * @param inputJsonNode The schema as JSON node to be updated
      * @param targetPath The path specifying where to insert the entry
      */
-    fun insertReferencedReports(
+    fun insertReferencedReportsIntoFrameworkSchema(
         inputJsonNode: JsonNode,
         targetPath: String?,
     ) {

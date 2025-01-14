@@ -4,17 +4,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.getCompanyReportFromDataSource
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.getFileReferenceToPublicationDateMapping
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.insertReferencedReports
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.objectMapper
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.updatePublicationDateInJsonNode
+import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 
 class ReferencedReportsUtilitiesTest {
@@ -32,9 +30,13 @@ class ReferencedReportsUtilitiesTest {
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
 
+    private val referencedReportsUtilities = ReferencedReportsUtilities(testObjectMapper)
+
     private fun readDataContent(resourceFile: String): Map<String, JsonSpecificationLeaf> {
-        val schema = objectMapper.readTree(TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification).schema)
-        insertReferencedReports(schema, "general.general.referencedReports")
+        val schema =
+            testObjectMapper
+                .readTree(TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification).schema)
+        referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(schema, "general.general.referencedReports")
         return JsonSpecificationUtils.dehydrateJsonSpecification(
             schema as ObjectNode,
             TestResourceFileReader.getJsonNode(resourceFile) as ObjectNode,
@@ -44,55 +46,101 @@ class ReferencedReportsUtilitiesTest {
     @Test
     fun `check that extraction of the referenced report works as expected`() {
         val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
-        val dataSource = objectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
+        val dataSource = testObjectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
             CompanyReport(
                 fileReference = dataSource?.fileReference ?: "dummy",
                 fileName = dataSource?.fileName,
                 publicationDate = LocalDate.parse(testDate),
             )
-        val companyReport = getCompanyReportFromDataSource(dataPointContent)
+        val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPointContent)
         assertEquals(expectedCompanyReport, companyReport)
     }
 
     @Test
     fun `check that a data point without data source yields null`() {
         val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPoint)
-        val companyReport = getCompanyReportFromDataSource(dataPointContent)
+        val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPointContent)
         assertEquals(null, companyReport)
     }
 
     @Test
-    fun `check that the extracted mapping is as expected`() {
-        val dataContent = readDataContent(frameworkWithReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
-        val expected =
-            mapOf(
-                "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
-                "70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(anotherTestDate),
-            )
-        assertEquals(expected, extracted)
+    fun `check that validateReferencedReportConsistency returns empty map when input is null`() {
+        val dataContent = readDataContent(frameworkWithoutReferencedReports)
+        val result =
+            referencedReportsUtilities
+                .validateReferencedReportConsistency(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
+        assertTrue(result.isEmpty())
     }
 
     @Test
-    fun `check that a framework without referenced reports yields an empty map`() {
-        val dataContent = readDataContent(frameworkWithoutReferencedReports)
-        val extracted = getFileReferenceToPublicationDateMapping(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
-        assertTrue(extracted.isEmpty())
+    fun `check that validateReferencedReportConsistency returns report map when input is valid`() {
+        val dataContent = readDataContent(frameworkWithReferencedReports)
+        val result =
+            referencedReportsUtilities
+                .validateReferencedReportConsistency(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
+        assertEquals(3, result.size)
+        assertEquals("60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", result["IntegratedReport"]?.fileReference)
+    }
+
+    @Test
+    fun `check that validateReferencedReportConsistency returns an error when duplicate file is uploaded`() {
+        val duplicateRefReferenceReport =
+            """
+            { "a": { "fileReference": "ref1" }, "b": { "fileReference": "ref1" } }
+            """.trimIndent()
+        val jsonSpecificationNode =
+            JsonSpecificationLeaf(
+                dataPointId = "id",
+                jsonPath = "path",
+                content = testObjectMapper.readTree(duplicateRefReferenceReport),
+            )
+        assertThrows<InvalidInputApiException> {
+            referencedReportsUtilities.validateReferencedReportConsistency(jsonSpecificationNode)
+        }
+    }
+
+    @Test
+    fun `check that an unlisted datasource throws an error`() {
+        val referencedReports = mutableMapOf<String, CompanyReport>()
+        val reportFromDatapoint =
+            CompanyReport(
+                fileReference = "fileReference",
+                fileName = "fileName",
+            )
+        assertThrows<InvalidInputApiException> {
+            referencedReportsUtilities.validateReportConsistencyWithGlobalList(reportFromDatapoint, referencedReports)
+        }
+    }
+
+    @Test
+    fun `check that inconsistent publication Dates references cause an error`() {
+        val referencedReports =
+            mutableMapOf(
+                "fileName" to CompanyReport(fileReference = "fileReference", publicationDate = LocalDate.parse(testDate)),
+            )
+        val reportFromDatapoint =
+            CompanyReport(
+                fileReference = "fileReference",
+                publicationDate = LocalDate.parse(anotherTestDate),
+            )
+        assertThrows<InvalidInputApiException> {
+            referencedReportsUtilities.validateReportConsistencyWithGlobalList(reportFromDatapoint, referencedReports)
+        }
     }
 
     @Test
     fun `check that updating a single data point with a publication date works as expected`() {
         val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
 
-        val dataSource = objectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
-        val contentNode = objectMapper.readTree(dataPointContent)
+        val dataSource = testObjectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
+        val contentNode = testObjectMapper.readTree(dataPointContent)
 
         requireNotNull(dataSource) { "Data point does not contain a proper data source" }
 
         val fileReferenceToPublicationDateMapping = mapOf(dataSource.fileReference to LocalDate.parse(testDate))
 
-        updatePublicationDateInJsonNode(
+        referencedReportsUtilities.updatePublicationDateInJsonNode(
             contentNode,
             fileReferenceToPublicationDateMapping,
             "dataSource",
@@ -108,7 +156,7 @@ class ReferencedReportsUtilitiesTest {
             )
         val actual =
             contentNode.get("dataSource").let {
-                objectMapper.readValue(it.toString(), ExtendedDocumentReference::class.java)
+                testObjectMapper.readValue(it.toString(), ExtendedDocumentReference::class.java)
             }
         assertEquals(expected, actual)
     }
@@ -124,7 +172,7 @@ class ReferencedReportsUtilitiesTest {
                 "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
             )
 
-        updatePublicationDateInJsonNode(
+        referencedReportsUtilities.updatePublicationDateInJsonNode(
             frameworkContent,
             fileReferenceToPublicationDateMapping,
             "",
@@ -138,7 +186,7 @@ class ReferencedReportsUtilitiesTest {
         val testNode = TestResourceFileReader.getJsonNode(frameworkTemplate)
         val targetPath = "category.subcategory.referencedReports"
 
-        insertReferencedReports(testNode, targetPath)
+        referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(testNode, targetPath)
         val expected = TestResourceFileReader.getJsonNode(templateWithReferencedReports)
         assertEquals(testNode, expected)
     }
@@ -146,7 +194,7 @@ class ReferencedReportsUtilitiesTest {
     @Test
     fun `check that an empty referenced reports path is not inserted into the json node`() {
         val testNode = TestResourceFileReader.getJsonNode(frameworkTemplate)
-        insertReferencedReports(testNode, null)
+        referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(testNode, null)
         assertEquals(testNode, TestResourceFileReader.getJsonNode(frameworkTemplate))
     }
 }

@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.objectMapper
+import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.junit.jupiter.api.BeforeEach
@@ -37,7 +37,7 @@ class DataPointManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder,
+            companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
         )
 
     private val correlationId = "test-correlation-id"
@@ -62,7 +62,7 @@ class DataPointManagerTest {
                 companyId = IdUtils.generateUUID(),
                 reportingPeriod = reportingPeriod,
             )
-        val expectedString = objectMapper.writeValueAsString(uploadedDataPoint)
+        val expectedString = testObjectMapper.writeValueAsString(uploadedDataPoint)
 
         `when`(metaDataManager.storeDataPointMetaInformation(any())).thenAnswer { invocation ->
             val argument = invocation.getArgument<DataPointMetaInformationEntity>(0)
