@@ -678,10 +678,6 @@ services:
     networks:
       - grafana
       - loki
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:3000/api/health"]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   loki:
