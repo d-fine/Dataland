@@ -83,8 +83,7 @@ class CsvExporter(
             dataToExport += mapJsonToLegacyCsvFields(data, legacyFields)
             csvData.add(dataToExport)
         }
-        println("dataToExport")
-        print(csvData)
+
         writeCsvFiles(outputDirectory, csvData, isinData, headers)
     }
 

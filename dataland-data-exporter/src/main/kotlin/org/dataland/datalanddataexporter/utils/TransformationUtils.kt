@@ -116,7 +116,7 @@ object TransformationUtils {
      * @param jsonPath The JSON path identifying the value
      * @return The string representation of the value
      */
-    fun mapJsonToLegacyCsvFields(
+    fun getValueFromJsonNode(
         jsonNode: JsonNode,
         jsonPath: String,
     ): String {
@@ -146,7 +146,7 @@ object TransformationUtils {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (jsonPath, csvHeader) ->
             if (csvHeader.isEmpty()) return@forEach
-            csvData[csvHeader] = mapJsonToLegacyCsvFields(jsonNode, jsonPath)
+            csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
         }
         return csvData
     }
@@ -164,7 +164,7 @@ object TransformationUtils {
         val csvData = mutableMapOf<String, String>()
         transformationRules.forEach { (csvHeader, jsonPath) ->
             if (csvHeader.isEmpty()) return@forEach
-            csvData[csvHeader] = mapJsonToLegacyCsvFields(jsonNode, jsonPath)
+            csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
         }
         return csvData
     }
