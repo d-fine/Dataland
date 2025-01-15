@@ -1,0 +1,170 @@
+{
+    "environmental": {
+        "biodiversity": {
+            "biodiversityProtectionPolicy": null,
+            "deforestationPolicy": null,
+            "highlyBiodiverseGrasslandExposure": null,
+            "landDegradationDesertificationSoilSealingExposure": null,
+            "manufactureOfAgrochemicalPesticidesProducts": null,
+            "primaryForestAndWoodedLandOfNativeSpeciesExposure": null,
+            "protectedAreasExposure": null,
+            "rareOrEndangeredEcosystemsExposure": null,
+            "sustainableAgriculturePolicy": null,
+            "sustainableOceansAndSeasPolicy": null,
+            "threatenedSpeciesExposure": null
+        },
+        "emissions": {
+            "carbonReductionInitiatives": null,
+            "emissionsOfAirPollutantsInTonnes": null,
+            "emissionsOfInorganicPollutantsInTonnes": null,
+            "emissionsOfOzoneDepletionSubstancesInTonnes": null
+        },
+        "energyPerformance": {
+            "applicableHighImpactClimateSectors": {},
+            "nonRenewableEnergyConsumptionCoalInGWh": null,
+            "nonRenewableEnergyConsumptionCrudeOilInGWh": null,
+            "nonRenewableEnergyConsumptionFossilFuelsInGWh": null,
+            "nonRenewableEnergyConsumptionInGWh": null,
+            "nonRenewableEnergyConsumptionLigniteInGWh": null,
+            "nonRenewableEnergyConsumptionNaturalGasInGWh": null,
+            "nonRenewableEnergyConsumptionNuclearEnergyInGWh": null,
+            "nonRenewableEnergyConsumptionOtherInGWh": null,
+            "nonRenewableEnergyProductionInGWh": null,
+            "relativeNonRenewableEnergyConsumptionInPercent": null,
+            "relativeNonRenewableEnergyProductionInPercent": null,
+            "renewableEnergyConsumptionInGWh": null,
+            "renewableEnergyProductionInGWh": null,
+            "totalHighImpactClimateSectorEnergyConsumptionInGWh": null
+        },
+        "greenhouseGasEmissions": {
+            "carbonFootprintInTonnesPerMillionEURRevenue": null,
+            "enterpriseValue": null,
+            "fossilFuelSectorExposure": null,
+            "ghgIntensityInTonnesPerMillionEURRevenue": null,
+            "scope1And2And3GhgEmissionsInTonnes": {
+                "comment": "",
+                "dataSource": {
+                    "fileName": "spotify-2022-equity-impact-report",
+                    "fileReference": "087cf59102229a1a5ebfcefe8c83bcede74024008fdcc24c9b0a302c1ad4bfe1",
+                    "page": 64,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 356178
+            },
+            "scope1And2And3GhgEmissionsLocationBasedInTonnes": null,
+            "scope1And2And3GhgEmissionsMarketBasedInTonnes": null,
+            "scope1And2GhgEmissionsInTonnes": null,
+            "scope1And2GhgEmissionsLocationBasedInTonnes": null,
+            "scope1And2GhgEmissionsMarketBasedInTonnes": {
+                "comment": "",
+                "dataSource": {
+                    "fileName": "spotify-2022-equity-impact-report",
+                    "fileReference": "087cf59102229a1a5ebfcefe8c83bcede74024008fdcc24c9b0a302c1ad4bfe1",
+                    "page": 64,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 3806
+            },
+            "scope1GhgEmissionsInTonnes": null,
+            "scope2GhgEmissionsInTonnes": null,
+            "scope2GhgEmissionsLocationBasedInTonnes": null,
+            "scope2GhgEmissionsMarketBasedInTonnes": {
+                "comment": "",
+                "dataSource": {
+                    "fileName": "spotify-2022-equity-impact-report",
+                    "fileReference": "087cf59102229a1a5ebfcefe8c83bcede74024008fdcc24c9b0a302c1ad4bfe1",
+                    "page": 64,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 3124
+            },
+            "scope3GhgEmissionsInTonnes": null,
+            "totalRevenue": null
+        },
+        "waste": {
+            "hazardousAndRadioactiveWasteInTonnes": null,
+            "nonRecycledWasteInTonnes": null
+        },
+        "water": {
+            "emissionsToWaterInTonnes": null,
+            "highWaterStressAreaExposure": null,
+            "relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+            "waterConsumptionInCubicMeters": null,
+            "waterManagementPolicy": null,
+            "waterReusedInCubicMeters": null
+        }
+    },
+    "general": {
+        "general": {
+            "dataDate": "2021-12-31",
+            "fiscalYearDeviation": "NoDeviation",
+            "fiscalYearEnd": "2021-12-31",
+            "referencedReports": {
+                "spotify-2022-equity-impact-report": {
+                    "fileName": "spotify-2022-equity-impact-report",
+                    "fileReference": "087cf59102229a1a5ebfcefe8c83bcede74024008fdcc24c9b0a302c1ad4bfe1",
+                    "publicationDate": "2022-12-31"
+                }
+            }
+        }
+    },
+    "social": {
+        "antiCorruptionAndAntiBribery": {
+            "casesOfInsufficientActionAgainstBriberyAndCorruption": null,
+            "reportedConvictionsOfBriberyAndCorruption": null,
+            "totalAmountOfReportedFinesOfBriberyAndCorruption": null
+        },
+        "greenSecurities": {
+            "securitiesNotCertifiedAsGreen": null
+        },
+        "humanRights": {
+            "humanRightsDueDiligence": null,
+            "humanRightsPolicy": null,
+            "numberOfReportedIncidentsOfHumanRightsViolations": null,
+            "reportedChildLabourIncidents": null,
+            "reportedForcedOrCompulsoryLabourIncidents": null,
+            "traffickingInHumanBeingsPolicy": null
+        },
+        "socialAndEmployeeMatters": {
+            "averageGrossHourlyEarningsFemaleEmployees": null,
+            "averageGrossHourlyEarningsMaleEmployees": null,
+            "boardGenderDiversityBoardOfDirectorsInPercent": null,
+            "ceoToEmployeePayGapRatio": null,
+            "controversialWeaponsExposure": null,
+            "corruptionLegalProceedings": null,
+            "environmentalPolicy": null,
+            "excessiveCeoPayRatioInPercent": null,
+            "fairBusinessMarketingAdvertisingPolicy": null,
+            "fairCompetitionPolicy": null,
+            "femaleBoardMembersBoardOfDirectors": null,
+            "grievanceHandlingMechanism": null,
+            "humanRightsDueDiligencePolicy": null,
+            "humanRightsLegalProceedings": null,
+            "iloCoreLabourStandards": null,
+            "iso14001Certificate": null,
+            "maleBoardMembersBoardOfDirectors": null,
+            "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": null,
+            "policyAgainstBriberyAndCorruption": null,
+            "policyAgainstChildLabour": null,
+            "policyAgainstDiscriminationInTheWorkplace": null,
+            "policyAgainstForcedLabour": null,
+            "rateOfAccidents": {
+                "value ": 0.2
+            },
+            "reportedIncidentsOfDiscrimination": null,
+            "sanctionedIncidentsOfDiscrimination": null,
+            "supplierCodeOfConduct": null,
+            "technologiesExpertiseTransferPolicy": null,
+            "transparencyDisclosurePolicy": null,
+            "unGlobalCompactPrinciplesCompliancePolicy": null,
+            "unadjustedGenderPayGapInPercent": null,
+            "violationOfTaxRulesAndRegulation": null,
+            "whistleblowerProtectionPolicy": null,
+            "workdaysLostInDays": null,
+            "workplaceAccidentPreventionPolicy": null
+        }
+    }
+}

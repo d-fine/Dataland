@@ -1,0 +1,639 @@
+{
+    "environmental": {
+        "biodiversity": {
+            "biodiversityProtectionPolicy": {
+                "comment": "Yes, OCI N.V. has a policy to protect biodiversity that covers facilities that are owned, leased, managed, or adjacent to a protected area or an area of high biodiversity value outside of protected areas. This policy can be found in the following documents:\n\n1. **OCI N.V./OCI-Global-Environmental-Policy.pdf**: \"Comply with relevant regulatory requirements and environmental policies when assessing new projects, which include environmental and biodiversity impact assessments, if applicable. When constructing new sites, identify and avoid areas of high biodiversity sensitivity.\"\n2. **OCI N.V./OCI-Annual-Report-2023-vf.pdf**: \"We comply with all relevant regulatory requirements and environmental policies when assessing new projects, which would include environmental and biodiversity impact assessments wherever relevant.\"\n\nSources:\n- [OCI N.V./OCI-Global-Environmental-Policy.pdf](OCI N.V./OCI-Global-Environmental-Policy.pdf)\n- [OCI N.V./OCI-Annual-Report-2023-vf.pdf](OCI N.V./OCI-Annual-Report-2023-vf.pdf)",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Global-Environmental-Policy.pdf",
+                    "fileReference": "e4225922675cc64fb6cce45c29174fbf332f610c6e8ac4f4d0bcdd29a985cddf",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "deforestationPolicy": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "highlyBiodiverseGrasslandExposure": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "landDegradationDesertificationSoilSealingExposure": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "manufactureOfAgrochemicalPesticidesProducts": {
+                "comment": "OCI N.V. is not involved in the production of pesticides and other agrochemicals. The company does not produce genetically modified organisms (GMOs) or neonicotinoids (pesticides) and also does not utilize these technologies. This information is based on the 2023 annual report.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": "No"
+            },
+            "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "protectedAreasExposure": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "rareOrEndangeredEcosystemsExposure": {
+                "comment": "None of our production facilities are located near protected areas or areas with high biodiversity. We are not required to implement a biodiversity management plan for our sites.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "No"
+            },
+            "sustainableAgriculturePolicy": {
+                "comment": "Yes, OCI N.V. has sustainable practices and policies for agriculture and soil. The company emphasizes the importance of sustainable intensification measures, particularly regarding inappropriate fertilizer methods that can lead to a loss of biodiversity. Further details on these practices and policies can be found in the OCI N.V. Annual Report 2023.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "sustainableOceansAndSeasPolicy": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "threatenedSpeciesExposure": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            }
+        },
+        "emissions": {
+            "carbonReductionInitiatives": {
+                "comment": "Yes, OCI N.V. has guidelines and procedures in place to reduce carbon emissions, aiming to align with the Paris Agreement. OCI N.V. is committed to reducing greenhouse gas emissions and contributing to the decarbonization goals of the Paris Agreement. The company has developed a decarbonization roadmap aiming to reduce Scope 1 and 2 greenhouse gas emissions intensity by 20% by 2030 compared to 2019 levels, and to achieve carbon neutrality by 2050. Further information can be found in the sections \"Our strategy,\" \"Environmental performance,\" and \"Decarbonization roadmap\" of the annual report.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "emissionsOfAirPollutantsInTonnes": {
+                "comment": "The total amount of air pollutants for OCI N.V. can be indicated as follows:\n\n- Direct sulfur dioxide emissions (SOx/SO2): 3,711 tons\n- Direct nitrogen oxide emissions (NOx/NO2): 2,957 tons\n- Direct emissions of non-methane volatile organic compounds (NMVOC): 269 tons\n\nThere is no information available for direct ammonia emissions (NH3), direct fine particle emissions (PM2.5), and direct total emissions of heavy metals (HM) (including cadmium, mercury, and lead).\n\nTotal amount of the mentioned air pollutants:\n3,711 tons (SO2) + 2,957 tons (NOx) + 269 tons (NMVOC) + 62 tons = 6,999 tons",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": 6999
+            },
+            "emissionsOfInorganicPollutantsInTonnes": null,
+            "emissionsOfOzoneDepletionSubstancesInTonnes": null
+        },
+        "energyPerformance": null,
+        "greenhouseGasEmissions": {
+            "carbonFootprintInTonnesPerMillionEURRevenue": null,
+            "enterpriseValue": null,
+            "fossilFuelSectorExposure": {
+                "comment": "OCI N.V. is a global producer and distributor of hydrogen products, including fertilizers, fuels, and raw materials for agriculture. There is no specific information indicating that OCI N.V. generates revenue from the exploration, mining, extraction, distribution, or refining of coal and lignite, liquid fossil fuels, or gaseous fossil fuels.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "No"
+            },
+            "ghgIntensityInTonnesPerMillionEURRevenue": null,
+            "scope1And2And3GhgEmissionsInTonnes": {
+                "comment": "The total greenhouse gas emissions of OCI N.V. amount to 38,279,649 tons of CO2e.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 38279649
+            },
+            "scope1And2And3GhgEmissionsLocationBasedInTonnes": null,
+            "scope1And2And3GhgEmissionsMarketBasedInTonnes": null,
+            "scope1And2GhgEmissionsInTonnes": {
+                "comment": "The sum of Scope 1 and Scope 2 carbon emissions for OCI N.V. is 8,549,285 tons of CO2e.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": 8549285
+            },
+            "scope1And2GhgEmissionsLocationBasedInTonnes": null,
+            "scope1And2GhgEmissionsMarketBasedInTonnes": null,
+            "scope1GhgEmissionsInTonnes": {
+                "comment": "The greenhouse gas emissions for Scope 1 of the company OCI N.V. amount to 8,205,008 tons of CO2e.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": 8205008
+            },
+            "scope2GhgEmissionsInTonnes": {
+                "comment": "The greenhouse gas emissions of the company OCI N.V. for Scope 2 amount to 344,277 tons of CO2e. This information comes from the document \"OCI N.V./OCI-Annual-Report-2023-vf.pdf.\".",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 344277
+            },
+            "scope2GhgEmissionsLocationBasedInTonnes": null,
+            "scope2GhgEmissionsMarketBasedInTonnes": null,
+            "scope3GhgEmissionsInTonnes": {
+                "comment": "The greenhouse gas emissions of the company OCI N.V. for Scope 3 amount to a total of 29,730,364 tonnes CO2e. This information is taken from the document \"OCI-Annual-Report-2023-vf.pdf\".",
+                "dataSource": {
+                    "fileName": "OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 29730364
+            },
+            "totalRevenue": {
+                "comment": "The total revenue for the fiscal year 2023 amounts to 1,962.6 million USD.",
+                "currency": null,
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": 1962600000
+            }
+        },
+        "waste": {
+            "hazardousAndRadioactiveWasteInTonnes": null,
+            "nonRecycledWasteInTonnes": {
+                "comment": "\"The value of the generated non-recyclable waste can be extracted is 5.068 tons.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 5068
+            }
+        },
+        "water": {
+            "emissionsToWaterInTonnes": null,
+            "highWaterStressAreaExposure": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+            "waterConsumptionInCubicMeters": {
+                "comment": "In the last completed fiscal year, OCI N.V. consumed a total of 40.78 million cubic meters of water. Converted to liters, this is equivalent to 40,780,000,000 liters.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 40780000
+            },
+            "waterManagementPolicy": {
+                "comment": "Yes, the company has policies and procedures for water management. The relevant documents are:\n\n- OCI-Global-Environmental-Policy.pdf\n- OCI-Annual-Report-2023-vf.pdf",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Global-Environmental-Policy.pdf",
+                    "fileReference": "e4225922675cc64fb6cce45c29174fbf332f610c6e8ac4f4d0bcdd29a985cddf",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "waterReusedInCubicMeters": null
+        }
+    },
+    "general": {
+        "general": {
+            "dataDate": "2024-03-20",
+            "fiscalYearDeviation": "NoDeviation",
+            "fiscalYearEnd": "2023-12-31",
+            "referencedReports": {
+                "OCI N.V./20200826-oci-tax-charter-2020-executed.pdf": {
+                    "fileName": "OCI N.V./20200826-oci-tax-charter-2020-executed.pdf",
+                    "fileReference": "47d876819d2e2ef50e383fc7a055f5eeba0cb6d01ea9a2cdffcc90f6bee0d7eb",
+                    "publicationDate": null
+                },
+                "OCI N.V./220517-anti-slavery-statement-oci-2022-final.pdf": {
+                    "fileName": "OCI N.V./220517-anti-slavery-statement-oci-2022-final.pdf",
+                    "fileReference": "cbb843416843d642bbf486418799ea369b639e4682cdbaad4a1be2d7e2292b92",
+                    "publicationDate": null
+                },
+                "OCI N.V./OCI-Annual-Report-2023-vf.pdf": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "publicationDate": null
+                },
+                "OCI N.V./OCI-Global-Environmental-Policy.pdf": {
+                    "fileName": "OCI N.V./OCI-Global-Environmental-Policy.pdf",
+                    "fileReference": "e4225922675cc64fb6cce45c29174fbf332f610c6e8ac4f4d0bcdd29a985cddf",
+                    "publicationDate": null
+                },
+                "OCI N.V./OCI-Whistleblower-Policy-2023.pdf": {
+                    "fileName": "OCI N.V./OCI-Whistleblower-Policy-2023.pdf",
+                    "fileReference": "094ed1974d94c1a850b833743026c40c0aabcbbf1a73f7515ee8568d754336bd",
+                    "publicationDate": null
+                },
+                "OCI N.V./human-rights-policy.pdf": {
+                    "fileName": "OCI N.V./human-rights-policy.pdf",
+                    "fileReference": "31209696aaa846658cf8d888e410126be75e82f2aaa9435c2ab94386c76c0ab4",
+                    "publicationDate": null
+                },
+                "OCI N.V./oci-nv-code-of-conduct.pdf": {
+                    "fileName": "OCI N.V./oci-nv-code-of-conduct.pdf",
+                    "fileReference": "5eb813fef89a095302c09209079aaef97131cc1f5bb8340f3e3175cf5969afe9",
+                    "publicationDate": null
+                },
+                "OCI-Group-Diversity-Inclusion-Policy-2023.pdf": {
+                    "fileName": "OCI-Group-Diversity-Inclusion-Policy-2023.pdf",
+                    "fileReference": "46db388b4afe82bad6977bc97936fd42c5100f2754e71827fab389d17430fcae",
+                    "publicationDate": null
+                },
+                "oci-nv-anti-bribery-corruption-policy.pdf": {
+                    "fileName": "oci-nv-anti-bribery-corruption-policy.pdf",
+                    "fileReference": "1b48bf70d572f98b085495bf50556e4a082551e40adc3a937b58f0ca931a0ab1",
+                    "publicationDate": null
+                }
+            }
+        }
+    },
+    "social": {
+        "antiCorruptionAndAntiBribery": null,
+        "greenSecurities": {
+            "securitiesNotCertifiedAsGreen": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            }
+        },
+        "humanRights": {
+            "humanRightsDueDiligence": {
+                "comment": "Yes, OCI N.V. has due diligence processes in place to identify, prevent, mitigate, and address negative impacts on human rights. These processes are part of the Human Rights Policy that falls within the Compliance Framework of OCI N.V. A common due diligence is conducted to ensure that suppliers and business partners are compliant. Additionally, there is an anonymous reporting hotline through which employees can report suspected violations within the supply chain.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "humanRightsPolicy": {
+                "comment": "Yes, the company OCI N.V. has a publicly available human rights policy statement. This statement is contained in the document \"human-rights-policy.pdf\".\n\nThe human rights policy statement reads:\n\n\"We are committed to respecting and promoting human rights and safe working conditions. We conduct all business activities responsibly, efficiently, transparently, and with integrity and respect towards all stakeholders, as codified in our OCI N.V. Compliance Framework including our Code of Conduct. This expectation also extends to our suppliers and business partners.\"",
+                "dataSource": {
+                    "fileName": "OCI N.V./human-rights-policy.pdf",
+                    "fileReference": "31209696aaa846658cf8d888e410126be75e82f2aaa9435c2ab94386c76c0ab4",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "numberOfReportedIncidentsOfHumanRightsViolations": null,
+            "reportedChildLabourIncidents": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "reportedForcedOrCompulsoryLabourIncidents": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "traffickingInHumanBeingsPolicy": {
+                "comment": "Yes, OCI N.V. has a policy against human trafficking. The relevant document is the \"anti-slavery-statement-oci-2022-final.pdf\".",
+                "dataSource": {
+                    "fileName": "OCI N.V./220517-anti-slavery-statement-oci-2022-final.pdf",
+                    "fileReference": "cbb843416843d642bbf486418799ea369b639e4682cdbaad4a1be2d7e2292b92",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            }
+        },
+        "socialAndEmployeeMatters": {
+            "averageGrossHourlyEarningsFemaleEmployees": null,
+            "averageGrossHourlyEarningsMaleEmployees": null,
+            "boardGenderDiversityBoardOfDirectorsInPercent": {
+                "comment": "The percentage of women on the OCI N.V. board is 30,7% in the year 2023. This information comes from the OCI Annual Report 2023.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Estimated",
+                "value": 30.7
+            },
+            "ceoToEmployeePayGapRatio": {
+                "comment": "The ratio of the annual total compensation for the highest-paid individual (CEO) to the median annual total compensation amount of all employees (excluding the highest-paid individual) is referred to as the CEO pay ratio. The CEO pay ratio for the last few years is as follows:\n\n- 2023: 42.3\n- 2022: 47.2\n- 2021: 44.5\n- 2020: 39.26\n\nThis information is taken from the OCI N.V. Annual Report 2023.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Estimated",
+                "value": 42.3
+            },
+            "controversialWeaponsExposure": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "corruptionLegalProceedings": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "environmentalPolicy": {
+                "comment": "Yes, OCI N.V. has an environmental policy. This was published in 2023 and reflects the company's commitment to becoming an environmental steward. The environmental policy is part of OCI N.V.'s comprehensive strategy to promote high standards of environmental responsibility through investments in low-carbon technologies, reducing the ecological footprint, and digital solutions. Further details on the environmental policy and measures to reduce environmental impacts can be found in the \"Environmental performance\" section of the annual report.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "excessiveCeoPayRatioInPercent": null,
+            "fairBusinessMarketingAdvertisingPolicy": {
+                "comment": "Yes, OCI N.V. has implemented guidelines and procedures to adopt fair business, marketing, and advertising practices and to ensure the safety and quality of goods and services. This information can be found in the document \"oci-nv-code-of-conduct.pdf\".",
+                "dataSource": {
+                    "fileName": "oci-nv-code-of-conduct.pdf",
+                    "fileReference": "5eb813fef89a095302c09209079aaef97131cc1f5bb8340f3e3175cf5969afe9",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "fairCompetitionPolicy": {
+                "comment": "Yes, OCI N.V. has guidelines and procedures related to fair competition and anti-competitive cartels. These are documented in the \"oci-nv-code-of-conduct.pdf\" file.",
+                "dataSource": {
+                    "fileName": "OCI N.V./oci-nv-code-of-conduct.pdf",
+                    "fileReference": "5eb813fef89a095302c09209079aaef97131cc1f5bb8340f3e3175cf5969afe9",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "femaleBoardMembersBoardOfDirectors": {
+                "comment": "As of the General Meeting held on May 3, 2023, the\ncomposition of the Board in terms of gender diversity is\nas follows:\n\u00e2\u20ac\u00a2 Non-Executive Directors: 6 Male (66.67%), 3\nFemale (33.3%)\n\u00e2\u20ac\u00a2 Executive Directors: 3 Male (75%), 1 Female (25.0%)",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 4
+            },
+            "grievanceHandlingMechanism": {
+                "comment": "Yes, OCI N.V. has a mechanism for handling complaints related to employee matters. According to the Whistleblower Policy document and the Annual Report 2023, OCI N.V. provides several channels for reporting compliance concerns, including issues such as discrimination and harassment. Employees can report concerns to their direct or next higher-level supervisor, the local Compliance Officer, the Global Compliance Director, or anonymously through the independent EthicsPoint hotline (oci-global.ethicspoint.com). All reports are treated confidentially, and there is a structured process for investigating and addressing the reported issues.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Whistleblower-Policy-2023.pdf",
+                    "fileReference": "094ed1974d94c1a850b833743026c40c0aabcbbf1a73f7515ee8568d754336bd",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "humanRightsDueDiligencePolicy": {
+                "comment": "Yes, OCI N.V. has introduced guidelines to support human rights and exercise due diligence to ensure that business activities do not have negative impacts on human rights. These guidelines are documented in the \"human-rights-policy.pdf\".",
+                "dataSource": {
+                    "fileName": "human-rights-policy.pdf",
+                    "fileReference": "31209696aaa846658cf8d888e410126be75e82f2aaa9435c2ab94386c76c0ab4",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "humanRightsLegalProceedings": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "iloCoreLabourStandards": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "iso14001Certificate": {
+                "comment": "Yes, the company OCI N.V. is certified according to ISO 14001. The certificates can be found in the file OCI-Annual-Report-2023-vf.pdf.\n\nExample: iso_14001_certificate.pdf",
+                "dataSource": {
+                    "fileName": "OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": "Yes"
+            },
+            "maleBoardMembersBoardOfDirectors": {
+                "comment": "As of the General Meeting held on May 3, 2023, the\ncomposition of the Board in terms of gender diversity is\nas follows:\n\u00e2\u20ac\u00a2 Non-Executive Directors: 6 Male (66.67%), 3\nFemale (33.3%)\n\u00e2\u20ac\u00a2 Executive Directors: 3 Male (75%), 1 Female (25.0%)",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": 9
+            },
+            "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+                "comment": "Yes, OCI N.V. has mechanisms in place to handle complaints and grievances in order to address violations of principles such as the UNGC Principles or the OECD Guidelines for Multinational Enterprises. These mechanisms are part of the whistleblowing framework and compliance policies of the company. Employees can report concerns anonymously through the OCI Helpline Ethicspoint (www.oci.ethicspoint.com), which is managed by an independent provider and available 24 hours a day, 7 days a week. OCI N.V. guarantees that no retaliatory measures will be taken against individuals who report in good faith or participate in an investigation.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Whistleblower-Policy-2023.pdf",
+                    "fileReference": "094ed1974d94c1a850b833743026c40c0aabcbbf1a73f7515ee8568d754336bd",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "policyAgainstBriberyAndCorruption": {
+                "comment": "Yes, OCI N.V. has a policy against corruption and bribery that aligns with international anti-corruption laws, including the OECD Convention on Combating Bribery of Foreign Public Officials in International Business Transactions. The relevant document is the \"oci-nv-anti-bribery-corruption-policy.pdf\".",
+                "dataSource": {
+                    "fileName": "oci-nv-anti-bribery-corruption-policy.pdf",
+                    "fileReference": "1b48bf70d572f98b085495bf50556e4a082551e40adc3a937b58f0ca931a0ab1",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "policyAgainstChildLabour": {
+                "comment": "Yes, OCI N.V. has introduced guidelines to eliminate all forms of child labor. This is documented in several documents, including:\n\n1. \"Our suppliers are not allowed to use forced or child labor or engage in slavery or human trafficking.\"\n2. \"We prohibit the use of involuntary or forced labor, human trafficking, slavery, and child labor in accordance with international laws and standards.\"\n3. \"This statement is made in accordance with Section 54 of the Modern Slavery Act 2015 and describes the steps OCI N.V. has taken to prevent modern slavery and human trafficking in its business and supply chains.\"",
+                "dataSource": {
+                    "fileName": "OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": "Yes"
+            },
+            "policyAgainstDiscriminationInTheWorkplace": {
+                "comment": "Yes, OCI N.V. has introduced guidelines to eliminate discrimination in the workplace. These are documented in the \"OCI-Group-Diversity-Inclusion-Policy-2023.pdf\".",
+                "dataSource": {
+                    "fileName": "OCI-Group-Diversity-Inclusion-Policy-2023.pdf",
+                    "fileReference": "46db388b4afe82bad6977bc97936fd42c5100f2754e71827fab389d17430fcae",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "policyAgainstForcedLabour": {
+                "comment": "Yes, OCI N.V. has introduced guidelines to eradicate all forms of forced labor. This is documented in the \"Modern Slavery Statement\". The guidelines include, among other things, a Human Rights Policy that explicitly prohibits modern slavery, as well as a Whistleblower Policy that encourages employees to report violations of human rights, including modern slavery. Further information can be found in the file \"220517-anti-slavery-statement-oci-2022-final.pdf\".",
+                "dataSource": {
+                    "fileName": "220517-anti-slavery-statement-oci-2022-final.pdf",
+                    "fileReference": "cbb843416843d642bbf486418799ea369b639e4682cdbaad4a1be2d7e2292b92",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "rateOfAccidentsInPercent": null,
+            "reportedIncidentsOfDiscrimination": null,
+            "sanctionedIncidentsOfDiscrimination": null,
+            "supplierCodeOfConduct": {
+                "comment": "Yes, OCI N.V. has a code of conduct for suppliers, focusing on issues such as unsafe working conditions, precarious work, child labor, and forced labor. This is described in the document \"oci-nv-code-of-conduct.pdf\".",
+                "dataSource": {
+                    "fileName": "oci-nv-code-of-conduct.pdf",
+                    "fileReference": "5eb813fef89a095302c09209079aaef97131cc1f5bb8340f3e3175cf5969afe9",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "technologiesExpertiseTransferPolicy": {
+                "comment": null,
+                "dataSource": null,
+                "quality": "Incomplete",
+                "value": "NoEvidenceFound"
+            },
+            "transparencyDisclosurePolicy": {
+                "comment": "Yes, OCI N.V. has a transparency policy. According to the information provided, OCI ensures that relevant information is provided equally and simultaneously to all interested parties, as regulated in their shareholder communication policy. They commit to providing clear and timely information to all stakeholders, and offer comprehensive insights to current and potential shareholders, analysts, and the financial press about the company and the industries in which they operate.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "unGlobalCompactPrinciplesCompliancePolicy": {
+                "comment": "Yes, OCI N.V. has a policy for monitoring compliance with the UNGC principles. This is confirmed by the commitment to the UN Global Compact and adherence to the 10 universal principles in the areas of human rights, labor, environment, and anti-corruption. This commitment is documented in their \"OCI-Annual-Report-2023-vf.pdf\".",
+                "dataSource": {
+                    "fileName": "OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Audited",
+                "value": "Yes"
+            },
+            "unadjustedGenderPayGapInPercent": null,
+            "violationOfTaxRulesAndRegulation": {
+                "comment": "OCI N.V. adheres to the OECD Guidelines for Multinational Enterprises on Taxation. The company declares its profits and pays taxes where economic activities take place. It is ensured that all intra-group transactions comply with the arm's length principle in accordance with OECD guidelines, meaning market-based prices are applied for intra-group transactions. OCI N.V. aims to meet all global tax reporting deadlines in a controlled manner and provide accurate financial information in tax reporting that aligns with financial statements, transfer pricing documentation, invoices, and other relevant sources. The company maintains a transparent and open working relationship with all relevant tax authorities and stakeholders, ensuring that all tax activities comply with both the letter and spirit of applicable tax laws and regulations.",
+                "dataSource": {
+                    "fileName": "OCI N.V./20200826-oci-tax-charter-2020-executed.pdf",
+                    "fileReference": "47d876819d2e2ef50e383fc7a055f5eeba0cb6d01ea9a2cdffcc90f6bee0d7eb",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "No"
+            },
+            "whistleblowerProtectionPolicy": {
+                "comment": "Yes, OCI N.V. has a policy to protect whistleblowers. This is described in the Whistleblower Policy and the Whistleblower Protection Policy. The policy provides several channels to report compliance concerns both locally and at the corporate level, including anonymously. An independent third party operates the Whistleblower Hotline, through which reports can be submitted by phone or online. External parties, including business partners, can also report potential compliance concerns. All reports are handled confidentially, and it is ensured that investigations are conducted promptly, objectively, and fairly. Retaliation is not tolerated and is treated as a disciplinary matter.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            },
+            "workdaysLostInDays": null,
+            "workplaceAccidentPreventionPolicy": {
+                "comment": "Yes, OCI N.V. has a workplace safety policy. The policy includes hazard identification, risk assessment, accident investigation, as well as the promotion of employee health and the prevention and mitigation of work-related health and safety impacts. These measures are described in the chapters \"Health, safety & wellbeing\" (pages 57-60) and \"Operational risks\" (pages 83-85) of the OCI N.V. Annual Report 2023.",
+                "dataSource": {
+                    "fileName": "OCI N.V./OCI-Annual-Report-2023-vf.pdf",
+                    "fileReference": "079ca580f548a430d548319a3680e30bf5ae6e2ac29a4397d6527a956137729f",
+                    "page": null,
+                    "tagName": null
+                },
+                "quality": "Reported",
+                "value": "Yes"
+            }
+        }
+    }
+}
