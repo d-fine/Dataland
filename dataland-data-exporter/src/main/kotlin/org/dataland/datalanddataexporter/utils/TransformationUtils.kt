@@ -61,7 +61,7 @@ object TransformationUtils {
         legacyRules.forEach { (csvHeader, _) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
         require(headers.isNotEmpty()) { "No headers found in legacy rules." }
         headers.addAll(getCompanyRelatedHeaders())
-        require(headers.distinct().size == headers.size) { "Duplicate headers found in transformation rules." }
+        require(headers.distinct().size == headers.size) { "Duplicate headers found in legacy rules." }
         return headers
     }
 
@@ -80,7 +80,7 @@ object TransformationUtils {
     fun checkConsistency(
         node: JsonNode,
         transformationRules: Map<String, String>,
-        legacyFields: Map<String, String>,
+        legacyRules: Map<String, String>,
     ) {
         val leafNodesInJsonNode: List<String> = getNonArrayLeafNodeFieldNames(node, "")
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
@@ -88,12 +88,12 @@ object TransformationUtils {
             "Transformation rules do not cover all leaf nodes in the data."
         }
 
-        val legacyValuesNotCovered = legacyFields.values.filter { !transformationRules.keys.contains(it) }
+        val legacyValuesNotCovered = legacyRules.values.filter { !transformationRules.keys.contains(it) }
         require(legacyValuesNotCovered.isEmpty()) {
             "Legacy headers require nodes that are not in the data: $legacyValuesNotCovered"
         }
 
-        val legacyKeysInTransformationValues = legacyFields.keys.filter { transformationRules.values.contains(it) }
+        val legacyKeysInTransformationValues = legacyRules.keys.filter { transformationRules.values.contains(it) }
         require(legacyKeysInTransformationValues.isEmpty()) {
             "Csv headers are not unique as legacy headers contain duplicates: $legacyKeysInTransformationValues"
         }

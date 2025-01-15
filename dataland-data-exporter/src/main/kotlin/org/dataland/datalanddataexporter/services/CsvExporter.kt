@@ -57,13 +57,13 @@ class CsvExporter(
 
         createDirectories(outputDirectory)
         val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
-        val headers = getHeaders(transformationRules)
+        val activeHeaders = getHeaders(transformationRules)
         val dataIds = getAllSfdrDataIds()
 
         val legacyRules = readTransformationConfig("./transformationRules/SfdrLegacyCsvExportFields.config")
         val legacyHeaders = getLegacyHeaders(legacyRules)
 
-        val allHeaders = headers + legacyHeaders
+        val combinedHeaders = activeHeaders + legacyHeaders
 
         dataIds.forEach { dataId ->
             logger.info("Exporting data with ID: $dataId")
@@ -88,7 +88,7 @@ class CsvExporter(
             csvData.add(dataToExport)
         }
 
-        writeCsvFiles(outputDirectory, csvData, isinData, allHeaders)
+        writeCsvFiles(outputDirectory, csvData, isinData, combinedHeaders)
     }
 
     /**

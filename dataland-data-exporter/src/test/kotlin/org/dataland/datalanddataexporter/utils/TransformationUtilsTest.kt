@@ -33,11 +33,15 @@ class TransformationUtilsTest {
             "mappedButNoData" to "mappedButNoDataHeader",
             "nested.nestedMapping" to "nestedHeader",
         )
-    private val expectedlegacyFields =
+    private val expectedLegacyRules =
         mapOf(
             "newHeader" to "presentMapping",
         )
-    private val inconsistentLegacyFields =
+    private val inconsistentLegacyHeader =
+        mapOf(
+            "presentHeader" to "presentMapping",
+        )
+    private val inconsistentLegacyMapping =
         mapOf(
             "presentHeader" to "newMapping",
         )
@@ -71,29 +75,29 @@ class TransformationUtilsTest {
     @Test
     fun `check that checkConsistency does not throw an exception for consistent data`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
-        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields) }
+        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedLegacyRules) }
     }
 
     @Test
-    fun `check that checkConsistency throws an exception for inconsistent data`() {
+    fun `check that checkConsistency throws an exception for inconsistent legacy headers`() {
         val jsonNode = ObjectMapper().readTree(inconsistentJson)
         assertThrows<IllegalArgumentException> {
-            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, inconsistentLegacyFields)
+            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, inconsistentLegacyHeader)
         }
     }
 
     @Test
-    fun `check that checkConsistency throws an exception for inconsistent legacy fields`() {
+    fun `check that checkConsistency throws an exception for inconsistent legacy mappings`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
         assertThrows<IllegalArgumentException> {
-            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, inconsistentLegacyFields)
+            TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, inconsistentLegacyMapping)
         }
     }
 
     @Test
     fun `check that referenced reports are filtered out for the consistency check`() {
         val jsonNode = ObjectMapper().readTree(referencedReportJson)
-        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedlegacyFields) }
+        assertDoesNotThrow { TransformationUtils.checkConsistency(jsonNode, expectedTransformationRules, expectedLegacyRules) }
     }
 
     @Test
