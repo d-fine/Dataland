@@ -1,12 +1,11 @@
 import { join } from 'path';
 import { DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
-import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress.ts';
+import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { assignCompanyOwnershipToDatalandAdmin } from '@e2e/utils/CompanyRolesUtils.ts';
 import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 
@@ -91,7 +90,7 @@ describeIf(
     });
 
     beforeEach(() => {
-      cy.ensureLoggedIn(admin_name, admin_pw);
+      cy.ensureLoggedIn(reader_name, reader_pw);
     });
 
     it('Download data as csv file, check for appropriate size and delete it afterwards', () => {
