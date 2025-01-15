@@ -1,0 +1,71 @@
+# This is a complete configuration to deploy Loki backed by the filesystem.
+# Please refer to https://grafana.com/docs/loki/latest/configure/
+# The index will be shipped to the storage via tsdb-shipper.
+
+
+# By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
+# analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
+analytics:
+  reporting_enabled: false # Disable reporting
+
+# Multi-tenant mode is set in the configuration with auth_enabled: true,
+# enabling authentication through the X-Scope-OrgID header, which must be present
+# if true. If false, the OrgID will always be set to 'fake'.
+auth_enabled: false
+
+# Configures the server of the launched module(s).
+server:
+  http_listen_port: 3100  # default 3100
+
+# Common configuration to be shared between multiple modules. If a more specific
+# configuration is given in other sections, the related configuration within
+# this section will be ignored.
+common:
+  path_prefix: /loki # must be defined
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+  ring:
+    kvstore:
+      # Backend storage to use for the ring. Supported values are: consul (default), etcd, memberlist, multi,
+      # inmemory:
+      # - All metadata stored in the ring is lost when the Loki service is restarted or the server fails.
+      # - This means that it may not function correctly after a restart UNTIL the ring data is regenerated.
+      # - The in-memory setup is only suitable for environments where the load and the number of instances are low.
+      store: inmemory
+  replication_factor: 1 # without clustering or sharding, this needs to be 1
+
+# The storage_config block configures one of many possible stores for both the
+# index and chunks. Which configuration to be picked should be defined in
+# schema_config block.
+storage_config:
+  tsdb_shipper:
+#    # Directory where ingesters would write index files which would then be
+#    # uploaded by shipper to configured storage
+    active_index_directory: /loki/index
+#    # Cache location for restoring index files from storage for queries
+    cache_location: /loki/index_cache
+
+# Configures the chunk index schema and where it is stored
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+# Enabling better organization and retrieval of log information. (depends on module ring)
+pattern_ingester:
+  enabled: true
+
+# The ingester WAL (Write Ahead Log) records incoming logs and stores them on
+# the local file systems in order to guarantee persistence of acknowledged data
+# in the event of a process crash.
+ingester:
+  wal:
+    enabled: true
+    dir: /loki/wal

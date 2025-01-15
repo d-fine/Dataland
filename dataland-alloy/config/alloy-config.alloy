@@ -1,0 +1,44 @@
+local.file_match "system" {
+	path_targets = [{
+		__address__ = "localhost",
+		__path__    = "/var/log/*log",
+		job         = "varlogs",
+	}]
+}
+
+loki.source.file "system" {
+	targets               = local.file_match.system.targets
+	forward_to            = [loki.write.local_loki.receiver]
+	legacy_positions_file = "/tmp/positions.yaml"
+}
+
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+discovery.relabel "default" {
+  targets = discovery.docker.containers.targets
+
+  rule {
+    action = "labelmap"
+    regex = "__meta_docker_container_label_([^_]+)"
+  }
+  rule {
+    action = "replace"
+    source_labels = ["__meta_docker_container_name"]
+    target_label = "container"
+  }
+}
+
+loki.source.docker "default" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.default.output
+  forward_to = [loki.write.local_loki.receiver]
+}
+
+loki.write "local_loki" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+	}
+	external_labels = {}
+}
