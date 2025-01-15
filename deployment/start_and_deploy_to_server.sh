@@ -64,6 +64,7 @@ fi
 ssh ubuntu@"$target_server_url" "if [ -d '$logging_data_mnt' ] && [ ! -d '$loki_volume' ]; then
         echo "Creating '$loki_volume' dir as volume for Loki container"
         sudo mkdir -p $loki_volume
+        sudo chmod a+w '$loki_volume'
 fi"
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
