@@ -13,37 +13,37 @@ import org.springframework.stereotype.Repository
 @Repository
 interface DataPointQaReportRepository : JpaRepository<DataPointQaReportEntity, String> {
     /**
-     * Returns all QA reports for a specific dataId. Supports filtering by reporterUserId and active status.
-     * @param dataId identifier used to uniquely specify data in the data store
+     * Returns all QA reports for a specific dataPointId. Supports filtering by reporterUserId and active status.
+     * @param dataPointId identifier used to uniquely specify data in the data store
      * @param showInactive flag to include inactive reports in the result
      * @param reporterUserId show only QA reports uploaded by the given user
      */
     @Query(
         "SELECT qaReport FROM DataPointQaReportEntity qaReport " +
-            "WHERE qaReport.dataId = :dataId " +
+            "WHERE qaReport.dataPointId = :dataPointId " +
             "AND (:showInactive = TRUE OR qaReport.active = TRUE) " +
             "AND (:reporterUserId IS NULL OR qaReport.reporterUserId = :reporterUserId)",
     )
     fun searchQaReportMetaInformation(
-        @Param("dataId") dataId: String,
+        @Param("dataPointId") dataPointId: String,
         @Param("showInactive") showInactive: Boolean,
         @Param("reporterUserId") reporterUserId: String?,
     ): List<DataPointQaReportEntity>
 
     /**
-     * Marks all reports for a specific dataId and reporterUserId as inactive.
-     * @param dataId identifier used to uniquely specify data in the data store
+     * Marks all reports for a specific dataPointId and reporterUserId as inactive.
+     * @param dataPointId identifier used to uniquely specify data in the data store
      * @param reporterUserId show only QA reports uploaded by the given user
      */
     @Query(
         "UPDATE DataPointQaReportEntity qaReport " +
             "SET qaReport.active = FALSE " +
-            "WHERE qaReport.dataId = :dataId " +
+            "WHERE qaReport.dataPointId = :dataPointId " +
             "AND qaReport.reporterUserId = :reporterUserId",
     )
     @Modifying
-    fun markAllReportsInactiveByDataIdAndReportingUserId(
-        dataId: String,
+    fun markAllReportsInactiveByDataPointIdAndReportingUserId(
+        dataPointId: String,
         reporterUserId: String,
     )
 }

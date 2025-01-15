@@ -73,7 +73,7 @@ class LogMessageBuilder {
         bypassQa: Boolean,
         correlationId: String,
     ): String =
-        "Received a request from user '$userId' to post a '${uploadedDatapoint.dataPointIdentifier}' data point with bypassQa: " +
+        "Received a request from user '$userId' to post a '${uploadedDatapoint.dataPointType}' data point with bypassQa: " +
             "$bypassQa for company ID '${uploadedDatapoint.companyId}' and reporting period '${uploadedDatapoint.reportingPeriod}'. " +
             "The correlation ID is '$correlationId'."
 

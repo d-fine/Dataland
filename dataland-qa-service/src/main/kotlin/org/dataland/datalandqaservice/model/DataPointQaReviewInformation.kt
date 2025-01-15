@@ -8,7 +8,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
  * @param dataId the id of the data point this review item is for
  * @param companyId the id of the company this data point belongs to
  * @param companyName the name of the company this data point belongs to
- * @param dataPointIdentifier the identifier of the type of data point
+ * @param dataPointType the identifier of the type of data point
  * @param reportingPeriod the reporting period of the data point
  * @param timestamp the time the review was uploaded
  * @param qaStatus the QA status of the data point as provided by the reviewer
@@ -19,7 +19,7 @@ data class DataPointQaReviewInformation(
     val dataId: String,
     override val companyId: String,
     val companyName: String,
-    override val dataPointIdentifier: String,
+    override val dataPointType: String,
     override val reportingPeriod: String,
     val timestamp: Long,
     val qaStatus: QaStatus,

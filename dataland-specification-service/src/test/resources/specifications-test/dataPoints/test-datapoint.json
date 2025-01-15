@@ -2,5 +2,5 @@
   "id": "test-datapoint",
   "name": "Testing...",
   "businessDefinition": "Testing...",
-  "dataPointTypeId": "test-datapoint-type"
+  "dataPointSchemaId": "test-datapoint-schema"
 }

@@ -59,7 +59,7 @@ class CategoryBuilder(
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
-                dataPointTypeId = dataPointTypeId,
+                dataPointSchemaId = dataPointTypeId,
             )
         val datapoint =
             addDatapointToFrameworkHierarchy(
@@ -76,17 +76,17 @@ class CategoryBuilder(
         id: String,
         name: String,
         businessDefinition: String,
-        dataPointTypeId: String,
+        dataPointSchemaId: String,
     ): DataPointSpecification {
-        require(builder.database.dataPointTypeSpecifications.containsKey(dataPointTypeId)) {
-            "Data point type id $dataPointTypeId does not exist in the database."
+        require(builder.database.dataPointSchemas.containsKey(dataPointSchemaId)) {
+            "Data point schema id $dataPointSchemaId does not exist in the database."
         }
         val newDatapointSpecification =
             DataPointSpecification(
                 id = id,
                 name = name,
                 businessDefinition = businessDefinition,
-                dataPointTypeId = dataPointTypeId,
+                dataPointSchemaId = dataPointSchemaId,
                 frameworkOwnership = builder.framework.identifier,
             )
         require(!builder.database.dataPointSpecifications.containsKey(id)) {

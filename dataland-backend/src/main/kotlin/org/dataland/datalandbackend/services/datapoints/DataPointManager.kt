@@ -54,8 +54,8 @@ class DataPointManager
             bypassQa: Boolean,
             correlationId: String,
         ): DataPointMetaInformation {
-            dataPointValidator.validateDataPoint(uploadedDataPoint.dataPointIdentifier, uploadedDataPoint.dataPointContent, correlationId)
-            logger.info("Storing '${uploadedDataPoint.dataPointIdentifier}' data point with bypassQa set to: $bypassQa.")
+            dataPointValidator.validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
+            logger.info("Storing '${uploadedDataPoint.dataPointType}' data point with bypassQa set to: $bypassQa.")
             val dataId = IdUtils.generateUUID()
 
             if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataPoint.companyId)) {
@@ -112,14 +112,14 @@ class DataPointManager
             if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
                 throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
             }
-            val dataPointIdentifier = metaInfo.dataPointIdentifier
-            logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
-            dataPointValidator.validateDataPointIdentifierExists(dataPointIdentifier)
+            val dataPointType = metaInfo.dataPointType
+            logger.info("Retrieving $dataPointType data point with id $dataId (correlation ID: $correlationId).")
+            dataPointValidator.validateDataPointTypeExists(dataPointType)
 
             val storedDataPoint = storageClient.selectDataPointById(dataId, correlationId)
             return UploadedDataPoint(
-                dataPointContent = storedDataPoint.dataPointContent,
-                dataPointIdentifier = storedDataPoint.dataPointIdentifier,
+                dataPoint = storedDataPoint.dataPoint,
+                dataPointType = storedDataPoint.dataPointType,
                 companyId = storedDataPoint.companyId,
                 reportingPeriod = storedDataPoint.reportingPeriod,
             )

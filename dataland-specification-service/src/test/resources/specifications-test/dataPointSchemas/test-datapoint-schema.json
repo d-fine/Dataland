@@ -1,5 +1,5 @@
 {
-  "id": "test-datapoint-type",
+  "id": "test-datapoint-schema",
   "name": "Testing...",
   "businessDefinition": "Testing...",
   "validatedBy": "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint",

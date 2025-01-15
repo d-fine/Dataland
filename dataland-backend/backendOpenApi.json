@@ -1184,14 +1184,14 @@
         "tags": [
           "data-point-controller"
         ],
-        "summary": "Verify data point content.",
-        "description": "The uploaded data point is verified to conform to its specification",
-        "operationId": "validateDataPointContent",
+        "summary": "Verify data point content against a given data point type.",
+        "description": "The uploaded data point is verified to conform to its specification.",
+        "operationId": "validateDataPoint",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DataPointContent"
+                "$ref": "#/components/schemas/DataPointToValidate"
               }
             }
           },
@@ -5094,7 +5094,7 @@
         ]
       }
     },
-    "/data-points/{dataId}": {
+    "/data-points/{dataPointId}": {
       "get": {
         "tags": [
           "data-point-controller"
@@ -5104,7 +5104,7 @@
         "operationId": "getDataPoint",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -19720,16 +19720,16 @@
       "UploadedDataPoint": {
         "required": [
           "companyId",
-          "dataPointContent",
-          "dataPointIdentifier",
+          "dataPoint",
+          "dataPointType",
           "reportingPeriod"
         ],
         "type": "object",
         "properties": {
-          "dataPointContent": {
+          "dataPoint": {
             "type": "string"
           },
-          "dataPointIdentifier": {
+          "dataPointType": {
             "type": "string"
           },
           "companyId": {
@@ -19744,18 +19744,18 @@
         "required": [
           "companyId",
           "currentlyActive",
-          "dataId",
-          "dataPointIdentifier",
+          "dataPointId",
+          "dataPointType",
           "qaStatus",
           "reportingPeriod",
           "uploadTime"
         ],
         "type": "object",
         "properties": {
-          "dataId": {
+          "dataPointId": {
             "type": "string"
           },
-          "dataPointIdentifier": {
+          "dataPointType": {
             "type": "string"
           },
           "companyId": {
@@ -19780,17 +19780,17 @@
           }
         }
       },
-      "DataPointContent": {
+      "DataPointToValidate": {
         "required": [
-          "dataPointContent",
-          "dataPointIdentifier"
+          "dataPoint",
+          "dataPointType"
         ],
         "type": "object",
         "properties": {
-          "dataPointContent": {
+          "dataPoint": {
             "type": "string"
           },
-          "dataPointIdentifier": {
+          "dataPointType": {
             "type": "string"
           }
         }

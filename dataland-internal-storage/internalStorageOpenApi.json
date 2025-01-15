@@ -429,16 +429,16 @@
       "StorableDataPoint": {
         "required": [
           "companyId",
-          "dataPointContent",
-          "dataPointIdentifier",
+          "dataPoint",
+          "dataPointType",
           "reportingPeriod"
         ],
         "type": "object",
         "properties": {
-          "dataPointContent": {
+          "dataPoint": {
             "type": "string"
           },
-          "dataPointIdentifier": {
+          "dataPointType": {
             "type": "string"
           },
           "companyId": {

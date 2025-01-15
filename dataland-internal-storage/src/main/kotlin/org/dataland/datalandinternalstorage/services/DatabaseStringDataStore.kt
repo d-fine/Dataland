@@ -161,11 +161,11 @@ class DatabaseStringDataStore(
             logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
             storeDataPointItemWithoutTransaction(
                 DataPointItem(
-                    dataId = dataId,
+                    dataPointId = dataId,
                     companyId = storableDataPoint.companyId,
                     reportingPeriod = storableDataPoint.reportingPeriod,
-                    dataPointIdentifier = storableDataPoint.dataPointIdentifier,
-                    dataPointContent = objectMapper.writeValueAsString(storableDataPoint.dataPointContent),
+                    dataPointType = storableDataPoint.dataPointType,
+                    dataPoint = objectMapper.writeValueAsString(storableDataPoint.dataPoint),
                 ),
             )
             publishStorageEvent(dataId, correlationId)

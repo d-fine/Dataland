@@ -5,5 +5,5 @@ package org.dataland.datalandbackendutils.interfaces
  * Interface for a basic data point instance defined by the data point dimensions plus the actual data in a JSON string
  */
 interface DataPointInstance : DataPointDimensions {
-    val dataPointContent: String
+    val dataPoint: String
 }

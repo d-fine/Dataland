@@ -6,6 +6,6 @@ package org.dataland.datalandbackendutils.interfaces
  */
 interface DataPointDimensions {
     val companyId: String
-    val dataPointIdentifier: String
+    val dataPointType: String
     val reportingPeriod: String
 }

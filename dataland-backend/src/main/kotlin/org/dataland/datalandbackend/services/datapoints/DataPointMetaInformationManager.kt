@@ -52,7 +52,7 @@ class DataPointMetaInformationManager
             return BasicDataPointDimensions(
                 reportingPeriod = dataPointMetaInformation.reportingPeriod,
                 companyId = dataPointMetaInformation.companyId,
-                dataPointIdentifier = dataPointMetaInformation.dataPointIdentifier,
+                dataPointType = dataPointMetaInformation.dataPointType,
             )
         }
 

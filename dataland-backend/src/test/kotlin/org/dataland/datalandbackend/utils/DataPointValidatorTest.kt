@@ -60,15 +60,15 @@ class DataPointValidatorTest {
     }
 
     @Test
-    fun `retrieveDataPoint should throw InvalidInputApiException when dataPointIdentifier does not exist`() {
-        val dataPointContent = "dummy"
-        val dataPointIdentifier = "non-existent-identifier"
+    fun `retrieveDataPoint should throw InvalidInputApiException when dataPointType does not exist`() {
+        val dataPoint = "dummy"
+        val dataPointType = "non-existent-identifier"
 
-        `when`(specificationClient.getDataPointSpecification(dataPointIdentifier))
+        `when`(specificationClient.getDataPointSpecification(dataPointType))
             .thenThrow(ClientException("Data point identifier not found."))
 
         assertThrows<InvalidInputApiException> {
-            dataPointValidator.validateDataPoint(dataPointIdentifier, dataPointContent, correlationId)
+            dataPointValidator.validateDataPoint(dataPointType, dataPoint, correlationId)
         }
     }
 
