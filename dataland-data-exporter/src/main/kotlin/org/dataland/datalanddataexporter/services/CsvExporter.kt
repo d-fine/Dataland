@@ -23,7 +23,7 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.getCurrentHea
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLegacyHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
-import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToLegacyCsvFields
+import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToLegacyCsv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
@@ -85,7 +85,7 @@ class CsvExporter(
 
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
             dataToExport += mapJsonToCsv(data, transformationRules)
-            dataToExport += mapJsonToLegacyCsvFields(data, legacyRules)
+            dataToExport += mapJsonToLegacyCsv(data, legacyRules)
             dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
             csvData.add(dataToExport)
         }

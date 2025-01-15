@@ -113,7 +113,7 @@ class TransformationUtilsTest {
     @Test
     fun `check that mapJsonToLegacyCsvFields returns correct csv data`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
-        val csvData = TransformationUtils.mapJsonToLegacyCsvFields(jsonNode, expectedLegacyRules)
+        val csvData = TransformationUtils.mapJsonToLegacyCsv(jsonNode, expectedLegacyRules)
         assertEquals(expectedLegacyCsvData, csvData)
     }
 

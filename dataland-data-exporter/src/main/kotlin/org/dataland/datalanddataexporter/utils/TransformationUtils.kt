@@ -133,15 +133,15 @@ object TransformationUtils {
     /**
      * Maps a JSON node to a CSV.
      * @param jsonNode The JSON node
-     * @param legacyFields The transformation rules
+     * @param legacyRules The legacy rules
      * @return A map of CSV headers to values
      */
-    fun mapJsonToLegacyCsvFields(
+    fun mapJsonToLegacyCsv(
         jsonNode: JsonNode,
-        legacyFields: Map<String, String>,
+        legacyRules: Map<String, String>,
     ): Map<String, String> {
         val csvData = mutableMapOf<String, String>()
-        legacyFields.forEach { (csvHeader, jsonPath) ->
+        legacyRules.forEach { (csvHeader, jsonPath) ->
             if (csvHeader.isEmpty()) return@forEach
             csvData[csvHeader] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, jsonPath)
         }
