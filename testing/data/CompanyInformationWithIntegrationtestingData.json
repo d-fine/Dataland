@@ -1,0 +1,3930 @@
+[
+	{
+		"companyInformation": {
+			"companyName": "Marks, Gleason and Quigley",
+			"headquarters": "North Augustusberg",
+			"headquartersPostalCode": "08803-0648",
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [
+					"ZUFwHAk3akRvd3G4UChn"
+				],
+				"Isin": [
+					"JNrh8IaHSJpy"
+				],
+				"PermId": [
+					"oYIAwqrVwk"
+				],
+				"Ticker": [],
+				"Duns": [
+					"SKcd0GfMn"
+				],
+				"VatNumber": [
+					"tAZ7pjvwM"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BO",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Bernhard and Sons",
+				"Quigley, Labadie and Fahey",
+				"Ratke and Sons",
+				"Swaniawski - Kemmer"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://unfortunate-accounting.name/",
+			"isTeaserCompany": false
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "models",
+					"testNumber": 20751.48,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-08-10",
+					"testPercentage": 21.9,
+					"testFieldWithDependency": "markets",
+					"mandatoryField": "users",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "865",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": null,
+						"quality": "Estimated"
+					},
+					"extendedDatapointRequired": {
+						"value": "ROI",
+						"dataSource": {
+							"page": "595-1297",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": "connect back-end feed",
+						"quality": null
+					}
+				},
+				"noSubsection": "networks"
+			},
+			"noSection": "e-business"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Goyette LLC",
+			"headquarters": "Flint",
+			"headquartersPostalCode": null,
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"6vvqIGJ3FZn1",
+					"olZH78t75PxW"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"RemedHdsu"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "AI",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://rectangular-decrease.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "ZUFwHAk3akRvd3G4UChn"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "interfaces",
+					"testNumber": 21932.52,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-04-23",
+					"testPercentage": null,
+					"testFieldWithDependency": "methodologies",
+					"mandatoryField": "interfaces",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "644-1036",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "input solid state monitor",
+						"quality": null
+					},
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": null,
+						"comment": null,
+						"quality": null
+					}
+				},
+				"noSubsection": "deliverables"
+			},
+			"noSection": "paradigms"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Connelly and Sons",
+			"headquarters": "Mullerbury",
+			"headquartersPostalCode": null,
+			"sector": "technologies",
+			"identifiers": {
+				"Lei": [
+					"qITnsbEwc6vKCqLHIgzM"
+				],
+				"Isin": [
+					"0jZ84loedwfF"
+				],
+				"PermId": [
+					"LmMbETxpqS"
+				],
+				"Ticker": [
+					"az9uv5l"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RS",
+			"companyContactDetails": [
+				"Viva.Muller@example.com",
+				"Lydia19@example.com",
+				"Alyce83@example.com",
+				"Kirsten.Wehner@example.com",
+				"Jodie.Feest@example.com"
+			],
+			"companyAlternativeNames": [
+				"Satterfield, Terry and Stroman"
+			],
+			"companyLegalForm": "GmbH",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "experiences",
+					"testNumber": 32300.64,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": null,
+					"testDate": "2024-05-27",
+					"testPercentage": 47.58,
+					"testFieldWithDependency": "applications",
+					"mandatoryField": "lifetime value",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": null
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "278",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "reboot mobile pixel",
+						"quality": "NoDataFound"
+					},
+					"extendedDatapointRequired": {
+						"value": "niches",
+						"dataSource": {
+							"page": "461-588",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "calculate neural capacitor",
+						"quality": null
+					}
+				},
+				"noSubsection": "experiences"
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "King Inc",
+			"headquarters": "Beckerport",
+			"headquartersPostalCode": "04869-4861",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"fF6il0pOK91rxLVpQwwn"
+				],
+				"Isin": [
+					"tcQCUmomrJdd",
+					"CbsK2VKYZpVA"
+				],
+				"PermId": [],
+				"Ticker": [
+					"3QMvATp"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"kzC4BiVhu"
+				],
+				"CompanyRegistrationNumber": [
+					"IqRFusCMCLq5XUb"
+				]
+			},
+			"countryCode": "CI",
+			"companyContactDetails": [
+				"Adeline.Rempel@example.com",
+				"Ida_Huels@example.com",
+				"Cleora_Ziemann83@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "qITnsbEwc6vKCqLHIgzM"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "e-commerce",
+					"testNumber": 16766.93,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-11-03",
+					"testPercentage": 66.59,
+					"testFieldWithDependency": "e-commerce",
+					"mandatoryField": "paradigms",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "496-590",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "bypass back-end system",
+						"quality": null
+					},
+					"extendedDatapointRequired": {
+						"value": "architectures",
+						"dataSource": {
+							"page": "37-55",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "reboot primary circuit",
+						"quality": null
+					}
+				},
+				"noSubsection": "relationships"
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Wisoky and Sons",
+			"headquarters": "West Isabellbury",
+			"headquartersPostalCode": "05465",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"6e8KPchlAILMMYDgKGui"
+				],
+				"Isin": [
+					"aYL4nVTavlcv",
+					"BQLtXB7n4WFx"
+				],
+				"PermId": [
+					"kCeFvVEUXb"
+				],
+				"Ticker": [],
+				"Duns": [
+					"AOCVQX5VY"
+				],
+				"VatNumber": [
+					"1jN4riHw7"
+				],
+				"CompanyRegistrationNumber": [
+					"64gWrdAyymKk7sX"
+				]
+			},
+			"countryCode": "SI",
+			"companyContactDetails": [
+				"Noemi44@example.com",
+				"Darian.Torphy22@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bernhard - Green",
+				"Dare - Jast",
+				"Schmeler, Mueller and Spencer",
+				"Zemlak and Sons"
+			],
+			"companyLegalForm": null,
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "fF6il0pOK91rxLVpQwwn"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "initiatives",
+					"testNumber": 32876.62,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-01-28",
+					"testPercentage": 63.2,
+					"testFieldWithDependency": "experiences",
+					"mandatoryField": "markets",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "261",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "transmit mobile sensor",
+						"quality": "NoDataFound"
+					},
+					"extendedDatapointRequired": {
+						"value": "interfaces",
+						"dataSource": null,
+						"comment": "index back-end array",
+						"quality": "NoDataFound"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "systems"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Becker Group",
+			"headquarters": "Fort Hunter",
+			"headquartersPostalCode": "04880",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"xOKJQ3nJrZqQ"
+				],
+				"PermId": [],
+				"Ticker": [
+					"bGC2vRl"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TL",
+			"companyContactDetails": [
+				"Evert77@example.com",
+				"Alyce29@example.com"
+			],
+			"companyAlternativeNames": [
+				"Ebert, Fadel and Johnson",
+				"Volkman Group"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://bleak-sound.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "6e8KPchlAILMMYDgKGui"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "ROI",
+					"testNumber": 41427.52,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-07-22",
+					"testPercentage": 0.88,
+					"testFieldWithDependency": "e-commerce",
+					"mandatoryField": "interfaces",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "1003",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "copy auxiliary interface",
+						"quality": "Audited"
+					},
+					"extendedDatapointRequired": {
+						"value": "mindshare",
+						"dataSource": {
+							"page": "144-271",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "hack open-source port",
+						"quality": "Incomplete"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "e-markets"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ritchie, Ryan and Wiegand",
+			"headquarters": "Miami",
+			"headquartersPostalCode": "26017-1230",
+			"sector": "applications",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ETLZzaMnJBy4"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"zLNgeVZvI"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "LT",
+			"companyContactDetails": [
+				"Bill54@example.com"
+			],
+			"companyAlternativeNames": [
+				"Gerlach - Boehm",
+				"Hansen, Bergstrom and Hodkiewicz",
+				"Zboncak, Roberts and Cassin"
+			],
+			"companyLegalForm": null,
+			"website": "https://muffled-grandchild.org",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "networks",
+					"testNumber": 64485.19,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2025-01-13",
+					"testPercentage": 35.75,
+					"testFieldWithDependency": "action-items",
+					"mandatoryField": "bandwidth",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "blockchains",
+						"dataSource": {
+							"page": "196",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": "back up virtual panel",
+						"quality": "NoDataFound"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "deliverables"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hoppe, Williamson and Simonis",
+			"headquarters": "Green Bay",
+			"headquartersPostalCode": null,
+			"sector": "e-business",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"pgudAeqtGMwy",
+					"PhQwuHWKkDkf"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CC",
+			"companyContactDetails": [
+				"Eudora_Jacobs3@example.com"
+			],
+			"companyAlternativeNames": [
+				"Hessel LLC",
+				"Hodkiewicz - Wolff",
+				"Swaniawski, Hand and Sipes"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://webbed-prize.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "e-commerce",
+					"testNumber": 33236.56,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "Yes",
+					"testDate": null,
+					"testPercentage": 68.65,
+					"testFieldWithDependency": "models",
+					"mandatoryField": "functionalities",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "1028-1264",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": null,
+						"quality": "Reported"
+					},
+					"extendedDatapointRequired": {
+						"value": "methodologies",
+						"dataSource": {
+							"page": "1123",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "connect mobile application",
+						"quality": null
+					}
+				},
+				"noSubsection": "methodologies"
+			},
+			"noSection": "ROI"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Rodriguez - Cronin",
+			"headquarters": "East Hulda",
+			"headquartersPostalCode": "92828",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [
+					"FkOuOTfZCbmyF0VrwUvt"
+				],
+				"Isin": [
+					"QT1nm3tHbLdt"
+				],
+				"PermId": [],
+				"Ticker": [
+					"PnveaRr"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"eWoV7puQx"
+				],
+				"CompanyRegistrationNumber": [
+					"orcHYD4XiwWWzaK"
+				]
+			},
+			"countryCode": "AL",
+			"companyContactDetails": [
+				"Chadd.Goldner@example.com",
+				"Judah51@example.com",
+				"Imani11@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://shallow-loading.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": null,
+					"testNumber": null,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "NA",
+					"testDate": null,
+					"testPercentage": 50.87,
+					"testFieldWithDependency": "eyeballs",
+					"mandatoryField": "e-commerce",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "e-business",
+						"dataSource": {
+							"page": "812",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "override online monitor",
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "e-commerce"
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Nienow Group",
+			"headquarters": "Diontown",
+			"headquartersPostalCode": "31930-6543",
+			"sector": "lifetime value",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"2kTgm9su8Z4E",
+					"ncFTRKdaZYN3"
+				],
+				"PermId": [],
+				"Ticker": [
+					"CSCLb3s"
+				],
+				"Duns": [
+					"0ESc410wQ"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"gHNGEHJZIbqPJWt"
+				]
+			},
+			"countryCode": "KE",
+			"companyContactDetails": [
+				"Garrett_Franecki84@example.com",
+				"Felicia_Beier13@example.com",
+				"Rossie91@example.com",
+				"Sherman85@example.com"
+			],
+			"companyAlternativeNames": [
+				"Cronin LLC",
+				"Zemlak Inc",
+				"Zieme, Runte and Kassulke"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://jumbo-yang.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "FkOuOTfZCbmyF0VrwUvt"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "mindshare",
+					"testNumber": 42871.6,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": null,
+					"testPercentage": 63.29,
+					"testFieldWithDependency": "eyeballs",
+					"mandatoryField": "portals",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "54",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "bypass 1080p pixel",
+						"quality": "NoDataFound"
+					},
+					"extendedDatapointRequired": {
+						"value": "experiences",
+						"dataSource": {
+							"page": "1107",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "transmit auxiliary bus",
+						"quality": "Reported"
+					}
+				},
+				"noSubsection": "metrics"
+			},
+			"noSection": "convergence"
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "O'Connell Inc",
+			"headquarters": "Encinitas",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"Ga3NXmxpTxHY",
+					"8HuV3iPPYEKz"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"v3ad85CqL"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SE",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://well-lit-outrun.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "markets",
+					"testNumber": 86545.94,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-10-22",
+					"testPercentage": 88.07,
+					"testFieldWithDependency": null,
+					"mandatoryField": "schemas",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "1048",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": null,
+						"quality": "Reported"
+					},
+					"extendedDatapointRequired": {
+						"value": "schemas",
+						"dataSource": {
+							"page": "756-927",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "interfaces"
+						},
+						"comment": "quantify digital monitor",
+						"quality": "Incomplete"
+					}
+				},
+				"noSubsection": "interfaces"
+			},
+			"noSection": "e-markets"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Blanda Group",
+			"headquarters": "Faymouth",
+			"headquartersPostalCode": "70284",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"iLNlcKPvblZz"
+				],
+				"PermId": [
+					"UCZ194jiFk"
+				],
+				"Ticker": [
+					"PKvdTh1"
+				],
+				"Duns": [
+					"dX39YVOio"
+				],
+				"VatNumber": [
+					"SJNvpQa0w"
+				],
+				"CompanyRegistrationNumber": [
+					"Z7IozLu8jtYQ4hM"
+				]
+			},
+			"countryCode": "SO",
+			"companyContactDetails": [
+				"Darien_Abernathy@example.com",
+				"Tyreek12@example.com",
+				"Sincere_Cummerata65@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://direct-metabolite.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "channels",
+					"testNumber": 20811.58,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-06-22",
+					"testPercentage": 77.46,
+					"testFieldWithDependency": "platforms",
+					"mandatoryField": "eyeballs",
+					"simpleDatapoint": null,
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "initiatives",
+						"dataSource": {
+							"page": "442",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": "program mobile protocol",
+						"quality": null
+					}
+				},
+				"noSubsection": "blockchains"
+			},
+			"noSection": "architectures"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ondricka, Stark and Dooley",
+			"headquarters": "Henrifield",
+			"headquartersPostalCode": "96636-4304",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"HffcU2pbyLEY"
+				],
+				"PermId": [
+					"Ar4JKAOt4f"
+				],
+				"Ticker": [
+					"iwZ5uDr"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "KE",
+			"companyContactDetails": [
+				"Ike_Kassulke67@example.com",
+				"Rowena_Bergstrom49@example.com",
+				"Jordon_DAmore@example.com",
+				"Benjamin_Kihn63@example.com",
+				"Aliyah_McGlynn@example.com"
+			],
+			"companyAlternativeNames": [
+				"Harris, MacGyver and Sipes",
+				"Reichert Inc"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://lucky-capitalism.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "e-business",
+					"testNumber": 19898.77,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-03-20",
+					"testPercentage": 77.9,
+					"testFieldWithDependency": "deliverables",
+					"mandatoryField": "solutions",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "665",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "transmit neural circuit",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "models",
+						"dataSource": {
+							"page": "839",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "hack online program",
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "web services"
+			},
+			"noSection": "supply-chains"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mante, Johnson and Gutmann",
+			"headquarters": "Minneapolis",
+			"headquartersPostalCode": null,
+			"sector": "paradigms",
+			"identifiers": {
+				"Lei": [
+					"u7g1QGMW8HirA8dSbYvE"
+				],
+				"Isin": [
+					"IU7xUCHCltCM"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"6pYFyU9Ic"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"0JGLUI7317aBDUi"
+				]
+			},
+			"countryCode": "GD",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://poised-autumn.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "supply-chains",
+					"testNumber": 60301.99,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-04-25",
+					"testPercentage": 11.3,
+					"testFieldWithDependency": null,
+					"mandatoryField": "niches",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "248-367",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-commerce"
+						},
+						"comment": "calculate multi-byte firewall",
+						"quality": "Reported"
+					},
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": null,
+						"comment": "back up wireless microchip",
+						"quality": "Incomplete"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "blockchains"
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Brown Inc",
+			"headquarters": "Wuckertfurt",
+			"headquartersPostalCode": "25737-9976",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"BxS2g2bYIlveZBhQpYHa"
+				],
+				"Isin": [
+					"jRk2E1RNaPE0"
+				],
+				"PermId": [],
+				"Ticker": [
+					"xHV5ocf"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"RbZPqbQpK"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PG",
+			"companyContactDetails": [
+				"Timothy.Volkman64@example.com",
+				"Dessie_West@example.com",
+				"Mikel31@example.com",
+				"Mariam.Barton@example.com"
+			],
+			"companyAlternativeNames": [
+				"Kemmer, Kuhic and Waelchi",
+				"Schaden, Stiedemann and Adams",
+				"Tromp, Huels and Beatty"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://showy-airbag.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "u7g1QGMW8HirA8dSbYvE"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "supply-chains",
+					"testNumber": 36929.36,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-04-06",
+					"testPercentage": 57.41,
+					"testFieldWithDependency": null,
+					"mandatoryField": "communities",
+					"simpleDatapoint": null,
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "architectures",
+						"dataSource": {
+							"page": "500-826",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "copy online hard drive",
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "e-business"
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Osinski, Veum and Weissnat",
+			"headquarters": "Bergstromstad",
+			"headquartersPostalCode": "64100",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"pSdFAFi21eEMEnEKP57W"
+				],
+				"Isin": [
+					"zZf3xpVSBwZD",
+					"84C08U8dI3QK"
+				],
+				"PermId": [
+					"DMwWDjfeRj"
+				],
+				"Ticker": [],
+				"Duns": [
+					"tXfwLk3Cs"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MF",
+			"companyContactDetails": [
+				"Darrion_Spinka27@example.com",
+				"Montana9@example.com",
+				"Marion.Waters@example.com"
+			],
+			"companyAlternativeNames": [
+				"Kris and Sons",
+				"Pouros, Wunsch and Schimmel",
+				"Schmeler LLC",
+				"Simonis, Jacobs and Kulas"
+			],
+			"companyLegalForm": null,
+			"website": "https://plastic-dozen.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "BxS2g2bYIlveZBhQpYHa"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": null,
+					"testNumber": 8329.56,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-04-01",
+					"testPercentage": 73.9,
+					"testFieldWithDependency": "channels",
+					"mandatoryField": "deliverables",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "1036",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "back up multi-byte bus",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "markets",
+						"dataSource": {
+							"page": "956",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "reboot back-end card",
+						"quality": null
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "schemas"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Lang and Sons",
+			"headquarters": "South Kaylieboro",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"qqAGJje1x7Yk",
+					"qwlxQAJ0GIkm"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"U4IrVut6Z"
+				],
+				"CompanyRegistrationNumber": [
+					"gGpeARZ5IL5BXr5"
+				]
+			},
+			"countryCode": "JE",
+			"companyContactDetails": [
+				"Lamont.Windler@example.com",
+				"Gennaro33@example.com",
+				"Rubie.Weber@example.com",
+				"Destinee.Kessler17@example.com",
+				"Rowan.Glover1@example.com"
+			],
+			"companyAlternativeNames": [
+				"Padberg LLC",
+				"Shanahan - Runolfsdottir",
+				"Stark LLC"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "pSdFAFi21eEMEnEKP57W"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "e-markets",
+					"testNumber": 90465.06,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-12-01",
+					"testPercentage": 50.59,
+					"testFieldWithDependency": "deliverables",
+					"mandatoryField": "lifetime value",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "401",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "transmit primary firewall",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "metrics",
+						"dataSource": null,
+						"comment": "index open-source firewall",
+						"quality": null
+					}
+				},
+				"noSubsection": "technologies"
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Collier - Mohr",
+			"headquarters": "White Plains",
+			"headquartersPostalCode": "65614",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"t69eVQfPjzOY"
+				],
+				"PermId": [
+					"cwpjC4NMsu"
+				],
+				"Ticker": [
+					"PsIlHCq"
+				],
+				"Duns": [
+					"6tmLRZCgO"
+				],
+				"VatNumber": [
+					"PNljLyhYX"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CV",
+			"companyContactDetails": [
+				"Rex_Upton@example.com",
+				"Theo60@example.com",
+				"Francisca.Weissnat19@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "niches",
+					"testNumber": 73494.26,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-10-14",
+					"testPercentage": 83.33,
+					"testFieldWithDependency": "users",
+					"mandatoryField": "systems",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "465",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "back up primary application",
+						"quality": "Reported"
+					},
+					"extendedDatapointRequired": {
+						"value": "convergence",
+						"dataSource": {
+							"page": "815",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "architectures"
+						},
+						"comment": "override neural pixel",
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "e-business"
+			},
+			"noSection": "architectures"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Goyette - Beahan",
+			"headquarters": "Uptonland",
+			"headquartersPostalCode": null,
+			"sector": "experiences",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"OLA17SwMIZ8L",
+					"b1TvytmjErTh"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"F41aVIP4J"
+				],
+				"CompanyRegistrationNumber": [
+					"J4hK1xycIqghTmj"
+				]
+			},
+			"countryCode": "BF",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Gulgowski - Toy",
+				"Rath, Bogan and Schaden",
+				"Rutherford, Labadie and Ankunding",
+				"Sauer LLC"
+			],
+			"companyLegalForm": null,
+			"website": "https://mellow-provider.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "functionalities",
+					"testNumber": null,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-06-08",
+					"testPercentage": null,
+					"testFieldWithDependency": null,
+					"mandatoryField": "markets",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": null
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "990",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "communities"
+						},
+						"comment": null,
+						"quality": "Audited"
+					},
+					"extendedDatapointRequired": {
+						"value": "mindshare",
+						"dataSource": {
+							"page": "797",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "channels"
+						},
+						"comment": "hack haptic port",
+						"quality": null
+					}
+				},
+				"noSubsection": "e-business"
+			},
+			"noSection": "infrastructures"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Howe - Rosenbaum",
+			"headquarters": "Port Colleen",
+			"headquartersPostalCode": "09881",
+			"sector": "mindshare",
+			"identifiers": {
+				"Lei": [
+					"exR26yeBLftdIDuNOHzv"
+				],
+				"Isin": [
+					"ceRL4fhpYsbk",
+					"hL1uD4ADKrha"
+				],
+				"PermId": [],
+				"Ticker": [
+					"SXyim2V"
+				],
+				"Duns": [
+					"NJNjaT65I"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RO",
+			"companyContactDetails": [
+				"Betsy_Wunsch@example.com",
+				"Fiona_Towne61@example.com",
+				"Susie_Borer36@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://bronze-matter.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "metrics",
+					"testNumber": 32559.35,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2025-01-02",
+					"testPercentage": 13.93,
+					"testFieldWithDependency": "schemas",
+					"mandatoryField": "users",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": null,
+						"comment": "calculate cross-platform circuit",
+						"quality": "Estimated"
+					},
+					"extendedDatapointRequired": {
+						"value": "experiences",
+						"dataSource": {
+							"page": "896",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "bypass digital bandwidth",
+						"quality": "NoDataFound"
+					}
+				},
+				"noSubsection": "communities"
+			},
+			"noSection": "technologies"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Reichert - Green",
+			"headquarters": "Waterloo",
+			"headquartersPostalCode": "21516-6582",
+			"sector": "deliverables",
+			"identifiers": {
+				"Lei": [
+					"i2QgSRlV2wzhzcagCWq8"
+				],
+				"Isin": [
+					"WEeHAOkH3aMH",
+					"iQlhGhkP8flc"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"gMVs8tAt9"
+				],
+				"VatNumber": [
+					"GamMNZFz2"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TZ",
+			"companyContactDetails": [
+				"Idell.Conn@example.com",
+				"Ashley_Jast@example.com",
+				"Misael.Krajcik70@example.com",
+				"Russel_Gleason@example.com",
+				"Eusebio8@example.com"
+			],
+			"companyAlternativeNames": [
+				"Franecki LLC",
+				"Goodwin - White",
+				"Kris, Jones and Johnston",
+				"Swaniawski - Weber"
+			],
+			"companyLegalForm": "GmbH",
+			"website": "https://flickering-shopping.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "exR26yeBLftdIDuNOHzv"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "action-items",
+					"testNumber": 96290.92,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-03-01",
+					"testPercentage": 50.16,
+					"testFieldWithDependency": "e-commerce",
+					"mandatoryField": "e-markets",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "598-624",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "content"
+						},
+						"comment": "back up online panel",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": null,
+						"comment": "transmit redundant firewall",
+						"quality": null
+					}
+				},
+				"noSubsection": "interfaces"
+			},
+			"noSection": "blockchains"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Medhurst - Lesch",
+			"headquarters": "Auburn",
+			"headquartersPostalCode": "32126",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"eFWHBEYXoGQAmqhUtTw7"
+				],
+				"Isin": [
+					"9FEsjmAaG91N"
+				],
+				"PermId": [
+					"6MQAii9vJf"
+				],
+				"Ticker": [],
+				"Duns": [
+					"pOgNXsjeK"
+				],
+				"VatNumber": [
+					"0mKNmtF41"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "DE",
+			"companyContactDetails": [
+				"Bo69@example.com",
+				"Adah_Zieme29@example.com"
+			],
+			"companyAlternativeNames": [
+				"Marquardt Inc",
+				"O'Keefe Group"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://far-off-pug.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "i2QgSRlV2wzhzcagCWq8"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "e-business",
+					"testNumber": 54758.51,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-11-08",
+					"testPercentage": 2.19,
+					"testFieldWithDependency": "content",
+					"mandatoryField": "web services",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": null
+					},
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "functionalities",
+						"dataSource": {
+							"page": "422",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "quantify bluetooth driver",
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "bandwidth"
+			},
+			"noSection": "ROI"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Stiedemann Inc",
+			"headquarters": "Port Verna",
+			"headquartersPostalCode": "12923",
+			"sector": "methodologies",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"NzmTZXkHE4wx"
+				],
+				"PermId": [],
+				"Ticker": [
+					"US7WZmx"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GT",
+			"companyContactDetails": [
+				"Ettie_Abshire57@example.com",
+				"Clyde.Hamill@example.com",
+				"Rene.Reilly@example.com",
+				"Rose_Harvey@example.com",
+				"Elroy7@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://jaunty-declaration.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "eFWHBEYXoGQAmqhUtTw7"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "systems",
+					"testNumber": 85197.31,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-05-05",
+					"testPercentage": 74.73,
+					"testFieldWithDependency": null,
+					"mandatoryField": "paradigms",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": null,
+						"comment": "transmit back-end sensor",
+						"quality": "Estimated"
+					},
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": {
+							"page": "540-1169",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "partnerships"
+						},
+						"comment": "copy solid state application",
+						"quality": null
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Yundt, Kertzmann and Goyette",
+			"headquarters": "East Meganeland",
+			"headquartersPostalCode": "89364-8189",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"TsFQxnA8vpjt",
+					"HAmKJeKHNyix"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"yruU6qL3Z"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"D2VlQdn2R0eMbYK"
+				]
+			},
+			"countryCode": "DK",
+			"companyContactDetails": [
+				"Keith.Bogisich@example.com"
+			],
+			"companyAlternativeNames": [
+				"Considine LLC",
+				"Tromp, Stracke and Will"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://illustrious-business.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": null,
+					"testNumber": null,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-12-29",
+					"testPercentage": null,
+					"testFieldWithDependency": "systems",
+					"mandatoryField": "experiences",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "supply-chains",
+						"dataSource": {
+							"page": "772",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": null,
+						"quality": "NoDataFound"
+					}
+				},
+				"noSubsection": "interfaces"
+			},
+			"noSection": "e-business"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Gislason Group",
+			"headquarters": "Streichville",
+			"headquartersPostalCode": null,
+			"sector": "communities",
+			"identifiers": {
+				"Lei": [
+					"TT6tNygOPeuVf7cE1GQG"
+				],
+				"Isin": [
+					"ODu2g8qNTsok"
+				],
+				"PermId": [
+					"Dmrm59iUxW"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"f9lvEHGac"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "YT",
+			"companyContactDetails": [
+				"Foster.Miller32@example.com",
+				"Cassidy_Torphy93@example.com",
+				"Norbert23@example.com",
+				"Betsy.Daniel7@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://gentle-alcove.org",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "content",
+					"testNumber": 51319.95,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": null,
+					"testDate": "2024-05-09",
+					"testPercentage": 26.06,
+					"testFieldWithDependency": null,
+					"mandatoryField": "e-business",
+					"simpleDatapoint": null,
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "blockchains",
+						"dataSource": {
+							"page": "1176-1238",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "applications"
+						},
+						"comment": "quantify virtual feed",
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "blockchains"
+			},
+			"noSection": "niches"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Carroll Inc",
+			"headquarters": "Halvorsonland",
+			"headquartersPostalCode": null,
+			"sector": "communities",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"ijnisD5pO02A",
+					"PAMICdI6G4Bf"
+				],
+				"PermId": [
+					"eK1iEUoqfd"
+				],
+				"Ticker": [
+					"uT3PHla"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"81YCqtRjBP8ik7y"
+				]
+			},
+			"countryCode": "IN",
+			"companyContactDetails": [
+				"Tyshawn_Mante@example.com",
+				"Minerva.Feest58@example.com"
+			],
+			"companyAlternativeNames": [
+				"Okuneva LLC"
+			],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://frightened-macro.name/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "TT6tNygOPeuVf7cE1GQG"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "functionalities",
+					"testNumber": 21696.56,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "Yes",
+					"testDate": null,
+					"testPercentage": null,
+					"testFieldWithDependency": null,
+					"mandatoryField": "deliverables",
+					"simpleDatapoint": null,
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "technologies",
+						"dataSource": {
+							"page": "337",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "hack solid state microchip",
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "content"
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Bosco - Maggio",
+			"headquarters": "Poinciana",
+			"headquartersPostalCode": "12399-3724",
+			"sector": "blockchains",
+			"identifiers": {
+				"Lei": [
+					"aE2087jPaLkgM22gl7jC"
+				],
+				"Isin": [
+					"ZXgIlXIJgeNA",
+					"MJBX8tFLcLr1"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [
+					"Ng2vzXmWL"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RS",
+			"companyContactDetails": [
+				"Erich.Pacocha14@example.com",
+				"Peyton_Klocko@example.com",
+				"Lesly89@example.com"
+			],
+			"companyAlternativeNames": [
+				"Barton - Maggio",
+				"Lakin, Smith and Bogisich",
+				"Larson - Cruickshank",
+				"Volkman, Turner and Schmeler"
+			],
+			"companyLegalForm": null,
+			"website": "https://rich-clone.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "experiences",
+					"testNumber": 6199.47,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": null,
+					"testDate": "2024-07-27",
+					"testPercentage": 49.35,
+					"testFieldWithDependency": "content",
+					"mandatoryField": "users",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "620",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "hack 1080p array",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "convergence",
+						"dataSource": {
+							"page": "32",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "program solid state port",
+						"quality": null
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "supply-chains"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Durgan Group",
+			"headquarters": "Croninview",
+			"headquartersPostalCode": "54605",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"fMGjaZSN5d1g",
+					"SwO5Z5ko5XF8"
+				],
+				"PermId": [
+					"1zfTBA4Klf"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"JpHnWugmYwb6KVg"
+				]
+			},
+			"countryCode": "LV",
+			"companyContactDetails": [
+				"Mariela34@example.com",
+				"Gino_Tremblay@example.com",
+				"Martina.Breitenberg@example.com",
+				"Christina72@example.com",
+				"Pietro_Larson14@example.com"
+			],
+			"companyAlternativeNames": [
+				"Flatley and Sons",
+				"Mante, Doyle and Gutmann",
+				"Nitzsche - Block",
+				"Quitzon - Jast"
+			],
+			"companyLegalForm": null,
+			"website": "https://definite-surprise.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "aE2087jPaLkgM22gl7jC"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "architectures",
+					"testNumber": null,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-03-08",
+					"testPercentage": 57.41,
+					"testFieldWithDependency": "e-commerce",
+					"mandatoryField": "platforms",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "502-1017",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": "compress auxiliary bus",
+						"quality": "Audited"
+					},
+					"extendedDatapointRequired": {
+						"value": "lifetime value",
+						"dataSource": {
+							"page": "84",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "initiatives"
+						},
+						"comment": "index back-end matrix",
+						"quality": null
+					}
+				},
+				"noSubsection": "e-commerce"
+			},
+			"noSection": "experiences"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hegmann - Simonis",
+			"headquarters": "Gerryfort",
+			"headquartersPostalCode": "92652",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"yZ1aRwKDYrS8",
+					"eR1Lrk8urQh6"
+				],
+				"PermId": [
+					"leV6GBu8rc"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"tWtfRiaGT"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "JO",
+			"companyContactDetails": [
+				"Brayan.McClure85@example.com",
+				"Oma.Marvin90@example.com",
+				"Dennis_Hackett@example.com",
+				"Leila_Jacobson@example.com",
+				"Vallie48@example.com"
+			],
+			"companyAlternativeNames": [
+				"Leuschke and Sons",
+				"Ryan, Powlowski and Stark",
+				"Thiel - Christiansen"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://smart-spacing.com/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "paradigms",
+					"testNumber": null,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-10-03",
+					"testPercentage": null,
+					"testFieldWithDependency": "metrics",
+					"mandatoryField": "channels",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": null,
+						"comment": "hack mobile microchip",
+						"quality": "Estimated"
+					},
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": {
+							"page": "152-637",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "metrics"
+						},
+						"comment": "hack redundant alarm",
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "synergies"
+			},
+			"noSection": "architectures"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kohler LLC",
+			"headquarters": "Parma",
+			"headquartersPostalCode": "03979-4508",
+			"sector": "metrics",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"l15FbUTx3JNu",
+					"M6BLS2EhIdqF"
+				],
+				"PermId": [
+					"Iqy87rM1Os"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "GU",
+			"companyContactDetails": [
+				"Melyna81@example.com",
+				"Dejuan24@example.com",
+				"Loraine_Hickle@example.com",
+				"Nikolas.Davis@example.com",
+				"Janie2@example.com"
+			],
+			"companyAlternativeNames": [
+				"Jenkins LLC",
+				"Kutch Inc",
+				"Schuster Inc"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": "https://sparkling-latex.info/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "markets",
+					"testNumber": 34452.37,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-02-08",
+					"testPercentage": 34.03,
+					"testFieldWithDependency": "solutions",
+					"mandatoryField": "paradigms",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": null
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "754-815",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "calculate haptic application",
+						"quality": "Estimated"
+					},
+					"extendedDatapointRequired": {
+						"value": "mindshare",
+						"dataSource": {
+							"page": "16-379",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "quantify open-source microchip",
+						"quality": null
+					}
+				},
+				"noSubsection": "communities"
+			},
+			"noSection": "mindshare"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Collins - Schowalter",
+			"headquarters": "Muellertown",
+			"headquartersPostalCode": "84239",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"tUgSs4b2CeqYgagEkp3a"
+				],
+				"Isin": [
+					"BCpsxycC94Dr",
+					"r6OIAPpv02hf"
+				],
+				"PermId": [
+					"IuTVXfkIe2"
+				],
+				"Ticker": [
+					"TgZC60q"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "CD",
+			"companyContactDetails": [
+				"Emilia_Rau22@example.com",
+				"Jaron72@example.com",
+				"Isabella.Schultz@example.com",
+				"Zack_Gottlieb38@example.com",
+				"Adolph54@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bruen - Lubowitz"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://wet-sink.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": null,
+					"testNumber": 64002.65,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "No",
+					"testDate": null,
+					"testPercentage": null,
+					"testFieldWithDependency": null,
+					"mandatoryField": "users",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "155-931",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": "quantify open-source capacitor",
+						"quality": null
+					},
+					"extendedDatapointRequired": {
+						"value": "e-markets",
+						"dataSource": {
+							"page": "775",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": null,
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "deliverables"
+			},
+			"noSection": "convergence"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mann - Hackett",
+			"headquarters": "Veumburgh",
+			"headquartersPostalCode": "34389-4974",
+			"sector": "initiatives",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"MzMgRl0GVJaS",
+					"2uJShHefeT3w"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"eVKaaHrEa"
+				],
+				"CompanyRegistrationNumber": [
+					"dwMFmcl9OaYYxL8"
+				]
+			},
+			"countryCode": "AG",
+			"companyContactDetails": [
+				"Hayden93@example.com",
+				"Elisa.Frami@example.com",
+				"Shanny.Mraz@example.com",
+				"Jerel_Crist@example.com"
+			],
+			"companyAlternativeNames": [
+				"Blanda - Cartwright",
+				"Dach, Schoen and Kutch",
+				"Schmitt - Toy"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://petty-statin.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "tUgSs4b2CeqYgagEkp3a"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "relationships",
+					"testNumber": null,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": null,
+					"testPercentage": null,
+					"testFieldWithDependency": "bandwidth",
+					"mandatoryField": "paradigms",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": null
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "968",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "relationships"
+						},
+						"comment": "connect redundant circuit",
+						"quality": "NoDataFound"
+					},
+					"extendedDatapointRequired": {
+						"value": "e-business",
+						"dataSource": {
+							"page": "730",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": "generate mobile monitor",
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "paradigms"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Tremblay, Hamill and Kertzmann",
+			"headquarters": "Lynn",
+			"headquartersPostalCode": "92594-1275",
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"nbwqAPna3Oa9"
+				],
+				"PermId": [
+					"Tspwy5Qx8x"
+				],
+				"Ticker": [
+					"wDRrUhO"
+				],
+				"Duns": [
+					"Eju2NhaYx"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "KW",
+			"companyContactDetails": [
+				"Darren_Nienow@example.com",
+				"Julia52@example.com",
+				"Clementina_Wilderman@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://little-refuse.biz/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "portals",
+					"testNumber": 46710.69,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": null,
+					"testPercentage": 0.89,
+					"testFieldWithDependency": null,
+					"mandatoryField": "platforms",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "305-1074",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "mindshare"
+						},
+						"comment": "generate solid state bandwidth",
+						"quality": "Reported"
+					},
+					"extendedDatapointRequired": {
+						"value": "infrastructures",
+						"dataSource": {
+							"page": "934-1142",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": "back up primary transmitter",
+						"quality": "Incomplete"
+					}
+				},
+				"noSubsection": "technologies"
+			},
+			"noSection": "eyeballs"
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mitchell, Leuschke and Roob",
+			"headquarters": "East Los Angeles",
+			"headquartersPostalCode": "25747",
+			"sector": "content",
+			"identifiers": {
+				"Lei": [
+					"4kynwAmTeSlWci1s5mB2"
+				],
+				"Isin": [
+					"LoeD3jbNtJpv"
+				],
+				"PermId": [
+					"ktQBPDehLJ"
+				],
+				"Ticker": [
+					"fA1Q7Zy"
+				],
+				"Duns": [
+					"wNTvd6vC2"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "RW",
+			"companyContactDetails": [
+				"Imelda.Morar@example.com",
+				"Angelita4@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://healthy-rhubarb.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "action-items",
+					"testNumber": 34800.58,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-09-15",
+					"testPercentage": 3.3,
+					"testFieldWithDependency": null,
+					"mandatoryField": "platforms",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": null,
+						"comment": "transmit solid state panel",
+						"quality": null
+					},
+					"extendedDatapointRequired": {
+						"value": "schemas",
+						"dataSource": {
+							"page": "1125",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "niches"
+						},
+						"comment": "override digital sensor",
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "platforms"
+			},
+			"noSection": "schemas"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Schroeder - Dicki",
+			"headquarters": "Fort Torey",
+			"headquartersPostalCode": "92064",
+			"sector": "users",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"r3qtJs7xdil0",
+					"YIHpvUaxeLim"
+				],
+				"PermId": [
+					"iWyT3Ysg1l"
+				],
+				"Ticker": [
+					"xHYESgr"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SO",
+			"companyContactDetails": [
+				"Braeden_Waters18@example.com",
+				"Leda15@example.com",
+				"Einar0@example.com",
+				"Felicity7@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bernhard and Sons",
+				"Fritsch and Sons",
+				"Rutherford and Sons"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://academic-chronometer.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "4kynwAmTeSlWci1s5mB2"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "ROI",
+					"testNumber": 36326.71,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-10-26",
+					"testPercentage": 36.08,
+					"testFieldWithDependency": "solutions",
+					"mandatoryField": "deliverables",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "817-1271",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "blockchains"
+						},
+						"comment": "copy haptic panel",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "web services",
+						"dataSource": {
+							"page": "778",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "synergies"
+						},
+						"comment": "back up multi-byte feed",
+						"quality": "Incomplete"
+					}
+				},
+				"noSubsection": "deliverables"
+			},
+			"noSection": "bandwidth"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ondricka and Sons",
+			"headquarters": "Leschhaven",
+			"headquartersPostalCode": "26209-0505",
+			"sector": "e-markets",
+			"identifiers": {
+				"Lei": [
+					"sZS0gwFNgnkJwT7WWror"
+				],
+				"Isin": [
+					"mi9sheEgYfFW",
+					"JtiYgoyDfJQC"
+				],
+				"PermId": [],
+				"Ticker": [
+					"AnLMSWC"
+				],
+				"Duns": [
+					"Wy3vwwxrS"
+				],
+				"VatNumber": [
+					"9GpfBKdIG"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "BR",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [],
+			"companyLegalForm": "Partnership without Limited Liability",
+			"website": "https://gullible-queen.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "schemas",
+					"testNumber": 61480.12,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": null,
+					"testDate": null,
+					"testPercentage": 19.53,
+					"testFieldWithDependency": "users",
+					"mandatoryField": "niches",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "838",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "users"
+						},
+						"comment": "program primary bus",
+						"quality": "Reported"
+					},
+					"extendedDatapointRequired": {
+						"value": "paradigms",
+						"dataSource": {
+							"page": "1093",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-business"
+						},
+						"comment": "generate 1080p program",
+						"quality": "Incomplete"
+					}
+				},
+				"noSubsection": "communities"
+			},
+			"noSection": "interfaces"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Ferry, Olson and Collier",
+			"headquarters": "North Garrick",
+			"headquartersPostalCode": "31710-5846",
+			"sector": "e-commerce",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"n5pWpQcIHa5j",
+					"RmLLPpqk1AT3"
+				],
+				"PermId": [],
+				"Ticker": [
+					"xqNRT4l"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"POWKDXLua"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "SL",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Aufderhar - Altenwerth",
+				"Hilpert, Lindgren and Leffler",
+				"Stark Group"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "sZS0gwFNgnkJwT7WWror"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "ROI",
+					"testNumber": 66852.9,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": null,
+					"testDate": "2024-12-13",
+					"testPercentage": null,
+					"testFieldWithDependency": "initiatives",
+					"mandatoryField": "mindshare",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "schemas",
+						"dataSource": {
+							"page": "547-923",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "convergence"
+						},
+						"comment": "generate auxiliary matrix",
+						"quality": "Reported"
+					}
+				},
+				"noSubsection": "functionalities"
+			},
+			"noSection": "convergence"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "D'Amore - Harris",
+			"headquarters": "Lake Jalen",
+			"headquartersPostalCode": "00898",
+			"sector": "interfaces",
+			"identifiers": {
+				"Lei": [
+					"8cqvxdILw2lnugJ23McD"
+				],
+				"Isin": [
+					"QPQEC43c5EW4"
+				],
+				"PermId": [],
+				"Ticker": [
+					"J9y47Y3"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "PT",
+			"companyContactDetails": [
+				"Waino58@example.com",
+				"Greyson_Abshire78@example.com"
+			],
+			"companyAlternativeNames": [
+				"Yundt, Rogahn and Rohan"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "niches",
+					"testNumber": 1565.85,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": null,
+					"testDate": null,
+					"testPercentage": 72.57,
+					"testFieldWithDependency": "bandwidth",
+					"mandatoryField": "applications",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": null
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "2",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "synthesize haptic microchip",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "technologies",
+						"dataSource": {
+							"page": "197",
+							"fileName": "AnnualReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "lifetime value"
+						},
+						"comment": "input 1080p matrix",
+						"quality": null
+					}
+				},
+				"noSubsection": "web services"
+			},
+			"noSection": "portals"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Spinka LLC",
+			"headquarters": "Bartolettiport",
+			"headquartersPostalCode": "14068",
+			"sector": "supply-chains",
+			"identifiers": {
+				"Lei": [
+					"r7Hx4k5gVxUTzONQiaap"
+				],
+				"Isin": [
+					"sKPsipYHZUch"
+				],
+				"PermId": [
+					"QJQQCyljvm"
+				],
+				"Ticker": [
+					"8p3aUNr"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"suVFDmHqc"
+				],
+				"CompanyRegistrationNumber": [
+					"KVHIK2tH7GjFRHf"
+				]
+			},
+			"countryCode": "UZ",
+			"companyContactDetails": [
+				"Nina.Fritsch91@example.com",
+				"Jan6@example.com",
+				"Shad.Bartoletti@example.com",
+				"Domenica.McCullough@example.com"
+			],
+			"companyAlternativeNames": [
+				"Denesik - Herman",
+				"Hodkiewicz, Murazik and Murphy",
+				"Ondricka - Turner"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://lasting-pet.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "8cqvxdILw2lnugJ23McD"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "niches",
+					"testNumber": 2928.05,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": null,
+					"testDate": "2024-10-11",
+					"testPercentage": 71.84,
+					"testFieldWithDependency": "models",
+					"mandatoryField": "lifetime value",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "52-681",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": "generate neural circuit",
+						"quality": "Audited"
+					},
+					"extendedDatapointRequired": {
+						"value": "synergies",
+						"dataSource": {
+							"page": "831-894",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "calculate open-source hard drive",
+						"quality": "Incomplete"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Towne, Rau and Christiansen",
+			"headquarters": "Fort Glendafurt",
+			"headquartersPostalCode": "99189",
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [
+					"Q3Yx6b9HZ8bP7LL2WHfA"
+				],
+				"Isin": [
+					"ppxUmL2MbrAt"
+				],
+				"PermId": [
+					"SzyYElR73w"
+				],
+				"Ticker": [
+					"ogYibaH"
+				],
+				"Duns": [
+					"wOtn45MrN"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"FBMX9whKPk8E8pt"
+				]
+			},
+			"countryCode": "ZM",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [
+				"Heller, Ritchie and Gislason",
+				"Jaskolski, Kutch and McCullough",
+				"McClure - Thiel",
+				"Metz, Hessel and Walsh"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://elliptical-ascot.com",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "r7Hx4k5gVxUTzONQiaap"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "methodologies",
+					"testNumber": null,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-03-28",
+					"testPercentage": null,
+					"testFieldWithDependency": "communities",
+					"mandatoryField": "metrics",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": {
+							"page": "169-1156",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "web services"
+						},
+						"comment": null,
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "metrics"
+			},
+			"noSection": "interfaces"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Becker and Sons",
+			"headquarters": "East Arnaldo",
+			"headquartersPostalCode": null,
+			"sector": null,
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"iId5dEu5ylld"
+				],
+				"PermId": [],
+				"Ticker": [
+					"HCwiEgF"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"fzenUrTyNnSrIbY"
+				]
+			},
+			"countryCode": "PA",
+			"companyContactDetails": [
+				"Domingo_Ratke@example.com",
+				"Marjolaine84@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://upright-laptop.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "Q3Yx6b9HZ8bP7LL2WHfA"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "paradigms",
+					"testNumber": null,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-01-31",
+					"testPercentage": null,
+					"testFieldWithDependency": "niches",
+					"mandatoryField": "methodologies",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": null
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "948-1027",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "schemas"
+						},
+						"comment": "index open-source circuit",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "e-business",
+						"dataSource": {
+							"page": "629-1092",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "solutions"
+						},
+						"comment": null,
+						"quality": "Reported"
+					}
+				},
+				"noSubsection": "experiences"
+			},
+			"noSection": null
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Macejkovic - Adams",
+			"headquarters": "Lansing",
+			"headquartersPostalCode": "69561",
+			"sector": "models",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"eL6emXRx7CwX",
+					"on5QAFksXbhY"
+				],
+				"PermId": [],
+				"Ticker": [
+					"u1YyuUj"
+				],
+				"Duns": [],
+				"VatNumber": [
+					"H422LSXsv"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "TK",
+			"companyContactDetails": null,
+			"companyAlternativeNames": [
+				"Wuckert - McLaughlin"
+			],
+			"companyLegalForm": "Limited Liability Partnership (LLP)",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "schemas",
+					"testNumber": null,
+					"testYesOrNo": null,
+					"testYesOrNoOrNa": null,
+					"testDate": "2025-01-18",
+					"testPercentage": 88.22,
+					"testFieldWithDependency": "metrics",
+					"mandatoryField": "markets",
+					"simpleDatapoint": null,
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": "e-business",
+						"dataSource": {
+							"page": "250",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "systems"
+						},
+						"comment": "generate multi-byte sensor",
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "infrastructures"
+			},
+			"noSection": "convergence"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Mitchell - Barton",
+			"headquarters": "Dominiqueberg",
+			"headquartersPostalCode": "36237",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"CCqoswqMvjYHYU8JjwbG"
+				],
+				"Isin": [
+					"cGpZNSUR1Cnp"
+				],
+				"PermId": [
+					"0sGCdKiT6l"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"B2rbPg7r6"
+				],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "MZ",
+			"companyContactDetails": [],
+			"companyAlternativeNames": [],
+			"companyLegalForm": "GmbH",
+			"website": "https://ideal-whisker.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "functionalities",
+					"testNumber": 68775.22,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-09-26",
+					"testPercentage": 23.99,
+					"testFieldWithDependency": null,
+					"mandatoryField": "ROI",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "652-853",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "methodologies"
+						},
+						"comment": "parse primary bus",
+						"quality": "NoDataFound"
+					},
+					"extendedDatapointRequired": {
+						"value": "networks",
+						"dataSource": {
+							"page": "118",
+							"fileName": "SustainabilityReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": "transmit virtual microchip",
+						"quality": "Reported"
+					}
+				},
+				"noSubsection": "partnerships"
+			},
+			"noSection": "ROI"
+		},
+		"reportingPeriod": "2023"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Dickens, Kovacek and Glover",
+			"headquarters": "Annieborough",
+			"headquartersPostalCode": "78756-6111",
+			"sector": "e-markets",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"qDhaLqj1xeXc",
+					"AWhGSfeVdgvB"
+				],
+				"PermId": [],
+				"Ticker": [
+					"2hOPvL6"
+				],
+				"Duns": [
+					"E6slI07ds"
+				],
+				"VatNumber": [
+					"QppAxclv8"
+				],
+				"CompanyRegistrationNumber": [
+					"AaZ3jMeWyxFb5Wr"
+				]
+			},
+			"countryCode": "MM",
+			"companyContactDetails": [
+				"Rodrick67@example.com"
+			],
+			"companyAlternativeNames": [
+				"Huels Inc",
+				"Roberts Group",
+				"Von and Sons"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "CCqoswqMvjYHYU8JjwbG"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "niches",
+					"testNumber": 97807.04,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-07-28",
+					"testPercentage": 9.52,
+					"testFieldWithDependency": "applications",
+					"mandatoryField": "convergence",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "365",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "experiences"
+						},
+						"comment": null,
+						"quality": null
+					},
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": {
+							"page": "1030-1036",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "bandwidth"
+						},
+						"comment": null,
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "partnerships"
+			},
+			"noSection": "solutions"
+		},
+		"reportingPeriod": "2020"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Quigley - Bruen",
+			"headquarters": "Elainaport",
+			"headquartersPostalCode": "14479-4708",
+			"sector": "architectures",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"uUX9cj9tNbqp",
+					"6UJHaaWacluO"
+				],
+				"PermId": [],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [
+					"1DyaQR58j"
+				],
+				"CompanyRegistrationNumber": [
+					"1OTWppwDFIOGAxF"
+				]
+			},
+			"countryCode": "BQ",
+			"companyContactDetails": [
+				"Nyasia.Kautzer@example.com",
+				"Felicia.Sawayn@example.com",
+				"Abby_Yundt97@example.com",
+				"Lucinda.Hyatt@example.com",
+				"Helene_Jacobs93@example.com"
+			],
+			"companyAlternativeNames": [],
+			"companyLegalForm": null,
+			"website": "https://alert-extreme.net/",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "eyeballs",
+					"testNumber": 69707.58,
+					"testYesOrNo": "Yes",
+					"testYesOrNoOrNa": "NA",
+					"testDate": "2024-02-05",
+					"testPercentage": 40.05,
+					"testFieldWithDependency": "models",
+					"mandatoryField": "eyeballs",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "212-799",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "ROI"
+						},
+						"comment": "bypass wireless hard drive",
+						"quality": "NoDataFound"
+					},
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": {
+							"page": "1159",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "deliverables"
+						},
+						"comment": null,
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "architectures"
+			},
+			"noSection": "bandwidth"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Kuhic, Hilll and Bahringer",
+			"headquarters": "Rock Hill",
+			"headquartersPostalCode": null,
+			"sector": "supply-chains",
+			"identifiers": {
+				"Lei": [],
+				"Isin": [
+					"IWdWrs6Pq96Z"
+				],
+				"PermId": [
+					"cAS0nvAnEB"
+				],
+				"Ticker": [
+					"huAKwiv"
+				],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "IO",
+			"companyContactDetails": [
+				"Bell_Botsford@example.com",
+				"Godfrey.Boyle@example.com",
+				"Selina71@example.com",
+				"Wilbert.Rippin@example.com"
+			],
+			"companyAlternativeNames": [
+				"Cummings Inc"
+			],
+			"companyLegalForm": "AG",
+			"website": "https://stingy-minister.net",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "paradigms",
+					"testNumber": 97589.1,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "NA",
+					"testDate": null,
+					"testPercentage": null,
+					"testFieldWithDependency": "e-markets",
+					"mandatoryField": "supply-chains",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "671",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "infrastructures"
+						},
+						"comment": "compress auxiliary bandwidth",
+						"quality": "Audited"
+					},
+					"extendedDatapointRequired": {
+						"value": "supply-chains",
+						"dataSource": {
+							"page": "924-945",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "supply-chains"
+						},
+						"comment": null,
+						"quality": "NoDataFound"
+					}
+				},
+				"noSubsection": null
+			},
+			"noSection": "e-business"
+		},
+		"reportingPeriod": "2021"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Dickens - Littel",
+			"headquarters": "East Khalid",
+			"headquartersPostalCode": "04727",
+			"sector": "convergence",
+			"identifiers": {
+				"Lei": [
+					"lWl2INKDOWXHPub8FGK7"
+				],
+				"Isin": [
+					"QYzyZz1vPZJr"
+				],
+				"PermId": [],
+				"Ticker": [
+					"C6yPdu6"
+				],
+				"Duns": [
+					"DIKER3nCb"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"3Fq7LSVyCSypXFo"
+				]
+			},
+			"countryCode": "IQ",
+			"companyContactDetails": [
+				"Gregorio.Armstrong81@example.com",
+				"Jeffry_Cole@example.com",
+				"Gina.Wuckert1@example.com",
+				"Germaine_Ziemann89@example.com",
+				"Esteban_Swaniawski@example.com"
+			],
+			"companyAlternativeNames": [
+				"Bins - Predovic",
+				"Harris, Hayes and Bashirian"
+			],
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://fumbling-bran.info",
+			"isTeaserCompany": false,
+			"parentCompanyLei": null
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": null,
+					"testNumber": 41681.43,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2025-01-09",
+					"testPercentage": null,
+					"testFieldWithDependency": "action-items",
+					"mandatoryField": "systems",
+					"simpleDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"fileName": "Policy",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": null,
+						"dataSource": {
+							"page": "887-960",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "portals"
+						},
+						"comment": "back up multi-byte circuit",
+						"quality": "Incomplete"
+					},
+					"extendedDatapointRequired": {
+						"value": "functionalities",
+						"dataSource": {
+							"page": "131",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "e-markets"
+						},
+						"comment": null,
+						"quality": "Audited"
+					}
+				},
+				"noSubsection": "e-markets"
+			},
+			"noSection": "initiatives"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Luettgen and Sons",
+			"headquarters": "Fort Maddison",
+			"headquartersPostalCode": "56297",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"CwyLXwuSZJ6VsbZS88hd"
+				],
+				"Isin": [
+					"T6ut9IrN9Ju9"
+				],
+				"PermId": [
+					"RV0RjFphTN"
+				],
+				"Ticker": [
+					"nNOkozH"
+				],
+				"Duns": [
+					"vrIDHaPNa"
+				],
+				"VatNumber": [
+					"atNHhuMup"
+				],
+				"CompanyRegistrationNumber": [
+					"AHOStRSxoAUlwWn"
+				]
+			},
+			"countryCode": "TN",
+			"companyContactDetails": [
+				"Cortez.Osinski37@example.com",
+				"Quincy_Blanda8@example.com",
+				"Marcelle_Sipes13@example.com"
+			],
+			"companyAlternativeNames": [
+				"Daniel LLC",
+				"Schoen - Cummerata",
+				"Steuber - Effertz"
+			],
+			"companyLegalForm": "GmbH & Co. KG",
+			"website": "https://flashy-tab.biz",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "lWl2INKDOWXHPub8FGK7"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "interfaces",
+					"testNumber": null,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-02-12",
+					"testPercentage": 1.41,
+					"testFieldWithDependency": null,
+					"mandatoryField": "relationships",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"fileName": "Certification",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+						}
+					},
+					"extendedDatapoint": {
+						"value": "No",
+						"dataSource": {
+							"page": "582",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "markets"
+						},
+						"comment": null,
+						"quality": "Estimated"
+					},
+					"extendedDatapointRequired": {
+						"value": "markets",
+						"dataSource": {
+							"page": "425-1113",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "models"
+						},
+						"comment": null,
+						"quality": "Reported"
+					}
+				},
+				"noSubsection": "content"
+			},
+			"noSection": "eyeballs"
+		},
+		"reportingPeriod": "2024"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Hilll, Huel and Sauer",
+			"headquarters": "West Monty",
+			"headquartersPostalCode": "17532-4390",
+			"sector": null,
+			"identifiers": {
+				"Lei": [
+					"PW3f1UgqZxXncLBlfZYS"
+				],
+				"Isin": [
+					"RtWJLqCeuEW5"
+				],
+				"PermId": [
+					"ZWghchPAi7"
+				],
+				"Ticker": [],
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"Ww4UJ0hjTndgw7N"
+				]
+			},
+			"countryCode": "GG",
+			"companyContactDetails": [
+				"Godfrey.Boyle@example.com",
+				"Lauren18@example.com"
+			],
+			"companyAlternativeNames": [
+				"Moen, Hahn and Lowe",
+				"Pouros LLC",
+				"Powlowski Group"
+			],
+			"companyLegalForm": null,
+			"website": "https://serious-paperwork.name",
+			"isTeaserCompany": false,
+			"parentCompanyLei": "CwyLXwuSZJ6VsbZS88hd"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "platforms",
+					"testNumber": 83863.19,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "No",
+					"testDate": "2024-08-12",
+					"testPercentage": null,
+					"testFieldWithDependency": "ROI",
+					"mandatoryField": "supply-chains",
+					"simpleDatapoint": null,
+					"extendedDatapoint": {
+						"value": "Yes",
+						"dataSource": {
+							"page": "10",
+							"fileName": "ESEFReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "platforms"
+						},
+						"comment": "quantify optical panel",
+						"quality": null
+					},
+					"extendedDatapointRequired": {
+						"value": "infrastructures",
+						"dataSource": {
+							"page": "1192",
+							"fileName": "IntegratedReport",
+							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"tagName": "networks"
+						},
+						"comment": "program 1080p sensor",
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "experiences"
+			},
+			"noSection": "markets"
+		},
+		"reportingPeriod": "2022"
+	},
+	{
+		"companyInformation": {
+			"companyName": "Brown - Schultz",
+			"headquarters": "Tremblayfurt",
+			"headquartersPostalCode": "08234",
+			"sector": "synergies",
+			"identifiers": {
+				"Lei": [
+					"1T3vgqYqC88YCormgUl3"
+				],
+				"Isin": [
+					"ehYgnPEGtar4"
+				],
+				"PermId": [
+					"5xnG2BNXoV"
+				],
+				"Ticker": [],
+				"Duns": [
+					"BoAJ1bhA8"
+				],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
+			},
+			"countryCode": "NR",
+			"companyContactDetails": [
+				"Vaughn.Roberts85@example.com"
+			],
+			"companyAlternativeNames": [
+				"Wilderman, Boyer and Friesen"
+			],
+			"companyLegalForm": "AG",
+			"website": null,
+			"isTeaserCompany": false,
+			"parentCompanyLei": "PW3f1UgqZxXncLBlfZYS"
+		},
+		"t": {
+			"section": {
+				"subsection": {
+					"testString": "initiatives",
+					"testNumber": 29141.67,
+					"testYesOrNo": "No",
+					"testYesOrNoOrNa": "Yes",
+					"testDate": "2024-11-03",
+					"testPercentage": 41.04,
+					"testFieldWithDependency": null,
+					"mandatoryField": "solutions",
+					"simpleDatapoint": {
+						"value": "No",
+						"dataSource": null
+					},
+					"extendedDatapoint": null,
+					"extendedDatapointRequired": {
+						"value": null,
+						"dataSource": null,
+						"comment": null,
+						"quality": "Estimated"
+					}
+				},
+				"noSubsection": "technologies"
+			},
+			"noSection": "methodologies"
+		},
+		"reportingPeriod": "2022"
+	}
+]
