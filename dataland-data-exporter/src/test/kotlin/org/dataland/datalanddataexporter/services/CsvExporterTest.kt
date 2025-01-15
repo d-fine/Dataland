@@ -12,12 +12,16 @@ import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanddataexporter.TestDataProvider
 import org.dataland.datalanddataexporter.utils.TransformationUtils.ISIN_IDENTIFIER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIER
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import java.io.File
 
 class CsvExporterTest {
     private lateinit var csvDataExporter: CsvExporter
@@ -49,12 +53,7 @@ class CsvExporterTest {
         val mockMetaDataControllerApi = mock(MetaDataControllerApi::class.java)
         `when`(
             mockMetaDataControllerApi.getListOfDataMetaInfo(
-                dataType = any(),
-                reportingPeriod = any(),
-                companyId = any(),
-                showOnlyActive = any(),
-                uploaderUserIds = any(),
-                qaStatus = any(),
+                dataType = DataTypeEnum.sfdr,
             ),
         ).thenReturn(mockMetaData)
         return mockMetaDataControllerApi
@@ -113,7 +112,33 @@ class CsvExporterTest {
     }
 
     @Test
-    fun `check that running the sfdr export does not throw an error`() {
+    fun `check that the sfdr export runs as expected`() {
         assertDoesNotThrow { csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output") }
+        verify(mockMetadataControllerApi, times(1))
+            .getListOfDataMetaInfo(
+                dataType = DataTypeEnum.sfdr,
+            )
+        verify(mockSfdrDataControllerApi, times(1))
+            .getCompanyAssociatedSfdrData(
+                dataId = any(),
+            )
+        verify(mockCompanyDataControllerApi, times(1))
+            .getCompanyById(
+                companyId = any(),
+            )
+    }
+
+    @Test
+    fun `check that running the sfdr export produces two csv files`() {
+        val outputDirectory = "./src/test/resources/csv/output"
+        val directory = File(outputDirectory)
+        if (directory.exists()) {
+            directory.deleteRecursively()
+        }
+
+        csvDataExporter.exportSfdrData(outputDirectory = outputDirectory)
+
+        val filesInDirectory = File(outputDirectory).listFiles()
+        assertTrue((filesInDirectory?.size ?: 0) >= 2, "There should be at least two new csv-files.")
     }
 }

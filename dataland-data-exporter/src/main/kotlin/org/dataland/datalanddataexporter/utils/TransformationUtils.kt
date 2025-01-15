@@ -52,6 +52,20 @@ object TransformationUtils {
     }
 
     /**
+     * Gets the headers from the legacy rules.
+     * @param legacyRules The transformation rules
+     * @return A list of headers
+     */
+    fun getLegacyHeaders(legacyRules: Map<String, String>): List<String> {
+        val headers = mutableListOf<String>()
+        legacyRules.forEach { (csvHeader, _) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
+        require(headers.isNotEmpty()) { "No headers found in legacy rules." }
+        headers.addAll(getCompanyRelatedHeaders())
+        require(headers.distinct().size == headers.size) { "Duplicate headers found in transformation rules." }
+        return headers
+    }
+
+    /**
      * Gets the headers for company-related entries that are independent of the data transformation rules.
      * @return A list of headers
      */

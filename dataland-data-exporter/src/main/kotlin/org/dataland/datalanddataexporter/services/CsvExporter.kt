@@ -19,6 +19,7 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.REPORTING_PER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistency
 import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataToJson
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getHeaders
+import org.dataland.datalanddataexporter.utils.TransformationUtils.getLegacyHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToLegacyCsvFields
@@ -59,7 +60,10 @@ class CsvExporter(
         val headers = getHeaders(transformationRules)
         val dataIds = getAllSfdrDataIds()
 
-        val legacyFields = readTransformationConfig("./transformationRules/SfdrLegacyCsvExportFields.config")
+        val legacyRules = readTransformationConfig("./transformationRules/SfdrLegacyCsvExportFields.config")
+        val legacyHeaders = getLegacyHeaders(legacyRules)
+
+        val allHeaders = headers + legacyHeaders
 
         dataIds.forEach { dataId ->
             logger.info("Exporting data with ID: $dataId")
@@ -70,7 +74,7 @@ class CsvExporter(
             val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
 
             try {
-                checkConsistency(data, transformationRules, legacyFields)
+                checkConsistency(data, transformationRules, legacyRules)
             } catch (exception: IllegalArgumentException) {
                 logger.error("Consistency check failed for data with ID $dataId and exception ${exception.message}.")
                 logger.warn("Skipping data with ID: $dataId")
@@ -80,11 +84,11 @@ class CsvExporter(
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
             dataToExport += mapJsonToCsv(data, transformationRules)
             dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
-            dataToExport += mapJsonToLegacyCsvFields(data, legacyFields)
+            dataToExport += mapJsonToLegacyCsvFields(data, legacyRules)
             csvData.add(dataToExport)
         }
 
-        writeCsvFiles(outputDirectory, csvData, isinData, headers)
+        writeCsvFiles(outputDirectory, csvData, isinData, allHeaders)
     }
 
     /**
@@ -134,8 +138,6 @@ class CsvExporter(
         val timestamp = getTimestamp()
         val dataOutputFile = File("$outputDirectory/SfdrData_$timestamp.csv")
         val isinOutputFile = File("$outputDirectory/SfdrIsin_$timestamp.csv")
-        println(dataOutputFile)
-        println(csvData)
         writeCsv(csvData, dataOutputFile, headers)
         writeCsv(isinData, isinOutputFile, listOf(LEI_HEADER, ISIN_HEADER))
     }
