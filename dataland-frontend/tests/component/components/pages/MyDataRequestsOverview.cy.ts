@@ -144,13 +144,14 @@ describe('Component tests for the data requests search page', function (): void 
       body: [],
       status: 200,
     }).as('UserRequests');
+    cy.stub(router, 'push').as('routerPush');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       cy.get('[data-test="requested-Datasets-table"]').should('not.exist');
       cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/bulkdatarequest');
+      cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
     });
   });
 
@@ -214,11 +215,12 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
+    cy.stub(router, 'push').as('routerPush');
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       cy.get('[data-test="requested-Datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
@@ -231,7 +233,7 @@ describe('Component tests for the data requests search page', function (): void 
         .clear()
         .type('companyAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('exist').should('be.visible').click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/companies/compA/frameworks/p2p');
+      cy.get('@routerPush').should('have.been.calledWith', '/companies/compA/frameworks/p2p');
     });
   });
 
@@ -273,14 +275,15 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
+    cy.stub(router, 'push').as('routerPush');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       cy.get('[data-test="requested-Datasets-table"]').within(() => {
         cy.get('tr:last').click();
       });
-      cy.wrap(mounted.component).its('$route.path').should('eq', `/requests/${dummyRequestId}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
     });
   });
 });

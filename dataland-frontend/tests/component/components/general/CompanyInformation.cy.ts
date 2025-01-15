@@ -54,6 +54,7 @@ describe('Component tests for the company info sheet', function (): void {
 
   it('Check visibility of company information', function () {
     mockRequestsOnMounted();
+    cy.stub(router, 'push').as('routerPush');
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
       router: router,
@@ -66,7 +67,7 @@ describe('Component tests for the company info sheet', function (): void {
       cy.get('[data-test="headquarter-visible"]').should('have.text', companyInformationForTest.headquarters);
       cy.get('[data-test="sector-visible"]').should('have.text', companyInformationForTest.sector);
       cy.get('[data-test="parent-visible"]').should('have.text', dummyParentCompanyName).click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', `/companies/${dummyParentCompanyId}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyParentCompanyId}`);
     });
   });
 
