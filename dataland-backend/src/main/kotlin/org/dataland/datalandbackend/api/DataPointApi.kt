@@ -75,7 +75,7 @@ interface DataPointApi {
 
     /**
      * A method to retrieve a data point by providing its ID
-     * @param dataId the unique identifier for the data point
+     * @param dataPointId the unique identifier for the data point
      * @return the data point identified by the ID
      */
     @Operation(
@@ -88,12 +88,12 @@ interface DataPointApi {
         ],
     )
     @GetMapping(
-        value = ["/{dataId}"],
+        value = ["/{dataPointId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataPointId)")
     fun getDataPoint(
-        @PathVariable dataId: String,
+        @PathVariable dataPointId: String,
     ): ResponseEntity<UploadedDataPoint>
 
     /**
