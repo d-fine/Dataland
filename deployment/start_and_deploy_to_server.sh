@@ -17,7 +17,7 @@ location=/home/ubuntu/dataland
 keycloak_backup_dir=/home/ubuntu/keycloak_backup
 persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
-logging_data_mnt = /mnt/data/logging
+logging_data_mnt=/mnt/data/logging
 loki_volume=$LOKI_VOLUME
 
 # shut down currently running dataland application and purge files on server
