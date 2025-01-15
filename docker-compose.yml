@@ -666,9 +666,9 @@ services:
     profiles: [ "production", "testing", "development" ]
     image: ${GRAFANA_IMAGE:-ghcr.io/d-fine/dataland/dataland_grafana:${DATALAND_GRAFANA_VERSION}}
     environment:
-      - GF_SECURITY_ADMIN_USER=admin@dataland.com
+      - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-      - GF_SERVER_ROOT_URL=%(protocol)s://dataland-admin/grafana/
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
     expose:
       - "3000"
     volumes:
@@ -689,9 +689,8 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
-#      - /mnt/mybtrfs/dataland-loki-data:/loki
-#      - ./dataland-loki/dataland_loki_data:/loki
-      - loki_data:/var/lib/loki/data
+      - ${LOKI_VOLUME}:/loki
+#      - /mnt/data/logging/dataland-loki-data:/loki
     networks:
       - loki
     logging:
@@ -756,6 +755,4 @@ volumes:
   grafana_data:
     driver: local
   alloy_data:
-    driver: local
-  loki_data:
     driver: local

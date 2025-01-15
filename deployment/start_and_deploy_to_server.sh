@@ -17,10 +17,6 @@ location=/home/ubuntu/dataland
 keycloak_backup_dir=/home/ubuntu/keycloak_backup
 persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
-#btrfs_device=/dev/sdx
-#btrfs_mount_point=/mnt/mybtrfs
-#loki_dir=dataland-loki-data
-#loki_size_limit=40G
 
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose --profile production down && sudo docker compose --profile init down && sudo docker compose down --remove-orphans) || true"
@@ -60,36 +56,8 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "community_manager_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "batch_manager_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "email_service_data" "$target_server_url" "$location"
-  delete_docker_volume_if_existent_remotely "loki_data" "$target_server_url" "$location"
+  delete_docker_volume_if_existent_remotely "$LOKI_VOLUME" "$target_server_url" "$location"
 fi
-
-#echo "Create limited volume in btrfs filesystem for Loki data (all logs)"
-## Check if btrfs-filesystem is already mounted
-#if ! mount | grep "on $btrfs_mount_point type btrfs" > /dev/null; then
-#    echo "Mounting btrfs filesystem..."
-#    # Create btrfs filesystem, if it does not exist already
-#    if [ ! -b "$btrfs_device" ]; then
-#        echo "Device $btrfs_device does not exist. Creating device..."
-#        sudo mkfs.btrfs "$btrfs_device"
-#    fi
-#    # Mount btrfs filesystem
-#    sudo mount "$btrfs_device" "$btrfs_mount_point"
-#    # Add automatic mounting at boot
-#    echo "$btrfs_device $btrfs_mount_point btrfs defaults 0 2" | sudo tee -a /etc/fstab
-##    # Enable quota to restrict size of subvolumes
-##    sudo btrfs quota enable "$btrfs_mount_point"
-#fi
-## Create loki subvolume, if it does not exist already
-#if [ ! -d "$btrfs_mount_point/$loki_dir" ]; then
-#    echo "Creating Btrfs subvolume for Loki."
-#    sudo btrfs subvolume create "$btrfs_mount_point/$loki_dir"
-#    echo "Restrict size for Loki subvolume."
-##    sudo btrfs qgroup limit $loki_size_limit "$btrfs_mount_point/$loki_dir"
-#    sudo btrfs subvolume set-size $loki_size_limit "$btrfs_mount_point/$loki_dir"
-#else
-#    echo "Subvolume for Loki already exists."
-#fi
-#echo "Setup completed: Limited volume for Loki data (all logs) exists."
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"

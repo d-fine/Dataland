@@ -41,3 +41,6 @@ gitinfo
 client.env
 keystore.jks
 tls.crt
+
+# local logging data
+/.dataland-loki/data/
