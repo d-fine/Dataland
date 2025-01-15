@@ -41,7 +41,7 @@ class CsvExporter(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(cron = "0 0 15 * * *")
+    @Scheduled(cron = "0 30 14 * * *")
     private fun triggerExport() {
         val outputDirectory = "/var/export/csv/sql_server"
         exportSfdrData(outputDirectory)
