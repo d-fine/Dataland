@@ -318,7 +318,6 @@ jobs:
           COMMUNITY_MANAGER_DB_PASSWORD: "password"
           EMAIL_SERVICE_DB_PASSWORD: "password"
           PGADMIN_PASSWORD: "password"
-          GRAFANA_PASSWORD: "password"
           KEYCLOAK_DATALAND_ADMIN_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_DATALAND_ADMIN_SALT: "K9nzg086pCNjq8dxl84GZg=="
           KEYCLOAK_DATALAND_ADMIN_PASSWORD: "password"
@@ -369,6 +368,8 @@ jobs:
           DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
           LOGGING_OPTIONS_MAX_SIZE: "1G"
           LOGGING_OPTIONS_MAX_FILE: 1
+          GRAFANA_PASSWORD: "password"
+          LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4

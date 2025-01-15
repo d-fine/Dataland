@@ -8,7 +8,8 @@
 analytics:
   reporting_enabled: false # Disable reporting
 
-# Enables authentication through the X-Scope-OrgID header, which must be present
+# Multi-tenant mode is set in the configuration with auth_enabled: true,
+# enabling authentication through the X-Scope-OrgID header, which must be present
 # if true. If false, the OrgID will always be set to 'fake'.
 auth_enabled: false
 
@@ -27,9 +28,12 @@ common:
       rules_directory: /loki/rules
   ring:
     kvstore:
-      # Backend storage to use for the ring. Supported values are: consul, etcd,
-      # inmemory, memberlist, multi.
-      store: inmemory # default: consul
+      # Backend storage to use for the ring. Supported values are: consul (default), etcd, memberlist, multi,
+      # inmemory:
+      # - All metadata stored in the ring is lost when the Loki service is restarted or the server fails.
+      # - This means that it may not function correctly after a restart UNTIL the ring data is regenerated.
+      # - The in-memory setup is only suitable for environments where the load and the number of instances are low.
+      store: inmemory
   replication_factor: 1 # without clustering or sharding, this needs to be 1
 
 # The storage_config block configures one of many possible stores for both the
