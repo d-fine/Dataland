@@ -28,7 +28,7 @@ fun DataPointSpecification.toDto(
                 .filter {
                     it.flattenedSchema.any { schemaEntry -> schemaEntry.dataPointId == this.id }
                 }.map { it.getRef(baseUrl) },
-        validatedBy =
+        dataPointSchema =
             database.dataPointSchemas[this.dataPointSchemaId]?.getRef(
                 baseUrl,
             ) ?: error("Data point type id ${this.dataPointSchemaId} does not exist in the database."),
@@ -41,6 +41,6 @@ data class DataPointSpecificationDto(
     val dataPointSpecification: IdWithRef,
     val name: String,
     val businessDefinition: String,
-    val validatedBy: IdWithRef,
+    val dataPointSchema: IdWithRef,
     val usedBy: List<IdWithRef>,
 )

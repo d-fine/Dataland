@@ -665,10 +665,10 @@
       "DataPointSpecificationDto": {
         "required": [
           "businessDefinition",
+          "dataPointSchema",
           "dataPointSpecification",
           "name",
-          "usedBy",
-          "validatedBy"
+          "usedBy"
         ],
         "type": "object",
         "properties": {
@@ -681,7 +681,7 @@
           "businessDefinition": {
             "type": "string"
           },
-          "validatedBy": {
+          "dataPointSchema": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "usedBy": {
