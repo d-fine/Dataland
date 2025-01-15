@@ -174,7 +174,7 @@ spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
 
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
-freemarker = "org.freemarker:freemarker:2.3.33"
+freemarker = "org.freemarker:freemarker:2.3.34"
 
 
 flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.18.2"
