@@ -52,6 +52,9 @@ class TransformationUtilsTest {
     private val expectedCsvData =
         mapOf("presentHeader" to "Here", "mappedButNoDataHeader" to "", "nestedHeader" to "NestedHere")
 
+    private val expectedLegacyCsvData =
+        mapOf("newHeader" to "Here")
+
     @Test
     fun `check that the retrieved JSON paths are as expected`() {
         val jsonNode = ObjectMapper().readTree(inputJson)
@@ -111,6 +114,13 @@ class TransformationUtilsTest {
         val jsonNode = ObjectMapper().readTree(inputJson)
         val csvData = TransformationUtils.mapJsonToCsv(jsonNode, expectedTransformationRules)
         assertEquals(expectedCsvData, csvData)
+    }
+
+    @Test
+    fun `check that mapJsonToLegacyCsvFields returns correct csv data`() {
+        val jsonNode = ObjectMapper().readTree(inputJson)
+        val csvData = TransformationUtils.mapJsonToLegacyCsvFields(jsonNode, expectedLegacyRules)
+        assertEquals(expectedLegacyCsvData, csvData)
     }
 
     @Test
