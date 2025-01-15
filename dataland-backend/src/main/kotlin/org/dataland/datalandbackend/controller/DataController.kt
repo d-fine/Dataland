@@ -73,8 +73,6 @@ abstract class DataController<T>(
         val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
 
-        val data = getDataAsString(dataId, correlationId)
-
         val companyAssociatedData =
             this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
@@ -84,10 +82,7 @@ abstract class DataController<T>(
     private fun getDataAsString(
         dataId: String,
         correlationId: String,
-    ): String {
-        val dataTypeString = dataType.toString()
-        return datasetStorageService.getDatasetData(dataId, dataTypeString, correlationId)
-    }
+    ): String = datasetStorageService.getDatasetData(dataId, dataType.toString(), correlationId)
 
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
@@ -214,7 +209,7 @@ abstract class DataController<T>(
         return CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = reportingPeriod,
-            data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
+            data = objectMapper.readValue(getDataAsString(dataId, correlationId), clazz),
         )
     }
 
