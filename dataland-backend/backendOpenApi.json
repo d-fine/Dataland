@@ -5094,7 +5094,7 @@
         ]
       }
     },
-    "/data-points/{dataId}": {
+    "/data-points/{dataPointId}": {
       "get": {
         "tags": [
           "data-point-controller"
@@ -5104,7 +5104,7 @@
         "operationId": "getDataPoint",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
