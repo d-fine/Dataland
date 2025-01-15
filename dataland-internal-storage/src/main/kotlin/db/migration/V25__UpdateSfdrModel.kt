@@ -62,7 +62,7 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
     }
 
     /**
-     * Determine which value to use put into the new excessiveCeoPayRatio field
+     * Determine which value to put into the new excessiveCeoPayRatio field
      */
     private fun determineValueToUse(
         excessiveCeoPayRatioInPercentValue: JSONObject?,

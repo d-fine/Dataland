@@ -16,9 +16,10 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.ISIN_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_HEADER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.REPORTING_PERIOD_HEADER
-import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistency
+import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistencyOfDataAndTransformationRules
+import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistencyOfLegacyRulesAndTransformationRules
 import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataToJson
-import org.dataland.datalanddataexporter.utils.TransformationUtils.getHeaders
+import org.dataland.datalanddataexporter.utils.TransformationUtils.getCurrentHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLegacyHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
@@ -57,13 +58,13 @@ class CsvExporter(
 
         createDirectories(outputDirectory)
         val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
-        val activeHeaders = getHeaders(transformationRules)
-        val dataIds = getAllSfdrDataIds()
-
         val legacyRules = readTransformationConfig("./transformationRules/SfdrLegacyCsvExportFields.config")
-        val legacyHeaders = getLegacyHeaders(legacyRules)
 
-        val combinedHeaders = activeHeaders + legacyHeaders
+        val currentHeaders = getCurrentHeaders(transformationRules)
+        val legacyHeaders = getLegacyHeaders(legacyRules)
+        val combinedHeaders = currentHeaders + legacyHeaders
+
+        val dataIds = getAllSfdrDataIds()
 
         dataIds.forEach { dataId ->
             logger.info("Exporting data with ID: $dataId")
@@ -74,7 +75,8 @@ class CsvExporter(
             val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
 
             try {
-                checkConsistency(data, transformationRules, legacyRules)
+                checkConsistencyOfDataAndTransformationRules(data, transformationRules)
+                checkConsistencyOfLegacyRulesAndTransformationRules(transformationRules, legacyRules)
             } catch (exception: IllegalArgumentException) {
                 logger.error("Consistency check failed for data with ID $dataId and exception ${exception.message}.")
                 logger.warn("Skipping data with ID: $dataId")
@@ -83,8 +85,8 @@ class CsvExporter(
 
             isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
             dataToExport += mapJsonToCsv(data, transformationRules)
-            dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
             dataToExport += mapJsonToLegacyCsvFields(data, legacyRules)
+            dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
             csvData.add(dataToExport)
         }
 

@@ -43,7 +43,7 @@ object TransformationUtils {
      * @param transformationRules The transformation rules
      * @return A list of headers
      */
-    fun getHeaders(transformationRules: Map<String, String>): List<String> {
+    fun getCurrentHeaders(transformationRules: Map<String, String>): List<String> {
         val headers = mutableListOf<String>()
         transformationRules.forEach { (_, csvHeader) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
         require(headers.isNotEmpty()) { "No headers found in transformation rules." }
@@ -59,9 +59,11 @@ object TransformationUtils {
      */
     fun getLegacyHeaders(legacyRules: Map<String, String>): List<String> {
         val headers = mutableListOf<String>()
-        legacyRules.forEach { (csvHeader, _) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
-        require(headers.isNotEmpty()) { "No headers found in legacy rules." }
-        headers.addAll(getCompanyRelatedHeaders())
+        legacyRules.forEach { (csvHeader, _) ->
+            if (csvHeader.isNotEmpty()) {
+                headers.add(csvHeader)
+            }
+        }
         require(headers.distinct().size == headers.size) { "Duplicate headers found in legacy rules." }
         return headers
     }
@@ -74,21 +76,31 @@ object TransformationUtils {
         listOf(COMPANY_ID_HEADER, COMPANY_NAME_HEADER, REPORTING_PERIOD_HEADER, LEI_HEADER)
 
     /**
-     * Checks the consistency of the transformation rules with the JSON data.
+     * Checks the consistency of the JSON data with the transformation rules.
      * @param node The JSON node
      * @param transformationRules The transformation rules
      */
-    fun checkConsistency(
+    fun checkConsistencyOfDataAndTransformationRules(
         node: JsonNode,
         transformationRules: Map<String, String>,
-        legacyRules: Map<String, String>,
     ) {
         val leafNodesInJsonNode: List<String> = JsonUtils.getNonArrayLeafNodeFieldNames(node)
         val filteredNodes = leafNodesInJsonNode.filter { !it.contains(NODE_FILTER) }
         require(transformationRules.keys.containsAll(filteredNodes)) {
             "Transformation rules do not cover all leaf nodes in the data."
         }
+    }
 
+    /**
+     * Checks the consistency of the transformation rules and the legacy rules.
+     * @param transformationRules The transformation rules
+     * @param legacyRules The transformation rules
+     *
+     */
+    fun checkConsistencyOfLegacyRulesAndTransformationRules(
+        transformationRules: Map<String, String>,
+        legacyRules: Map<String, String>,
+    ) {
         val legacyValuesNotCovered = legacyRules.values.filter { !transformationRules.keys.contains(it) }
         require(legacyValuesNotCovered.isEmpty()) {
             "Legacy headers require nodes that are not in the data: $legacyValuesNotCovered"

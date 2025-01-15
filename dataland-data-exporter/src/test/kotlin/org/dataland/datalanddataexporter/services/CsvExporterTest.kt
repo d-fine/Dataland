@@ -139,6 +139,6 @@ class CsvExporterTest {
         csvDataExporter.exportSfdrData(outputDirectory = outputDirectory)
 
         val filesInDirectory = File(outputDirectory).listFiles()
-        assertTrue((filesInDirectory?.size ?: 0) >= 2, "There should be at least two new csv-files.")
+        assertTrue((filesInDirectory!!.size) == 2, "There should be exactly two new csv-files.")
     }
 }
