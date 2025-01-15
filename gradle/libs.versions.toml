@@ -66,9 +66,9 @@ log4j-slf4j2-impl = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-i
 log4j-api = { group = "org.apache.logging.log4j", name = "log4j-api", version.ref = "log4j" }
 log4j-to-slf4j = { group = "org.apache.logging.log4j", name = "log4j-to-slf4j", version.ref = "log4j" }
 
-logback-classic = "ch.qos.logback:logback-classic:1.5.6"
+logback-classic = "ch.qos.logback:logback-classic:1.5.16"
 
-logback-core = "ch.qos.logback:logback-core:1.5.6"
+logback-core = "ch.qos.logback:logback-core:1.5.16"
 
 slf4j-api = "org.slf4j:slf4j-api:2.0.16"
 
