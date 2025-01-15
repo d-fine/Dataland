@@ -45,4 +45,28 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
   ): AxiosPromise<DataMetaInformation> {
     return this.openApiDataController.postCompanyAssociatedNuclearAndGasData(data, bypassQa, options);
   }
+
+  exportCompanyAssociatedDataToJson(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataToJson(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToCsv(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataToCsv(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataToExcel(dataId, options);
+  }
 }
