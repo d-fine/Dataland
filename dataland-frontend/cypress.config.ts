@@ -122,9 +122,30 @@ export default defineConfig({
         },
       });
 
+      on('task', {
+        async getFileSize(path: string) {
+          const stats = await promises.stat(path);
+          return stats.size;
+        },
+      });
+
+      on('task', {
+        deleteFile(path: string) {
+          return promises.unlink(path).then(() => null);
+        },
+      });
+
+      on('task', {
+        async checkFileContent({ path, term }) {
+          const content = await promises.readFile(path, 'utf8');
+          return content.includes(term);
+        },
+      });
+
       return config;
     },
     supportFile: 'tests/e2e/support/index.ts',
+    downloadsFolder: 'cypress/downloads',
   },
   component: {
     devServer: {

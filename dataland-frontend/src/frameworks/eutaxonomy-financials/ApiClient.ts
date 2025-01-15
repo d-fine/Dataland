@@ -45,4 +45,28 @@ export class EutaxonomyFinancialsApiClient implements PublicFrameworkDataApi<Eut
   ): AxiosPromise<DataMetaInformation> {
     return this.openApiDataController.postCompanyAssociatedEutaxonomyFinancialsData(data, bypassQa, options);
   }
+
+  exportCompanyAssociatedDataToJson(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedEutaxonomyFinancialsDataToJson(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToCsv(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedEutaxonomyFinancialsDataToCsv(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedEutaxonomyFinancialsDataToExcel(dataId, options);
+  }
 }

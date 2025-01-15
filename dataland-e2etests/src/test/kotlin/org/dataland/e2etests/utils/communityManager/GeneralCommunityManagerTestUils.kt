@@ -6,6 +6,7 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
+import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
 import org.dataland.communitymanager.openApiClient.model.RequestPriority
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
@@ -241,7 +242,8 @@ fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(
     newStatus: RequestStatus,
 ) {
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
-    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, newStatus)
+    val statusDataRequestPatch = DataRequestPatch(requestStatus = newStatus)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, statusDataRequestPatch)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
     assertEquals(newLastUpdatedTimestamp, storedDataRequestAfterPatch.lastModifiedDate)
@@ -254,7 +256,8 @@ fun patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated(
     newAdminComment: String,
 ) {
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
-    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, adminComment = newAdminComment)
+    val adminCommentDataRequestPatch = DataRequestPatch(adminComment = newAdminComment)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, adminCommentDataRequestPatch)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     assertTrue(oldLastUpdatedTimestamp == newLastUpdatedTimestamp)
     assertEquals(newAdminComment, storedDataRequestAfterPatch.adminComment)
@@ -266,7 +269,8 @@ fun patchDataRequestPriorityAndAssertLastModifiedUpdated(
     newRequestPriority: RequestPriority,
 ) {
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
-    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, requestPriority = newRequestPriority)
+    val priorityDataRequestPatch = DataRequestPatch(requestPriority = newRequestPriority)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, priorityDataRequestPatch)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
     assertEquals(newRequestPriority, storedDataRequestAfterPatch.requestPriority)

@@ -97,7 +97,7 @@ describeIf(
     );
 
     /**
-     * Defines interceps and submits data on the lksg upload for the lksg blanket test
+     * Defines intercepts and submits data on the lksg upload for the lksg blanket test
      * @param storedCompany stored company information
      * @param dataMetaInformation meta data information
      * @param testCompanyName name of the company
