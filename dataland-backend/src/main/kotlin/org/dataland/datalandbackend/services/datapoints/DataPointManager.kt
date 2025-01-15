@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -115,6 +116,11 @@ class DataPointManager
             val dataPointIdentifier = metaInfo.dataPointIdentifier
             logger.info("Retrieving $dataPointIdentifier data point with id $dataId (correlation ID: $correlationId).")
             dataPointValidator.validateDataPointIdentifierExists(dataPointIdentifier)
+
+            val dataFromCache = dataManager.getDataFromCache(dataId)
+            if (dataFromCache != null) {
+                return objectMapper.readValue(dataFromCache)
+            }
 
             val storedDataPoint = storageClient.selectDataPointById(dataId, correlationId)
             return UploadedDataPoint(

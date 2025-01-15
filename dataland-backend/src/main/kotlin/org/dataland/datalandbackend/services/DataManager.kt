@@ -26,17 +26,19 @@ import java.util.concurrent.ConcurrentHashMap
  * @param messageQueuePublications service for publishing messages to the message queue
 */
 @Service("DataManager")
+@Suppress("TooManyFunctions")
 class DataManager
     @Suppress("LongParameterList")
+    @Autowired
     constructor(
-        @Autowired private val objectMapper: ObjectMapper,
-        @Autowired private val companyQueryManager: CompanyQueryManager,
-        @Autowired private val metaDataManager: DataMetaInformationManager,
-        @Autowired private val storageClient: StorageControllerApi,
-        @Autowired private val dataManagerUtils: DataManagerUtils,
-        @Autowired private val companyRoleChecker: CompanyRoleChecker,
-        @Autowired private val messageQueuePublications: MessageQueuePublications,
-    ) {
+        private val objectMapper: ObjectMapper,
+        private val companyQueryManager: CompanyQueryManager,
+        private val metaDataManager: DataMetaInformationManager,
+        private val storageClient: StorageControllerApi,
+        private val dataManagerUtils: DataManagerUtils,
+        private val companyRoleChecker: CompanyRoleChecker,
+        private val messageQueuePublications: MessageQueuePublications,
+    ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
         private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
@@ -44,22 +46,22 @@ class DataManager
         /**
          * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
          * relevant message queues
-         * @param storableDataSet contains all the inputs needed by Dataland
+         * @param uploadedDataSet contains all the inputs needed by Dataland
          * @param bypassQa whether the data should be sent to QA or not
          * @param correlationId the correlationId of the request
          * @return ID of the newly stored data in the data store
          */
-        fun processDataStorageRequest(
-            storableDataSet: StorableDataSet,
+        override fun storeDataset(
+            uploadedDataSet: StorableDataSet,
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            if (bypassQa && !companyRoleChecker.canUserBypassQa(storableDataSet.companyId)) {
+            if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataSet.companyId)) {
                 throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
             }
             val dataId = IdUtils.generateUUID()
-            storeMetaDataFrom(dataId, storableDataSet, correlationId)
-            storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
+            storeMetaDataFrom(dataId, uploadedDataSet, correlationId)
+            storeDataSetInTemporaryStoreAndSendMessage(dataId, uploadedDataSet, bypassQa, correlationId)
             return dataId
         }
 
@@ -165,6 +167,23 @@ class DataManager
                 dataId, dataType, correlationId,
                 ::getJsonStringFromCacheOrInternalStorage,
             )
+
+        override fun getDatasetData(
+            datasetId: String,
+            dataType: String,
+            correlationId: String,
+        ): String =
+            getPublicDataSet(
+                datasetId,
+                DataType
+                    .valueOf(dataType),
+                correlationId,
+            ).data
+
+        /**
+         * Method to get data from the cache or the internal storage
+         */
+        fun getDataFromCache(dataId: String): String? = publicDataInMemoryStorage[dataId]
 
         private fun getJsonStringFromCacheOrInternalStorage(
             dataId: String,

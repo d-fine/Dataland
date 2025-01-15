@@ -2,35 +2,39 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Keventown",
-			"headquartersPostalCode": "08624-9889",
-			"sector": "web services",
+			"headquarters": "Nienowshire",
+			"headquartersPostalCode": "02199-0994",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"ZSW19V9gRjT8dOwHuHw8"
-				],
+				"Lei": [],
 				"Isin": [
-					"7isXp6iT68ka"
+					"Dq6d8MiHRTZG"
 				],
-				"PermId": [],
+				"PermId": [
+					"hj5snyfWes"
+				],
 				"Ticker": [
-					"NJ56EIw"
+					"EFUzYWQ"
 				],
 				"Duns": [
-					"Uv5q40XAG"
+					"SZ96gyHqy"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"ZpBjhhkxNgn3BlA"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AE",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [
-				"Abbott, Stroman and Rempel"
+			"countryCode": "UA",
+			"companyContactDetails": [
+				"Torrance71@example.com",
+				"Candice15@example.com",
+				"Weston_Casper37@example.com",
+				"Modesto.Ruecker25@example.com"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://reflecting-jungle.name",
+			"companyAlternativeNames": [
+				"Brown Group",
+				"Kertzmann - Hintz"
+			],
+			"companyLegalForm": null,
+			"website": "https://variable-trumpet.com",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -39,86 +43,97 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "109-1241",
+							"page": "397-806",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "deliverables",
+							"publicationDate": null
 						},
-						"comment": "parse optical driver",
-						"quality": "Estimated"
+						"comment": "connect haptic application",
+						"quality": "NoDataFound"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-12-10",
+						"value": "2024-04-30",
 						"dataSource": {
-							"page": "1197-1214",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "portals"
+							"page": "1034-1064",
+							"fileName": "SustainabilityReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "communities",
+							"publicationDate": null
 						},
-						"comment": "synthesize mobile pixel",
-						"quality": "Reported"
+						"comment": "index bluetooth transmitter",
+						"quality": "Estimated"
 					},
 					"referencedReports": {
 						"IntegratedReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": "IntegratedReport",
-							"publicationDate": "2023-04-01"
+							"publicationDate": "2024-01-21"
+						},
+						"ESEFReport": {
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"fileName": "ESEFReport",
+							"publicationDate": "2023-12-23"
 						},
 						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-08-18"
+							"publicationDate": "2023-10-09"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 9602059661.42,
+						"value": 3590393294.58,
 						"dataSource": {
-							"page": "689",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "web services"
+							"page": "873-1099",
+							"fileName": "SustainabilityReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "ROI",
+							"publicationDate": null
 						},
-						"comment": "input mobile microchip",
-						"quality": "Estimated",
-						"currency": "LAK"
+						"comment": "connect bluetooth driver",
+						"quality": "NoDataFound",
+						"currency": "SHP"
 					},
 					"debt": {
-						"value": 1098737262.65,
+						"value": 3321109884.42,
 						"dataSource": {
-							"page": "752-1062",
+							"page": "490-1253",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "ROI"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "lifetime value",
+							"publicationDate": null
 						},
-						"comment": "index 1080p bus",
-						"quality": "Reported",
-						"currency": "CDF"
+						"comment": "navigate online panel",
+						"quality": "Audited",
+						"currency": "UGX"
 					},
 					"balanceSheetTotal": {
-						"value": 4386258840.09,
+						"value": 2933890086.13,
 						"dataSource": {
-							"page": "300-1131",
+							"page": "717-750",
 							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "systems"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
 						},
-						"comment": "program primary monitor",
-						"quality": "Incomplete",
-						"currency": "MAD"
+						"comment": "parse redundant matrix",
+						"quality": "Reported",
+						"currency": "BND"
 					},
 					"evic": {
-						"value": 5305528752.51,
+						"value": 761164708.52,
 						"dataSource": {
-							"page": "599",
-							"fileName": "IntegratedReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "markets"
+							"page": "222",
+							"fileName": "ESEFReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "systems",
+							"publicationDate": null
 						},
-						"comment": "copy optical array",
-						"quality": "NoDataFound",
-						"currency": "BWP"
+						"comment": "back up redundant bandwidth",
+						"quality": "Audited",
+						"currency": "MGA"
 					}
 				}
 			}

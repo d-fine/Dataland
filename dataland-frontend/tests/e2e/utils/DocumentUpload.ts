@@ -6,7 +6,16 @@ import { DocumentControllerApi, type DocumentUploadResponse } from '@clients/doc
  * @param token the keycloak token for authentication
  */
 export function uploadAllDocuments(token: string): void {
-  const documentDirectory = '../testing/data/documents/';
+  uploadAllDocumentsFromFolder(token, '../testing/data/documents/');
+  uploadAllDocumentsFromFolder(token, '../testing/data/documents/fake-fixtures/');
+}
+
+/**
+ * Uploads all documents from a folder
+ * @param token the keycloak token for authentication
+ * @param documentDirectory the directory where the documents are stored
+ */
+function uploadAllDocumentsFromFolder(token: string, documentDirectory: string): void {
   cy.task('readdir', documentDirectory).then((fileNames) => {
     const allFileNames = fileNames as string[];
     const pdfFileNames = allFileNames.filter((name: string) => name.endsWith('.pdf'));

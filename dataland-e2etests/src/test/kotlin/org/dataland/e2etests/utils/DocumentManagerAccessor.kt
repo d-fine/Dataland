@@ -18,7 +18,11 @@ class DocumentManagerAccessor {
         listOf(
             File("./build/resources/test/documents/some-document.pdf"),
             File("./build/resources/test/documents/some-document2.pdf"),
-            File("./build/resources/test/documents/StandardWordExport.pdf"),
+            File("./build/resources/test/documents/fake-fixtures/fake-fixture-pdf-1.pdf"),
+            File("./build/resources/test/documents/fake-fixtures/fake-fixture-pdf-2.pdf"),
+            File("./build/resources/test/documents/fake-fixtures/fake-fixture-pdf-3.pdf"),
+            File("./build/resources/test/documents/fake-fixtures/fake-fixture-pdf-4.pdf"),
+            File("./build/resources/test/documents/fake-fixtures/fake-fixture-pdf-5.pdf"),
             File("./build/resources/test/documents/more-pdfs-in-seperate-directory/some-document.pdf"),
         )
 

@@ -56,13 +56,31 @@ class MessageQueuePublications(
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        logger.info("Publish message that data set with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
-            type = MessageType.PUBLIC_DATA_RECEIVED,
+        publishDatasetMessage(
+            dataId = dataId,
+            bypassQa = bypassQa,
             correlationId = correlationId,
-            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_UPLOAD,
+        )
+    }
+
+    /**
+     * Method to publish a message that a data set has been uploaded
+     * @param dataId The ID of the uploaded data set
+     * @param bypassQa Whether the QA process should be bypassed
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDataSetQaRequiredMessage(
+        dataId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+    ) {
+        logger.info("Publish message that data set with ID '$dataId' needs to undergo QA. Correlation ID: '$correlationId'.")
+        publishDatasetMessage(
+            dataId = dataId,
+            bypassQa = bypassQa,
+            correlationId = correlationId,
+            routingKey = RoutingKeyNames.DATASET_QA,
         )
     }
 
@@ -82,6 +100,29 @@ class MessageQueuePublications(
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_DELETION,
+        )
+    }
+
+    /**
+     * Method to publish a message that a data set has been uploaded and either needs to be stored or just undergo QA
+     * @param dataId The ID of the uploaded data set
+     * @param bypassQa Whether the QA process should be bypassed
+     * @param correlationId The correlation ID of the request initiating the event
+     * @param routingKey The routing key to steer which consumers pick up on the event
+     */
+    private fun publishDatasetMessage(
+        dataId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+        routingKey: String,
+    ) {
+        logger.info("Publish message that data set with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
+            type = MessageType.PUBLIC_DATA_RECEIVED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = routingKey,
         )
     }
 }

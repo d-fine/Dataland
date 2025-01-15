@@ -16,7 +16,7 @@ import {
   type YesNoNa,
 } from '@clients/backend';
 import { generateCurrencyValue, generateFloat, generatePercentageValue } from '@e2e/fixtures/common/NumberFixtures';
-import { generateReferencedDocuments, getReferencedDocumentId } from '@e2e/utils/DocumentReference';
+import { generateReferencedDocuments, getAllFakeFixtureDocumentIds } from '@e2e/utils/DocumentReference';
 import { generateCurrencyCode } from '@e2e/fixtures/common/CurrencyFixtures';
 import { type BaseDataPoint, type ExtendedDataPoint } from '@/utils/DataPoint';
 import { generateFutureDate, generatePastDate } from '@e2e/fixtures/common/DateFixtures';
@@ -160,20 +160,18 @@ export class Generator {
 
   /**
    * Generates a random non-empty set of reports that can be referenced
-   * @param requiredReportNames reports with names that must occur
    * @returns a random non-empty set of reports
    */
-  generateReferencedReports(requiredReportNames?: string[]): ReferencedDocuments {
-    let availableReportNames = pickSubsetOfElements(possibleReports);
-    if (requiredReportNames !== undefined) {
-      availableReportNames = [...new Set(requiredReportNames.concat(availableReportNames))];
-    }
+  generateReferencedReports(): ReferencedDocuments {
+    const availableReportNames = pickSubsetOfElements(possibleReports);
+    const fixtureDocumentIds = getAllFakeFixtureDocumentIds();
 
     const referencedReports: ReferencedDocuments = {};
+    let documentIndex = 0;
     for (const reportName of availableReportNames) {
       referencedReports[reportName] = {
-        fileReference: getReferencedDocumentId(),
-        fileName: this.valueOrNull(reportName),
+        fileReference: fixtureDocumentIds[documentIndex++],
+        fileName: reportName,
         publicationDate: this.valueOrNull(generatePastDate()),
       };
     }

@@ -4,6 +4,7 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyFinancialsData
 import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
@@ -32,6 +33,8 @@ class FrameworkTestDataProvider<T>(
                 File("./build/resources/test/CompanyInformationWithVsmeData.json"),
             PathwaysToParisData::class.java to
                 File("./build/resources/test/CompanyInformationWithP2pData.json"),
+            AdditionalCompanyInformationData::class.java to
+                File("./build/resources/test/CompanyInformationWithAdditionalCompanyInformationData.json"),
         )
 
     private val moshi: Moshi =

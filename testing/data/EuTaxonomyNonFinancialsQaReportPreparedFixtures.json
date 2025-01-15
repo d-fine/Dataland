@@ -2,34 +2,35 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "North Wallaceworth",
-			"headquartersPostalCode": "97416-7205",
-			"sector": "metrics",
+			"headquarters": "Lake Marquiseburgh",
+			"headquartersPostalCode": "68964-2847",
+			"sector": "channels",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"mfgMyuCjrEiPzYyHl6Pv"
+				],
 				"Isin": [
-					"Q3CoERJfyoUh"
+					"ZRklmfBFn06s"
 				],
-				"PermId": [
-					"hWr3EB4NVC"
-				],
+				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [
-					"Y0KbP18Xg"
+				"Duns": [
+					"wWWzed9VX"
 				],
-				"CompanyRegistrationNumber": [
-					"2ZvCn2oatj9aSG1"
-				]
+				"VatNumber": [
+					"N2KFe0mD4"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "GU",
+			"countryCode": "BV",
 			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Hilll - Corkery",
-				"Rodriguez Inc"
+				"Effertz, Runte and Nitzsche",
+				"Fay, Ullrich and Prohaska",
+				"Hintz - Walsh"
 			],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": null,
+			"companyLegalForm": null,
+			"website": "https://modern-necklace.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -97,6 +98,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2020"
 	}
 ]

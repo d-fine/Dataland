@@ -9,8 +9,8 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.model.ExportFileType
@@ -26,16 +26,15 @@ import java.time.Instant
 
 /**
  * Abstract implementation of the controller for data exchange of an abstract type T
- * @param dataManager service to handle data
+ * @param datasetStorageService service to handle data storage
  * @param dataMetaInformationManager service for handling data meta information
  * @param objectMapper the mapper to transform strings into classes and vice versa
  */
-
 abstract class DataController<T>(
-    var dataManager: DataManager,
-    var dataMetaInformationManager: DataMetaInformationManager,
+    private val datasetStorageService: DatasetStorageService,
+    private val dataMetaInformationManager: DataMetaInformationManager,
     var dataExportService: DataExportService,
-    var objectMapper: ObjectMapper,
+    private val objectMapper: ObjectMapper,
     private val clazz: Class<T>,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
@@ -54,7 +53,8 @@ abstract class DataController<T>(
         val uploadTime = Instant.now().toEpochMilli()
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val correlationId = IdUtils.generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
-        val dataIdOfPostedData = dataManager.processDataStorageRequest(datasetToStore, bypassQa, correlationId)
+
+        val dataIdOfPostedData = datasetStorageService.storeDataset(datasetToStore, bypassQa, correlationId)
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
 
         return ResponseEntity.ok(
@@ -71,11 +71,18 @@ abstract class DataController<T>(
         this.verifyAccess(metaInfo)
         val companyId = metaInfo.company.companyId
         val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
+        logger.info(logMessageBuilder.getCompanyAssociatedDataMessage(dataId, companyId))
+
         val companyAssociatedData =
             this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
         return ResponseEntity.ok(companyAssociatedData)
     }
+
+    private fun getDataAsString(
+        dataId: String,
+        correlationId: String,
+    ): String = datasetStorageService.getDatasetData(dataId, dataType.toString(), correlationId)
 
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
@@ -92,12 +99,8 @@ abstract class DataController<T>(
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null)
-            val dataAsString =
-                dataManager
-                    .getPublicDataSet(
-                        it.dataId, DataType.valueOf(it.dataType),
-                        correlationId,
-                    ).data
+
+            val dataAsString = getDataAsString(it.dataId, correlationId)
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
                     it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),
@@ -206,7 +209,7 @@ abstract class DataController<T>(
         return CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = reportingPeriod,
-            data = objectMapper.readValue(dataManager.getPublicDataSet(dataId, dataType, correlationId).data, clazz),
+            data = objectMapper.readValue(getDataAsString(dataId, correlationId), clazz),
         )
     }
 

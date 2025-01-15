@@ -6,6 +6,7 @@ import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mock
 import { generateStoredDataRequests } from '@e2e/fixtures/custom_mocks/StoredDataRequestsFaker';
 import { generateSfdrQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
 import { generateEuTaxonomyNonFinancialsQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/EuTaxonomyNonFinancialsQaReportPreparedFixtures';
+import { generateAdditionalCompanyInformationLinkedQaReports } from '@e2e/fixtures/custom_mocks/AdditionalCompanyInformationQaPreparedFixtures.ts';
 
 /**
  * Generates mocks that are not only dataset mocks
@@ -46,5 +47,9 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     '../testing/data/EuTaxonomyNonFinancialsQaReportPreparedFixtures.json',
     JSON.stringify(generateEuTaxonomyNonFinancialsQaReportPreparedFixtures(), null, '\t')
+  );
+  fs.writeFileSync(
+    '../testing/data/AdditionalCompanyInformationQaReportPreparedFixtures.json',
+    JSON.stringify(generateAdditionalCompanyInformationLinkedQaReports(), null, '\t')
   );
 }

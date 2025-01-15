@@ -2,150 +2,269 @@
 	{
 		"companyInformation": {
 			"companyName": "Heimathafen-dataset-with-no-null-fields",
-			"headquarters": "Legrosboro",
-			"headquartersPostalCode": "07260-4983",
-			"sector": "interfaces",
+			"headquarters": "Bruentown",
+			"headquartersPostalCode": "83380",
+			"sector": "e-commerce",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"VgFCfXl8DLaulKUv678h"
+				],
 				"Isin": [
-					"Z9xaBbAu6I4I"
+					"WWtEIuHjypjf"
 				],
 				"PermId": [
-					"vbiIz2Qtvj"
+					"n62fzPlXZn"
 				],
-				"Ticker": [
-					"eS3v7tD"
-				],
+				"Ticker": [],
 				"Duns": [
-					"fs3EI6w07"
+					"XA1weHm1U"
 				],
-				"VatNumber": [],
+				"VatNumber": [
+					"gwc5CaMb1"
+				],
 				"CompanyRegistrationNumber": [
-					"CiCulT2VVUG9QjO"
+					"0DStsCHhwhfCeNF"
 				]
 			},
-			"countryCode": "SI",
+			"countryCode": "SK",
 			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Roob - Bailey"
+				"Barton Inc",
+				"Cummings - Ebert",
+				"Reynolds, Littel and Hirthe"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://dim-lettuce.com",
+			"companyLegalForm": "Private Limited Company (Ltd)",
+			"website": "https://heavenly-writing.com/",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"unternehmen": {
-					"unternehmenseigentumUndEigentuemerstruktur": "Conor quasi suadeo absconditus tracto uterque calculus vomica. Asperiores quasi tergeo studio pecco solum. Depono concedo valeo attero bardus cum.",
-					"kernkompetenzenUndGeschaeftsbereiche": [],
-					"anzahlDerFuerEsgZustaendigenMitarbeiter": 1422
+					"unternehmenseigentumUndEigentuemerstruktur": "Usitas succedo argumentum doloremque. Dapifer theatrum maiores spes architecto adinventitias amitto ipsa timor tabgo. Ambitus timor una quam a trepide claro.",
+					"kernkompetenzenUndGeschaeftsbereiche": [
+						"16.21",
+						"46.21",
+						"47.2"
+					],
+					"anzahlDerFuerEsgZustaendigenMitarbeiter": 7100
 				},
 				"methodik": {
-					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "Aggero caries quis celer strenuus architecto bis decet doloribus. Tamisium claro velit delectus absorbeo uxor cui vicinus viridis. Sapiente corona unus tyrannus patruus contego infit acceptus.",
-					"kriterienFuerIhreNachhaltigkeitsratings": "Cauda perspiciatis odio sum crur crur. Brevis tametsi depulso venia. Tamquam reprehenderit concedo tergo conicio tactus peccatus auxilium valeo charisma.",
-					"verfahrenZurVorbereitungDerAnalyseOderMethodik": "Corrumpo adipisci tot coniuratio admoveo verumtamen antepono crudelis. Maxime delinquo utrimque arbustum tribuo. Tunc timidus pecus.",
-					"definitionBewertungsskala": "Creptio validus pauci decretum caveo teneo stillicidium. Credo ulterius demulceo benevolentia ducimus accusamus iure. Summopere animadverto aeternus condico civitas bis.",
-					"aktualitaetDerRatings": "Nulla earum cruciamentum vesica. Cultura tenax stipes sumo unus absque. Atqui temporibus tergiversatio cohibeo aegrus.",
-					"unabhaengigkeitDerRatings": "Abeo soluta tres via ager corpus. Terga claustrum brevis deludo curvo abeo aspernatur conservo cuppedia pauci. Absconditus cenaculum solum audio cinis creo verecundia vos alius.",
-					"datenerfassung": "Ipsum dignissimos damno video sustineo armarium comedo explicabo bellicus apostolus. Ventito thorax claro curto tamdiu atrox nostrum. Verus voveo beneficium.",
-					"methodikUmfasstUmweltSozialesUndGovernance": "Trucido sunt arcus contigo vacuus ascisco peccatus alioqui bestia. Apto annus vomica stipes argentum decimus cattus arbitro tumultus contigo. Animus conitor contabesco censura adaugeo coruscus curvo.",
+					"verstaendnisVonNachhaltigkeitAlsTeilDerBewertung": "Demens theca textus arcus ipsa incidunt adfectus urbanus. Thermae spoliatio quis surgo voluptate viscus. Adhuc temporibus vinculum pel coruscus minus vir auditor.",
+					"kriterienFuerIhreNachhaltigkeitsratings": "Distinctio utroque cultura viduo aegrus. Creber placeat sunt voro celo vesper. Auxilium delego pax terra.",
+					"verfahrenZurVorbereitungDerAnalyseOderMethodik": "Dolor venia caute amaritudo thesaurus adipiscor suscipit adhuc ter. Suscipit succurro solutio suadeo cena. Demonstro virgo comminor aureus pauci ustilo esse aro copiose tolero.",
+					"definitionBewertungsskala": "Varietas libero pauci aeternus damnatio. Consequatur adsidue provident architecto commemoro tabesco vacuus cubo avaritia. Vapulus sum spero aufero utique tempus ultio.",
+					"aktualitaetDerRatings": "Aqua aliqua adaugeo vita pecco. Curiositas coma contra tracto casso torqueo. Carpo aestus caute stips.",
+					"unabhaengigkeitDerRatings": "Acies curvo assentator exercitationem perspiciatis dedico utor abbas despecto demonstro. Similique perspiciatis tracto ulterius theatrum dolore auxilium aqua amicitia. Eveniet trepide cumque aperiam triumphus solum fugiat clam sublime.",
+					"datenerfassung": "Appello vulgaris coniecto cribro comburo trepide tempora stella et. Cum vulgo argumentum attonbitus alius. Animi vito colligo cohibeo aperio adeptio adficio assentator.",
+					"methodikUmfasstUmweltSozialesUndGovernance": "Conatus vilicus conspergo amita alter crapula aggero a cribro tollo. Volva aequus stultus arx pariatur tamisium. Thymbra vester summa.",
 					"datenquellen": [
 						{
-							"value": "models",
+							"value": "methodologies",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "markets",
+							"value": "interfaces",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						}
+					],
+					"datenPlausibilitaetspruefung": "Carmen arx decipio viridis vicinus vae subseco combibo nam teres. Spargo consequatur victus commodi recusandae arbustum sequi aer termes strenuus. Vestigium quis cura confido comptus sufficio adaugeo decet velociter cunae.",
+					"intervalleFuerDieDatenaktualisierung": "deliverables",
+					"zuverlaessigkeitDerMethodikSicherstellen": "Timidus traho audio acies. Assentator abduco condico aptus super demens. Suscipit damno victus.",
+					"minimierungOderVerhinderungSubjektiverFaktoren": "Asporto utilis alter basium advenio vis vulgivagus antea universe capitulus. Sed veniam cursus derideo animus versus cupiditate. Terra architecto autus rerum.",
+					"listePotenziellerInteressenkonflikte": "Saepe conor quasi suadeo absconditus tracto uterque calculus vomica deserunt. Quasi tergeo studio pecco. Decretum depono concedo valeo attero bardus cum adhaero.",
+					"interessenkonfliktenEntgegenwirken": "Terreo aggero caries quis. Strenuus architecto bis decet doloribus. Tamisium claro velit delectus absorbeo uxor cui vicinus viridis.",
+					"dokumentationDerDatenerfassungUndSicherstellungDesProzesses": "Sapiente corona unus tyrannus patruus contego infit acceptus. Cauda perspiciatis odio sum crur crur. Brevis tametsi depulso venia.",
+					"bewertungVonQualitaetsstandards": "Tamquam reprehenderit concedo tergo conicio tactus peccatus auxilium valeo charisma. Corrumpo adipisci tot coniuratio admoveo verumtamen antepono crudelis. Maxime delinquo utrimque arbustum tribuo.",
+					"ratingTransparenzstandards": "Tunc timidus pecus. Creptio validus pauci decretum caveo teneo stillicidium. Credo ulterius demulceo benevolentia ducimus accusamus iure.",
+					"qualitaetssicherungsprozess": "Yes",
+					"fallsNeinGebenSieBitteDieGruendeAn": "Animadverto aeternus condico civitas bis carmen nulla earum. Vesica cursim cultura tenax stipes sumo. Absque commemoro atqui temporibus tergiversatio cohibeo aegrus decretum abeo.",
+					"strukturDesQualitaetssicherungsprozesses": "Tres via ager corpus vaco terga claustrum brevis. Curvo abeo aspernatur conservo cuppedia pauci. Absconditus cenaculum solum audio cinis creo verecundia vos alius.",
+					"dieAktualitaetDerMethodik": "Ipsum dignissimos damno video sustineo armarium comedo explicabo bellicus apostolus. Ventito thorax claro curto tamdiu atrox nostrum. Verus voveo beneficium.",
+					"paisInDieAnalyseEinbezogen": "No",
+					"listeDerEingeschlossenenPais": "Sunt arcus contigo vacuus ascisco peccatus alioqui bestia vaco. Annus vomica stipes argentum. Cattus arbitro tumultus contigo nihil animus.",
+					"quelleDerPaiSammlung": [
+						{
+							"value": "niches",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "paradigms",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						}
+					],
+					"umgangMitAusreissern": "Deripio socius contabesco admiratio ancilla theologus. Ceno valetudo deprecator peccatus recusandae alius corrumpo. Timor subnecto sui tenus.",
+					"identifizierungVonKontroversenGeschaeften": "Cogito adeptio tergeo ullam undique tempore. Umquam viriliter synagoga vivo comis. Una sono sperno aperte vapulus aeternus conqueror cultura carpo asperiores.",
+					"aktuelleKontroversen": "Aqua vito corpus synagoga ter atqui aestas copiose suggero. Cui terminatio usque comes infit claudeo stips corroboro. Vere custodia accendo uxor derelinquo tum tutamen dicta adduco.",
+					"quellenZurErfassungVonKontroversen": [
+						{
+							"value": "e-commerce",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "applications",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						}
-					],
-					"datenPlausibilitaetspruefung": "Valetudo deprecator peccatus recusandae alius. Beatae timor subnecto sui tenus. Cogito adeptio tergeo ullam undique tempore.",
-					"intervalleFuerDieDatenaktualisierung": "niches",
-					"zuverlaessigkeitDerMethodikSicherstellen": "Viriliter synagoga vivo comis vulpes una sono sperno aperte. Aeternus conqueror cultura carpo asperiores turbo aqua vito corpus synagoga. Atqui aestas copiose suggero solum cui terminatio usque comes.",
-					"minimierungOderVerhinderungSubjektiverFaktoren": "Claudeo stips corroboro undique vere custodia accendo. Derelinquo tum tutamen dicta adduco curis modi acidus textor quia. Tutamen sed testimonium abscido spargo suffoco subito.",
-					"listePotenziellerInteressenkonflikte": "Perferendis ducimus attonbitus. Cetera pecus umquam acceptus celebrer bibo perspiciatis acceptus vacuus. Earum curatio explicabo acquiro succurro arma maiores vulgus.",
-					"interessenkonfliktenEntgegenwirken": "Thermae dicta amita audax cuppedia caelestis velit summisse. Crudelis delicate sub vicissitudo at. Quos curis desino urbanus conatus contra conduco tero concedo caries.",
-					"dokumentationDerDatenerfassungUndSicherstellungDesProzesses": "Cattus crustulum accusamus sublime aegrotatio aduro sumptus ars umerus suppono. Subnecto laborum speculum ago deorsum consequatur nobis atque. Uredo necessitatibus totus accendo terebro taceo.",
-					"bewertungVonQualitaetsstandards": "Bestia nostrum congregatio synagoga desidero supellex tonsor verus tracto celo. Amplitudo aedificium patrocinor thymum. Tutis calcar temeritas.",
-					"ratingTransparenzstandards": "Altus vix crastinus auxilium. Tergiversatio dignissimos crastinus. Vesco admoveo thalassinus ulciscor quidem sursum odit vigor soluta.",
-					"qualitaetssicherungsprozess": "Yes",
-					"fallsNeinGebenSieBitteDieGruendeAn": "Artificiose cruciamentum verecundia blanditiis. Cum synagoga barba commemoro. Repellat corrupti acquiro tremo animi talis pauci.",
-					"strukturDesQualitaetssicherungsprozesses": "Spiritus cunctatio certe reprehenderit terra varius vester tamen. Damnatio labore dolor sophismata argumentum aeger animus cribro. Defungo coma conicio.",
-					"dieAktualitaetDerMethodik": "Viridis cervus audentia ustilo decerno triumphus aveho caste amissio. Tandem adulatio conventus odit tenax spectaculum vallum amiculum benigne capillus. Crudelis corona tricesimus alienus coepi comburo conspergo vehemens damnatio cogo.",
-					"paisInDieAnalyseEinbezogen": "Yes",
-					"listeDerEingeschlossenenPais": "Acerbitas adhaero debeo pecco amitto. Vivo defessus ad vulgaris cicuta. Adeo perferendis rem ambulo aestivus ipsam vergo vigor dens.",
-					"quelleDerPaiSammlung": [
-						{
-							"value": "portals",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
-							"value": "architectures",
+							"value": "e-commerce",
 							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
-					],
-					"umgangMitAusreissern": "Bardus benigne amplexus complectus demonstro adnuo. Corrumpo iure timor attonbitus statua inventore patrocinor. Votum somniculosus corporis socius tabgo coerceo talis cuppedia supplanto.",
-					"identifizierungVonKontroversenGeschaeften": "Auctor quidem uxor abstergo defleo atrox absque dolor. Attollo a facere. Usitas voro aliqua asporto.",
-					"aktuelleKontroversen": "Spiculum cogo tempus suppono conor nulla suppellex. Maxime advoco coma numquam voco. Aliquid crinis annus pauci vicissitudo textor demonstro confero.",
-					"quellenZurErfassungVonKontroversen": [
+					]
+				},
+				"impactmerkmaleKeineArmut": {
+					"sdgKeineArmut": "No",
+					"wennNeinBitteBegruenden": "Abscido spargo suffoco subito absque perferendis ducimus attonbitus thermae. Pecus umquam acceptus celebrer bibo. Acceptus vacuus soleo earum curatio explicabo acquiro.",
+					"verwendeteSchluesselzahlen": "Arma maiores vulgus sursum thermae dicta amita audax. Caelestis velit summisse cerno crudelis delicate. Vicissitudo at viriliter quos curis desino urbanus conatus.",
+					"datenerfassung": "Conduco tero concedo caries vinum. Crustulum accusamus sublime aegrotatio aduro. Ars umerus suppono solus subnecto laborum speculum ago.",
+					"datenPlausibilitaetspruefung": "Consequatur nobis atque crudelis uredo necessitatibus. Accendo terebro taceo vaco bestia nostrum congregatio synagoga desidero. Tonsor verus tracto celo calco amplitudo aedificium patrocinor.",
+					"datenquellen": [
+						{
+							"value": "partnerships",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "communities",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "platforms",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "blockchains",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "eyeballs",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						}
+					]
+				},
+				"impactmerkmaleKeinHunger": {
+					"sdgKeinHunger": "No",
+					"wennNeinBitteBegruenden": "Crastinus tantillus vesco admoveo thalassinus ulciscor quidem. Odit vigor soluta agnosco arto artificiose cruciamentum verecundia. Appositus cum synagoga barba.",
+					"verwendeteSchluesselzahlen": "Esse repellat corrupti acquiro tremo. Talis pauci quisquam. Cunctatio certe reprehenderit terra varius vester tamen spargo.",
+					"datenerfassung": "Labore dolor sophismata argumentum aeger animus. Aiunt defungo coma conicio uter viridis. Audentia ustilo decerno triumphus aveho.",
+					"datenPlausibilitaetspruefung": "Amissio valens tandem adulatio conventus. Tenax spectaculum vallum amiculum benigne capillus virgo. Corona tricesimus alienus coepi comburo conspergo.",
+					"datenquellen": [
+						{
+							"value": "supply-chains",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "content",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "synergies",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "supply-chains",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "infrastructures",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						}
+					]
+				},
+				"impactmerkmaleGesundheitUndWohlergehen": {
+					"sdgGesundheitUndWohlergehen": "No",
+					"wennNeinBitteBegruenden": "Ad vulgaris cicuta timidus adeo perferendis. Ambulo aestivus ipsam vergo vigor dens combibo comitatus. Doloremque amplitudo cuius bardus benigne amplexus complectus demonstro.",
+					"verwendeteSchluesselzahlen": "Laudantium corrumpo iure. Attonbitus statua inventore patrocinor tandem votum somniculosus corporis socius. Coerceo talis cuppedia supplanto socius auctor quidem uxor.",
+					"datenerfassung": "Defleo atrox absque. Alo attollo a facere appono usitas voro. Asporto eaque spiculum.",
+					"datenPlausibilitaetspruefung": "Tempus suppono conor nulla suppellex. Maxime advoco coma numquam voco. Aliquid crinis annus pauci vicissitudo textor demonstro confero.",
+					"datenquellen": [
 						{
 							"value": "architectures",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "metrics",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "networks",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "metrics",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "convergence",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
-				"impactmerkmaleKeineArmut": {
-					"sdgKeineArmut": "Yes",
+				"impactmerkmaleHochwertigeBildung": {
+					"sdgHochwertigeBildung": "Yes",
 					"wennNeinBitteBegruenden": "Capillus creo commodo curvo argumentum capitulus. Error ipsum cibo absorbeo amet curiositas xiphias uxor magnam. Careo doloremque basium ara voluptate verumtamen vito villa.",
 					"verwendeteSchluesselzahlen": "Aetas adsuesco capillus confido cursus vae sequi usitas demergo usus. Summopere alius blandior verbera urbs. Validus super quidem amissio.",
 					"datenerfassung": "Exercitationem advenio vero demum cometes adiuvo vester vulticulus concido. Ut crudelis avaritia crastinus. Mollitia adulescens sursum coruscus cena cohors corrupti ulciscor delego velut.",
@@ -155,27 +274,27 @@
 							"value": "action-items",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "paradigms",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "markets",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
-				"impactmerkmaleKeinHunger": {
-					"sdgKeinHunger": "Yes",
+				"impactmerkmaleGeschlechtergleichheit": {
+					"sdgGeschlechtergleichheit": "Yes",
 					"wennNeinBitteBegruenden": "Callide abscido somniculosus. Ultra voluptates talus theologus earum truculenter acerbitas calcar. Depulso capillus conservo ubi volutabrum speciosus.",
 					"verwendeteSchluesselzahlen": "Aer somniculosus truculenter adeo stillicidium speciosus decipio illum celo. Consuasor utroque tenuis distinctio acer cibo subito utor. Tamquam sufficio comparo argumentum caveo ter creo laudantium.",
 					"datenerfassung": "Basium bonus claustrum. Optio cauda autus officia crux cicuta. Canis summa adficio.",
@@ -185,27 +304,27 @@
 							"value": "platforms",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "paradigms",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "users",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
-				"impactmerkmaleGesundheitUndWohlergehen": {
-					"sdgGesundheitUndWohlergehen": "No",
+				"impactmerkmaleSauberesWasserUndSanitaereEinrichtungen": {
+					"sdgSauberesWasserUndSanitaereEinrichtungen": "No",
 					"wennNeinBitteBegruenden": "Vulariter sublime usitas alioqui amiculum suffragium tunc. Credo totidem curia capto. Approbo solium voluptate decimus vacuus attollo.",
 					"verwendeteSchluesselzahlen": "Averto architecto animus suffoco veritas tabesco caritas. Comis cunctatio summisse vestrum valeo advoco tergo perferendis voluntarius amaritudo. Coaegresco atrox canis vobis.",
 					"datenerfassung": "Vorago solio circumvenio crudelis commodo venia anser condico perspiciatis degenero. Demum bonus acervus territo. Pauci verbera iusto.",
@@ -215,27 +334,27 @@
 							"value": "portals",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "platforms",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "bandwidth",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
-				"impactmerkmaleHochwertigeBildung": {
-					"sdgHochwertigeBildung": "No",
+				"impactmerkmaleBezahlbareUndSaubereEnergie": {
+					"sdgBezahlbareUndSaubereEnergie": "No",
 					"wennNeinBitteBegruenden": "Architecto tracto amplitudo carmen trucido curvo. Molestiae tredecim aiunt sophismata thermae eaque vir molestias volva canis. Tam armarium carcer.",
 					"verwendeteSchluesselzahlen": "Coadunatio triumphus comburo thorax demergo necessitatibus stillicidium antepono. Qui vallum molestias amaritudo ratione. Defaeco accusantium centum.",
 					"datenerfassung": "Bos derideo sint vulariter. Suadeo eius architecto depereo theatrum aestas alter conforto. Sumptus dolorem cimentarius circumvenio.",
@@ -245,41 +364,41 @@
 							"value": "mindshare",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "functionalities",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "methodologies",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "platforms",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "action-items",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
-				"impactmerkmaleGeschlechtergleichheit": {
-					"sdgGeschlechtergleichheit": "No",
+				"impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum": {
+					"sdgMenschenwuerdigeArbeitUndWirtschaftswachstum": "No",
 					"wennNeinBitteBegruenden": "Curriculum facilis bos cena solium ipsum solutio. Taedium textus ocer vester creber aranea deprimo crinis. Rerum subnecto tenuis tubineus vulnero quisquam velociter vis.",
 					"verwendeteSchluesselzahlen": "Vereor succedo quasi. Aestus aspicio corporis usque aequitas vinculum argumentum. Adeo armarium vigor adicio saepe deorsum crinis vesica campana.",
 					"datenerfassung": "Vulnero cito ademptio derideo carmen adhaero appono esse verbum stabilis. Vulgivagus una coepi admoneo. Aequitas amita bellicus creator tribuo vulariter.",
@@ -289,13 +408,13 @@
 							"value": "schemas",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
-				"impactmerkmaleSauberesWasserUndSanitaereEinrichtungen": {
-					"sdgSauberesWasserUndSanitaereEinrichtungen": "Yes",
+				"impactmerkmaleIndustrieInnovationUndInfrastruktur": {
+					"sdgIndustrieInnovationUndInfrastruktur": "Yes",
 					"wennNeinBitteBegruenden": "Cavus accommodo nulla corona eius vacuus spiculum timidus. Comminor alii tui testimonium. Audacia ocer candidus voco vaco denuncio denuncio.",
 					"verwendeteSchluesselzahlen": "Assentator sint titulus audeo magni reprehenderit mollitia cibo officia arca. Summisse explicabo caste una beatae ulciscor ubi. Iure tolero candidus deludo.",
 					"datenerfassung": "Despecto vesper contra surgo aperio cotidie defessus adhaero. Tametsi repellendus constans quod decerno comburo nemo tutis ultio vesco. Tondeo addo ambitus viridis.",
@@ -305,27 +424,27 @@
 							"value": "partnerships",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "content",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "content",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
-				"impactmerkmaleBezahlbareUndSaubereEnergie": {
-					"sdgBezahlbareUndSaubereEnergie": "No",
+				"impactmerkmaleWenigerUngleichheiten": {
+					"sdgWenigerUngleichheiten": "No",
 					"wennNeinBitteBegruenden": "Thesis tremo ademptio vapulus. Suscipit vilitas consuasor vis. Vesper error trado.",
 					"verwendeteSchluesselzahlen": "Ante adsidue dicta vix explicabo valeo bene. Expedita caput iste vociferor praesentium vita. Adfero nemo cunctatio.",
 					"datenerfassung": "Solio cometes barba cras amoveo custodia cohors. Inventore bibo soleo. Decretum vesica curriculum curatio timor.",
@@ -335,41 +454,41 @@
 							"value": "ROI",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "ROI",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "e-commerce",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "e-commerce",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "applications",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
-				"impactmerkmaleMenschenwuerdigeArbeitUndWirtschaftswachstum": {
-					"sdgMenschenwuerdigeArbeitUndWirtschaftswachstum": "No",
+				"impactmerkmaleNachhaltigeStaedteUndGemeinden": {
+					"sdgNachhaltigeStaedteUndGemeinden": "No",
 					"wennNeinBitteBegruenden": "Eveniet aegre explicabo corrumpo. Adflicto reprehenderit depereo illo saepe aureus spero demo vinco. Deporto tondeo verumtamen alveus commodo reiciendis.",
 					"verwendeteSchluesselzahlen": "Laudantium contego eos volo cuius ipsam. Adfectus demo teres porro vero ars cur voco cursim accusamus. Dolor utique spes.",
 					"datenerfassung": "Arca nostrum dolorum vicissitudo denego est atqui statim. Quas desidero clementia sperno aeger soluta ater delego valens appello. Et aranea strenuus territo cubicularis substantia aperiam sortitus alius.",
@@ -379,27 +498,27 @@
 							"value": "web services",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "initiatives",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "methodologies",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
-				"impactmerkmaleIndustrieInnovationUndInfrastruktur": {
-					"sdgIndustrieInnovationUndInfrastruktur": "Yes",
+				"impactmerkmaleNachhaltigerKonsumUndProduktion": {
+					"sdgNachhaligerKonsumUndProduktion": "Yes",
 					"wennNeinBitteBegruenden": "Coadunatio via cimentarius beatus comitatus tollo defetiscor neque defungo atque. Caute tam timor defessus cursim acies. Triumphus dolorum vester templum aequitas et victoria studio.",
 					"verwendeteSchluesselzahlen": "Certe sumo studio cupiditas tenetur spiculum creptio abbas delectus curtus. Uterque dicta considero catena spero. Accedo benevolentia pauper adhaero supra arguo.",
 					"datenerfassung": "Arbor valens est. Tertius curriculum ascit veniam tametsi cribro tametsi. Cunae maxime pel pecco temptatio valde acies bonus xiphias denique.",
@@ -409,34 +528,34 @@
 							"value": "synergies",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "convergence",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "supply-chains",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "action-items",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
-				"impactmerkmaleWenigerUngleichheiten": {
-					"sdgWenigerUngleichheiten": "Yes",
+				"impactmerkmaleMassnahmenZumKlimaschutz": {
+					"sdgMassnahmenZumKlimaschutz": "Yes",
 					"wennNeinBitteBegruenden": "Ver amoveo fugit valetudo. Cenaculum aliquid annus cauda patior sit paens. Antiquus tot caste absque nulla claro aliqua vicissitudo uterque.",
 					"verwendeteSchluesselzahlen": "Cunae calcar error cruciamentum. Velum beatae alius corroboro velociter commodi cinis ipsam cenaculum. Cena cruciamentum vitae suffoco cattus.",
 					"datenerfassung": "Ater ducimus coaegresco contra sto curia charisma sponte tutis vivo. Delicate demoror apostolus. Debeo voluptas quis deleo.",
@@ -446,20 +565,20 @@
 							"value": "content",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "blockchains",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
-				"impactmerkmaleNachhaltigeStaedteUndGemeinden": {
-					"sdgNachhaltigeStaedteUndGemeinden": "Yes",
+				"impactmerkmaleLebenUnterWasser": {
+					"sdgLebenUnterWasser": "Yes",
 					"wennNeinBitteBegruenden": "Utroque quos cilicium verbera deprecator alias adamo. Unus turba ducimus aduro strues. Tersus vapulus adsidue acies adsum civis.",
 					"verwendeteSchluesselzahlen": "Vester viscus deduco commemoro cito ciminatio vulgus brevis. Talus desipio vobis ager et tam somniculosus utrimque una dolorem. Numquam cattus degero exercitationem aurum.",
 					"datenerfassung": "Desparatus debeo cunctatio conatus complectus timor ulciscor ademptio corrumpo illum. Labore cum acer fugit audio spoliatio crux suscipit congregatio. Ara aggredior cursus.",
@@ -469,13 +588,13 @@
 							"value": "users",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
-				"impactmerkmaleNachhaltigerKonsumUndProduktion": {
-					"sdgNachhaligerKonsumUndProduktion": "Yes",
+				"impactmerkmaleLebenAndLand": {
+					"sdgLebenAnLand": "Yes",
 					"wennNeinBitteBegruenden": "Adsidue varius cauda ulterius suadeo benevolentia creptio suus. Accusamus spoliatio cogito occaecati urbanus deludo. Doloribus concido tepesco.",
 					"verwendeteSchluesselzahlen": "Cultellus voluptate audeo minima comparo video. Surgo antiquus clibanus temporibus spero suus ut. Aggredior sodalitas spero tibi perspiciatis unde chirographum.",
 					"datenerfassung": "Dolor decens angulus torqueo coadunatio aut deduco civitas curtus. Agnitio pauci temeritas arcesso concedo corporis uredo laborum socius. Balbus ventosus decens cupiditas alter suffragium conscendo.",
@@ -485,27 +604,27 @@
 							"value": "convergence",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "functionalities",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "deliverables",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
-				"impactmerkmaleMassnahmenZumKlimaschutz": {
-					"sdgMassnahmenZumKlimaschutz": "No",
+				"impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen": {
+					"sdgFriedenGerechtigkeitUndStarkeInstitutionen": "No",
 					"wennNeinBitteBegruenden": "Ascit comes tenax peior ad ustilo. Celebrer verbera theatrum vociferor corroboro decerno. Cupressus vindico vivo pecto absum suffoco calamitas suppellex veniam.",
 					"verwendeteSchluesselzahlen": "Cibo audio cognomen. Peior vilitas sufficio abduco usitas supellex cuppedia coaegresco vir coerceo. Dedecor anser odio suadeo studio derideo addo.",
 					"datenerfassung": "Curriculum ea abeo aperiam. Thesaurus tribuo arguo bellum credo sustineo acsi vos. Magni acervus conicio tertius tempora curis.",
@@ -515,20 +634,20 @@
 							"value": "initiatives",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "networks",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
-				"impactmerkmaleLebenUnterWasser": {
-					"sdgLebenUnterWasser": "Yes",
+				"impactmerkmalePartnerschaftenZurErreichungDerZiele": {
+					"sdgPartnerschaftenZurErreichungDerZiele": "Yes",
 					"wennNeinBitteBegruenden": "Dolorum aptus somniculosus. Aetas studio suggero verbera artificiose pecus adeo causa audio. Communis ad textor decerno tabula contra.",
 					"verwendeteSchluesselzahlen": "Alioqui statua optio autus caput atque corrigo correptius. Delicate ciminatio delibero eveniet utpote substantia comis armarium pauci aspicio. Adulescens incidunt administratio stabilis suffoco vulgus virgo campana tamisium.",
 					"datenerfassung": "Aperte ustilo crux cursus aequitas defero desidero. Decor provident tamen vesica possimus temperantia ante tempore sub celebrer. Error coniecto culpo.",
@@ -538,411 +657,314 @@
 							"value": "methodologies",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "action-items",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "channels",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "systems",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "ROI",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						}
-					]
-				},
-				"impactmerkmaleLebenAndLand": {
-					"sdgLebenAnLand": "No",
-					"wennNeinBitteBegruenden": "Circumvenio delectatio sum eligendi culpo vomito. Sit adsidue aggero vox perferendis vigilo appono tricesimus voveo celer. Approbo solus contego.",
-					"verwendeteSchluesselzahlen": "Barba velit civis corroboro deputo vesper deripio cresco carcer debilito. Cui comprehendo vigor utilis tero. Utroque amissio damno vigilo.",
-					"datenerfassung": "Totidem volubilis quaerat vulariter infit undique capio non numquam accendo. Vilitas officiis deleo capto amitto thorax. Cedo vero cohaero decet atrocitas.",
-					"datenPlausibilitaetspruefung": "Villa sulum suspendo decumbo vulnero curis arbor color aeneus. Quia suscipio voluptatibus capitulus agnitio debeo dens. Utpote cunae velociter undique viduo commodi damnatio collum chirographum.",
-					"datenquellen": [
-						{
-							"value": "ROI",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "supply-chains",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						}
-					]
-				},
-				"impactmerkmaleFriedenGerechtigkeitUndStarkeInstitutionen": {
-					"sdgFriedenGerechtigkeitUndStarkeInstitutionen": "No",
-					"wennNeinBitteBegruenden": "Uxor molestias debeo tabgo confero adipiscor acidus capitulus. Bardus antepono in utilis asper spiculum acerbitas tondeo studio. Cuius cibo accendo adhuc thesaurus bellicus quis complectus.",
-					"verwendeteSchluesselzahlen": "Terga spoliatio acceptus. Acervus ullus commemoro tot dignissimos. Teres vilis compono creber utilis.",
-					"datenerfassung": "Sit absorbeo advoco theologus. Patria acervus cultellus. Et aliqua aut via carcer audax maiores.",
-					"datenPlausibilitaetspruefung": "Adfero verecundia deleniti thema sodalitas nulla ipsam. Aequus cito carus tumultus acies defetiscor deinde sumptus. Charisma venia tego sono censura victus cunabula verus auctus.",
-					"datenquellen": [
-						{
-							"value": "lifetime value",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "relationships",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "applications",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "deliverables",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						}
-					]
-				},
-				"impactmerkmalePartnerschaftenZurErreichungDerZiele": {
-					"sdgPartnerschaftenZurErreichungDerZiele": "Yes",
-					"wennNeinBitteBegruenden": "Vergo vilitas vesica atqui cumque concido damnatio aperte. Voluptatibus asporto in speculum itaque demo casus atqui curis deserunt. Modi nesciunt acer aegre delibero curso urbs talio.",
-					"verwendeteSchluesselzahlen": "Deleo averto suspendo spiculum arbustum architecto. Claustrum dolore unus asperiores. Amiculum thalassinus acceptus currus.",
-					"datenerfassung": "Succedo vero taceo. Verto stillicidium sumo recusandae convoco suggero commemoro. Vesco est necessitatibus arbustum aspernatur.",
-					"datenPlausibilitaetspruefung": "Decipio tamquam demoror voluptatibus sol caecus talio. Tamen volva venia libero accommodo defungo cedo. Aqua super confero cum.",
-					"datenquellen": [
-						{
-							"value": "networks",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
 				"implementierung": {
-					"angeboteneSprachen": "Cumque cimentarius utique ad amplus caveo. Ter custodia vapulus vomer cuius. Assentator video defungo aurum tenetur strues.",
-					"bereitgestellteDokumentationsarten": "Fugit subiungo adicio cado usque comburo voluptate. Atavus maxime consequatur id acerbitas sto caries adulescens. Cras suasoria surculus supplanto alias.",
-					"bereitgestellteDokumentationAufDeutsch": "Yes",
-					"leistungstests": "Yes",
-					"sicherheitstests": "Yes",
-					"beschreibungDerSystemarchitektur": "Acervus vigilo occaecati calcar vorax dedico suus. Optio corona terra deduco molestias. Quod amplus appositus canonicus damno beatae vomer.",
-					"erforderlichesClientBetriebssystem": "methodologies",
+					"angeboteneSprachen": "Crapula circumvenio delectatio sum eligendi culpo vomito votum. Adsidue aggero vox perferendis vigilo appono tricesimus voveo. Amissio approbo solus contego viscus.",
+					"bereitgestellteDokumentationsarten": "Velit civis corroboro deputo. Deripio cresco carcer debilito commemoro cui comprehendo vigor utilis tero. Utroque amissio damno vigilo.",
+					"bereitgestellteDokumentationAufDeutsch": "No",
+					"leistungstests": "No",
+					"sicherheitstests": "No",
+					"beschreibungDerSystemarchitektur": "Vulariter infit undique capio non numquam accendo. Vilitas officiis deleo capto amitto thorax. Cedo vero cohaero decet atrocitas.",
+					"erforderlichesClientBetriebssystem": "functionalities",
 					"angebotFuerFetteDuenneZitrischeKunden": "No",
-					"serverBackup": "Adnuo speciosus adsuesco sodalitas. Ter theatrum compono. Argumentum tum eligendi eos optio sollicito curso appositus natus.",
+					"serverBackup": "Suspendo decumbo vulnero curis arbor color aeneus dicta. Suscipio voluptatibus capitulus agnitio debeo dens temptatio. Cunae velociter undique viduo commodi damnatio collum chirographum cenaculum carpo.",
 					"standardisiertesKonzeptZurWiederherstellungImKatastrophenfall": {
 						"value": "Yes",
 						"dataSource": {
 							"fileName": "Certification",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+							"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 						}
 					},
 					"stammUndBewegungsdatenLesen": "No",
-					"kompatibilitaetMitAnderenDatenquellen": "Yes",
+					"kompatibilitaetMitAnderenDatenquellen": "No",
 					"importDerErgebnisseInDasDataWarehouse": "No",
-					"erforderlichesDatenbanksystem": "functionalities",
-					"beschreibungDesDesignsUndDerStrukturDerDatenbankEn": "Admoneo adhuc dedecor aufero laborum damnatio tricesimus. Sapiente valeo dolorem patrocinor ancilla maxime appello. Suspendo demergo derideo conturbo uberrime animadverto videlicet.",
-					"direkterZugriffAufDieDatenbank": "Yes",
+					"erforderlichesDatenbanksystem": "experiences",
+					"beschreibungDesDesignsUndDerStrukturDerDatenbankEn": "Debeo tabgo confero adipiscor acidus capitulus tergiversatio. Antepono in utilis asper. Acerbitas tondeo studio supplanto cuius cibo accendo adhuc.",
+					"direkterZugriffAufDieDatenbank": "No",
 					"schreibenderZugriffAufDieDatenbank": "Yes",
-					"unterstuetzungDerEchtzeitverarbeitung": "Yes",
+					"unterstuetzungDerEchtzeitverarbeitung": "No",
 					"unterstuetzungFuerZeitnaheVerarbeitung": "Yes",
 					"unterstuetzungDerStapelverarbeitung": "Yes",
-					"unterstuetzteBiLoesung": "users",
+					"unterstuetzteBiLoesung": "networks",
 					"flexibilitaetBeimImportExportVonDaten": "No",
-					"rundUmDieUhrVerfuegbarkeit": "No",
-					"uebertragenVonDatenhistorien": "Ait barba vinitor aspernatur vobis celebrer qui conscendo contego. Cauda tutamen considero minima. Titulus curis aegrotatio caelestis sordeo speculum vis.",
-					"unterstuetzterZeitraumDerDatenhistorien": "networks",
-					"fruehesterStartterminFuerEinIntegrationsprojekt": "2024-03-11",
-					"geschaetzterZeitrahmenFuerDieVollstaendigeIntegrationDesProjekts": "relationships",
-					"durchschnittlicheAnzahlDerBenoetigtenRessourcen": 4888,
-					"anzahlDerVerfuegbarenRessourcen": "Corona fugit aeneus demonstro. Crepusculum tenus soluta. Cattus bibo ventito sordeo vomito tergum magnam comprehendo synagoga.",
-					"kundenbetreuung": 3059
+					"rundUmDieUhrVerfuegbarkeit": "Yes",
+					"uebertragenVonDatenhistorien": "Acervus ullus commemoro tot dignissimos. Teres vilis compono creber utilis. Sit absorbeo advoco theologus.",
+					"unterstuetzterZeitraumDerDatenhistorien": "paradigms",
+					"fruehesterStartterminFuerEinIntegrationsprojekt": "2024-08-28",
+					"geschaetzterZeitrahmenFuerDieVollstaendigeIntegrationDesProjekts": "synergies",
+					"durchschnittlicheAnzahlDerBenoetigtenRessourcen": 4044,
+					"anzahlDerVerfuegbarenRessourcen": "Et aliqua aut via carcer audax maiores. Adfero verecundia deleniti thema sodalitas nulla ipsam. Aequus cito carus tumultus acies defetiscor deinde sumptus.",
+					"kundenbetreuung": 7885
 				}
 			},
 			"environmental": {
 				"nachhaltigskeitsrisiken": {
-					"methodikFuerOekologischeNachhaltigkeitsrisiken": "No",
-					"wennNeinBitteBegruenden": "Victoria cura socius conventus demo rem. Tersus neque theatrum doloremque qui patrocinor nihil deduco. Quos civis tibi caries.",
-					"kartierteRisikenFuerDieOekologischeNachhaltigkeit": "Coadunatio neque beatae voluptatum. Caelum accedo balbus. Laboriosam officia colligo civis tepesco dolore trepide cibus patria deleo.",
-					"identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik": "Balbus doloribus verbum angustus caries absconditus adversus. Animi vulgaris soleo arceo usus quisquam sum arguo consequuntur tum. Apud vester reiciendis patruus vel concido.",
-					"umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "Aranea desidero villa vomito vulticulus ratione adipisci subseco delectus. Caelum depraedor velociter curatio. Ager deduco verbera defaeco adhaero.",
-					"risikenFuerDieOekologischeNachhaltigkeitAbsichern": "Suscipio blandior charisma ciminatio. Cito vilis derideo crinis. Cometes appositus adeo tergum minus arbitro acquiro.",
+					"methodikFuerOekologischeNachhaltigkeitsrisiken": "Yes",
+					"wennNeinBitteBegruenden": "Tego sono censura victus cunabula verus auctus thema vulpes velociter. Ea testimonium texo stella utor cimentarius. Vergo vilitas vesica atqui cumque concido damnatio aperte.",
+					"kartierteRisikenFuerDieOekologischeNachhaltigkeit": "Voluptatibus asporto in speculum itaque demo casus atqui curis deserunt. Modi nesciunt acer aegre delibero curso urbs talio. Deleo averto suspendo spiculum arbustum architecto.",
+					"identifizierungDerWesentlichenRisikenFuerDieOekologischeNachhaltigkeitUndDerKonstruktionsmethodik": "Claustrum dolore unus asperiores. Amiculum thalassinus acceptus currus. Succedo vero taceo.",
+					"umweltbewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "Verto stillicidium sumo recusandae convoco suggero commemoro. Vesco est necessitatibus arbustum aspernatur. Decipio tamquam demoror voluptatibus sol caecus talio.",
+					"risikenFuerDieOekologischeNachhaltigkeitAbsichern": "Tamen volva venia libero accommodo defungo cedo. Aqua super confero cum. Tenus voveo decipio.",
 					"quellen": [
+						{
+							"value": "solutions",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "paradigms",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
 						{
 							"value": "ROI",
 							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "infrastructures",
-							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "partnerships",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					],
-					"vierAugenPruefung": "Yes",
-					"wennKeineVierAugenPruefungBitteBegruenden": "Auctus vulariter volo aggero absens. Vetus speculum tui eum vado bis. Advoco autem vindico tonsor coruscus comis.",
-					"beschreibungDerVierAugenPruefung": "Cum quasi dolor asperiores cariosus currus audio cursim uter. Coruscus thalassinus aegre. Spargo exercitationem advoco vis tyrannus defungo."
+					"vierAugenPruefung": "No",
+					"wennKeineVierAugenPruefungBitteBegruenden": "Vapulus vomer cuius defetiscor assentator video. Aurum tenetur strues molestiae fugit subiungo. Cado usque comburo.",
+					"beschreibungDerVierAugenPruefung": "Solio atavus maxime consequatur id acerbitas sto caries adulescens coniecto. Suasoria surculus supplanto alias defendo decens. Perspiciatis acervus vigilo occaecati calcar vorax."
 				},
 				"pais": {
 					"sechsPaisTreibhausgasemissionen": "Yes",
-					"wennNeinBitteBegruenden": "Quam consequatur pecco tamquam arbustum bardus amoveo autus vitiosus at. Adfero caput vergo facilis temptatio quod odio deputo modi. Temperantia eveniet vis deinde vulgo vulnus audeo approbo ager utpote.",
-					"wennJaBitteDiePaisAuflisten": "Textilis amicitia villa cavus cognatus suus certus voluptatibus. Contra cervus peior velit communis dedecor tersus voro comis. Video vigor aranea aperte spoliatio canis.",
-					"verwendeteSchluesselzahlen": "Vociferor minus adfectus officiis solutio adsum tui benevolentia explicabo in. Minima alo solio cognatus suadeo vaco cohaero patior credo patria. Balbus pariatur quasi.",
-					"datenerfassung": "Advenio bene verto vulnus clibanus cunabula solitudo. Claustrum paulatim aer ventus voluptatem apud absens sufficio acer verus. Callide vaco degero sui clam tres tremo conduco dolorem.",
-					"datenPlausibilitaetspruefung": "Esse terror alienus. Soluta quis amitto cenaculum caries ullus. Quidem tricesimus cilicium cogo arbitro.",
+					"wennNeinBitteBegruenden": "Copiose optio corona terra deduco molestias desino quod. Appositus canonicus damno. Vomer vetus tenax ascisco.",
+					"wennJaBitteDiePaisAuflisten": "Speciosus adsuesco sodalitas. Ter theatrum compono. Argumentum tum eligendi eos optio sollicito curso appositus natus.",
+					"verwendeteSchluesselzahlen": "Atavus perferendis consuasor. Unus expedita admoneo adhuc dedecor aufero laborum damnatio tricesimus dignissimos. Valeo dolorem patrocinor ancilla maxime appello esse suspendo.",
+					"datenerfassung": "Derideo conturbo uberrime animadverto videlicet cariosus. Benevolentia delectus admitto. Tunc suffoco tandem ait barba vinitor aspernatur vobis.",
+					"datenPlausibilitaetspruefung": "Qui conscendo contego bellicus cauda. Considero minima dignissimos titulus curis aegrotatio caelestis sordeo speculum. Terga aperio dens deporto capitulus corona fugit aeneus demonstro adipiscor.",
 					"datenquellen": [
 						{
-							"value": "convergence",
+							"value": "networks",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
-							"value": "deliverables",
+							"value": "metrics",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "action-items",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "infrastructures",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "architectures",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
 				"paiBiologischeVielfalt": {
 					"paisBiologischeVielfalt": "Yes",
-					"wennNeinBitteBegruenden": "Stipes quo vinculum. Acies veniam coadunatio usitas pecco velum. Creta argumentum totus undique vetus dolorum ademptio basium territo.",
-					"verwendeteSchluesselzahlen": "Speciosus dapifer creo ulciscor tersus triumphus aeternus conatus terra ascisco. Argumentum tredecim eligendi adstringo vicissitudo ullus cariosus utrimque. Adipiscor et apud acies depono deleo excepturi vinculum.",
-					"datenerfassung": "Cernuus nulla nesciunt vulticulus combibo cras taceo deprecator summisse volo. Depereo depraedor supplanto conventus concido modi compello adflicto. Infit reprehenderit solus campana campana cras distinctio iste.",
-					"datenPlausibilitaetspruefung": "Curvo repudiandae demum capillus tepidus odit sono itaque. Decens ex crapula cito tabgo temperantia thorax illum iste. Soluta virga apud copia iusto attollo ocer.",
+					"wennNeinBitteBegruenden": "Sordeo vomito tergum magnam comprehendo synagoga cohaero suasoria defaeco victoria. Socius conventus demo rem repudiandae tersus. Theatrum doloremque qui patrocinor nihil deduco caput.",
+					"verwendeteSchluesselzahlen": "Civis tibi caries caecus coadunatio neque beatae voluptatum. Caelum accedo balbus. Laboriosam officia colligo civis tepesco dolore trepide cibus patria deleo.",
+					"datenerfassung": "Balbus doloribus verbum angustus caries absconditus adversus. Animi vulgaris soleo arceo usus quisquam sum arguo consequuntur tum. Apud vester reiciendis patruus vel concido.",
+					"datenPlausibilitaetspruefung": "Aranea desidero villa vomito vulticulus ratione adipisci subseco delectus. Caelum depraedor velociter curatio. Ager deduco verbera defaeco adhaero.",
 					"datenquellen": [
 						{
-							"value": "blockchains",
+							"value": "users",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "systems",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "web services",
+							"value": "solutions",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
 				"paiWasser": {
-					"paiWasser": "No",
-					"wennNeinBitteBegruenden": "Tunc viridis video aiunt tenax amplitudo adflicto cur comparo tutis. Adduco crapula congregatio amplus contego vigor stips. Omnis solvo adflicto advenio thesis accusamus.",
-					"verwendeteSchluesselzahlen": "Depulso careo beatus provident arma expedita cursim id. Saepe ubi arma cupio incidunt circumvenio. Clamo cicuta crapula excepturi combibo tardus attollo velociter atrox terror.",
-					"datenerfassung": "Crepusculum deputo aedificium vomica bellicus. Viduo via denuncio communis corrumpo vulnero voluptas cimentarius officia. Degenero confugo tabernus aetas decretum possimus vix vomica hic.",
-					"datenPlausibilitaetspruefung": "Nam sto substantia delectus defendo tantillus talus. Vinculum adhuc carmen necessitatibus iusto argentum urbs. Aestus tergo super.",
+					"paiWasser": "Yes",
+					"wennNeinBitteBegruenden": "Vilis derideo crinis excepturi cometes. Adeo tergum minus arbitro. Desipio cenaculum omnis.",
+					"verwendeteSchluesselzahlen": "Acer ager creator. Claro auctus vulariter volo aggero absens. Vetus speculum tui eum vado bis.",
+					"datenerfassung": "Advoco autem vindico tonsor coruscus comis. Cum quasi dolor asperiores cariosus currus audio cursim uter. Coruscus thalassinus aegre.",
+					"datenPlausibilitaetspruefung": "Spargo exercitationem advoco vis tyrannus defungo. Velut quam consequatur pecco. Arbustum bardus amoveo autus vitiosus at turpis adfero.",
 					"datenquellen": [
 						{
-							"value": "supply-chains",
+							"value": "web services",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "e-business",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "eyeballs",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "supply-chains",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						}
-					]
-				},
-				"paiAbfall": {
-					"paiAbfall": "Yes",
-					"wennNeinBitteBegruenden": "Odit similique compono delicate admoveo accedo quaerat. Calamitas succurro surculus ventito admoneo aveho aperiam crebro vilicus. Coepi dolorum bis succedo.",
-					"verwendeteSchluesselzahlen": "Velit considero conculco umerus advenio sopor aliqua. Stabilis aiunt stillicidium autus ab velut calco careo. Sumo speculum succurro nesciunt nisi iure summisse.",
-					"datenerfassung": "Labore vallum omnis armarium aperiam itaque amplexus decumbo cornu. Canto capio tactus. Virtus anser commemoro.",
-					"datenPlausibilitaetspruefung": "Ullam congregatio uredo aqua congregatio cupressus ipsam crebro. Voluptatem solitudo amor cunabula tantum alveus ustulo vacuus chirographum. Comparo usque asper aliquid corona supra vilitas antiquus tametsi suus.",
-					"datenquellen": [
-						{
-							"value": "interfaces",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "networks",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						}
+					]
+				},
+				"paiAbfall": {
+					"paiAbfall": "No",
+					"wennNeinBitteBegruenden": "Modi vehemens temperantia eveniet vis deinde. Vulnus audeo approbo ager utpote tactus textilis amicitia villa cavus. Suus certus voluptatibus uterque contra.",
+					"verwendeteSchluesselzahlen": "Peior velit communis dedecor tersus. Comis depereo video vigor aranea aperte spoliatio canis viriliter vociferor. Adfectus officiis solutio adsum tui benevolentia explicabo.",
+					"datenerfassung": "Vulgivagus minima alo solio cognatus suadeo vaco. Patior credo patria aeternus balbus. Quasi explicabo advenio bene verto vulnus clibanus.",
+					"datenPlausibilitaetspruefung": "Solitudo vito claustrum paulatim aer ventus. Apud absens sufficio acer verus urbanus callide vaco degero sui. Tres tremo conduco dolorem abeo.",
+					"datenquellen": [
+						{
+							"value": "applications",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "platforms",
+							"value": "content",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "bandwidth",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
 				"paiUmweltAufDemLand": {
 					"paiUmweltAufDemLand": "Yes",
-					"wennNeinBitteBegruenden": "Benigne deporto nobis. Vehemens tenetur perspiciatis numquam asperiores. Speculum dolore aperte mollitia terra aetas ocer.",
-					"verwendeteSchluesselzahlen": "Admoneo trado ocer consuasor. Cetera odit venustas. Bis alius tactus.",
-					"datenerfassung": "Cimentarius suppellex articulus velut cicuta et vicinus. Deleo non peior uredo solum facilis abscido alveus. Quibusdam anser venustas degenero harum vomer tubineus.",
-					"datenPlausibilitaetspruefung": "Subseco carpo teres absum temeritas eius cornu credo ter. Concido inflammatio impedit crepusculum. Bis conturbo vacuus.",
+					"wennNeinBitteBegruenden": "Ullus contra quidem tricesimus. Cogo arbitro vacuus deduco vulgo. Aedificium cohaero velociter amitto cibus distinctio denuncio accommodo.",
+					"verwendeteSchluesselzahlen": "Stipes quo vinculum. Acies veniam coadunatio usitas pecco velum. Creta argumentum totus undique vetus dolorum ademptio basium territo.",
+					"datenerfassung": "Speciosus dapifer creo ulciscor tersus triumphus aeternus conatus terra ascisco. Argumentum tredecim eligendi adstringo vicissitudo ullus cariosus utrimque. Adipiscor et apud acies depono deleo excepturi vinculum.",
+					"datenPlausibilitaetspruefung": "Cernuus nulla nesciunt vulticulus combibo cras taceo deprecator summisse volo. Depereo depraedor supplanto conventus concido modi compello adflicto. Infit reprehenderit solus campana campana cras distinctio iste.",
 					"datenquellen": [
+						{
+							"value": "supply-chains",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "relationships",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
 						{
 							"value": "networks",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "interfaces",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "mindshare",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "functionalities",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
 				"sfdr": {
-					"methodikZurMessungEinesSignifikantenBeitragsZuEinemUmweltziel": "Amo dolores carus copiose considero venustas sonitus vitae. Architecto amor auxilium ara. Conventus videlicet quia suggero turbo certus curvo provident triumphus cena."
+					"methodikZurMessungEinesSignifikantenBeitragsZuEinemUmweltziel": "Decens ex crapula cito tabgo temperantia thorax illum iste. Soluta virga apud copia iusto attollo ocer. Volo decipio paens similique veritatis acceptus."
 				},
 				"kontroverseGeschaeftsfelderTabakerzeugung": {
 					"ausschlussDerTabakerzeugung": "No",
-					"wennNeinBitteBegruenden": "Caput paulatim abeo certus. Desino tum totidem. Placeat condico atrocitas auditor assumenda cado defendo desparatus.",
-					"verwendeteKennzahl": "Utpote curatio currus vel depopulo cohors cupressus carmen arguo. Cornu titulus nisi quaerat aspicio. Accendo demoror vicinus.",
-					"methodikDerBerechnung": "Sub verto mollitia claudeo repellat defendo infit. Thesis aeternus voluptatibus optio tabernus vitium blandior bellum curso vulgaris. Delinquo thymum attero sursum excepturi complectus delectatio.",
+					"wennNeinBitteBegruenden": "Tunc viridis video aiunt tenax amplitudo adflicto cur comparo tutis. Adduco crapula congregatio amplus contego vigor stips. Omnis solvo adflicto advenio thesis accusamus.",
+					"verwendeteKennzahl": "Depulso careo beatus provident arma expedita cursim id. Saepe ubi arma cupio incidunt circumvenio. Clamo cicuta crapula excepturi combibo tardus attollo velociter atrox terror.",
+					"methodikDerBerechnung": "Crepusculum deputo aedificium vomica bellicus. Viduo via denuncio communis corrumpo vulnero voluptas cimentarius officia. Degenero confugo tabernus aetas decretum possimus vix vomica hic.",
 					"verwendeteQuellen": [
 						{
-							"value": "interfaces",
+							"value": "e-commerce",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
-							"value": "infrastructures",
+							"value": "deliverables",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "convergence",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
 				"kontroverseGeschaeftsfelderKohlefoerderungUndVerteilung": {
-					"ausschlussDerKohlefoerderungUndVerteilung": "Yes",
-					"wennNeinBitteBegruenden": "Necessitatibus tricesimus suscipio verecundia argentum quibusdam. Articulus amo valeo quia depraedor comes illum iusto. Vita quia bellum voluntarius nam vicissitudo velociter ambitus baiulus amplitudo.",
-					"verwendeteKennzahl": "Absum quod qui. Sequi solium accedo adipisci abduco civis. Deporto suggero avaritia dicta aureus acervus.",
-					"methodikDerBerechnung": "Explicabo trado debilito atrocitas copia. Totus desidero volva benigne. Vapulus inventore sed spargo.",
+					"ausschlussDerKohlefoerderungUndVerteilung": "No",
+					"wennNeinBitteBegruenden": "Vinculum adhuc carmen necessitatibus iusto argentum urbs. Aestus tergo super. Decens utroque tyrannus ipsum aveho abutor cura suffragium.",
+					"verwendeteKennzahl": "Et odit similique compono delicate. Accedo quaerat timor. Succurro surculus ventito admoneo.",
+					"methodikDerBerechnung": "Aperiam crebro vilicus atrox. Dolorum bis succedo quia velit. Conculco umerus advenio sopor aliqua.",
 					"verwendeteQuellen": [
 						{
-							"value": "interfaces",
+							"value": "mindshare",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "e-business",
+							"value": "deliverables",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "synergies",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "communities",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
@@ -951,161 +973,168 @@
 			"social": {
 				"nachhaltigskeitsrisiken": {
 					"methodikSozialeNachhaltigkeitsrisiken": "No",
-					"wennNeinBitteBegruenden": "Carpo umerus cilicium defleo carus. Cribro spoliatio canto tantillus uxor modi cetera ater. Trans neque aedificium cado vespillo enim volup.",
-					"kartierteSozialeNachhaltigkeitsrisiken": "Distinctio soleo conforto aeternus titulus decimus. Cohors denuo autus basium cado copiose clibanus. Absum tibi compono aestivus suppellex conspergo atrox conforto communis utilis.",
-					"identifizierungWesentlicherSozialerNachhaltigkeitsrisikenUndKonstruktionsmethodik": "Conturbo tero tertius officiis strenuus. Adfero desolo usitas substantia adopto sodalitas aspernatur comparo aqua consequatur. Administratio repellendus dolorum soluta.",
-					"sozialeBewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "Modi decipio abutor tricesimus sonitus vitium tristis corrupti sulum. Auctus inventore crinis volva tenus degenero arcus vulgivagus ara molestias. Torqueo asper vinum uredo cicuta tibi vomito sol bonus.",
-					"sozialeNachhaltigkeitsrisikenAbsichern": "Attollo ante defluo curso nulla sortitus. Convoco acies deduco. Porro victoria cibo viridis claudeo.",
+					"wennNeinBitteBegruenden": "Speculum succurro nesciunt nisi iure summisse ustulo labore. Omnis armarium aperiam itaque amplexus decumbo cornu aetas canto capio. Agnitio virtus anser commemoro quos ullam congregatio uredo.",
+					"kartierteSozialeNachhaltigkeitsrisiken": "Congregatio cupressus ipsam crebro. Voluptatem solitudo amor cunabula tantum alveus ustulo vacuus chirographum. Comparo usque asper aliquid corona supra vilitas antiquus tametsi suus.",
+					"identifizierungWesentlicherSozialerNachhaltigkeitsrisikenUndKonstruktionsmethodik": "Facere vir tergo speculum aptus caste. Amitto benigne deporto nobis. Vehemens tenetur perspiciatis numquam asperiores.",
+					"sozialeBewertungUnterBeruecksichtigungVonNachhaltigkeitsrisiken": "Speculum dolore aperte mollitia terra aetas ocer. Admoneo trado ocer consuasor. Cetera odit venustas.",
+					"sozialeNachhaltigkeitsrisikenAbsichern": "Bis alius tactus. Cimentarius suppellex articulus velut cicuta et vicinus. Deleo non peior uredo solum facilis abscido alveus.",
 					"quelle": [
-						{
-							"value": "metrics",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
 						{
 							"value": "bandwidth",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "infrastructures",
+							"value": "web services",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "models",
+							"value": "e-markets",
 							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "e-business",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					],
 					"vierAugenPruefung": "No",
-					"wennKeineVierAugenPruefungBitteBegruenden": "Inventore commodi umquam atavus amet vulgivagus deputo sponte. Tibi thesis tactus talus admiratio delicate ademptio asperiores. Maiores vulnus tabernus deserunt coniecto quod tamen tolero dapifer.",
-					"beschreibungDerVierAugenPruefung": "Sol deleo molestiae currus cetera similique bene paulatim. Utroque subnecto amaritudo vulnus nemo apud careo vomer. Occaecati templum verto confugo possimus audax coniecto optio."
+					"wennKeineVierAugenPruefungBitteBegruenden": "Teres absum temeritas eius. Credo ter caecus concido inflammatio. Crepusculum aeger bis conturbo vacuus soluta temporibus.",
+					"beschreibungDerVierAugenPruefung": "Exercitationem benevolentia somnus statua utor suffoco tabella amo dolores carus. Considero venustas sonitus vitae ascisco. Amor auxilium ara vulgaris."
 				},
 				"paiSozial": {
-					"paiSozial": "No",
-					"wennNeinBitteBegruenden": "Deludo distinctio rerum vaco corporis capio teneo vigilo neque. Conspergo comparo aliquid celebrer spiritus. Solum volup defendo utrum statua defessus.",
-					"verwendeteSchluesselzahlen": "Summisse cado non alter voluntarius. Et derelinquo culpo comedo aestivus stabilis eligendi. Hic thema assumenda adnuo omnis doloribus.",
-					"datenerfassung": "Baiulus conqueror itaque. Aperiam aperiam arbitro velit cultellus. Aggredior crur armarium curis administratio spargo crebro alienus.",
-					"datenPlausibilitaetspruefung": "Crebro culpo callide vos nam turpis. Angulus arma eum venio suppellex apostolus constans vinculum calculus collum. Spargo cupio sortitus velum quas triduana verumtamen ustulo.",
+					"paiSozial": "Yes",
+					"wennNeinBitteBegruenden": "Quia suggero turbo certus curvo provident triumphus cena recusandae argentum. Paulatim abeo certus alias. Tum totidem similique placeat condico atrocitas auditor.",
+					"verwendeteSchluesselzahlen": "Cado defendo desparatus tempora. Curatio currus vel depopulo cohors cupressus carmen arguo colo cornu. Nisi quaerat aspicio ancilla accendo demoror vicinus expedita sub.",
+					"datenerfassung": "Mollitia claudeo repellat defendo infit ventosus thesis aeternus voluptatibus optio. Vitium blandior bellum curso vulgaris id delinquo thymum. Sursum excepturi complectus delectatio.",
+					"datenPlausibilitaetspruefung": "Eius socius ambitus ademptio. Debilito necessitatibus tricesimus suscipio. Argentum quibusdam somniculosus articulus amo valeo quia depraedor comes illum.",
 					"datenquellen": [
 						{
-							"value": "action-items",
+							"value": "web services",
 							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "paradigms",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
 							"value": "bandwidth",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "blockchains",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
 				"paiSozialesAufDemLand": {
-					"paiSozialesAufDemLand": "Yes",
-					"wennNeinBitteBegruenden": "Velum ventito caecus complectus armarium allatus addo currus amissio. Adhuc conspergo abbas suscipit. Velum iusto surculus subito commemoro ut validus ventus clamo.",
-					"verwendeteSchluesselzahlen": "Advenio quo carus. Alveus amplitudo venio conventus caelum turba argumentum. Clementia maiores accendo utroque advoco solium eos articulus.",
-					"datenerfassung": "Celo civis auctus decens. Uterque voluptatibus vix audio. Solium terror victus numquam summisse quaerat triumphus curo.",
-					"datenPlausibilitaetspruefung": "Arto annus officia. Suadeo tres celebrer sint benigne amissio ait crapula vehemens. Alo curo molestias.",
+					"paiSozialesAufDemLand": "No",
+					"wennNeinBitteBegruenden": "Ambitus baiulus amplitudo accusamus absum quod qui delectus sequi solium. Adipisci abduco civis. Deporto suggero avaritia dicta aureus acervus.",
+					"verwendeteSchluesselzahlen": "Explicabo trado debilito atrocitas copia. Totus desidero volva benigne. Vapulus inventore sed spargo.",
+					"datenerfassung": "Eaque desidero ulterius demo vitiosus. Carpo umerus cilicium defleo carus. Cribro spoliatio canto tantillus uxor modi cetera ater.",
+					"datenPlausibilitaetspruefung": "Trans neque aedificium cado vespillo enim volup. Distinctio soleo conforto aeternus titulus decimus. Cohors denuo autus basium cado copiose clibanus.",
 					"datenquellen": [
 						{
-							"value": "systems",
+							"value": "synergies",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
-							"value": "eyeballs",
+							"value": "portals",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "content",
+							"value": "users",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "channels",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "portals",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						}
 					]
 				},
 				"sfdr": {
-					"methodikZurMessungDesSignifikantenBeitragsZuEinemGesellschaftlichenZiel": "Magnam annus aliqua catena. Tenuis placeat temptatio vinitor adipiscor ago ab certus. Quas arcesso cuius cursus quibusdam conitor."
+					"methodikZurMessungDesSignifikantenBeitragsZuEinemGesellschaftlichenZiel": "Conturbo tero tertius officiis strenuus. Adfero desolo usitas substantia adopto sodalitas aspernatur comparo aqua consequatur. Administratio repellendus dolorum soluta."
 				},
 				"kontroverseGeschaeftsfelderWaffen": {
-					"herstellungOderVertriebVonWaffenAusschluss": "Yes",
-					"wennNeinBitteBegruenden": "Artificiose viduo tredecim taceo repudiandae color utroque comburo. Ancilla unus desipio adiuvo charisma suffoco pectus amplexus. Coniecto velociter corporis.",
-					"verwendeteKennzahlFuerDieUmsatzmessung": "Torqueo accusantium caecus molestiae colo. Caute spero quia caritas volaticus congregatio arbitro rem teres assumenda. Conicio tantum vergo desipio alo animus.",
-					"methodikDerBerechnung": "Cicuta tantum torqueo pel. Benigne verbum suasoria vicinus labore temptatio occaecati tabgo tamquam. Vir demonstro solus suppellex deporto succedo colo iure cupressus cometes.",
-					"verwendeteQuellen": [
-						{
-							"value": "action-items",
-							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						},
-						{
-							"value": "technologies",
-							"dataSource": {
-								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
-							}
-						}
-					],
-					"ausschlussVerbotenerWaffen": "Yes",
-					"wennAuschlussNichtMoeglichBitteBegruenden": "Natus tredecim consectetur vobis. Cotidie trado absconditus adaugeo vulticulus dolorum ulciscor valde rem deripio. Officiis acerbitas ducimus callide subnecto contigo acervus venustas tenetur cena.",
-					"verwendeteKennzahlZurAbbildungGeaechteterWaffen": "Baiulus ait quam arx tertius aureus acidus. Absens repellat utpote denego delectatio quis succurro civis est. Carcer quam carbo theca spero."
-				},
-				"kontroverseGeschaeftsfelder": {
+					"herstellungOderVertriebVonWaffenAusschluss": "No",
+					"wennNeinBitteBegruenden": "Decipio abutor tricesimus sonitus vitium tristis corrupti. Vespillo auctus inventore crinis volva tenus degenero arcus. Ara molestias tyrannus torqueo asper vinum uredo cicuta tibi vomito.",
+					"verwendeteKennzahlFuerDieUmsatzmessung": "Bonus delibero attollo ante defluo curso nulla sortitus. Convoco acies deduco. Porro victoria cibo viridis claudeo.",
+					"methodikDerBerechnung": "Trado voveo possimus caelum amitto apud similique acceptus. Suscipio inventore commodi umquam atavus amet vulgivagus deputo. Sui tibi thesis tactus talus admiratio delicate ademptio.",
 					"verwendeteQuellen": [
 						{
 							"value": "metrics",
 							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						}
+					],
+					"ausschlussVerbotenerWaffen": "No",
+					"wennAuschlussNichtMoeglichBitteBegruenden": "Deserunt coniecto quod tamen tolero dapifer spiritus sol. Molestiae currus cetera similique bene paulatim. Utroque subnecto amaritudo vulnus nemo apud careo vomer.",
+					"verwendeteKennzahlZurAbbildungGeaechteterWaffen": "Occaecati templum verto confugo possimus audax coniecto optio. Umbra deludo distinctio rerum vaco corporis capio. Vigilo neque corrupti conspergo comparo aliquid celebrer spiritus culpo."
+				},
+				"kontroverseGeschaeftsfelder": {
+					"verwendeteQuellen": [
+						{
+							"value": "blockchains",
+							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
 							"value": "experiences",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
-							"value": "architectures",
+							"value": "convergence",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						},
 						{
-							"value": "eyeballs",
+							"value": "users",
 							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
@@ -1114,64 +1143,85 @@
 			"governance": {
 				"goodGovernance": {
 					"methodikDerGutenRegierungsfuehrung": "No",
-					"wennNeinBitteBegruenden": "Coruscus aureus adeo canonicus baiulus cribro deserunt. Vulgo adulescens causa urbanus tamisium stultus. Soleo subseco cupiditas admitto teneo defetiscor carus.",
-					"definitionVonGuterRegierungsfuehrung": "Auctus uterque ambitus color dicta vir. Coniuratio necessitatibus exercitationem cilicium teneo trepide defaeco umerus acidus. Cunabula curiositas cito corpus animi deprimo bene.",
-					"listeDerKpisFuerGuteUnternehmensfuehrung": "Altus expedita absum tepidus subseco non veritatis vinculum statua. Uterque conservo benigne. Cattus beatus virga aestas vulariter acsi pariatur pauci una.",
+					"wennNeinBitteBegruenden": "Voluntarius perspiciatis et. Culpo comedo aestivus stabilis eligendi defero. Thema assumenda adnuo omnis doloribus ancilla baiulus.",
+					"definitionVonGuterRegierungsfuehrung": "Itaque congregatio aperiam aperiam arbitro. Cultellus tamdiu aggredior crur armarium curis administratio spargo crebro alienus. Crebro culpo callide vos nam turpis.",
+					"listeDerKpisFuerGuteUnternehmensfuehrung": "Angulus arma eum venio suppellex apostolus constans vinculum calculus collum. Spargo cupio sortitus velum quas triduana verumtamen ustulo. Coma callide addo alo placeat audeo.",
 					"verwendeteQuellen": [
 						{
-							"value": "e-markets",
+							"value": "metrics",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
-							"value": "portals",
+							"value": "web services",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
 				"goodGovernanceUngc": {
-					"beruecksichtigungDesUngc": "No",
-					"wennNeinBitteBegruenden": "Quaerat adficio temeritas adnuo. Bis demonstro tertius solutio voluptatibus cultellus vulgo tui consequuntur textilis. Assumenda supra cogo cognomen abutor contego cur vinitor decet.",
-					"beruecksichtigungDerUngcBeschreibung": "Cinis vinitor vindico cultellus pax bardus conicio tametsi arto coma. Volubilis audax desidero repudiandae urbs quasi anser bonus venio absorbeo. Deorsum adamo venia argentum texo campana volutabrum corrigo.",
+					"beruecksichtigungDesUngc": "Yes",
+					"wennNeinBitteBegruenden": "Allatus addo currus amissio. Adhuc conspergo abbas suscipit. Velum iusto surculus subito commemoro ut validus ventus clamo.",
+					"beruecksichtigungDerUngcBeschreibung": "Advenio quo carus. Alveus amplitudo venio conventus caelum turba argumentum. Clementia maiores accendo utroque advoco solium eos articulus.",
 					"verwendeteQuellen": [
 						{
-							"value": "supply-chains",
+							"value": "ROI",
 							"dataSource": {
-								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "channels",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					]
 				},
 				"bestechungUndKorruption": {
 					"kontroversenImBereichDerBestechungUndKorruption": "Yes",
-					"wennNeinBitteBegruenden": "Ipsum traho umquam adflicto urbanus dedico cui vester deinde numquam. Carus terebro acsi tendo consequatur maiores cometes. Voluntarius aggredior doloribus deprimo.",
-					"verwendeteMetrikenUndMethodik": "Adicio cui corpus voluntarius somnus. Spargo totus vociferor texo pauper. Vesper advenio cibus.",
+					"wennNeinBitteBegruenden": "Voluptatibus vix audio solvo solium terror victus numquam summisse. Triumphus curo accommodo arto annus officia teres. Tres celebrer sint benigne amissio ait crapula vehemens.",
+					"verwendeteMetrikenUndMethodik": "Alo curo molestias. Pecus solum bestia arbor cunctatio vos. Magnam annus aliqua catena.",
 					"verwendeteQuellen": [
 						{
-							"value": "e-commerce",
+							"value": "networks",
 							"dataSource": {
 								"fileName": "Policy",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
 							}
 						},
 						{
-							"value": "portals",
+							"value": "networks",
+							"dataSource": {
+								"fileName": "Policy",
+								"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342"
+							}
+						},
+						{
+							"value": "paradigms",
 							"dataSource": {
 								"fileName": "Certification",
-								"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63"
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
+							}
+						},
+						{
+							"value": "synergies",
+							"dataSource": {
+								"fileName": "Certification",
+								"fileReference": "04c4e6cd07eeae270635dd909f58b09b2104ea5e92ec22a80b6e7ba1d0b75dd0"
 							}
 						}
 					],
-					"dieAktualitaetDerKontroversenImBereichBestechungUndKorruption": "Tego cur amita occaecati articulus. Currus contra confugo amita. Auxilium animadverto volaticus administratio tempus virga decumbo arx."
+					"dieAktualitaetDerKontroversenImBereichBestechungUndKorruption": "Quas arcesso cuius cursus quibusdam conitor. Taedium artificiose viduo. Taceo repudiandae color utroque comburo sophismata ancilla unus desipio."
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2024"
 	}
 ]

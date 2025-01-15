@@ -72,7 +72,7 @@ class DataPointQaReportController(
         return ResponseEntity.ok(report)
     }
 
-    override fun getAllQaReportsForDataset(
+    override fun getAllQaReportsForDataPoint(
         dataId: String,
         showInactive: Boolean?,
         reporterUserId: String?,

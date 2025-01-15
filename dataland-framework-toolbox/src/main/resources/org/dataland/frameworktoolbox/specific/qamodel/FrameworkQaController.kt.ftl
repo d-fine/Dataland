@@ -4,7 +4,6 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.controller.QaReportController
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportSecurityPolicy
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,8 +12,9 @@ import org.springframework.http.ResponseEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
-
 <#list frameworkDataType.imports as import>import ${import}
+</#list>
+<#list frameworkQaReportManagerDataType.imports as import>import ${import}
 </#list>
 
 /**
@@ -24,7 +24,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.repor
 @RestController
 class ${frameworkDataType.shortenedQualifier}QaReportController(
 @Autowired objectMapper: ObjectMapper,
-@Autowired qaReportManager: QaReportManager,
+@Autowired qaReportManager: ${frameworkQaReportManagerDataType.shortenedQualifier},
 @Autowired qaReportSecurityPolicy: QaReportSecurityPolicy,
 ) : QaReportController<${frameworkDataType.shortenedQualifier}>(
 objectMapper = objectMapper,

@@ -12,16 +12,23 @@ export type ReferencedDocuments = { [key: string]: CompanyReport | BaseDocumentR
  * @param frameworkDataGenerator a generator that generates a random framework dataset of type T
  * @param numElements the number of elements to generate
  * @param reportingPeriodGenerator a generator that generates a reporting period
+ * @param referencedReportsAccessor a function that returns the referenced reports for a given dataset
  * @returns a list of numElements pairs of randomly generated companies associated to randomly generated framework datasets
  */
 export function generateFixtureDataset<T>(
   frameworkDataGenerator: () => T,
   numElements: number,
-  reportingPeriodGenerator: (dataSet: T) => string = generateReportingPeriod
+  reportingPeriodGenerator: (dataSet: T) => string = generateReportingPeriod,
+  referencedReportsAccessor?: (dataSet: T) => ReferencedDocuments | undefined | null
 ): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {
     const data = frameworkDataGenerator();
+    if (referencedReportsAccessor) {
+      const documents = referencedReportsAccessor(data);
+      if (documents) removeAllUnusedReferencedReports(data as Record<string, unknown>, documents);
+    }
+
     fixtureDataset.push({
       companyInformation: generateCompanyInformation(),
       t: data,
@@ -33,6 +40,39 @@ export function generateFixtureDataset<T>(
     }
   }
   return fixtureDataset;
+}
+
+/**
+ * Remove all documents from the given data object that are not referenced by the dataset
+ * @param data the data object to search for file references
+ * @param documents the documents to remove unused references from
+ */
+function removeAllUnusedReferencedReports(data: Record<string, unknown>, documents: ReferencedDocuments): void {
+  const usedFileReferences = new Set<string>();
+  findAllFileReferencesRecursive(data, usedFileReferences);
+  const unusedFileReferences = Object.entries(documents).filter(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ([_ignored, value]) => !usedFileReferences.has(value.fileReference)
+  );
+  for (const [key] of unusedFileReferences) {
+    delete documents[key];
+  }
+}
+
+/**
+ * Recursively searches for all file references in a given data object and adds them to the given set
+ * @param data the data object to search for file references
+ * @param fileReferences the set to add the file references to
+ */
+function findAllFileReferencesRecursive(data: Record<string, unknown>, fileReferences: Set<string>): void {
+  for (const key in data) {
+    const element = data[key];
+    if (typeof element === 'object' && key != 'referencedReports') {
+      findAllFileReferencesRecursive(element as Record<string, unknown>, fileReferences);
+    } else if (key === 'fileReference') {
+      fileReferences.add(element as string);
+    }
+  }
 }
 
 /**

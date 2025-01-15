@@ -1,0 +1,10 @@
+{
+  "frameworkSpecification": {
+    "id": "additional-company-information",
+    "ref": "https://dummy.com/specifications/frameworks/additional-company-information"
+  },
+  "name": "Additional Company Information",
+  "businessDefinition": "Additional Company Information",
+  "schema": "{\"general\":{\"general\":{\"fiscalYearDeviation\":{\"id\":\"extendedEnumFiscalYearDeviation\",\"ref\":\"https://dummy.com/specifications/data-points/extendedEnumFiscalYearDeviation\"},\"fiscalYearEnd\":{\"id\":\"extendedDateFiscalYearEnd\",\"ref\":\"https://dummy.com/specifications/data-points/extendedDateFiscalYearEnd\"}},\"financialInformation\":{\"equity\":{\"id\":\"extendedCurrencyEquity\",\"ref\":\"https://dummy.com/specifications/data-points/extendedCurrencyEquity\"},\"debt\":{\"id\":\"extendedCurrencyDebt\",\"ref\":\"https://dummy.com/specifications/data-points/extendedCurrencyDebt\"},\"balanceSheetTotal\":{\"id\":\"extendedCurrencyBalanceSheetTotal\",\"ref\":\"https://dummy.com/specifications/data-points/extendedCurrencyBalanceSheetTotal\"},\"evic\":{\"id\":\"extendedCurrencyEvic\",\"ref\":\"https://dummy.com/specifications/data-points/extendedCurrencyEvic\"}}}}",
+  "referencedReportJsonPath": "general.general.referencedReports"
+}

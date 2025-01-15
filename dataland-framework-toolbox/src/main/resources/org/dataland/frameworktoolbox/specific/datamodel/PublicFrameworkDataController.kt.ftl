@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
-import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -16,6 +15,8 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 <#list frameworkDataType.imports as import>import ${import}
+</#list>
+<#list frameworkDataManager.imports as import>import ${import}
 </#list>
 
 /**
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/data/${frameworkIdentifier}")
 @RestController
 class ${frameworkDataType.shortenedQualifier}Controller(
-    @Autowired var myDataManager: DataManager,
+    @Autowired var myDataManager: ${frameworkDataManager.shortenedQualifier},
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,

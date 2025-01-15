@@ -1,0 +1,94 @@
+{
+	"data": {
+		"general": {
+			"general": {
+				"referencedReports": {
+					"SustainabilityReport": {
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "SustainabilityReport",
+						"publicationDate": "2023-09-19"
+					},
+					"AnnualReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileName": "AnnualReport",
+						"publicationDate": "2023-06-30"
+					}
+				}
+			},
+			"financialInformation": {
+				"equity": {
+					"value": 7977554542.02,
+					"dataSource": {
+						"page": "222-279",
+						"fileName": "SustainabilityReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "action-items",
+						"publicationDate": null
+					},
+					"comment": "connect auxiliary sensor",
+					"quality": "Reported",
+					"currency": "SSP"
+				},
+				"debt": {
+					"value": 3790624169.63,
+					"dataSource": {
+						"page": "444-500",
+						"fileName": "SustainabilityReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "e-business",
+						"publicationDate": null
+					},
+					"comment": "back up multi-byte circuit",
+					"quality": "NoDataFound",
+					"currency": "BND"
+				},
+				"evic": {
+					"value": 2985546942.8,
+					"dataSource": {
+						"page": "96",
+						"fileName": "SustainabilityReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "ROI",
+						"publicationDate": null
+					},
+					"comment": "quantify auxiliary microchip",
+					"quality": "Estimated",
+					"currency": "NGN"
+				}
+			}
+		}
+	},
+	"qaReport": {
+		"general": {
+			"financialInformation": {
+				"equity": {
+					"verdict": "QaAccepted",
+					"comment": "Equity is fine",
+					"correctedData": {}
+				},
+				"debt": {
+					"verdict": "QaNotAttempted",
+					"comment": "Qa for debt was inconclusive",
+					"correctedData": {}
+				},
+				"evic": {
+					"verdict": "QaRejected",
+					"comment": "EVIC is not correct",
+					"correctedData": {
+						"value": 5909087220.21,
+						"dataSource": {
+							"page": "203-833",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "channels",
+							"publicationDate": null
+						},
+						"comment": "bypass mobile matrix",
+						"quality": "NoDataFound",
+						"currency": "TOP"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,5 +1,6 @@
 package org.dataland.e2etests.utils.api
 
+import org.dataland.datalandqaservice.openApiClient.api.AdditionalCompanyInformationDataQaReportControllerApi
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 
@@ -8,4 +9,9 @@ import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
  */
 object QaService {
     val QaControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val DataPointQaReportControllerApi =
+        org.dataland.datalandqaservice.openApiClient.api
+            .DataPointQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val AdditionalCompanyInformationDataQaReportControllerApi =
+        AdditionalCompanyInformationDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
 }
