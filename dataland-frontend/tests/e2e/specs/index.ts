@@ -63,4 +63,5 @@ if (testGroupingDisabled || cypressTestGroup === 4) {
   require('./search-company-framework-data');
   require('./quality-assurance');
   require('./community');
+  require('./data_download');
 }

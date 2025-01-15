@@ -71,14 +71,3 @@ export function getCellValueContainerAndCheckIconForHiddenDisplay(
   }
   return getCellValueContainer(label, datasetIdx);
 }
-/**
- * Verifies that the tooltip of the reportingYear in  contains the expected text
- * @param reportingYear year to check
- */
-export function checkReportingYearToolTip(reportingYear: string): void {
-  const expectedTextInToolTip = 'Publication date of the dataset on Dataland:';
-  cy.get(`.material-icons[title="${reportingYear}"]`).trigger('mouseenter', 'center');
-  cy.get('.p-tooltip').should('be.visible').contains(expectedTextInToolTip);
-  cy.get(`.material-icons[title="${reportingYear}"]`).trigger('mouseleave');
-  cy.get('.p-tooltip').should('not.exist');
-}
