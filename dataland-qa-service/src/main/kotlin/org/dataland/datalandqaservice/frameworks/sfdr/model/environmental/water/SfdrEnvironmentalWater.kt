@@ -2,6 +2,7 @@
 package org.dataland.datalandqaservice.frameworks.sfdr.model.environmental.water
 
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointBigDecimal
 import org.dataland.datalandbackend.openApiClient.model.ExtendedDataPointYesNo
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
@@ -16,8 +17,7 @@ data class SfdrEnvironmentalWater(
     val waterConsumptionInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     @field:Valid()
     val waterReusedInCubicMeters: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val relativeWaterUsageInCubicMetersPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val relativeWaterUsageInCubicMetersPerMillionRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
     val waterManagementPolicy: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()

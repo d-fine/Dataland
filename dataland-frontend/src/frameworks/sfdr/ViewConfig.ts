@@ -321,13 +321,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               'Tonnes of GHG emissions / million of the enterprise value (in the same currency as the enterprise value)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
-                ),
-                'Carbon footprint',
-                dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue
+              formatCurrencyForDisplay(
+                dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionRevenue,
+                'Carbon footprint'
               ),
           },
           {
@@ -336,13 +332,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             explanation: 'Tonnes of GHG emissions / million of the revenue (in the same currency as the total revenue)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
-                ),
-                'GHG intensity',
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue
+              formatCurrencyForDisplay(
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionRevenue,
+                'GHG intensity'
               ),
           },
           {
@@ -352,13 +344,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
-                ),
-                'GHG intensity - scope 1',
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue
+              formatCurrencyForDisplay(
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionRevenue,
+                'GHG intensity - scope 1'
               ),
           },
           {
@@ -368,13 +356,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
-                ),
-                'GHG intensity - scope 2',
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue
+              formatCurrencyForDisplay(
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionRevenue,
+                'GHG intensity - scope 2'
               ),
           },
           {
@@ -384,13 +368,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 3 carbon emissions, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
-                ),
-                'GHG intensity - scope 3',
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue
+              formatCurrencyForDisplay(
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionRevenue,
+                'GHG intensity - scope 3'
               ),
           },
           {
@@ -400,13 +380,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
-                ),
-                'GHG intensity - scope 4',
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue
+              formatCurrencyForDisplay(
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionRevenue,
+                'GHG intensity - scope 4'
               ),
           },
           {
@@ -903,13 +879,9 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             explanation: 'Average amount in cubic meters of fresh water used per million EUR revenue',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value,
-                  'Cubic Meters / \u20ACM Revenue'
-                ),
-                'Relative Water Usage',
-                dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue
+              formatCurrencyForDisplay(
+                dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionRevenue,
+                'Relative Water Usage'
               ),
           },
           {

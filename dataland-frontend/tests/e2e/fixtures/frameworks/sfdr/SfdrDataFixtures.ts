@@ -56,20 +56,12 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         scope4GhgEmissionsInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         enterpriseValue: dataGenerator.randomCurrencyDataPoint(),
         totalRevenue: dataGenerator.randomCurrencyDataPoint(),
-        carbonFootprintInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        ghgIntensityInTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
-        ghgIntensityScope1InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat()
-        ),
-        ghgIntensityScope2InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat()
-        ),
-        ghgIntensityScope3InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat()
-        ),
-        ghgIntensityScope4InTonnesPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat()
-        ),
+        carbonFootprintInTonnesPerMillionRevenue: dataGenerator.randomCurrencyDataPoint(),
+        ghgIntensityInTonnesPerMillionRevenue: dataGenerator.randomCurrencyDataPoint(),
+        ghgIntensityScope1InTonnesPerMillionRevenue: dataGenerator.randomCurrencyDataPoint(),
+        ghgIntensityScope2InTonnesPerMillionRevenue: dataGenerator.randomCurrencyDataPoint(),
+        ghgIntensityScope3InTonnesPerMillionRevenue: dataGenerator.randomCurrencyDataPoint(),
+        ghgIntensityScope4InTonnesPerMillionRevenue: dataGenerator.randomCurrencyDataPoint(),
         fossilFuelSectorExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         financedScope1AndScope2Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
         financedScope3Emissions: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat()),
@@ -124,9 +116,7 @@ export function generateSfdrData(nullProbability = DEFAULT_PROBABILITY): SfdrDat
         emissionsToWaterInTonnes: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         waterConsumptionInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
         waterReusedInCubicMeters: dataGenerator.randomExtendedDataPoint(dataGenerator.randomFloat(0)),
-        relativeWaterUsageInCubicMetersPerMillionEURRevenue: dataGenerator.randomExtendedDataPoint(
-          dataGenerator.randomFloat(0)
-        ),
+        relativeWaterUsageInCubicMetersPerMillionRevenue: dataGenerator.randomCurrencyDataPoint(0),
         waterManagementPolicy: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
         highWaterStressAreaExposure: dataGenerator.randomExtendedDataPoint(dataGenerator.randomYesNo()),
       },

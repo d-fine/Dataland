@@ -41,18 +41,12 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     val scope4GhgEmissionsInTonnes: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
     val enterpriseValue: QaReportDataPoint<CurrencyDataPoint?>? = null,
     val totalRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
-    @field:Valid()
-    val carbonFootprintInTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val ghgIntensityInTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val ghgIntensityScope1InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val ghgIntensityScope2InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val ghgIntensityScope3InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
-    @field:Valid()
-    val ghgIntensityScope4InTonnesPerMillionEURRevenue: QaReportDataPoint<ExtendedDataPointBigDecimal?>? = null,
+    val carbonFootprintInTonnesPerMillionRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val ghgIntensityInTonnesPerMillionRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val ghgIntensityScope1InTonnesPerMillionRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val ghgIntensityScope2InTonnesPerMillionRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val ghgIntensityScope3InTonnesPerMillionRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
+    val ghgIntensityScope4InTonnesPerMillionRevenue: QaReportDataPoint<CurrencyDataPoint?>? = null,
     @field:Valid()
     val fossilFuelSectorExposure: QaReportDataPoint<ExtendedDataPointYesNo?>? = null,
     @field:Valid()

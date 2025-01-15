@@ -3157,23 +3157,23 @@
           "totalRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "carbonFootprintInTonnesPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "carbonFootprintInTonnesPerMillionRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityInTonnesPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "ghgIntensityInTonnesPerMillionRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "ghgIntensityScope1InTonnesPerMillionRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "ghgIntensityScope2InTonnesPerMillionRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "ghgIntensityScope3InTonnesPerMillionRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "ghgIntensityScope4InTonnesPerMillionRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "fossilFuelSectorExposure": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
@@ -3209,8 +3209,8 @@
           "waterReusedInCubicMeters": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
+          "relativeWaterUsageInCubicMetersPerMillionRevenue": {
+            "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "waterManagementPolicy": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
