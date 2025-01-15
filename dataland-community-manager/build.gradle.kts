@@ -137,3 +137,19 @@ jacoco {
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
+
+afterEvaluate {
+    tasks.getByName("forkedSpringBootRun") {
+        dependsOn(":dataland-backend-utils:assemble")
+        dependsOn(":dataland-message-queue-utils:assemble")
+        notCompatibleWithConfigurationCache(
+            "See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102",
+        )
+    }
+
+    tasks.getByName("forkedSpringBootStop") {
+        notCompatibleWithConfigurationCache(
+            "See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102",
+        )
+    }
+}
