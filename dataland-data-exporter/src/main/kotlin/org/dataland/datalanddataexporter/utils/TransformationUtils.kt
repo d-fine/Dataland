@@ -81,7 +81,7 @@ object TransformationUtils {
 
         val legacyKeysInTransformationValues = legacyFields.keys.filter { transformationRules.values.contains(it) }
         require(legacyKeysInTransformationValues.isEmpty()) {
-            "Legacy headers are already exist as headers: $legacyKeysInTransformationValues"
+            "Csv headers are not unique as legacy headers contain duplicates: $legacyKeysInTransformationValues"
         }
     }
 
@@ -154,7 +154,7 @@ object TransformationUtils {
     /**
      * Maps a JSON node to a CSV.
      * @param jsonNode The JSON node
-     * @param transformationRules The transformation rules
+     * @param legacyFields The transformation rules
      * @return A map of CSV headers to values
      */
     fun mapJsonToLegacyCsvFields(

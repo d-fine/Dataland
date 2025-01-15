@@ -99,7 +99,7 @@ class TransformationUtilsTest {
     @Test
     fun `check that null valued fields are extracted as empty strings`() {
         val jsonNode = ObjectMapper().readTree("{\"nullValued\": null}")
-        assertEquals("", TransformationUtils.mapJsonToLegacyCsvFields(jsonNode, "nullValued"))
+        assertEquals("", TransformationUtils.getValueFromJsonNode(jsonNode, "nullValued"))
     }
 
     @Test
@@ -137,7 +137,6 @@ class TransformationUtilsTest {
         val transformationRule =
             FileHandlingUtils.readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         val csvData = TransformationUtils.mapJsonToCsv(jsonNode, transformationRule)
-        val sortedCsvData = csvData.toSortedMap()
 
         val csvFile = File("./src/test/resources/csv/output.csv")
         val mapper = CsvMapper()
@@ -149,6 +148,6 @@ class TransformationUtilsTest {
                 .with(schema)
                 .readValue<Map<String, String>>(csvFile)
 
-        assertEquals(sortedCsvData, expectedCsvData)
+        assertEquals(csvData, expectedCsvData)
     }
 }

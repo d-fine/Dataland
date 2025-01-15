@@ -134,6 +134,8 @@ class CsvExporter(
         val timestamp = getTimestamp()
         val dataOutputFile = File("$outputDirectory/SfdrData_$timestamp.csv")
         val isinOutputFile = File("$outputDirectory/SfdrIsin_$timestamp.csv")
+        println(dataOutputFile)
+        println(csvData)
         writeCsv(csvData, dataOutputFile, headers)
         writeCsv(isinData, isinOutputFile, listOf(LEI_HEADER, ISIN_HEADER))
     }
