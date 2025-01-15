@@ -131,7 +131,7 @@ object TransformationUtils {
         val csvData = mutableMapOf<String, String>()
         legacyFields.forEach { (csvHeader, jsonPath) ->
             if (csvHeader.isEmpty()) return@forEach
-            csvData[csvHeader] = getValueFromJsonNode(jsonNode, jsonPath)
+            csvData[csvHeader] = JsonUtils.getValueFromJsonNodeByPath(jsonNode, jsonPath)
         }
         return csvData
     }
