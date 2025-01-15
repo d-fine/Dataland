@@ -43,7 +43,7 @@
   "devDependencies": {
     "@cypress/code-coverage": "3.12.36",
     "@faker-js/faker": "8.4.1",
-    "@rushstack/eslint-patch": "1.10.4",
+    "@rushstack/eslint-patch": "1.10.5",
     "@tsconfig/node20": "20.1.4",
     "@types/dompurify": "3.0.5",
     "@types/markdown-it": "14.1.2",
