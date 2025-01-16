@@ -1723,6 +1723,7 @@
         "type": "string",
         "enum": [
           "Low",
+          "Baseline",
           "High",
           "Urgent"
         ]
@@ -1917,6 +1918,7 @@
         "enum": [
           "Low",
           "Normal",
+          "Baseline",
           "High",
           "VeryHigh",
           "Urgent"

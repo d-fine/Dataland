@@ -8,4 +8,4 @@ import io.swagger.v3.oas.annotations.media.Schema
 @Schema(
     enumAsRef = true,
 )
-enum class AggregatedRequestPriority { Low, Normal, High, VeryHigh, Urgent }
+enum class AggregatedRequestPriority { Low, Normal, Baseline, High, VeryHigh, Urgent }
