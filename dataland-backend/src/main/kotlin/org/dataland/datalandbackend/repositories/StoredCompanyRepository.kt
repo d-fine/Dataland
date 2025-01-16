@@ -31,10 +31,18 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
                 " WHERE company_id IN " +
                 " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true') " +
-                " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
+                " ORDER BY CASE" +
+                " WHEN company_name ~* '^[a-zA-Z]' THEN 0" +
+                " WHEN company_name ~* '^[0-9]' THEN 1" +
+                " ELSE 2" +
+                " END, company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
                 " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
                 " ON leis.company_id = has_active_data.company_Id" +
-                " ORDER BY company_name ASC",
+                " ORDER BY CASE" +
+                " WHEN company_name ~* '^[a-zA-Z]' THEN 0" +
+                " WHEN company_name ~* '^[0-9]' THEN 1" +
+                " ELSE 2" +
+                " END, company_name ASC",
     )
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
@@ -47,7 +55,10 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-            " SELECT filtered_data.company_id AS companyId," +
+            "WITH company_name_ordering AS (" +
+                "SELECT * FROM (VALUES ('^[a-zA-Z]', 1), ('^[0-9]', 2)) AS o (regex, priority)" +
+                ")" +
+                " SELECT filtered_data.company_id AS companyId," +
                 " company_name AS companyName," +
                 " headquarters, " +
                 " country_code AS countryCode, " +
@@ -59,10 +70,12 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " FROM stored_companies " +
                 " INNER JOIN " + TemporaryTables.TABLE_FILTERED_DROPDOWN_RESULTS +
                 " ON stored_companies.company_id = filtered_dropdown_results.company_id " +
-                " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS filtered_data " +
+                " ORDER BY (SELECT priority from company_name_ordering o WHERE company_name ~* o.regex), company_name ASC" +
+                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}" +
+                ") AS filtered_data" +
                 " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
                 " ON leis.company_id = filtered_data.company_Id" +
-                " ORDER BY company_name ASC",
+                " ORDER BY (SELECT priority from company_name_ordering o WHERE company_name ~* o.regex), company_name ASC",
     )
     fun searchCompaniesWithoutSearchString(
         @Param("searchFilter") searchFilter: StoredCompanySearchFilter,
@@ -81,8 +94,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-            " WITH " +
-                " chunked_results AS (" +
+            " WITH chunked_results AS (" +
                 " SELECT filtered_text_results.company_id AS companyId," +
                 " MIN(filtered_text_results.company_name) AS companyName," +
                 " MAX(filtered_text_results.dataset_rank) AS maxDatasetRank," +
@@ -92,17 +104,19 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " ON filtered_text_results.company_id = filtered_dropdown_results.company_id " +
                 " GROUP BY filtered_text_results.company_id" +
                 " ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC " +
-                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset})" +
-
+                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}" +
+                ")" +
                 " SELECT companyId," +
                 " companyName, " +
                 " headquarters, " +
                 " country_code AS countryCode, " +
                 " sector, " +
                 " leis.identifier_value AS lei " +
-                " FROM (SELECT chunked_results.companyId, chunked_results.companyName, maxDatasetRank, maxMatchQuality, " +
+                " FROM (" +
+                "SELECT chunked_results.companyId, chunked_results.companyName, maxDatasetRank, maxMatchQuality, " +
                 " headquarters, country_code, sector FROM chunked_results" +
-                " LEFT JOIN stored_companies ON chunked_results.companyId = stored_companies.company_id) AS filtered_data" +
+                " LEFT JOIN stored_companies ON chunked_results.companyId = stored_companies.company_id" +
+                ") AS filtered_data" +
                 " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
                 " ON leis.company_id=filtered_data.companyId " +
                 " ORDER BY maxDatasetRank DESC, maxMatchQuality DESC, companyName ASC",
