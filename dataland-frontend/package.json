@@ -61,7 +61,7 @@
     "eslint-plugin-jsdoc": "48.11.0",
     "eslint-plugin-vue": "9.29.1",
     "git-commit-id": "2.0.1",
-    "lint-staged": "15.2.10",
+    "lint-staged": "15.2.11",
     "markdown-it": "14.1.0",
     "mocha": "10.8.2",
     "npm-check-updates": "17.1.11",
