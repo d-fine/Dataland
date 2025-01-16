@@ -1,8 +1,12 @@
 package org.dataland.datalanddataexporter.services
 
+import ApiRetryException
+import com.fasterxml.jackson.databind.JsonNode
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
@@ -19,8 +23,7 @@ import org.dataland.datalanddataexporter.utils.TransformationUtils.REPORTING_PER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistencyOfDataAndTransformationRules
 import org.dataland.datalanddataexporter.utils.TransformationUtils.checkConsistencyOfLegacyRulesAndTransformationRules
 import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataToJson
-import org.dataland.datalanddataexporter.utils.TransformationUtils.getCurrentHeaders
-import org.dataland.datalanddataexporter.utils.TransformationUtils.getLegacyHeaders
+import org.dataland.datalanddataexporter.utils.TransformationUtils.getCurrentAndLegacyHeaders
 import org.dataland.datalanddataexporter.utils.TransformationUtils.getLeiToIsinMapping
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToCsv
 import org.dataland.datalanddataexporter.utils.TransformationUtils.mapJsonToLegacyCsv
@@ -29,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.io.File
+import java.net.SocketTimeoutException
 
 /**
  * A class for handling the transformation of JSON files into CSV
@@ -41,8 +45,12 @@ class CsvExporter(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    companion object {
+        const val MAX_RETRIES = 3
+    }
+
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 15 16 * * *")
     private fun triggerExport() {
         val outputDirectory = "/var/export/csv/sql_server"
         exportSfdrData(outputDirectory)
@@ -59,38 +67,95 @@ class CsvExporter(
         createDirectories(outputDirectory)
         val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         val legacyRules = readTransformationConfig("./transformationRules/SfdrLegacyCsvExportFields.config")
-
-        val currentHeaders = getCurrentHeaders(transformationRules)
-        val legacyHeaders = getLegacyHeaders(legacyRules)
-        val combinedHeaders = currentHeaders + legacyHeaders
-
+        val headers = getCurrentAndLegacyHeaders(transformationRules, legacyRules)
         val dataIds = getAllSfdrDataIds()
 
         dataIds.forEach { dataId ->
-            logger.info("Exporting data with ID: $dataId")
-
-            val dataToExport = mutableMapOf<String, String>()
-            val companyAssociatedData = sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId)
-            val data = convertDataToJson(companyAssociatedData)
-            val companyData = companyDataControllerApi.getCompanyById(companyAssociatedData.companyId)
-
             try {
-                checkConsistencyOfDataAndTransformationRules(data, transformationRules)
-                checkConsistencyOfLegacyRulesAndTransformationRules(transformationRules, legacyRules)
-            } catch (exception: IllegalArgumentException) {
-                logger.error("Consistency check failed for data with ID $dataId and exception ${exception.message}.")
-                logger.warn("Skipping data with ID: $dataId")
-                return@forEach
+                val (deltaCsvData, deltaIsinData) = getSfdrDataForSingleDataId(dataId, transformationRules, legacyRules)
+                csvData.add(deltaCsvData)
+                isinData.addAll(deltaIsinData)
+            } catch (e: ApiRetryException) {
+                logger.error("Common API error occurred for data ID: $dataId. Error: ${e.message}. Skipping this ID.")
+            } catch (e: IllegalArgumentException) {
+                logger.error("IllegalArgumentException for data ID: $dataId. Error: ${e.message}. Skipping this ID.")
             }
-
-            isinData.addAll(getLeiToIsinMapping(companyData.companyInformation))
-            dataToExport += mapJsonToCsv(data, transformationRules)
-            dataToExport += mapJsonToLegacyCsv(data, legacyRules)
-            dataToExport += getCompanyRelatedData(companyAssociatedData, companyData)
-            csvData.add(dataToExport)
         }
 
-        writeCsvFiles(outputDirectory, csvData, isinData, combinedHeaders)
+        writeCsvFiles(outputDirectory, csvData, isinData, headers)
+    }
+
+    /**
+     * Gets the SFDR data for a single dataId and its associated LEI to ISIN mapping
+     * @return A list of SFDR data IDs
+     */
+    fun getSfdrDataForSingleDataId(
+        dataId: String,
+        transformationRules: Map<String, String>,
+        legacyRules: Map<String, String>,
+    ): Pair<MutableMap<String, String>, List<Map<String, String>>> {
+        logger.info("Exporting data with ID: $dataId")
+
+        val csvData = mutableMapOf<String, String>()
+
+        val companyAssociatedData = retryOnCommonApiErrors { sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataId) }
+        val companyData = retryOnCommonApiErrors { companyDataControllerApi.getCompanyById(companyAssociatedData.companyId) }
+
+        val data = convertDataToJson(companyAssociatedData)
+
+        validateConsistency(data, transformationRules, legacyRules, dataId)
+
+        val isinData = getLeiToIsinMapping(companyData.companyInformation)
+        csvData += mapJsonToCsv(data, transformationRules)
+        csvData += mapJsonToLegacyCsv(data, legacyRules)
+        csvData += getCompanyRelatedData(companyAssociatedData, companyData)
+
+        return Pair(csvData, isinData)
+    }
+
+    /**
+     * Checks the consistency of the JSON data with the transformation rules.
+     * @param data The JSON node
+     * @param transformationRules The transformation rules
+     * @param legacyRules The transformation rules
+     * @param dataId The dataId
+     */
+    private fun validateConsistency(
+        data: JsonNode,
+        transformationRules: Map<String, String>,
+        legacyRules: Map<String, String>,
+        dataId: String,
+    ) {
+        try {
+            checkConsistencyOfDataAndTransformationRules(data, transformationRules)
+            checkConsistencyOfLegacyRulesAndTransformationRules(transformationRules, legacyRules)
+        } catch (exception: IllegalArgumentException) {
+            logger.error("Validate consistency failed for data ID: $dataId.")
+            throw IllegalArgumentException("Consistency check failed for data with ID $dataId: ${exception.message}", exception)
+        }
+    }
+
+    /**
+     * Retry multiples times for common API errors
+     */
+    private fun <T> retryOnCommonApiErrors(functionToExecute: () -> T): T {
+        var counter = 0
+        while (counter < MAX_RETRIES) {
+            try {
+                return functionToExecute()
+            } catch (exception: ClientException) {
+                logger.error("Unexpected client exception occurred. Response was: ${exception.message}.")
+                counter++
+            } catch (exception: SocketTimeoutException) {
+                logger.error("Unexpected timeout occurred. Response was: ${exception.message}.")
+                counter++
+            } catch (exception: ServerException) {
+                logger.error("Unexpected server exception. Response was: ${exception.message}.")
+                counter++
+            }
+        }
+        logger.error("Maximum number of retries exceeded.")
+        throw ApiRetryException("Operation failed after $MAX_RETRIES attempts due to common API errors.")
     }
 
     /**

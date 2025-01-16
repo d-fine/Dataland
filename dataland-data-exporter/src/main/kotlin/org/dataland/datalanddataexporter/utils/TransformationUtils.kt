@@ -39,6 +39,21 @@ object TransformationUtils {
     }
 
     /**
+     * Gets the headers from the transformation rules and legacy rules
+     * @param transformationRules The transformation rules
+     * @param legacyRules The transformation rules
+     * @return A list of headers
+     */
+    fun getCurrentAndLegacyHeaders(
+        transformationRules: Map<String, String>,
+        legacyRules: Map<String, String>,
+    ): List<String> {
+        val currentHeaders = getCurrentHeaders(transformationRules)
+        val legacyHeaders = getLegacyHeaders(legacyRules)
+        return currentHeaders + legacyHeaders
+    }
+
+    /**
      * Gets the headers from the transformation rules.
      * @param transformationRules The transformation rules
      * @return A list of headers

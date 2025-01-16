@@ -20117,14 +20117,10 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
-          },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "companyId": {
@@ -20134,6 +20130,10 @@
             "type": "string"
           },
           "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }
