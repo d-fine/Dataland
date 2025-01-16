@@ -8,7 +8,7 @@ io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1
 
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 
-org-springframework-boot = { id = "org.springframework.boot", version = "3.3.2" }
+org-springframework-boot = { id = "org.springframework.boot", version = "3.4.1" }
 
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.1" }
 
@@ -18,7 +18,7 @@ org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring"
 
 org-sonarqube = { id = "org.sonarqube", version = "5.0.0.4638" }
 
-org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.8.0" }
+org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.4.2" }
 
@@ -66,9 +66,9 @@ log4j-slf4j2-impl = { group = "org.apache.logging.log4j", name = "log4j-slf4j2-i
 log4j-api = { group = "org.apache.logging.log4j", name = "log4j-api", version.ref = "log4j" }
 log4j-to-slf4j = { group = "org.apache.logging.log4j", name = "log4j-to-slf4j", version.ref = "log4j" }
 
-logback-classic = "ch.qos.logback:logback-classic:1.5.6"
+logback-classic = "ch.qos.logback:logback-classic:1.5.16"
 
-logback-core = "ch.qos.logback:logback-core:1.5.6"
+logback-core = "ch.qos.logback:logback-core:1.5.16"
 
 slf4j-api = "org.slf4j:slf4j-api:2.0.16"
 
@@ -171,7 +171,7 @@ spring-amqp = "org.springframework.amqp:spring-amqp:3.2.1"
 
 spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
-springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0"
+springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.1"
 
 jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
 freemarker = "org.freemarker:freemarker:2.3.34"

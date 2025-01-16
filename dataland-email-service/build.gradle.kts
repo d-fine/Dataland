@@ -77,3 +77,19 @@ tasks.test {
 jacoco {
     toolVersion = jacocoVersion
 }
+
+afterEvaluate {
+    tasks.getByName("forkedSpringBootRun") {
+        dependsOn(":dataland-backend-utils:assemble")
+        dependsOn(":dataland-message-queue-utils:assemble")
+        notCompatibleWithConfigurationCache(
+            "See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102",
+        )
+    }
+
+    tasks.getByName("forkedSpringBootStop") {
+        notCompatibleWithConfigurationCache(
+            "See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102",
+        )
+    }
+}
