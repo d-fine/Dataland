@@ -707,7 +707,6 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "integrationTesting",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
@@ -936,7 +935,6 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "integrationTesting",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
@@ -1090,7 +1088,6 @@
               "items": {
                 "type": "string",
                 "enum": [
-                  "integrationTesting",
                   "eutaxonomy-financials",
                   "eutaxonomy-non-financials",
                   "nuclear-and-gas",
@@ -1451,7 +1448,6 @@
             "type": "string",
             "example": "p2p",
             "enum": [
-              "integrationTesting",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
@@ -1550,7 +1546,6 @@
             "items": {
               "type": "string",
               "enum": [
-                "integrationTesting",
                 "eutaxonomy-financials",
                 "eutaxonomy-non-financials",
                 "nuclear-and-gas",
@@ -1887,7 +1882,6 @@
           "dataType": {
             "type": "string",
             "enum": [
-              "integrationTesting",
               "eutaxonomy-financials",
               "eutaxonomy-non-financials",
               "nuclear-and-gas",
