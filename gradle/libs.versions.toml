@@ -191,10 +191,10 @@ tika-core = "org.apache.tika:tika-core:3.0.0"
 
 tika-parsers = "org.apache.tika:tika-parsers:3.0.0"
 
-poi = "org.apache.poi:poi:5.3.0"
+poi = "org.apache.poi:poi:5.4.0"
 
-poi-ooxml = "org.apache.poi:poi-ooxml:5.3.0"
+poi-ooxml = "org.apache.poi:poi-ooxml:5.4.0"
 
-poi-scratchpad = "org.apache.poi:poi-scratchpad:5.3.0"
+poi-scratchpad = "org.apache.poi:poi-scratchpad:5.4.0"
 
 simple-odf = "org.odftoolkit:simple-odf:0.9.0"
