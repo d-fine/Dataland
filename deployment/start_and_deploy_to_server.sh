@@ -17,7 +17,6 @@ location=/home/ubuntu/dataland
 keycloak_backup_dir=/home/ubuntu/keycloak_backup
 persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
-logging_data_mnt=/mnt/data/logging
 loki_volume="$LOKI_VOLUME"
 
 # shut down currently running dataland application and purge files on server
@@ -61,7 +60,7 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "$loki_volume" "$target_server_url" "$location"
 fi
 
-ssh ubuntu@"$target_server_url" "if [ -d '$logging_data_mnt' ] && [ ! -d '$loki_volume' ]; then
+ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
         echo "Creating '$loki_volume' dir as volume for Loki container"
         sudo mkdir -p $loki_volume
         sudo chmod a+w '$loki_volume'
