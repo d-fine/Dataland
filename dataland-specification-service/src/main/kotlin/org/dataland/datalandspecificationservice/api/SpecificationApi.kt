@@ -3,10 +3,10 @@ package org.dataland.datalandspecificationservice.api
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
-import org.dataland.datalandspecificationservice.model.DataPointSchemaDto
-import org.dataland.datalandspecificationservice.model.DataPointSpecificationDto
-import org.dataland.datalandspecificationservice.model.FrameworkSpecificationDto
-import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecificationDto
+import org.dataland.datalandspecificationservice.model.DataPointBaseTypeSpecification
+import org.dataland.datalandspecificationservice.model.DataPointTypeSpecification
+import org.dataland.datalandspecificationservice.model.FrameworkSpecification
+import org.dataland.datalandspecificationservice.model.SimpleFrameworkSpecification
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -30,7 +30,7 @@ interface SpecificationApi {
     )
     fun getFrameworkSpecification(
         @PathVariable("frameworkSpecificationId") frameworkSpecificationId: String,
-    ): ResponseEntity<FrameworkSpecificationDto>
+    ): ResponseEntity<FrameworkSpecification>
 
     /**
      * A method to check if a framework is valid
@@ -71,65 +71,65 @@ interface SpecificationApi {
         value = ["/frameworks"],
         produces = ["application/json"],
     )
-    fun listFrameworkSpecifications(): ResponseEntity<List<SimpleFrameworkSpecificationDto>>
+    fun listFrameworkSpecifications(): ResponseEntity<List<SimpleFrameworkSpecification>>
 
     /**
-     * Get the data point specification for a given id
+     * Get the data point type specification for a given id
      */
     @Operation(
-        summary = "Get the data point specification for a given id.",
-        description = "Get the data point specification for a given id.",
+        summary = "Get the data point type specification for a given id.",
+        description = "Get the data point type specification for a given id.",
     )
     @GetMapping(
-        value = ["/data-points/{dataPointSpecificationId}"],
+        value = ["/data-point-types/{dataPointTypeId}"],
         produces = ["application/json"],
     )
-    fun getDataPointSpecification(
-        @PathVariable("dataPointSpecificationId") dataPointSpecificationId: String,
-    ): ResponseEntity<DataPointSpecificationDto>
+    fun getDataPointTypeSpecification(
+        @PathVariable("dataPointTypeId") dataPointTypeId: String,
+    ): ResponseEntity<DataPointTypeSpecification>
 
     /**
-     * Get the data type specification for a given id
+     * Get the data point base type specification for a given id
      */
     @Operation(
-        summary = "Get the data point schema for a given id.",
-        description = "Get the data point schema for a given id.",
+        summary = "Get the data point base type for a given id.",
+        description = "Get the data point base type for a given id.",
     )
     @GetMapping(
-        value = ["/data-point-schemas/{dataPointSchemaId}"],
+        value = ["/data-point-base-types/{dataPointBaseTypeId}"],
         produces = ["application/json"],
     )
-    fun getDataPointSchema(
-        @PathVariable("dataPointSchemaId") dataPointSchemaId: String,
-    ): ResponseEntity<DataPointSchemaDto>
+    fun getDataPointBaseType(
+        @PathVariable("dataPointBaseTypeId") dataPointBaseTypeId: String,
+    ): ResponseEntity<DataPointBaseTypeSpecification>
 
     /**
-     * Get the java class that validates a data point
+     * Get the kotlin data class that validates a data point base type
+     */
+    @Operation(
+        summary = "Get the kotlin class that validates the data point base type.",
+        description = "Get the kotlin class that validates the data point base type.",
+    )
+    @GetMapping(
+        value = ["/data-point-base-types/{dataPointBaseTypeId}/validated-by"],
+        produces = ["text/plain", "*/*"],
+    )
+    fun getKotlinClassValidatingTheDataPointBaseType(
+        @PathVariable("dataPointBaseTypeId") dataPointBaseTypeId: String,
+    ): ResponseEntity<String>
+
+    /**
+     * Get the kotlin class that validates a data point type
      */
     @Operation(
         summary = "Get the kotlin class that validates the data point type.",
         description = "Get the kotlin class that validates the data point type.",
     )
     @GetMapping(
-        value = ["/data-point-schemas/{dataPointSchemaId}/validated-by"],
+        value = ["/data-point-types/{dataPointTypeId}/validated-by"],
         produces = ["text/plain", "*/*"],
     )
-    fun getKotlinClassValidatingTheDataPointSchema(
-        @PathVariable("dataPointSchemaId") dataPointSchemaId: String,
-    ): ResponseEntity<String>
-
-    /**
-     * Get the java class that validates a data point
-     */
-    @Operation(
-        summary = "Get the kotlin class that validates the data point.",
-        description = "Get the kotlin class that validates the data point.",
-    )
-    @GetMapping(
-        value = ["/data-points/{dataPointSpecificationId}/validated-by"],
-        produces = ["text/plain", "*/*"],
-    )
-    fun getKotlinClassValidatingTheDataPoint(
-        @PathVariable("dataPointSpecificationId") dataPointSpecificationId: String,
+    fun getKotlinClassValidatingTheDataPointType(
+        @PathVariable("dataPointTypeId") dataPointSpecificationId: String,
     ): ResponseEntity<String>
 }

@@ -3,7 +3,7 @@ package org.dataland.frameworktoolbox.specific.specification.elements
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.dataland.datalandspecification.specifications.DataPointSpecification
+import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.specification.FrameworkSpecificationBuilder
 import org.dataland.frameworktoolbox.specific.specification.SpecificationNamingConvention
@@ -46,7 +46,7 @@ class CategoryBuilder(
         component: ComponentBase,
         typeNameSuffix: String,
         dataPointTypeId: String,
-    ): Pair<DataPointSpecification, DatapointBuilder> {
+    ): Pair<DataPointType, DatapointBuilder> {
         val specificationId =
             SpecificationNamingConvention.generateDataPointSpecificationName(
                 component.documentSupport,
@@ -77,23 +77,23 @@ class CategoryBuilder(
         name: String,
         businessDefinition: String,
         dataPointSchemaId: String,
-    ): DataPointSpecification {
-        require(builder.database.dataPointSchemas.containsKey(dataPointSchemaId)) {
+    ): DataPointType {
+        require(builder.database.dataPointBaseTypes.containsKey(dataPointSchemaId)) {
             "Data point schema id $dataPointSchemaId does not exist in the database."
         }
-        val newDatapointSpecification =
-            DataPointSpecification(
+        val newDatapointType =
+            DataPointType(
                 id = id,
                 name = name,
                 businessDefinition = businessDefinition,
-                dataPointSchemaId = dataPointSchemaId,
+                dataPointBaseTypeId = dataPointSchemaId,
                 frameworkOwnership = builder.framework.identifier,
             )
-        require(!builder.database.dataPointSpecifications.containsKey(id)) {
+        require(!builder.database.dataPointTypes.containsKey(id)) {
             "Data point specification with id $id already exists in the database."
         }
-        builder.database.dataPointSpecifications[id] = newDatapointSpecification
-        return newDatapointSpecification
+        builder.database.dataPointTypes[id] = newDatapointType
+        return newDatapointType
     }
 
     /**

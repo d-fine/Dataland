@@ -1,0 +1,6 @@
+{
+  "id": "test-datapoint-type",
+  "name": "Testing...",
+  "businessDefinition": "Testing...",
+  "dataPointBaseTypeId": "test-datapoint-base-type"
+}

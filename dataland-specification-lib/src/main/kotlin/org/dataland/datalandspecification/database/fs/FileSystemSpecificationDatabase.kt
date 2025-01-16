@@ -3,9 +3,9 @@ package org.dataland.datalandspecification.database.fs
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandspecification.database.SpecificationDatabase
-import org.dataland.datalandspecification.specifications.DataPointSchema
-import org.dataland.datalandspecification.specifications.DataPointSpecification
-import org.dataland.datalandspecification.specifications.FrameworkSpecification
+import org.dataland.datalandspecification.specifications.DataPointBaseType
+import org.dataland.datalandspecification.specifications.DataPointType
+import org.dataland.datalandspecification.specifications.Framework
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -54,34 +54,34 @@ class FileSystemSpecificationDatabase(
     }
 
     private fun loadFromDisk() {
-        loadSpecifications<DataPointSchema>(File(baseFolder, "dataPointSchemas"), objectMapper, logger)
+        loadSpecifications<DataPointBaseType>(File(baseFolder, "dataPointBaseTypes"), objectMapper, logger)
             .forEach { (id, specification) ->
-                dataPointSchemas[id] = specification
+                dataPointBaseTypes[id] = specification
             }
-        logger.info("Loaded ${dataPointSchemas.size} data point type specifications")
-        loadSpecifications<DataPointSpecification>(File(baseFolder, "dataPoints"), objectMapper, logger)
+        logger.info("Loaded ${dataPointBaseTypes.size} data point type specifications")
+        loadSpecifications<DataPointType>(File(baseFolder, "dataPointTypes"), objectMapper, logger)
             .forEach { (id, specification) ->
-                dataPointSpecifications[id] = specification
+                dataPointTypes[id] = specification
             }
-        logger.info("Loaded ${dataPointSpecifications.size} data point specifications")
-        loadSpecifications<FrameworkSpecification>(File(baseFolder, "frameworks"), objectMapper, logger)
+        logger.info("Loaded ${dataPointTypes.size} data point specifications")
+        loadSpecifications<Framework>(File(baseFolder, "frameworks"), objectMapper, logger)
             .forEach { (id, specification) ->
-                frameworkSpecifications[id] = specification
+                frameworks[id] = specification
             }
-        logger.info("Loaded ${frameworkSpecifications.size} framework specifications")
+        logger.info("Loaded ${frameworks.size} framework specifications")
         validateIntegrity()
     }
 
     private fun validateIntegrity() {
-        frameworkSpecifications.forEach {
+        frameworks.forEach {
             it.value.validateIntegrity(this)
             assert(it.value.id == it.key) { "Framework ID does not match key: ${it.key}" }
         }
-        dataPointSchemas.forEach {
+        dataPointBaseTypes.forEach {
             it.value.validateIntegrity()
             assert(it.value.id == it.key) { "Data point type ID does not match key: ${it.key}" }
         }
-        dataPointSpecifications.forEach {
+        dataPointTypes.forEach {
             it.value.validateIntegrity(this)
             assert(it.value.id == it.key) { "Data point ID does not match key: ${it.key}" }
         }
@@ -92,8 +92,8 @@ class FileSystemSpecificationDatabase(
      */
     fun saveToDisk() {
         validateIntegrity()
-        saveSpecifications(File(baseFolder, "dataPointSchemas"), objectMapper, dataPointSchemas)
-        saveSpecifications(File(baseFolder, "dataPoints"), objectMapper, dataPointSpecifications)
-        saveSpecifications(File(baseFolder, "frameworks"), objectMapper, frameworkSpecifications)
+        saveSpecifications(File(baseFolder, "dataPointBaseTypes"), objectMapper, dataPointBaseTypes)
+        saveSpecifications(File(baseFolder, "dataPointTypes"), objectMapper, dataPointTypes)
+        saveSpecifications(File(baseFolder, "frameworks"), objectMapper, frameworks)
     }
 }
