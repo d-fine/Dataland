@@ -64,7 +64,7 @@ class DataPointValidatorTest {
         val dataPoint = "dummy"
         val dataPointType = "non-existent-identifier"
 
-        `when`(specificationClient.getDataPointSpecification(dataPointType))
+        `when`(specificationClient.getDataPointTypeSpecification(dataPointType))
             .thenThrow(ClientException("Data point identifier not found."))
 
         assertThrows<InvalidInputApiException> {

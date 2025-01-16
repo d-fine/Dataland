@@ -39,8 +39,8 @@ class DataPointValidator
         ) {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
-            val dataPointSchemaId = specificationClient.getDataPointSpecification(dataPointType).dataPointSchema.id
-            val validationClass = specificationClient.getDataPointSchema(dataPointSchemaId).validatedBy
+            val dataPointSchemaId = specificationClient.getDataPointTypeSpecification(dataPointType).dataPointBaseType.id
+            val validationClass = specificationClient.getDataPointBaseType(dataPointSchemaId).validatedBy
             validateConsistency(dataPoint, validationClass, correlationId)
         }
 
@@ -50,7 +50,7 @@ class DataPointValidator
          */
         fun validateDataPointTypeExists(dataPointType: String) {
             try {
-                specificationClient.getDataPointSpecification(dataPointType)
+                specificationClient.getDataPointTypeSpecification(dataPointType)
             } catch (clientException: ClientException) {
                 logger.error("Data point identifier $dataPointType not found: ${clientException.message}.")
                 throw InvalidInputApiException(
