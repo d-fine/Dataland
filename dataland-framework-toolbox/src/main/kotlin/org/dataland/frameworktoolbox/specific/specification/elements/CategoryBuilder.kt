@@ -72,14 +72,14 @@ class CategoryBuilder(
     /**
      * Add a new data point specification to the framework
      */
-    fun addDatapointSpecification(
+    private fun addDatapointSpecification(
         id: String,
         name: String,
         businessDefinition: String,
         dataPointBaseTypeId: String,
     ): DataPointType {
         require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
-            "Data point schema id $dataPointBaseTypeId does not exist in the database."
+            "Data point base type id $dataPointBaseTypeId does not exist in the database."
         }
         val newDatapointType =
             DataPointType(
