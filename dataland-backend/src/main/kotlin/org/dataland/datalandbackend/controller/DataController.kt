@@ -33,7 +33,7 @@ import java.time.Instant
 abstract class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
-    var dataExportService: DataExportService,
+    private val dataExportService: DataExportService,
     private val objectMapper: ObjectMapper,
     private val clazz: Class<T>,
 ) : DataApi<T> {
@@ -53,8 +53,8 @@ abstract class DataController<T>(
         val uploadTime = Instant.now().toEpochMilli()
         val datasetToStore = buildStorableDataset(companyAssociatedData, userId, uploadTime)
         val correlationId = IdUtils.generateCorrelationId(companyId = companyAssociatedData.companyId, dataId = null)
-
         val dataIdOfPostedData = datasetStorageService.storeDataset(datasetToStore, bypassQa, correlationId)
+
         logger.info(logMessageBuilder.postCompanyAssociatedDataSuccessMessage(companyId, correlationId))
 
         return ResponseEntity.ok(
@@ -79,10 +79,13 @@ abstract class DataController<T>(
         return ResponseEntity.ok(companyAssociatedData)
     }
 
-    private fun getDataAsString(
+    private fun getData(
         dataId: String,
         correlationId: String,
-    ): String = datasetStorageService.getDatasetData(dataId, dataType.toString(), correlationId)
+    ): T {
+        val dataAsString = datasetStorageService.getDatasetData(dataId, dataType.toString(), correlationId)
+        return objectMapper.readValue(dataAsString, clazz)
+    }
 
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
@@ -99,11 +102,9 @@ abstract class DataController<T>(
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
         metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
             val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null)
-
-            val dataAsString = getDataAsString(it.dataId, correlationId)
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
-                    it.toApiModel(DatalandAuthentication.fromContext()), objectMapper.readValue(dataAsString, clazz),
+                    it.toApiModel(DatalandAuthentication.fromContext()), getData(it.dataId, correlationId),
                 ),
             )
         }
@@ -209,7 +210,7 @@ abstract class DataController<T>(
         return CompanyAssociatedData(
             companyId = companyId,
             reportingPeriod = reportingPeriod,
-            data = objectMapper.readValue(getDataAsString(dataId, correlationId), clazz),
+            data = getData(dataId, correlationId),
         )
     }
 
