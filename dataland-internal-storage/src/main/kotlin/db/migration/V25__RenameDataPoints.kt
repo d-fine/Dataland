@@ -4,8 +4,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script updates the existing EU taxonomy non-financials datasets and migrates all
- * existing BaseDataPoints to ExtendedDataPoints.
+ * Change column names to new version
  */
 @Suppress("ClassName")
 class V25__RenameDataPoints : BaseJavaMigration() {

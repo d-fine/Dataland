@@ -4,8 +4,7 @@ import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 
 /**
- * This migration script deletes the invitation meta info table after the corresponding feature that stores data into
- * that table has been removed.
+ * Change column names to new version
  */
 @Suppress("ClassName")
 class V4__RenameDataPoints : BaseJavaMigration() {
