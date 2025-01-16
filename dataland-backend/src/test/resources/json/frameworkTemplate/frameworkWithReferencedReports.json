@@ -6,7 +6,7 @@
         "dataSource": {
           "page": "213",
           "fileName": "AnnualReport",
-          "fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+          "fileReference": "70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           "tagName": "e-business"
         },
         "comment": "generate primary application",
@@ -24,11 +24,6 @@
         "quality": "Reported"
       },
       "referencedReports": {
-        "IntegratedReport": {
-          "fileReference": "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-          "fileName": "IntegratedReport",
-          "publicationDate": "2023-11-04"
-        },
         "AnnualReport": {
           "fileReference": "70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
           "fileName": "AnnualReport",
