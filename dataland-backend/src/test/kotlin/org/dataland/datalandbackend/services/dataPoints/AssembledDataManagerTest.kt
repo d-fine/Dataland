@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.services.dataPoints
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
@@ -86,8 +86,8 @@ class AssembledDataManagerTest {
 
         `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
 
-        val uploadedDataSet =
-            StorableDataSet(
+        val uploadedDataset =
+            StorableDataset(
                 companyId = companyId,
                 dataType = DataType("sfdr"),
                 uploaderUserId = uploaderUserId,
@@ -96,15 +96,15 @@ class AssembledDataManagerTest {
                 data = inputData,
             )
 
-        assembledDataManager.storeDataset(uploadedDataSet, false, correlationId)
+        assembledDataManager.storeDataset(uploadedDataset, false, correlationId)
         expectedDataPointIdentifiers.forEach {
             verify(spyDataPointManager, times(1)).storeDataPoint(
                 argThat { dataPointIdentifier == it }, any(), any(), any(),
             )
         }
         verify(messageQueuePublications, times(expectedDataPointIdentifiers.size)).publishDataPointUploadedMessage(any(), any(), any())
-        verify(messageQueuePublications, times(1)).publishDataSetQaRequiredMessage(any(), any(), any())
-        verify(messageQueuePublications, times(0)).publishDataSetUploadedMessage(any(), any(), any())
+        verify(messageQueuePublications, times(1)).publishDatasetQaRequiredMessage(any(), any(), any())
+        verify(messageQueuePublications, times(0)).publishDatasetUploadedMessage(any(), any(), any())
         verify(datasetDatapointRepository, times(1)).save(
             argThat {
                 dataPoints.keys.sorted() == expectedDataPointIdentifiers.sorted()
@@ -169,10 +169,10 @@ class AssembledDataManagerTest {
             )
         }
 
-        val assembledDataSet = assembledDataManager.getDatasetData(datasetId, "sfdr", correlationId)
+        val assembledDataset = assembledDataManager.getDatasetData(datasetId, "sfdr", correlationId)
         dataPointContent.forEach {
-            assert(assembledDataSet.contains(it))
+            assert(assembledDataset.contains(it))
         }
-        assert(assembledDataSet.contains("\"referencedReports\":{\"ESEFReport\":"))
+        assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 }

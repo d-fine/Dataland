@@ -62,7 +62,7 @@ class DataMetaInformationManager(
     }
 
     /**
-     * Method to make the data manager get meta info about one specific data set
+     * Method to make the data manager get meta info about one specific dataset
      * @param dataId filters the requested meta info to one specific data ID
      * @return meta info about data behind the dataId
      */

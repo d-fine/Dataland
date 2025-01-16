@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
@@ -50,21 +50,21 @@ class AssembledDataManager
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
-         * Processes a data set by breaking it up and storing its data points in the internal storage
-         * @param uploadedDataSet the data set to process
+         * Processes a dataset by breaking it up and storing its data points in the internal storage
+         * @param uploadedDataset the dataset to process
          * @param bypassQa whether to bypass the QA process
          * @param correlationId the correlation id for the operation
-         * @return the id of the stored data set
+         * @return the id of the stored dataset
          */
         @Transactional
         override fun storeDataset(
-            uploadedDataSet: StorableDataSet,
+            uploadedDataset: StorableDataset,
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) = splitDatasetIntoDataPoints(uploadedDataSet)
+            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) = splitDatasetIntoDataPoints(uploadedDataset)
             validateDataset(dataContent, referencedReports, correlationId)
-            return storeSplitDataset(uploadedDataSet, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
+            return storeSplitDataset(uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
         }
 
         private data class SplitDataset(
@@ -73,8 +73,8 @@ class AssembledDataManager
             val fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
         )
 
-        private fun splitDatasetIntoDataPoints(uploadedDataSet: StorableDataSet): SplitDataset {
-            val frameworkSpecification = getFrameworkSpecification(uploadedDataSet.dataType.toString())
+        private fun splitDatasetIntoDataPoints(uploadedDataset: StorableDataset): SplitDataset {
+            val frameworkSpecification = getFrameworkSpecification(uploadedDataset.dataType.toString())
             val frameworkSchema = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             val frameworkUsesReferencedReports = frameworkSpecification.referencedReportJsonPath != null
 
@@ -85,7 +85,7 @@ class AssembledDataManager
                 JsonSpecificationUtils
                     .dehydrateJsonSpecification(
                         frameworkSchema,
-                        objectMapper.readTree(uploadedDataSet.data) as ObjectNode,
+                        objectMapper.readTree(uploadedDataset.data) as ObjectNode,
                     ).toMutableMap()
 
             val referencedReports =
@@ -113,7 +113,7 @@ class AssembledDataManager
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
             dataPointIdentifier: String,
             correlationId: String,
-            uploadedDataSet: StorableDataSet,
+            uploadedDataset: StorableDataset,
             bypassQa: Boolean,
         ): String? {
             val dataPointContent = dataPointJsonLeaf.content
@@ -134,11 +134,11 @@ class AssembledDataManager
                 UploadedDataPoint(
                     dataPointContent = objectMapper.writeValueAsString(dataPointContent),
                     dataPointIdentifier = dataPointIdentifier,
-                    companyId = uploadedDataSet.companyId,
-                    reportingPeriod = uploadedDataSet.reportingPeriod,
+                    companyId = uploadedDataset.companyId,
+                    reportingPeriod = uploadedDataset.reportingPeriod,
                 ),
                 dataId,
-                uploadedDataSet.uploaderUserId,
+                uploadedDataset.uploaderUserId,
                 correlationId,
             )
 
@@ -153,24 +153,24 @@ class AssembledDataManager
         }
 
         private fun storeSplitDataset(
-            uploadedDataSet: StorableDataSet,
+            uploadedDataset: StorableDataset,
             correlationId: String,
             bypassQa: Boolean,
             dataContent: Map<String, JsonSpecificationLeaf>,
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
         ): String {
             val datasetId = IdUtils.generateUUID()
-            dataManager.storeMetaDataFrom(datasetId, uploadedDataSet, correlationId)
+            dataManager.storeMetaDataFrom(datasetId, uploadedDataset, correlationId)
 
             TransactionSynchronizationManager.registerSynchronization(
                 object : TransactionSynchronization {
                     override fun afterCommit() {
-                        messageQueuePublications.publishDataSetQaRequiredMessage(datasetId, bypassQa, correlationId)
+                        messageQueuePublications.publishDatasetQaRequiredMessage(datasetId, bypassQa, correlationId)
                     }
                 },
             )
 
-            logger.info("Processing data set with id $datasetId for framework ${uploadedDataSet.dataType}")
+            logger.info("Processing dataset with id $datasetId for framework ${uploadedDataset.dataType}")
 
             val createdDataIds = mutableMapOf<String, String>()
             dataContent.forEach { (dataPointIdentifier, dataPointJsonLeaf) ->
@@ -179,14 +179,14 @@ class AssembledDataManager
                     fileReferenceToPublicationDateMapping,
                     dataPointIdentifier,
                     correlationId,
-                    uploadedDataSet,
+                    uploadedDataset,
                     bypassQa,
                 )?.let { createdDataIds[dataPointIdentifier] = it }
             }
             this.datasetDatapointRepository.save(
                 DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
             )
-            logger.info("Completed processing data set (correlation ID: $correlationId).")
+            logger.info("Completed processing dataset (correlation ID: $correlationId).")
             return datasetId
         }
 
@@ -237,11 +237,11 @@ class AssembledDataManager
             }
 
         /**
-         * Retrieves a data set by assembling the data points from the internal storage
-         * @param datasetId the id of the data set
-         * @param dataType the type of data set
+         * Retrieves a dataset by assembling the data points from the internal storage
+         * @param datasetId the id of the dataset
+         * @param dataType the type of dataset
          * @param correlationId the correlation id for the operation
-         * @return the data set in form of a JSON string
+         * @return the dataset in form of a JSON string
          */
         @Transactional(readOnly = true)
         override fun getDatasetData(
@@ -249,8 +249,8 @@ class AssembledDataManager
             dataType: String,
             correlationId: String,
         ): String {
-            val dataPoints = getDataPointIdsForDataSet(datasetId)
-            return assembleDataSetFromDataPoints(dataPoints.values.toList(), dataType, correlationId)
+            val dataPoints = getDataPointIdsForDataset(datasetId)
+            return assembleDatasetFromDataPoints(dataPoints.values.toList(), dataType, correlationId)
         }
 
         /**
@@ -259,7 +259,7 @@ class AssembledDataManager
          * @return a map of data point IDs to the corresponding technical IDs that are contained in the dataset
          */
         @Transactional(readOnly = true)
-        fun getDataPointIdsForDataSet(datasetId: String): Map<String, String> {
+        fun getDataPointIdsForDataset(datasetId: String): Map<String, String> {
             val dataPoints =
                 datasetDatapointRepository
                     .findById(datasetId)
@@ -270,14 +270,14 @@ class AssembledDataManager
         }
 
         /**
-         * Assembles a data set by retrieving the data points from the internal storage
+         * Assembles a dataset by retrieving the data points from the internal storage
          * and filling their content into the framework template
          * @param dataIds a list of all required data points
-         * @param framework the type of data set
+         * @param framework the type of dataset
          * @param correlationId the correlation id for the operation
-         * @return the data set in form of a JSON string
+         * @return the dataset in form of a JSON string
          */
-        private fun assembleDataSetFromDataPoints(
+        private fun assembleDatasetFromDataPoints(
             dataIds: List<String>,
             framework: String,
             correlationId: String,

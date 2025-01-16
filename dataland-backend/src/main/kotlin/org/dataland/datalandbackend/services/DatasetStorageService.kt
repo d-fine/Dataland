@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorableDataset
 
 /**
  * Service to store and retrieve datasets from a backing storage engine
@@ -8,23 +8,23 @@ import org.dataland.datalandbackend.model.StorableDataSet
 interface DatasetStorageService {
     /**
      * Stores a dataset in the backing storage engine
-     * @param uploadedDataSet the data set to process
+     * @param uploadedDataset the dataset to process
      * @param bypassQa whether to bypass the QA process
      * @param correlationId the correlation id for the operation
-     * @return the id of the stored data set
+     * @return the id of the stored dataset
      */
     fun storeDataset(
-        uploadedDataSet: StorableDataSet,
+        uploadedDataset: StorableDataset,
         bypassQa: Boolean,
         correlationId: String,
     ): String
 
     /**
      * Retrieves the content of a dataset from the backend storage engien
-     * @param datasetId the id of the data set
-     * @param dataType the type of data set
+     * @param datasetId the id of the dataset
+     * @param dataType the type of dataset
      * @param correlationId the correlation id for the operation
-     * @return the data set in form of a JSON string
+     * @return the dataset in form of a JSON string
      */
     fun getDatasetData(
         datasetId: String,

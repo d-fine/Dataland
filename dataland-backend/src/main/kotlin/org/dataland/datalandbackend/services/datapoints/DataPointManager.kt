@@ -103,7 +103,7 @@ class DataPointManager
          * Retrieves a single data point from the internal storage
          * @param dataId the id of the data point
          * @param correlationId the correlation id for the operation
-         * @return the data point in form of a StorableDataSet
+         * @return the data point in form of a StorableDataset
          */
         fun retrieveDataPoint(
             dataId: String,

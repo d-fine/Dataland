@@ -22,7 +22,7 @@ import java.util.UUID
  * Controller for the company metadata endpoints
  * @param dataMetaInformationManager service for handling data meta information
  * @param logMessageBuilder a helper for building log messages
- * @param nonSourceableDataManager service for handling information on data sets and their sourceability
+ * @param nonSourceableDataManager service for handling information on datasets and their sourceability
  */
 
 @RestController
@@ -68,7 +68,7 @@ class MetaDataController(
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 
-    override fun getInfoOnNonSourceabilityOfDataSets(
+    override fun getInfoOnNonSourceabilityOfDatasets(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
@@ -106,7 +106,7 @@ class MetaDataController(
     }
 
     override fun getContainedDataPoints(dataId: String): ResponseEntity<Map<String, String>> {
-        val dataPoints = assembledDataManager.getDataPointIdsForDataSet(dataId)
+        val dataPoints = assembledDataManager.getDataPointIdsForDataset(dataId)
         if (dataPoints.isEmpty()) {
             throw ResourceNotFoundApiException(
                 summary = "No data point mapping found for dataset.",
