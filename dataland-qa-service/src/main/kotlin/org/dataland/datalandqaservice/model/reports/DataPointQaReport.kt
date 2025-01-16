@@ -5,8 +5,8 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPointVerdict
 /**
  * --- API model ---
  * Meta information associated to a QA report in the QA data storage
- * @param dataPointId unique identifier to identify the data the report is associated with
- * @param dataPointType unique identifier to identify the data point the report is associated with
+ * @param dataPointId unique identifier to identify the data point the report is associated with
+ * @param dataPointType unique identifier to identify the data point type the report is associated with
  * @param qaReportId unique identifier of the QA report
  * @param reporterUserId the user ID of the user who requested the upload of this QA report
  * @param uploadTime is a timestamp for the upload of this QA report
