@@ -134,17 +134,6 @@ gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
 
-afterEvaluate {
-    tasks.getByName("forkedSpringBootRun") {
-        dependsOn(":dataland-message-queue-utils:assemble")
-        notCompatibleWithConfigurationCache(
-            "See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102",
-        )
-    }
-
-    tasks.getByName("forkedSpringBootStop") {
-        notCompatibleWithConfigurationCache(
-            "See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102",
-        )
-    }
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
