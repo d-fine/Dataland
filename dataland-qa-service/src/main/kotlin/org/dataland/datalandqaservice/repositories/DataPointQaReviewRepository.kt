@@ -15,39 +15,39 @@ import java.util.UUID
 @Repository
 interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, UUID> {
     /**
-     * A function to get the dataId of the currently active data point, given a triple of company ID, data type and reporting period
+     * A function to get the dataPointId of the currently active data point, given a triple of company ID, data type and reporting period
      * @param filter the filter to apply to the search containing the company ID, data type, reporting period and the QA status
      */
     @Query(
-        "SELECT dataPointQaReview.dataId FROM DataPointQaReviewEntity dataPointQaReview " +
+        "SELECT dataPointQaReview.dataPointId FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
             "AND dataPointQaReview.companyId = :#{#filter.companyId} " +
-            "AND dataPointQaReview.dataPointIdentifier = :#{#filter.dataPointIdentifier} " +
+            "AND dataPointQaReview.dataPointType = :#{#filter.dataPointType} " +
             "AND dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod} " +
             "AND dataPointQaReview.qaStatus = org.dataland.datalandbackendutils.model.QaStatus.Accepted " +
             "ORDER BY dataPointQaReview.timestamp DESC " +
             "LIMIT 1",
     )
-    fun getDataIdOfCurrentlyActiveDataPoint(
+    fun getDataPointIdOfCurrentlyActiveDataPoint(
         @Param("filter") filter: BasicDataPointDimensions,
     ): String?
 
     /**
-     * Find QA information for a specific dataId. Take all entries ordered by descending timestamp.
-     * @param dataId ID to specify the data point the QA information is for
+     * Find QA information for a specific dataPointId. Take all entries ordered by descending timestamp.
+     * @param dataPointId ID to specify the data point the QA information is for
      */
-    fun findByDataIdOrderByTimestampDesc(dataId: String): List<DataPointQaReviewEntity>
+    fun findByDataPointIdOrderByTimestampDesc(dataPointId: String): List<DataPointQaReviewEntity>
 
     /**
-     * Find the latest QA information items per dataId and filter for the QA status 'Pending'. These entries form the review queue.
+     * Find the latest QA information items per dataPointId and filter for the QA status 'Pending'. These entries form the review queue.
      */
     @Query(
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
             "AND dataPointQaReview.qaStatus = org.dataland.datalandbackendutils.model.QaStatus.Pending " +
             "ORDER BY dataPointQaReview.timestamp DESC",
     )
@@ -63,7 +63,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
     @Query(
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
-            "AND (:#{#filter.dataPointIdentifier} IS NULL OR dataPointQaReview.dataPointIdentifier = :#{#filter.dataPointIdentifier}) " +
+            "AND (:#{#filter.dataPointType} IS NULL OR dataPointQaReview.dataPointType = :#{#filter.dataPointType}) " +
             "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
             "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = :#{#filter.qaStatus})" +
             "ORDER BY dataPointQaReview.timestamp DESC " +
@@ -77,7 +77,7 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
 
     /**
      * Find all QA information items filtering by company ID, data point identifier, reporting period and QA status provided via [filter].
-     * Results are paginated using [resultLimit] and [resultOffset] and only contain the most recent entry per dataId.
+     * Results are paginated using [resultLimit] and [resultOffset] and only contain the most recent entry per dataPointId.
      * @param filter the filter to apply to the search containing the company ID, data point identifier, reporting period and the QA status
      * @param resultLimit the maximum number of results to return
      * @param resultOffset the offset to start the result set from
@@ -86,9 +86,9 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
         "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
             "WHERE dataPointQaReview.timestamp = " +
             "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
-            "WHERE subDataPointQaReview.dataId = dataPointQaReview.dataId) " +
+            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
             "AND (:#{#filter.companyId} IS NULL OR dataPointQaReview.companyId = :#{#filter.companyId}) " +
-            "AND (:#{#filter.dataPointIdentifier} IS NULL OR dataPointQaReview.dataPointIdentifier = :#{#filter.dataPointIdentifier}) " +
+            "AND (:#{#filter.dataPointType} IS NULL OR dataPointQaReview.dataPointType = :#{#filter.dataPointType}) " +
             "AND (:#{#filter.reportingPeriod} IS NULL OR dataPointQaReview.reportingPeriod = :#{#filter.reportingPeriod}) " +
             "AND (:#{#filter.qaStatus} IS NULL OR dataPointQaReview.qaStatus = :#{#filter.qaStatus})" +
             "ORDER BY dataPointQaReview.timestamp DESC " +

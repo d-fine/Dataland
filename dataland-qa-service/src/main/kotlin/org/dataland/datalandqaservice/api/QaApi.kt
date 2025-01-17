@@ -153,7 +153,7 @@ interface QaApi {
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun getDataPointQaReviewInformation(
         @RequestParam companyId: String?,
-        @RequestParam dataPointIdentifier: String?,
+        @RequestParam dataPointType: String?,
         @RequestParam reportingPeriod: String?,
         @RequestParam qaStatus: QaStatus?,
         @Parameter(

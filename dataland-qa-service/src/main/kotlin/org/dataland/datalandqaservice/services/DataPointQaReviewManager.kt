@@ -103,10 +103,10 @@ class DataPointQaReviewManager(
 
         val dataPointQaReviewEntity =
             DataPointQaReviewEntity(
-                dataId = dataId,
+                dataPointId = dataId,
                 companyId = dataMetaInfo.companyId,
                 companyName = companyName,
-                dataPointIdentifier = dataMetaInfo.dataPointIdentifier,
+                dataPointType = dataMetaInfo.dataPointType,
                 reportingPeriod = dataMetaInfo.reportingPeriod,
                 timestamp = Instant.now().toEpochMilli(),
                 qaStatus = qaStatus,
@@ -122,18 +122,18 @@ class DataPointQaReviewManager(
     ) {
         val currentlyActiveDataId =
             if (dataPointQaReviewEntity.qaStatus == QaStatus.Accepted) {
-                dataPointQaReviewEntity.dataId
+                dataPointQaReviewEntity.dataPointId
             } else {
                 getDataIdOfCurrentlyActiveDataPoint(
                     dataPointQaReviewEntity.companyId,
-                    dataPointQaReviewEntity.dataPointIdentifier,
+                    dataPointQaReviewEntity.dataPointType,
                     dataPointQaReviewEntity.reportingPeriod,
                 )
             }
 
         val qaStatusChangeMessage =
             QaStatusChangeMessage(
-                dataId = dataPointQaReviewEntity.dataId,
+                dataId = dataPointQaReviewEntity.dataPointId,
                 updatedQaStatus = dataPointQaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
             )
@@ -151,27 +151,27 @@ class DataPointQaReviewManager(
     /**
      * Retrieve dataId of currently active dataset for same triple (companyId, dataType, reportingPeriod)
      * @param companyId ID of the company the data point is associated to
-     * @param dataPointIdentifier Identifier of the type of the data point
+     * @param dataPointType Identifier of the type of the data point
      * @param reportingPeriod Reporting period of the data point
      * @return Returns the dataId of the active data point, or null if no active dataset can be found
      */
     private fun getDataIdOfCurrentlyActiveDataPoint(
         companyId: String,
-        dataPointIdentifier: String,
+        dataPointType: String,
         reportingPeriod: String,
     ): String? {
         logger.info(
             "Searching for currently active data point for company $companyId, " +
-                "data point identifier $dataPointIdentifier, and reportingPeriod $reportingPeriod",
+                "data point identifier $dataPointType, and reportingPeriod $reportingPeriod",
         )
         val searchFilter =
             BasicDataPointDimensions(
                 companyId = companyId,
-                dataPointIdentifier = dataPointIdentifier,
+                dataPointType = dataPointType,
                 reportingPeriod = reportingPeriod,
             )
 
-        return dataPointQaReviewRepository.getDataIdOfCurrentlyActiveDataPoint(searchFilter)
+        return dataPointQaReviewRepository.getDataPointIdOfCurrentlyActiveDataPoint(searchFilter)
     }
 
     /**
@@ -187,7 +187,7 @@ class DataPointQaReviewManager(
      */
     fun getDataPointQaReviewInformationByDataId(dataId: String): List<DataPointQaReviewInformation> =
         dataPointQaReviewRepository
-            .findByDataIdOrderByTimestampDesc(dataId)
+            .findByDataPointIdOrderByTimestampDesc(dataId)
             .map { it.toDataPointQaReviewInformation() }
 
     /**

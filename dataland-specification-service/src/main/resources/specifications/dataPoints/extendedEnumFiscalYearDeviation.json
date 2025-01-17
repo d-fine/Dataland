@@ -1,7 +1,0 @@
-{
-  "id" : "extendedEnumFiscalYearDeviation",
-  "name" : "Fiscal Year Deviation",
-  "businessDefinition" : "Does the fiscal year deviate from the calendar year?",
-  "dataPointTypeId" : "extendedEnumFiscalYearDeviation",
-  "frameworkOwnership" : "additional-company-information"
-}

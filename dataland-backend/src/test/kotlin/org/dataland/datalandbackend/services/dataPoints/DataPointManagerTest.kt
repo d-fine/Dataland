@@ -42,7 +42,7 @@ class DataPointManagerTest {
 
     private val correlationId = "test-correlation-id"
     private val uploaderUserId = "test-user-id"
-    private val dataPointIdentifier = "test-identifier"
+    private val dataPointType = "test-type"
     private val reportingPeriod = "test-period"
 
     @BeforeEach
@@ -57,8 +57,8 @@ class DataPointManagerTest {
     fun `check that the storeDataPoint function executes the expected calls and returns the expected results`() {
         val uploadedDataPoint =
             UploadedDataPoint(
-                dataPointIdentifier = dataPointIdentifier,
-                dataPointContent = "test-content",
+                dataPointType = dataPointType,
+                dataPoint = "test-content",
                 companyId = IdUtils.generateUUID(),
                 reportingPeriod = reportingPeriod,
             )
@@ -67,8 +67,8 @@ class DataPointManagerTest {
         `when`(metaDataManager.storeDataPointMetaInformation(any())).thenAnswer { invocation ->
             val argument = invocation.getArgument<DataPointMetaInformationEntity>(0)
             DataPointMetaInformationEntity(
-                dataId = argument.dataId,
-                dataPointIdentifier = argument.dataPointIdentifier,
+                dataPointId = argument.dataPointId,
+                dataPointType = argument.dataPointType,
                 uploaderUserId = argument.uploaderUserId,
                 companyId = argument.companyId,
                 reportingPeriod = argument.reportingPeriod,
@@ -84,9 +84,9 @@ class DataPointManagerTest {
         verify(metaDataManager).storeDataPointMetaInformation(any())
         verify(dataManager).storeDataInTemporaryStorage(eq(dataId), eq(expectedString), eq(correlationId))
         assert(result.companyId == uploadedDataPoint.companyId)
-        assert(result.dataPointIdentifier == uploadedDataPoint.dataPointIdentifier)
+        assert(result.dataPointType == uploadedDataPoint.dataPointType)
         assert(result.reportingPeriod == uploadedDataPoint.reportingPeriod)
-        assert(result.dataId == dataId)
+        assert(result.dataPointId == dataId)
     }
 
     @Test
@@ -96,7 +96,7 @@ class DataPointManagerTest {
         val differentIdDataPoint =
             BasicDataPointDimensions(
                 companyId = "different-id",
-                dataPointIdentifier = dataPointIdentifier,
+                dataPointType = dataPointType,
                 reportingPeriod = reportingPeriod,
             )
         `when`(metaDataManager.getCurrentlyActiveDataId(differentIdDataPoint)).thenReturn(someId)
@@ -112,13 +112,13 @@ class DataPointManagerTest {
         val returnNewActiveId =
             BasicDataPointDimensions(
                 companyId = "same-id",
-                dataPointIdentifier = dataPointIdentifier,
+                dataPointType = dataPointType,
                 reportingPeriod = reportingPeriod,
             )
         val returnNull =
             BasicDataPointDimensions(
                 companyId = "no-id",
-                dataPointIdentifier = dataPointIdentifier,
+                dataPointType = dataPointType,
                 reportingPeriod = reportingPeriod,
             )
         `when`(metaDataManager.getCurrentlyActiveDataId(returnNewActiveId)).thenReturn(newActiveDataId)

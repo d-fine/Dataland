@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalandbackend.model.datapoints.DataPointContent
+import org.dataland.datalandbackend.model.datapoints.DataPointToValidate
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.springframework.http.ResponseEntity
@@ -30,8 +30,8 @@ interface DataPointApi {
      * @param dataPoint the data point content to be validated
      */
     @Operation(
-        summary = "Verify data point content.",
-        description = "The uploaded data point is verified to conform to its specification",
+        summary = "Verify data point content against a given data point type.",
+        description = "The uploaded data point is verified to conform to its specification.",
     )
     @ApiResponses(
         value = [
@@ -43,8 +43,8 @@ interface DataPointApi {
         consumes = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun validateDataPointContent(
-        @Valid @RequestBody dataPoint: DataPointContent,
+    fun validateDataPoint(
+        @Valid @RequestBody dataPoint: DataPointToValidate,
     ): ResponseEntity<Void>
 
     /**
@@ -75,7 +75,7 @@ interface DataPointApi {
 
     /**
      * A method to retrieve a data point by providing its ID
-     * @param dataId the unique identifier for the data point
+     * @param dataPointId the unique identifier for the data point
      * @return the data point identified by the ID
      */
     @Operation(
@@ -88,12 +88,12 @@ interface DataPointApi {
         ],
     )
     @GetMapping(
-        value = ["/{dataId}"],
+        value = ["/{dataPointId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataPointManager.isCompanyAssociatedWithDataPointMarkedForPublicAccess(#dataPointId)")
     fun getDataPoint(
-        @PathVariable dataId: String,
+        @PathVariable dataPointId: String,
     ): ResponseEntity<UploadedDataPoint>
 
     /**

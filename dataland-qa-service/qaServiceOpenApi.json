@@ -2267,7 +2267,7 @@
             }
           },
           {
-            "name": "dataPointIdentifier",
+            "name": "dataPointType",
             "in": "query",
             "required": false,
             "schema": {
@@ -6024,18 +6024,18 @@
         "required": [
           "active",
           "comment",
-          "dataId",
-          "dataPointIdentifier",
+          "dataPointId",
+          "dataPointType",
           "qaReportId",
           "uploadTime",
           "verdict"
         ],
         "type": "object",
         "properties": {
-          "dataId": {
+          "dataPointId": {
             "type": "string"
           },
-          "dataPointIdentifier": {
+          "dataPointType": {
             "type": "string"
           },
           "qaReportId": {
@@ -6266,7 +6266,7 @@
           "companyId",
           "companyName",
           "dataId",
-          "dataPointIdentifier",
+          "dataPointType",
           "qaStatus",
           "reportingPeriod",
           "timestamp"
@@ -6282,7 +6282,7 @@
           "companyName": {
             "type": "string"
           },
-          "dataPointIdentifier": {
+          "dataPointType": {
             "type": "string"
           },
           "reportingPeriod": {
