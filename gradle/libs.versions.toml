@@ -135,7 +135,8 @@ jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17
 
 commons-io = "commons-io:commons-io:2.18.0"
 
-commons-codec = "commons-codec:commons-codec:1.17.1"
+commons-codec = "commons-codec:commons-codec:1.17.2"
+
 commons-text = "org.apache.commons:commons-text:1.13.0"
 
 pdfbox = "org.apache.pdfbox:pdfbox:3.0.3"
@@ -152,8 +153,8 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 
 json = "org.json:json:20240303"
 
-spring-context = "org.springframework:spring-context:6.2.0"
-spring-test = "org.springframework:spring-test:6.2.0"
+spring-context = "org.springframework:spring-context:6.2.1"
+spring-test = "org.springframework:spring-test:6.2.1"
 
 spring-boot = "org.springframework.boot:spring-boot:3.4.0"
 
