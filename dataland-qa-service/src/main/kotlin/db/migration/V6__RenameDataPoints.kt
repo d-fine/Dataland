@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 @Suppress("ClassName")
 class V6__RenameDataPoints : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger("Migration V6")
+
     override fun migrate(context: Context?) {
         logger.info("Renaming data point columns")
         val connection = context!!.connection
