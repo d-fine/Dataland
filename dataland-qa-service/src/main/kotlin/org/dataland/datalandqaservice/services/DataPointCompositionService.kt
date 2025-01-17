@@ -19,7 +19,7 @@ class DataPointCompositionService
          * Gets the composition of a dataset as a map of DataPointId to DataPointDataId
          * Returns null if the dataset is not a composition of data points
          */
-        fun getCompositionOfDataSet(dataId: String): Map<String, String>? =
+        fun getCompositionOfDataset(dataId: String): Map<String, String>? =
             try {
                 metaDataControllerApi.getContainedDataPoints(dataId)
             } catch (ex: ClientException) {

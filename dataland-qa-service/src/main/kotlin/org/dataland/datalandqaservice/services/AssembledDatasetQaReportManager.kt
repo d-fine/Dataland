@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 /**
- * A service class for managing QA reports for lego brick datasets
+ * A service class for managing QA reports for assembled datasets
  */
 @Service
 @Suppress("LongParameterList")
@@ -77,7 +77,7 @@ class AssembledDatasetQaReportManager(
         val specification = getFrameworkSpecification(dataType)
 
         val associatedDataPoints =
-            dataPointCompositionService.getCompositionOfDataSet(dataId) ?: throw
+            dataPointCompositionService.getCompositionOfDataset(dataId) ?: throw
                 IllegalStateException("The dataset with id $dataId is not a composition of data points")
         val decomposedQaReport =
             JsonSpecificationUtils.dehydrateJsonSpecification(

@@ -55,15 +55,16 @@ class DataPointQaReviewManager(
     }
 
     /**
-     * Review a lego dataset and change the QA status of all data points in the dataset if they are not already reviewed
+     * Review an assembled dataset and change the QA status of the contained data points depending on [overwriteDataPointQaStatus]
      * @param dataId dataId of dataset of which to change qaStatus
      * @param qaStatus new qaStatus to be set
      * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
      * @param correlationId the ID for the process triggering the change
-     * @param overwriteDataPointQaStatus if true, the QA status of all data points in the dataset will be overwritten
+     * @param overwriteDataPointQaStatus if true: the QA status of all data points in the dataset will be overwritten,
+     * if false: only data points with QA status 'Pending' will be updated
      */
     @Transactional
-    fun reviewLegoDataset(
+    fun reviewAssembledDataset(
         dataId: String,
         qaStatus: QaStatus,
         triggeringUserId: String,
@@ -71,7 +72,7 @@ class DataPointQaReviewManager(
         correlationId: String,
         overwriteDataPointQaStatus: Boolean,
     ) {
-        val composition = compositionService.getCompositionOfDataSet(dataId) ?: return
+        val composition = compositionService.getCompositionOfDataset(dataId) ?: return
         val allDataIds = composition.values.toList()
 
         if (overwriteDataPointQaStatus) {

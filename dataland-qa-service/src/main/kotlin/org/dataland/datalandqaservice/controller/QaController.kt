@@ -80,7 +80,7 @@ class QaController(
                 comment = comment,
                 correlationId = correlationId,
             )
-        dataPointQaReviewManager.reviewLegoDataset(
+        dataPointQaReviewManager.reviewAssembledDataset(
             dataId = dataId,
             qaStatus = qaStatus,
             triggeringUserId = reviewerId,
