@@ -8,6 +8,7 @@
       :framework="dataType"
       :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
+
     <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
@@ -52,13 +53,32 @@
             />
 
             <PrimeButton
+              class="uppercase p-button p-button-sm d-letters ml-3"
+              aria-label="DOWNLOAD DATA"
+              @click="isDownloadModalOpen = true"
+              data-test="downloadDataButton"
+            >
+              <span class="px-2 py-1">DOWNLOAD DATA</span>
+            </PrimeButton>
+
+            <DownloadDatasetModal
+              :isDownloadModalOpen="isDownloadModalOpen"
+              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              @close-download-modal="onCloseDownloadModal"
+              @download-dataset="handleDatasetDownload"
+              data-test="downloadModal"
+            >
+            </DownloadDatasetModal>
+
+            <PrimeButton
               v-if="isEditableByCurrentUser"
-              class="uppercase p-button-outlined p-button p-button-sm d-letters ml-3"
+              class="uppercase p-button p-button-sm d-letters ml-3"
               aria-label="EDIT DATA"
               @click="editDataset"
               data-test="editDatasetButton"
             >
-              <span class="px-2">EDIT DATA</span>
+              <span class="px-2 py-1">EDIT DATA</span>
               <span
                 v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
                 class="material-icons-outlined"
@@ -108,9 +128,9 @@ import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_EDIT_FUNCTIONALITY, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, checkIfUserHasRole } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataMetaInformation, type CompanyInformation, type DataTypeEnum } from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 
 import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -122,10 +142,16 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
+import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
+import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
   components: {
+    DownloadDatasetModal,
     CompanyInfoSheet,
     TheContent,
     TheHeader,
@@ -148,8 +174,12 @@ export default defineComponent({
       type: String as PropType<DataTypeEnum>,
       required: true,
     },
+    /**
+     * This object is filled if ViewFrameworkBase displays a single dataset.
+     * If ViewFrameworkBase is used to display multiple datasets, mapOfReportingPeriodToActiveDataset is populated instead.
+     */
     singleDataMetaInfoToDisplay: {
-      type: Object as () => DataMetaInformation,
+      type: Object as PropType<DataMetaInformation>,
     },
     viewInPreviewMode: {
       type: Boolean,
@@ -174,11 +204,16 @@ export default defineComponent({
       pageScrolled: false,
       scrollEmittedByToolbar: false,
       latestScrollPosition: 0,
+      /**
+       * This object is filled if ViewFrameworkBase displays multiple datasets.
+       * If ViewFrameworkBase is used to display a single dataset, singleDataMetaInfoToDisplay is populated instead.
+       */
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccessfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
+      isDownloadModalOpen: false,
     };
   },
   provide() {
@@ -217,6 +252,12 @@ export default defineComponent({
     window.addEventListener('scroll', this.windowScrollHandler);
   },
   methods: {
+    /**
+     * Triggered by event "closeDownloadModal" emitted by the DownloadDatasetModal component
+     */
+    onCloseDownloadModal() {
+      this.isDownloadModalOpen = false;
+    },
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
      * @param fetchedCompanyInformation the company information for the current company Id
@@ -388,6 +429,90 @@ export default defineComponent({
      */
     handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
       return router.push(reportingPeriodTableEntry.editUrl);
+    },
+
+    /**
+     * Download the dataset from the selected reporting period as a file in the selected format
+     * @param selectedYear selected reporting year
+     * @param selectedFileTypeIdentifier selected export file type
+     */
+    async handleDatasetDownload(selectedYear: string, selectedFileTypeIdentifier: string) {
+      let dataId;
+      if (this.singleDataMetaInfoToDisplay) {
+        dataId = this.singleDataMetaInfoToDisplay.dataId;
+      } else {
+        dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
+      }
+
+      if (!dataId) {
+        throw new ReferenceError(`DataId does not exist.`);
+      }
+
+      try {
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDefinition = getBasePublicFrameworkDefinition(this.dataType);
+        const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = frameworkDefinition
+          ? frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance)
+          : null;
+
+        if (!frameworkDataApi) {
+          throw new ReferenceError('Retrieving dataApi for framework failed.');
+        }
+
+        let dataResponse;
+        let dataContent;
+
+        const exportFileType = Object.values(ExportFileTypes).find(
+          (fileType) => fileType.identifier === selectedFileTypeIdentifier
+        );
+
+        if (!exportFileType) {
+          throw new ReferenceError('ExportFileType undefined.');
+        }
+
+        const fileExtension = exportFileType.fileExtension;
+        const filename = `${dataId}.${fileExtension}`;
+
+        switch (exportFileType.identifier) {
+          case 'csv':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToCsv(dataId);
+            dataContent = dataResponse.data;
+            break;
+          case 'excel':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToExcel(dataId);
+            dataContent = dataResponse.data;
+            break;
+          case 'json':
+            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToJson(dataId);
+            dataContent = JSON.stringify(dataResponse.data);
+            break;
+        }
+
+        if (!dataResponse) {
+          throw new Error(`Retrieving frameworkData for dataId ${dataId} failed.`);
+        }
+
+        this.forceFileDownload(dataContent, filename);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    /**
+     * In order to download a file via frontend, it is necessary to create a link, attach the file to it, and click
+     * the link to trigger the file download. Afterward, the created element is deleted from the DOM.
+     * @param content dataContent string to be downloaded to file
+     * @param filename name of file to be downloaded
+     */
+    forceFileDownload(content: string, filename: string) {
+      const url = window.URL.createObjectURL(new Blob([content]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
     },
   },
   watch: {

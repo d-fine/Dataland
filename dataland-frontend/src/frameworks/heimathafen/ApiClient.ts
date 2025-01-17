@@ -37,4 +37,28 @@ export class HeimathafenApiClient implements PublicFrameworkDataApi<HeimathafenD
   ): AxiosPromise<DataMetaInformation> {
     return this.openApiDataController.postCompanyAssociatedHeimathafenData(data, bypassQa, options);
   }
+
+  exportCompanyAssociatedDataToJson(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToJson(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToCsv(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToCsv(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToExcel(dataId, options);
+  }
 }
