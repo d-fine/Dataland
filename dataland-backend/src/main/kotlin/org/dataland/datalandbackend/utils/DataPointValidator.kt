@@ -28,34 +28,34 @@ class DataPointValidator
 
         /**
          * Validates a single data point by casting it to the correct class and running the validations
-         * @param dataPointIdentifier the identifier of the data point
-         * @param dataPointContent the content of the data point
+         * @param dataPointType the type of the data point to validate
+         * @param dataPoint the data to validate
          * @param correlationId the correlation id for the operation
          */
         fun validateDataPoint(
-            dataPointIdentifier: String,
-            dataPointContent: String,
+            dataPointType: String,
+            dataPoint: String,
             correlationId: String,
         ) {
-            logger.info("Validating data point $dataPointIdentifier (correlation ID: $correlationId)")
-            validateDataPointIdentifierExists(dataPointIdentifier)
-            val dataPointType = specificationClient.getDataPointSpecification(dataPointIdentifier).validatedBy.id
-            val validationClass = specificationClient.getDataPointTypeSpecification(dataPointType).validatedBy
-            validateConsistency(dataPointContent, validationClass, correlationId)
+            logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
+            validateDataPointTypeExists(dataPointType)
+            val dataPointBaseTypeId = specificationClient.getDataPointTypeSpecification(dataPointType).dataPointBaseType.id
+            val validationClass = specificationClient.getDataPointBaseType(dataPointBaseTypeId).validatedBy
+            validateConsistency(dataPoint, validationClass, correlationId)
         }
 
         /**
          * Validates with the specification service that a data point identifier exists
-         * @param dataPointIdentifier the identifier to validate
+         * @param dataPointType the identifier to validate
          */
-        fun validateDataPointIdentifierExists(dataPointIdentifier: String) {
+        fun validateDataPointTypeExists(dataPointType: String) {
             try {
-                specificationClient.getDataPointSpecification(dataPointIdentifier)
+                specificationClient.getDataPointTypeSpecification(dataPointType)
             } catch (clientException: ClientException) {
-                logger.error("Data point identifier $dataPointIdentifier not found: ${clientException.message}.")
+                logger.error("Data point identifier $dataPointType not found: ${clientException.message}.")
                 throw InvalidInputApiException(
-                    "Specified data point identifier $dataPointIdentifier is not valid.",
-                    "The specified data point identifier $dataPointIdentifier is not known to the specification service.",
+                    "Specified data point identifier $dataPointType is not valid.",
+                    "The specified data point identifier $dataPointType is not known to the specification service.",
                 )
             }
         }

@@ -44,7 +44,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FrameworkSpecificationDto"
+                  "$ref": "#/components/schemas/FrameworkSpecification"
                 }
               }
             }
@@ -134,7 +134,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SimpleFrameworkSpecificationDto"
+                    "$ref": "#/components/schemas/SimpleFrameworkSpecification"
                   }
                 }
               }
@@ -163,17 +163,17 @@
         }
       }
     },
-    "/data-points/{dataPointSpecificationId}": {
+    "/data-point-types/{dataPointTypeId}": {
       "get": {
         "tags": [
           "specification-controller"
         ],
-        "summary": "Get the data point specification for a given id.",
-        "description": "Get the data point specification for a given id.",
-        "operationId": "getDataPointSpecification",
+        "summary": "Get the data point type specification for a given id.",
+        "description": "Get the data point type specification for a given id.",
+        "operationId": "getDataPointTypeSpecification",
         "parameters": [
           {
-            "name": "dataPointSpecificationId",
+            "name": "dataPointTypeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -187,7 +187,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataPointSpecificationDto"
+                  "$ref": "#/components/schemas/DataPointTypeSpecification"
                 }
               }
             }
@@ -215,17 +215,17 @@
         }
       }
     },
-    "/data-points/{dataPointSpecificationId}/validated-by": {
+    "/data-point-types/{dataPointTypeId}/validated-by": {
       "get": {
         "tags": [
           "specification-controller"
         ],
-        "summary": "Get the kotlin class that validates the data point.",
-        "description": "Get the kotlin class that validates the data point.",
-        "operationId": "getKotlinClassValidatingTheDataPoint",
+        "summary": "Get the kotlin class that validates the data point type.",
+        "description": "Get the kotlin class that validates the data point type.",
+        "operationId": "getKotlinClassValidatingTheDataPointType",
         "parameters": [
           {
-            "name": "dataPointSpecificationId",
+            "name": "dataPointTypeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -272,17 +272,17 @@
         }
       }
     },
-    "/data-point-types/{dataPointTypeSpecificationId}": {
+    "/data-point-base-types/{dataPointBaseTypeId}": {
       "get": {
         "tags": [
           "specification-controller"
         ],
-        "summary": "Get the data type specification for a given id.",
-        "description": "Get the data type specification for a given id.",
-        "operationId": "getDataPointTypeSpecification",
+        "summary": "Get the data point base type for a given id.",
+        "description": "Get the data point base type for a given id.",
+        "operationId": "getDataPointBaseType",
         "parameters": [
           {
-            "name": "dataPointTypeSpecificationId",
+            "name": "dataPointBaseTypeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -296,7 +296,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataPointTypeSpecificationDto"
+                  "$ref": "#/components/schemas/DataPointBaseTypeSpecification"
                 }
               }
             }
@@ -324,17 +324,17 @@
         }
       }
     },
-    "/data-point-types/{dataPointTypeSpecificationId}/validated-by": {
+    "/data-point-base-types/{dataPointBaseTypeId}/validated-by": {
       "get": {
         "tags": [
           "specification-controller"
         ],
-        "summary": "Get the kotlin class that validates the data point type.",
-        "description": "Get the kotlin class that validates the data point type.",
-        "operationId": "getKotlinClassValidatingTheDataPointType",
+        "summary": "Get the kotlin class that validates the data point base type.",
+        "description": "Get the kotlin class that validates the data point base type.",
+        "operationId": "getKotlinClassValidatingTheDataPointBaseType",
         "parameters": [
           {
-            "name": "dataPointTypeSpecificationId",
+            "name": "dataPointBaseTypeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -621,14 +621,14 @@
           }
         }
       },
-      "SimpleFrameworkSpecificationDto": {
+      "SimpleFrameworkSpecification": {
         "required": [
-          "frameworkSpecification",
+          "framework",
           "name"
         ],
         "type": "object",
         "properties": {
-          "frameworkSpecification": {
+          "framework": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {
@@ -636,16 +636,16 @@
           }
         }
       },
-      "FrameworkSpecificationDto": {
+      "FrameworkSpecification": {
         "required": [
           "businessDefinition",
-          "frameworkSpecification",
+          "framework",
           "name",
           "schema"
         ],
         "type": "object",
         "properties": {
-          "frameworkSpecification": {
+          "framework": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {
@@ -662,17 +662,17 @@
           }
         }
       },
-      "DataPointSpecificationDto": {
+      "DataPointTypeSpecification": {
         "required": [
           "businessDefinition",
-          "dataPointSpecification",
+          "dataPointBaseType",
+          "dataPointType",
           "name",
-          "usedBy",
-          "validatedBy"
+          "usedBy"
         ],
         "type": "object",
         "properties": {
-          "dataPointSpecification": {
+          "dataPointType": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {
@@ -681,7 +681,7 @@
           "businessDefinition": {
             "type": "string"
           },
-          "validatedBy": {
+          "dataPointBaseType": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "usedBy": {
@@ -692,10 +692,10 @@
           }
         }
       },
-      "DataPointTypeSpecificationDto": {
+      "DataPointBaseTypeSpecification": {
         "required": [
           "businessDefinition",
-          "dataPointTypeSpecification",
+          "dataPointBaseType",
           "example",
           "name",
           "usedBy",
@@ -703,7 +703,7 @@
         ],
         "type": "object",
         "properties": {
-          "dataPointTypeSpecification": {
+          "dataPointBaseType": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {
