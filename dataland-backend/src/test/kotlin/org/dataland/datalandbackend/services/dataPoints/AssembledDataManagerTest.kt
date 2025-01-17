@@ -47,7 +47,7 @@ class AssembledDataManagerTest {
     private val specificationClient = mock(SpecificationControllerApi::class.java)
     private val datasetDatapointRepository = mock(DatasetDatapointRepository::class.java)
 
-    private val frameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
+    private val frameworkSpecificationFile = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
 
@@ -69,6 +69,8 @@ class AssembledDataManagerTest {
     private val uploaderUserId = "test-user-id"
     private val reportingPeriod = "test-period"
     private val companyId = "test-company-id"
+    private val datasetId = "test-dataset-id"
+    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecificationFile)
 
     @BeforeEach
     fun resetMocks() {
@@ -81,7 +83,6 @@ class AssembledDataManagerTest {
     @Test
     fun `check that processing a dataset works as expected`() {
         val expectedDataPointIdentifiers = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
-        val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification)
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
         `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
@@ -114,13 +115,7 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that assembling a dataset works as expected`() {
-        val datasetId = "test-dataset-id"
-        val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification)
-        val dataPointMap =
-            mapOf(
-                "extendedEnumFiscalYearDeviation" to "test-data-point-1",
-                "extendedCurrencyEquity" to "test-data-point-2",
-            )
+        val dataPointMap = mapOf("extendedEnumFiscalYearDeviation" to "test-data-point-1", "extendedCurrencyEquity" to "test-data-point-2")
 
         val dataPointContent =
             listOf(
@@ -162,7 +157,7 @@ class AssembledDataManagerTest {
         `when`(storageClient.selectDataPointById(any(), any())).thenAnswer { invocation ->
             val dataId = invocation.getArgument<String>(0)
             StorableDataPoint(
-                dataPointContent = dataContentMap[dataId]!!,
+                dataPointContent = dataContentMap[dataId] ?: "",
                 dataPointIdentifier = dataPointMap.filterValues { it == dataId }.keys.first(),
                 companyId = companyId,
                 reportingPeriod = reportingPeriod,

@@ -102,7 +102,7 @@ class ReferencedReportsUtilitiesTest {
 
     @Test
     fun `check that an unlisted datasource throws an error`() {
-        val referencedReports = mutableMapOf<String, CompanyReport>()
+        val referencedReports = mapOf<String, CompanyReport>()
         val reportFromDatapoint =
             CompanyReport(
                 fileReference = "fileReference",
@@ -116,7 +116,7 @@ class ReferencedReportsUtilitiesTest {
     @Test
     fun `check that inconsistent publication Dates references cause an error`() {
         val referencedReports =
-            mutableMapOf(
+            mapOf(
                 "fileName" to CompanyReport(fileReference = "fileReference", publicationDate = LocalDate.parse(testDate)),
             )
         val reportFromDatapoint =
