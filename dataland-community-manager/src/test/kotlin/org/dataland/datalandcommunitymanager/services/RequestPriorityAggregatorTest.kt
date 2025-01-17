@@ -79,7 +79,7 @@ class RequestPriorityAggregatorTest {
                 aggregatedRequestsWithAggregatedPriority.filter {
                     it.datalandCompanyId == companyId
                 }
-            aggregatedRequest.forEach { it -> assertEquals(expectedPriority, it.aggregatedPriority) }
+            aggregatedRequest.forEach { assertEquals(expectedPriority, it.aggregatedPriority) }
         }
     }
 
