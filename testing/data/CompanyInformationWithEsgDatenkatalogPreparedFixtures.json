@@ -39,7 +39,7 @@
 					"gueltigkeitsdatum": "2024-07-10"
 				},
 				"generelleEsgStrategie": {
-					"nachhaltigkeitsstrategieVorhanden": "No",
+					"nachhaltigkeitsstrategieVorhanden": "Yes",
 					"dokumenteZurNachhaltigkeitsstrategie": [
 						{
 							"value": "initiatives",
