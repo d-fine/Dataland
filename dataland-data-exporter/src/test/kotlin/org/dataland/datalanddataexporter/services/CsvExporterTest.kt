@@ -10,8 +10,11 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanddataexporter.TestDataProvider
+import org.dataland.datalanddataexporter.utils.FileHandlingUtils.readTransformationConfig
+import org.dataland.datalanddataexporter.utils.TransformationUtils
 import org.dataland.datalanddataexporter.utils.TransformationUtils.ISIN_IDENTIFIER
 import org.dataland.datalanddataexporter.utils.TransformationUtils.LEI_IDENTIFIER
+import org.dataland.datalanddataexporter.utils.TransformationUtils.convertDataToJson
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -47,6 +50,13 @@ class CsvExporterTest {
             companyId = "mockCompanyId",
             reportingPeriod = "2021",
             data = TestDataProvider.getMockSfdrData(),
+        )
+
+    private val mockCompanyAssociatedSfdrDataWithNoNullFields =
+        CompanyAssociatedDataSfdrData(
+            companyId = "mockCompanyId",
+            reportingPeriod = "2021",
+            data = TestDataProvider.getMockSfdrDataWithNoNullFields(),
         )
 
     private fun setupMockMetaDataControllerApi(): MetaDataControllerApi {
@@ -109,6 +119,13 @@ class CsvExporterTest {
                 sfdrDataControllerApi = mockSfdrDataControllerApi,
                 companyDataControllerApi = mockCompanyDataControllerApi,
             )
+    }
+
+    @Test
+    fun `check that the transformation rules cover all possible leaf nodes`() {
+        val data = convertDataToJson(mockCompanyAssociatedSfdrDataWithNoNullFields)
+        val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
+        assertDoesNotThrow { TransformationUtils.checkConsistencyOfDataAndTransformationRules(data, transformationRules) }
     }
 
     @Test

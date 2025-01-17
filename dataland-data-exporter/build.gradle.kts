@@ -27,6 +27,8 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.jackson.module.kotlin)
     implementation(libs.jackson.dataformat.csv)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
@@ -110,4 +112,14 @@ sourceSets {
 
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
+}
+
+tasks.register<Copy>("getTestData") {
+    description = "Task to copy required testing data."
+    group = "verification"
+    from("$rootDir/testing/data/CompanyInformationWithSfdrPreparedFixtures.json")
+    into(layout.buildDirectory.dir("resources/test"))
+}
+tasks.getByName("processTestResources") {
+    dependsOn("getTestData")
 }
