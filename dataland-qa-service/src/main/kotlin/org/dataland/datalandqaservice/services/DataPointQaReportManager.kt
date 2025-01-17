@@ -2,8 +2,8 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.DataPointContent
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -58,10 +58,10 @@ class DataPointQaReportManager(
         }
 
         try {
-            dataPointControllerApi.validateDataPointContent(
-                DataPointContent(
-                    dataPointContent = report.correctedData,
-                    dataPointIdentifier = dataPointMetaInfo.dataPointIdentifier,
+            dataPointControllerApi.validateDataPoint(
+                DataPointToValidate(
+                    dataPoint = report.correctedData,
+                    dataPointType = dataPointMetaInfo.dataPointType,
                 ),
             )
         } catch (ex: ClientException) {
@@ -70,7 +70,7 @@ class DataPointQaReportManager(
                     InvalidInputApiException(
                         "Provided data point verdict does not conform to data point specification",
                         "The provided data point verdict does not conform to the data point specification for " +
-                            "'${dataPointMetaInfo.dataPointIdentifier}'",
+                            "'${dataPointMetaInfo.dataPointType}'",
                         ex,
                     )
                 } else {
@@ -98,7 +98,7 @@ class DataPointQaReportManager(
     ): DataPointQaReport {
         val dataPointMetaInfo = ensureDatalandDataPointExists(dataId)
         ensureQaReportConformsToSpecification(report, dataPointMetaInfo)
-        qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
+        qaReportRepository.markAllReportsInactiveByDataPointIdAndReportingUserId(dataId, reporterUserId)
 
         val mappedQaStatus = report.verdict.toQaStatus()
         if (mappedQaStatus != null) {
@@ -115,8 +115,8 @@ class DataPointQaReportManager(
             .save(
                 DataPointQaReportEntity(
                     qaReportId = IdUtils.generateUUID(),
-                    dataId = dataId,
-                    dataPointIdentifier = dataPointMetaInfo.dataPointIdentifier,
+                    dataPointId = dataId,
+                    dataPointType = dataPointMetaInfo.dataPointType,
                     reporterUserId = reporterUserId,
                     uploadTime = uploadTime,
                     active = true,
@@ -165,11 +165,11 @@ class DataPointQaReportManager(
                     "No QA report with the id: $qaReportId could be found.",
                 )
             }
-        if (dataEntity.dataId != dataId) {
+        if (dataEntity.dataPointId != dataId) {
             throw InvalidInputApiException(
                 "QA report '$qaReportId' not associated with data '$dataId'",
                 "The requested Qa Report '$qaReportId' is not associated with data '$dataId'," +
-                    " but with data '${dataEntity.dataId}'.",
+                    " but with data '${dataEntity.dataPointId}'.",
             )
         }
 
@@ -198,7 +198,7 @@ class DataPointQaReportManager(
     ): List<DataPointQaReport> =
         qaReportRepository
             .searchQaReportMetaInformation(
-                dataId = dataId,
+                dataPointId = dataId,
                 reporterUserId = reporterUserId,
                 showInactive = showInactive,
             ).map { it.toApiModel() }
