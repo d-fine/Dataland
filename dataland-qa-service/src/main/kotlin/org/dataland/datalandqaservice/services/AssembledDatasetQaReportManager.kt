@@ -147,7 +147,7 @@ class AssembledDatasetQaReportManager(
         val dataPointQaReportIdList = objectMapper.readValue<List<String>>(qaReportEntity.qaReport)
         val dataPointReports =
             dataPointQaReportRepository.findAllById(dataPointQaReportIdList).associate {
-                it.dataPointIdentifier to objectMapper.valueToTree<JsonNode>(it.toDatasetApiModel(objectMapper))
+                it.dataPointType to objectMapper.valueToTree<JsonNode>(it.toDatasetApiModel(objectMapper))
             }
         val hydratedQaReport =
             JsonSpecificationUtils.hydrateJsonSpecification(
