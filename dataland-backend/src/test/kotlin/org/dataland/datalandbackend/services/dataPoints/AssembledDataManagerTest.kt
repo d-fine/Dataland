@@ -21,7 +21,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
@@ -70,7 +70,7 @@ class AssembledDataManagerTest {
     private val reportingPeriod = "test-period"
     private val companyId = "test-company-id"
     private val datasetId = "test-dataset-id"
-    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecificationFile)
+    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(frameworkSpecificationFile)
 
     @BeforeEach
     fun resetMocks() {
@@ -100,7 +100,7 @@ class AssembledDataManagerTest {
         assembledDataManager.storeDataset(uploadedDataset, false, correlationId)
         expectedDataPointIdentifiers.forEach {
             verify(spyDataPointManager, times(1)).storeDataPoint(
-                argThat { dataPointIdentifier == it }, any(), any(), any(),
+                argThat { dataPointType == it }, any(), any(), any(),
             )
         }
         verify(messageQueuePublications, times(expectedDataPointIdentifiers.size)).publishDataPointUploadedMessage(any(), any(), any())
@@ -141,11 +141,11 @@ class AssembledDataManagerTest {
         )
 
         `when`(metaDataManager.getDataPointMetaInformationByDataId(any())).thenAnswer { invocation ->
-            val dataId = invocation.getArgument<String>(0)
+            val dataPointId = invocation.getArgument<String>(0)
             DataPointMetaInformationEntity(
-                dataId = dataId,
+                dataPointId = dataPointId,
                 companyId = companyId,
-                dataPointIdentifier = dataPointMap.filterValues { it == dataId }.keys.first(),
+                dataPointType = dataPointMap.filterValues { it == dataPointId }.keys.first(),
                 reportingPeriod = reportingPeriod,
                 uploaderUserId = uploaderUserId,
                 uploadTime = Instant.now().toEpochMilli(),
@@ -155,10 +155,10 @@ class AssembledDataManagerTest {
         }
 
         `when`(storageClient.selectDataPointById(any(), any())).thenAnswer { invocation ->
-            val dataId = invocation.getArgument<String>(0)
+            val dataPointId = invocation.getArgument<String>(0)
             StorableDataPoint(
-                dataPointContent = dataContentMap[dataId] ?: "",
-                dataPointIdentifier = dataPointMap.filterValues { it == dataId }.keys.first(),
+                dataPoint = dataContentMap[dataPointId] ?: "",
+                dataPointType = dataPointMap.filterValues { it == dataPointId }.keys.first(),
                 companyId = companyId,
                 reportingPeriod = reportingPeriod,
             )

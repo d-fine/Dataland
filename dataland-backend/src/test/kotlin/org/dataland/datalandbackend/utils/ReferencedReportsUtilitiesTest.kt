@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -35,7 +35,7 @@ class ReferencedReportsUtilitiesTest {
     private fun readDataContent(resourceFile: String): Map<String, JsonSpecificationLeaf> {
         val schema =
             testObjectMapper
-                .readTree(TestResourceFileReader.getKotlinObject<FrameworkSpecificationDto>(frameworkSpecification).schema)
+                .readTree(TestResourceFileReader.getKotlinObject<FrameworkSpecification>(frameworkSpecification).schema)
         referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(schema, "general.general.referencedReports")
         return JsonSpecificationUtils.dehydrateJsonSpecification(
             schema as ObjectNode,

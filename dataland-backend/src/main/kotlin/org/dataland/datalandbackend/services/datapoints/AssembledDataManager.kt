@@ -20,7 +20,6 @@ import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificationDto
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -29,6 +28,7 @@ import org.springframework.transaction.support.TransactionSynchronization
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
+import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 
 /**
  * Manages datasets assembled from multiple data points
@@ -132,8 +132,8 @@ class AssembledDataManager
             val dataId = IdUtils.generateUUID()
             dataPointManager.storeDataPoint(
                 UploadedDataPoint(
-                    dataPointContent = objectMapper.writeValueAsString(dataPointContent),
-                    dataPointIdentifier = dataPointIdentifier,
+                    dataPoint = objectMapper.writeValueAsString(dataPointContent),
+                    dataPointType = dataPointIdentifier,
                     companyId = uploadedDataset.companyId,
                     reportingPeriod = uploadedDataset.reportingPeriod,
                 ),
@@ -225,7 +225,7 @@ class AssembledDataManager
             }
         }
 
-        private fun getFrameworkSpecification(framework: String): FrameworkSpecificationDto =
+        private fun getFrameworkSpecification(framework: String): FrameworkSpecification =
             try {
                 specificationClient.getFrameworkSpecification(framework)
             } catch (clientException: ClientException) {
@@ -291,9 +291,9 @@ class AssembledDataManager
             val allDataPoints = mutableMapOf<String, JsonNode>()
 
             dataIds.forEach { dataId ->
-                val dataPoint = dataPointManager.retrieveDataPoint(dataId, correlationId)
-                allDataPoints[dataPoint.dataPointIdentifier] = objectMapper.readTree(dataPoint.dataPointContent)
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint.dataPointContent)
+                val storedDataPoint = dataPointManager.retrieveDataPoint(dataId, correlationId)
+                allDataPoints[storedDataPoint.dataPointType] = objectMapper.readTree(storedDataPoint.dataPoint)
+                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(storedDataPoint.dataPoint)
                 if (companyReport != null) {
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }
