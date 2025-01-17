@@ -72,7 +72,7 @@ describe('Component tests for the DatasetOverview page', () => {
       sectors: [],
     };
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
       router: router,
@@ -95,7 +95,7 @@ describe('Component tests for the DatasetOverview page', () => {
       sectors: [],
     };
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
 
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
@@ -112,7 +112,7 @@ describe('Component tests for the DatasetOverview page', () => {
   it("Checks that the tab-bar is rendered correctly and that clicking on 'COMPANIES' performs a router push", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept('**/api/companies?**', []);
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
 
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,

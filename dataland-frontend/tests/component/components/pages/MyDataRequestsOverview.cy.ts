@@ -144,7 +144,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: [],
       status: 200,
     }).as('UserRequests');
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,
@@ -215,7 +215,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
@@ -275,7 +275,7 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,

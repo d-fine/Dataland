@@ -425,7 +425,7 @@ describe('Component test for the admin-requests-overview page', () => {
   });
 
   it('Check the functionality of the rowClick event', () => {
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     mountAdminAllRequestsPageWithMocks().then(() => {
       const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
 

@@ -63,7 +63,7 @@ describe('Component test for the view multiple dataset display base component', 
       status: 200,
       body: [mockedData2024.metaInfo, mockedData2023.metaInfo],
     });
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
       router: router,

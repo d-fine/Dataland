@@ -54,7 +54,7 @@ describe('Component tests for the company info sheet', function (): void {
 
   it('Check visibility of company information', function () {
     mockRequestsOnMounted();
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
       router: router,

@@ -32,7 +32,7 @@ describe('Component test for UserProfileDropDown', () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_REVIEWER],
     });
-    cy.stub(router, 'push').as('routerPush');
+    cy.spy(router, 'push').as('routerPush');
 
     cy.mountWithPlugins(UserProfileDropDown, {
       keycloak: reviewerKeycloakMock,
