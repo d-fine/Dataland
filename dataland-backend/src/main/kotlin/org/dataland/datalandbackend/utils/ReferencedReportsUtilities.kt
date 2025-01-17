@@ -93,11 +93,11 @@ class ReferencedReportsUtilities(
 
     /**
      * Extracts the company report from an extended data source.
-     * @param dataPointContent The content of the data point
+     * @param dataPoint The string representation of the contained data
      * @return The company report or null if it could not be extracted
      */
-    fun getCompanyReportFromDataSource(dataPointContent: String): CompanyReport? {
-        val dataSource = objectMapper.readTree(dataPointContent).get(DATA_SOURCE_FIELD)
+    fun getCompanyReportFromDataSource(dataPoint: String): CompanyReport? {
+        val dataSource = objectMapper.readTree(dataPoint).get(DATA_SOURCE_FIELD)
 
         if (dataSource == null || dataSource.isNull) {
             return null

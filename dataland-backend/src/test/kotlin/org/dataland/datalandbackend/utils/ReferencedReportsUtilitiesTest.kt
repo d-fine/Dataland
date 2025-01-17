@@ -45,22 +45,22 @@ class ReferencedReportsUtilitiesTest {
 
     @Test
     fun `check that extraction of the referenced report works as expected`() {
-        val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
-        val dataSource = testObjectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
+        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val dataSource = testObjectMapper.readValue(dataPoint, CurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
             CompanyReport(
                 fileReference = dataSource?.fileReference ?: "dummy",
                 fileName = dataSource?.fileName,
                 publicationDate = LocalDate.parse(testDate),
             )
-        val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPointContent)
+        val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
         assertEquals(expectedCompanyReport, companyReport)
     }
 
     @Test
     fun `check that a data point without data source yields null`() {
-        val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPoint)
-        val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPointContent)
+        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
+        val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
         assertEquals(null, companyReport)
     }
 
@@ -131,10 +131,10 @@ class ReferencedReportsUtilitiesTest {
 
     @Test
     fun `check that updating a single data point with a publication date works as expected`() {
-        val dataPointContent = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
 
-        val dataSource = testObjectMapper.readValue(dataPointContent, CurrencyDataPoint::class.java).dataSource
-        val contentNode = testObjectMapper.readTree(dataPointContent)
+        val dataSource = testObjectMapper.readValue(dataPoint, CurrencyDataPoint::class.java).dataSource
+        val contentNode = testObjectMapper.readTree(dataPoint)
 
         requireNotNull(dataSource) { "Data point does not contain a proper data source" }
 

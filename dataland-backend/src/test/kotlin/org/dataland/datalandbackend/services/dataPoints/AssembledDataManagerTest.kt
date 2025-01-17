@@ -82,7 +82,7 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that processing a dataset works as expected`() {
-        val expectedDataPointIdentifiers = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
+        val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
         `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
@@ -98,17 +98,17 @@ class AssembledDataManagerTest {
             )
 
         assembledDataManager.storeDataset(uploadedDataset, false, correlationId)
-        expectedDataPointIdentifiers.forEach {
+        expectedDataPointTypes.forEach {
             verify(spyDataPointManager, times(1)).storeDataPoint(
                 argThat { dataPointType == it }, any(), any(), any(),
             )
         }
-        verify(messageQueuePublications, times(expectedDataPointIdentifiers.size)).publishDataPointUploadedMessage(any(), any(), any())
+        verify(messageQueuePublications, times(expectedDataPointTypes.size)).publishDataPointUploadedMessage(any(), any(), any())
         verify(messageQueuePublications, times(1)).publishDatasetQaRequiredMessage(any(), any(), any())
         verify(messageQueuePublications, times(0)).publishDatasetUploadedMessage(any(), any(), any())
         verify(datasetDatapointRepository, times(1)).save(
             argThat {
-                dataPoints.keys.sorted() == expectedDataPointIdentifiers.sorted()
+                dataPoints.keys.sorted() == expectedDataPointTypes.sorted()
             },
         )
     }
@@ -117,7 +117,7 @@ class AssembledDataManagerTest {
     fun `check that assembling a dataset works as expected`() {
         val dataPointMap = mapOf("extendedEnumFiscalYearDeviation" to "test-data-point-1", "extendedCurrencyEquity" to "test-data-point-2")
 
-        val dataPointContent =
+        val dataPoints =
             listOf(
                 "{\"content\":\"test-content-1\"}",
                 TestResourceFileReader.getJsonString(currencyDataPoint),
@@ -125,8 +125,8 @@ class AssembledDataManagerTest {
 
         val dataContentMap =
             mapOf(
-                "test-data-point-1" to dataPointContent[0],
-                "test-data-point-2" to dataPointContent[1],
+                "test-data-point-1" to dataPoints[0],
+                "test-data-point-2" to dataPoints[1],
             )
 
         `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
@@ -165,7 +165,7 @@ class AssembledDataManagerTest {
         }
 
         val assembledDataset = assembledDataManager.getDatasetData(datasetId, "sfdr", correlationId)
-        dataPointContent.forEach {
+        dataPoints.forEach {
             assert(assembledDataset.contains(it))
         }
         assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))

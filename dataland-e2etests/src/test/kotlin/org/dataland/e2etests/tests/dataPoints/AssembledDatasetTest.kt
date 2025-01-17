@@ -210,12 +210,12 @@ class AssembledDatasetTest {
             )
 
         val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
-        expectedDataPointInformation.forEach { (dataPointIdentifier, expectedData) ->
-            val factId = datasetComposition[dataPointIdentifier]!!
-            QaService.QaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
+        expectedDataPointInformation.forEach { (dataPointType, expectedData) ->
+            val dataPointId = datasetComposition[dataPointType]!!
+            QaService.QaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
                 assertEquals(expectedData.qaStatus, it[0].qaStatus)
             }
-            QaService.DataPointQaReportControllerApi.getAllQaReportsForDataPoint(factId).let {
+            QaService.DataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
                 assertQaReportsAlign(expectedData.qaReport, it[0])
             }
         }
