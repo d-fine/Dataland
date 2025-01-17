@@ -79,8 +79,8 @@ class ReferencedReportsUtilitiesTest {
         val result =
             referencedReportsUtilities
                 .validateReferencedReportConsistency(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
-        assertEquals(3, result.size)
-        assertEquals("60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", result["IntegratedReport"]?.fileReference)
+        assertEquals(2, result.size)
+        assertEquals("70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", result["AnnualReport"]?.fileReference)
     }
 
     @Test
