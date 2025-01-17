@@ -54,7 +54,7 @@ class QaControllerTest(
 
     val dataId = UUID.randomUUID().toString()
     val originalActiveDataId = UUID.randomUUID().toString()
-    val dataPointIdentifier = "some-identifier"
+    val dataPointType = "some-type"
     val reportingPeriod = "2022"
     val companyId = UUID.randomUUID().toString()
     val companyName = "some-company"
@@ -63,8 +63,8 @@ class QaControllerTest(
     private fun specifyMocks() {
         `when`(dataPointControllerApi.getDataPointMetaInfo(any())).thenReturn(
             DataPointMetaInformation(
-                dataId = "dummy",
-                dataPointIdentifier = dataPointIdentifier,
+                dataPointId = "dummy",
+                dataPointType = dataPointType,
                 companyId = companyId,
                 reportingPeriod = reportingPeriod,
                 qaStatus = OpenApiClientQaStatus.Accepted,
@@ -108,7 +108,7 @@ class QaControllerTest(
         qaController
             .getDataPointQaReviewInformation(
                 companyId = companyId,
-                dataPointIdentifier = dataPointIdentifier,
+                dataPointType = dataPointType,
                 reportingPeriod = reportingPeriod,
                 qaStatus = null,
                 onlyLatest = onlyLatest,

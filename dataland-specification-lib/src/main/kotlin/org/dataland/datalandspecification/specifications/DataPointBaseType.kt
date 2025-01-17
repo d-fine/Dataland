@@ -3,9 +3,9 @@ package org.dataland.datalandspecification.specifications
 import com.fasterxml.jackson.databind.JsonNode
 
 /**
- * A specification for a data point type.
+ * A specification for a data point base type.
  */
-data class DataPointTypeSpecification(
+data class DataPointBaseType(
     val id: String,
     val name: String,
     val businessDefinition: String,
@@ -13,7 +13,7 @@ data class DataPointTypeSpecification(
     val example: JsonNode,
 ) {
     /**
-     * Validates the integrity of the data point type specification.
+     * Validates the integrity of the data point base type.
      */
     fun validateIntegrity() {
         VerificationUtils.assertValidId(id)
