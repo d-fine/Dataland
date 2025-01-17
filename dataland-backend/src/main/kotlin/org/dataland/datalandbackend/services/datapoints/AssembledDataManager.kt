@@ -255,7 +255,6 @@ class AssembledDataManager
             }
         }
 
-
         /**
          * Retrieve a framework specification from the specification service
          * @param framework the name of the framework to retrieve the specification for
