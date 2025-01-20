@@ -60,26 +60,16 @@ object TransformationUtils {
      */
     fun getCurrentHeaders(transformationRules: Map<String, String>): List<String> {
         val headers = mutableListOf<String>()
-        val headerCounts = mutableMapOf<String, Int>()
 
         transformationRules.forEach { (_, csvHeader) ->
             if (csvHeader.isNotEmpty()) {
                 headers.add(csvHeader)
-                headerCounts[csvHeader] = headerCounts.getOrDefault(csvHeader, 0) + 1
             }
         }
 
         require(headers.isNotEmpty()) { "No headers found in transformation rules." }
-
         headers.addAll(getCompanyRelatedHeaders())
-
-        val duplicates = headerCounts.filter { it.value > 1 }.keys
-        if (duplicates.isNotEmpty()) {
-            println("Duplicate headers found: ${duplicates.joinToString(", ")}")
-        }
-
         require(headers.distinct().size == headers.size) { "Duplicate headers found in transformation rules." }
-
         return headers
     }
 
@@ -144,7 +134,7 @@ object TransformationUtils {
     }
 
     /**
-     * Maps a JSON node to a CSV.
+     * Maps a JSON node and transformation rules to map that associates each CSV header with its value.
      * @param jsonNode The JSON node
      * @param transformationRules The transformation rules
      * @return A map of CSV headers to values
@@ -162,7 +152,7 @@ object TransformationUtils {
     }
 
     /**
-     * Maps a JSON node to a CSV.
+     * Maps a JSON node and legacy rules to map that associates each CSV header with its value.
      * @param jsonNode The JSON node
      * @param legacyRules The legacy rules
      * @return A map of CSV headers to values
