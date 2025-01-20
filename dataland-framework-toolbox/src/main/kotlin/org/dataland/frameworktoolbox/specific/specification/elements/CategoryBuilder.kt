@@ -3,7 +3,7 @@ package org.dataland.frameworktoolbox.specific.specification.elements
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.dataland.datalandspecification.specifications.DataPointSpecification
+import org.dataland.datalandspecification.specifications.DataPointType
 import org.dataland.frameworktoolbox.intermediate.components.ComponentBase
 import org.dataland.frameworktoolbox.specific.specification.FrameworkSpecificationBuilder
 import org.dataland.frameworktoolbox.specific.specification.SpecificationNamingConvention
@@ -45,8 +45,8 @@ class CategoryBuilder(
     fun addDefaultDatapointAndSpecification(
         component: ComponentBase,
         typeNameSuffix: String,
-        dataPointTypeId: String,
-    ): Pair<DataPointSpecification, DatapointBuilder> {
+        dataPointBaseTypeId: String,
+    ): Pair<DataPointType, DatapointBuilder> {
         val specificationId =
             SpecificationNamingConvention.generateDataPointSpecificationName(
                 component.documentSupport,
@@ -59,7 +59,7 @@ class CategoryBuilder(
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
-                dataPointTypeId = dataPointTypeId,
+                dataPointBaseTypeId = dataPointBaseTypeId,
             )
         val datapoint =
             addDatapointToFrameworkHierarchy(
@@ -72,34 +72,34 @@ class CategoryBuilder(
     /**
      * Add a new data point specification to the framework
      */
-    fun addDatapointSpecification(
+    private fun addDatapointSpecification(
         id: String,
         name: String,
         businessDefinition: String,
-        dataPointTypeId: String,
-    ): DataPointSpecification {
-        require(builder.database.dataPointTypeSpecifications.containsKey(dataPointTypeId)) {
-            "Data point type id $dataPointTypeId does not exist in the database."
+        dataPointBaseTypeId: String,
+    ): DataPointType {
+        require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
+            "Data point base type id $dataPointBaseTypeId does not exist in the database."
         }
-        val newDatapointSpecification =
-            DataPointSpecification(
+        val newDatapointType =
+            DataPointType(
                 id = id,
                 name = name,
                 businessDefinition = businessDefinition,
-                dataPointTypeId = dataPointTypeId,
+                dataPointBaseTypeId = dataPointBaseTypeId,
                 frameworkOwnership = builder.framework.identifier,
             )
-        require(!builder.database.dataPointSpecifications.containsKey(id)) {
+        require(!builder.database.dataPointTypes.containsKey(id)) {
             "Data point specification with id $id already exists in the database."
         }
-        builder.database.dataPointSpecifications[id] = newDatapointSpecification
-        return newDatapointSpecification
+        builder.database.dataPointTypes[id] = newDatapointType
+        return newDatapointType
     }
 
     /**
      * Add a new data point to the framework hierarchy
      */
-    fun addDatapointToFrameworkHierarchy(
+    private fun addDatapointToFrameworkHierarchy(
         identifier: String,
         dataPointId: String,
     ): DatapointBuilder {

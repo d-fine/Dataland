@@ -44,7 +44,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FrameworkSpecificationDto"
+                  "$ref": "#/components/schemas/FrameworkSpecification"
                 }
               }
             }
@@ -134,7 +134,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SimpleFrameworkSpecificationDto"
+                    "$ref": "#/components/schemas/SimpleFrameworkSpecification"
                   }
                 }
               }
@@ -163,126 +163,17 @@
         }
       }
     },
-    "/data-points/{dataPointSpecificationId}": {
+    "/data-point-types/{dataPointTypeId}": {
       "get": {
         "tags": [
           "specification-controller"
         ],
-        "summary": "Get the data point specification for a given id.",
-        "description": "Get the data point specification for a given id.",
-        "operationId": "getDataPointSpecification",
-        "parameters": [
-          {
-            "name": "dataPointSpecificationId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataPointSpecificationDto"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/data-points/{dataPointSpecificationId}/validated-by": {
-      "get": {
-        "tags": [
-          "specification-controller"
-        ],
-        "summary": "Get the kotlin class that validates the data point.",
-        "description": "Get the kotlin class that validates the data point.",
-        "operationId": "getKotlinClassValidatingTheDataPoint",
-        "parameters": [
-          {
-            "name": "dataPointSpecificationId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/data-point-types/{dataPointTypeSpecificationId}": {
-      "get": {
-        "tags": [
-          "specification-controller"
-        ],
-        "summary": "Get the data type specification for a given id.",
-        "description": "Get the data type specification for a given id.",
+        "summary": "Get the data point type specification for a given id.",
+        "description": "Get the data point type specification for a given id.",
         "operationId": "getDataPointTypeSpecification",
         "parameters": [
           {
-            "name": "dataPointTypeSpecificationId",
+            "name": "dataPointTypeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -296,7 +187,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DataPointTypeSpecificationDto"
+                  "$ref": "#/components/schemas/DataPointTypeSpecification"
                 }
               }
             }
@@ -324,7 +215,7 @@
         }
       }
     },
-    "/data-point-types/{dataPointTypeSpecificationId}/validated-by": {
+    "/data-point-types/{dataPointTypeId}/validated-by": {
       "get": {
         "tags": [
           "specification-controller"
@@ -334,7 +225,7 @@
         "operationId": "getKotlinClassValidatingTheDataPointType",
         "parameters": [
           {
-            "name": "dataPointTypeSpecificationId",
+            "name": "dataPointTypeId",
             "in": "path",
             "required": true,
             "schema": {
@@ -346,12 +237,121 @@
           "200": {
             "description": "OK",
             "content": {
-              "*/*": {
+              "text/plain": {
                 "schema": {
                   "type": "string"
                 }
               },
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data-point-base-types/{dataPointBaseTypeId}": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Get the data point base type for a given id.",
+        "description": "Get the data point base type for a given id.",
+        "operationId": "getDataPointBaseType",
+        "parameters": [
+          {
+            "name": "dataPointBaseTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataPointBaseTypeSpecification"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data-point-base-types/{dataPointBaseTypeId}/validated-by": {
+      "get": {
+        "tags": [
+          "specification-controller"
+        ],
+        "summary": "Get the kotlin class that validates the data point base type.",
+        "description": "Get the kotlin class that validates the data point base type.",
+        "operationId": "getKotlinClassValidatingTheDataPointBaseType",
+        "parameters": [
+          {
+            "name": "dataPointBaseTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
               "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "*/*": {
                 "schema": {
                   "type": "string"
                 }
@@ -403,7 +403,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -414,7 +414,7 @@
                   }
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -466,12 +466,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -517,63 +517,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
               "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/actuator/health/**": {
-      "get": {
-        "tags": [
-          "Actuator"
-        ],
-        "summary": "Actuator web endpoint \u0027health-path\u0027",
-        "operationId": "health-path",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
-                "schema": {
-                  "type": "object"
-                }
               },
               "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -621,14 +570,14 @@
           }
         }
       },
-      "SimpleFrameworkSpecificationDto": {
+      "SimpleFrameworkSpecification": {
         "required": [
-          "frameworkSpecification",
+          "framework",
           "name"
         ],
         "type": "object",
         "properties": {
-          "frameworkSpecification": {
+          "framework": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {
@@ -636,16 +585,16 @@
           }
         }
       },
-      "FrameworkSpecificationDto": {
+      "FrameworkSpecification": {
         "required": [
           "businessDefinition",
-          "frameworkSpecification",
+          "framework",
           "name",
           "schema"
         ],
         "type": "object",
         "properties": {
-          "frameworkSpecification": {
+          "framework": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {
@@ -662,17 +611,17 @@
           }
         }
       },
-      "DataPointSpecificationDto": {
+      "DataPointTypeSpecification": {
         "required": [
           "businessDefinition",
-          "dataPointSpecification",
+          "dataPointBaseType",
+          "dataPointType",
           "name",
-          "usedBy",
-          "validatedBy"
+          "usedBy"
         ],
         "type": "object",
         "properties": {
-          "dataPointSpecification": {
+          "dataPointType": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {
@@ -681,7 +630,7 @@
           "businessDefinition": {
             "type": "string"
           },
-          "validatedBy": {
+          "dataPointBaseType": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "usedBy": {
@@ -692,10 +641,10 @@
           }
         }
       },
-      "DataPointTypeSpecificationDto": {
+      "DataPointBaseTypeSpecification": {
         "required": [
           "businessDefinition",
-          "dataPointTypeSpecification",
+          "dataPointBaseType",
           "example",
           "name",
           "usedBy",
@@ -703,7 +652,7 @@
         ],
         "type": "object",
         "properties": {
-          "dataPointTypeSpecification": {
+          "dataPointBaseType": {
             "$ref": "#/components/schemas/IdWithRef"
           },
           "name": {

@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandspecification.database.SpecificationDatabase
-import org.dataland.datalandspecification.specifications.FrameworkSpecification
+import org.dataland.datalandspecification.specifications.Framework
 
 /**
  * Get the reference for this framework specification.
  */
-fun FrameworkSpecification.getRef(baseUrl: String): IdWithRef =
+fun Framework.getRef(baseUrl: String): IdWithRef =
     IdWithRef(
         id = this.id,
         ref = "https://$baseUrl/specifications/frameworks/${this.id}",
@@ -29,8 +29,8 @@ private fun translateSchema(
         } else {
             assert(value.isTextual)
             val dataPointSpec =
-                database.dataPointSpecifications[value.asText()]
-                    ?: throw IllegalArgumentException("Data point id ${value.asText()} does not exist in the database.")
+                database.dataPointTypes[value.asText()]
+                    ?: throw IllegalArgumentException("Data point type id ${value.asText()} does not exist in the database.")
             val idWithRef = dataPointSpec.getRef(baseUrl)
 
             val idWithRefNode: ObjectNode = JsonNodeFactory.instance.objectNode()
@@ -45,14 +45,14 @@ private fun translateSchema(
 /**
  * Convert a framework specification to a DTO.
  */
-fun FrameworkSpecification.toDto(
+fun Framework.toDto(
     baseUrl: String,
     database: SpecificationDatabase,
-): FrameworkSpecificationDto {
+): FrameworkSpecification {
     val newSchema: ObjectNode = this.schema.deepCopy()
     translateSchema(newSchema, baseUrl, database)
-    return FrameworkSpecificationDto(
-        frameworkSpecification = this.getRef(baseUrl),
+    return FrameworkSpecification(
+        framework = this.getRef(baseUrl),
         name = this.name,
         businessDefinition = this.businessDefinition,
         schema = ObjectMapper().writeValueAsString(newSchema),
@@ -63,17 +63,17 @@ fun FrameworkSpecification.toDto(
 /**
  * Convert a framework specification to a simplified DTO.
  */
-fun FrameworkSpecification.toSimpleDto(baseUrl: String): SimpleFrameworkSpecificationDto =
-    SimpleFrameworkSpecificationDto(
-        frameworkSpecification = this.getRef(baseUrl),
+fun Framework.toSimpleDto(baseUrl: String): SimpleFrameworkSpecification =
+    SimpleFrameworkSpecification(
+        framework = this.getRef(baseUrl),
         name = this.name,
     )
 
 /**
  * A DTO for a framework specification.
  */
-data class FrameworkSpecificationDto(
-    val frameworkSpecification: IdWithRef,
+data class FrameworkSpecification(
+    val framework: IdWithRef,
     val name: String,
     val businessDefinition: String,
     val schema: String,
@@ -83,7 +83,7 @@ data class FrameworkSpecificationDto(
 /**
  * A simplified DTO for framework specification.
  */
-data class SimpleFrameworkSpecificationDto(
-    val frameworkSpecification: IdWithRef,
+data class SimpleFrameworkSpecification(
+    val framework: IdWithRef,
     val name: String,
 )

@@ -31,13 +31,13 @@ class SpecificationControllerTest(
                 .path("test3")
                 .path("ref")
                 .textValue() ==
-                "https://local-dev.dataland.com/specifications/data-points/test-datapoint",
+                "https://local-dev.dataland.com/specifications/data-point-types/test-datapoint-type",
         )
     }
 
     @Test
     fun `retrieving a data point specification should return a DTO with correct refs in usedBy`() {
-        val response = specificationController.getDataPointSpecification("test-datapoint")
+        val response = specificationController.getDataPointTypeSpecification("test-datapoint-type")
         assert(response.statusCode.is2xxSuccessful)
         val body = response.body!!
         assert(body.usedBy[0].ref == "https://local-dev.dataland.com/specifications/frameworks/test-framework")
@@ -45,10 +45,10 @@ class SpecificationControllerTest(
 
     @Test
     fun `retrieving a data point type specification should return a DTO with correct refs in usedBy`() {
-        val response = specificationController.getDataPointTypeSpecification("test-datapoint-type")
+        val response = specificationController.getDataPointBaseType("test-datapoint-base-type")
         assert(response.statusCode.is2xxSuccessful)
         val body = response.body!!
-        assert(body.usedBy[0].ref == "https://local-dev.dataland.com/specifications/data-points/test-datapoint")
+        assert(body.usedBy[0].ref == "https://local-dev.dataland.com/specifications/data-point-types/test-datapoint-type")
     }
 
     @Test
@@ -61,14 +61,14 @@ class SpecificationControllerTest(
     @Test
     fun `retrieving a non existing data point specification should return 404`() {
         assertThrows<ResourceNotFoundApiException> {
-            specificationController.getDataPointSpecification("non-existing-datapoint")
+            specificationController.getDataPointTypeSpecification("non-existing-datapoint")
         }
     }
 
     @Test
     fun `retrieving a non existing data point type specification should return 404`() {
         assertThrows<ResourceNotFoundApiException> {
-            specificationController.getDataPointTypeSpecification("non-existing-datapoint-type")
+            specificationController.getDataPointBaseType("non-existing-datapoint-type")
         }
     }
 }

@@ -22,14 +22,14 @@ data class DataPointQaReviewEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val eventId: UUID? = null,
-    @Column(name = "data_id", nullable = false)
-    val dataId: String,
+    @Column(name = "data_point_id", nullable = false)
+    val dataPointId: String,
     @Column(name = "company_id", nullable = false)
     override val companyId: String,
     @Column(name = "company_name", nullable = false)
     val companyName: String,
-    @Column(name = "data_point_identifier", nullable = false)
-    override val dataPointIdentifier: String,
+    @Column(name = "data_point_type", nullable = false)
+    override val dataPointType: String,
     @Column(name = "reporting_period", nullable = false)
     override val reportingPeriod: String,
     @Column(name = "timestamp", nullable = false)
@@ -47,10 +47,10 @@ data class DataPointQaReviewEntity(
      */
     fun toDataPointQaReviewInformation() =
         DataPointQaReviewInformation(
-            dataId = this.dataId,
+            dataId = this.dataPointId,
             companyId = this.companyId,
             companyName = this.companyName,
-            dataPointIdentifier = this.dataPointIdentifier,
+            dataPointType = this.dataPointType,
             reportingPeriod = this.reportingPeriod,
             timestamp = this.timestamp,
             qaStatus = this.qaStatus,

@@ -1,14 +1,14 @@
 package org.dataland.datalandspecification.database
 
-import org.dataland.datalandspecification.specifications.DataPointSpecification
-import org.dataland.datalandspecification.specifications.DataPointTypeSpecification
-import org.dataland.datalandspecification.specifications.FrameworkSpecification
+import org.dataland.datalandspecification.specifications.DataPointBaseType
+import org.dataland.datalandspecification.specifications.DataPointType
+import org.dataland.datalandspecification.specifications.Framework
 
 /**
  * A specification database containing all specifications.
  */
 abstract class SpecificationDatabase {
-    val dataPointTypeSpecifications: MutableMap<String, DataPointTypeSpecification> = mutableMapOf()
-    val dataPointSpecifications: MutableMap<String, DataPointSpecification> = mutableMapOf()
-    val frameworkSpecifications: MutableMap<String, FrameworkSpecification> = mutableMapOf()
+    val dataPointBaseTypes: MutableMap<String, DataPointBaseType> = mutableMapOf()
+    val dataPointTypes: MutableMap<String, DataPointType> = mutableMapOf()
+    val frameworks: MutableMap<String, Framework> = mutableMapOf()
 }
