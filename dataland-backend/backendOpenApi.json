@@ -20057,15 +20057,9 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -20073,7 +20067,13 @@
           "countryCode": {
             "type": "string"
           },
-          "sector": {
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "lei": {
             "type": "string",
             "nullable": true
           }

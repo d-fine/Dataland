@@ -27,8 +27,6 @@ dependencies {
     implementation(project(":dataland-keycloak-adapter"))
     implementation(libs.jackson.module.kotlin)
     implementation(libs.jackson.dataformat.csv)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
     implementation(libs.okhttp)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
