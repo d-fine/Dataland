@@ -31,10 +31,7 @@ export default defineConfig({
       process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES !== undefined
         ? process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES
         : '2',
-    LOGGING_OPTIONS_MAX_SIZE: process.env.LOGGING_OPTIONS_MAX_SIZE,
-    LOGGING_OPTIONS_MAX_FILE: process.env.LOGGING_OPTIONS_MAX_FILE,
     GRAFANA_PASSWORD: process.env.GRAFANA_PASSWORD,
-    LOKI_VOLUME: process.env.LOKI_VOLUME,
   },
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,
