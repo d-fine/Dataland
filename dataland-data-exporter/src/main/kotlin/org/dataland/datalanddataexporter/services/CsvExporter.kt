@@ -47,6 +47,7 @@ class CsvExporter(
 
     companion object {
         const val MAX_RETRIES = 3
+        const val UNAUTHORIZED_CODE = 401
     }
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function

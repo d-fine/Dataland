@@ -3,6 +3,8 @@ package org.dataland.datalanddataexporter.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.infrastructure.ServerException
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
@@ -25,6 +27,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import java.io.File
+import java.net.SocketTimeoutException
 
 class CsvExporterTest {
     private lateinit var csvDataExporter: CsvExporter
@@ -143,6 +146,47 @@ class CsvExporterTest {
             .getCompanyById(
                 companyId = any(),
             )
+    }
+
+    @Test
+    fun `check that the csv exporter handles a socket timeout and terminates after MAX RETRIES tries`() {
+        `when`(
+            mockCompanyDataControllerApi.getCompanyById(
+                companyId = any(),
+            ),
+        ).thenThrow(SocketTimeoutException())
+        csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output")
+        verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
+            .getCompanyById(any())
+    }
+
+    @Test
+    fun `check that the csv exporter handles a server exception and terminates after MAX RETRIES tries`() {
+        `when`(
+            mockCompanyDataControllerApi.getCompanyById(
+                companyId = any(),
+            ),
+        ).thenThrow(ServerException())
+        csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output")
+        verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
+            .getCompanyById(any())
+    }
+
+    @Test
+    fun `check that the csv exporter handles a client exception and terminates after MAX RETRIES tries`() {
+        `when`(
+            mockCompanyDataControllerApi.getCompanyById(
+                companyId = any(),
+            ),
+        ).thenThrow(
+            ClientException(
+                statusCode = CsvExporter.UNAUTHORIZED_CODE,
+            ),
+        )
+
+        csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output")
+        verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
+            .getCompanyById(any())
     }
 
     @Test
