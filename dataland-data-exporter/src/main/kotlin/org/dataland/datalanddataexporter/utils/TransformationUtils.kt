@@ -62,21 +62,17 @@ object TransformationUtils {
         val headers = mutableListOf<String>()
         val headerCounts = mutableMapOf<String, Int>()
 
-        // Add headers from transformation rules
         transformationRules.forEach { (_, csvHeader) ->
             if (csvHeader.isNotEmpty()) {
                 headers.add(csvHeader)
-                // Count occurrences of each header
                 headerCounts[csvHeader] = headerCounts.getOrDefault(csvHeader, 0) + 1
             }
         }
 
         require(headers.isNotEmpty()) { "No headers found in transformation rules." }
 
-        // Add company-related headers
         headers.addAll(getCompanyRelatedHeaders())
 
-        // Check for duplicates
         val duplicates = headerCounts.filter { it.value > 1 }.keys
         if (duplicates.isNotEmpty()) {
             println("Duplicate headers found: ${duplicates.joinToString(", ")}")

@@ -122,7 +122,7 @@ class CsvExporterTest {
     }
 
     @Test
-    fun `check that the transformation rules cover all possible leaf nodes`() {
+    fun `check that the transformation rules covers all possible leaf nodes`() {
         val data = convertDataToJson(mockCompanyAssociatedSfdrDataWithNoNullFields)
         val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         assertDoesNotThrow { TransformationUtils.checkConsistencyOfDataAndTransformationRules(data, transformationRules) }
@@ -146,7 +146,7 @@ class CsvExporterTest {
     }
 
     @Test
-    fun `check that running the sfdr export produces two csv files`() {
+    fun `check that running the sfdr export produces two new csv files`() {
         val outputDirectory = "./src/test/resources/csv/output"
         val directory = File(outputDirectory)
         if (directory.exists()) {
