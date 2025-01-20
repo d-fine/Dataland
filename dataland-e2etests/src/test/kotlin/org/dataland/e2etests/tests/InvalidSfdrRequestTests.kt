@@ -101,7 +101,7 @@ class InvalidSfdrRequestTests {
             (errorForInvalidInput.response as ClientError<*>)
                 .body!!
                 .toString()
-                .contains("rateOfAccidentsInPercent"),
+                .contains("rateOfAccidents"),
         )
         Assertions.assertTrue(
             (errorForInvalidInput.response as ClientError<*>)

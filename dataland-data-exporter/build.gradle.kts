@@ -111,3 +111,13 @@ sourceSets {
 gitProperties {
     keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
+
+tasks.register<Copy>("getTestData") {
+    description = "Task to copy required testing data."
+    group = "verification"
+    from("$rootDir/testing/data/CompanyInformationWithSfdrPreparedFixtures.json")
+    into(layout.buildDirectory.dir("resources/test"))
+}
+tasks.getByName("processTestResources") {
+    dependsOn("getTestData")
+}
