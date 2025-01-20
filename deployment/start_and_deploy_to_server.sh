@@ -68,12 +68,6 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   fi"
 fi
 
-ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
-        echo "Creating '$loki_volume' dir as volume for Loki container"
-        sudo mkdir -p $loki_volume
-        sudo chmod a+w '$loki_volume'
-fi"
-
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
   ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_gleif_full_golden_copy_download_flag"
