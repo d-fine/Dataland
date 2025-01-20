@@ -35,6 +35,8 @@ class CsvExporterTest {
     private lateinit var mockSfdrDataControllerApi: SfdrDataControllerApi
     private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
+    private val outputDirectory = "./src/test/resources/csv/output"
+
     private val mockMetaData =
         listOf(
             DataMetaInformation(
@@ -133,7 +135,7 @@ class CsvExporterTest {
 
     @Test
     fun `check that the sfdr export runs as expected`() {
-        assertDoesNotThrow { csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output") }
+        assertDoesNotThrow { csvDataExporter.exportSfdrData(outputDirectory) }
         verify(mockMetadataControllerApi, times(1))
             .getListOfDataMetaInfo(
                 dataType = DataTypeEnum.sfdr,
@@ -155,7 +157,7 @@ class CsvExporterTest {
                 companyId = any(),
             ),
         ).thenThrow(SocketTimeoutException())
-        csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output")
+        csvDataExporter.exportSfdrData(outputDirectory)
         verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
             .getCompanyById(any())
     }
@@ -167,7 +169,7 @@ class CsvExporterTest {
                 companyId = any(),
             ),
         ).thenThrow(ServerException())
-        csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output")
+        csvDataExporter.exportSfdrData(outputDirectory)
         verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
             .getCompanyById(any())
     }
@@ -184,20 +186,19 @@ class CsvExporterTest {
             ),
         )
 
-        csvDataExporter.exportSfdrData(outputDirectory = "./src/test/resources/csv/output")
+        csvDataExporter.exportSfdrData(outputDirectory)
         verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
             .getCompanyById(any())
     }
 
     @Test
     fun `check that running the sfdr export produces two new csv files`() {
-        val outputDirectory = "./src/test/resources/csv/output"
         val directory = File(outputDirectory)
         if (directory.exists()) {
             directory.deleteRecursively()
         }
 
-        csvDataExporter.exportSfdrData(outputDirectory = outputDirectory)
+        csvDataExporter.exportSfdrData(outputDirectory)
 
         val filesInDirectory = File(outputDirectory).listFiles()
         assertTrue((filesInDirectory!!.size) == 2, "There should be exactly two new csv-files.")
