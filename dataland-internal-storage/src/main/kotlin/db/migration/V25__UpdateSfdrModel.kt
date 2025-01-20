@@ -5,12 +5,15 @@ import db.migration.utils.migrateCompanyAssociatedDataOfDatatype
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
+import org.slf4j.LoggerFactory
 
 /**
  * This migration script updates all sfdr datasets to match the new sfdr data model.
  */
 @Suppress("ClassName")
 class V25__UpdateSfdrModel : BaseJavaMigration() {
+    private val logger = LoggerFactory.getLogger("Migration V25")
+
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
             context,
@@ -28,6 +31,10 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
      * Migrates the rate of accidents in the sfdr data
      */
     fun migrateRateOfAccidents(dataTableEntity: DataTableEntity) {
+        logger.info(
+            "Migrating rate of accidents for data id: " + dataTableEntity.dataId,
+        )
+
         val dataset = dataTableEntity.dataJsonObject
 
         val socialAndEmployeeMattersObject =
@@ -45,6 +52,9 @@ class V25__UpdateSfdrModel : BaseJavaMigration() {
      * called excessiveCeoPayRatio.
      */
     fun migrateExcessiveCeoPayGapRatio(dataTableEntity: DataTableEntity) {
+        logger.info(
+            "Migrating excessive ceo pay gap ratio for data id: " + dataTableEntity.dataId,
+        )
         val dataset = dataTableEntity.dataJsonObject
 
         val socialAndEmployeeMattersObject =
