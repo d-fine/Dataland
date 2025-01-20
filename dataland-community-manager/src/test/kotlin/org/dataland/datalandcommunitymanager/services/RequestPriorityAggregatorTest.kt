@@ -19,39 +19,29 @@ class RequestPriorityAggregatorTest {
     private val dummyAggregatedRequests =
         listOf(
             AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Low, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Baseline, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.High, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Urgent, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Baseline, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(
-                DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Urgent, "Open", 0,
-            ),
-            AggregatedDataRequest(
-                DataTypeEnum.sfdr, "2023", companyIdBaselinePriority, RequestPriority.Baseline, "Open", 2,
-            ),
-            AggregatedDataRequest(
-                DataTypeEnum.sfdr, "2024", companyIdBaselinePriority, RequestPriority.Low, "Open", 2,
-            ),
-            AggregatedDataRequest(
-                DataTypeEnum.sfdr, "2024", companyIdBaselinePriority, RequestPriority.Baseline, "Open", 1,
-            ),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdBaselinePriority, RequestPriority.Low, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdBaselinePriority, RequestPriority.Baseline, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdBaselinePriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdBaselinePriority, RequestPriority.Baseline, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Low, "Open", 2),
             AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Baseline, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.High, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Urgent, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Low, "Open", 2),
-            AggregatedDataRequest(
-                DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Baseline, "Open", 2,
-            ),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Baseline, "Open", 2),
             AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.High, "Open", 2),
-            AggregatedDataRequest(
-                DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Urgent, "Open", 0,
-            ),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Urgent, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Low, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Baseline, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(
-                DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Urgent, "Open", 1,
-            ),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Urgent, "Open", 1),
         )
 
     @BeforeEach
