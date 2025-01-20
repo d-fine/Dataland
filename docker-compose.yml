@@ -219,6 +219,7 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      GRAFANA_ADMIN: ${GRAFANA_ADMIN}
       GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
@@ -666,7 +667,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     image: ${GRAFANA_IMAGE:-ghcr.io/d-fine/dataland/dataland_grafana:${DATALAND_GRAFANA_VERSION}}
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
     expose:

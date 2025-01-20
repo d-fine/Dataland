@@ -73,5 +73,6 @@
 
 [Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_SIZE", "100M", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_FILE", "1", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GRAFANA_ADMIN", "admin", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("GRAFANA_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("LOKI_VOLUME", "./dataland-loki/data", [System.EnvironmentVariableTarget]::User)
