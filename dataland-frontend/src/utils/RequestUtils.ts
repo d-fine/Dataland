@@ -133,12 +133,14 @@ export function priorityBadgeClass(priority: RequestPriority): string {
   switch (priority) {
     case 'Low':
       return 'p-badge badge-blue outline rounded';
+    case 'Baseline':
+      return 'p-badge badge-yellow outline rounded';
     case 'High':
       return 'p-badge badge-orange outline rounded';
     case 'Urgent':
       return 'p-badge badge-red outline rounded';
     default:
-      return 'p-badge outline rounded';
+      return 'p-badge badge-blue outline rounded';
   }
 }
 
