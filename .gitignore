@@ -43,4 +43,4 @@ keystore.jks
 tls.crt
 
 # local logging data
-/.dataland-loki/data/
+/dataland-loki/data
