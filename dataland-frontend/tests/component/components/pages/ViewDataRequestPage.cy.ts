@@ -169,6 +169,7 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
+    cy.spy(router, 'push').as('routerPush');
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
       ViewDataRequestPage,
       {
@@ -176,16 +177,14 @@ describe('Component tests for the view data request page', function (): void {
           requestId: requestId,
         },
       }
-    ).then((mounted) => {
+    ).then(() => {
       checkBasicPageElementsAsUser(RequestStatus.Resolved);
       cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
       cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
       cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
 
       cy.get('[data-test="viewDataset"]').should('exist').click();
-      cy.wrap(mounted.component)
-        .its('$route.path')
-        .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
 
@@ -274,17 +273,16 @@ describe('Component tests for the view data request page', function (): void {
     interceptUserAskForCompanyNameOnMounted();
     interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
     interceptPatchRequest();
+    cy.spy(router, 'push').as('routerPush');
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
       ViewDataRequestPage,
       {
         props: { requestId: requestId },
       }
-    ).then((mounted) => {
+    ).then(() => {
       checkBasicPageElementsAsUser(RequestStatus.Open);
       cy.get('[data-test="viewDataset"]').should('exist').click();
-      cy.wrap(mounted.component)
-        .its('$route.path')
-        .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
     });
   });
 
@@ -297,14 +295,16 @@ describe('Component tests for the view data request page', function (): void {
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
       interceptPatchRequest();
+      cy.spy(router, 'push').as('routerPush');
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
         props: { requestId: requestId },
-      }).then((mounted) => {
+      }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="resolveRequestButton"]').should('exist').click();
-        cy.wrap(mounted.component)
-          .its('$route.path')
-          .should('eq', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
+        cy.get('@routerPush').should(
+          'have.been.calledWith',
+          `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`
+        );
       });
     }
   );
