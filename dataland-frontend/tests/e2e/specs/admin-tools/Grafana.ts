@@ -3,7 +3,7 @@ import { getStringCypressEnv } from '@e2e/utils/Cypress';
 describe('As a developer, I expect Grafana to be available to me', () => {
   it('Checks if Grafana is available loki logs are shown', () => {
     cy.visit('http://dataland-admin:6789/grafana');
-    cy.get('input[name=user]').should('exist').type('admin@dataland.com');
+    cy.get('input[name=user]').should('exist').type('admin');
     cy.get('input[name=password]').should('exist').type(getStringCypressEnv('GRAFANA_PASSWORD'));
     cy.get('button[data-testid="data-testid Login button"]').should('contain.text', 'Log in').click();
     cy.get('[data-testid="data-testid panel content"]').should('contain.text', 'Grafana');
