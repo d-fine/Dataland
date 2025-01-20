@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory
  * This migration script updates all sfdr datasets to match the new sfdr data model.
  */
 @Suppress("ClassName")
-class V25__UpdateSfdrModel : BaseJavaMigration() {
-    private val logger = LoggerFactory.getLogger("Migration V25")
+class V26__UpdateSfdrModel : BaseJavaMigration() {
+    private val logger = LoggerFactory.getLogger("Migration V26")
 
     override fun migrate(context: Context?) {
         migrateCompanyAssociatedDataOfDatatype(
