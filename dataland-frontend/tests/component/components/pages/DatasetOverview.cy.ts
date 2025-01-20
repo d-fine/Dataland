@@ -72,14 +72,16 @@ describe('Component tests for the DatasetOverview page', () => {
       sectors: [],
     };
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       validateTabBar(0, keycloakMock);
       cy.wait(100);
       cy.get(getTabSelector(1)).click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/datasets');
+      cy.get('@routerPush').should('have.been.calledWith', '/datasets');
+      validateTabBar(1, keycloakMock);
     });
   });
 
@@ -93,28 +95,34 @@ describe('Component tests for the DatasetOverview page', () => {
       sectors: [],
     };
     cy.intercept('**/api/companies/meta-information', mockDistinctValues);
+    cy.spy(router, 'push').as('routerPush');
+
     cy.mountWithPlugins(SearchCompaniesForFrameworkData, {
       keycloak: keycloakMock,
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       validateTabBar(0, keycloakMock);
       cy.wait(100);
       cy.get(getTabSelector(2)).click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/qualityassurance');
+      cy.get('@routerPush').should('have.been.calledWith', '/qualityassurance');
+      validateTabBar(2, keycloakMock);
     });
   });
 
   it("Checks that the tab-bar is rendered correctly and that clicking on 'COMPANIES' performs a router push", () => {
     const keycloakMock = minimalKeycloakMock({});
     cy.intercept('**/api/companies?**', []);
+    cy.spy(router, 'push').as('routerPush');
+
     cy.mountWithPlugins(DatasetOverview, {
       keycloak: keycloakMock,
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       validateTabBar(1, keycloakMock);
       cy.wait(100);
       cy.get(getTabSelector(0)).click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/companies');
+      cy.get('@routerPush').should('have.been.calledWith', '/companies');
+      validateTabBar(0, keycloakMock);
     });
   });
 });

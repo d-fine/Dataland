@@ -63,6 +63,7 @@ describe('Component test for the view multiple dataset display base component', 
       status: 200,
       body: [mockedData2024.metaInfo, mockedData2023.metaInfo],
     });
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
       router: router,
@@ -73,7 +74,7 @@ describe('Component test for the view multiple dataset display base component', 
         dataType: DataTypeEnum.Lksg,
         viewInPreviewMode: false,
       },
-    }).then((mounted) => {
+    }).then(() => {
       cy.get('[data-test="editDatasetButton"').find('.material-icons-outlined').should('exist').click();
       cy.get('[data-test="select-reporting-period-dialog"')
         .should('exist')
@@ -83,12 +84,10 @@ describe('Component test for the view multiple dataset display base component', 
         .should('contain', '2023')
         .click();
 
-      cy.wrap(mounted.component)
-        .its('$route.fullPath')
-        .should(
-          'eq',
-          `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`
-        );
+      cy.get('@routerPush').should(
+        'have.been.calledWith',
+        `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`
+      );
     });
   });
 });

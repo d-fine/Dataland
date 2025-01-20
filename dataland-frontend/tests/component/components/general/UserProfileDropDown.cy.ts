@@ -32,14 +32,15 @@ describe('Component test for UserProfileDropDown', () => {
     const reviewerKeycloakMock = minimalKeycloakMock({
       roles: [KEYCLOAK_ROLE_REVIEWER],
     });
+    cy.spy(router, 'push').as('routerPush');
 
     cy.mountWithPlugins(UserProfileDropDown, {
       keycloak: reviewerKeycloakMock,
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       cy.get(profileDropdownToggleSelector).click().get(qaAnchorSelector).should('exist').should('be.visible');
       cy.get(qaAnchorSelector).click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/qualityassurance');
+      cy.get('@routerPush').should('have.been.calledWith', '/qualityassurance');
     });
   });
 

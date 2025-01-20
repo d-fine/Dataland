@@ -8,7 +8,7 @@ import org.dataland.datalandspecification.database.SpecificationDatabase
 /**
  * A specification for a nested schema entry
  */
-data class FrameworkSpecificationSchemaEntry(
+data class FrameworkSchemaEntry(
     val jsonPath: String,
     val dataPointId: String,
 )
@@ -16,7 +16,7 @@ data class FrameworkSpecificationSchemaEntry(
 /**
  * A specification for a framework
  */
-data class FrameworkSpecification(
+data class Framework(
     val id: String,
     val name: String,
     val businessDefinition: String,
@@ -27,13 +27,13 @@ data class FrameworkSpecification(
      * A flattened version of the schema
      */
     @get:JsonIgnore
-    val flattenedSchema: List<FrameworkSpecificationSchemaEntry>
+    val flattenedSchema: List<FrameworkSchemaEntry>
         get() = flattenSchema(schema, "").toList()
 
     private fun flattenSchema(
         schema: ObjectNode,
         prefix: String,
-    ): Sequence<FrameworkSpecificationSchemaEntry> {
+    ): Sequence<FrameworkSchemaEntry> {
         assert(schema.isObject)
         return sequence {
             schema.fields().forEach { (key, value) ->
@@ -42,7 +42,7 @@ data class FrameworkSpecification(
                     yieldAll(flattenSchema(value as ObjectNode, newPath))
                 } else {
                     assert(value.isTextual)
-                    yield(FrameworkSpecificationSchemaEntry(newPath, value.asText()))
+                    yield(FrameworkSchemaEntry(newPath, value.asText()))
                 }
             }
         }
@@ -53,7 +53,7 @@ data class FrameworkSpecification(
      */
     fun validateIntegrity(database: SpecificationDatabase) {
         VerificationUtils.assertValidId(id)
-        val dataPointIds: Set<String> = database.dataPointSpecifications.keys
+        val dataPointIds: Set<String> = database.dataPointTypes.keys
         val schemaDataPointIds = flattenedSchema.map { it.dataPointId }.toSet()
         val missingDataPointIds = schemaDataPointIds - dataPointIds
         check(missingDataPointIds.isEmpty()) { "The following data point ids are missing in the database: $missingDataPointIds" }

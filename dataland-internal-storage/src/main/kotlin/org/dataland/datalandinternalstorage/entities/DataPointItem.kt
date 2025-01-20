@@ -15,16 +15,16 @@ import org.dataland.datalandinternalstorage.model.StorableDataPoint
 @Table(name = "data_point_items")
 data class DataPointItem(
     @Id
-    @Column(name = "data_id")
-    val dataId: String,
+    @Column(name = "data_point_id")
+    val dataPointId: String,
     @Column(name = "company_id")
     override val companyId: String,
     @Column(name = "reporting_period")
     override val reportingPeriod: String,
-    @Column(name = "data_point_identifier")
-    override val dataPointIdentifier: String,
+    @Column(name = "data_point_type")
+    override val dataPointType: String,
     @Column(name = "data", columnDefinition = "TEXT")
-    override val dataPointContent: String,
+    override val dataPoint: String,
 ) : DataPointInstance {
     /**
      * Converts the DataPointItem to a StorableDataPoint
@@ -32,8 +32,8 @@ data class DataPointItem(
      */
     fun toStorableDataPoint(objectMapper: ObjectMapper): StorableDataPoint =
         StorableDataPoint(
-            dataPointContent = objectMapper.readValue(dataPointContent, String::class.java),
-            dataPointIdentifier = dataPointIdentifier,
+            dataPoint = objectMapper.readValue(dataPoint, String::class.java),
+            dataPointType = dataPointType,
             companyId = companyId,
             reportingPeriod = reportingPeriod,
         )

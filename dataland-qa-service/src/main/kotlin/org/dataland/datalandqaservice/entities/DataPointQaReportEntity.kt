@@ -25,10 +25,10 @@ data class DataPointQaReportEntity(
     var verdict: QaReportDataPointVerdict,
     @Column(name = "corrected_data", columnDefinition = "TEXT", nullable = true)
     var correctedData: String?,
-    @Column(name = "data_id", nullable = false)
-    var dataId: String,
-    @Column(name = "data_point_identifier", nullable = false)
-    var dataPointIdentifier: String,
+    @Column(name = "data_point_id", nullable = false)
+    var dataPointId: String,
+    @Column(name = "data_point_type", nullable = false)
+    var dataPointType: String,
     @Column(name = "reporter_user_id", nullable = false)
     var reporterUserId: String,
     @Column(name = "upload_time", nullable = false)
@@ -41,11 +41,11 @@ data class DataPointQaReportEntity(
      */
     fun toApiModel(): DataPointQaReport =
         DataPointQaReport(
-            dataId = dataId,
+            dataPointId = dataPointId,
             qaReportId = qaReportId,
             reporterUserId = reporterUserId,
             uploadTime = uploadTime,
-            dataPointIdentifier = dataPointIdentifier,
+            dataPointType = dataPointType,
             active = active,
             comment = comment,
             verdict = verdict,
