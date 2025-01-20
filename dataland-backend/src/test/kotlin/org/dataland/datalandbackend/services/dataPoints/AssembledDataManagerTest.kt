@@ -32,6 +32,7 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Instant
 import java.util.Optional
 
@@ -80,8 +81,14 @@ class AssembledDataManagerTest {
         )
     }
 
+    private fun simulateTransactionCommit() {
+        TransactionSynchronizationManager.getSynchronizations().forEach { it.afterCommit() }
+        TransactionSynchronizationManager.clearSynchronization()
+    }
+
     @Test
     fun `check that processing a dataset works as expected`() {
+        TransactionSynchronizationManager.initSynchronization()
         val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
@@ -98,6 +105,8 @@ class AssembledDataManagerTest {
             )
 
         assembledDataManager.storeDataset(uploadedDataset, false, correlationId)
+        simulateTransactionCommit()
+
         expectedDataPointTypes.forEach {
             verify(spyDataPointManager, times(1)).storeDataPoint(
                 argThat { dataPointType == it }, any(), any(), any(),
