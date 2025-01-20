@@ -195,6 +195,9 @@ jobs:
           DATA_EXPORTER_OUTPUT_DIRECTORY: ${{ secrets.DATA_EXPORTER_OUTPUT_DIRECTORY }}
           LOGGING_OPTIONS_MAX_SIZE: ${{ vars.LOGGING_OPTIONS_MAX_SIZE }}
           LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
+          GRAFANA_ADMIN: ${{ vars.GRAFANA_ADMIN }}
+          GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
+          LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -272,6 +275,10 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          LOGGING_OPTIONS_MAX_SIZE: ${{ vars.LOGGING_OPTIONS_MAX_SIZE }}
+          LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
+          GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
+          LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
       - name: Move Cypress Results
         if: always()
         run: |

@@ -31,6 +31,8 @@ export default defineConfig({
       process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES !== undefined
         ? process.env.DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES
         : '2',
+    GRAFANA_ADMIN: process.env.GRAFANA_ADMIN,
+    GRAFANA_PASSWORD: process.env.GRAFANA_PASSWORD,
   },
   experimentalMemoryManagement: true,
   numTestsKeptInMemory: 1,

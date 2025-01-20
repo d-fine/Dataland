@@ -17,6 +17,7 @@ location=/home/ubuntu/dataland
 keycloak_backup_dir=/home/ubuntu/keycloak_backup
 persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
+loki_volume="$LOKI_VOLUME"
 
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose --profile production down && sudo docker compose --profile init down && sudo docker compose down --remove-orphans) || true"
@@ -56,7 +57,22 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "community_manager_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "batch_manager_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "email_service_data" "$target_server_url" "$location"
+  ssh ubuntu@"$target_server_url" "
+  if [ -d '$loki_volume' ]; then
+      if echo '$loki_volume' | grep -q 'loki'; then
+          echo \"Deleting '$loki_volume' dir as volume for Loki container\"
+          sudo rm -r '$loki_volume'
+      else
+          echo \"$loki_volume exists but was not deleted because it does not contain 'loki', which was expected.\"
+      fi
+  fi"
 fi
+
+ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
+        echo "Creating '$loki_volume' dir as volume for Loki container"
+        sudo mkdir -p $loki_volume
+        sudo chmod a+w '$loki_volume'
+fi"
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
