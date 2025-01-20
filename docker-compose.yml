@@ -690,7 +690,6 @@ services:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
     volumes:
       - ${LOKI_VOLUME}:/loki
-#      - /mnt/data/logging/dataland-loki-data:/loki
     networks:
       - loki
     logging:
