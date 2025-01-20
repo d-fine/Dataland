@@ -88,6 +88,7 @@ class RequestPriorityAggregator {
             priorityCountMap[RequestPriority.Urgent]?.let { it > 0L } == true -> AggregatedRequestPriority.Urgent
             priorityCountMap[RequestPriority.High]?.let { it > 1L } == true -> AggregatedRequestPriority.VeryHigh
             priorityCountMap[RequestPriority.High]?.let { it == 1L } == true -> AggregatedRequestPriority.High
+            priorityCountMap[RequestPriority.Baseline]?.let { it > 0L } == true -> AggregatedRequestPriority.Baseline
             priorityCountMap[RequestPriority.Low]?.let { it > 1L } == true -> AggregatedRequestPriority.Normal
             priorityCountMap[RequestPriority.Low]?.let { it == 1L } == true -> AggregatedRequestPriority.Low
             else -> null

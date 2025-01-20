@@ -3357,7 +3357,7 @@
           "workplaceAccidentPreventionPolicy": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
           },
-          "rateOfAccidentsInPercent": {
+          "rateOfAccidents": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
           "workdaysLostInDays": {
@@ -3378,10 +3378,7 @@
           "sanctionedIncidentsOfDiscrimination": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigInteger"
           },
-          "ceoToEmployeePayGapRatio": {
-            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
-          },
-          "excessiveCeoPayRatioInPercent": {
+          "excessiveCeoPayRatio": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           }
         }

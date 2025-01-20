@@ -8672,7 +8672,7 @@
               }
             ]
           },
-          "rateOfAccidentsInPercent": {
+          "rateOfAccidents": {
             "nullable": true,
             "allOf": [
               {
@@ -8728,15 +8728,7 @@
               }
             ]
           },
-          "ceoToEmployeePayGapRatio": {
-            "nullable": true,
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
-              }
-            ]
-          },
-          "excessiveCeoPayRatioInPercent": {
+          "excessiveCeoPayRatio": {
             "nullable": true,
             "allOf": [
               {
@@ -20179,17 +20171,7 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "lei": {
             "type": "string",
             "nullable": true
           },
@@ -20198,6 +20180,16 @@
           },
           "countryCode": {
             "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -20220,10 +20212,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

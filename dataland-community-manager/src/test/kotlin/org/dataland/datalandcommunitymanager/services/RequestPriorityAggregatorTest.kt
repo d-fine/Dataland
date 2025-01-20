@@ -12,47 +12,36 @@ class RequestPriorityAggregatorTest {
     private var requestPriorityAggregator = RequestPriorityAggregator()
     private val companyIdLowPriority = "Test Low"
     private val companyIdNormalPriority = "Test Normal"
+    private val companyIdBaselinePriority = "Test Baseline"
     private val companyIdHighPriority = "Test High"
     private val companyIdVeryHighPriority = "Test Very High"
     private val companyIdUrgentPriority = "Test Urgent"
     private val dummyAggregatedRequests =
         listOf(
             AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Low, "Open", 1),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Baseline, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.High, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdLowPriority, RequestPriority.Urgent, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Baseline, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(
-                DataTypeEnum.sfdr,
-                "2024",
-                companyIdNormalPriority,
-                RequestPriority.Urgent,
-                "Open",
-                0,
-            ),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdNormalPriority, RequestPriority.Urgent, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdBaselinePriority, RequestPriority.Low, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2023", companyIdBaselinePriority, RequestPriority.Baseline, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdBaselinePriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.sfdr, "2024", companyIdBaselinePriority, RequestPriority.Baseline, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Baseline, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.High, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.p2p, "2023", companyIdHighPriority, RequestPriority.Urgent, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Low, "Open", 2),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Baseline, "Open", 2),
             AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.High, "Open", 2),
-            AggregatedDataRequest(
-                DataTypeEnum.p2p,
-                "2024",
-                companyIdVeryHighPriority,
-                RequestPriority.Urgent,
-                "Open",
-                0,
-            ),
+            AggregatedDataRequest(DataTypeEnum.p2p, "2024", companyIdVeryHighPriority, RequestPriority.Urgent, "Open", 0),
             AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Low, "Open", 0),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Baseline, "Open", 1),
             AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.High, "Open", 0),
-            AggregatedDataRequest(
-                DataTypeEnum.vsme,
-                "2023",
-                companyIdUrgentPriority,
-                RequestPriority.Urgent,
-                "Open",
-                1,
-            ),
+            AggregatedDataRequest(DataTypeEnum.vsme, "2023", companyIdUrgentPriority, RequestPriority.Urgent, "Open", 1),
         )
 
     @BeforeEach
@@ -69,6 +58,7 @@ class RequestPriorityAggregatorTest {
             mapOf(
                 companyIdLowPriority to AggregatedRequestPriority.Low,
                 companyIdNormalPriority to AggregatedRequestPriority.Normal,
+                companyIdBaselinePriority to AggregatedRequestPriority.Baseline,
                 companyIdHighPriority to AggregatedRequestPriority.High,
                 companyIdVeryHighPriority to AggregatedRequestPriority.VeryHigh,
                 companyIdUrgentPriority to AggregatedRequestPriority.Urgent,
@@ -76,10 +66,10 @@ class RequestPriorityAggregatorTest {
 
         expectedPriorities.forEach { (companyId, expectedPriority) ->
             val aggregatedRequest =
-                aggregatedRequestsWithAggregatedPriority.find {
+                aggregatedRequestsWithAggregatedPriority.filter {
                     it.datalandCompanyId == companyId
                 }
-            assertEquals(expectedPriority, aggregatedRequest?.aggregatedPriority)
+            aggregatedRequest.forEach { assertEquals(expectedPriority, it.aggregatedPriority) }
         }
     }
 
