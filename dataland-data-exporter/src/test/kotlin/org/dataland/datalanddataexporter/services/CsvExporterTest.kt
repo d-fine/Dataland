@@ -12,6 +12,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalanddataexporter.TestDataProvider
+import org.dataland.datalanddataexporter.services.CsvExporter.Companion.MAX_RETRIES
 import org.dataland.datalanddataexporter.utils.FileHandlingUtils.readTransformationConfig
 import org.dataland.datalanddataexporter.utils.TransformationUtils
 import org.dataland.datalanddataexporter.utils.TransformationUtils.ISIN_IDENTIFIER
@@ -127,7 +128,7 @@ class CsvExporterTest {
     }
 
     @Test
-    fun `check that the transformation rules covers all possible leaf nodes`() {
+    fun `check that the transformation rules cover all possible leaf nodes`() {
         val data = convertDataToJson(mockCompanyAssociatedSfdrDataWithNoNullFields)
         val transformationRules = readTransformationConfig("./transformationRules/SfdrSqlServer.config")
         assertDoesNotThrow { TransformationUtils.checkConsistencyOfDataAndTransformationRules(data, transformationRules) }
@@ -158,7 +159,7 @@ class CsvExporterTest {
             ),
         ).thenThrow(SocketTimeoutException())
         csvDataExporter.exportSfdrData(outputDirectory)
-        verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
+        verify(mockCompanyDataControllerApi, times(MAX_RETRIES))
             .getCompanyById(any())
     }
 
@@ -170,7 +171,7 @@ class CsvExporterTest {
             ),
         ).thenThrow(ServerException())
         csvDataExporter.exportSfdrData(outputDirectory)
-        verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
+        verify(mockCompanyDataControllerApi, times(MAX_RETRIES))
             .getCompanyById(any())
     }
 
@@ -187,7 +188,7 @@ class CsvExporterTest {
         )
 
         csvDataExporter.exportSfdrData(outputDirectory)
-        verify(mockCompanyDataControllerApi, times(CsvExporter.MAX_RETRIES))
+        verify(mockCompanyDataControllerApi, times(MAX_RETRIES))
             .getCompanyById(any())
     }
 

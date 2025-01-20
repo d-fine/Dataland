@@ -49,8 +49,8 @@ object TestDataProvider {
     /**
      * This function converts a JSON to a list
      */
-    private fun getSfdrDataList(): List<CompanyInformationWithT<SfdrData>> =
-        objectMapper.readValue<List<CompanyInformationWithT<SfdrData>>>(
+    private fun getSfdrDataList(): List<CompanyInformationWithTAndReportingPeriod<SfdrData>> =
+        objectMapper.readValue<List<CompanyInformationWithTAndReportingPeriod<SfdrData>>>(
             companyInformationWithSfdrPreparedFixturesFile.inputStream(),
         )
 }
