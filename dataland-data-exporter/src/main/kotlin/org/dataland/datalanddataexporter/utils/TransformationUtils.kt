@@ -60,10 +60,30 @@ object TransformationUtils {
      */
     fun getCurrentHeaders(transformationRules: Map<String, String>): List<String> {
         val headers = mutableListOf<String>()
-        transformationRules.forEach { (_, csvHeader) -> if (csvHeader.isNotEmpty()) headers.add(csvHeader) }
+        val headerCounts = mutableMapOf<String, Int>()
+
+        // Add headers from transformation rules
+        transformationRules.forEach { (_, csvHeader) ->
+            if (csvHeader.isNotEmpty()) {
+                headers.add(csvHeader)
+                // Count occurrences of each header
+                headerCounts[csvHeader] = headerCounts.getOrDefault(csvHeader, 0) + 1
+            }
+        }
+
         require(headers.isNotEmpty()) { "No headers found in transformation rules." }
+
+        // Add company-related headers
         headers.addAll(getCompanyRelatedHeaders())
+
+        // Check for duplicates
+        val duplicates = headerCounts.filter { it.value > 1 }.keys
+        if (duplicates.isNotEmpty()) {
+            println("Duplicate headers found: ${duplicates.joinToString(", ")}")
+        }
+
         require(headers.distinct().size == headers.size) { "Duplicate headers found in transformation rules." }
+
         return headers
     }
 
