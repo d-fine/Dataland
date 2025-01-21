@@ -45,48 +45,68 @@ object JsonComparator {
         }
 
         if (expected.isObject && actual.isObject) {
-            val expectedFields =
-                expected
-                    .fieldNames()
-                    .asSequence()
-                    .filterNot { it in ignoredKeys }
-                    .toSet()
-            val actualFields =
-                actual
-                    .fieldNames()
-                    .asSequence()
-                    .filterNot { it in ignoredKeys }
-                    .toSet()
-            val allFields = expectedFields + actualFields
-            for (field in allFields) {
-                if (field in ignoredKeys) {
-                    continue
-                }
-                val newPath = if (currentPath.isEmpty()) field else "$currentPath.$field"
-                findNodeDifferences(
-                    expected[field],
-                    actual[field],
-                    ignoredKeys,
-                    newPath,
-                    differenceList,
-                )
-            }
+            compareObjects(expected, ignoredKeys, actual, currentPath, differenceList)
         } else if (expected.isArray && actual.isArray) {
-            val expectedSize = expected.size()
-            val actualSize = actual.size()
-            val maxSize = maxOf(expectedSize, actualSize)
-            for (i in 0 until maxSize) {
-                val newPath = if (currentPath.isEmpty()) "[$i]" else "$currentPath[$i]"
-                findNodeDifferences(
-                    expected.get(i),
-                    actual.get(i),
-                    ignoredKeys,
-                    newPath,
-                    differenceList,
-                )
-            }
+            compareArrays(expected, actual, currentPath, ignoredKeys, differenceList)
         } else if (expected != actual) {
             differenceList.add(JsonDiff(currentPath, expected, actual))
+        }
+    }
+
+    private fun compareArrays(
+        expected: JsonNode,
+        actual: JsonNode,
+        currentPath: String,
+        ignoredKeys: Set<String>,
+        differenceList: MutableList<JsonDiff>,
+    ) {
+        val expectedSize = expected.size()
+        val actualSize = actual.size()
+        val maxSize = maxOf(expectedSize, actualSize)
+        for (i in 0 until maxSize) {
+            val newPath = if (currentPath.isEmpty()) "[$i]" else "$currentPath[$i]"
+            findNodeDifferences(
+                expected.get(i),
+                actual.get(i),
+                ignoredKeys,
+                newPath,
+                differenceList,
+            )
+        }
+    }
+
+    private fun compareObjects(
+        expected: JsonNode,
+        ignoredKeys: Set<String>,
+        actual: JsonNode,
+        currentPath: String,
+        differenceList: MutableList<JsonDiff>,
+    ) {
+        val expectedFields =
+            expected
+                .fieldNames()
+                .asSequence()
+                .filterNot { it in ignoredKeys }
+                .toSet()
+        val actualFields =
+            actual
+                .fieldNames()
+                .asSequence()
+                .filterNot { it in ignoredKeys }
+                .toSet()
+        val allFields = expectedFields + actualFields
+        for (field in allFields) {
+            if (field in ignoredKeys) {
+                continue
+            }
+            val newPath = if (currentPath.isEmpty()) field else "$currentPath.$field"
+            findNodeDifferences(
+                expected[field],
+                actual[field],
+                ignoredKeys,
+                newPath,
+                differenceList,
+            )
         }
     }
 }
