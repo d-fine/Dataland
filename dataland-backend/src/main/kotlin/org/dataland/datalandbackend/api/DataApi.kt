@@ -82,7 +82,6 @@ interface DataApi<T> {
         summary = "Retrieve data for the company ID and reporting period provided.",
         description = "Data identified by the company ID and reporting Period is retrieved, if available.",
     )
-    // ToDo add another response code when nothing is found
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
@@ -92,7 +91,6 @@ interface DataApi<T> {
         value = ["/"],
         produces = ["application/json"],
     )
-    // ToDo add the check for public datasets again
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getCompanyAssociatedData(
         @RequestParam reportingPeriod: String,

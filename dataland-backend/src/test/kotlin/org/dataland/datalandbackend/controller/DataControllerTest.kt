@@ -147,7 +147,7 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun `test that no dataset is returned for a combination of reporting period, company id and data type that does not exist`() {
+    fun `test that no dataset is returned for a combination of reporting period company id and data type that does not exist`() {
         `when`(
             mockDataMetaInformationManager
                 .getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(testCompanyId, testDataType.toString(), testReportingPeriod),
@@ -158,7 +158,7 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun `test that the expected dataset is returned for a combination of reporting period, company id and data type`() {
+    fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         `when`(
             mockDataMetaInformationManager
                 .getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(testCompanyId, testDataType.toString(), testReportingPeriod),

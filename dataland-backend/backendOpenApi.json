@@ -2646,6 +2646,74 @@
         ]
       }
     },
+    "/data/sfdr/": {
+      "get": {
+        "tags": [
+          "sfdr-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataSfdrData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/p2p/{dataId}": {
       "get": {
         "tags": [
@@ -2924,6 +2992,74 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationPathwaysToParisData"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/p2p/": {
+      "get": {
+        "tags": [
+          "p-2p-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_1",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataPathwaysToParisData"
                 }
               }
             }
@@ -3272,6 +3408,74 @@
         ]
       }
     },
+    "/data/nuclear-and-gas/": {
+      "get": {
+        "tags": [
+          "nuclear-and-gas-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_2",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataNuclearAndGasData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/lksg/{dataId}": {
       "get": {
         "tags": [
@@ -3550,6 +3754,74 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationLksgData"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/lksg/": {
+      "get": {
+        "tags": [
+          "lksg-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_3",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataLksgData"
                 }
               }
             }
@@ -3898,6 +4170,74 @@
         ]
       }
     },
+    "/data/heimathafen/": {
+      "get": {
+        "tags": [
+          "heimathafen-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_4",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataHeimathafenData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/eutaxonomy-non-financials/{dataId}": {
       "get": {
         "tags": [
@@ -4176,6 +4516,74 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationEutaxonomyNonFinancialsData"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/eutaxonomy-non-financials/": {
+      "get": {
+        "tags": [
+          "eutaxonomy-non-financials-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_5",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyNonFinancialsData"
                 }
               }
             }
@@ -4524,6 +4932,74 @@
         ]
       }
     },
+    "/data/eutaxonomy-financials/": {
+      "get": {
+        "tags": [
+          "eutaxonomy-financials-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_6",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEutaxonomyFinancialsData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/esg-datenkatalog/{dataId}": {
       "get": {
         "tags": [
@@ -4837,6 +5313,74 @@
         ]
       }
     },
+    "/data/esg-datenkatalog/": {
+      "get": {
+        "tags": [
+          "esg-datenkatalog-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_7",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataEsgDatenkatalogData"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/additional-company-information/{dataId}": {
       "get": {
         "tags": [
@@ -5115,6 +5659,74 @@
                   "items": {
                     "$ref": "#/components/schemas/DataAndMetaInformationAdditionalCompanyInformationData"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/data/additional-company-information/": {
+      "get": {
+        "tags": [
+          "additional-company-information-data-controller"
+        ],
+        "summary": "Retrieve data for the company ID and reporting period provided.",
+        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
+        "operationId": "getCompanyAssociatedData_8",
+        "parameters": [
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyAssociatedDataAdditionalCompanyInformationData"
                 }
               }
             }
@@ -20171,21 +20783,21 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "countryCode": {
             "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",
@@ -20212,10 +20824,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
