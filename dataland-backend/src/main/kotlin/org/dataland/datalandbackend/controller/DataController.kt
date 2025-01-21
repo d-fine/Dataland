@@ -66,7 +66,7 @@ abstract class DataController<T>(
         )
     }
 
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+    private fun retrieveDataset(dataId: String): CompanyAssociatedData<T> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         this.verifyAccess(metaInfo)
         val companyId = metaInfo.company.companyId
@@ -76,7 +76,19 @@ abstract class DataController<T>(
         val companyAssociatedData =
             this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
-        return ResponseEntity.ok(companyAssociatedData)
+        return companyAssociatedData
+    }
+
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+        return ResponseEntity.ok(retrieveDataset(dataId))
+    }
+
+    override fun getCompanyAssociatedData(reportingPeriod: String, companyId: String): ResponseEntity<CompanyAssociatedData<T>> {
+        val dataId = dataMetaInformationManager.getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(
+            companyId = companyId, dataType = dataType.toString(), reportingPeriod = reportingPeriod,
+        )
+        return if (!dataId.isNullOrEmpty()) {ResponseEntity.ok(retrieveDataset(dataId))}
+        else {ResponseEntity.notFound().build()}
     }
 
     private fun getData(

@@ -145,6 +145,14 @@ internal class DataControllerTest(
         }
     }
 
+    @Test
+    fun `test that no dataset is returned for a combination of reposting period, company id and data type that does not exist`() {
+        `when`(mockDataMetaInformationManager.getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(testCompanyId, testDataType.toString(), testReportingPeriod)).thenReturn(null)
+        assertThrows<AccessDeniedException> {
+            dataController.getCompanyAssociatedData(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
+        }
+    }
+
     private fun buildDataMetaInformationEntity(
         dataId: String,
         uploaderId: String,
