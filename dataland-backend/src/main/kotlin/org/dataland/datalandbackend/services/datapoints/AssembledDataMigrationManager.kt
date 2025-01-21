@@ -43,7 +43,8 @@ class AssembledDataMigrationManager
                 reportingPeriod = dataMetaInfo.reportingPeriod,
                 dataContent = splitDataset.dataContent,
                 fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
-                bypassQa = false,
+                initialQaStatus = dataMetaInfo.qaStatus,
+                initialQaComment = "Status copied from stored dataset during migration.",
             )
         }
 

@@ -64,7 +64,7 @@ class DataPointManager
             }
 
             val dataPointMetaInformation = storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, correlationId)
-            messageQueuePublications.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
+            messageQueuePublications.publishDataPointUploadedMessageWithBypassQa(dataId, bypassQa, correlationId)
             return dataPointMetaInformation
         }
 

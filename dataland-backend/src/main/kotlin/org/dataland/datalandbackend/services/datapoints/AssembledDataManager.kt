@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -130,7 +131,6 @@ class AssembledDataManager
          * @param companyId the id of the company the data point belongs to
          * @param reportingPeriod the reporting period of the data point
          * @param uploaderUserId the id of the user who uploaded the data point
-         * @param bypassQa whether to bypass the QA process
          * @return the id of the stored data point
          */
         private fun storeIndividualDataPoint(
@@ -141,7 +141,8 @@ class AssembledDataManager
             companyId: String,
             reportingPeriod: String,
             uploaderUserId: String,
-            bypassQa: Boolean,
+            initialQaStatus: QaStatus,
+            initialQaComment: String?,
         ): String? {
             val dataPoint = dataPointJsonLeaf.content
             if (dataPoint.isEmpty) return null
@@ -172,7 +173,10 @@ class AssembledDataManager
             TransactionSynchronizationManager.registerSynchronization(
                 object : TransactionSynchronization {
                     override fun afterCommit() {
-                        messageQueuePublications.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
+                        messageQueuePublications.publishDataPointUploadedMessage(
+                            dataId, initialQaStatus,
+                            initialQaComment, correlationId,
+                        )
                     }
                 },
             )
@@ -191,7 +195,8 @@ class AssembledDataManager
             reportingPeriod: String,
             uploaderUserId: String,
             correlationId: String,
-            bypassQa: Boolean,
+            initialQaStatus: QaStatus,
+            initialQaComment: String?,
         ) {
             logger.info("Processing dataset with id $datasetId (correlation ID: $correlationId).")
 
@@ -205,7 +210,8 @@ class AssembledDataManager
                     companyId = companyId,
                     reportingPeriod = reportingPeriod,
                     uploaderUserId = uploaderUserId,
-                    bypassQa = bypassQa,
+                    initialQaComment = initialQaComment,
+                    initialQaStatus = initialQaStatus,
                 )?.let { createdDataIds[dataPointType] = it }
             }
             this.datasetDatapointRepository.save(
@@ -240,6 +246,12 @@ class AssembledDataManager
                     }
                 },
             )
+            val (qaStatus, comment) =
+                when (bypassQa) {
+                    true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
+                    false -> Pair(QaStatus.Pending, null)
+                }
+
             storeDataPointsForDataset(
                 datasetId = datasetId,
                 dataContent = dataContent,
@@ -248,7 +260,8 @@ class AssembledDataManager
                 reportingPeriod = uploadedDataset.reportingPeriod,
                 uploaderUserId = uploadedDataset.uploaderUserId,
                 correlationId = correlationId,
-                bypassQa = bypassQa,
+                initialQaStatus = qaStatus,
+                initialQaComment = comment,
             )
 
             return datasetId
