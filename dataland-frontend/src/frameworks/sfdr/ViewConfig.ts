@@ -322,7 +322,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionRevenue,
+                dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerCurrencyMillionRevenue,
                 'Carbon footprint'
               ),
           },
@@ -333,7 +333,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionRevenue,
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerCurrencyMillionRevenue,
                 'GHG intensity'
               ),
           },
@@ -345,7 +345,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionRevenue,
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerCurrencyMillionRevenue,
                 'GHG intensity - scope 1'
               ),
           },
@@ -357,7 +357,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionRevenue,
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerCurrencyMillionRevenue,
                 'GHG intensity - scope 2'
               ),
           },
@@ -369,7 +369,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionRevenue,
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerCurrencyMillionRevenue,
                 'GHG intensity - scope 3'
               ),
           },
@@ -381,7 +381,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionRevenue,
+                dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerCurrencyMillionRevenue,
                 'GHG intensity - scope 4'
               ),
           },
@@ -881,7 +881,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
-                dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionRevenue,
+                dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue,
                 'Relative Water Usage'
               ),
           },

@@ -246,7 +246,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'carbonFootprintInTonnesPerMillionRevenue',
+            name: 'carbonFootprintInTonnesPerCurrencyMillionRevenue',
             label: 'Carbon footprint',
             description:
               'Tonnes of GHG emissions / million of the enterprise value (in the same currency as the enterprise value)',
@@ -256,7 +256,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'ghgIntensityInTonnesPerMillionRevenue',
+            name: 'ghgIntensityInTonnesPerCurrencyMillionRevenue',
             label: 'GHG intensity',
             description: 'Tonnes of GHG emissions / million of the revenue (in the same currency as the total revenue)',
 
@@ -265,7 +265,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'ghgIntensityScope1InTonnesPerMillionRevenue',
+            name: 'ghgIntensityScope1InTonnesPerCurrencyMillionRevenue',
             label: 'GHG intensity - scope 1',
             description:
               'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
@@ -275,7 +275,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'ghgIntensityScope2InTonnesPerMillionRevenue',
+            name: 'ghgIntensityScope2InTonnesPerCurrencyMillionRevenue',
             label: 'GHG intensity - scope 2',
             description:
               'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
@@ -285,7 +285,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'ghgIntensityScope3InTonnesPerMillionRevenue',
+            name: 'ghgIntensityScope3InTonnesPerCurrencyMillionRevenue',
             label: 'GHG intensity - scope 3',
             description:
               'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 3 carbon emissions, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
@@ -295,7 +295,7 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'ghgIntensityScope4InTonnesPerMillionRevenue',
+            name: 'ghgIntensityScope4InTonnesPerCurrencyMillionRevenue',
             label: 'GHG intensity - scope 4',
             description:
               'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
@@ -669,7 +669,7 @@ export const sfdrDataModel = [
             validation: 'min:0',
           },
           {
-            name: 'relativeWaterUsageInCubicMetersPerMillionRevenue',
+            name: 'relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue',
             label: 'Relative Water Usage',
             description: 'Average amount in cubic meters of fresh water used per million EUR revenue',
 

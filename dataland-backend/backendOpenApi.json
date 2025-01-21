@@ -7789,51 +7789,51 @@
               }
             ]
           },
-          "carbonFootprintInTonnesPerMillionEURRevenue": {
+          "carbonFootprintInTonnesPerCurrencyMillionRevenue": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
-          "ghgIntensityInTonnesPerMillionEURRevenue": {
+          "ghgIntensityInTonnesPerCurrencyMillionRevenue": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
-          "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+          "ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
-          "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+          "ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
-          "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+          "ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
-          "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+          "ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -7911,11 +7911,11 @@
               }
             ]
           },
-          "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+          "relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
             "nullable": true,
             "allOf": [
               {
-                "$ref": "#/components/schemas/ExtendedDataPointBigDecimal"
+                "$ref": "#/components/schemas/CurrencyDataPoint"
               }
             ]
           },
@@ -20057,9 +20057,8 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -20067,8 +20066,9 @@
           "countryCode": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "companyId": {
             "type": "string"

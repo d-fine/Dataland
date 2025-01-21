@@ -23,7 +23,7 @@ data class SfdrEnvironmentalWater(
     val waterReusedInCubicMeters: ExtendedDataPoint<BigDecimal?>? = null,
     @field:MinimumValue(minimumValue = 0)
     @field:Valid()
-    val relativeWaterUsageInCubicMetersPerMillionRevenue: CurrencyDataPoint? = null,
+    val relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue: CurrencyDataPoint? = null,
     @field:Valid()
     val waterManagementPolicy: ExtendedDataPoint<YesNo?>? = null,
     @field:Valid()

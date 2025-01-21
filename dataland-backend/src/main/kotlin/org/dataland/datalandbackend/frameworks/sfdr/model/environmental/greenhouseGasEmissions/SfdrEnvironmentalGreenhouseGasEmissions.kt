@@ -44,17 +44,17 @@ data class SfdrEnvironmentalGreenhouseGasEmissions(
     @field:Valid()
     val totalRevenue: CurrencyDataPoint? = null,
     @field:Valid()
-    val carbonFootprintInTonnesPerMillionRevenue: CurrencyDataPoint? = null,
+    val carbonFootprintInTonnesPerCurrencyMillionRevenue: CurrencyDataPoint? = null,
     @field:Valid()
-    val ghgIntensityInTonnesPerMillionRevenue: CurrencyDataPoint? = null,
+    val ghgIntensityInTonnesPerCurrencyMillionRevenue: CurrencyDataPoint? = null,
     @field:Valid()
-    val ghgIntensityScope1InTonnesPerMillionRevenue: CurrencyDataPoint? = null,
+    val ghgIntensityScope1InTonnesPerCurrencyMillionRevenue: CurrencyDataPoint? = null,
     @field:Valid()
-    val ghgIntensityScope2InTonnesPerMillionRevenue: CurrencyDataPoint? = null,
+    val ghgIntensityScope2InTonnesPerCurrencyMillionRevenue: CurrencyDataPoint? = null,
     @field:Valid()
-    val ghgIntensityScope3InTonnesPerMillionRevenue: CurrencyDataPoint? = null,
+    val ghgIntensityScope3InTonnesPerCurrencyMillionRevenue: CurrencyDataPoint? = null,
     @field:Valid()
-    val ghgIntensityScope4InTonnesPerMillionRevenue: CurrencyDataPoint? = null,
+    val ghgIntensityScope4InTonnesPerCurrencyMillionRevenue: CurrencyDataPoint? = null,
     @field:Valid()
     val fossilFuelSectorExposure: ExtendedDataPoint<YesNo?>? = null,
     @field:Valid()

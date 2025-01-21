@@ -3106,22 +3106,22 @@
           "totalRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "carbonFootprintInTonnesPerMillionRevenue": {
+          "carbonFootprintInTonnesPerCurrencyMillionRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityInTonnesPerMillionRevenue": {
+          "ghgIntensityInTonnesPerCurrencyMillionRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope1InTonnesPerMillionRevenue": {
+          "ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope2InTonnesPerMillionRevenue": {
+          "ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope3InTonnesPerMillionRevenue": {
+          "ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
-          "ghgIntensityScope4InTonnesPerMillionRevenue": {
+          "ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "fossilFuelSectorExposure": {
@@ -3158,7 +3158,7 @@
           "waterReusedInCubicMeters": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
-          "relativeWaterUsageInCubicMetersPerMillionRevenue": {
+          "relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
             "$ref": "#/components/schemas/QaReportDataPointCurrencyDataPoint"
           },
           "waterManagementPolicy": {
