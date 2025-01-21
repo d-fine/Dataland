@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -79,16 +80,25 @@ abstract class DataController<T>(
         return companyAssociatedData
     }
 
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        return ResponseEntity.ok(retrieveDataset(dataId))
-    }
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> =
+        ResponseEntity
+            .ok(retrieveDataset(dataId))
 
-    override fun getCompanyAssociatedData(reportingPeriod: String, companyId: String): ResponseEntity<CompanyAssociatedData<T>> {
-        val dataId = dataMetaInformationManager.getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(
-            companyId = companyId, dataType = dataType.toString(), reportingPeriod = reportingPeriod,
-        )
-        return if (!dataId.isNullOrEmpty()) {ResponseEntity.ok(retrieveDataset(dataId))}
-        else {ResponseEntity.notFound().build()}
+    override fun getCompanyAssociatedData(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<T>> {
+        val dataId =
+            dataMetaInformationManager.getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(
+                companyId = companyId, dataType = dataType.toString(), reportingPeriod = reportingPeriod,
+            )
+        if (dataId == null) {
+            throw ResourceNotFoundApiException(
+                summary = "No dataset found.",
+                message = "No dataset available for data type $dataType reporting period $reportingPeriod company ID $companyId.",
+            )
+        }
+        return ResponseEntity.ok(retrieveDataset(dataId))
     }
 
     private fun getData(

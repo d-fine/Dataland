@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -146,9 +147,12 @@ internal class DataControllerTest(
     }
 
     @Test
-    fun `test that no dataset is returned for a combination of reposting period, company id and data type that does not exist`() {
-        `when`(mockDataMetaInformationManager.getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(testCompanyId, testDataType.toString(), testReportingPeriod)).thenReturn(null)
-        assertThrows<AccessDeniedException> {
+    fun `test that no dataset is returned for a combination of reporting period, company id and data type that does not exist`() {
+        `when`(
+            mockDataMetaInformationManager
+                .getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(testCompanyId, testDataType.toString(), testReportingPeriod),
+        ).thenReturn(null)
+        assertThrows<ResourceNotFoundApiException> {
             dataController.getCompanyAssociatedData(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
         }
     }

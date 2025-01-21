@@ -74,17 +74,20 @@ class DataMetaInformationManager(
             )
         }
 
+    /**
+     *
+     */
     fun getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(
         companyId: String,
         dataType: String,
         reportingPeriod: String,
-    ): String? {
-        return dataMetaInformationRepositoryInterface.findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
-            reportingPeriod = reportingPeriod,
-            companyId = companyId,
-            dataType = dataType,
-        )?.dataId
-    }
+    ): String? =
+        dataMetaInformationRepositoryInterface
+            .findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
+                reportingPeriod = reportingPeriod,
+                companyId = companyId,
+                dataType = dataType,
+            )?.dataId
 
     /**
      * Method to make the data manager search for meta info
