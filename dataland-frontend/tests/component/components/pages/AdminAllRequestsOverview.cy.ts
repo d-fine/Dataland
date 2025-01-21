@@ -425,14 +425,15 @@ describe('Component test for the admin-requests-overview page', () => {
   });
 
   it('Check the functionality of the rowClick event', () => {
-    mountAdminAllRequestsPageWithMocks().then((chainable) => {
+    cy.spy(router, 'push').as('routerPush');
+    mountAdminAllRequestsPageWithMocks().then(() => {
       const dataRequestIdOfLastElement = mockRequests[mockRequests.length - 1].dataRequestId;
 
       cy.get('[data-test=requests-datatable]').within(() => {
         cy.get('tr:last').click();
       });
 
-      cy.wrap(chainable.component).its('$route.path').should('eq', `/requests/${dataRequestIdOfLastElement}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dataRequestIdOfLastElement}`);
     });
   });
 });

@@ -1,7 +1,0 @@
-{
-  "id" : "extendedCurrencyDebt",
-  "name" : "Debt",
-  "businessDefinition" : "The total amount of all financial obligations the company owes to external parties, including loans, bonds, and other forms of debt.",
-  "dataPointTypeId" : "extendedCurrency",
-  "frameworkOwnership" : "additional-company-information"
-}

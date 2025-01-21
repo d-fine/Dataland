@@ -21,9 +21,10 @@ x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
   POSTGRES_DB: eurodat_db_name
   POSTGRES_USER: eurodat_db_user
   POSTGRES_PASSWORD: eurodat_db_password
-x-logging-options: &logging-options
+x-logging: &loki-logging
   driver: json-file
   options:
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     max-size: ${LOGGING_OPTIONS_MAX_SIZE}
     max-file: ${LOGGING_OPTIONS_MAX_FILE}
 
@@ -55,7 +56,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
@@ -71,12 +72,13 @@ services:
       - qa-service-db
       - community-manager-db
       - email-service-db
+      - grafana
     ports:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   api-key-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -93,7 +95,7 @@ services:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   api-key-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -112,7 +114,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -132,7 +134,7 @@ services:
     depends_on:
       - document-manager-db
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   document-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -151,7 +153,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   backend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -171,7 +173,7 @@ services:
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   backend-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -198,7 +200,7 @@ services:
       -c shared_buffers=1GB
       -c temp_buffers=512MB
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   e2etests:
     profiles: [ "testing" ]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -217,6 +219,8 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      GRAFANA_ADMIN: ${GRAFANA_ADMIN}
+      GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
@@ -225,7 +229,7 @@ services:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   frontend-dev:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
     # don't work anymore after a certain amount of requests
@@ -245,7 +249,7 @@ services:
     environment:
       POLLING: "false"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -254,7 +258,7 @@ services:
       - internal
     <<: *uncritical-constants-env
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -273,7 +277,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   internal-storage-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -292,7 +296,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   keycloak-db:
     restart: always
     profiles: [ "production", "testing", "development", "init" ]
@@ -311,7 +315,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   keycloak:
     restart: always
     profiles: [ "production", "development" ]
@@ -328,7 +332,7 @@ services:
     depends_on:
       - keycloak-db
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   keycloak-initializer:
     profiles: [ "testing", "init" ]
     networks:
@@ -375,7 +379,7 @@ services:
       keycloak-db:
         condition: service_healthy
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   pgadmin:
     restart: always
     image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
@@ -406,7 +410,7 @@ services:
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   rabbitmq:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -428,7 +432,7 @@ services:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -450,7 +454,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   qa-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -469,7 +473,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   batch-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -487,7 +491,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   community-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -510,7 +514,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   community-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -529,7 +533,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   specification-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -542,7 +546,7 @@ services:
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -562,7 +566,7 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   email-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -581,7 +585,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   external-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -597,7 +601,7 @@ services:
     extra_hosts:
      - "host.docker.internal:host-gateway"
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
@@ -611,7 +615,7 @@ services:
     env_file:
       - ./dataland-eurodat-client/secret_files/client.env
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   dummy-eurodat-client:
     restart: always
     profiles: [ "testing" ]
@@ -623,11 +627,11 @@ services:
     environment:
       <<: *dummy-eurodat-db-settings
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:e7897baa70dae1968d23d785adb4aeb699175e0bcaae44f98a7083ecb9668b93
+    image: postgres:alpine@sha256:0bcc5bbbb2aa9c9b4c6505845918c7eb55d783cf5c1f434fac33012579fb149d
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -640,7 +644,7 @@ services:
       interval: 30s
       timeout: 3s
     logging:
-      <<: *logging-options
+      <<: *loki-logging
   data-exporter:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -657,7 +661,57 @@ services:
     volumes:
       - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
     logging:
-      <<: *logging-options
+      <<: *loki-logging
+  grafana:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${GRAFANA_IMAGE:-ghcr.io/d-fine/dataland/dataland_grafana:${DATALAND_GRAFANA_VERSION}}
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
+    expose:
+      - "3000"
+    volumes:
+      - grafana_data:/var/lib/grafana/data
+    depends_on:
+      - loki
+    networks:
+      - grafana
+      - loki
+    logging:
+      <<: *loki-logging
+  loki:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${LOKI_IMAGE:-ghcr.io/d-fine/dataland/dataland_loki:${DATALAND_LOKI_VERSION}}
+    expose:
+      - "3100"
+    environment:
+      INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
+    volumes:
+      - ${LOKI_VOLUME}:/loki
+    networks:
+      - loki
+    logging:
+      <<: *loki-logging
+  alloy:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${ALLOY_IMAGE:-ghcr.io/d-fine/dataland/dataland_alloy:${DATALAND_ALLOY_VERSION}}
+    expose:
+      - "8080"
+    environment:
+      INTERNAL_ALLOY_URL: ${INTERNAL_ALLOY_URL:-http://alloy:8080}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - alloy_data:/var/lib/alloy/data
+    depends_on:
+      - loki
+    networks:
+      - loki
+    logging:
+      <<: *loki-logging
 networks:
   internal:
   external:
@@ -669,6 +723,8 @@ networks:
   qa-service-db:
   community-manager-db:
   email-service-db:
+  loki:
+  grafana:
 volumes:
   keycloak_data:
     driver: local
@@ -695,4 +751,8 @@ volumes:
   batch_manager_data:
     driver: local
   email_service_data:
+    driver: local
+  grafana_data:
+    driver: local
+  alloy_data:
     driver: local

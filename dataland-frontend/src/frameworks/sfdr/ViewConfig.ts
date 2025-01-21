@@ -579,7 +579,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Crude Oil',
-            explanation: 'Energy consumption from crude oil (non-renewable energy source)',
+            explanation:
+              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1435,18 +1436,15 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent?.value,
-                  'Percent'
-                ),
+                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.rateOfAccidents?.value, ''),
                 'Rate Of Accidents',
-                dataset.social?.socialAndEmployeeMatters?.rateOfAccidentsInPercent
+                dataset.social?.socialAndEmployeeMatters?.rateOfAccidents
               ),
           },
           {
             type: 'cell',
             label: 'Workdays Lost',
-            explanation: 'Number of workdays lost to injuries, accidents, fatalities or illness',
+            explanation: 'Number of workdays lost to injuries, accidents, fatalities or illness in total',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1529,31 +1527,15 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           },
           {
             type: 'cell',
-            label: 'CEO to Employee Pay Gap Ratio',
-            explanation:
-              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).',
-            shouldDisplay: (): boolean => true,
-            valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
-              wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.ceoToEmployeePayGapRatio?.value, ''),
-                'CEO to Employee Pay Gap Ratio',
-                dataset.social?.socialAndEmployeeMatters?.ceoToEmployeePayGapRatio
-              ),
-          },
-          {
-            type: 'cell',
             label: 'Excessive CEO pay ratio',
             explanation:
-              'Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)',
+              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual)',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
-                formatNumberForDatatable(
-                  dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent?.value,
-                  'Percent'
-                ),
+                formatNumberForDatatable(dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio?.value, ''),
                 'Excessive CEO pay ratio',
-                dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatioInPercent
+                dataset.social?.socialAndEmployeeMatters?.excessiveCeoPayRatio
               ),
           },
         ],

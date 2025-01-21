@@ -45,4 +45,28 @@ export class EsgDatenkatalogApiClient implements PublicFrameworkDataApi<EsgDaten
   ): AxiosPromise<DataMetaInformation> {
     return this.openApiDataController.postCompanyAssociatedEsgDatenkatalogData(data, bypassQa, options);
   }
+
+  exportCompanyAssociatedDataToJson(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataToJson(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToCsv(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataToCsv(dataId, options);
+  }
+
+  exportCompanyAssociatedDataToExcel(
+    dataId: string,
+    options?: AxiosRequestConfig
+  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataToExcel(dataId, options);
+  }
 }

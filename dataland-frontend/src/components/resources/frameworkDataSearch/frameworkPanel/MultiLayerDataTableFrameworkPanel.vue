@@ -36,6 +36,7 @@
         )
       "
       :ariaLabel="`Datasets of the ${frameworkDisplayName} framework`"
+      :hideEmptyFields="hideEmptyFields ?? false"
     />
   </div>
   <div v-if="status == 'InsufficientRights'">

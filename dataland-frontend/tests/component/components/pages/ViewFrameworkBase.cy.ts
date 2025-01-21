@@ -102,4 +102,19 @@ describe('Component test for ViewFrameworkBase', () => {
       });
     }
   );
+
+  it('Should display the download data button for data reader ' + 'and open download modal', () => {
+    cy.intercept('**/api/metadata*', []);
+    cy.mountWithPlugins(ViewFrameworkBase, {
+      keycloak: minimalKeycloakMock({}),
+      global: {
+        stubs: ['CompanyInformation'],
+      },
+    }).then((mounted) => {
+      void mounted.wrapper.setProps({});
+
+      cy.get('button[data-test=downloadDataButton]').should('exist').click();
+      cy.get('[data-test=downloadModal]').should('exist');
+    });
+  });
 });

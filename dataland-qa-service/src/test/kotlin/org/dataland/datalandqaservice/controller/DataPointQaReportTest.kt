@@ -6,8 +6,8 @@ import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.DataPointContent
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.DataPointToValidate
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -68,13 +68,13 @@ class DataPointQaReportTest(
 
     private val dummyDataId = "dummyDataId"
     private val dummyCompanyId = "dummyCompanyId"
-    private val dummyDataPointIdentifier = "dummyDataPointIdentifier"
+    private val dummyDataPointType = "dummyDataPointType"
     private val incorrectDataPlaceholder = "incorrect-data"
 
     private val dummyDataMetaInformation =
         DataPointMetaInformation(
-            dataId = dummyDataId,
-            dataPointIdentifier = dummyDataPointIdentifier,
+            dataPointId = dummyDataId,
+            dataPointType = dummyDataPointType,
             qaStatus = QaStatus.Pending,
             reportingPeriod = "dummyReportingPeriod",
             companyId = dummyCompanyId,
@@ -99,7 +99,7 @@ class DataPointQaReportTest(
     @BeforeEach
     fun `setup api mocks`() {
         `when`(dataPointApi.getDataPointMetaInfo(dummyDataId)).thenReturn(dummyDataMetaInformation)
-        `when`(dataPointApi.validateDataPointContent(DataPointContent(incorrectDataPlaceholder, dummyDataPointIdentifier)))
+        `when`(dataPointApi.validateDataPoint(DataPointToValidate(incorrectDataPlaceholder, dummyDataPointType)))
             .thenThrow(ClientException(statusCode = 400))
         `when`(companyDataControllerApi.getCompanyById(dummyCompanyId)).thenReturn(dummyCompanyInformation)
     }

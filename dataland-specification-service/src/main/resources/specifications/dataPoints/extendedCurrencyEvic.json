@@ -1,7 +1,0 @@
-{
-  "id" : "extendedCurrencyEvic",
-  "name" : "EVIC",
-  "businessDefinition" : "Enterprise Value Including Cash",
-  "dataPointTypeId" : "extendedCurrency",
-  "frameworkOwnership" : "additional-company-information"
-}

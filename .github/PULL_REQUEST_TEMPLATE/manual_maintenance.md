@@ -9,6 +9,8 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
+- In the wiki 'Problematic Updates'.
+
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
 
