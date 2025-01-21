@@ -48,7 +48,7 @@ log4j = "2.24.3"
 
 [libraries]
 
-gradle-tooling = "org.gradle:gradle-tooling-api:8.11.1"
+gradle-tooling = "org.gradle:gradle-tooling-api:8.12"
 
 detekt-cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.23.7"
 
@@ -153,8 +153,8 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 
 json = "org.json:json:20240303"
 
-spring-context = "org.springframework:spring-context:6.2.1"
-spring-test = "org.springframework:spring-test:6.2.1"
+spring-context = "org.springframework:spring-context:6.2.2"
+spring-test = "org.springframework:spring-test:6.2.2"
 
 spring-boot = "org.springframework.boot:spring-boot:3.4.1"
 
