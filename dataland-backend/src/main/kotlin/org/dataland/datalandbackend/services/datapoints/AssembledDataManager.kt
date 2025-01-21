@@ -62,12 +62,16 @@ class AssembledDataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) = splitDatasetIntoDataPoints(uploadedDataset)
+            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) =
+                splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
             validateDataset(dataContent, referencedReports, correlationId)
             return storeSplitDataset(uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
         }
 
-        private data class SplitDataset(
+        /**
+         * Data class to store a dataset intermediately after it has been split into datapoints
+         */
+        data class SplitDataset(
             val dataContent: Map<String, JsonSpecificationLeaf>,
             val referencedReports: Map<String, CompanyReport>?,
             val fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
@@ -75,11 +79,15 @@ class AssembledDataManager
 
         /**
          * Splits the dataset into individual data points
-         * @param uploadedDataset the dataset to split
+         * @param data the dataset to split
+         * @param dataType the type of the dataset
          * @return the split dataset
          */
-        private fun splitDatasetIntoDataPoints(uploadedDataset: StorableDataset): SplitDataset {
-            val frameworkSpecification = getFrameworkSpecification(uploadedDataset.dataType.toString())
+        fun splitDatasetIntoDataPoints(
+            data: String,
+            dataType: String,
+        ): SplitDataset {
+            val frameworkSpecification = getFrameworkSpecification(dataType)
             val frameworkSchema = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             val frameworkUsesReferencedReports = frameworkSpecification.referencedReportJsonPath != null
 
@@ -90,12 +98,12 @@ class AssembledDataManager
                 JsonSpecificationUtils
                     .dehydrateJsonSpecification(
                         frameworkSchema,
-                        objectMapper.readTree(uploadedDataset.data) as ObjectNode,
+                        objectMapper.readTree(data) as ObjectNode,
                     ).toMutableMap()
 
             val referencedReports =
                 if (frameworkUsesReferencedReports) {
-                    referencedReportsUtilities.validateReferencedReportConsistency(
+                    referencedReportsUtilities.parseReferencedReportsFromJsonLeaf(
                         dataContent[REFERENCED_REPORTS_ID],
                     )
                 } else {
@@ -119,7 +127,9 @@ class AssembledDataManager
          * @param fileReferenceToPublicationDateMapping a mapping of file references to publication dates
          * @param dataPointType the type of the data point
          * @param correlationId the correlation id for the operation
-         * @param uploadedDataset the dataset the data point belongs to
+         * @param companyId the id of the company the data point belongs to
+         * @param reportingPeriod the reporting period of the data point
+         * @param uploaderUserId the id of the user who uploaded the data point
          * @param bypassQa whether to bypass the QA process
          * @return the id of the stored data point
          */
@@ -128,7 +138,9 @@ class AssembledDataManager
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
             dataPointType: String,
             correlationId: String,
-            uploadedDataset: StorableDataset,
+            companyId: String,
+            reportingPeriod: String,
+            uploaderUserId: String,
             bypassQa: Boolean,
         ): String? {
             val dataPoint = dataPointJsonLeaf.content
@@ -149,11 +161,11 @@ class AssembledDataManager
                 UploadedDataPoint(
                     dataPoint = objectMapper.writeValueAsString(dataPoint),
                     dataPointType = dataPointType,
-                    companyId = uploadedDataset.companyId,
-                    reportingPeriod = uploadedDataset.reportingPeriod,
+                    companyId = companyId,
+                    reportingPeriod = reportingPeriod,
                 ),
                 dataId,
-                uploadedDataset.uploaderUserId,
+                uploaderUserId,
                 correlationId,
             )
 
@@ -165,6 +177,41 @@ class AssembledDataManager
                 },
             )
             return dataId
+        }
+
+        /**
+         * Creates all individual datapoints and associated them with the datapoints
+         */
+        @Transactional
+        fun storeDataPointsForDataset(
+            datasetId: String,
+            dataContent: Map<String, JsonSpecificationLeaf>,
+            fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            companyId: String,
+            reportingPeriod: String,
+            uploaderUserId: String,
+            correlationId: String,
+            bypassQa: Boolean,
+        ) {
+            logger.info("Processing dataset with id $datasetId (correlation ID: $correlationId).")
+
+            val createdDataIds = mutableMapOf<String, String>()
+            dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->
+                storeIndividualDataPoint(
+                    dataPointJsonLeaf = dataPointJsonLeaf,
+                    fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
+                    dataPointType = dataPointType,
+                    correlationId = correlationId,
+                    companyId = companyId,
+                    reportingPeriod = reportingPeriod,
+                    uploaderUserId = uploaderUserId,
+                    bypassQa = bypassQa,
+                )?.let { createdDataIds[dataPointType] = it }
+            }
+            this.datasetDatapointRepository.save(
+                DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
+            )
+            logger.info("Completed processing dataset (correlation ID: $correlationId).")
         }
 
         /**
@@ -193,24 +240,17 @@ class AssembledDataManager
                     }
                 },
             )
-
-            logger.info("Processing dataset with id $datasetId for framework ${uploadedDataset.dataType}")
-
-            val createdDataIds = mutableMapOf<String, String>()
-            dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->
-                storeIndividualDataPoint(
-                    dataPointJsonLeaf,
-                    fileReferenceToPublicationDateMapping,
-                    dataPointType,
-                    correlationId,
-                    uploadedDataset,
-                    bypassQa,
-                )?.let { createdDataIds[dataPointType] = it }
-            }
-            this.datasetDatapointRepository.save(
-                DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
+            storeDataPointsForDataset(
+                datasetId = datasetId,
+                dataContent = dataContent,
+                fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
+                companyId = uploadedDataset.companyId,
+                reportingPeriod = uploadedDataset.reportingPeriod,
+                uploaderUserId = uploadedDataset.uploaderUserId,
+                correlationId = correlationId,
+                bypassQa = bypassQa,
             )
-            logger.info("Completed processing dataset (correlation ID: $correlationId).")
+
             return datasetId
         }
 
@@ -225,6 +265,7 @@ class AssembledDataManager
             referencedReports: Map<String, CompanyReport>?,
             correlationId: String,
         ) {
+            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports ?: emptyMap())
             val observedDocumentReferences = mutableSetOf<String>()
 
             datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->

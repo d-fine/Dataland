@@ -17,15 +17,18 @@ class DataMigrationTest {
     @Test
     fun `ensure the data migration works as expected`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val dataMetaInfo = Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
-            dataType = DataTypeEnum.additionalMinusCompanyMinusInformation,
-            companyAssociatedDataJsonNode = CompanyAssociatedDataJsonNode(
-                companyId = companyId,
-                data = dummyDataset,
-                reportingPeriod = "2025"
+        val dataMetaInfo =
+            Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
+                dataType = DataTypeEnum.additionalMinusCompanyMinusInformation,
+                companyAssociatedDataJsonNode =
+                    CompanyAssociatedDataJsonNode(
+                        companyId = companyId,
+                        data = dummyDataset,
+                        reportingPeriod = "2025",
+                    ),
             )
-        )
+        Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         fail("DataId:  {${dataMetaInfo.dataId}}")
-        // TODO: Continue test
+        // TODO: Continue Test
     }
 }

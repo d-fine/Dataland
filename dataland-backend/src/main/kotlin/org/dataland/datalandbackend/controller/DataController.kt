@@ -30,7 +30,7 @@ import java.time.Instant
  * @param dataMetaInformationManager service for handling data meta information
  * @param objectMapper the mapper to transform strings into classes and vice versa
  */
-abstract class DataController<T>(
+open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
     private val dataExportService: DataExportService,
