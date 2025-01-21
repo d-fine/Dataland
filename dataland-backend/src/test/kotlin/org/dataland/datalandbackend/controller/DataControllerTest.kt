@@ -157,6 +157,16 @@ internal class DataControllerTest(
         }
     }
 
+    @Test
+    fun `test that the expected dataset is returned for a combination of reporting period, company id and data type`() {
+        `when`(
+            mockDataMetaInformationManager
+                .getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(testCompanyId, testDataType.toString(), testReportingPeriod),
+        ).thenReturn(otherUserAcceptedDataId)
+        val response = dataController.getCompanyAssociatedData(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
+        Assertions.assertEquals(someEuTaxoData, response.body!!.data)
+    }
+
     private fun buildDataMetaInformationEntity(
         dataId: String,
         uploaderId: String,
