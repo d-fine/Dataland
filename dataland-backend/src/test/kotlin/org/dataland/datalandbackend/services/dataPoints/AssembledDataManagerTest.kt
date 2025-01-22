@@ -73,8 +73,11 @@ class AssembledDataManagerTest {
     private val reportingPeriod = "test-period"
     private val companyId = "test-company-id"
     private val datasetId = "test-dataset-id"
+    private val dataPointType = "extendedEnumFiscalYearDeviation"
+    private val dataPointId = "test-data-point-1"
     private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(frameworkSpecificationFile)
-    private val dataDimensions = BasicDataDimensions(companyId, "sfdr", reportingPeriod)
+    private val framework = "sfdr"
+    private val dataDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
 
     @BeforeEach
     fun resetMocks() {
@@ -103,7 +106,7 @@ class AssembledDataManagerTest {
         val uploadedDataset =
             StorableDataset(
                 companyId = companyId,
-                dataType = DataType("sfdr"),
+                dataType = DataType(framework),
                 uploaderUserId = uploaderUserId,
                 uploadTime = Instant.now().toEpochMilli(),
                 reportingPeriod = reportingPeriod,
@@ -130,7 +133,7 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that assembling a dataset works as expected`() {
-        val dataPointMap = mapOf("extendedEnumFiscalYearDeviation" to "test-data-point-1", "extendedCurrencyEquity" to "test-data-point-2")
+        val dataPointMap = mapOf(dataPointType to dataPointId, "extendedCurrencyEquity" to "test-data-point-2")
 
         val dataPoints =
             listOf(
@@ -140,13 +143,13 @@ class AssembledDataManagerTest {
 
         val dataContentMap =
             mapOf(
-                "test-data-point-1" to dataPoints[0],
+                dataPointId to dataPoints[0],
                 "test-data-point-2" to dataPoints[1],
             )
 
         setMockData(dataPointMap, dataContentMap)
 
-        val assembledDataset = assembledDataManager.getDatasetData(datasetId, "sfdr", correlationId)
+        val assembledDataset = assembledDataManager.getDatasetData(datasetId, framework, correlationId)
         dataPoints.forEach {
             assert(assembledDataset.contains(it))
         }
@@ -155,8 +158,6 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that assembling a dynamic dataset works as expected`() {
-        val dataPointType = "extendedEnumFiscalYearDeviation"
-        val dataPointId = "test-data-point-1"
         val dataPointMap = mapOf(dataPointType to dataPointId)
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
         val dataContentMap = mapOf(dataPointId to dataPoint)

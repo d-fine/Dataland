@@ -95,9 +95,9 @@ abstract class DataController<T>(
                 dataType = dataType.toString(),
                 reportingPeriod = reportingPeriod,
             )
-        val correlationId = IdUtils.generateCorrelationId(dataDimensions = dataDimensions)
+        val correlationId = IdUtils.generateCorrelationId(dataDimensions)
         val dataAsString =
-            datasetStorageService.getDatasetData(dataDimensions = dataDimensions, correlationId = correlationId)
+            datasetStorageService.getDatasetData(dataDimensions, correlationId)
                 ?: throw ResourceNotFoundApiException(
                     summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
                     message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),

@@ -11,7 +11,6 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
-import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -158,16 +157,16 @@ class DataPointManager
             }
         }
 
-        fun getAssociatedDataPointIds(
-            dataPointTypes: List<String>,
-            dataDimensions: BasicDataDimensions,
-        ): List<String> {
+        /**
+         * Retrieves the currently active data points for a list of specific data point dimensions
+         * @param dataPointDimensions the data dimensions to retrieve the data points for
+         * @return the id of the currently active data point
+         */
+        fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): List<String> {
             val dataPointIds = mutableListOf<String>()
-            dataPointTypes.forEach { dataPointType ->
-                val dataPointId = metaDataManager.getCurrentlyActiveDataId(dataDimensions.toBasicDataPointDimensions(dataPointType))
-                if (dataPointId != null) {
-                    dataPointIds.add(dataPointId)
-                }
+            dataPointDimensions.forEach {
+                val dataPointId = metaDataManager.getCurrentlyActiveDataId(it) ?: return@forEach
+                dataPointIds.add(dataPointId)
             }
             return dataPointIds
         }

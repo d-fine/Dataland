@@ -26,6 +26,8 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Spy
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -151,10 +153,6 @@ internal class DataControllerTest(
 
     @Test
     fun `test that no dataset is returned for a combination of reporting period company id and data type that does not exist`() {
-        `when`(
-            mockDataMetaInformationManager
-                .getActiveDatasetIdByDataDimensions(testDataDimensions),
-        ).thenReturn(null)
         assertThrows<ResourceNotFoundApiException> {
             dataController.getCompanyAssociatedData(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
         }
@@ -162,10 +160,7 @@ internal class DataControllerTest(
 
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
-        `when`(
-            mockDataMetaInformationManager
-                .getActiveDatasetIdByDataDimensions(testDataDimensions),
-        ).thenReturn(otherUserAcceptedDataId)
+        `when`(mockDataManager.getDatasetData(eq(testDataDimensions), any())).thenReturn(someEuTaxoDataAsString)
         val response = dataController.getCompanyAssociatedData(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
         Assertions.assertEquals(someEuTaxoData, response.body!!.data)
     }

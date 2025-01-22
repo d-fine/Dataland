@@ -352,15 +352,9 @@ class AssembledDataManager
             val framework = dataDimensions.dataType
             val frameworkSpecification = getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-            val relevantDataPointTypes =
-                JsonSpecificationUtils
-                    .dehydrateJsonSpecification(
-                        frameworkTemplate,
-                        frameworkTemplate,
-                    ).keys
-                    .toList()
-
-            val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointTypes, dataDimensions)
+            val relevantDataPointTypes = JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
+            val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
 
             if (dataPointIds.isEmpty()) {
                 throw ResourceNotFoundApiException(
