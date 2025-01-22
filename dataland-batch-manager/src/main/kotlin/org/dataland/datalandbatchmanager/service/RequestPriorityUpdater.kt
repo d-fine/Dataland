@@ -65,10 +65,16 @@ class RequestPriorityUpdater
             newPriority: RequestPriority,
             filterCondition: (ExtendedStoredDataRequest) -> Boolean,
         ) {
+            val expectedRequests = requestControllerApi.getNumberOfRequests(
+                requestStatus = setOf(RequestStatus.Open),
+                requestPriority = setOf(currentPriority),
+            )
+            logger.info("Found $expectedRequests requests with priority $currentPriority to be considered for updating.")
             val requests =
                 requestControllerApi.getDataRequests(
                     requestStatus = setOf(RequestStatus.Open),
                     requestPriority = setOf(currentPriority),
+                    chunkSize = expectedRequests,
                 )
             logger.info("Found ${requests.size} requests with priority $currentPriority.")
             requests
