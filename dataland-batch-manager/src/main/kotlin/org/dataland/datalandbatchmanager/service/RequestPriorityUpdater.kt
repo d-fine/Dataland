@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
 
+private const val RESULTS_PER_PAGE = 100
+
 /**
  * Service class for managing and updating the priorities of data requests in the Dataland community manager.
  */
@@ -86,25 +88,26 @@ class RequestPriorityUpdater
         }
 
         private fun getAllRequests(priority: RequestPriority): List<ExtendedStoredDataRequest> {
-            val expectedRequests = requestControllerApi.getNumberOfRequests(
-                requestStatus = setOf(RequestStatus.Open),
-                requestPriority = setOf(priority),
-            )
+            val expectedRequests =
+                requestControllerApi.getNumberOfRequests(
+                    requestStatus = setOf(RequestStatus.Open),
+                    requestPriority = setOf(priority),
+                )
             logger.info("Found $expectedRequests requests with priority $priority to be considered for updating.")
             val allRequests = mutableListOf<ExtendedStoredDataRequest>()
             var page = 0
-            val requestsPerPage = 100
 
             while (true) {
-                val requests = requestControllerApi.getDataRequests(
-                    requestStatus = setOf(RequestStatus.Open),
-                    requestPriority = setOf(priority),
-                    chunkSize = requestsPerPage,
-                    chunkIndex = page,
-                )
+                val requests =
+                    requestControllerApi.getDataRequests(
+                        requestStatus = setOf(RequestStatus.Open),
+                        requestPriority = setOf(priority),
+                        chunkSize = RESULTS_PER_PAGE,
+                        chunkIndex = page,
+                    )
                 allRequests.addAll(requests)
 
-                if (requests.size < requestsPerPage || allRequests.size >= expectedRequests) {
+                if (requests.size < RESULTS_PER_PAGE || allRequests.size >= expectedRequests) {
                     break
                 }
                 page++
