@@ -12,6 +12,7 @@ import java.sql.Connection
  */
 @Suppress("ClassName")
 class V7__UpdateSfdrQaReports : BaseJavaMigration() {
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     override fun migrate(context: Context?) {
         val targetConnection = context!!.connection
@@ -38,7 +39,7 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         while (queueResultSet.next()) {
             val qaReportId = queueResultSet.getString("qa_report_id")
 
-            logger.info("Migrating sfdr fields for qa report id: " + qaReportId)
+            logger.info("Migrating sfdr fields for qa report id: $qaReportId")
 
             val qaReport =
                 JSONObject(
@@ -62,7 +63,7 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
     /**
      * Migrate a single qa report
      */
-    private fun migrateQaReport(qaReport: JSONObject): JSONObject {
+    fun migrateQaReport(qaReport: JSONObject): JSONObject {
         val socialAndEmployeeMattersObject =
             qaReport.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return qaReport
 
@@ -77,6 +78,7 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
 
         valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
+        qaReport.optJSONObject("social").put("socialAndEmployeeMatters", socialAndEmployeeMattersObject)
 
         return qaReport
     }
@@ -89,11 +91,14 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         ceoToEmployeePayGapRatioValue: JSONObject?,
     ): JSONObject? {
         if (excessiveCeoPayRatioInPercentValue == null || ceoToEmployeePayGapRatioValue == null) {
+            logger.info("Shouldn't happen")
             return excessiveCeoPayRatioInPercentValue ?: ceoToEmployeePayGapRatioValue
         }
         return when {
-            isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue) -> ceoToEmployeePayGapRatioValue
-            isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue) -> excessiveCeoPayRatioInPercentValue
+            isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue.getJSONObject("correctedData"))
+            -> ceoToEmployeePayGapRatioValue
+            isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue.getJSONObject("correctedData"))
+            -> excessiveCeoPayRatioInPercentValue
             else -> ceoToEmployeePayGapRatioValue
         }
     }

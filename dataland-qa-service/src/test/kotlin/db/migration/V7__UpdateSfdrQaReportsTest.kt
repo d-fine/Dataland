@@ -1,53 +1,48 @@
 package db.migration
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.dataland.datalandqaservice.db.migration.V7__UpdateSfdrQaReports
 import org.json.JSONObject
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.io.File
+import org.skyscreamer.jsonassert.JSONAssert
 
 @Suppress("ClassName")
 class V7__UpdateSfdrQaReportsTest {
-    private val objectMapper = jacksonObjectMapper().findAndRegisterModules().registerKotlinModule()
-
     private fun testMigrationOfSingleQaReport(
         locationOfOriginalReport: String,
         locationOfExpectedReport: String,
-        migratingFunction: () -> Unit,
+        migratingFunction: (JSONObject) -> JSONObject,
     ) {
-        val originalQaReport = objectMapper.readValue(File(locationOfOriginalReport), JSONObject::class.java)
-        val expectedQaReport = objectMapper.readValue(File(locationOfExpectedReport), JSONObject::class.java)
+        val originalQaReport = JSONObject(javaClass.getResource("/db/migration/$locationOfOriginalReport")!!.readText())
+        val expectedQaReport = JSONObject(javaClass.getResource("/db/migration/$locationOfExpectedReport")!!.readText())
 
         val migratedQaReport = migratingFunction(originalQaReport)
-        Assertions.assertEquals(expectedQaReport, migratedQaReport)
+        JSONAssert.assertEquals(expectedQaReport, migratedQaReport, true)
     }
 
     @Test
     fun `check migration for SFDR one`() {
         testMigrationOfSingleQaReport(
-            "./src/test/resources/originalSfdrOne.json",
-            "./src/test/resources/expectedSfdrOne.json",
-            V7__UpdateSfdrQaReports()::migrate,
+            "V7/originalSfdrOne.json",
+            "V7/expectedSfdrOne.json",
+            V7__UpdateSfdrQaReports()::migrateQaReport,
         )
     }
 
     @Test
     fun `check migration for SFDR two`() {
         testMigrationOfSingleQaReport(
-            "./src/test/resources/originalSfdrTwo.json",
-            "./src/test/resources/expectedSfdrTwo.json",
-            V7__UpdateSfdrQaReports()::migrate,
+            "V7/originalSfdrTwo.json",
+            "V7/expectedSfdrTwo.json",
+            V7__UpdateSfdrQaReports()::migrateQaReport,
         )
     }
 
     @Test
     fun `check migration for SFDR three`() {
         testMigrationOfSingleQaReport(
-            "./src/test/resources/originalSfdrThree.json",
-            "./src/test/resources/expectedSfdrThree.json",
-            V7__UpdateSfdrQaReports()::migrate,
+            "V7/originalSfdrThree.json",
+            "V7/expectedSfdrThree.json",
+            V7__UpdateSfdrQaReports()::migrateQaReport,
         )
     }
 }
