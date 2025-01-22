@@ -173,7 +173,8 @@ sonar {
                 "Activity.kt," +
 
                 // qa-service
-                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**",
+                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
+                "dataland-qa-service/src/main/kotlin/db/migration/V7__UpdateSfdrQaReports.kt",
         )
     }
 }
