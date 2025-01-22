@@ -1,4 +1,4 @@
-package org.dataland.datalandqaservice.db.migration
+package db.migration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.flywaydb.core.api.migration.BaseJavaMigration
@@ -17,7 +17,10 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
 
     override fun migrate(context: Context?) {
         val targetConnection = context!!.connection
-        migrateSfdrModel(targetConnection)
+        val tableResultSet = targetConnection.metaData.getTables(null, null, "qa_reports", null)
+        if (tableResultSet.next()) {
+            migrateSfdrModel(targetConnection)
+        }
     }
 
     /**
