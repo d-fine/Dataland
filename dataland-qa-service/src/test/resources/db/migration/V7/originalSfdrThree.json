@@ -1148,36 +1148,6 @@
             "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
           }
         }
-      },
-      "ceoToEmployeePayGapRatio": {
-        "comment": "The internal pay ratio between the average pay of Randstad employees and the CEO in 2023 is 40:1.",
-        "verdict": "QaAccepted",
-        "correctedData": {
-          "value": 40.0,
-          "quality": "Reported",
-          "comment": "The internal pay ratio between the average pay of Randstad employees and the CEO in 2023 is 40:1.",
-          "dataSource": {
-            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
-            "page": "205",
-            "tagName": "",
-            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
-          }
-        }
-      },
-      "excessiveCeoPayRatioInPercent": {
-        "comment": "",
-        "verdict": "QaAccepted",
-        "correctedData": {
-          "value": 4000,
-          "quality": "Reported",
-          "comment": "The internal pay ratio for the CEO is 40:1, which translates to 4000% when expressed as a percentage.",
-          "dataSource": {
-            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
-            "page": "205",
-            "tagName": "",
-            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
-          }
-        }
       }
     },
     "greenSecurities": {

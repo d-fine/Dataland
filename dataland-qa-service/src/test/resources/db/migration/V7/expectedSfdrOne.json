@@ -1093,8 +1093,8 @@
         "comment": "",
         "verdict": "QaNotAttempted",
         "correctedData": {
-          "value": null,
-          "quality": null,
+          "value": 3,
+          "quality": "Reported",
           "comment": null,
           "dataSource": null
         }

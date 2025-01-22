@@ -76,8 +76,9 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         val ceoToEmployeePayGapRatioValue =
             socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
         val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
+        logger.info(valueToUse.toString())
 
-        valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
+        valueToUse.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
         qaReport.optJSONObject("social").put("socialAndEmployeeMatters", socialAndEmployeeMattersObject)
 
         return qaReport
@@ -91,7 +92,6 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         ceoToEmployeePayGapRatioValue: JSONObject?,
     ): JSONObject? {
         if (excessiveCeoPayRatioInPercentValue == null || ceoToEmployeePayGapRatioValue == null) {
-            logger.info("Shouldn't happen")
             return excessiveCeoPayRatioInPercentValue ?: ceoToEmployeePayGapRatioValue
         }
         return when {
