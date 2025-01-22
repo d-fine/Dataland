@@ -105,29 +105,6 @@ class RequestPriorityUpdaterTest {
     }
 
     @Test
-    fun `validate the request priorities are not updated if keycloak returns an empty list`() {
-        `when`(mockKeycloakUserService.getUsersByRole("ROLE_PREMIUM_USER"))
-            .thenReturn(listOf())
-
-        `when`(mockKeycloakUserService.getUsersByRole("ROLE_ADMIN"))
-            .thenReturn(listOf())
-
-        requestPriorityUpdater.processRequestPriorityUpdates()
-
-        verify(mockRequestControllerApi, never())
-            .getDataRequests(
-                requestStatus = setOf(RequestStatus.Open),
-                requestPriority = setOf(RequestPriority.Low),
-            )
-
-        verify(mockRequestControllerApi, never())
-            .getDataRequests(
-                requestStatus = setOf(RequestStatus.Open),
-                requestPriority = setOf(RequestPriority.High),
-            )
-    }
-
-    @Test
     fun `check that the update priority process exits if the list of premium users is empty`() {
         `when`(mockKeycloakUserService.getUsersByRole(any())).thenReturn(listOf())
         assertThrows<IllegalArgumentException> { requestPriorityUpdater.processRequestPriorityUpdates() }
