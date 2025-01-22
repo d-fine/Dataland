@@ -39,11 +39,13 @@ class RequestPriorityUpdater
             }
             logger.info("Premium user IDs: $premiumUserIds")
 
+            logger.info("Updating request priorities based on user roles Premium user.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.Low,
                 newPriority = RequestPriority.High,
             ) { request -> request.userId in premiumUserIds }
 
+            logger.info("Updating request priorities based on user roles non-Premium user.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.High,
                 newPriority = RequestPriority.Low,
