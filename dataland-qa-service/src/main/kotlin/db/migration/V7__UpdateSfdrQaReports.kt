@@ -74,9 +74,8 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
             socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
         val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
 
-        valueToUse.let {
-            socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it ?: JSONObject.NULL)
-        }
+        valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
+
         qaReport.optJSONObject("social").put("socialAndEmployeeMatters", socialAndEmployeeMattersObject)
 
         return qaReport
