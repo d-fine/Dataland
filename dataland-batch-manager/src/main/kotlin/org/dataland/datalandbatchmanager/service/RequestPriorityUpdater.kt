@@ -65,17 +65,7 @@ class RequestPriorityUpdater
             newPriority: RequestPriority,
             filterCondition: (ExtendedStoredDataRequest) -> Boolean,
         ) {
-            val expectedRequests = requestControllerApi.getNumberOfRequests(
-                requestStatus = setOf(RequestStatus.Open),
-                requestPriority = setOf(currentPriority),
-            )
-            logger.info("Found $expectedRequests requests with priority $currentPriority to be considered for updating.")
-            val requests =
-                requestControllerApi.getDataRequests(
-                    requestStatus = setOf(RequestStatus.Open),
-                    requestPriority = setOf(currentPriority),
-                    chunkSize = expectedRequests,
-                )
+            val requests = getAllRequests(currentPriority)
             requests
                 .filter(filterCondition)
                 .forEach { (dataRequestId) ->
@@ -93,5 +83,33 @@ class RequestPriorityUpdater
                         logger.warn("Failed to update request priority of request $dataRequestId: ${e.message}")
                     }
                 }
+        }
+
+        private fun getAllRequests(priority: RequestPriority): List<ExtendedStoredDataRequest> {
+            val expectedRequests = requestControllerApi.getNumberOfRequests(
+                requestStatus = setOf(RequestStatus.Open),
+                requestPriority = setOf(priority),
+            )
+            logger.info("Found $expectedRequests requests with priority $priority to be considered for updating.")
+            val allRequests = mutableListOf<ExtendedStoredDataRequest>()
+            var page = 0
+            val requestsPerPage = 100
+
+            while (true) {
+                val requests = requestControllerApi.getDataRequests(
+                    requestStatus = setOf(RequestStatus.Open),
+                    requestPriority = setOf(priority),
+                    chunkSize = requestsPerPage,
+                    chunkIndex = page,
+                )
+                allRequests.addAll(requests)
+
+                if (requests.size < requestsPerPage || allRequests.size >= expectedRequests) {
+                    break
+                }
+                page++
+            }
+
+            return allRequests
         }
     }
