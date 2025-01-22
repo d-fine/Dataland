@@ -37,15 +37,15 @@ class RequestPriorityUpdater
                     keycloakUserService.getUsersByRole(roleName).map { it.userId },
                 )
             }
-            logger.info("Premium user IDs: $premiumUserIds")
+            logger.info("Found ${premiumUserIds.size} premium users and administrators.")
 
-            logger.info("Updating request priorities based on user roles Premium user.")
+            logger.info("Upgrading request priorities from Low to High for premium users.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.Low,
                 newPriority = RequestPriority.High,
             ) { request -> request.userId in premiumUserIds }
 
-            logger.info("Updating request priorities based on user roles non-Premium user.")
+            logger.info("Downgrading request priorities from High to Low for regular users.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.High,
                 newPriority = RequestPriority.Low,
@@ -76,12 +76,10 @@ class RequestPriorityUpdater
                     requestPriority = setOf(currentPriority),
                     chunkSize = expectedRequests,
                 )
-            logger.info("Found ${requests.size} requests with priority $currentPriority.")
             requests
                 .filter(filterCondition)
                 .forEach { (dataRequestId) ->
                     runCatching {
-                        logger.info("Updating request priority of request $dataRequestId to $newPriority.")
                         requestControllerApi.patchDataRequest(
                             dataRequestId = UUID.fromString(dataRequestId),
                             dataRequestPatch =
