@@ -1,6 +1,5 @@
 package db.migration
 
-import org.dataland.datalandqaservice.db.migration.V7__UpdateSfdrQaReports
 import org.json.JSONObject
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.JSONAssert
