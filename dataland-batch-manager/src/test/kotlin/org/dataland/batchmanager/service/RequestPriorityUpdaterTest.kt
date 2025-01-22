@@ -101,4 +101,27 @@ class RequestPriorityUpdaterTest {
         verify(mockRequestControllerApi, never())
             .patchDataRequest(dataRequestId = requestIdNormalUserPrioLow, dataRequestPatch = patchHigh)
     }
+
+    @Test
+    fun `validate the request priorities are not updated if keycloak returns an empty list`() {
+        `when`(mockKeycloakUserService.getUsersByRole("ROLE_PREMIUM_USER"))
+            .thenReturn(listOf())
+
+        `when`(mockKeycloakUserService.getUsersByRole("ROLE_ADMIN"))
+            .thenReturn(listOf())
+
+        requestPriorityUpdater.processRequestPriorityUpdates()
+
+        verify(mockRequestControllerApi, never())
+            .getDataRequests(
+                requestStatus = setOf(RequestStatus.Open),
+                requestPriority = setOf(RequestPriority.Low),
+            )
+
+        verify(mockRequestControllerApi, never())
+            .getDataRequests(
+                requestStatus = setOf(RequestStatus.Open),
+                requestPriority = setOf(RequestPriority.High),
+            )
+    }
 }
