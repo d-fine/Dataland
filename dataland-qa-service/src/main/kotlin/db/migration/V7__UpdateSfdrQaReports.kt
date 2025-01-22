@@ -1,6 +1,5 @@
 package db.migration
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -13,7 +12,6 @@ import java.sql.Connection
 @Suppress("ClassName")
 class V7__UpdateSfdrQaReports : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
-    private val objectMapper = jacksonObjectMapper()
 
     override fun migrate(context: Context?) {
         val targetConnection = context!!.connection
@@ -43,7 +41,7 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
 
             logger.info("Migrating the SFDR QA report for QA report ID: $qaReportId")
 
-            val qaReport = objectMapper.readValue(queueResultSet.getString("qa_report"), JSONObject::class.java)
+            val qaReport = JSONObject(queueResultSet.getString("qa_report"))
             val updatedQaReport = migrateQaReport(qaReport)
 
             updateStatement.setString(1, updatedQaReport.toString())
