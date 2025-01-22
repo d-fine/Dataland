@@ -1,6 +1,6 @@
 package org.dataland.datalandqaservice.db.migration
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.flywaydb.core.api.migration.BaseJavaMigration
 import org.flywaydb.core.api.migration.Context
 import org.json.JSONObject
@@ -13,6 +13,7 @@ import java.sql.Connection
 @Suppress("ClassName")
 class V7__UpdateSfdrQaReports : BaseJavaMigration() {
     private val logger = LoggerFactory.getLogger(javaClass)
+    private val objectMapper = jacksonObjectMapper()
 
     override fun migrate(context: Context?) {
         val targetConnection = context!!.connection
@@ -29,8 +30,6 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
                     " WHERE data_type = 'sfdr'",
             )
 
-        val objectMapper = ObjectMapper()
-
         val updateStatement =
             targetConnection.prepareStatement(
                 "UPDATE qa_reports SET qa_report = ? WHERE qa_report_id = ?",
@@ -41,15 +40,8 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
 
             logger.info("Migrating the SFDR QA report for QA report ID: $qaReportId")
 
-            val qaReport =
-                JSONObject(
-                    objectMapper.readValue(
-                        queueResultSet.getString("qa_report"), String::class.java,
-                    ),
-                )
-
+            val qaReport = objectMapper.readValue(queueResultSet.getString("qa_report"), JSONObject::class.java)
             val updatedQaReport = migrateQaReport(qaReport)
-
             val updatedQaReportString = objectMapper.writeValueAsString(updatedQaReport)
 
             updateStatement.setString(1, updatedQaReportString)
@@ -78,16 +70,20 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         val ceoToEmployeePayGapRatioValue =
             socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
         val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
-        logger.info(valueToUse.toString())
 
-        valueToUse.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
+        valueToUse.let {
+            socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it ?: JSONObject.NULL)
+        }
         qaReport.optJSONObject("social").put("socialAndEmployeeMatters", socialAndEmployeeMattersObject)
 
         return qaReport
     }
 
     /**
-     * Determine which value to put into the new excessiveCeoPayRatio field
+     * Determine which value to put into the new excessiveCeoPayRatio field in the QA report
+     * If one of the two old fields is null, take the other one; if both are null, set to null.
+     * If both fields are given, check if the ceoToEmployeePayGapRatioValue has valid corrected data; if so, take this
+     * one; if not (e.g. ceoToEmployeePayGapRatioValue is not null but an empty QA report), take the other one.
      */
     private fun determineValueToUse(
         excessiveCeoPayRatioInPercentValue: JSONObject?,
@@ -99,8 +95,10 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         return when {
             isValueOfObjectAValidNumber(ceoToEmployeePayGapRatioValue.getJSONObject("correctedData"))
             -> ceoToEmployeePayGapRatioValue
+
             isValueOfObjectAValidNumber(excessiveCeoPayRatioInPercentValue.getJSONObject("correctedData"))
             -> excessiveCeoPayRatioInPercentValue
+
             else -> ceoToEmployeePayGapRatioValue
         }
     }
