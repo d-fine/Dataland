@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -75,18 +76,15 @@ class DataMetaInformationManager(
         }
 
     /**
-     *
+     * Method to retrieve the dataset ID of the active dataset for a given set of [dataDimensions]
+     * @param dataDimensions the data dimensions for which to retrieve the active dataset ID
      */
-    fun getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(
-        companyId: String,
-        dataType: String,
-        reportingPeriod: String,
-    ): String? =
+    fun getActiveDatasetIdByDataDimensions(dataDimensions: BasicDataDimensions): String? =
         dataMetaInformationRepositoryInterface
             .findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
-                reportingPeriod = reportingPeriod,
-                companyId = companyId,
-                dataType = dataType,
+                reportingPeriod = dataDimensions.reportingPeriod,
+                companyId = dataDimensions.companyId,
+                dataType = dataDimensions.dataType,
             )?.dataId
 
     /**

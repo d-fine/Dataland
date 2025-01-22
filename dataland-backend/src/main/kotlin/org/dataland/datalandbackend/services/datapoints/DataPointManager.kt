@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -155,5 +156,19 @@ class DataPointManager
             } else {
                 logger.info("No update of the currently active flag required (correlation ID: $correlationId).")
             }
+        }
+
+        fun getAssociatedDataPointIds(
+            dataPointTypes: List<String>,
+            dataDimensions: BasicDataDimensions,
+        ): List<String> {
+            val dataPointIds = mutableListOf<String>()
+            dataPointTypes.forEach { dataPointType ->
+                val dataPointId = metaDataManager.getCurrentlyActiveDataId(dataDimensions.toBasicDataPointDimensions(dataPointType))
+                if (dataPointId != null) {
+                    dataPointIds.add(dataPointId)
+                }
+            }
+            return dataPointIds
         }
     }

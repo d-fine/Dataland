@@ -14,6 +14,7 @@ import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -88,17 +89,28 @@ abstract class DataController<T>(
         reportingPeriod: String,
         companyId: String,
     ): ResponseEntity<CompanyAssociatedData<T>> {
-        val dataId =
-            dataMetaInformationManager.getActiveDatasetIdByReportingPeriodAndCompanyIdAndDataType(
-                companyId = companyId, dataType = dataType.toString(), reportingPeriod = reportingPeriod,
+        val dataDimensions =
+            BasicDataDimensions(
+                companyId = companyId,
+                dataType = dataType.toString(),
+                reportingPeriod = reportingPeriod,
             )
-        if (dataId == null) {
-            throw ResourceNotFoundApiException(
-                summary = "No dataset found.",
-                message = "No dataset available for data type $dataType reporting period $reportingPeriod company ID $companyId.",
+        val correlationId = IdUtils.generateCorrelationId(dataDimensions = dataDimensions)
+        val dataAsString =
+            datasetStorageService.getDatasetData(dataDimensions = dataDimensions, correlationId = correlationId)
+                ?: throw ResourceNotFoundApiException(
+                    summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                    message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+                )
+
+        val result =
+            CompanyAssociatedData(
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                data = objectMapper.readValue(dataAsString, clazz),
             )
-        }
-        return ResponseEntity.ok(retrieveDataset(dataId))
+
+        return ResponseEntity.ok(result)
     }
 
     private fun getData(

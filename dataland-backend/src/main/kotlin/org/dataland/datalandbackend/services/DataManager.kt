@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.slf4j.LoggerFactory
@@ -238,5 +239,19 @@ class DataManager
          */
         fun removeDatasetFromInMemoryStore(dataId: String) {
             publicDataInMemoryStorage.remove(dataId)
+        }
+
+        override fun getDatasetData(
+            dataDimensions: BasicDataDimensions,
+            correlationId: String,
+        ): String? {
+            val dataId =
+                metaDataManager.getActiveDatasetIdByDataDimensions(dataDimensions)
+                    ?: throw ResourceNotFoundApiException(
+                        summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                        message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+                    )
+            // handle check for visibility
+            return getPublicDataset(dataId, DataType.valueOf(dataDimensions.dataType), correlationId).data
         }
     }
