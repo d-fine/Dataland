@@ -45,9 +45,8 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
 
             val qaReport = objectMapper.readValue(queueResultSet.getString("qa_report"), JSONObject::class.java)
             val updatedQaReport = migrateQaReport(qaReport)
-            val updatedQaReportString = objectMapper.writeValueAsString(updatedQaReport)
 
-            updateStatement.setString(1, updatedQaReportString)
+            updateStatement.setString(1, updatedQaReport.toString())
             updateStatement.setString(2, qaReportId)
             updateStatement.executeUpdate()
         }
