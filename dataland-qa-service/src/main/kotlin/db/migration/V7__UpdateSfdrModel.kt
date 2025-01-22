@@ -20,58 +20,66 @@ class V7__UpdateSfdrModel : BaseJavaMigration() {
     }
 
     /**
-     * Migration of qa-queue data into new qa_review table (no data for qa_status or qa_reviewer)
+     * Migration of sfdr fields in the qa_report
      */
     private fun migrateSfdrModel(targetConnection: Connection) {
         val queueResultSet =
             targetConnection.createStatement().executeQuery(
                 "SELECT qa_report_id, qa_report FROM qa_reports" +
-                        " WHERE data_type = 'sfdr'"
+                    " WHERE data_type = 'sfdr'",
             )
 
         val objectMapper = ObjectMapper()
 
-        val updateStatement = targetConnection.prepareStatement(
-            "UPDATE qa_reports SET qa_report = ? WHERE qa_report_id = ?"
-        )
-
-        while (queueResultSet.next()) {
-            val qa_report_id = queueResultSet.getString("qa_report_id")
-            val qa_report = JSONObject(
-                    objectMapper.readValue(
-                        queueResultSet.getString("qa_report"), String::class.java,
-                    )
+        val updateStatement =
+            targetConnection.prepareStatement(
+                "UPDATE qa_reports SET qa_report = ? WHERE qa_report_id = ?",
             )
 
-            val socialAndEmployeeMattersObject =
-                qa_report.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return
+        while (queueResultSet.next()) {
+            val qaReportId = queueResultSet.getString("qa_report_id")
 
-            // migrate rate of accidents
-            socialAndEmployeeMattersObject.remove("rateOfAccidentsInPercent")?.let {
-                socialAndEmployeeMattersObject.put("rateOfAccidents", it)
-            }
+            logger.info("Migrating sfdr fields for qa report id: " + qaReportId)
 
-            // migrate ceo pay gap
-            val excessiveCeoPayRatioInPercentValue =
-                socialAndEmployeeMattersObject.remove("excessiveCeoPayRatioInPercent") as? JSONObject
-            val ceoToEmployeePayGapRatioValue =
-                socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
-            val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
+            val qaReport =
+                JSONObject(
+                    objectMapper.readValue(
+                        queueResultSet.getString("qa_report"), String::class.java,
+                    ),
+                )
 
-            valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
+            val updatedQaReport = migrateQaReport(qaReport)
 
-            //put qa_report back into database
-            // Update the qa_report in the database
-            val updatedQaReportString = objectMapper.writeValueAsString(qa_report)
+            val updatedQaReportString = objectMapper.writeValueAsString(updatedQaReport)
 
             updateStatement.setString(1, updatedQaReportString)
-            updateStatement.setString(2, qa_report_id)
+            updateStatement.setString(2, qaReportId)
             updateStatement.executeUpdate()
+        }
+        updateStatement.close()
+        queueResultSet.close()
+    }
 
-            updateStatement.close()
-            queueResultSet.close()
+    /**
+     * Migrate a single qa report
+     */
+    private fun migrateQaReport(qaReport: JSONObject): JSONObject {
+        val socialAndEmployeeMattersObject =
+            qaReport.optJSONObject("social")?.optJSONObject("socialAndEmployeeMatters") ?: return qaReport
+
+        socialAndEmployeeMattersObject.remove("rateOfAccidentsInPercent")?.let {
+            socialAndEmployeeMattersObject.put("rateOfAccidents", it)
         }
 
+        val excessiveCeoPayRatioInPercentValue =
+            socialAndEmployeeMattersObject.remove("excessiveCeoPayRatioInPercent") as? JSONObject
+        val ceoToEmployeePayGapRatioValue =
+            socialAndEmployeeMattersObject.remove("ceoToEmployeePayGapRatio") as? JSONObject
+        val valueToUse = determineValueToUse(excessiveCeoPayRatioInPercentValue, ceoToEmployeePayGapRatioValue)
+
+        valueToUse?.let { socialAndEmployeeMattersObject.put("excessiveCeoPayRatio", it) }
+
+        return qaReport
     }
 
     /**
@@ -90,11 +98,10 @@ class V7__UpdateSfdrModel : BaseJavaMigration() {
             else -> ceoToEmployeePayGapRatioValue
         }
     }
+
     /**
      * Checks if the value of an object is a valid number
      */
     private fun isValueOfObjectAValidNumber(jsonObject: JSONObject): Boolean =
         jsonObject.has("value") && jsonObject.get("value").toString().toDoubleOrNull() != null
-
 }
-
