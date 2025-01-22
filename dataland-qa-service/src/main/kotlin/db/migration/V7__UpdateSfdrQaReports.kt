@@ -11,8 +11,7 @@ import java.sql.Connection
  * Change column names to new version
  */
 @Suppress("ClassName")
-class V7__UpdateSfdrModel : BaseJavaMigration() {
-    private val logger = LoggerFactory.getLogger("Migration V7")
+class V7__UpdateSfdrQaReports : BaseJavaMigration() {
 
     override fun migrate(context: Context?) {
         val targetConnection = context!!.connection

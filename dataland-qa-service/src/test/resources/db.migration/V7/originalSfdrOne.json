@@ -1,0 +1,1336 @@
+{
+  "general": null,
+  "environmental": {
+    "greenhouseGasEmissions": {
+      "scope1GhgEmissionsInTonnes": {
+        "comment": "The total scope 1 GHG emissions for Schindler Holding AG in 2023 are 139,528 t CO2℮ as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 139528,
+          "quality": "Reported",
+          "comment": "The total scope 1 GHG emissions for Schindler Holding AG in 2023 are 139,528 t CO2℮ as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope2GhgEmissionsInTonnes": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope2GhgEmissionsLocationBasedInTonnes": {
+        "comment": "The total scope 2 GHG emissions (location-based) for Schindler Holding AG in 2023 are 56,780 t CO2℮ as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 56780,
+          "quality": "Reported",
+          "comment": "The total scope 2 GHG emissions (location-based) for Schindler Holding AG in 2023 are 56,780 t CO2℮ as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope2GhgEmissionsMarketBasedInTonnes": {
+        "comment": "The total scope 2 GHG emissions (market-based) for Schindler Holding AG in 2023 are 6,198 t CO2℮ as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 6198,
+          "quality": "Reported",
+          "comment": "The total scope 2 GHG emissions (market-based) for Schindler Holding AG in 2023 are 6,198 t CO2℮ as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope1And2GhgEmissionsInTonnes": {
+        "comment": "The total scope 1 and 2 GHG emissions (location-based) for Schindler Holding AG in 2023 are 196,308 t CO2℮ as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 196308.0,
+          "quality": "Estimated",
+          "comment": "The total scope 1 and 2 GHG emissions (location-based) for Schindler Holding AG in 2023 are 196,308 t CO2℮ as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope1And2GhgEmissionsLocationBasedInTonnes": {
+        "comment": "The total scope 1 and 2 GHG emissions (location-based) for Schindler Holding AG in 2023 are 196,308 t CO2℮ as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 196308,
+          "quality": "Reported",
+          "comment": "The total scope 1 and 2 GHG emissions (location-based) for Schindler Holding AG in 2023 are 196,308 t CO2℮ as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope1And2GhgEmissionsMarketBasedInTonnes": {
+        "comment": "The total scope 1 and 2 GHG emissions (market-based) for Schindler Holding AG in 2023 are 145,726 t CO2℮ as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 145726,
+          "quality": "Reported",
+          "comment": "The total scope 1 and 2 GHG emissions (market-based) for Schindler Holding AG in 2023 are 145,726 t CO2℮ as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope3GhgEmissionsInTonnes": {
+        "comment": "The total scope 3 GHG emissions for Schindler Holding AG in 2023 are 11,522,686 t CO2℮ as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 11522686,
+          "quality": "Reported",
+          "comment": "The total scope 3 GHG emissions for Schindler Holding AG in 2023 are 11,522,686 t CO2℮ as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope3UpstreamGhgEmissionsInTonnes": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 3303411,
+          "quality": "Estimated",
+          "comment": "The scope 3 upstream GHG emissions for Schindler Holding AG in 2023 are the sum of emissions from purchased goods and services (3,119,737 t CO2℮), upstream transportation and distribution (58,162 t CO2℮), business travel (10,047 t CO2e) and employee commuting (115,465 t CO2e), totaling 3,177,746 t CO2℮.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope3DownstreamGhgEmissionsInTonnes": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 8219275.0,
+          "quality": "Estimated",
+          "comment": "Field estimated with: scope3SoldProductsGhgEmissionsInTonnes, scope3EoLSoldProductsGhgEmissionsInTonnes",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope1And2And3GhgEmissionsInTonnes": {
+        "comment": "The total scope 1 GHG emissions are 139,528 t CO2℮, the total scope 2 GHG emissions (location-based) are 56,780 t CO2℮, and the total scope 3 GHG emissions are 11,522,686 t CO2℮. The sum of these values gives the total scope 1, 2, and 3 GHG emissions.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 11718994,
+          "quality": "Estimated",
+          "comment": "The total scope 1 GHG emissions are 139,528 t CO2℮, the total scope 2 GHG emissions (location-based) are 56,780 t CO2℮, and the total scope 3 GHG emissions are 11,522,686 t CO2℮. The sum of these values gives the total scope 1, 2, and 3 GHG emissions.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+        "comment": "The total scope 1 GHG emissions are 139,528 t CO2℮, the total scope 2 GHG emissions (location-based) are 56,780 t CO2℮, and the total scope 3 GHG emissions are 11,522,686 t CO2℮. The sum of these values gives the total scope 1, 2, and 3 GHG emissions (location-based).",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 11718994.0,
+          "quality": "Estimated",
+          "comment": "The total scope 1 GHG emissions are 139,528 t CO2℮, the total scope 2 GHG emissions (location-based) are 56,780 t CO2℮, and the total scope 3 GHG emissions are 11,522,686 t CO2℮. The sum of these values gives the total scope 1, 2, and 3 GHG emissions (location-based).",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+        "comment": "The total scope 1 GHG emissions are 139,528 t CO2℮, the total scope 2 GHG emissions (market-based) are 6,198 t CO2℮, and the total scope 3 GHG emissions are 11,522,686 t CO2℮. The sum of these values gives the total scope 1, 2, and 3 GHG emissions (market-based).",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 11668412.0,
+          "quality": "Estimated",
+          "comment": "The total scope 1 GHG emissions are 139,528 t CO2℮, the total scope 2 GHG emissions (market-based) are 6,198 t CO2℮, and the total scope 3 GHG emissions are 11,522,686 t CO2℮. The sum of these values gives the total scope 1, 2, and 3 GHG emissions (market-based).",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "148",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "scope4GhgEmissionsInTonnes": null,
+      "enterpriseValue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      },
+      "totalRevenue": {
+        "comment": "The total revenue for Schindler Holding AG in 2023 is 11,494 million CHF as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 11494000000,
+          "quality": "Reported",
+          "comment": "The total revenue for Schindler Holding AG in 2023 is 11,494 million CHF as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "6",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          },
+          "currency": "CHF"
+        }
+      },
+      "carbonFootprintInTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityInTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "fossilFuelSectorExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "financedScope1AndScope2Emissions": null,
+      "financedScope3Emissions": null
+    },
+    "energyPerformance": {
+      "renewableEnergyProductionInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "renewableEnergyConsumptionInGWh": {
+        "comment": "The total value of renewable energy consumed by Schindler Holding AG in 2023 is 10,033 MWh, as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 10.033,
+          "quality": "Estimated",
+          "comment": "The total value of renewable energy consumed by Schindler Holding AG in 2023 is 10,033 MWh, as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "147",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "nonRenewableEnergyProductionInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "relativeNonRenewableEnergyProductionInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionInGWh": {
+        "comment": "The total non-renewable energy consumption is the sum of direct energy (560,551 MWh), purchased electricity (108,895 MWh), and district heating and cooling (8,005 MWh) as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 677.451,
+          "quality": "Estimated",
+          "comment": "The total non-renewable energy consumption is the sum of direct energy (560,551 MWh), purchased electricity (108,895 MWh), and district heating and cooling (8,005 MWh) as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "147",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "relativeNonRenewableEnergyConsumptionInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "applicableHighImpactClimateSectors": null,
+      "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+        "comment": "The total non-renewable energy consumption from fossil fuels for Schindler Holding AG in 2023 is the sum of energy consumption from natural gas, fuel oil, other fuels (mainly liquefied petroleum gas and diesel), petrol/gasoline, diesel, and other fuels (mainly ethanol) as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 560.551,
+          "quality": "Estimated",
+          "comment": "The total non-renewable energy consumption from fossil fuels for Schindler Holding AG in 2023 is the sum of energy consumption from natural gas, fuel oil, other fuels (mainly liquefied petroleum gas and diesel), petrol/gasoline, diesel, and other fuels (mainly ethanol) as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "147",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+        "comment": "The total non-renewable energy consumption from crude oil for Schindler Holding AG in 2023 includes petrol/gasoline (235,243 MWh), diesel (230,182 MWh), fuel oil (1,433 MWh), other fuels (mainly ethanol) (18,876 MWh), and other fuels (mainly liquefied petroleum gas and diesel) (3,280 MWh) as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 489.014,
+          "quality": "Estimated",
+          "comment": "The total non-renewable energy consumption from crude oil for Schindler Holding AG in 2023 includes petrol/gasoline (235,243 MWh), diesel (230,182 MWh), fuel oil (1,433 MWh), other fuels (mainly ethanol) (18,876 MWh), and other fuels (mainly liquefied petroleum gas and diesel) (3,280 MWh) as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "147",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+        "comment": "The total non-renewable energy consumption from natural gas for Schindler Holding AG in 2023 is 71,537 MWh as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 71.537,
+          "quality": "Estimated",
+          "comment": "The total non-renewable energy consumption from natural gas for Schindler Holding AG in 2023 is 71,537 MWh as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "147",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "nonRenewableEnergyConsumptionLigniteInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionCoalInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionOtherInGWh": {
+        "comment": "The total non-renewable energy consumption from other fuels (mainly liquefied petroleum gas and diesel) for Schindler Holding AG in 2023 is 3,280 MWh as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 3.28,
+          "quality": "Estimated",
+          "comment": "The total non-renewable energy consumption from other fuels (mainly liquefied petroleum gas and diesel) for Schindler Holding AG in 2023 is 3,280 MWh as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "147",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      }
+    },
+    "biodiversity": {
+      "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "protectedAreasExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "rareOrEndangeredEcosystemsExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "highlyBiodiverseGrasslandExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "manufactureOfAgrochemicalPesticidesProducts": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "landDegradationDesertificationSoilSealingExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "sustainableAgriculturePolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "sustainableOceansAndSeasPolicy": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "threatenedSpeciesExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "biodiversityProtectionPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "deforestationPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "water": {
+      "emissionsToWaterInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "waterConsumptionInCubicMeters": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "waterReusedInCubicMeters": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "waterManagementPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "highWaterStressAreaExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "waste": {
+      "hazardousAndRadioactiveWasteInTonnes": {
+        "comment": "The total hazardous waste for Schindler Holding AG in 2023 is 2,021 tonnes as stated in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 2021,
+          "quality": "Reported",
+          "comment": "The total hazardous waste for Schindler Holding AG in 2023 is 2,021 tonnes as stated in the relevant document.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "149",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "nonRecycledWasteInTonnes": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 10928.4,
+          "quality": "Reported",
+          "comment": "Sum of hazardous and nonhazardous waste directed to disposal.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "151",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      }
+    },
+    "emissions": {
+      "emissionsOfInorganicPollutantsInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "emissionsOfAirPollutantsInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "emissionsOfOzoneDepletionSubstancesInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "carbonReductionInitiatives": {
+        "comment": "The document explicitly mentions that Schindler has set a climate ambition to achieve net-zero GHG emissions by 2040, with medium-term 2030 goals aligned to the Paris Climate Agreement and validated by the Science Based Targets initiative (SBTi).",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Schindler has set a climate ambition to achieve net-zero GHG emissions by 2040 and has integrated medium-term 2030 goals in its climate transition plan. These targets are aligned with the Paris Climate Agreement and validated by the Science Based Targets initiative (SBTi).",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "135",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      }
+    }
+  },
+  "social": {
+    "socialAndEmployeeMatters": {
+      "humanRightsLegalProceedings": {
+        "comment": "The document explicitly mentions that Schindler is not aware of any instances of forced labor in its own operations or in its supply chain, indicating that there are no human rights-related legal proceedings.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "The relevant document explicitly mentions that the child labor risk assessment did not show any reasonable suspicion of child labor, neither in Schindler's own operations nor in its supply chain, and no child labor investigations or legal proceedings were reported.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "132",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "iloCoreLabourStandards": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "environmentalPolicy": {
+        "comment": "The document mentions that Schindler's major product lines undergo a strict life cycle assessment (LCA) in accordance with the ISO 14040:2006 standard and that the Group's overarching environmental management systems are certified according to ISO 14001. This indicates the existence of an environmental policy.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler has integrated eco-design principles and life cycle assessments in its product design, and its environmental management systems are certified according to ISO 14001. The company also manages hazardous substances and has policies for suppliers regarding these substances.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "138",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "corruptionLegalProceedings": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "transparencyDisclosurePolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "humanRightsDueDiligencePolicy": {
+        "comment": "Schindler's Human Rights Policy, which entered into force in December 2022, aims to foster a culture of respect for human rights and to comply with relevant regulations in its entire business operations and value chain. This indicates the existence of a human rights due diligence policy.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler has a Human Rights Policy that entered into force in December 2022, aiming to foster a culture of respect for human rights and comply with relevant regulations across its business operations and value chain.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "policyAgainstChildLabour": {
+        "comment": "The Responsible Sourcing Policy, which is based on Schindler's Code of Conduct, addresses child labor among other human rights issues.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The Responsible Sourcing Policy, based on Schindler's Code of Conduct, addresses child labor among other human rights issues.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "policyAgainstForcedLabour": {
+        "comment": "The Responsible Sourcing Policy, which is based on Schindler's Code of Conduct, addresses forced labor among other human rights issues.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The Responsible Sourcing Policy, based on Schindler's Code of Conduct, addresses forced labor among other human rights issues.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "policyAgainstDiscriminationInTheWorkplace": {
+        "comment": "The relevant document explicitly mentions that Schindler has adopted a Corporate Policy against Discrimination and Harassment.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The company has a Corporate Policy against Discrimination and Harassment, which implies a policy against workplace discrimination.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "iso14001Certificate": {
+        "comment": "The document explicitly mentions that all except one of Schindler's production sites were ISO 14001 certified in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Schindler's overarching environmental management systems are certified according to ISO 14001, and in 2023, all except one of Schindler’s production sites were ISO 14001 certified.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "138",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "policyAgainstBriberyAndCorruption": {
+        "comment": "The document explicitly mentions that Schindler has a strict zero-tolerance policy against all forms of corruption and outlines the major elements of its anti-bribery compliance program.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Schindler has a strict zero-tolerance policy against all forms of corruption, applying to its workforce and business partners, with detailed implementation and training programs.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "145",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "fairBusinessMarketingAdvertisingPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler's Code of Conduct includes rules for fair and respectful business conduct, which implies a policy on fair business, marketing, and advertising practices.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "technologiesExpertiseTransferPolicy": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "fairCompetitionPolicy": {
+        "comment": "The Responsible Sourcing Policy, which is based on Schindler's Code of Conduct, includes topics such as fair competition.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler's Responsible Sourcing Policy, published in June 2023, includes fair competition as one of its topics, indicating the existence of a policy related to fair competition.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "violationOfTaxRulesAndRegulation": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "unGlobalCompactPrinciplesCompliancePolicy": {
+        "comment": "The Responsible Sourcing Policy, published in June 2023, is founded on Schindler's Code of Conduct and internationally recognized guidelines, such as the principles of the United Nations' Global Compact.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler's Responsible Sourcing Policy, published in June 2023, is based on the principles of the United Nations Global Compact, indicating compliance with these principles.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+        "comment": "Schindler promotes a speak-up culture, encouraging employees to report concerns related to potential violations of applicable laws, regulations, and the Schindler Code of Conduct, without fear of retaliation. Concerns can be made known via various channels, including to the Schindler Ombudsman or through the Integrityline.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The report mentions Schindler's Code of Conduct and various policies related to human rights, environmental impact, and anti-corruption. It also describes a speak-up culture and reporting mechanisms like the Integrityline.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "averageGrossHourlyEarningsMaleEmployees": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      },
+      "averageGrossHourlyEarningsFemaleEmployees": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      },
+      "unadjustedGenderPayGapInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "femaleBoardMembersSupervisoryBoard": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 0,
+          "quality": "Reported",
+          "comment": "The document lists zero female members for the supervisory committee.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "85",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "femaleBoardMembersBoardOfDirectors": {
+        "comment": "The relevant document lists three female members on the board of directors of Schindler Holding AG in 2023: Prof. Dr. Monika Bütler, Carole Vischer, and Petra A. Winkler.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 3,
+          "quality": "Reported",
+          "comment": "The relevant document lists three female members on the board of directors of Schindler Holding AG in 2023: Prof. Dr. Monika Bütler, Carole Vischer, and Petra A. Winkler.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "77",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "maleBoardMembersSupervisoryBoard": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 3,
+          "quality": "Reported",
+          "comment": "The Supervisory and Strategy Committee, which is part of the Board of Directors, consists of three male members: Silvio Napoli, Erich Ammann, and Günter Schäuble.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "78",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "maleBoardMembersBoardOfDirectors": {
+        "comment": "The Board of Directors of Schindler Holding AG in 2023 consists of 11 members, with 3 female members. Therefore, the number of male members is 8.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 8,
+          "quality": "Reported",
+          "comment": "The Board of Directors of Schindler Holding AG in 2023 consists of 11 members, with 3 female members. Therefore, the number of male members is 8.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "77",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "boardGenderDiversitySupervisoryBoardInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "boardGenderDiversityBoardOfDirectorsInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "controversialWeaponsExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "workplaceAccidentPreventionPolicy": {
+        "comment": "The document explicitly mentions that Schindler employees and subcontractors are encouraged to voice safety concerns and suggest improvements, and that a culture of Stop Work Authority (SWA) is being reinforced and fostered on a continuous basis. This indicates the existence of a workplace accident prevention policy.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The report mentions various safety measures and initiatives, such as Stop Work Authority, safety performance standards for subcontractors, technical training programs, and safety inspections. ",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "140",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "rateOfAccidentsInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "workdaysLostInDays": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "supplierCodeOfConduct": {
+        "comment": "The Responsible Sourcing Policy, published in June 2023, is founded on Schindler's Code of Conduct and covers topics such as respect for human rights, including addressing child labor, forced labor, and occupational health and safety.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler has a Responsible Sourcing Policy, which is based on their Code of Conduct and includes guidelines against child labor, forced labor, and other ethical issues. However, the specific content of the policy is not fully detailed in the provided text.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "grievanceHandlingMechanism": {
+        "comment": "Schindler promotes a speak-up culture, encouraging employees to report concerns related to potential violations of applicable laws, regulations, and the Schindler Code of Conduct, without fear of retaliation. Concerns can be made known via various channels, including to the Schindler Ombudsman or through the Integrityline.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler promotes a speak-up culture and provides channels for employees to report concerns, such as the Schindler Ombudsman and the Integrityline, indicating a grievance handling mechanism.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "whistleblowerProtectionPolicy": {
+        "comment": "The document explicitly mentions that Schindler promotes a speak-up culture, encouraging employees to report concerns related to potential violations of applicable laws, regulations, and the Schindler Code of Conduct, without fear of retaliation. Concerns can be made known via various channels, including to the Schindler Ombudsman or through the Integrityline.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler promotes a speak-up culture, encouraging employees to report concerns without fear of retaliation, and provides channels like the Schindler Ombudsman and Integrityline for reporting.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "reportedIncidentsOfDiscrimination": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "sanctionedIncidentsOfDiscrimination": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ceoToEmployeePayGapRatio": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "excessiveCeoPayRatioInPercent": {
+        "comment": "The highest individual variable compensation amounted to 398% of the fixed compensation for Schindler Holding AG in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 398.0,
+          "quality": "Reported",
+          "comment": "The highest individual variable compensation amounted to 398% of the fixed compensation for Schindler Holding AG in 2023.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "114",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      }
+    },
+    "greenSecurities": {
+      "securitiesNotCertifiedAsGreen": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "humanRights": {
+      "humanRightsPolicy": {
+        "comment": "Schindler's Human Rights Policy entered into force in December 2022, as explicitly mentioned in the relevant document.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Schindler's Human Rights Policy entered into force in December 2022, aiming to foster a culture of respect for human rights and comply with relevant regulations across its business operations and value chain.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "humanRightsDueDiligence": {
+        "comment": "Schindler performed a child labor risk assessment in 2023, which is part of their due diligence processes to identify, prevent, mitigate, and address adverse human rights impacts.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Schindler is in the process of evaluating a system for due diligence related to conflict minerals and metals, and has performed a child labor risk assessment in 2023.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "131",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "traffickingInHumanBeingsPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The Responsible Sourcing Policy addresses forced labor, which is related to human trafficking, but the specific policy content is not explicitly detailed.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "134",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "reportedChildLabourIncidents": {
+        "comment": "The document explicitly mentions that the child labor risk assessment did not show any reasonable suspicion of child labor, neither in Schindler's own operations nor in its supply chain.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "No",
+          "quality": "Reported",
+          "comment": "The child labor risk assessment conducted by Schindler in 2023 did not show any reasonable suspicion of child labor in its own operations or supply chain.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "131",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "reportedForcedOrCompulsoryLabourIncidents": {
+        "comment": "The document explicitly mentions that the child labor risk assessment did not show any reasonable suspicion of child labor, neither in Schindler's own operations nor in its supply chain. This implies that there were no reported forced or compulsory labor incidents.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "The report mentions the potential risk of forced labor, especially in the supply chain, but does not provide any specific incidents or reports of forced labor.",
+          "dataSource": {
+            "fileReference": "1fb76a98fae4e24ca227a6a3cc3271fc1de79e949a99311adc57d68fc384c222",
+            "page": "131",
+            "tagName": "",
+            "fileName": "SchindlerHoldingAG-CH0024638196-2023-financial_statements"
+          }
+        }
+      },
+      "numberOfReportedIncidentsOfHumanRightsViolations": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "antiCorruptionAndAntiBribery": {
+      "casesOfInsufficientActionAgainstBriberyAndCorruption": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "reportedConvictionsOfBriberyAndCorruption": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      }
+    }
+  }
+}
