@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 import java.sql.Connection
 
 /**
- * Change column names to new version
+ * This class migrates SFDR QA reports to the new SFDR data model
  */
 @Suppress("ClassName")
 class V7__UpdateSfdrQaReports : BaseJavaMigration() {
@@ -20,7 +20,7 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
     }
 
     /**
-     * Migration of sfdr fields in the qa_report
+     * Migration of SFDR QA reports to the new SFDR data model
      */
     private fun migrateSfdrModel(targetConnection: Connection) {
         val queueResultSet =
@@ -39,7 +39,7 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
         while (queueResultSet.next()) {
             val qaReportId = queueResultSet.getString("qa_report_id")
 
-            logger.info("Migrating sfdr fields for qa report id: $qaReportId")
+            logger.info("Migrating the SFDR QA report for QA report ID: $qaReportId")
 
             val qaReport =
                 JSONObject(
@@ -61,7 +61,9 @@ class V7__UpdateSfdrQaReports : BaseJavaMigration() {
     }
 
     /**
-     * Migrate a single qa report
+     * Migrate a single SFDR QA report
+     * @param qaReport to update as a JSONObject
+     * @return the updated qaReport as a JSONObject
      */
     fun migrateQaReport(qaReport: JSONObject): JSONObject {
         val socialAndEmployeeMattersObject =
