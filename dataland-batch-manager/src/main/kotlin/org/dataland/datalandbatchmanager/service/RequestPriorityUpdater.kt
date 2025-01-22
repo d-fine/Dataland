@@ -39,9 +39,8 @@ class RequestPriorityUpdater
                     keycloakUserService.getUsersByRole(roleName).map { it.userId },
                 )
             }
-            if (premiumUserIds.isEmpty()) {
-                logger.error("No premium users or administrators found. Scheduled update of request priorities failed.")
-                return
+            require(premiumUserIds.isNotEmpty()) {
+                "No premium users or administrators found. Scheduled update of request priorities failed."
             }
 
             logger.info("Found ${premiumUserIds.size} premium users and administrators.")
