@@ -47,6 +47,11 @@ junit-jupiter = "5.11.4"
 
 log4j = "2.24.3"
 
+jackson = "2.17.3"
+##      ⬆ :2.18.0"
+##      ⬆ :2.18.1"
+##      ⬆ :2.18.2"
+
 [libraries]
 
 gradle-tooling = "org.gradle:gradle-tooling-api:8.12"
@@ -131,15 +136,9 @@ bcpkix-jdk15on = "org.bouncycastle:bcpkix-jdk15on:1.70"
 
 bcprov-jdk15on = "org.bouncycastle:bcprov-jdk15on:1.70"
 
-jackson-dataformat-csv = "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.17.3"
-##                                                                            ⬆ :2.18.0"
-##                                                                            ⬆ :2.18.1"
-##                                                                            ⬆ :2.18.2"
+jackson-dataformat-csv = { group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-csv", version.ref = "jackson" }
 
-jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
-##                                                                      ⬆ :2.18.0"
-##                                                                      ⬆ :2.18.1"
-##                                                                      ⬆ :2.18.2"
+jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
 
 commons-io = "commons-io:commons-io:2.18.0"
 
@@ -184,10 +183,8 @@ spring-rabbit-test = { module = "org.springframework.amqp:spring-rabbit-test" }
 
 springdoc-openapi-ui = "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.3"
 
-jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
-##                                                               ⬆ :2.18.0"
-##                                                               ⬆ :2.18.1"
-##                                                               ⬆ :2.18.2"
+jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
+
 freemarker = "org.freemarker:freemarker:2.3.34"
 
 flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:11.2.0"
