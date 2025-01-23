@@ -17,10 +17,10 @@
           id="requestDataFormId"
           name="requestDataFormName"
         >
-          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
+          <div class="px-8 py-4 justify-content-center uploadFormWrapper">
             <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
-              <div class="col-12 md:col-6 xl:col-8 flex align-items-center justify-content-center">
-                <div class="col-12 status text-center">
+              <div>
+                <div class="status text-center">
                   <template v-if="submittingInProgress">
                     <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
                   </template>
@@ -29,6 +29,12 @@
                     <template v-if="submittingSucceeded">
                       <em class="material-icons info-icon green-text">check_circle</em>
                       <h1 class="status-text" data-test="requestStatusText">Success</h1>
+                      <div class="col-4 col-offset-4">
+                        {{ rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
+                        identifiers could not be recognized and were rejected. {{ createdRequests.length }} data
+                        requests were created and {{ notCreatedRequests.length }} skipped (data already available). More
+                        details can be found in the summary below.
+                      </div>
                     </template>
 
                     <template v-if="!submittingSucceeded">
@@ -48,51 +54,80 @@
                 </div>
               </div>
 
-              <div class="col-12 md:col-6 xl:col-4 bg-white radius-1 p-4">
-                <h1 class="p-0">Data Request Summary</h1>
+              <div class="col-8 col-offset-2 bg-white mt-3">
+                <h1 class="middle-center-div">Data Request Summary</h1>
                 <template v-if="submittingInProgress">
                   <i class="pi pi-spinner pi-spin text-xl text-primary" aria-hidden="true" />
                 </template>
                 <template v-else>
-                  <div class="summary-section border-bottom py-5">
-                    <h6 class="summary-section-heading m-0">{{ summarySectionReportingPeriodsHeading }}</h6>
-                    <p class="summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
+                  <div class="summary-section border-bottom py-4">
+                    <h6 class="middle-center-div summary-section-heading m-0">{{ summarySectionReportingPeriodsHeading }}</h6>
+                    <p class="middle-center-div summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
                   </div>
-                  <div class="summary-section border-bottom py-5">
-                    <h6 class="summary-section-heading m-0">{{ summarySectionFrameworksHeading }}</h6>
-                    <p class="summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(', ') }}</p>
+                  <div class="summary-section border-bottom py-4">
+                    <h6 class="middle-center-div summary-section-heading m-0">{{ summarySectionFrameworksHeading }}</h6>
+                    <p class="middle-center-div summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(', ') }}</p>
                   </div>
-
-                  <div
-                    v-if="submittingSucceeded && acceptedCompanyIdentifiers.length"
-                    class="summary-section py-5"
-                    data-test="acceptedIdentifiers"
-                  >
-                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
-                      <em class="material-icons info-icon green-text">check_circle</em>
-                      {{ summarySectionIdentifiersHeading(acceptedCompanyIdentifiers, 'REQUESTED') }}
-                    </h6>
-                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
-                      <template v-for="identifier in acceptedCompanyIdentifiers" :key="identifier">
-                        <div class="identifier mb-2">{{ identifier }}</div>
+                  <div class="summary-section border-bottom py-4">
+                  <Accordion>
+                    <AccordionTab>
+                      <template #header>
+                        <span class="flex align-items-center gap-2 w-full">
+                          <em class="material-icons info-icon green-text">check_circle</em>
+                          <span class="summary-section-heading">CREATED REQUESTS</span>
+                          <Badge :value="createdRequests.length" class="ml-auto mr-2" />
+                        </span>
                       </template>
-                    </p>
-                  </div>
-
-                  <div
-                    v-if="submittingSucceeded && rejectedCompanyIdentifiers.length"
-                    class="summary-section py-5"
-                    data-test="rejectedIdentifiers"
-                  >
-                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
-                      <em class="material-icons info-icon red-text">error</em>
-                      {{ summarySectionIdentifiersHeading(rejectedCompanyIdentifiers, 'REJECTED') }}
-                    </h6>
-                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
-                      <template v-for="identifier in rejectedCompanyIdentifiers" :key="identifier">
-                        <div class="identifier mb-2">{{ identifier }}</div>
+                      <template v-for="entry in createdRequests" :key="entry">
+                        <div class="grid">
+                          <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
+                          <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
+                          <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
+                          <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+                        </div>
                       </template>
-                    </p>
+                    </AccordionTab>
+                  </Accordion>
+                  </div>
+                  <div class="summary-section border-bottom py-4">
+                  <Accordion :active-index="0">
+                    <AccordionTab>
+                      <template #header>
+                        <span class="flex align-items-center gap-2 w-full">
+                          <em class="material-icons info-icon new-color">info</em>
+                          <span class="summary-section-heading">SKIPPED REQUESTS (data already exists)</span>
+                          <Badge :value="notCreatedRequests.length" class="ml-auto mr-2" />
+                        </span>
+                      </template>
+                      <template v-for="entry in notCreatedRequests" :key="entry">
+                        <div class="grid">
+                          <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
+                          <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
+                          <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
+                          <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+                          <a :href="entry.url" target="_blank" class="col bold-text new-color">View Data</a>
+                        </div>
+                      </template>
+                    </AccordionTab>
+                  </Accordion>
+                  </div>
+                  <div class="summary-section border-bottom py-4">
+                  <Accordion>
+                    <AccordionTab>
+                      <template #header>
+                        <span class="flex align-items-center gap-2 w-full">
+                          <em class="material-icons info-icon red-text">error</em>
+                          <span class="summary-section-heading">REJECTED IDENTIFIERS</span>
+                          <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
+                        </span>
+                      </template>
+                      <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
+                        <div class="grid">
+                          <div class="col bold-text">{{ entry }}</div>
+                        </div>
+                      </template>
+                    </AccordionTab>
+                  </Accordion>
                   </div>
 
                   <div
@@ -132,8 +167,9 @@
                       </p>
                     </BasicFormSection>
 
-                    <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select at least one framework">
+                    <BasicFormSection :data-test="selectFrameworkDiv" header="Select at least one framework">
                       <MultiSelectFormFieldBindData
+                        name="FrameworkSelection"
                         data-test="selectFrameworkSelect"
                         placeholder="Select framework"
                         :options="availableFrameworks"
@@ -207,6 +243,9 @@
 // @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import PrimeButton from 'primevue/button';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+import Badge from 'primevue/badge';
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
@@ -226,10 +265,14 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
+import { type ExistingDataResponse } from '@/utils/RequestUtils.ts';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
+    Accordion,
+    AccordionTab,
+    Badge,
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,
     TheHeader,
@@ -253,22 +296,75 @@ export default defineComponent({
     return {
       bulkDataRequestModel: {},
       availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
-      selectedFrameworks: [] as Array<DataTypeEnum>,
+      selectedFrameworks: ['lksg', 'sfdr', 'eutaxonomy-non-financials'] as Array<DataTypeEnum>,
       identifiersInString: '',
       identifiers: [] as Array<string>,
-      acceptedCompanyIdentifiers: [] as Array<string>,
-      rejectedCompanyIdentifiers: [] as Array<string>,
-      submittingSucceeded: false,
+      acceptedCompanyIdentifiers: ['Test123', 'AnotherTest'] as Array<string>,
+      rejectedCompanyIdentifiers: ['Rejected123', 'AnotherReject'] as Array<string>,
+      createdRequests: [
+        {
+          companyIdentifier: '1',
+          companyName: 'VW',
+          reportingPeriod: '2023',
+          framework: 'sfdr',
+          url: 'https://dataland.com',
+        },
+        {
+          companyIdentifier: '2',
+          companyName: 'Siemens',
+          reportingPeriod: '2025',
+          framework: 'lksg',
+          url: 'https://dataland.com',
+        },
+        {
+          companyIdentifier: '3',
+          companyName: 'BASF',
+          reportingPeriod: '2019',
+          framework: 'eu-taxonomy',
+          url: 'https://dataland.com',
+        },
+        {
+          companyIdentifier: '4',
+          companyName: 'Bayer',
+          reportingPeriod: '2018',
+          framework: 'eu-taxonomy',
+          url: 'https://dataland.com',
+        },
+      ] as Array<ExistingDataResponse>,
+      notCreatedRequests: [
+        {
+          companyIdentifier: '123',
+          companyName: 'Adidas',
+          reportingPeriod: '2024',
+          framework: 'sfdr',
+          url: 'https://dataland.com',
+        },
+        {
+          companyIdentifier: '456',
+          companyName: 'Daimler',
+          reportingPeriod: '2022',
+          framework: 'lksg',
+          url: 'https://dataland.com',
+        },
+        {
+          companyIdentifier: '789',
+          companyName: 'Deutsche Bank',
+          reportingPeriod: '2021',
+          framework: 'eu-taxonomy',
+          url: 'https://dataland.com',
+        },
+      ] as Array<ExistingDataResponse>,
+      submittingSucceeded: true,
       submittingInProgress: false,
-      postBulkDataRequestObjectProcessed: false,
+      postBulkDataRequestObjectProcessed: true,
       message: '',
       footerContent,
       selectedReportingPeriodsError: false,
       reportingPeriods: [
-        { name: '2024', value: false },
+        { name: '2024', value: true },
         { name: '2023', value: false },
         { name: '2022', value: false },
-        { name: '2021', value: false },
+        { name: '2021', value: true },
         { name: '2020', value: false },
       ],
     };
@@ -424,8 +520,8 @@ export default defineComponent({
       border-bottom: 1px solid #dadada;
     }
     .summary-section-heading {
-      font-weight: 400;
-      font-size: 14px;
+      font-weight: 500;
+      font-size: 16px;
       line-height: 20px;
       .info-icon {
         margin-bottom: -2px;
@@ -443,6 +539,14 @@ export default defineComponent({
       }
     }
   }
+}
+
+.new-color {
+  color: $orange-prime;
+}
+
+.bold-text {
+  font-weight: bold;
 }
 
 .no-framework {
