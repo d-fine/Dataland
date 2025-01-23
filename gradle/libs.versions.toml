@@ -154,7 +154,7 @@ awaitility = "org.awaitility:awaitility:4.2.2"
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
-json = "org.json:json:20250108"
+json = "org.json:json:20250107"
 
 spring-context = "org.springframework:spring-context:6.2.2"
 spring-test = "org.springframework:spring-test:6.2.2"
