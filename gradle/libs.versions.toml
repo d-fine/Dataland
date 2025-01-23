@@ -22,8 +22,7 @@ org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugi
 
 com-gorylenko-gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version = "2.4.2" }
 
-org-openapi-generator = { id = "org.openapi.generator", version = "7.10.0" }
-##                                                           ⬆ = "7.11.0" }
+org-openapi-generator = { id = "org.openapi.generator", version = "7.11.0" }
 
 com-github-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.52.0" }
 
@@ -155,7 +154,7 @@ awaitility = "org.awaitility:awaitility:4.2.2"
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
-json = "org.json:json:20240303"
+json = "org.json:json:20250107"
 ##                ⬆ :20241224"
 ##                ⬆ :20250107"
 
