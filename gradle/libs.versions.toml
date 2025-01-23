@@ -16,11 +16,7 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kot
 
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 
-org-sonarqube = { id = "org.sonarqube", version = "5.0.0.4638" }
-##                                           ⬆ = "5.1.0.4872" }
-##                                           ⬆ = "5.1.0.4882" }
-##                                           ⬆ = "6.0.0.5145" }
-##                                           ⬆ = "6.0.1.5171" }
+org-sonarqube = { id = "org.sonarqube", version = "6.0.1.5171" }
 
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 
