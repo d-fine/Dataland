@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -18,8 +19,9 @@ import java.util.UUID
  */
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
-    @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
+    @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
+    @Autowired private val messageQueuePublications: MessageQueuePublications,
 ) {
     /**
      * Method to associate data information with a specific company
@@ -27,7 +29,7 @@ class DataMetaInformationManager(
      */
     @Transactional
     fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
-        dataMetaInformationRepositoryInterface.save(dataMetaInformation)
+        dataMetaInformationRepository.save(dataMetaInformation)
 
     /**
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
@@ -39,6 +41,26 @@ class DataMetaInformationManager(
         }
         setCurrentlyActiveDatasetInactive(dataMetaInfo.company, dataMetaInfo.dataType, dataMetaInfo.reportingPeriod)
         dataMetaInfo.currentlyActive = true
+    }
+
+    /**
+     * Patch dataMetaInformation for dataset with given [dataId]
+     */
+    @Transactional
+    fun patchDataMetaInformation(
+        dataId: String,
+        dataMetaInformationPatch: DataMetaInformationPatch,
+        correlationId: String,
+    ): DataMetaInformationEntity {
+        val dataMetaInformationEntity = this.getDataMetaInformationByDataId(dataId)
+        messageQueuePublications.publishDataMetaInfoPatchMessage(
+            dataId,
+            dataMetaInformationPatch,
+            correlationId,
+        )
+//        dataMetaInformationPatch.uploaderUserId?.let { dataMetaInformationEntity.uploaderUserId = it }
+//        return dataMetaInformationRepository.save(dataMetaInformationEntity)
+        return dataMetaInformationEntity
     }
 
     /**
@@ -54,10 +76,10 @@ class DataMetaInformationManager(
         reportingPeriod: String,
     ) {
         val metaInfoOfCurrentlyActiveDataset =
-            dataMetaInformationRepositoryInterface.getActiveDataset(company, dataType, reportingPeriod)
+            dataMetaInformationRepository.getActiveDataset(company, dataType, reportingPeriod)
         if (metaInfoOfCurrentlyActiveDataset != null) {
             metaInfoOfCurrentlyActiveDataset.currentlyActive = null
-            dataMetaInformationRepositoryInterface.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
+            dataMetaInformationRepository.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
         }
     }
 
@@ -67,7 +89,7 @@ class DataMetaInformationManager(
      * @return meta info about data behind the dataId
      */
     fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity =
-        dataMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
+        dataMetaInformationRepository.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
                 "Dataset not found",
                 "No dataset with the id: $dataId could be found in the data store.",
@@ -102,7 +124,7 @@ class DataMetaInformationManager(
                 qaStatus = qaStatus,
             )
 
-        return dataMetaInformationRepositoryInterface.searchDataMetaInformation(filter)
+        return dataMetaInformationRepository.searchDataMetaInformation(filter)
     }
 
     /**
@@ -112,7 +134,7 @@ class DataMetaInformationManager(
     @Transactional
     fun deleteDataMetaInfo(dataId: String) {
         val dataMetaInformation = getDataMetaInformationByDataId(dataId)
-        dataMetaInformationRepositoryInterface.delete(dataMetaInformation)
+        dataMetaInformationRepository.delete(dataMetaInformation)
     }
 
     /**
@@ -121,7 +143,7 @@ class DataMetaInformationManager(
      * @returns the data meta information uploaded by the specified user
      */
     fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? =
-        dataMetaInformationRepositoryInterface
+        dataMetaInformationRepository
             .getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
 }

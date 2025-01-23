@@ -129,4 +129,22 @@ class LogMessageBuilder {
     ): String =
         "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
             "Correlation ID '$correlationId'"
+
+    /**
+     * Generates a message to inform that a request was received to return patch the meta info of a dataset
+     * @param dataId The ID of the dataset that shall be returned
+     * @param companyId The ID of the company for which this dataset shall be returned
+     * @returns the message to log
+     */
+    fun patchDataMetaInformationMessage(
+        userId: String?,
+        dataId: String,
+        dataType: String,
+        companyId: String,
+        reportingPeriod: String,
+        correlationId: String,
+    ): String =
+        "Received a request by user $userId to patch metadata of dataset with dataId '$dataId' and " +
+            "data dimensions (companyId '$companyId', dataType '$dataType', reportingPeriod '$reportingPeriod'). " +
+            "CorrelationID '$correlationId'."
 }

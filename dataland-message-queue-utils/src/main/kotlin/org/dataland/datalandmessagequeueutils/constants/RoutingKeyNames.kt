@@ -10,6 +10,7 @@ object RoutingKeyNames {
     const val DATA = "data"
     const val EMAIL = "email"
     const val META_DATA_PERSISTED = "metaDataPersisted"
+    const val METAINFORMATION_PATCH = "metainformation.change"
     const val PRIVATE_DATA_AND_DOCUMENT = "privateDataAndDocument"
     const val DATA_POINT_UPLOAD = "dataPoint.upload"
     const val DATA_POINT_QA = "dataPoint.qa"

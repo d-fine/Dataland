@@ -1,11 +1,13 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -82,6 +84,30 @@ class MessageQueuePublications(
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_DELETION,
+        )
+    }
+
+    /**
+     * Method to publish a message that the metainformation for a dataset has to be patched
+     */
+    fun publishDataMetaInfoPatchMessage(
+        dataId: String,
+        dataMetaInformationPatch: DataMetaInformationPatch,
+        correlationId: String,
+    ) {
+        logger.info("Publish message that data set with ID '$dataId' needs to be patched.  Correlation ID: '$correlationId'.")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body =
+                objectMapper.writeValueAsString(
+                    DataMetaInfoPatchPayload(
+                        dataId = dataId,
+                        uploaderId = dataMetaInformationPatch.uploaderUserId!!,
+                    ),
+                ),
+            type = MessageType.METAINFO_UPDATED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = RoutingKeyNames.METAINFORMATION_PATCH,
         )
     }
 }

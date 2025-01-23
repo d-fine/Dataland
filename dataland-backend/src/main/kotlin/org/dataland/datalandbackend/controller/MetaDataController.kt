@@ -3,11 +3,13 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
+import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -66,6 +68,33 @@ class MetaDataController(
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 
+    override fun patchDataMetaInfo(
+        dataId: String,
+        dataMetaInformationPatch: DataMetaInformationPatch,
+    ): ResponseEntity<DataMetaInformation> {
+        val currentUser = DatalandAuthentication.fromContextOrNull()
+        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+        val companyId = metaInfo.company.companyId
+        val correlationId = IdUtils.generateCorrelationId(companyId, dataId)
+        logMessageBuilder.patchDataMetaInformationMessage(
+            userId = currentUser?.userId,
+            dataId = dataId,
+            dataType = metaInfo.dataType,
+            companyId = companyId,
+            reportingPeriod = metaInfo.reportingPeriod,
+            correlationId = correlationId,
+        )
+        if (!metaInfo.isDatasetViewableByUser(currentUser)) {
+            throw AccessDeniedException(
+                logMessageBuilder.generateAccessDeniedExceptionMessage(
+                    metaInfo.qaStatus,
+                ),
+            )
+        }
+        val patchedMetaInfo = dataMetaInformationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
+        return ResponseEntity.ok(patchedMetaInfo.toApiModel(currentUser))
+    }
+
     override fun getInfoOnNonSourceabilityOfDataSets(
         companyId: String?,
         dataType: DataType?,
@@ -91,7 +120,8 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        val latestNonSourceableInfo = nonSourceableDataManager.getLatestNonSourceableInfoForDataset(companyId, dataType, reportingPeriod)
+        val latestNonSourceableInfo =
+            nonSourceableDataManager.getLatestNonSourceableInfoForDataset(companyId, dataType, reportingPeriod)
 
         if (latestNonSourceableInfo?.isNonSourceable != true) {
             throw ResourceNotFoundApiException(
