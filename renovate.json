@@ -24,7 +24,6 @@
         "*"
       ],
       "matchUpdateTypes": [
-        "patch",
         "digest"
       ]
     },
@@ -35,6 +34,15 @@
       "labels": [
         "dependencies",
         "MAJOR"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "labels": [
+        "dependencies",
+        "Minor"
       ]
     },
     {
