@@ -8,7 +8,7 @@ io-gitlab-arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version = "1
 
 com-github-node-gradle-node = { id = "com.github.node-gradle.node", version = "7.1.0" }
 
-org-springframework-boot = { id = "org.springframework.boot", version = "3.4.1" }
+org-springframework-boot = { id = "org.springframework.boot", version = "3.4.2" }
 
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.2" }
 
@@ -17,6 +17,10 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kot
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 
 org-sonarqube = { id = "org.sonarqube", version = "5.0.0.4638" }
+##                                           ⬆ = "5.1.0.4872" }
+##                                           ⬆ = "5.1.0.4882" }
+##                                           ⬆ = "6.0.0.5145" }
+##                                           ⬆ = "6.0.1.5171" }
 
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 
@@ -142,7 +146,7 @@ commons-codec = "commons-codec:commons-codec:1.17.2"
 
 commons-text = "org.apache.commons:commons-text:1.13.0"
 
-pdfbox = "org.apache.pdfbox:pdfbox:3.0.3"
+pdfbox = "org.apache.pdfbox:pdfbox:3.0.4"
 
 mockito-inline = { group = "org.mockito", name = "mockito-inline", version.ref = "mockito" }
 
@@ -154,14 +158,12 @@ awaitility = "org.awaitility:awaitility:4.2.2"
 
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 
-json = "org.json:json:20250107"
-##                ⬆ :20241224"
-##                ⬆ :20250107"
+json = "org.json:json:20250108"
 
 spring-context = "org.springframework:spring-context:6.2.2"
 spring-test = "org.springframework:spring-test:6.2.2"
 
-spring-boot = "org.springframework.boot:spring-boot:3.4.1"
+spring-boot = "org.springframework.boot:spring-boot:3.4.2"
 
 spring-rabbit = "org.springframework.amqp:spring-rabbit:3.2.2"
 
