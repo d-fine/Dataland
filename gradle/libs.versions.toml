@@ -17,10 +17,6 @@ org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kot
 org-jetbrains-kotlin-plugin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 
 org-sonarqube = { id = "org.sonarqube", version = "5.0.0.4638" }
-##                                           ⬆ = "5.1.0.4872" }
-##                                           ⬆ = "5.1.0.4882" }
-##                                           ⬆ = "6.0.0.5145" }
-##                                           ⬆ = "6.0.1.5171" }
 
 org-springdoc-openapi-gradle-plugin = { id = "org.springdoc.openapi-gradle-plugin", version = "1.9.0" }
 
@@ -113,18 +109,9 @@ spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-star
 
 mailjet-client = "com.mailjet:mailjet-client:5.2.5"
 
-flyway = "org.flywaydb:flyway-database-postgresql:10.22.0"
-##                                            ⬆ :11.0.0"
-##                                            ⬆ :11.0.1"
-##                                            ⬆ :11.1.0"
-##                                            ⬆ :11.1.1"
-##                                            ⬆ :11.2.0"
-flyway-core = "org.flywaydb:flyway-core:10.22.0"
-##                                  ⬆ :11.0.0"
-##                                  ⬆ :11.0.1"
-##                                  ⬆ :11.1.0"
-##                                  ⬆ :11.1.1"
-##                                  ⬆ :11.2.0"
+flyway = "org.flywaydb:flyway-database-postgresql:11.2.0"
+
+flyway-core = "org.flywaydb:flyway-core:11.2.0"
 
 kotlin-serialization-compiler-plugin-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-serialization-compiler-plugin-embeddable", version.ref = "kotlin" }
 
@@ -203,22 +190,15 @@ jackson-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.17.3"
 ##                                                               ⬆ :2.18.2"
 freemarker = "org.freemarker:freemarker:2.3.34"
 
-flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:10.22.0"
-##                                                                ⬆ :11.0.0"
-##                                                                ⬆ :11.0.1"
-##                                                                ⬆ :11.1.0"
-##                                                                ⬆ :11.1.1"
-##                                                                ⬆ :11.2.0"
+flyway-database-postgresql = "org.flywaydb:flyway-database-postgresql:11.2.0"
 
 jodconverter-core = "org.jodconverter:jodconverter-core:4.4.8"
 
 jodconverter-local = "org.jodconverter:jodconverter-local:4.4.8"
 
-itext-core = "com.itextpdf:itext-core:8.0.5"
-##                                ⬆ :9.0.0"
+itext-core = "com.itextpdf:itext-core:9.0.0"
 
-layout = "com.itextpdf:layout:8.0.5"
-##                        ⬆ :9.0.0"
+layout = "com.itextpdf:layout:9.0.0"
 
 tika-core = "org.apache.tika:tika-core:3.0.0"
 
