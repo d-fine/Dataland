@@ -4,7 +4,6 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
@@ -21,7 +20,6 @@ import java.util.UUID
 class DataMetaInformationManager(
     @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
-    @Autowired private val messageQueuePublications: MessageQueuePublications,
 ) {
     /**
      * Method to associate data information with a specific company
@@ -41,26 +39,6 @@ class DataMetaInformationManager(
         }
         setCurrentlyActiveDatasetInactive(dataMetaInfo.company, dataMetaInfo.dataType, dataMetaInfo.reportingPeriod)
         dataMetaInfo.currentlyActive = true
-    }
-
-    /**
-     * Patch dataMetaInformation for dataset with given [dataId]
-     */
-    @Transactional
-    fun patchDataMetaInformation(
-        dataId: String,
-        dataMetaInformationPatch: DataMetaInformationPatch,
-        correlationId: String,
-    ): DataMetaInformationEntity {
-        val dataMetaInformationEntity = this.getDataMetaInformationByDataId(dataId)
-        messageQueuePublications.publishDataMetaInfoPatchMessage(
-            dataId,
-            dataMetaInformationPatch,
-            correlationId,
-        )
-//        dataMetaInformationPatch.uploaderUserId?.let { dataMetaInformationEntity.uploaderUserId = it }
-//        return dataMetaInformationRepository.save(dataMetaInformationEntity)
-        return dataMetaInformationEntity
     }
 
     /**

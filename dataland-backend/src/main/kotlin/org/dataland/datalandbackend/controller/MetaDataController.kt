@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.services.DataMetaInfoAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
@@ -31,6 +32,7 @@ import java.util.UUID
 @RestController
 class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired var dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) : MetaDataApi {
@@ -104,7 +106,7 @@ class MetaDataController(
             ),
         )
         val patchedMetaInfo =
-            dataMetaInformationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
+            dataMetaInfoAlterationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
         return ResponseEntity.ok(patchedMetaInfo.toApiModel(currentUser))
     }
 

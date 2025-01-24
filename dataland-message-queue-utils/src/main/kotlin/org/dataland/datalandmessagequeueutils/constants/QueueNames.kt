@@ -7,6 +7,7 @@ package org.dataland.datalandmessagequeueutils.constants
 object QueueNames {
     const val INTERNAL_STORAGE_DATA_POINT_STORAGE = "internal-storage.storeDatapoints"
     const val INTERNAL_STORAGE_DATASET_STORAGE = "internal-storage.storeDatasets"
+    const val INTERNAL_STORAGE_DATASET_UPDATE = "internal-storage.updateDatasets"
     const val INTERNAL_STORAGE_DATASET_DELETION = "internal-storage.deleteDatasets"
     const val QA_SERVICE_DATASET_QA = "qa-service.qaDatasets"
     const val QA_SERVICE_DATA_POINT_QA = "qa-service.qaDataPoints"
