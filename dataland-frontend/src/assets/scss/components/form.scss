@@ -1,3 +1,8 @@
+@use "sass:color";
+@use "../colors";
+@use "../units";
+@use "../variables";
+
 .input-group {
   position: relative;
   margin-top: 3em;
@@ -10,16 +15,16 @@ form {
   [data-type='number'],
   [data-type='textarea'] {
     .formkit-inner {
-      font-size: $input-text-fs;
+      font-size: units.$input-text-fs;
       border-radius: 0;
-      background: $input-text-bg;
+      background: colors.$input-text-bg;
       border-style: solid;
       border-width: 0 0 1px 0;
-      border-color: $input-text-border;
+      border-color: colors.$input-text-border;
       box-shadow: none;
       &:focus-within {
         outline: none;
-        border-bottom: 1px solid $input-text-border-hover;
+        border-bottom: 1px solid colors.$input-text-border-hover;
       }
       .formkit-input {
         line-height: normal;
@@ -32,11 +37,11 @@ form {
 }
 
 input {
-  font-family: $ibm-plex-sans;
-  font-size: $input-text-fs;
+  font-family: variables.$ibm-plex-sans;
+  font-size: units.$input-text-fs;
   &[type='submit'],
   &[type='reset'] {
-    border-radius: $radius-none;
+    border-radius: variables.$radius-none;
   }
 }
 
@@ -50,15 +55,15 @@ input[type='radio'] {
   height: 25px;
   width: 25px;
   margin-right: 0.5rem;
-  background-color: $input-text-bg;
-  border: 3px solid $input-text-border-hover;
+  background-color: colors.$input-text-bg;
+  border: 3px solid colors.$input-text-border-hover;
   border-radius: 50%;
   cursor: pointer;
   &::before {
     content: '';
     width: 5px;
     height: 10px;
-    border: solid $input-text-border-hover;
+    border: solid colors.$input-text-border-hover;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
     display: none;
@@ -74,10 +79,10 @@ input[type='radio'] {
 }
 
 .p-inputtext {
-  font-family: $ibm-plex-sans;
-  color: $input-text-color;
-  background: $input-text-bg;
-  padding: $spacing-xs;
+  font-family: variables.$ibm-plex-sans;
+  color: colors.$input-text-color;
+  background: colors.$input-text-bg;
+  padding: variables.$spacing-xs;
   border: 0;
   margin: 0;
   transition:
@@ -86,26 +91,26 @@ input[type='radio'] {
     border-color 0.2s,
     box-shadow 0.2s;
   appearance: none;
-  border-radius: $radius-none;
+  border-radius: variables.$radius-none;
   &:enabled:hover {
-    border-color: $input-text-border-hover;
+    border-color: colors.$input-text-border-hover;
   }
   &:enabled:focus {
     outline: 0 none;
     outline-offset: 0;
     box-shadow: 0 0 0 0.2rem #bfd1f6;
-    border-color: $input-text-border-hover;
+    border-color: colors.$input-text-border-hover;
   }
   &.p-invalid.p-component {
     border-color: #ced4da #ced4da #ced4da #e4677e;
   }
   &.p-inputtext-sm {
-    font-size: $fs-sm;
-    padding: $spacing-xxs;
+    font-size: variables.$fs-sm;
+    padding: variables.$spacing-xxs;
   }
   &.p-inputtext-lg {
-    font-size: $fs-lg;
-    padding: $spacing-xs;
+    font-size: variables.$fs-lg;
+    padding: variables.$spacing-xs;
   }
 }
 
@@ -122,10 +127,10 @@ input[type='radio'] {
 }
 
 .p-dropdown {
-  background: $input-text-bg;
+  background: colors.$input-text-bg;
   .p-dropdown-trigger {
     background: transparent;
-    color: $brown-dark;
+    color: variables.$brown-dark;
     width: 2.357rem;
   }
 }
@@ -134,7 +139,7 @@ input[type='radio'] {
   background: transparent;
   border-width: 2px;
   border-style: solid;
-  border-color: $outline-dropdown-border;
+  border-color: colors.$outline-dropdown-border;
   border-radius: 8px;
   .p-inputtext {
     background: transparent;
@@ -142,38 +147,38 @@ input[type='radio'] {
 }
 
 .fill-dropdown {
-  background: $white;
+  background: variables.$white;
   border-width: 2px;
   border-style: solid;
-  border-color: $fill-dropdown-bg;
+  border-color: colors.$fill-dropdown-bg;
   border-radius: 8px;
   &.always-fill {
-    background: $fill-dropdown-bg;
-    color: $white;
+    background: colors.$fill-dropdown-bg;
+    color: variables.$white;
     .p-inputtext {
-      color: $white;
+      color: variables.$white;
     }
     .p-dropdown-trigger {
-      color: $white;
+      color: variables.$white;
     }
   }
   &.p-inputwrapper-filled {
-    background: $fill-dropdown-bg;
-    color: $white;
+    background: colors.$fill-dropdown-bg;
+    color: variables.$white;
     .p-inputtext {
-      color: $white;
+      color: variables.$white;
     }
     .p-dropdown-trigger {
-      color: $white;
+      color: variables.$white;
     }
   }
   &.p-overlay-open {
-    background: $fill-dropdown-hover-bg;
+    background: colors.$fill-dropdown-hover-bg;
     .p-inputtext {
-      color: $fill-dropdown-hover-text;
+      color: colors.$fill-dropdown-hover-text;
     }
     .p-dropdown-trigger {
-      color: $fill-dropdown-hover-text;
+      color: colors.$fill-dropdown-hover-text;
     }
   }
   &.p-focus {
@@ -184,21 +189,21 @@ input[type='radio'] {
   .p-inputtext {
     background: transparent;
     padding: 0.5rem 0.75rem;
-    color: $fill-dropdown-hover-text;
+    color: colors.$fill-dropdown-hover-text;
   }
   .p-dropdown-trigger {
-    color: $fill-dropdown-hover-text;
+    color: colors.$fill-dropdown-hover-text;
   }
 }
 
 .p-dropdown-panel {
-  background: $white;
+  background: variables.$white;
   .p-dropdown-items {
     .p-dropdown-item {
       margin: 0;
       padding: 0.5rem 1rem;
-      border: 0.1em solid $dropdown-options-bg;
-      color: $input-text-color;
+      border: 0.1em solid colors.$dropdown-options-bg;
+      color: colors.$input-text-color;
       background: transparent;
       transition:
         background-color 0.2s,
@@ -206,11 +211,11 @@ input[type='radio'] {
         box-shadow 0.2s;
       border-radius: 0;
       &:not(.p-highlight):not(.p-disabled):hover {
-        background: $dropdown-options-bg;
+        background: colors.$dropdown-options-bg;
       }
       &.p-highlight {
-        color: $input-text-bg;
-        background: $input-text-border-hover;
+        color: colors.$input-text-bg;
+        background: colors.$input-text-border-hover;
       }
     }
   }
@@ -223,15 +228,15 @@ input[type='radio'] {
 
 .p-datepicker {
   padding: 0.5rem;
-  background: $card-background;
-  color: $card-text;
+  background: colors.$card-background;
+  color: colors.$card-text;
   border-radius: 0;
   &:not(.p-datepicker-inline) {
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
   }
   .p-datepicker-header {
     padding: 0.5rem;
-    font-weight: $semi-bold-weight;
+    font-weight: units.$semi-bold-weight;
     margin: 0;
     border-bottom: 1px solid #dee2e6;
     .p-datepicker-prev,
@@ -259,10 +264,10 @@ input[type='radio'] {
       line-height: 2rem;
       .p-datepicker-year,
       .p-datepicker-month {
-        font-size: $input-text-fs;
-        font-weight: $light-bold-weight;
+        font-size: units.$input-text-fs;
+        font-weight: units.$light-bold-weight;
         &:enabled:hover {
-          color: $main-color;
+          color: colors.$main-color;
         }
       }
       .p-datepicker-month {
@@ -277,11 +282,11 @@ input[type='radio'] {
     .p-monthpicker-month {
       padding: 0.5rem;
       &.p-highlight {
-        color: $btn-primary-color;
-        background: $btn-primary-bg;
+        color: colors.$btn-primary-color;
+        background: colors.$btn-primary-bg;
       }
       &:not(.p-disabled):not(.p-highlight):hover {
-        background: $gray-light;
+        background: variables.$gray-light;
       }
     }
   }
@@ -306,23 +311,23 @@ input[type='radio'] {
           box-shadow 0.2s;
         border: 1px solid transparent;
         &.p-highlight {
-          color: $btn-primary-color;
-          background: $btn-primary-bg;
+          color: colors.$btn-primary-color;
+          background: colors.$btn-primary-bg;
           &:hover {
-            color: $btn-primary-color;
-            background: $btn-primary-bg;
+            color: colors.$btn-primary-color;
+            background: colors.$btn-primary-bg;
           }
         }
         &:hover {
-          background: $gray-light;
+          background: variables.$gray-light;
         }
         &.p-disabled {
           opacity: 0.3;
         }
       }
       &.p-datepicker-today > span {
-        background: $gray-light;
-        color: $full-dark;
+        background: variables.$gray-light;
+        color: variables.$full-dark;
       }
     }
   }
@@ -333,8 +338,8 @@ input[type='radio'] {
 }
 
 .p-multiselect-panel {
-  background: $bg-text-primary;
-  color: $main-text-color;
+  background: colors.$bg-text-primary;
+  color: colors.$main-text-color;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.1);
   .p-multiselect-header {
     padding: 0.5rem 1rem;
@@ -364,11 +369,11 @@ input[type='radio'] {
     .p-multiselect-item {
       padding: 0.5rem 1rem;
       &.p-highlight {
-        color: $bg-text-primary;
-        background: $main-color;
+        color: colors.$bg-text-primary;
+        background: colors.$main-color;
       }
       &:not(.p-highlight):not(.p-disabled):hover {
-        background: $input-text-bg;
+        background: colors.$input-text-bg;
       }
       .p-checkbox {
         margin-right: 0.5rem;
@@ -381,7 +386,7 @@ input[type='radio'] {
   width: 2.1rem;
   height: 1.2rem;
   .p-inputswitch-slider {
-    background: $inputswitch-slider-bg-off;
+    background: colors.$inputswitch-slider-bg-off;
     transition:
       background-color 0.2s,
       color 0.2s,
@@ -389,7 +394,7 @@ input[type='radio'] {
       box-shadow 0.2s;
     border-radius: 30px;
     &::before {
-      background: $bg-text-primary;
+      background: colors.$bg-text-primary;
       width: 1rem;
       height: 1rem;
       margin-top: -0.5rem;
@@ -399,9 +404,9 @@ input[type='radio'] {
   }
   &.p-inputswitch-checked {
     .p-inputswitch-slider {
-      background: $inputswitch-slider-bg;
+      background: colors.$inputswitch-slider-bg;
       &::before {
-        background: $bg-text-primary;
+        background: colors.$bg-text-primary;
         transform: translateX(1rem);
       }
     }
@@ -412,7 +417,7 @@ input[type='radio'] {
   width: 2.1rem;
   height: 1.2rem;
   .p-inputswitch-slider {
-    background: $inputswitch-singlecolor-slider-bg;
+    background: colors.$inputswitch-singlecolor-slider-bg;
     transition:
       background-color 0.2s,
       color 0.2s,
@@ -420,7 +425,7 @@ input[type='radio'] {
       box-shadow 0.2s;
     border-radius: 30px;
     &::before {
-      background: $bg-text-primary;
+      background: colors.$bg-text-primary;
       width: 1rem;
       height: 1rem;
       margin-top: -0.5rem;
@@ -430,9 +435,9 @@ input[type='radio'] {
   }
   &.p-inputswitch-checked {
     .p-inputswitch-slider {
-      background: $inputswitch-singlecolor-slider-bg;
+      background: colors.$inputswitch-singlecolor-slider-bg;
       &::before {
-        background: $bg-text-primary;
+        background: colors.$bg-text-primary;
         transform: translateX(1rem);
       }
     }
@@ -441,37 +446,37 @@ input[type='radio'] {
 
 .p-tooltip {
   .p-tooltip-text {
-    background: $input-label-color;
-    color: $bg-text-primary;
+    background: colors.$input-label-color;
+    color: colors.$bg-text-primary;
     padding: 0.5rem;
     border-radius: 0;
     width: max-content;
     max-width: 300px;
   }
   &.p-tooltip-right .p-tooltip-arrow {
-    border-right-color: $input-label-color;
+    border-right-color: colors.$input-label-color;
   }
   &.p-tooltip-left .p-tooltip-arrow {
-    border-left-color: $input-label-color;
+    border-left-color: colors.$input-label-color;
   }
   &.p-tooltip-top .p-tooltip-arrow {
-    border-top-color: $input-label-color;
+    border-top-color: colors.$input-label-color;
   }
   &.p-tooltip-bottom .p-tooltip-arrow {
-    border-bottom-color: $input-label-color;
+    border-bottom-color: colors.$input-label-color;
   }
 }
 .d-nace-textinput {
   width: 33%;
   border-radius: 0;
-  background: $input-text-bg;
+  background: colors.$input-text-bg;
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-color: $input-text-border;
+  border-color: colors.$input-text-border;
   box-shadow: none;
 }
 .formListSection {
-  border: 1px solid $input-text-border;
+  border: 1px solid colors.$input-text-border;
   padding: 1rem;
   border-radius: 0.5rem;
   margin: 2rem 0;
@@ -502,17 +507,17 @@ input[type='radio'] {
     margin-right: 10px;
   }
   input[type='checkbox'] {
-    background-color: $input-text-bg;
-    border: 2px solid $input-checked-color;
+    background-color: colors.$input-text-bg;
+    border: 2px solid colors.$input-checked-color;
     border-radius: 2px;
   }
   input[type='checkbox']:not(.p-radiobutton):checked {
-    background-color: $input-checked-color;
+    background-color: colors.$input-checked-color;
   }
   input[type='radio'],
   input.p-radiobutton {
     background-color: white;
-    border: 2px solid $input-label-color;
+    border: 2px solid colors.$input-label-color;
     border-radius: 15px;
     cursor: pointer;
     margin-right: 10px;
@@ -520,7 +525,7 @@ input[type='radio'] {
   input.p-radiobutton:hover,
   input.p-radiobutton:active,
   input.p-radiobutton:checked {
-    border: 3px solid $input-label-color;
+    border: 3px solid colors.$input-label-color;
   }
   input[type='checkbox']::before,
   input[type='radio']::before {
@@ -534,12 +539,12 @@ input[type='radio'] {
   }
   input[type='checkbox']::before {
     border-style: solid;
-    border-color: $input-text-bg;
+    border-color: colors.$input-text-bg;
   }
   input[type='radio']::before,
   input.p-radiobutton::before {
     border-style: solid;
-    border-color: $input-label-color;
+    border-color: colors.$input-label-color;
   }
   input[type='checkbox']:checked::before,
   input[type='radio']:checked::before {
@@ -552,29 +557,29 @@ input[type='radio'] {
     }
   }
   .p-multiselect {
-    font-size: $input-text-fs;
+    font-size: units.$input-text-fs;
     border-radius: 0;
-    background: $input-text-bg;
+    background: colors.$input-text-bg;
     border-style: solid;
     border-width: 0 0 1px 0;
-    border-color: $input-text-border;
+    border-color: colors.$input-text-border;
     box-shadow: none;
     width: 100%;
 
     &:focus-within {
       outline: none;
-      border-bottom: 1px solid $input-text-border-hover;
+      border-bottom: 1px solid colors.$input-text-border-hover;
     }
     .p-multiselect-label {
       padding: 0.75rem;
       &.p-placeholder {
-        color: $text-color-secondary;
+        color: colors.$text-color-secondary;
       }
     }
     .p-multiselect-trigger {
       width: 2.5rem;
       .p-multiselect-trigger-icon {
-        color: $text-color-secondary;
+        color: colors.$text-color-secondary;
         font-size: 0.75rem;
       }
     }
@@ -627,7 +632,7 @@ input[type='radio'] {
     padding-bottom: 1rem;
     .form-field-label {
       h5 {
-        font-size: $fs-base;
+        font-size: variables.$fs-base;
       }
     }
   }
@@ -667,9 +672,9 @@ input[type='radio'] {
     }
   }
   .formFields {
-    background: $upload-form-bg;
-    border-radius: $upload-form-radius;
-    padding: $upload-form-padding;
+    background: colors.$upload-form-bg;
+    border-radius: units.$upload-form-radius;
+    padding: units.$upload-form-padding;
     margin-left: auto;
     margin-bottom: 1rem;
   }
@@ -678,7 +683,7 @@ input[type='radio'] {
       text-align: center;
       width: 100%;
       padding: 2rem;
-      border: 1px solid $input-error;
+      border: 1px solid colors.$input-error;
     }
   }
   .hidden-input {
@@ -688,23 +693,23 @@ input[type='radio'] {
     }
   }
   .form-list-item {
-    color: $input-label-color;
-    background: $el-list-item-bg;
-    font-size: $fs-sm;
-    font-weight: $fw-semibold;
-    margin: $spacing-xxxs;
+    color: colors.$input-label-color;
+    background: colors.$el-list-item-bg;
+    font-size: variables.$fs-sm;
+    font-weight: variables.$fw-semibold;
+    margin: variables.$spacing-xxxs;
     text-align: center;
     min-width: 1.5rem;
     border-radius: 1rem;
     padding: 0.25rem 1rem;
-    border: 1px solid $input-label-color;
+    border: 1px solid colors.$input-label-color;
     display: inline-flex;
     align-items: center;
     em {
       margin-left: 0.5rem;
       cursor: pointer;
       &:hover {
-        color: darken($input-label-color, 20%);
+        color: color.adjust(colors.$input-label-color, $lightness: -20%);
       }
     }
   }
@@ -716,7 +721,7 @@ input[type='radio'] {
     .form-field:not(:last-child) {
       margin: 0 0 1rem 0;
       padding: 0 0 1rem 0;
-      border-bottom: 1px solid $input-separator;
+      border-bottom: 1px solid colors.$input-separator;
     }
   }
   .uploaded-files {
@@ -788,13 +793,13 @@ input[type='radio'] {
 
 .button-disabled {
   opacity: 0.4;
-  background: $btn-primary-bg !important;
+  background: colors.$btn-primary-bg !important;
   border: 0 !important;
 }
 
 .bordered-box {
-  border: 2px dotted $input-separator;
-  border-radius: $upload-form-radius;
+  border: 2px dotted colors.$input-separator;
+  border-radius: units.$upload-form-radius;
   padding: 16px;
 }
 
@@ -811,11 +816,11 @@ input[type='radio'] {
     box-shadow 0.2s;
   &:not(.p-disabled) {
     &.p-focus {
-      border-color: $btn-primary-bg;
+      border-color: colors.$btn-primary-bg;
     }
     &:not(.p-highlight) {
       &:hover {
-        border-color: $btn-primary-bg;
+        border-color: colors.$btn-primary-bg;
       }
     }
   }
@@ -857,5 +862,5 @@ p.header-separator {
   border-top: 1px solid #e0dfde;
 }
 .red-border {
-  border: 1px solid $input-error;
+  border: 1px solid colors.$input-error;
 }

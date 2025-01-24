@@ -1,16 +1,18 @@
+@use "variables";
+
 //forms
-$input-text-fs: $fs-base;
-$input-padding-fs: $spacing-xs;
-$input-label-fs: $fs-xs;
-$button-fs: $fs-base;
-$button-fw: $fw-semibold;
-$upload-form-radius: $radius-xxs;
-$upload-form-padding: $spacing-md;
+$input-text-fs: variables.$fs-base;
+$input-padding-fs: variables.$spacing-xs;
+$input-label-fs: variables.$fs-xs;
+$button-fs: variables.$fs-base;
+$button-fw: variables.$fw-semibold;
+$upload-form-radius: variables.$radius-xxs;
+$upload-form-padding: variables.$spacing-md;
 
 //typography
-$normal-weight: $fw-normal; // 400
-$light-bold-weight: $fw-medium; // 500
-$semi-bold-weight: $fw-semibold; // 600
+$normal-weight: variables.$fw-normal; // 400
+$light-bold-weight: variables.$fw-medium; // 500
+$semi-bold-weight: variables.$fw-semibold; // 600
 
 //table
 $first-table-column-width: 30vw;

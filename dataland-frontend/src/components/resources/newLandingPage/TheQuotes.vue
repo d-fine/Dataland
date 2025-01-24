@@ -221,6 +221,8 @@ const register = (): void => {
 </script>
 
 <style lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .quotes {
   margin: 0 auto 120px;
   display: flex;

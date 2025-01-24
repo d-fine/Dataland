@@ -34,6 +34,8 @@ const isActiveAbout = computed(() => route.path === '/about');
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/scss/newVariables' as *;
+
 .header {
   display: flex;
   justify-content: space-between;

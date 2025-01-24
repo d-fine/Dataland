@@ -92,6 +92,8 @@ const register = (): void => {
 };
 </script>
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .header {
   &__authsection {
     display: flex;

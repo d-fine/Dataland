@@ -100,6 +100,8 @@ const handleInputBlur = (): void => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .intro {
   text-align: center;
   margin: 140px auto;
@@ -243,6 +245,8 @@ const handleInputBlur = (): void => {
 </style>
 
 <style lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .search {
   position: relative;
   margin: 80px auto 0;

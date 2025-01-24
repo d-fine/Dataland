@@ -1,18 +1,19 @@
-@import 'variables';
+@use 'variables';
+@use "colors";
 
 :root {
   // BRAND COLORS
-  --text-color: #{$brown-dark};
-  --text-color-secondary: #{$brown};
-  --text-color-third: #{$brown-light};
-  --primary-color: #{$orange-prime};
-  --primary-color-text: #{$paper-white};
-  --secondary-color: #{$aquamarine-dark};
-  --secondary-color-text: #{$paper-white};
+  --text-color: #{variables.$brown-dark};
+  --text-color-secondary: #{variables.$brown};
+  --text-color-third: #{variables.$brown-light};
+  --primary-color: #{variables.$orange-prime};
+  --primary-color-text: #{variables.$paper-white};
+  --secondary-color: #{variables.$aquamarine-dark};
+  --secondary-color-text: #{variables.$paper-white};
 
   // added colors
   --primary-color-100: #fdefe6;
-  --color-blue: #{$aquamarine-dark};
+  --color-blue: #{variables.$aquamarine-dark};
 
   // default prime colors
   --surface-0: #ffffff;
@@ -159,12 +160,12 @@
   --primary-900: #0d3c61;
 
   // Typography
-  --font-family: #{$ibm-plex-sans};
+  --font-family: #{variables.$ibm-plex-sans};
 
   --content-padding: 1rem;
   --inline-spacing: 0.5rem;
   --border-radius: 0;
-  --surface-ground: #{$surface-ground};
+  --surface-ground: #{variables.$surface-ground};
   --surface-section: #ffffff;
   --surface-card: #ffffff;
   --surface-overlay: #ffffff;
@@ -176,7 +177,7 @@
 
 body {
   //FormKit
-  --fk-font-family: #{$ibm-plex-sans};
-  --fk-color-primary: #{$input-checked-color};
+  --fk-font-family: #{variables.$ibm-plex-sans};
+  --fk-color-primary: #{colors.$input-checked-color};
   --fk-border-radius: 0;
 }
