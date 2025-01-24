@@ -144,7 +144,7 @@ class LogMessageBuilder {
         reportingPeriod: String,
         correlationId: String,
     ): String =
-        "Received a request by user $userId to patch metadata of dataset with dataId '$dataId' and " +
-            "data dimensions (companyId '$companyId', dataType '$dataType', reportingPeriod '$reportingPeriod'). " +
-            "CorrelationID '$correlationId'."
+        "Received a request to patchMetaDataInfo by user $userId to patch metadata of dataset with dataId $dataId and " +
+            "data dimensions (companyId $companyId, dataType $dataType, reportingPeriod $reportingPeriod). " +
+            "CorrelationID $correlationId."
 }

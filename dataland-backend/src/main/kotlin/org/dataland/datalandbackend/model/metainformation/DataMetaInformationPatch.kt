@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.metainformation
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
@@ -10,4 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty
 data class DataMetaInformationPatch(
     @field:JsonProperty(required = false)
     val uploaderUserId: String? = null,
-)
+) {
+    // TODO check why this is necessary...why are methods serialized?
+    /**
+     * Returns true if all fields are set to null; false otherwise.
+     * JsonIgnore is necessary, otherwise this function would be serialized.
+     */
+    @JsonIgnore
+    fun isNullOrEmpty(): Boolean = uploaderUserId.isNullOrEmpty()
+}

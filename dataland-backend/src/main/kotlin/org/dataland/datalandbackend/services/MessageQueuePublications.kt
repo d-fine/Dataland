@@ -95,13 +95,13 @@ class MessageQueuePublications(
         dataMetaInformationPatch: DataMetaInformationPatch,
         correlationId: String,
     ) {
-        logger.info("Publish message that data set with ID '$dataId' needs to be patched.  Correlation ID: '$correlationId'.")
+        logger.info("Publish message that data set with dataId $dataId needs to be patched. Correlation ID: $correlationId.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body =
                 objectMapper.writeValueAsString(
                     DataMetaInfoPatchPayload(
                         dataId = dataId,
-                        uploaderId = dataMetaInformationPatch.uploaderUserId!!,
+                        uploaderId = dataMetaInformationPatch.uploaderUserId,
                     ),
                 ),
             type = MessageType.METAINFO_UPDATED,

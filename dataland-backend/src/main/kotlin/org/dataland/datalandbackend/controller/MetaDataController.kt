@@ -10,9 +10,11 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
@@ -32,6 +34,8 @@ class MetaDataController(
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) : MetaDataApi {
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     override fun getListOfDataMetaInfo(
         companyId: String?,
         dataType: DataType?,
@@ -76,14 +80,6 @@ class MetaDataController(
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         val companyId = metaInfo.company.companyId
         val correlationId = IdUtils.generateCorrelationId(companyId, dataId)
-        logMessageBuilder.patchDataMetaInformationMessage(
-            userId = currentUser?.userId,
-            dataId = dataId,
-            dataType = metaInfo.dataType,
-            companyId = companyId,
-            reportingPeriod = metaInfo.reportingPeriod,
-            correlationId = correlationId,
-        )
         if (!metaInfo.isDatasetViewableByUser(currentUser)) {
             throw AccessDeniedException(
                 logMessageBuilder.generateAccessDeniedExceptionMessage(
@@ -91,7 +87,24 @@ class MetaDataController(
                 ),
             )
         }
-        val patchedMetaInfo = dataMetaInformationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
+        if (dataMetaInformationPatch.isNullOrEmpty()) {
+            throw InvalidInputApiException(
+                summary = "Empty Request Body",
+                message = "Request body must not be null nor empty",
+            )
+        }
+        logger.info(
+            logMessageBuilder.patchDataMetaInformationMessage(
+                userId = currentUser?.userId,
+                dataId = dataId,
+                dataType = metaInfo.dataType,
+                companyId = companyId,
+                reportingPeriod = metaInfo.reportingPeriod,
+                correlationId = correlationId,
+            ),
+        )
+        val patchedMetaInfo =
+            dataMetaInformationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
         return ResponseEntity.ok(patchedMetaInfo.toApiModel(currentUser))
     }
 

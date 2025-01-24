@@ -5,5 +5,5 @@ package org.dataland.datalandmessagequeueutils.messages.data
  */
 data class DataMetaInfoPatchPayload(
     val dataId: String,
-    val uploaderId: String,
+    val uploaderId: String?,
 )
