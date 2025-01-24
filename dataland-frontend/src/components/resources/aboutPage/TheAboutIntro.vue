@@ -50,6 +50,8 @@ const register = (): void => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .about-intro {
   display: flex;
   flex-direction: column;

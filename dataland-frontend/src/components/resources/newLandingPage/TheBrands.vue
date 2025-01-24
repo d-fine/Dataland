@@ -26,6 +26,8 @@ const brandsSection = computed(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .brands {
   display: flex;
   flex-direction: column;

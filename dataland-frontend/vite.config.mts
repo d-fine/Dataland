@@ -44,6 +44,10 @@ export default defineConfig({
       'primevue/radiobutton',
       'primevue/icons/chevrondown',
       'primevue/icons/chevronleft',
+      'primevue/config',
+      'primevue/dialogservice',
+      'pinia',
+      'pinia-shared-state',
       '@formkit/vue',
       'axios',
       'i18n-iso-countries',
@@ -83,13 +87,6 @@ export default defineConfig({
     watch: {
       ignored: ['**/coverage/**'],
       usePolling: process.env.POLLING === 'true',
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@import "./src/assets/scss/newVariables.scss"; @import "./src/assets/scss/variables.scss";`,
-      },
     },
   },
 });

@@ -41,6 +41,8 @@ const getInTouchSection = computed(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .getintouch {
   padding: 140px 0 200px;
   align-items: center;
