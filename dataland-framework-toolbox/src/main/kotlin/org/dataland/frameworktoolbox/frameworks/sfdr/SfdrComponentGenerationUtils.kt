@@ -10,8 +10,8 @@ class SfdrComponentGenerationUtils : ComponentGenerationUtils() {
     private fun appendUnitSuffixToFieldNameToMatchLegacyGeneration(unit: String): String =
         when (unit) {
             in setOf("Tonnes", "GWh", "Percent", "Cubic Meters", "Days") -> "In${unit.replace(" ", "")}"
-            "Tonnes / €M Revenue" -> "InTonnesPerMillionEURRevenue"
-            "Cubic Meters / €M Revenue" -> "InCubicMetersPerMillionEURRevenue"
+            "Tonnes / Currency M Revenue" -> "InTonnesPerCurrencyMillionRevenue"
+            "Cubic Meters / Currency M Revenue" -> "InCubicMetersPerCurrencyMillionRevenue"
             else -> ""
         }
 

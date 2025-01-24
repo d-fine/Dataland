@@ -23,13 +23,16 @@ class CurrencyComponentFactory(
         utils: ComponentGenerationUtils,
         componentGroup: ComponentGroupApi,
     ): ComponentBase {
-        templateDiagnostic.unitNotUsed(row)
+        // templateDiagnostic.unitNotUsed(row)
         val bounds = DecimalComponentFactory.parseBounds(row.options)
 
         return componentGroup.create<CurrencyComponent>(
             utils.generateFieldIdentifierFromRow(row),
         ) {
             utils.setCommonProperties(row, this)
+            if (row.unit.isNotBlank()) {
+                constantUnitSuffix = row.unit.trim()
+            }
             this.minimumValue = bounds.first
             this.maximumValue = bounds.second
         }

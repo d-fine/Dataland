@@ -185,8 +185,8 @@
 						"quality": "Audited",
 						"currency": "SLE"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 69762.73,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 6564885689.88,
 						"dataSource": {
 							"page": "139-932",
 							"fileName": "SustainabilityReport",
@@ -194,22 +194,25 @@
 							"tagName": "markets"
 						},
 						"comment": "bypass optical card",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "QAR"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 47221.61,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 5370949893.26,
 						"dataSource": null,
 						"comment": "connect open-source microchip",
-						"quality": null
+						"quality": null,
+						"currency": "KWD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": null,
 						"comment": "copy wireless sensor",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "SBD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 43960.81,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 3350894560.57,
 						"dataSource": {
 							"page": "872-962",
 							"fileName": "SustainabilityReport",
@@ -217,9 +220,10 @@
 							"tagName": "metrics"
 						},
 						"comment": "input wireless microchip",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "KGS"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "717-1076",
@@ -228,10 +232,11 @@
 							"tagName": "models"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "TND"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 55213.07,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 5415693246.76,
 						"dataSource": {
 							"page": "934",
 							"fileName": "AnnualReport",
@@ -239,7 +244,8 @@
 							"tagName": "technologies"
 						},
 						"comment": "quantify auxiliary microchip",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "MNT"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -712,8 +718,8 @@
 						"comment": "index auxiliary matrix",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 27192.68,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 9762395059.23,
 						"dataSource": {
 							"page": "1072-1255",
 							"fileName": "SustainabilityReport",
@@ -721,7 +727,8 @@
 							"tagName": "platforms"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "EUR"
 					},
 					"waterManagementPolicy": {
 						"value": null,
@@ -1387,8 +1394,8 @@
 						"quality": null,
 						"currency": "RWF"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 31015.33,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 5291566380.77,
 						"dataSource": {
 							"page": "196-586",
 							"fileName": "ESEFReport",
@@ -1396,10 +1403,11 @@
 							"tagName": "web services"
 						},
 						"comment": "calculate 1080p feed",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "GIP"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 8337.83,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 7089207973.33,
 						"dataSource": {
 							"page": "807-1169",
 							"fileName": "IntegratedReport",
@@ -1407,16 +1415,18 @@
 							"tagName": "technologies"
 						},
 						"comment": "bypass solid state program",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "BDT"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": null,
 						"comment": "back up 1080p capacitor",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "KZT"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 74152.49,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 6286181998.44,
 						"dataSource": {
 							"page": "557-1198",
 							"fileName": "IntegratedReport",
@@ -1424,15 +1434,17 @@
 							"tagName": "platforms"
 						},
 						"comment": "bypass neural bus",
-						"quality": null
+						"quality": null,
+						"currency": "SCR"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 43506.7,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 7038346799.09,
 						"dataSource": null,
 						"comment": "index back-end firewall",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "KGS"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "940",
@@ -1441,7 +1453,8 @@
 							"tagName": "convergence"
 						},
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "TWD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
@@ -1894,7 +1907,7 @@
 						"comment": null,
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": "No",
 						"dataSource": {
@@ -2582,14 +2595,15 @@
 						"quality": "Reported",
 						"currency": "MZN"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 71654.22,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 7434278430.89,
 						"dataSource": null,
 						"comment": "transmit online interface",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "RUB"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 188274909.74,
 						"dataSource": {
 							"page": "464-608",
 							"fileName": "SustainabilityReport",
@@ -2597,10 +2611,11 @@
 							"tagName": "users"
 						},
 						"comment": "generate redundant application",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "UAH"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 61766.4,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 6122559756.04,
 						"dataSource": {
 							"page": "745-1144",
 							"fileName": "ESEFReport",
@@ -2608,10 +2623,11 @@
 							"tagName": "schemas"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "NIO"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 35917.36,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 7198668629.86,
 						"dataSource": {
 							"page": "768",
 							"fileName": "AnnualReport",
@@ -2619,10 +2635,11 @@
 							"tagName": "communities"
 						},
 						"comment": "back up mobile bandwidth",
-						"quality": null
+						"quality": null,
+						"currency": "HUF"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 87088.01,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 4739856068.04,
 						"dataSource": {
 							"page": "1051-1277",
 							"fileName": "AnnualReport",
@@ -2630,10 +2647,11 @@
 							"tagName": "paradigms"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "TZS"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 41829.16,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 8567823800.26,
 						"dataSource": {
 							"page": "264",
 							"fileName": "IntegratedReport",
@@ -2641,7 +2659,8 @@
 							"tagName": "interfaces"
 						},
 						"comment": "back up bluetooth port",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "JOD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -3096,8 +3115,8 @@
 						"comment": "override digital card",
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 56776.87,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 6241926082.88,
 						"dataSource": {
 							"page": "86",
 							"fileName": "ESEFReport",
@@ -3105,7 +3124,8 @@
 							"tagName": "eyeballs"
 						},
 						"comment": "calculate mobile matrix",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "MRU"
 					},
 					"waterManagementPolicy": {
 						"value": null,
@@ -3803,8 +3823,8 @@
 						"quality": null,
 						"currency": "EUR"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 86242.11,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 4777905882.8,
 						"dataSource": {
 							"page": "890-1187",
 							"fileName": "AnnualReport",
@@ -3812,16 +3832,18 @@
 							"tagName": "partnerships"
 						},
 						"comment": "override mobile feed",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "TTD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 20558.84,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 3890268958.64,
 						"dataSource": null,
 						"comment": "hack cross-platform bandwidth",
-						"quality": null
+						"quality": null,
+						"currency": "CUP"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 16424.94,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 9441142594.45,
 						"dataSource": {
 							"page": "941-1296",
 							"fileName": "AnnualReport",
@@ -3829,9 +3851,10 @@
 							"tagName": "web services"
 						},
 						"comment": "synthesize haptic pixel",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "CDF"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "42-627",
@@ -3840,9 +3863,10 @@
 							"tagName": "methodologies"
 						},
 						"comment": "generate solid state firewall",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "SHP"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "167",
@@ -3851,9 +3875,10 @@
 							"tagName": "networks"
 						},
 						"comment": null,
-						"quality": null
+						"quality": null,
+						"currency": "SEK"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "336",
@@ -3862,7 +3887,8 @@
 							"tagName": "schemas"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "XCD"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": null,
@@ -4217,8 +4243,8 @@
 						"quality": "Incomplete"
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 59273.85,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 9824218174.91,
 						"dataSource": {
 							"page": "600",
 							"fileName": "AnnualReport",
@@ -4226,7 +4252,8 @@
 							"tagName": "models"
 						},
 						"comment": "compress wireless sensor",
-						"quality": null
+						"quality": null,
+						"currency": "MXN"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": null
@@ -4907,9 +4934,9 @@
 						"currency": "MRU"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 1747844461.35,
 						"dataSource": {
 							"page": "218",
 							"fileName": "IntegratedReport",
@@ -4917,26 +4944,30 @@
 							"tagName": "e-commerce"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "ALL"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 243.03,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 3706989195.2,
 						"dataSource": null,
 						"comment": "transmit online monitor",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "AED"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 76997.86,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 8240269983.66,
 						"dataSource": null,
 						"comment": "input online firewall",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "SHP"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 1841032160.44,
 						"dataSource": null,
 						"comment": "reboot back-end alarm",
-						"quality": null
+						"quality": null,
+						"currency": "KES"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
@@ -5279,7 +5310,7 @@
 						"comment": null,
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": null,
 						"dataSource": {
@@ -5941,8 +5972,8 @@
 						"currency": "MVR"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 13588.18,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 9447232801.47,
 						"dataSource": {
 							"page": "560-720",
 							"fileName": "IntegratedReport",
@@ -5950,10 +5981,11 @@
 							"tagName": "schemas"
 						},
 						"comment": "bypass haptic system",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "BSD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 97417.68,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 2783085817.93,
 						"dataSource": {
 							"page": "353",
 							"fileName": "ESEFReport",
@@ -5961,10 +5993,11 @@
 							"tagName": "convergence"
 						},
 						"comment": "connect virtual circuit",
-						"quality": null
+						"quality": null,
+						"currency": "LSL"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 1906113540.75,
 						"dataSource": {
 							"page": "827",
 							"fileName": "ESEFReport",
@@ -5972,10 +6005,11 @@
 							"tagName": "users"
 						},
 						"comment": "program back-end circuit",
-						"quality": null
+						"quality": null,
+						"currency": "WST"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 99502.23,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 4917139392.35,
 						"dataSource": {
 							"page": "232-490",
 							"fileName": "ESEFReport",
@@ -5983,10 +6017,11 @@
 							"tagName": "relationships"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "ZWL"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 6562.5,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 9570461702.54,
 						"dataSource": {
 							"page": "1028",
 							"fileName": "ESEFReport",
@@ -5994,10 +6029,11 @@
 							"tagName": "paradigms"
 						},
 						"comment": "copy haptic matrix",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BAM"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 742061478.08,
 						"dataSource": {
 							"page": "963-998",
 							"fileName": "IntegratedReport",
@@ -6005,7 +6041,8 @@
 							"tagName": "web services"
 						},
 						"comment": "reboot bluetooth hard drive",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "BSD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -6332,8 +6369,8 @@
 						"comment": "parse solid state interface",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 30314.25,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 9606912666.94,
 						"dataSource": {
 							"page": "316",
 							"fileName": "IntegratedReport",
@@ -6341,7 +6378,8 @@
 							"tagName": "applications"
 						},
 						"comment": "calculate solid state alarm",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "GHS"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -6985,9 +7023,9 @@
 						"quality": "Reported",
 						"currency": "AMD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1087-1151",
@@ -6996,10 +7034,11 @@
 							"tagName": "markets"
 						},
 						"comment": "generate back-end circuit",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BWP"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 17467.55,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 8566585143.57,
 						"dataSource": {
 							"page": "1143-1174",
 							"fileName": "AnnualReport",
@@ -7007,10 +7046,11 @@
 							"tagName": "partnerships"
 						},
 						"comment": "transmit bluetooth card",
-						"quality": null
+						"quality": null,
+						"currency": "CHF"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": null,
 						"dataSource": {
@@ -7358,7 +7398,7 @@
 						"quality": null
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "300-1250",
@@ -7367,7 +7407,8 @@
 							"tagName": "interfaces"
 						},
 						"comment": "connect primary hard drive",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "PAB"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -8039,8 +8080,8 @@
 						"quality": null,
 						"currency": "TWD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 27121.24,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 7308895187.45,
 						"dataSource": {
 							"page": "44-140",
 							"fileName": "IntegratedReport",
@@ -8048,10 +8089,11 @@
 							"tagName": "content"
 						},
 						"comment": "navigate haptic alarm",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "EUR"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 26019.96,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 7752875045.41,
 						"dataSource": {
 							"page": "493-1280",
 							"fileName": "ESEFReport",
@@ -8059,10 +8101,11 @@
 							"tagName": "deliverables"
 						},
 						"comment": "program wireless sensor",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "ETB"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 81700.58,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 9714172158.86,
 						"dataSource": {
 							"page": "973",
 							"fileName": "ESEFReport",
@@ -8070,10 +8113,11 @@
 							"tagName": "supply-chains"
 						},
 						"comment": "hack haptic array",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "SZL"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 31600.43,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 7784851558.97,
 						"dataSource": {
 							"page": "795",
 							"fileName": "IntegratedReport",
@@ -8081,15 +8125,17 @@
 							"tagName": "content"
 						},
 						"comment": "parse bluetooth program",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "GMD"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 1405398049.39,
 						"dataSource": null,
 						"comment": "back up haptic circuit",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "NGN"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
 						"dataSource": {
@@ -8484,8 +8530,8 @@
 						"comment": "override open-source circuit",
 						"quality": "NoDataFound"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 43145.58,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2223355504.68,
 						"dataSource": {
 							"page": "134-264",
 							"fileName": "IntegratedReport",
@@ -8493,7 +8539,8 @@
 							"tagName": "e-business"
 						},
 						"comment": "reboot 1080p array",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "KES"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
@@ -9157,8 +9204,8 @@
 						"currency": "MAD"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 38323.47,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 3909840029.66,
 						"dataSource": {
 							"page": "843",
 							"fileName": "AnnualReport",
@@ -9166,10 +9213,11 @@
 							"tagName": "paradigms"
 						},
 						"comment": null,
-						"quality": null
+						"quality": null,
+						"currency": "INR"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 49606.62,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 9347604163.93,
 						"dataSource": {
 							"page": "810-1215",
 							"fileName": "AnnualReport",
@@ -9177,10 +9225,11 @@
 							"tagName": "e-markets"
 						},
 						"comment": "back up open-source alarm",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "LBP"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 47747.18,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 6778069804.42,
 						"dataSource": {
 							"page": "1093",
 							"fileName": "AnnualReport",
@@ -9188,10 +9237,11 @@
 							"tagName": "synergies"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "KYD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 1042380540.16,
 						"dataSource": {
 							"page": "278",
 							"fileName": "AnnualReport",
@@ -9199,10 +9249,11 @@
 							"tagName": "web services"
 						},
 						"comment": "back up solid state bus",
-						"quality": null
+						"quality": null,
+						"currency": "NOK"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 96772.85,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 7122760196.22,
 						"dataSource": {
 							"page": "1016-1049",
 							"fileName": "AnnualReport",
@@ -9210,10 +9261,11 @@
 							"tagName": "mindshare"
 						},
 						"comment": "connect online firewall",
-						"quality": null
+						"quality": null,
+						"currency": "ZAR"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 42637.91,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 5473843161.02,
 						"dataSource": {
 							"page": "618",
 							"fileName": "AnnualReport",
@@ -9221,7 +9273,8 @@
 							"tagName": "ROI"
 						},
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "JPY"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -9465,11 +9518,12 @@
 					},
 					"waterConsumptionInCubicMeters": null,
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 3839.93,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 7400276237.17,
 						"dataSource": null,
 						"comment": "navigate haptic circuit",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "AOA"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -10198,7 +10252,7 @@
 						"quality": "NoDataFound",
 						"currency": "CUP"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "475-968",
@@ -10207,9 +10261,10 @@
 							"tagName": "convergence"
 						},
 						"comment": "generate cross-platform card",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "THB"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "642-646",
@@ -10218,10 +10273,11 @@
 							"tagName": "lifetime value"
 						},
 						"comment": "parse haptic port",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "LSL"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 94193,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 9488358411.48,
 						"dataSource": {
 							"page": "1143",
 							"fileName": "AnnualReport",
@@ -10229,10 +10285,11 @@
 							"tagName": "solutions"
 						},
 						"comment": "quantify mobile program",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "XCD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 20492.83,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 3588625204.28,
 						"dataSource": {
 							"page": "290-755",
 							"fileName": "AnnualReport",
@@ -10240,9 +10297,10 @@
 							"tagName": "solutions"
 						},
 						"comment": "input multi-byte hard drive",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "CUP"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "133-705",
@@ -10251,9 +10309,10 @@
 							"tagName": "interfaces"
 						},
 						"comment": "index cross-platform circuit",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "BND"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
 						"value": 87063.66,
@@ -10674,7 +10733,7 @@
 						"quality": "Audited"
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": "Yes",
 						"dataSource": {
@@ -11361,15 +11420,16 @@
 						"quality": null,
 						"currency": "RSD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": null,
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "TOP"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 6843.07,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 4978213254.36,
 						"dataSource": {
 							"page": "521",
 							"fileName": "IntegratedReport",
@@ -11377,10 +11437,11 @@
 							"tagName": "convergence"
 						},
 						"comment": "reboot wireless alarm",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "BAM"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 90194.1,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 2967522535.47,
 						"dataSource": {
 							"page": "788-1171",
 							"fileName": "AnnualReport",
@@ -11388,16 +11449,18 @@
 							"tagName": "niches"
 						},
 						"comment": "transmit redundant bus",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "UYU"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 8363.62,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 9096943119.08,
 						"dataSource": null,
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "BDT"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 61411.34,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 2165252265.98,
 						"dataSource": {
 							"page": "1069",
 							"fileName": "AnnualReport",
@@ -11405,7 +11468,8 @@
 							"tagName": "applications"
 						},
 						"comment": "quantify wireless alarm",
-						"quality": null
+						"quality": null,
+						"currency": "NGN"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -11790,8 +11854,8 @@
 						"comment": "program solid state microchip",
 						"quality": "Incomplete"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 53714879.32,
 						"dataSource": {
 							"page": "1023-1159",
 							"fileName": "AnnualReport",
@@ -11799,7 +11863,8 @@
 							"tagName": "relationships"
 						},
 						"comment": "navigate primary transmitter",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "SHP"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
@@ -12446,7 +12511,7 @@
 						"quality": "Audited",
 						"currency": "YER"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1015-1183",
@@ -12455,11 +12520,12 @@
 							"tagName": "e-markets"
 						},
 						"comment": "connect optical microchip",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "ETB"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 576262590.47,
 						"dataSource": {
 							"page": "43-794",
 							"fileName": "SustainabilityReport",
@@ -12467,9 +12533,10 @@
 							"tagName": "schemas"
 						},
 						"comment": "synthesize 1080p circuit",
-						"quality": null
+						"quality": null,
+						"currency": "XPF"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "352-1073",
@@ -12478,15 +12545,17 @@
 							"tagName": "relationships"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BND"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": null,
 						"comment": "connect mobile circuit",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "BYN"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "20",
@@ -12495,7 +12564,8 @@
 							"tagName": "content"
 						},
 						"comment": "transmit mobile array",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "USD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -12898,8 +12968,8 @@
 						"comment": "copy back-end program",
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 24796.06,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2349441759.29,
 						"dataSource": {
 							"page": "462",
 							"fileName": "SustainabilityReport",
@@ -12907,7 +12977,8 @@
 							"tagName": "models"
 						},
 						"comment": "calculate solid state system",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "EGP"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -13594,9 +13665,9 @@
 						"quality": "Estimated",
 						"currency": "OMR"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 62485,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 7057826365.35,
 						"dataSource": {
 							"page": "270-979",
 							"fileName": "IntegratedReport",
@@ -13604,10 +13675,11 @@
 							"tagName": "interfaces"
 						},
 						"comment": "hack bluetooth hard drive",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "NOK"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 52816.41,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 4252732791.94,
 						"dataSource": {
 							"page": "1139",
 							"fileName": "IntegratedReport",
@@ -13615,10 +13687,11 @@
 							"tagName": "blockchains"
 						},
 						"comment": "connect solid state driver",
-						"quality": null
+						"quality": null,
+						"currency": "MDL"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 47231.72,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 6128144941.76,
 						"dataSource": {
 							"page": "299-869",
 							"fileName": "SustainabilityReport",
@@ -13626,11 +13699,12 @@
 							"tagName": "e-commerce"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "KWD"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 74646.84,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 9341103041.08,
 						"dataSource": {
 							"page": "173",
 							"fileName": "IntegratedReport",
@@ -13638,7 +13712,8 @@
 							"tagName": "web services"
 						},
 						"comment": "back up multi-byte application",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "SCR"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
@@ -14012,8 +14087,8 @@
 						"comment": "compress neural microchip",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 93046.56,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 6386523186.23,
 						"dataSource": {
 							"page": "2-334",
 							"fileName": "IntegratedReport",
@@ -14021,7 +14096,8 @@
 							"tagName": "solutions"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "WST"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -14651,8 +14727,8 @@
 					"scope4GhgEmissionsInTonnes": null,
 					"enterpriseValue": null,
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 1797851230.95,
 						"dataSource": {
 							"page": "155",
 							"fileName": "AnnualReport",
@@ -14660,10 +14736,11 @@
 							"tagName": "architectures"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "SYP"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 974524244.66,
 						"dataSource": {
 							"page": "824-1161",
 							"fileName": "AnnualReport",
@@ -14671,10 +14748,11 @@
 							"tagName": "channels"
 						},
 						"comment": "copy cross-platform program",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "FJD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 77110.84,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 6899098423.31,
 						"dataSource": {
 							"page": "292-507",
 							"fileName": "AnnualReport",
@@ -14682,10 +14760,11 @@
 							"tagName": "systems"
 						},
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "SHP"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "774-1268",
@@ -14694,10 +14773,11 @@
 							"tagName": "channels"
 						},
 						"comment": "quantify cross-platform panel",
-						"quality": null
+						"quality": null,
+						"currency": "DZD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 23211.33,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 2828114123.55,
 						"dataSource": {
 							"page": "93-164",
 							"fileName": "SustainabilityReport",
@@ -14705,7 +14785,8 @@
 							"tagName": "partnerships"
 						},
 						"comment": "calculate 1080p firewall",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "DKK"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -15139,7 +15220,7 @@
 						"comment": "copy digital interface",
 						"quality": "NoDataFound"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "292-812",
@@ -15148,7 +15229,8 @@
 							"tagName": "niches"
 						},
 						"comment": "program optical bus",
-						"quality": null
+						"quality": null,
+						"currency": "BDT"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -15844,8 +15926,8 @@
 						"quality": "Reported",
 						"currency": "INR"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 51402.31,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 5518268868.33,
 						"dataSource": {
 							"page": "879",
 							"fileName": "IntegratedReport",
@@ -15853,16 +15935,18 @@
 							"tagName": "e-business"
 						},
 						"comment": "compress cross-platform application",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "LYD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 66087.46,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 7291768058.21,
 						"dataSource": null,
 						"comment": "quantify redundant program",
-						"quality": null
+						"quality": null,
+						"currency": "PEN"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 8323.87,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 7680776033.09,
 						"dataSource": {
 							"page": "329",
 							"fileName": "IntegratedReport",
@@ -15870,9 +15954,10 @@
 							"tagName": "channels"
 						},
 						"comment": null,
-						"quality": null
+						"quality": null,
+						"currency": "BDT"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "947",
@@ -15881,10 +15966,11 @@
 							"tagName": "experiences"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "MOP"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 1786.2,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 5615635879.8,
 						"dataSource": {
 							"page": "364",
 							"fileName": "IntegratedReport",
@@ -15892,10 +15978,11 @@
 							"tagName": "interfaces"
 						},
 						"comment": "connect primary matrix",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "ALL"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 95339.32,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 2099744942.97,
 						"dataSource": {
 							"page": "1013-1214",
 							"fileName": "IntegratedReport",
@@ -15903,7 +15990,8 @@
 							"tagName": "web services"
 						},
 						"comment": "override cross-platform sensor",
-						"quality": null
+						"quality": null,
+						"currency": "XOF"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -16170,8 +16258,8 @@
 						"quality": "NoDataFound"
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 55183.24,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 5900670804.55,
 						"dataSource": {
 							"page": "1140-1144",
 							"fileName": "IntegratedReport",
@@ -16179,7 +16267,8 @@
 							"tagName": "partnerships"
 						},
 						"comment": "generate solid state feed",
-						"quality": null
+						"quality": null,
+						"currency": "MMK"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -16865,8 +16954,8 @@
 						"quality": "Incomplete",
 						"currency": "COP"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 77737.74,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 3891565871.89,
 						"dataSource": {
 							"page": "391-718",
 							"fileName": "AnnualReport",
@@ -16874,10 +16963,11 @@
 							"tagName": "schemas"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "SLE"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 79482.78,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 2003299796.49,
 						"dataSource": {
 							"page": "498-691",
 							"fileName": "AnnualReport",
@@ -16885,10 +16975,11 @@
 							"tagName": "models"
 						},
 						"comment": "quantify auxiliary monitor",
-						"quality": null
+						"quality": null,
+						"currency": "SSP"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 862000039.77,
 						"dataSource": {
 							"page": "402",
 							"fileName": "IntegratedReport",
@@ -16896,9 +16987,10 @@
 							"tagName": "architectures"
 						},
 						"comment": "quantify haptic alarm",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "YER"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "141",
@@ -16907,15 +16999,17 @@
 							"tagName": "networks"
 						},
 						"comment": "generate solid state interface",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "KZT"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": null,
 						"comment": "program open-source interface",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "TZS"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1135-1293",
@@ -16924,7 +17018,8 @@
 							"tagName": "content"
 						},
 						"comment": "back up mobile driver",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "LSL"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -17189,8 +17284,8 @@
 						"comment": "back up solid state system",
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 97276.28,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2633857689.8,
 						"dataSource": {
 							"page": "280-884",
 							"fileName": "IntegratedReport",
@@ -17198,7 +17293,8 @@
 							"tagName": "partnerships"
 						},
 						"comment": null,
-						"quality": null
+						"quality": null,
+						"currency": "ZAR"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -17857,8 +17953,8 @@
 					},
 					"enterpriseValue": null,
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 78359.37,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 4988206932.32,
 						"dataSource": {
 							"page": "681-995",
 							"fileName": "SustainabilityReport",
@@ -17866,9 +17962,10 @@
 							"tagName": "users"
 						},
 						"comment": "reboot bluetooth hard drive",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "SOS"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1157",
@@ -17877,10 +17974,11 @@
 							"tagName": "metrics"
 						},
 						"comment": "back up 1080p circuit",
-						"quality": null
+						"quality": null,
+						"currency": "ISK"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 30944.87,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 2670490727.76,
 						"dataSource": {
 							"page": "295-1275",
 							"fileName": "IntegratedReport",
@@ -17888,10 +17986,11 @@
 							"tagName": "applications"
 						},
 						"comment": "parse haptic circuit",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "GIP"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 48476.9,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 9460242053.03,
 						"dataSource": {
 							"page": "1182",
 							"fileName": "IntegratedReport",
@@ -17899,9 +17998,10 @@
 							"tagName": "supply-chains"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "KZT"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "917",
@@ -17910,10 +18010,11 @@
 							"tagName": "solutions"
 						},
 						"comment": "generate online port",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "BYN"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 1151748872.36,
 						"dataSource": {
 							"page": "1188-1273",
 							"fileName": "IntegratedReport",
@@ -17921,7 +18022,8 @@
 							"tagName": "networks"
 						},
 						"comment": "calculate 1080p feed",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "ARS"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -18221,8 +18323,8 @@
 						"comment": "calculate primary feed",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 9338.66,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2167914898.6,
 						"dataSource": {
 							"page": "1085-1150",
 							"fileName": "SustainabilityReport",
@@ -18230,7 +18332,8 @@
 							"tagName": "lifetime value"
 						},
 						"comment": "bypass primary microchip",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "BHD"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -18895,15 +18998,16 @@
 						"currency": "JOD"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": null,
 						"comment": "quantify auxiliary bus",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "CHF"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 44277.66,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 6254168436.86,
 						"dataSource": {
 							"page": "938",
 							"fileName": "SustainabilityReport",
@@ -18911,11 +19015,12 @@
 							"tagName": "experiences"
 						},
 						"comment": "reboot cross-platform firewall",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "KHR"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 170416270.84,
 						"dataSource": {
 							"page": "1018",
 							"fileName": "ESEFReport",
@@ -18923,10 +19028,11 @@
 							"tagName": "networks"
 						},
 						"comment": "compress auxiliary interface",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "CAD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 10405.93,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 6011217557.83,
 						"dataSource": {
 							"page": "62-1118",
 							"fileName": "SustainabilityReport",
@@ -18934,7 +19040,8 @@
 							"tagName": "solutions"
 						},
 						"comment": "copy virtual protocol",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "BMD"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -19416,8 +19523,8 @@
 						"comment": "back up virtual system",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 1499196982.47,
 						"dataSource": {
 							"page": "3-242",
 							"fileName": "IntegratedReport",
@@ -19425,7 +19532,8 @@
 							"tagName": "metrics"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "JMD"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -20115,14 +20223,15 @@
 						"quality": "Reported",
 						"currency": "TTD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 77290.43,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 3690118498.63,
 						"dataSource": null,
 						"comment": "back up digital monitor",
-						"quality": null
+						"quality": null,
+						"currency": "SLE"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 84958.24,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 6366014778.62,
 						"dataSource": {
 							"page": "1068",
 							"fileName": "ESEFReport",
@@ -20130,10 +20239,11 @@
 							"tagName": "users"
 						},
 						"comment": "override cross-platform pixel",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "TOP"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 88487.25,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 8991267404.06,
 						"dataSource": {
 							"page": "431",
 							"fileName": "ESEFReport",
@@ -20141,9 +20251,10 @@
 							"tagName": "eyeballs"
 						},
 						"comment": "copy primary firewall",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "UGX"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "362-1057",
@@ -20152,10 +20263,11 @@
 							"tagName": "web services"
 						},
 						"comment": "calculate redundant feed",
-						"quality": null
+						"quality": null,
+						"currency": "BHD"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 62640.51,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 6088880940.81,
 						"dataSource": {
 							"page": "870-1175",
 							"fileName": "IntegratedReport",
@@ -20163,10 +20275,11 @@
 							"tagName": "technologies"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "NOK"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 4165.01,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 7185447083.32,
 						"dataSource": {
 							"page": "903",
 							"fileName": "IntegratedReport",
@@ -20174,7 +20287,8 @@
 							"tagName": "interfaces"
 						},
 						"comment": "reboot digital array",
-						"quality": null
+						"quality": null,
+						"currency": "ARS"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -20454,8 +20568,8 @@
 						"comment": "transmit multi-byte driver",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 10157.25,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 5738050339.28,
 						"dataSource": {
 							"page": "714",
 							"fileName": "IntegratedReport",
@@ -20463,7 +20577,8 @@
 							"tagName": "web services"
 						},
 						"comment": "quantify primary alarm",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "BIF"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
@@ -21153,8 +21268,8 @@
 						"quality": "Reported",
 						"currency": "GEL"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 4240.95,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 4733797651.72,
 						"dataSource": {
 							"page": "934-1022",
 							"fileName": "AnnualReport",
@@ -21162,10 +21277,11 @@
 							"tagName": "infrastructures"
 						},
 						"comment": "transmit auxiliary program",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "ARS"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 51022.53,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 7803120885.51,
 						"dataSource": {
 							"page": "921",
 							"fileName": "IntegratedReport",
@@ -21173,10 +21289,11 @@
 							"tagName": "relationships"
 						},
 						"comment": "program digital panel",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "LRD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 64376.02,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 4207886827.64,
 						"dataSource": {
 							"page": "149-1044",
 							"fileName": "IntegratedReport",
@@ -21184,9 +21301,10 @@
 							"tagName": "content"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "OMR"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "68-650",
@@ -21195,11 +21313,12 @@
 							"tagName": "communities"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "MMK"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 191807299.85,
 						"dataSource": {
 							"page": "597",
 							"fileName": "SustainabilityReport",
@@ -21207,7 +21326,8 @@
 							"tagName": "supply-chains"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "PYG"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -21674,7 +21794,7 @@
 						"comment": "calculate solid state monitor",
 						"quality": "NoDataFound"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "514",
@@ -21683,7 +21803,8 @@
 							"tagName": "interfaces"
 						},
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "STN"
 					},
 					"waterManagementPolicy": {
 						"value": null,
@@ -22390,8 +22511,8 @@
 						"quality": "Incomplete",
 						"currency": "UYU"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 8575.88,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 8121080594.14,
 						"dataSource": {
 							"page": "877",
 							"fileName": "AnnualReport",
@@ -22399,10 +22520,11 @@
 							"tagName": "e-business"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "BGN"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 92058.94,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 9842358913.74,
 						"dataSource": {
 							"page": "357-951",
 							"fileName": "AnnualReport",
@@ -22410,10 +22532,11 @@
 							"tagName": "partnerships"
 						},
 						"comment": null,
-						"quality": null
+						"quality": null,
+						"currency": "VND"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 72778.91,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 2976834215.22,
 						"dataSource": {
 							"page": "962",
 							"fileName": "ESEFReport",
@@ -22421,17 +22544,19 @@
 							"tagName": "solutions"
 						},
 						"comment": "copy solid state port",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "SAR"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 1543635465.2,
 						"dataSource": null,
 						"comment": "compress neural program",
-						"quality": null
+						"quality": null,
+						"currency": "TMT"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 61358.8,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 7879437780.94,
 						"dataSource": {
 							"page": "764-1236",
 							"fileName": "AnnualReport",
@@ -22439,7 +22564,8 @@
 							"tagName": "solutions"
 						},
 						"comment": "index solid state interface",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "NGN"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -22876,7 +23002,7 @@
 						"quality": null
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": null,
 						"dataSource": {
@@ -23594,8 +23720,8 @@
 						"currency": "CHF"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 31283.85,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 3801100186.54,
 						"dataSource": {
 							"page": "621",
 							"fileName": "IntegratedReport",
@@ -23603,11 +23729,12 @@
 							"tagName": "interfaces"
 						},
 						"comment": "copy optical card",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "GMD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 9875.9,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 6222598226.74,
 						"dataSource": {
 							"page": "416-546",
 							"fileName": "IntegratedReport",
@@ -23615,10 +23742,11 @@
 							"tagName": "paradigms"
 						},
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "BIF"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 82911.12,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 7397088278.09,
 						"dataSource": {
 							"page": "136",
 							"fileName": "IntegratedReport",
@@ -23626,10 +23754,11 @@
 							"tagName": "initiatives"
 						},
 						"comment": "program solid state system",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "TJS"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 51139.26,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 5964079601.69,
 						"dataSource": {
 							"page": "626",
 							"fileName": "IntegratedReport",
@@ -23637,13 +23766,15 @@
 							"tagName": "content"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "LRD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 38767.95,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 6353432252.07,
 						"dataSource": null,
 						"comment": "bypass 1080p capacitor",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "INR"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -24043,8 +24174,8 @@
 						"quality": null
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 29665.3,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 3021760908.88,
 						"dataSource": {
 							"page": "1168",
 							"fileName": "IntegratedReport",
@@ -24052,7 +24183,8 @@
 							"tagName": "eyeballs"
 						},
 						"comment": "parse bluetooth card",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "GEL"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
@@ -24767,7 +24899,7 @@
 						"quality": "Reported",
 						"currency": "RWF"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1073",
@@ -24776,11 +24908,12 @@
 							"tagName": "infrastructures"
 						},
 						"comment": "synthesize optical protocol",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "RWF"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 54111.39,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 9434973970.06,
 						"dataSource": {
 							"page": "713-1299",
 							"fileName": "SustainabilityReport",
@@ -24788,10 +24921,11 @@
 							"tagName": "ROI"
 						},
 						"comment": "quantify auxiliary driver",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "MKD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 1302286938.29,
 						"dataSource": {
 							"page": "1009-1011",
 							"fileName": "SustainabilityReport",
@@ -24799,9 +24933,10 @@
 							"tagName": "systems"
 						},
 						"comment": "generate mobile port",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "AUD"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "496-641",
@@ -24810,9 +24945,10 @@
 							"tagName": "applications"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "AZN"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": null,
 						"dataSource": {
@@ -25195,8 +25331,8 @@
 						"comment": "parse optical bus",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 28819.58,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 3778640839.74,
 						"dataSource": {
 							"page": "648-663",
 							"fileName": "SustainabilityReport",
@@ -25204,7 +25340,8 @@
 							"tagName": "niches"
 						},
 						"comment": "reboot back-end monitor",
-						"quality": null
+						"quality": null,
+						"currency": "GBP"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
@@ -25846,8 +25983,8 @@
 						"quality": "Estimated",
 						"currency": "UGX"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 68983.67,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 7209415955.01,
 						"dataSource": {
 							"page": "820-1190",
 							"fileName": "IntegratedReport",
@@ -25855,10 +25992,11 @@
 							"tagName": "ROI"
 						},
 						"comment": "hack redundant protocol",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "PYG"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 80537.75,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 3223299835.81,
 						"dataSource": {
 							"page": "821-1297",
 							"fileName": "IntegratedReport",
@@ -25866,10 +26004,11 @@
 							"tagName": "e-business"
 						},
 						"comment": "input solid state circuit",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "SYP"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 38630.84,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 6574902308.64,
 						"dataSource": {
 							"page": "199",
 							"fileName": "ESEFReport",
@@ -25877,9 +26016,10 @@
 							"tagName": "partnerships"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "INR"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "362-914",
@@ -25888,9 +26028,10 @@
 							"tagName": "channels"
 						},
 						"comment": "calculate haptic microchip",
-						"quality": null
+						"quality": null,
+						"currency": "HTG"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1057",
@@ -25899,9 +26040,10 @@
 							"tagName": "applications"
 						},
 						"comment": "generate solid state microchip",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "DKK"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "895-1182",
@@ -25910,7 +26052,8 @@
 							"tagName": "deliverables"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "KWD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -26313,8 +26456,8 @@
 						"comment": "bypass mobile alarm",
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 40871.26,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2029762368.18,
 						"dataSource": {
 							"page": "544",
 							"fileName": "AnnualReport",
@@ -26322,7 +26465,8 @@
 							"tagName": "interfaces"
 						},
 						"comment": "index primary card",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "ISK"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -27017,8 +27161,8 @@
 						"currency": "BHD"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 1694285317.79,
 						"dataSource": {
 							"page": "591-997",
 							"fileName": "SustainabilityReport",
@@ -27026,10 +27170,11 @@
 							"tagName": "models"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "AWG"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 818657202.18,
 						"dataSource": {
 							"page": "854-1119",
 							"fileName": "SustainabilityReport",
@@ -27037,9 +27182,10 @@
 							"tagName": "bandwidth"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "KYD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "25-547",
@@ -27048,12 +27194,13 @@
 							"tagName": "relationships"
 						},
 						"comment": "input 1080p feed",
-						"quality": null
+						"quality": null,
+						"currency": "MVR"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 698069040.66,
 						"dataSource": {
 							"page": "934",
 							"fileName": "IntegratedReport",
@@ -27061,7 +27208,8 @@
 							"tagName": "partnerships"
 						},
 						"comment": "parse online feed",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "INR"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -27489,8 +27637,8 @@
 						"comment": "reboot 1080p matrix",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 23483.7,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 8786392461.05,
 						"dataSource": {
 							"page": "241-813",
 							"fileName": "ESEFReport",
@@ -27498,7 +27646,8 @@
 							"tagName": "relationships"
 						},
 						"comment": "copy open-source sensor",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "DOP"
 					},
 					"waterManagementPolicy": {
 						"value": null,
@@ -28233,8 +28382,8 @@
 						"quality": "NoDataFound",
 						"currency": "FJD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 40258.06,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 5355154315.48,
 						"dataSource": {
 							"page": "724",
 							"fileName": "AnnualReport",
@@ -28242,10 +28391,11 @@
 							"tagName": "convergence"
 						},
 						"comment": "generate optical card",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "IRR"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 954729453.66,
 						"dataSource": {
 							"page": "1060",
 							"fileName": "AnnualReport",
@@ -28253,12 +28403,13 @@
 							"tagName": "markets"
 						},
 						"comment": "reboot back-end card",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "LRD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 46805.63,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 7395225283.69,
 						"dataSource": {
 							"page": "521-982",
 							"fileName": "AnnualReport",
@@ -28266,10 +28417,11 @@
 							"tagName": "partnerships"
 						},
 						"comment": "quantify bluetooth system",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "KWD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 87034.53,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 6419078619.22,
 						"dataSource": {
 							"page": "1040",
 							"fileName": "SustainabilityReport",
@@ -28277,7 +28429,8 @@
 							"tagName": "supply-chains"
 						},
 						"comment": "transmit solid state panel",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "TZS"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -28600,8 +28753,8 @@
 						"comment": null,
 						"quality": "Incomplete"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 27581.84,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 5994262690.66,
 						"dataSource": {
 							"page": "209",
 							"fileName": "ESEFReport",
@@ -28609,7 +28762,8 @@
 							"tagName": "solutions"
 						},
 						"comment": "copy optical firewall",
-						"quality": null
+						"quality": null,
+						"currency": "FJD"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -29283,8 +29437,8 @@
 						"quality": "Incomplete",
 						"currency": "ERN"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 31725.34,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 5184755055.23,
 						"dataSource": {
 							"page": "584",
 							"fileName": "IntegratedReport",
@@ -29292,9 +29446,10 @@
 							"tagName": "channels"
 						},
 						"comment": "parse redundant interface",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "GMD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "420",
@@ -29303,10 +29458,11 @@
 							"tagName": "mindshare"
 						},
 						"comment": "parse wireless driver",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "MGA"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 74910668.19,
 						"dataSource": {
 							"page": "412",
 							"fileName": "IntegratedReport",
@@ -29314,9 +29470,10 @@
 							"tagName": "e-business"
 						},
 						"comment": "back up bluetooth monitor",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "MKD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "815-1057",
@@ -29325,10 +29482,11 @@
 							"tagName": "functionalities"
 						},
 						"comment": "navigate multi-byte alarm",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "INR"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 9974.96,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 7583918897.44,
 						"dataSource": {
 							"page": "999-1233",
 							"fileName": "SustainabilityReport",
@@ -29336,10 +29494,11 @@
 							"tagName": "e-business"
 						},
 						"comment": "reboot open-source bandwidth",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "BIF"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 17945.68,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 7046205168.59,
 						"dataSource": {
 							"page": "214",
 							"fileName": "SustainabilityReport",
@@ -29347,7 +29506,8 @@
 							"tagName": "partnerships"
 						},
 						"comment": "compress back-end system",
-						"quality": null
+						"quality": null,
+						"currency": "CLP"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -29660,8 +29820,8 @@
 						"comment": "reboot mobile bandwidth",
 						"quality": "NoDataFound"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 1349.47,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 9533535472.59,
 						"dataSource": {
 							"page": "408-830",
 							"fileName": "IntegratedReport",
@@ -29669,7 +29829,8 @@
 							"tagName": "solutions"
 						},
 						"comment": "parse neural monitor",
-						"quality": null
+						"quality": null,
+						"currency": "ALL"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -30379,8 +30540,8 @@
 						"quality": "Audited",
 						"currency": "ANG"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 604262517.3,
 						"dataSource": {
 							"page": "837",
 							"fileName": "IntegratedReport",
@@ -30388,9 +30549,10 @@
 							"tagName": "content"
 						},
 						"comment": "navigate open-source alarm",
-						"quality": null
+						"quality": null,
+						"currency": "LRD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "274-625",
@@ -30399,11 +30561,12 @@
 							"tagName": "synergies"
 						},
 						"comment": "transmit cross-platform driver",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "PEN"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 1965251362.41,
 						"dataSource": {
 							"page": "599-1035",
 							"fileName": "AnnualReport",
@@ -30411,10 +30574,11 @@
 							"tagName": "e-business"
 						},
 						"comment": "bypass solid state panel",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "BAM"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 48801.23,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 4561347928.83,
 						"dataSource": {
 							"page": "299",
 							"fileName": "IntegratedReport",
@@ -30422,10 +30586,11 @@
 							"tagName": "content"
 						},
 						"comment": "copy haptic firewall",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "LAK"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 27442.91,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 9626899433.79,
 						"dataSource": {
 							"page": "305-388",
 							"fileName": "IntegratedReport",
@@ -30433,7 +30598,8 @@
 							"tagName": "convergence"
 						},
 						"comment": "connect primary card",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "FJD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -30802,8 +30968,8 @@
 						"comment": "hack cross-platform card",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 78085.81,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2906434198.37,
 						"dataSource": {
 							"page": "702-897",
 							"fileName": "AnnualReport",
@@ -30811,7 +30977,8 @@
 							"tagName": "web services"
 						},
 						"comment": "override virtual application",
-						"quality": null
+						"quality": null,
+						"currency": "SOS"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -31431,14 +31598,15 @@
 						"quality": null,
 						"currency": "WST"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 45104.26,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 9757932962.39,
 						"dataSource": null,
 						"comment": "calculate cross-platform array",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "KMF"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 6598.73,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 8230301328.01,
 						"dataSource": {
 							"page": "912-970",
 							"fileName": "SustainabilityReport",
@@ -31446,10 +31614,11 @@
 							"tagName": "solutions"
 						},
 						"comment": null,
-						"quality": null
+						"quality": null,
+						"currency": "BAM"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 619116113.52,
 						"dataSource": {
 							"page": "552-874",
 							"fileName": "AnnualReport",
@@ -31457,10 +31626,11 @@
 							"tagName": "initiatives"
 						},
 						"comment": "copy mobile card",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "WST"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 17607.67,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 2811759144.53,
 						"dataSource": {
 							"page": "289",
 							"fileName": "AnnualReport",
@@ -31468,10 +31638,11 @@
 							"tagName": "channels"
 						},
 						"comment": "index back-end transmitter",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "CLP"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 1846258433.07,
 						"dataSource": {
 							"page": "630-1141",
 							"fileName": "AnnualReport",
@@ -31479,13 +31650,15 @@
 							"tagName": "solutions"
 						},
 						"comment": "navigate solid state bandwidth",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "XCD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 22377.24,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 3499636121.56,
 						"dataSource": null,
 						"comment": "reboot bluetooth driver",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "DJF"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -31755,8 +31928,8 @@
 						"comment": null,
 						"quality": "Incomplete"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 89136.07,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 9496697948.78,
 						"dataSource": {
 							"page": "669-1288",
 							"fileName": "AnnualReport",
@@ -31764,7 +31937,8 @@
 							"tagName": "deliverables"
 						},
 						"comment": "synthesize haptic microchip",
-						"quality": null
+						"quality": null,
+						"currency": "USD"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
@@ -32420,9 +32594,9 @@
 						"quality": null,
 						"currency": "SDG"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 53507.34,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 8324477456.05,
 						"dataSource": {
 							"page": "607-767",
 							"fileName": "SustainabilityReport",
@@ -32430,10 +32604,11 @@
 							"tagName": "bandwidth"
 						},
 						"comment": "transmit solid state interface",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "MGA"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 11326.5,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 5977256349.29,
 						"dataSource": {
 							"page": "944-1114",
 							"fileName": "SustainabilityReport",
@@ -32441,17 +32616,19 @@
 							"tagName": "systems"
 						},
 						"comment": "back up haptic firewall",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "BND"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 11215.35,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 2294783641.12,
 						"dataSource": null,
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BND"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 22213.03,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 9993793724.58,
 						"dataSource": {
 							"page": "1025-1197",
 							"fileName": "AnnualReport",
@@ -32459,7 +32636,8 @@
 							"tagName": "architectures"
 						},
 						"comment": "index cross-platform sensor",
-						"quality": null
+						"quality": null,
+						"currency": "DJF"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -32878,8 +33056,8 @@
 						"comment": "parse haptic interface",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 85845.03,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2963876524.01,
 						"dataSource": {
 							"page": "277-1080",
 							"fileName": "SustainabilityReport",
@@ -32887,7 +33065,8 @@
 							"tagName": "mindshare"
 						},
 						"comment": "generate wireless alarm",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "TTD"
 					},
 					"waterManagementPolicy": {
 						"value": null,
@@ -33570,16 +33749,17 @@
 						"quality": "Audited",
 						"currency": "BMD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 245081421.45,
 						"dataSource": null,
 						"comment": "back up haptic program",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "RSD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 3646.67,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 4851027685.22,
 						"dataSource": {
 							"page": "311",
 							"fileName": "SustainabilityReport",
@@ -33587,11 +33767,12 @@
 							"tagName": "e-business"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "AOA"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 72076.37,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 3799797385,
 						"dataSource": {
 							"page": "784",
 							"fileName": "IntegratedReport",
@@ -33599,7 +33780,8 @@
 							"tagName": "action-items"
 						},
 						"comment": "synthesize haptic system",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "RUB"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -33884,8 +34066,8 @@
 						"comment": "override redundant bus",
 						"quality": "NoDataFound"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 75027.27,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 8773305623.33,
 						"dataSource": {
 							"page": "787",
 							"fileName": "SustainabilityReport",
@@ -33893,7 +34075,8 @@
 							"tagName": "eyeballs"
 						},
 						"comment": "compress primary transmitter",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "SDG"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -34598,8 +34781,8 @@
 						"quality": "Audited",
 						"currency": "PYG"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 52254.14,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 9142239741.05,
 						"dataSource": {
 							"page": "809",
 							"fileName": "AnnualReport",
@@ -34607,10 +34790,11 @@
 							"tagName": "lifetime value"
 						},
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "MAD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 52342.59,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 6979070636.45,
 						"dataSource": {
 							"page": "891-1000",
 							"fileName": "AnnualReport",
@@ -34618,10 +34802,11 @@
 							"tagName": "bandwidth"
 						},
 						"comment": "reboot cross-platform alarm",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "MAD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 47977.27,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 3101818433.5,
 						"dataSource": {
 							"page": "626-1250",
 							"fileName": "AnnualReport",
@@ -34629,10 +34814,11 @@
 							"tagName": "channels"
 						},
 						"comment": "back up bluetooth transmitter",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "KYD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "506-846",
@@ -34641,9 +34827,10 @@
 							"tagName": "niches"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "XPF"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": null,
 						"dataSource": {
@@ -35080,7 +35267,7 @@
 						"quality": "Reported"
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": "No",
 						"dataSource": {
@@ -35752,8 +35939,8 @@
 						"quality": "Incomplete",
 						"currency": "GIP"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 56661.44,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 2896985197.44,
 						"dataSource": {
 							"page": "846-1270",
 							"fileName": "ESEFReport",
@@ -35761,10 +35948,11 @@
 							"tagName": "convergence"
 						},
 						"comment": "parse virtual panel",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "MRU"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 7236.54,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 6516613780.99,
 						"dataSource": {
 							"page": "1130-1249",
 							"fileName": "ESEFReport",
@@ -35772,10 +35960,11 @@
 							"tagName": "networks"
 						},
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "BBD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 24431.86,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 7114848862.4,
 						"dataSource": {
 							"page": "788",
 							"fileName": "ESEFReport",
@@ -35783,17 +35972,19 @@
 							"tagName": "functionalities"
 						},
 						"comment": "reboot haptic capacitor",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "DZD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 725923313.29,
 						"dataSource": null,
 						"comment": "index multi-byte driver",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "BZD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 71492.1,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 6572811049.41,
 						"dataSource": {
 							"page": "1023-1232",
 							"fileName": "ESEFReport",
@@ -35801,7 +35992,8 @@
 							"tagName": "deliverables"
 						},
 						"comment": "navigate open-source microchip",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "RUB"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -36159,7 +36351,7 @@
 						"comment": "generate bluetooth card",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": "No",
 						"dataSource": {
@@ -36884,7 +37076,7 @@
 						"quality": null,
 						"currency": "BMD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "500-663",
@@ -36893,10 +37085,11 @@
 							"tagName": "e-commerce"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "BHD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 48480.31,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 8902687595.7,
 						"dataSource": {
 							"page": "964-1215",
 							"fileName": "SustainabilityReport",
@@ -36904,10 +37097,11 @@
 							"tagName": "methodologies"
 						},
 						"comment": "transmit 1080p interface",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "KZT"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 83189.58,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 5467661221.05,
 						"dataSource": {
 							"page": "205",
 							"fileName": "ESEFReport",
@@ -36915,9 +37109,10 @@
 							"tagName": "mindshare"
 						},
 						"comment": "compress open-source interface",
-						"quality": null
+						"quality": null,
+						"currency": "TMT"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "5",
@@ -36926,9 +37121,10 @@
 							"tagName": "relationships"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "PYG"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1014",
@@ -36937,9 +37133,10 @@
 							"tagName": "networks"
 						},
 						"comment": "hack virtual panel",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "XOF"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "3-1012",
@@ -36948,7 +37145,8 @@
 							"tagName": "schemas"
 						},
 						"comment": "input redundant port",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "WST"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -37299,7 +37497,7 @@
 						"comment": "reboot primary card",
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "271-683",
@@ -37308,7 +37506,8 @@
 							"tagName": "convergence"
 						},
 						"comment": "bypass 1080p program",
-						"quality": null
+						"quality": null,
+						"currency": "GTQ"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -38008,8 +38207,8 @@
 						"quality": "Audited",
 						"currency": "SRD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 91077.46,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 3758895746.43,
 						"dataSource": {
 							"page": "376-1257",
 							"fileName": "IntegratedReport",
@@ -38017,10 +38216,11 @@
 							"tagName": "metrics"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "VES"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 387112542.52,
 						"dataSource": {
 							"page": "188-573",
 							"fileName": "IntegratedReport",
@@ -38028,10 +38228,11 @@
 							"tagName": "synergies"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "CVE"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 29767.2,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 9886696080.22,
 						"dataSource": {
 							"page": "177",
 							"fileName": "IntegratedReport",
@@ -38039,10 +38240,11 @@
 							"tagName": "web services"
 						},
 						"comment": "generate neural circuit",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "GEL"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 77296.41,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 2385134270.88,
 						"dataSource": {
 							"page": "1039",
 							"fileName": "ESEFReport",
@@ -38050,16 +38252,18 @@
 							"tagName": "channels"
 						},
 						"comment": "override mobile monitor",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "SLE"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 23889.37,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 8536851359.53,
 						"dataSource": null,
 						"comment": "back up redundant protocol",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "DOP"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 981089831.33,
 						"dataSource": {
 							"page": "32",
 							"fileName": "ESEFReport",
@@ -38067,7 +38271,8 @@
 							"tagName": "e-business"
 						},
 						"comment": "parse digital sensor",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "PAB"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": null,
@@ -38361,8 +38566,8 @@
 						"comment": null,
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 3788.36,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 5595703809.52,
 						"dataSource": {
 							"page": "125",
 							"fileName": "ESEFReport",
@@ -38370,7 +38575,8 @@
 							"tagName": "e-commerce"
 						},
 						"comment": "index virtual sensor",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "AOA"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -39058,10 +39264,10 @@
 						"quality": "Reported",
 						"currency": "CHF"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 19235.82,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 6634683771.99,
 						"dataSource": {
 							"page": "326-727",
 							"fileName": "ESEFReport",
@@ -39069,10 +39275,11 @@
 							"tagName": "solutions"
 						},
 						"comment": "hack cross-platform transmitter",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "COP"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 72691.37,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 7567461368.16,
 						"dataSource": {
 							"page": "906-976",
 							"fileName": "SustainabilityReport",
@@ -39080,10 +39287,11 @@
 							"tagName": "paradigms"
 						},
 						"comment": "compress optical capacitor",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "RWF"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 26322.12,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 3905806662.51,
 						"dataSource": {
 							"page": "789",
 							"fileName": "SustainabilityReport",
@@ -39091,9 +39299,10 @@
 							"tagName": "blockchains"
 						},
 						"comment": "compress redundant bandwidth",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "ETB"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "737-1102",
@@ -39102,7 +39311,8 @@
 							"tagName": "markets"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "TZS"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -39570,8 +39780,8 @@
 						"comment": "compress redundant feed",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 95163.69,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 7535926990.68,
 						"dataSource": {
 							"page": "793",
 							"fileName": "IntegratedReport",
@@ -39579,7 +39789,8 @@
 							"tagName": "models"
 						},
 						"comment": "reboot digital pixel",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "XOF"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -40253,9 +40464,9 @@
 						"quality": "Reported",
 						"currency": "UGX"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 1928094958.42,
 						"dataSource": {
 							"page": "566-598",
 							"fileName": "IntegratedReport",
@@ -40263,9 +40474,10 @@
 							"tagName": "technologies"
 						},
 						"comment": "synthesize haptic sensor",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "WST"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "389-900",
@@ -40274,10 +40486,11 @@
 							"tagName": "initiatives"
 						},
 						"comment": "parse virtual application",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "MNT"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 15766.58,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 4255239067.13,
 						"dataSource": {
 							"page": "520",
 							"fileName": "IntegratedReport",
@@ -40285,10 +40498,11 @@
 							"tagName": "systems"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "CAD"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 75299.11,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 8693679701.54,
 						"dataSource": {
 							"page": "360-1021",
 							"fileName": "SustainabilityReport",
@@ -40296,10 +40510,11 @@
 							"tagName": "technologies"
 						},
 						"comment": "index haptic sensor",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "SDG"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 99041.39,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 6783234535.25,
 						"dataSource": {
 							"page": "791-1051",
 							"fileName": "AnnualReport",
@@ -40307,7 +40522,8 @@
 							"tagName": "channels"
 						},
 						"comment": "navigate primary array",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "ZMW"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
@@ -40675,8 +40891,8 @@
 						"comment": "reboot wireless transmitter",
 						"quality": "Incomplete"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 1361196383.36,
 						"dataSource": {
 							"page": "224-362",
 							"fileName": "AnnualReport",
@@ -40684,7 +40900,8 @@
 							"tagName": "markets"
 						},
 						"comment": "back up bluetooth bandwidth",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "FKP"
 					},
 					"waterManagementPolicy": {
 						"value": null,
@@ -41397,7 +41614,7 @@
 						"quality": "Audited",
 						"currency": "ISK"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "426-1258",
@@ -41406,16 +41623,18 @@
 							"tagName": "initiatives"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "EUR"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 1764481163.11,
 						"dataSource": null,
 						"comment": null,
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "DOP"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 63361.04,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 2657900571.36,
 						"dataSource": {
 							"page": "346-955",
 							"fileName": "IntegratedReport",
@@ -41423,11 +41642,12 @@
 							"tagName": "schemas"
 						},
 						"comment": "bypass open-source circuit",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "NPR"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 64233.97,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 8964579126.34,
 						"dataSource": {
 							"page": "195",
 							"fileName": "SustainabilityReport",
@@ -41435,10 +41655,11 @@
 							"tagName": "paradigms"
 						},
 						"comment": "reboot back-end feed",
-						"quality": null
+						"quality": null,
+						"currency": "NZD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 499362163.24,
 						"dataSource": {
 							"page": "700",
 							"fileName": "ESEFReport",
@@ -41446,7 +41667,8 @@
 							"tagName": "synergies"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "TTD"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -41730,7 +41952,7 @@
 						"comment": null,
 						"quality": "Incomplete"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": null,
 						"dataSource": {
@@ -42472,7 +42694,7 @@
 						"quality": "Estimated",
 						"currency": "KPW"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "255-580",
@@ -42481,10 +42703,11 @@
 							"tagName": "experiences"
 						},
 						"comment": "connect mobile matrix",
-						"quality": null
+						"quality": null,
+						"currency": "MOP"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "713-1025",
@@ -42493,9 +42716,10 @@
 							"tagName": "web services"
 						},
 						"comment": "input redundant microchip",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "LBP"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "31",
@@ -42504,16 +42728,18 @@
 							"tagName": "solutions"
 						},
 						"comment": "parse online pixel",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "PKR"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 10317.14,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 2103322895.71,
 						"dataSource": null,
 						"comment": "program online sensor",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BIF"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 66389.42,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 5358203698.42,
 						"dataSource": {
 							"page": "1010-1127",
 							"fileName": "SustainabilityReport",
@@ -42521,7 +42747,8 @@
 							"tagName": "channels"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "PGK"
 					},
 					"fossilFuelSectorExposure": null,
 					"financedScope1AndScope2Emissions": {
@@ -42869,7 +43096,7 @@
 						"comment": "program solid state feed",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": "Yes",
 						"dataSource": {
@@ -43564,7 +43791,7 @@
 						"currency": "SHP"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "56",
@@ -43573,10 +43800,11 @@
 							"tagName": "synergies"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "KZT"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 33447.91,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 9390130490.07,
 						"dataSource": {
 							"page": "852-938",
 							"fileName": "ESEFReport",
@@ -43584,10 +43812,11 @@
 							"tagName": "initiatives"
 						},
 						"comment": "override multi-byte interface",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "GYD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 11245.97,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 2618481256.07,
 						"dataSource": {
 							"page": "788-1273",
 							"fileName": "ESEFReport",
@@ -43595,10 +43824,11 @@
 							"tagName": "users"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "BND"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 2348.36,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 3831460250.07,
 						"dataSource": {
 							"page": "867-1051",
 							"fileName": "ESEFReport",
@@ -43606,10 +43836,11 @@
 							"tagName": "portals"
 						},
 						"comment": "bypass online driver",
-						"quality": null
+						"quality": null,
+						"currency": "AMD"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 52463.87,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 2661786573.01,
 						"dataSource": {
 							"page": "189-341",
 							"fileName": "AnnualReport",
@@ -43617,10 +43848,11 @@
 							"tagName": "paradigms"
 						},
 						"comment": "synthesize back-end array",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "MAD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 61550.71,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 5260267588.31,
 						"dataSource": {
 							"page": "544-1199",
 							"fileName": "IntegratedReport",
@@ -43628,7 +43860,8 @@
 							"tagName": "systems"
 						},
 						"comment": "program optical bandwidth",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "NGN"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "No",
@@ -43922,8 +44155,8 @@
 						"comment": "hack wireless program",
 						"quality": "Incomplete"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 74386.47,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2120050550.44,
 						"dataSource": {
 							"page": "148-883",
 							"fileName": "AnnualReport",
@@ -43931,7 +44164,8 @@
 							"tagName": "systems"
 						},
 						"comment": "parse 1080p firewall",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "SCR"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -44625,7 +44859,7 @@
 						"currency": "AFN"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1099",
@@ -44634,11 +44868,12 @@
 							"tagName": "architectures"
 						},
 						"comment": "index virtual capacitor",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "BAM"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 36761.23,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 8287431825.89,
 						"dataSource": {
 							"page": "83",
 							"fileName": "IntegratedReport",
@@ -44646,10 +44881,11 @@
 							"tagName": "supply-chains"
 						},
 						"comment": "calculate neural array",
-						"quality": null
+						"quality": null,
+						"currency": "IDR"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 61023.43,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 4860272363.29,
 						"dataSource": {
 							"page": "969-1041",
 							"fileName": "SustainabilityReport",
@@ -44657,10 +44893,11 @@
 							"tagName": "infrastructures"
 						},
 						"comment": "navigate digital capacitor",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "MZN"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
 						"dataSource": {
@@ -45074,7 +45311,7 @@
 						"comment": "quantify mobile bandwidth",
 						"quality": "Incomplete"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1038-1055",
@@ -45083,7 +45320,8 @@
 							"tagName": "web services"
 						},
 						"comment": "override neural array",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "MKD"
 					},
 					"waterManagementPolicy": {
 						"value": null,
@@ -45724,9 +45962,9 @@
 						"currency": "CUP"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 44833.91,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 6452908329.67,
 						"dataSource": {
 							"page": "1128-1249",
 							"fileName": "ESEFReport",
@@ -45734,17 +45972,19 @@
 							"tagName": "e-commerce"
 						},
 						"comment": "index bluetooth program",
-						"quality": null
+						"quality": null,
+						"currency": "KMF"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 85180.37,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 8534898303.92,
 						"dataSource": null,
 						"comment": "synthesize auxiliary microchip",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "TRY"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 53096.56,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 7517205814.37,
 						"dataSource": {
 							"page": "565",
 							"fileName": "ESEFReport",
@@ -45752,9 +45992,10 @@
 							"tagName": "architectures"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "MDL"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "404-1100",
@@ -45763,7 +46004,8 @@
 							"tagName": "lifetime value"
 						},
 						"comment": "generate primary bus",
-						"quality": null
+						"quality": null,
+						"currency": "BIF"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -46158,8 +46400,8 @@
 						"comment": "compress digital alarm",
 						"quality": "Audited"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 51640.96,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 5002927402.97,
 						"dataSource": {
 							"page": "972",
 							"fileName": "ESEFReport",
@@ -46167,7 +46409,8 @@
 							"tagName": "platforms"
 						},
 						"comment": "compress solid state interface",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "LYD"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -46886,8 +47129,8 @@
 						"currency": "BTN"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 71143.98,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 4357675109.06,
 						"dataSource": {
 							"page": "649",
 							"fileName": "ESEFReport",
@@ -46895,9 +47138,10 @@
 							"tagName": "initiatives"
 						},
 						"comment": "parse bluetooth hard drive",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "RSD"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "197-992",
@@ -46906,9 +47150,10 @@
 							"tagName": "e-business"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "ZWL"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "488-531",
@@ -46917,9 +47162,10 @@
 							"tagName": "paradigms"
 						},
 						"comment": null,
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "COP"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "1198",
@@ -46928,9 +47174,10 @@
 							"tagName": "metrics"
 						},
 						"comment": "quantify auxiliary card",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BIF"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "124",
@@ -46939,9 +47186,10 @@
 							"tagName": "synergies"
 						},
 						"comment": "compress mobile card",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "DKK"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": "No",
 						"dataSource": {
@@ -47330,7 +47578,7 @@
 						"comment": "compress mobile interface",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
 						"value": "No",
@@ -48013,9 +48261,9 @@
 						"quality": "NoDataFound",
 						"currency": "IQD"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 1994932498.78,
 						"dataSource": {
 							"page": "195-377",
 							"fileName": "IntegratedReport",
@@ -48023,10 +48271,11 @@
 							"tagName": "systems"
 						},
 						"comment": "navigate wireless protocol",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "LRD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 18796.27,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 9692075857.9,
 						"dataSource": {
 							"page": "667-1267",
 							"fileName": "AnnualReport",
@@ -48034,12 +48283,13 @@
 							"tagName": "partnerships"
 						},
 						"comment": "calculate redundant hard drive",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "CNY"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 86973.38,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 9052116423.85,
 						"dataSource": {
 							"page": "424-702",
 							"fileName": "ESEFReport",
@@ -48047,7 +48297,8 @@
 							"tagName": "markets"
 						},
 						"comment": "reboot open-source bus",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "TWD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -48352,8 +48603,8 @@
 						"comment": "index haptic microchip",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 42981803.41,
 						"dataSource": {
 							"page": "1032",
 							"fileName": "SustainabilityReport",
@@ -48361,7 +48612,8 @@
 							"tagName": "e-commerce"
 						},
 						"comment": "quantify open-source panel",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "THB"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -49074,7 +49326,7 @@
 						"quality": null,
 						"currency": "PAB"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "130-1046",
@@ -49083,10 +49335,11 @@
 							"tagName": "relationships"
 						},
 						"comment": "navigate solid state circuit",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BND"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 36914.83,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 5942668176.72,
 						"dataSource": {
 							"page": "893",
 							"fileName": "SustainabilityReport",
@@ -49094,10 +49347,11 @@
 							"tagName": "action-items"
 						},
 						"comment": "bypass digital panel",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "IDR"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 95458.85,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 8794846239.04,
 						"dataSource": {
 							"page": "715",
 							"fileName": "SustainabilityReport",
@@ -49105,10 +49359,11 @@
 							"tagName": "deliverables"
 						},
 						"comment": "override multi-byte program",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "XPF"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 181161430.66,
 						"dataSource": {
 							"page": "133-956",
 							"fileName": "IntegratedReport",
@@ -49116,16 +49371,18 @@
 							"tagName": "blockchains"
 						},
 						"comment": "compress optical hard drive",
-						"quality": null
+						"quality": null,
+						"currency": "PLN"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 42126.08,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 2552271559.83,
 						"dataSource": null,
 						"comment": "input bluetooth firewall",
-						"quality": null
+						"quality": null,
+						"currency": "JOD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 52966.18,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 8032370894.22,
 						"dataSource": {
 							"page": "929-1214",
 							"fileName": "IntegratedReport",
@@ -49133,7 +49390,8 @@
 							"tagName": "e-commerce"
 						},
 						"comment": "synthesize open-source circuit",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "MDL"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
@@ -49557,8 +49815,8 @@
 						"comment": null,
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 12598.65,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 4370781446.34,
 						"dataSource": {
 							"page": "216",
 							"fileName": "SustainabilityReport",
@@ -49566,7 +49824,8 @@
 							"tagName": "methodologies"
 						},
 						"comment": "reboot redundant transmitter",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "BRL"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
@@ -50243,9 +50502,9 @@
 						"quality": "Estimated",
 						"currency": "GBP"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 2951.01,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 6513821873.82,
 						"dataSource": {
 							"page": "327",
 							"fileName": "SustainabilityReport",
@@ -50253,10 +50512,11 @@
 							"tagName": "networks"
 						},
 						"comment": null,
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "ANG"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 65236.72,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 9943514126.36,
 						"dataSource": {
 							"page": "324-908",
 							"fileName": "SustainabilityReport",
@@ -50264,10 +50524,11 @@
 							"tagName": "infrastructures"
 						},
 						"comment": "generate online monitor",
-						"quality": null
+						"quality": null,
+						"currency": "PAB"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 76426.34,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 8895383379.43,
 						"dataSource": {
 							"page": "716",
 							"fileName": "SustainabilityReport",
@@ -50275,10 +50536,11 @@
 							"tagName": "models"
 						},
 						"comment": "generate open-source alarm",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "SGD"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 50170.84,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 5973406827.54,
 						"dataSource": {
 							"page": "152",
 							"fileName": "SustainabilityReport",
@@ -50286,10 +50548,11 @@
 							"tagName": "lifetime value"
 						},
 						"comment": null,
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "LKR"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 47351.13,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 8940772572.54,
 						"dataSource": {
 							"page": "829",
 							"fileName": "SustainabilityReport",
@@ -50297,7 +50560,8 @@
 							"tagName": "partnerships"
 						},
 						"comment": "parse online port",
-						"quality": null
+						"quality": null,
+						"currency": "KWD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": null,
@@ -50580,7 +50844,7 @@
 						"comment": "copy 1080p driver",
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "580-757",
@@ -50589,7 +50853,8 @@
 							"tagName": "applications"
 						},
 						"comment": "quantify digital protocol",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "PLN"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -51297,8 +51562,8 @@
 						"quality": "Estimated",
 						"currency": "HUF"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 53823.7,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 2285873219.37,
 						"dataSource": {
 							"page": "919-1170",
 							"fileName": "AnnualReport",
@@ -51306,10 +51571,11 @@
 							"tagName": "initiatives"
 						},
 						"comment": "connect open-source monitor",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "MGA"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": 64040.67,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 5325629396.83,
 						"dataSource": {
 							"page": "923",
 							"fileName": "AnnualReport",
@@ -51317,10 +51583,11 @@
 							"tagName": "models"
 						},
 						"comment": "program primary interface",
-						"quality": null
+						"quality": null,
+						"currency": "NZD"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 233858141.58,
 						"dataSource": {
 							"page": "1075",
 							"fileName": "AnnualReport",
@@ -51328,10 +51595,11 @@
 							"tagName": "channels"
 						},
 						"comment": "connect digital capacitor",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "AUD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 32475.51,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 5698852702.04,
 						"dataSource": {
 							"page": "575",
 							"fileName": "AnnualReport",
@@ -51339,9 +51607,10 @@
 							"tagName": "deliverables"
 						},
 						"comment": "back up neural monitor",
-						"quality": null
+						"quality": null,
+						"currency": "GTQ"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "249-305",
@@ -51350,9 +51619,10 @@
 							"tagName": "initiatives"
 						},
 						"comment": "calculate multi-byte driver",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "DOP"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": null,
 						"dataSource": {
@@ -51727,8 +51997,8 @@
 						"comment": "override solid state card",
 						"quality": null
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 18508.9,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 2888912460.76,
 						"dataSource": {
 							"page": "811",
 							"fileName": "AnnualReport",
@@ -51736,7 +52006,8 @@
 							"tagName": "eyeballs"
 						},
 						"comment": "reboot digital firewall",
-						"quality": null
+						"quality": null,
+						"currency": "CNY"
 					},
 					"waterManagementPolicy": {
 						"value": "Yes",
@@ -52398,13 +52669,14 @@
 						"quality": null,
 						"currency": "BND"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 78228.89,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 9904362198.44,
 						"dataSource": null,
 						"comment": "index auxiliary monitor",
-						"quality": "Estimated"
+						"quality": "Estimated",
+						"currency": "SOS"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
 						"value": null,
 						"dataSource": {
 							"page": "562-717",
@@ -52413,10 +52685,11 @@
 							"tagName": "portals"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "CUP"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 86689.84,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 8925013870.47,
 						"dataSource": {
 							"page": "128",
 							"fileName": "AnnualReport",
@@ -52424,10 +52697,11 @@
 							"tagName": "applications"
 						},
 						"comment": "generate neural protocol",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "TWD"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 28005.11,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 3649254185.15,
 						"dataSource": {
 							"page": "182-1018",
 							"fileName": "IntegratedReport",
@@ -52435,10 +52709,11 @@
 							"tagName": "functionalities"
 						},
 						"comment": "hack digital card",
-						"quality": null
+						"quality": null,
+						"currency": "FKP"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 1260947950.65,
 						"dataSource": {
 							"page": "1108-1219",
 							"fileName": "IntegratedReport",
@@ -52446,9 +52721,10 @@
 							"tagName": "users"
 						},
 						"comment": "reboot cross-platform bus",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "STN"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": null,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": null,
 					"fossilFuelSectorExposure": {
 						"value": null,
 						"dataSource": {
@@ -52851,8 +53127,8 @@
 						"comment": "input haptic feed",
 						"quality": "Reported"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 55322.59,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 3025063709.35,
 						"dataSource": {
 							"page": "1147-1261",
 							"fileName": "IntegratedReport",
@@ -52860,7 +53136,8 @@
 							"tagName": "synergies"
 						},
 						"comment": "index redundant hard drive",
-						"quality": "Incomplete"
+						"quality": "Incomplete",
+						"currency": "MNT"
 					},
 					"waterManagementPolicy": {
 						"value": "No",
@@ -53488,8 +53765,8 @@
 						"quality": "Estimated",
 						"currency": "BDT"
 					},
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 85066.22,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 4792187025.3,
 						"dataSource": {
 							"page": "262-1031",
 							"fileName": "IntegratedReport",
@@ -53497,10 +53774,11 @@
 							"tagName": "schemas"
 						},
 						"comment": "connect redundant microchip",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "TRY"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": {
+						"value": 1429749720.26,
 						"dataSource": {
 							"page": "719-818",
 							"fileName": "ESEFReport",
@@ -53508,10 +53786,11 @@
 							"tagName": "portals"
 						},
 						"comment": "transmit auxiliary port",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "YER"
 					},
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 1414390527.64,
 						"dataSource": {
 							"page": "182-723",
 							"fileName": "ESEFReport",
@@ -53519,11 +53798,12 @@
 							"tagName": "blockchains"
 						},
 						"comment": "bypass optical driver",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "KRW"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": 87124.41,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 3312210454.6,
 						"dataSource": {
 							"page": "440",
 							"fileName": "ESEFReport",
@@ -53531,10 +53811,11 @@
 							"tagName": "mindshare"
 						},
 						"comment": "program cross-platform alarm",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "TZS"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 33545.95,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 8529241716.03,
 						"dataSource": {
 							"page": "548-1000",
 							"fileName": "SustainabilityReport",
@@ -53542,7 +53823,8 @@
 							"tagName": "initiatives"
 						},
 						"comment": null,
-						"quality": null
+						"quality": null,
+						"currency": "GYD"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
@@ -53966,7 +54248,7 @@
 						"quality": "Incomplete"
 					},
 					"waterReusedInCubicMeters": null,
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": null,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": null,
 					"waterManagementPolicy": {
 						"value": "Yes",
 						"dataSource": {
@@ -54625,8 +54907,8 @@
 						"currency": "SGD"
 					},
 					"totalRevenue": null,
-					"carbonFootprintInTonnesPerMillionEURRevenue": {
-						"value": 53369.54,
+					"carbonFootprintInTonnesPerCurrencyMillionRevenue": {
+						"value": 2688716982.95,
 						"dataSource": {
 							"page": "347-883",
 							"fileName": "AnnualReport",
@@ -54634,11 +54916,12 @@
 							"tagName": "communities"
 						},
 						"comment": "synthesize back-end pixel",
-						"quality": "NoDataFound"
+						"quality": "NoDataFound",
+						"currency": "MGA"
 					},
-					"ghgIntensityInTonnesPerMillionEURRevenue": null,
-					"ghgIntensityScope1InTonnesPerMillionEURRevenue": {
-						"value": 40816.34,
+					"ghgIntensityInTonnesPerCurrencyMillionRevenue": null,
+					"ghgIntensityScope1InTonnesPerCurrencyMillionRevenue": {
+						"value": 4949918116.91,
 						"dataSource": {
 							"page": "222-800",
 							"fileName": "SustainabilityReport",
@@ -54646,10 +54929,11 @@
 							"tagName": "bandwidth"
 						},
 						"comment": "bypass bluetooth port",
-						"quality": "Reported"
+						"quality": "Reported",
+						"currency": "ISK"
 					},
-					"ghgIntensityScope2InTonnesPerMillionEURRevenue": {
-						"value": 78530.08,
+					"ghgIntensityScope2InTonnesPerCurrencyMillionRevenue": {
+						"value": 6716700454.71,
 						"dataSource": {
 							"page": "929",
 							"fileName": "ESEFReport",
@@ -54657,10 +54941,11 @@
 							"tagName": "e-commerce"
 						},
 						"comment": "parse wireless alarm",
-						"quality": null
+						"quality": null,
+						"currency": "SOS"
 					},
-					"ghgIntensityScope3InTonnesPerMillionEURRevenue": {
-						"value": null,
+					"ghgIntensityScope3InTonnesPerCurrencyMillionRevenue": {
+						"value": 1043499337.97,
 						"dataSource": {
 							"page": "804",
 							"fileName": "ESEFReport",
@@ -54668,10 +54953,11 @@
 							"tagName": "bandwidth"
 						},
 						"comment": null,
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "GYD"
 					},
-					"ghgIntensityScope4InTonnesPerMillionEURRevenue": {
-						"value": 69638.19,
+					"ghgIntensityScope4InTonnesPerCurrencyMillionRevenue": {
+						"value": 5123507543.47,
 						"dataSource": {
 							"page": "646",
 							"fileName": "SustainabilityReport",
@@ -54679,7 +54965,8 @@
 							"tagName": "niches"
 						},
 						"comment": "reboot neural matrix",
-						"quality": null
+						"quality": null,
+						"currency": "QAR"
 					},
 					"fossilFuelSectorExposure": {
 						"value": "Yes",
@@ -54983,8 +55270,8 @@
 						"comment": "index 1080p protocol",
 						"quality": "Estimated"
 					},
-					"relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
-						"value": 23183.14,
+					"relativeWaterUsageInCubicMetersPerCurrencyMillionRevenue": {
+						"value": 8684308049.27,
 						"dataSource": {
 							"page": "870",
 							"fileName": "IntegratedReport",
@@ -54992,7 +55279,8 @@
 							"tagName": "models"
 						},
 						"comment": "compress online program",
-						"quality": "Audited"
+						"quality": "Audited",
+						"currency": "DKK"
 					},
 					"waterManagementPolicy": null,
 					"highWaterStressAreaExposure": {
