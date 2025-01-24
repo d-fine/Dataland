@@ -20,7 +20,7 @@ interface DatasetStorageService {
     ): String
 
     /**
-     * Retrieves the content of a dataset from the backend storage engien
+     * Retrieves the content of a dataset from the backend storage engine
      * @param datasetId the id of the dataset
      * @param dataType the type of dataset
      * @param correlationId the correlation id for the operation

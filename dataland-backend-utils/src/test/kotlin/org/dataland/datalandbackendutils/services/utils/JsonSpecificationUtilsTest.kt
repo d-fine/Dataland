@@ -2,6 +2,7 @@ package org.dataland.datalandbackendutils.services.utils
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.assertThrows
 class JsonSpecificationUtilsTest {
     private val objectMapper = jacksonObjectMapper()
     private val demoSpecification =
-        objectMapper.readTree(
+        objectMapper.readValue<ObjectNode>(
             """
         {
             "field": {
@@ -32,7 +33,7 @@ class JsonSpecificationUtilsTest {
             }
         }
     """,
-        ) as ObjectNode
+        )
 
     private val demoValueMap =
         mapOf(

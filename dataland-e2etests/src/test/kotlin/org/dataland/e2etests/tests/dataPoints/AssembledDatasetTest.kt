@@ -49,7 +49,7 @@ class AssembledDatasetTest {
         companyId: String,
         bypassQa: Boolean,
     ): DataMetaInformation {
-        val ret =
+        val dataMetaInformationResponse =
             Backend.additionalCompanyInformationDataControllerApi.postCompanyAssociatedAdditionalCompanyInformationData(
                 CompanyAssociatedDataAdditionalCompanyInformationData(
                     companyId = companyId,
@@ -59,7 +59,7 @@ class AssembledDatasetTest {
                 bypassQa = bypassQa,
             )
         Thread.sleep(1000) // wait for the data to be processed
-        return ret
+        return dataMetaInformationResponse
     }
 
     @Test

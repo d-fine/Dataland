@@ -56,33 +56,36 @@ object JsonSpecificationUtils {
         }
 
     /**
-     * Dehydrates a JSON specification into a map of dataPointIds to data. During dehydration, the data
-     * from the data object is extracted and stored in a map. Unknown keys cause an exception.
+     * Takes a specification and a corresponding data object and creates a map of dataPointTypes (from [jsonSpecification])
+     * to the corresponding data (from [dataObject]). Nodes in the data object not present in the specification cause an exception.
      * @param jsonSpecification The JSON specification to dehydrate (from the specification service)
      * @param dataObject The data object to dehydrate
-     * @return A map of dataPointIds to data
+     * @return A map of data point types to their corresponding data
      */
     fun dehydrateJsonSpecification(
         jsonSpecification: ObjectNode,
         dataObject: ObjectNode,
-    ): Map<String, JsonSpecificationLeaf> {
-        val returnMap = mutableMapOf<String, JsonSpecificationLeaf>()
-        dehydrateJsonSpecificationRecursive("", jsonSpecification, dataObject, returnMap)
-        return returnMap
-    }
+    ): Map<String, JsonSpecificationLeaf> = dehydrateJsonSpecificationRecursive("", jsonSpecification, dataObject)
 
+    /**
+     * Recursively go through the provided data object and return a map of data point types to the corresponding extracted data.
+     * @param currentPath The current path in the JSON specification
+     * @param currentSpecificationNode The JSON node from the specification corresponding to [currentPath]
+     * @param currentDataNode The data object to dehydrate corresponding to [currentPath]
+     * @return A map of data point types to their corresponding data
+     */
     private fun dehydrateJsonSpecificationRecursive(
         currentPath: String,
         currentSpecificationNode: ObjectNode,
         currentDataNode: JsonNode,
-        dataMap: MutableMap<String, JsonSpecificationLeaf>,
-    ) {
+    ): Map<String, JsonSpecificationLeaf> {
+        val dataMap = mutableMapOf<String, JsonSpecificationLeaf>()
         if (isTerminalNode(currentSpecificationNode)) {
             val dataPointId = currentSpecificationNode.get("id").asText()
             dataMap[dataPointId] = JsonSpecificationLeaf(dataPointId, currentPath, currentDataNode)
         } else {
             if (currentDataNode.isNull) {
-                return
+                return dataMap
             }
             if (currentDataNode !is ObjectNode) {
                 throw InvalidInputApiException(
@@ -91,18 +94,19 @@ object JsonSpecificationUtils {
                 )
             }
             for ((fieldName, jsonNode) in currentDataNode.fields()) {
-                processNode(fieldName, jsonNode, currentPath, dataMap, currentSpecificationNode)
+                dataMap.putAll(processNode(fieldName, jsonNode, currentPath, currentSpecificationNode))
             }
         }
+        return dataMap
     }
 
     private fun processNode(
         fieldName: String,
         jsonNode: JsonNode,
         currentPath: String,
-        dataMap: MutableMap<String, JsonSpecificationLeaf>,
         currentSpecificationNode: ObjectNode,
-    ) {
+    ): Map<String, JsonSpecificationLeaf> {
+        val dataMap = mutableMapOf<String, JsonSpecificationLeaf>()
         if (!jsonNode.isNull) {
             val upcomingPath = if (currentPath.isEmpty()) fieldName else "$currentPath.$fieldName"
             val matchingSpecificationNode =
@@ -114,12 +118,14 @@ object JsonSpecificationUtils {
             require(matchingSpecificationNode is ObjectNode) {
                 "Specification node must be an object node"
             }
-            dehydrateJsonSpecificationRecursive(
-                currentPath = upcomingPath,
-                currentSpecificationNode = matchingSpecificationNode,
-                currentDataNode = jsonNode,
-                dataMap = dataMap,
+            dataMap.putAll(
+                dehydrateJsonSpecificationRecursive(
+                    currentPath = upcomingPath,
+                    currentSpecificationNode = matchingSpecificationNode,
+                    currentDataNode = jsonNode,
+                ),
             )
         }
+        return dataMap
     }
 }
