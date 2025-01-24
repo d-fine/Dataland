@@ -160,6 +160,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/scss/newVariables' as *;
+
 .card-wrapper {
   width: 100%;
   display: flex;
