@@ -19,28 +19,30 @@
         >
           <div class="px-8 py-4 justify-content-center uploadFormWrapper">
             <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
-              <div>
-                <div class="status text-center">
-                  <template v-if="submittingInProgress">
-                    <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
-                  </template>
-
-                  <template v-else>
-                    <template v-if="submittingSucceeded">
-                      <em class="material-icons info-icon green-text">check_circle</em>
-                      <h1 class="status-text" data-test="requestStatusText">Success</h1>
-                      <div class="col-4 col-offset-4">
-                        {{ rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
-                        identifiers could not be recognized and were rejected. {{ createdRequests.length }} data
-                        requests were created and {{ notCreatedRequests.length }} skipped (data already available). More
-                        details can be found in the summary below.
+              <template v-if="submittingInProgress">
+                <div class="status-wrapper">
+                  <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
+                </div>
+              </template>
+              <template v-else>
+                <div>
+                  <div class="status text-center">
+                    <div class="status-wrapper">
+                      <div v-if="submittingSucceeded" class="status-container">
+                        <em class="col material-icons info-icon green-text">check_circle</em>
+                        <h1 class="col status-text" data-test="requestStatusText">Success</h1>
                       </div>
-                    </template>
-
-                    <template v-if="!submittingSucceeded">
-                      <em class="material-icons info-icon red-text">error</em>
-                      <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
-                    </template>
+                      <div v-else class="status-container">
+                        <em class="material-icons info-icon red-text">error</em>
+                        <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
+                      </div>
+                    </div>
+                    <div class="col-4 col-offset-4">
+                      {{ rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
+                      identifiers could not be recognized and were rejected. {{ createdRequests.length }} data requests
+                      were created and {{ notCreatedRequests.length }} skipped. More details can be found in the summary
+                      below.
+                    </div>
 
                     <p v-if="message" class="py-3">{{ message }}</p>
 
@@ -50,102 +52,99 @@
                       label="TO MY DATA REQUESTS"
                       class="uppercase p-button-outlined"
                     />
-                  </template>
+                  </div>
                 </div>
-              </div>
 
-              <div class="col-8 col-offset-2 bg-white mt-3">
-                <h1 class="middle-center-div">Data Request Summary</h1>
-                <template v-if="submittingInProgress">
-                  <i class="pi pi-spinner pi-spin text-xl text-primary" aria-hidden="true" />
-                </template>
-                <template v-else>
+                <div class="col-8 col-offset-2 bg-white mt-4">
+                  <h1 class="middle-center-div">Data Request Summary</h1>
                   <div class="summary-section border-bottom py-4">
-                    <h6 class="middle-center-div summary-section-heading m-0">{{ summarySectionReportingPeriodsHeading }}</h6>
-                    <p class="middle-center-div summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
-                  </div>
-                  <div class="summary-section border-bottom py-4">
-                    <h6 class="middle-center-div summary-section-heading m-0">{{ summarySectionFrameworksHeading }}</h6>
-                    <p class="middle-center-div summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(', ') }}</p>
-                  </div>
-                  <div class="summary-section border-bottom py-4">
-                  <Accordion>
-                    <AccordionTab>
-                      <template #header>
-                        <span class="flex align-items-center gap-2 w-full">
-                          <em class="material-icons info-icon green-text">check_circle</em>
-                          <span class="summary-section-heading">CREATED REQUESTS</span>
-                          <Badge :value="createdRequests.length" class="ml-auto mr-2" />
-                        </span>
-                      </template>
-                      <template v-for="entry in createdRequests" :key="entry">
-                        <div class="grid">
-                          <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
-                          <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
-                          <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-                          <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+                    <div class="summary-wrapper">
+                      <div class="grid col-6">
+                        <div class="col">
+                          <h6 class="middle-center-div summary-section-heading m-0">
+                            {{ summarySectionReportingPeriodsHeading }}
+                          </h6>
+                          <p class="middle-center-div summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
                         </div>
-                      </template>
-                    </AccordionTab>
-                  </Accordion>
+                        <div class="col">
+                          <h6 class="middle-center-div summary-section-heading m-0">
+                            {{ summarySectionFrameworksHeading }}
+                          </h6>
+                          <p class="middle-center-div summary-section-data m-0 mt-3">
+                            {{ humanizedSelectedFrameworks.join(', ') }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="summary-section border-bottom py-4">
-                  <Accordion :active-index="0">
-                    <AccordionTab>
-                      <template #header>
-                        <span class="flex align-items-center gap-2 w-full">
-                          <em class="material-icons info-icon new-color">info</em>
-                          <span class="summary-section-heading">SKIPPED REQUESTS (data already exists)</span>
-                          <Badge :value="notCreatedRequests.length" class="ml-auto mr-2" />
-                        </span>
-                      </template>
-                      <template v-for="entry in notCreatedRequests" :key="entry">
-                        <div class="grid">
-                          <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
-                          <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
-                          <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-                          <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
-                          <a :href="entry.url" target="_blank" class="col bold-text new-color">View Data</a>
-                        </div>
-                      </template>
-                    </AccordionTab>
-                  </Accordion>
+                    <Accordion>
+                      <AccordionTab>
+                        <template #header>
+                          <span class="flex align-items-center gap-2 w-full">
+                            <em class="material-icons info-icon green-text">check_circle</em>
+                            <span class="summary-section-heading">CREATED REQUESTS</span>
+                            <Badge :value="createdRequests.length" class="ml-auto mr-2" />
+                          </span>
+                        </template>
+                        <template v-for="entry in createdRequests" :key="entry">
+                          <div class="grid-container align-items-center">
+                            <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
+                            <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
+                            <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
+                            <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+                          </div>
+                        </template>
+                      </AccordionTab>
+                    </Accordion>
                   </div>
                   <div class="summary-section border-bottom py-4">
-                  <Accordion>
-                    <AccordionTab>
-                      <template #header>
-                        <span class="flex align-items-center gap-2 w-full">
-                          <em class="material-icons info-icon red-text">error</em>
-                          <span class="summary-section-heading">REJECTED IDENTIFIERS</span>
-                          <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
-                        </span>
-                      </template>
-                      <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
-                        <div class="grid">
-                          <div class="col bold-text">{{ entry }}</div>
+                    <Accordion :active-index="0">
+                      <AccordionTab>
+                        <template #header>
+                          <span class="flex align-items-center gap-2 w-full">
+                            <em class="material-icons info-icon new-color">info</em>
+                            <span class="summary-section-heading">SKIPPED REQUESTS (data already exists)</span>
+                            <Badge :value="notCreatedRequests.length" class="ml-auto mr-2" />
+                          </span>
+                        </template>
+                        <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
+                          If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single
+                          data request on the corresponding dataset page.
                         </div>
-                      </template>
-                    </AccordionTab>
-                  </Accordion>
+                        <template v-for="entry in notCreatedRequests" :key="entry">
+                          <div class="grid-container align-items-center">
+                            <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
+                            <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
+                            <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
+                            <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+                            <a :href="entry.url" target="_blank" class="col bold-text new-color">View Data</a>
+                          </div>
+                        </template>
+                      </AccordionTab>
+                    </Accordion>
                   </div>
-
-                  <div
-                    v-if="!submittingSucceeded"
-                    class="summary-section py-5"
-                    data-test="selectedIdentifiersUnsuccessfulSubmit"
-                  >
-                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">SELECTED IDENTIFIERS</h6>
-                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
-                      <template v-for="identifier in identifiers" :key="identifier">
-                        <div class="identifier mb-2">{{ identifier }}</div>
-                      </template>
-                    </p>
+                  <div class="summary-section border-bottom py-4">
+                    <Accordion>
+                      <AccordionTab>
+                        <template #header>
+                          <span class="flex align-items-center gap-2 w-full">
+                            <em class="material-icons info-icon red-text">error</em>
+                            <span class="summary-section-heading">REJECTED IDENTIFIERS</span>
+                            <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
+                          </span>
+                        </template>
+                        <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
+                          <div class="grid-container align-items-center">
+                            <div class="col bold-text middle-center-div">{{ entry }}</div>
+                          </div>
+                        </template>
+                      </AccordionTab>
+                    </Accordion>
                   </div>
-                </template>
-              </div>
+                </div>
+              </template>
             </template>
-
             <template v-else>
               <div class="col-12 md:col-8 xl:col-6">
                 <div class="grid">
@@ -541,6 +540,24 @@ export default defineComponent({
   }
 }
 
+.summary-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px; /* Adjust the gap as needed */
+}
+
+.status-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+}
+
 .new-color {
   color: $orange-prime;
 }
@@ -553,5 +570,11 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 2fr 4fr 1fr 2fr 1fr;
+  gap: 1px;
 }
 </style>
