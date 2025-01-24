@@ -1,7 +1,7 @@
-@use "sass:color";
-@use "../colors";
-@use "../units";
-@use "../variables";
+@use 'sass:color';
+@use '../colors';
+@use '../units';
+@use '../variables';
 
 .p-button {
   color: colors.$btn-primary-color;
