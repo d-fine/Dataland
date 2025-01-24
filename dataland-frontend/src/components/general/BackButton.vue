@@ -35,6 +35,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .back-button {
   width: fit-content;
   @media only screen and (min-width: $small) {

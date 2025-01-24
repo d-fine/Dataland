@@ -38,6 +38,8 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+@use '@/assets/scss/variables' as *;
+
 .progress-spinner-container {
   position: absolute;
   top: 50%;

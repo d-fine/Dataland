@@ -562,6 +562,8 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+@use '@/assets/scss/variables' as *;
+
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
