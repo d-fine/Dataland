@@ -77,7 +77,7 @@ class ReferencedReportsUtilities(
                     "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
                         "but the publication date listed in the referenced reports is '${matchingReport.publicationDate}'.",
                 )
-            } else if (report.fileName != null && report.fileName != matchingReport.fileName) {
+            } else if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
                 InvalidInputApiException(
                     "Inconsistent file name",
                     "The file name of the report '${report.fileName}' is not consistent " +
