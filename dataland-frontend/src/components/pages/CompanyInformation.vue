@@ -276,6 +276,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/variables' as *;
+
 .inline-loading {
   width: 450px;
 }

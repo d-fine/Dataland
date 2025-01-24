@@ -120,6 +120,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/variables' as *;
+
 .claim-panel {
   grid-column: 1 / -1;
   background-color: var(--surface-card);
