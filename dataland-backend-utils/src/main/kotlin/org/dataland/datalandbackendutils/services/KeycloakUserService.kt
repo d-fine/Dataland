@@ -50,6 +50,7 @@ class KeycloakUserService(
                     response,
                     KeycloakUserInfo::class.java,
                 )
+            logger.info("Keycloak response be like $response")
             return user
         } catch (e: JacksonException) {
             logger.warn("Failed to parse response from Keycloak. userId $userId. Response $response, exception: $e")

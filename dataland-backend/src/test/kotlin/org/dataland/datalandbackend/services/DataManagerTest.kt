@@ -222,7 +222,7 @@ class DataManagerTest(
             ),
         ).thenThrow(AmqpException::class.java)
         assertThrows<AmqpException> {
-            spyDataManager.storeDataSetInTemporaryStoreAndSendMessage(
+            spyDataManager.storeDataSetInTemporaryStoreAndSendUploadMessage(
                 dataUUID, storableEuTaxonomyDataSetForNonFinancials, false, correlationId,
             )
         }

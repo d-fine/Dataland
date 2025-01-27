@@ -15,6 +15,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
@@ -71,7 +72,7 @@ class DatabaseStringDataStore(
             ),
         ],
     )
-    fun storeDataset(
+    fun storeUploadedDataset(
         @Payload payload: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
         @Header(MessageHeaderKey.TYPE) type: String,
@@ -84,6 +85,45 @@ class DatabaseStringDataStore(
             logger.info("Inserting data into database with data ID: $dataId and correlation ID: $correlationId.")
             storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
             publishStorageEvent(dataId, correlationId)
+        }
+    }
+
+    /**
+     * Method that listens to the storage_queue and stores data into the database in case there is a message on the
+     * storage_queue
+     * @param payload the content of the message
+     * @param correlationId the correlation ID of the current user process
+     * @param type the type of the message
+     */
+    @RabbitListener(
+        bindings = [
+            QueueBinding(
+                value =
+                    Queue(
+                        QueueNames.INTERNAL_STORAGE_DATASET_STORAGE,
+                        arguments = [
+                            Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                            Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                            Argument(name = "defaultRequeueRejected", value = "false"),
+                        ],
+                    ),
+                exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
+                key = [RoutingKeyNames.METAINFORMATION_PATCH],
+            ),
+        ],
+    )
+    fun storePatchedDataset(
+        @Payload payload: String,
+        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+        @Header(MessageHeaderKey.TYPE) type: String,
+    ) {
+        MessageQueueUtils.validateMessageType(type, MessageType.METAINFO_UPDATED)
+        MessageQueueUtils.rejectMessageOnException {
+            val dataId = MessageQueueUtils.readMessagePayload<DataMetaInfoPatchMessage>(payload, objectMapper).dataId
+            MessageQueueUtils.validateDataId(dataId)
+            val data = retrieveData(dataId, correlationId)
+            logger.info("Inserting updated data into database with data ID: $dataId and correlation ID: $correlationId.")
+            storeDataItemWithoutTransaction(DataItem(dataId, objectMapper.writeValueAsString(data)))
         }
     }
 

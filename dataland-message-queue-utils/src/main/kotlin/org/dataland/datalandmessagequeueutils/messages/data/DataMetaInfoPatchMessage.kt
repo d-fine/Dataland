@@ -3,7 +3,7 @@ package org.dataland.datalandmessagequeueutils.messages.data
 /**
  * The payload for a data upload message
  */
-data class DataMetaInfoPatchPayload(
+data class DataMetaInfoPatchMessage(
     val dataId: String,
-    val uploaderId: String?,
+    val uploaderUserId: String?,
 )

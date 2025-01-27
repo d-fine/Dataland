@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataSet
@@ -19,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional
 class DataMetaInfoAlterationManager
     @Autowired
     constructor(
-        private val objectMapper: ObjectMapper,
+//        private val objectMapper: ObjectMapper,
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val dataManager: DataManager,
-        private val messageQueuePublications: MessageQueuePublications,
+//        private val messageQueuePublications: MessageQueuePublications,
         private val keycloakUserService: KeycloakUserService,
     ) {
         private val logger = LoggerFactory.getLogger(DataMetaInfoAlterationManager::class.java)
@@ -39,25 +38,42 @@ class DataMetaInfoAlterationManager
             dataMetaInformationPatch: DataMetaInformationPatch,
             correlationId: String,
         ): DataMetaInformationEntity {
-            val dataMetaInformation: DataMetaInformationEntity =
-                dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
 //        if (!dataManager.isDataSetPublic(dataId)) throw InvalidInputApiException(
 //            summary = "Not a public dataset.",
 //            message = "The provided dataId does not belong to a public dataset. Patching of meta information is only " +
 //                    "supported for public dataset."
 //        )
 
-            val uploaderUserId =
-                dataMetaInformationPatch.uploaderUserId?.let {
-                    keycloakUserService.getUser(it).userId.isEmpty()
-                } ?: throw InvalidInputApiException(
+            dataMetaInformationPatch.uploaderUserId?.let { keycloakUserService.getUser(it).userId.isEmpty() }
+                ?: throw InvalidInputApiException(
                     summary = "UploaderUserId invalid.",
                     message = "The provided uploaderUserId could not be found.",
                 )
-            logger.info("Updating uploaderUserId to $uploaderUserId")
+
+            val dataMetaInformation: DataMetaInformationEntity =
+                dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+
+            logger.info("Retrieving StorableDataSet with dataId $dataId from Storage. CorrelationId: $correlationId.")
 
             val storableDataSet: StorableDataSet =
                 dataManager.getPublicDataSet(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
+
+            logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
+
+            dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
+            dataMetaInformationManager.storeDataMetaInformation(dataMetaInformation)
+
+            logger.info("Updating MetaInformation within StorableDataSet with dataId $dataId. CorrelationId: $correlationId.")
+            this.updateStorableDataSetFromMetaInfo(storableDataSet, dataMetaInformationPatch)
+
+//        logger.info(objectMapper.writeValueAsString(storableDataSet))
+
+            dataManager.storeDataSetInTemporaryStoreAndSendUploadMessage(
+                dataId = dataId,
+                storableDataSet = storableDataSet,
+                bypassQa = true,
+                correlationId = correlationId,
+            )
 
 //        messageQueuePublications.publishDataMetaInfoPatchMessage(
 //            dataId,
@@ -67,5 +83,18 @@ class DataMetaInfoAlterationManager
 //        dataMetaInformationPatch.uploaderUserId?.let { dataMetaInformationEntity.uploaderUserId = it }
 //        return dataMetaInformationRepository.save(dataMetaInformationEntity)
             return dataMetaInformation
+        }
+
+        /**
+         * Update MetaInformation within StorableDataSet
+         */
+        private fun updateStorableDataSetFromMetaInfo(
+            storableDataSet: StorableDataSet,
+            dataMetaInformationPatch: DataMetaInformationPatch,
+        ): StorableDataSet {
+            dataMetaInformationPatch.uploaderUserId?.let {
+                storableDataSet.uploaderUserId = it
+            }
+            return storableDataSet
         }
     }

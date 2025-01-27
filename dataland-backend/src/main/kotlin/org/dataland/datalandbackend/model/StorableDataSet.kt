@@ -17,7 +17,7 @@ import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiExcept
 data class StorableDataSet(
     val companyId: String,
     val dataType: DataType,
-    val uploaderUserId: String,
+    var uploaderUserId: String,
     val uploadTime: Long,
     val reportingPeriod: String,
     val data: String,

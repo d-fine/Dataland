@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param dataManagerUtils holds util methods for handling of data
  * @param companyRoleChecker service for checking company roles
  * @param messageQueuePublications service for publishing messages to the message queue
-*/
+ */
 @Service("DataManager")
 class DataManager
     @Suppress("LongParameterList")
@@ -59,7 +59,7 @@ class DataManager
             }
             val dataId = IdUtils.generateUUID()
             storeMetaDataFrom(dataId, storableDataSet, correlationId)
-            storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
+            storeDataSetInTemporaryStoreAndSendUploadMessage(dataId, storableDataSet, bypassQa, correlationId)
             return dataId
         }
 
@@ -133,9 +133,11 @@ class DataManager
          * @param storableDataSet The data set to store
          * @param bypassQa Whether the data set should be sent to QA or not
          * @param correlationId The correlation id of the request initiating the storing of data
+         * @param routingKey Allows to specify a routingKey for the message sent to messageQueue. By default, it's the key
+         * for a dataset upload, but it can be used to specify when a dataset is merely updated.
          * @return ID of the stored data set
          */
-        fun storeDataSetInTemporaryStoreAndSendMessage(
+        fun storeDataSetInTemporaryStoreAndSendUploadMessage(
             dataId: String,
             storableDataSet: StorableDataSet,
             bypassQa: Boolean,
@@ -147,6 +149,29 @@ class DataManager
             )
             storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
             messageQueuePublications.publishDataSetUploadedMessage(dataId, bypassQa, correlationId)
+        }
+
+        /**
+         * Method to temporarily store a data set in a hash map and send a message to the storage_queue
+         * @param dataId The id of the inserted data set
+         * @param storableDataSet The data set to store
+         * @param bypassQa Whether the data set should be sent to QA or not
+         * @param correlationId The correlation id of the request initiating the storing of data
+         * @param routingKey Allows to specify a routingKey for the message sent to messageQueue. By default, it's the key
+         * for a dataset upload, but it can be used to specify when a dataset is merely updated.
+         * @return ID of the stored data set
+         */
+        fun storeDataSetInTemporaryStoreAndSendPatchMessage(
+            dataId: String,
+            storableDataSet: StorableDataSet,
+            correlationId: String,
+        ) {
+            logger.info(
+                "Storing updated data of type '${storableDataSet.dataType}' for company ID '${storableDataSet.companyId}'" +
+                    " in temporary storage. Data ID '$dataId'. Correlation ID: '$correlationId'.",
+            )
+            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
+            messageQueuePublications.publishDataSetMetaInfoPatchMessage(dataId, storableDataSet.uploaderUserId, correlationId)
         }
 
         /**

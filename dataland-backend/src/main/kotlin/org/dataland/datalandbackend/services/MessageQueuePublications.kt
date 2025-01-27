@@ -7,7 +7,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
-import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,6 +69,30 @@ class MessageQueuePublications(
     }
 
     /**
+     * Method to publish a message that the meta info of a data set has been updated
+     * @param dataId The ID of the uploaded data set
+     * @param bypassQa Whether the QA process should be bypassed
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDataSetMetaInfoPatchMessage(
+        dataId: String,
+        uploaderUserId: String,
+        correlationId: String,
+    ) {
+        logger.info(
+            "Publish message that metaInfo for data set with ID '$dataId' has been updated. " +
+                "Correlation ID: '$correlationId'.",
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataMetaInfoPatchMessage(dataId = dataId, uploaderUserId = uploaderUserId)),
+            type = MessageType.PUBLIC_DATA_RECEIVED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = RoutingKeyNames.METAINFORMATION_PATCH,
+        )
+    }
+
+    /**
      * Method to publish a message that a data set has to be deleted
      * @param dataId The ID of the data set to be deleted
      * @param correlationId The correlation ID of the request initiating the event
@@ -99,9 +123,9 @@ class MessageQueuePublications(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body =
                 objectMapper.writeValueAsString(
-                    DataMetaInfoPatchPayload(
+                    DataMetaInfoPatchMessage(
                         dataId = dataId,
-                        uploaderId = dataMetaInformationPatch.uploaderUserId,
+                        uploaderUserId = dataMetaInformationPatch.uploaderUserId,
                     ),
                 ),
             type = MessageType.METAINFO_UPDATED,
