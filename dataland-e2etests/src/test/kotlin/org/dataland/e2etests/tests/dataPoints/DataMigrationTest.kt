@@ -6,8 +6,8 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
 
 class DataMigrationTest {
     private val testDataProvider = FrameworkTestDataProvider(AdditionalCompanyInformationData::class.java)
@@ -15,7 +15,7 @@ class DataMigrationTest {
     private val apiAccessor = ApiAccessor()
 
     @Test
-    fun `ensure the data migration works as expected`() {
+    fun `ensure the data can be retrieved correctly after migration`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dataMetaInfo =
             Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
@@ -28,7 +28,24 @@ class DataMigrationTest {
                     ),
             )
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
-        fail("DataId:  {${dataMetaInfo.dataId}}")
-        // TODO: Continue Test
+        Thread.sleep(1000)
+        val downloadedDataset =
+            Backend.additionalCompanyInformationDataControllerApi
+                .getCompanyAssociatedAdditionalCompanyInformationData(dataMetaInfo.dataId)
+
+        assertEquals(
+            dummyDataset.general?.general?.referencedReports,
+            downloadedDataset.data.general
+                ?.general
+                ?.referencedReports,
+        )
+        assertEquals(
+            dummyDataset.general?.financialInformation?.evic,
+            downloadedDataset.data.general
+                ?.financialInformation
+                ?.evic
+                // Ignore publication date as it is modified during referenced report processing
+                ?.let { it.copy(dataSource = it.dataSource?.copy(publicationDate = null)) },
+        )
     }
 }
