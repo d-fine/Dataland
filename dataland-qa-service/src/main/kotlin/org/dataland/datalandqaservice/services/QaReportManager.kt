@@ -98,6 +98,7 @@ class QaReportManager(
      * @param requestingUser the user requesting the change
      * @return the updated QA report
      */
+    @Transactional
     fun setQaReportStatus(
         qaReportId: String,
         dataId: String,
@@ -108,7 +109,7 @@ class QaReportManager(
         val storedQaReportEntity = getQaReportById(dataId, dataType, qaReportId)
         if (!qaReportSecurityPolicy.canUserSetQaReportStatus(storedQaReportEntity, requestingUser)) {
             throw InsufficientRightsApiException(
-                "Missing required access rights",
+                "Required access rights missing",
                 "You do not have the required access rights to update QA report with the id: $qaReportId",
             )
         }
@@ -123,6 +124,7 @@ class QaReportManager(
      * @param qaReportId filters the requested meta info to one specific QA report ID
      * @return meta info about QA report behind the qaReportId
      */
+    @Transactional(readOnly = true)
     fun getQaReportById(
         dataId: String,
         dataType: String,
@@ -158,7 +160,11 @@ class QaReportManager(
      * Deletes all QA reports for a specific dataId.
      */
     @Transactional
-    fun deleteAllQaReportsForDataId(dataId: String) {
+    fun deleteAllQaReportsForDataId(
+        dataId: String,
+        correlationId: String,
+    ) {
+        logger.info("Deleting all QA reports associated with dataId $dataId (correlationId: $correlationId)")
         qaReportRepository.deleteAllByDataId(dataId)
     }
 
@@ -167,6 +173,7 @@ class QaReportManager(
      * @param dataId filters the requested meta info to one specific data ID
      * @return a list of meta info about QA reports associated to the data set
      */
+    @Transactional(readOnly = true)
     fun searchQaReportMetaInfo(
         dataId: String,
         dataType: String,

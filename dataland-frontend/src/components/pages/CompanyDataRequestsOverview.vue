@@ -108,7 +108,7 @@
                 <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
                   <template #body="slotProps">
                     <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ slotProps.data.requestStatus }}
+                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
                     </div>
                   </template>
                 </Column>
@@ -192,7 +192,7 @@ import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
-import { accessStatusBadgeClass, badgeClass } from '@/utils/RequestUtils';
+import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import PrimeButton from 'primevue/button';
 import {
   customCompareForRequestStatus,
@@ -254,7 +254,6 @@ export default defineComponent({
     this.availableFrameworks = retrieveAvailableFrameworks();
     this.availableAccessStatus = retrieveAvailableAccessStatus();
     this.getStoredCompanyRequestDataList().catch((error) => console.error(error));
-    this.resetFilterAndSearchBar();
   },
   watch: {
     selectedFrameworks() {
@@ -275,6 +274,7 @@ export default defineComponent({
     },
   },
   methods: {
+    getRequestStatusLabel,
     accessStatusBadgeClass,
     badgeClass,
     frameworkHasSubTitle,
@@ -297,6 +297,8 @@ export default defineComponent({
         const dataRequestsPromises = companyIDs.map(async (companyId) => {
           try {
             const response = await apiClientProvider.apiClients.requestController.getDataRequests(
+              undefined,
+              undefined,
               undefined,
               undefined,
               undefined,
@@ -354,18 +356,25 @@ export default defineComponent({
      * Resets selected frameworks and searchBarInput
      */
     resetFilterAndSearchBar() {
-      this.selectedFrameworks = this.availableFrameworks;
-      this.selectedAccessStatus = this.availableAccessStatus;
+      this.selectedFrameworks = [];
+      this.selectedAccessStatus = [];
       this.searchBarInput = '';
     },
     /**
      * Updates the displayedData
      */
     updateCurrentDisplayedData() {
-      this.displayedData = this.storedDataRequests
-        .filter((dataRequest) => this.filterSearchInput(dataRequest.userEmailAddress))
-        .filter((dataRequest) => this.filterFramework(dataRequest.dataType))
-        .filter((dataRequest) => this.filterAccessStatus(dataRequest.accessStatus));
+      this.displayedData = this.storedDataRequests.filter((dataRequest) =>
+        this.filterSearchInput(dataRequest.companyName)
+      );
+      if (this.selectedFrameworks.length > 0) {
+        this.displayedData = this.displayedData.filter((dataRequest) => this.filterFramework(dataRequest.dataType));
+      }
+      if (this.selectedAccessStatus.length > 0) {
+        this.displayedData = this.displayedData.filter((dataRequest) =>
+          this.filterAccessStatus(dataRequest.accessStatus)
+        );
+      }
       this.displayedData.sort((a, b) => this.customCompareForStoredDataRequests(a, b));
       this.numberOfFilteredRequests = this.displayedData.length;
       this.displayedData = this.displayedData.slice(
@@ -412,8 +421,7 @@ export default defineComponent({
         if (this.getKeycloakPromise) {
           await new ApiClientProvider(this.getKeycloakPromise()).apiClients.requestController.patchDataRequest(
             requestId,
-            undefined,
-            newAccessStatus
+            { accessStatus: newAccessStatus }
           );
           await this.getStoredCompanyRequestDataList();
           this.updateCurrentDisplayedData();

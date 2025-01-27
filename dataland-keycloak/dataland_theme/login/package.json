@@ -20,12 +20,12 @@
   },
   "devDependencies": {
     "@types/node": "20.10.8",
-    "@typescript-eslint/eslint-plugin": "7.16.1",
+    "@typescript-eslint/eslint-plugin": "7.18.0",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "5.2.1",
-    "npm-check-updates": "16.14.20",
-    "sass": "1.80.3",
+    "npm-check-updates": "17.1.14",
+    "sass": "1.83.1",
     "typescript": "5.4.5",
     "vite": "4.5.5"
   }

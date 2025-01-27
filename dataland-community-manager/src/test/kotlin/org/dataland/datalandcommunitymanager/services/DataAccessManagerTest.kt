@@ -121,7 +121,8 @@ class DataAccessManagerTest {
         val dataRequestProcessingUtils = mock(DataRequestProcessingUtils::class.java)
         doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
             dataRequestEntity = any(), requestStatus = any(),
-            accessStatus = any(), modificationTime = any(),
+            accessStatus = any(), requestStatusChangeReason = anyString(),
+            modificationTime = any(),
         )
         doNothing().`when`(dataRequestProcessingUtils).addMessageToMessageHistory(
             dataRequestEntity = any(), contacts = anySet(), message = anyString(),
@@ -132,19 +133,22 @@ class DataAccessManagerTest {
 
     private fun createDataRequestRepository(): DataRequestRepository {
         val dataRequestRepository = mock(DataRequestRepository::class.java)
+        val vsmeRequestWithGrantedAccess = setupVsmeRequestWithGrantedAccess()
+        val vsmeRequestWithRevokedAccess = setupVsmeRequestWithRevokedAccess()
+
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 userId = userId, datalandCompanyId = companyId, dataType = DataTypeEnum.vsme.toString(),
                 reportingPeriod = grantedAccessReportingYear,
             ),
-        ).thenReturn(setupVsmeRequestWithGrantedAccess())
+        ).thenReturn(vsmeRequestWithGrantedAccess)
 
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
                 userId = userId, datalandCompanyId = companyId, dataType = DataTypeEnum.vsme.toString(),
                 reportingPeriod = revokedAccessReportingYear,
             ),
-        ).thenReturn(setupVsmeRequestWithRevokedAccess())
+        ).thenReturn(vsmeRequestWithRevokedAccess)
 
         `when`(
             dataRequestRepository.findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
@@ -225,7 +229,8 @@ class DataAccessManagerTest {
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
-                accessStatus = eq(AccessStatus.Pending), modificationTime = any(),
+                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
+                modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
@@ -252,7 +257,8 @@ class DataAccessManagerTest {
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
-                accessStatus = eq(AccessStatus.Pending), modificationTime = any(),
+                accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
+                modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(

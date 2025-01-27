@@ -7,9 +7,12 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import java.util.UUID
 
 /**
@@ -31,11 +34,15 @@ data class DataRequestEntity(
     @OneToMany(mappedBy = "dataRequest")
     var dataRequestStatusHistory: List<RequestStatusEntity>,
     var lastModifiedDate: Long,
+    var requestPriority: RequestPriority,
+    var adminComment: String?,
 ) {
     val requestStatus: RequestStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatus) ?: RequestStatus.Open
     val accessStatus: AccessStatus
         get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.accessStatus) ?: AccessStatus.Public
+    val requestStatusChangeReason: String?
+        get() = (dataRequestStatusHistory.maxByOrNull { it.creationTimestamp }?.requestStatusChangeReason)
     constructor(
         userId: String,
         dataType: String,
@@ -52,6 +59,13 @@ data class DataRequestEntity(
         messageHistory = listOf(),
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
+        requestPriority =
+            if (DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER)) {
+                RequestPriority.High
+            } else {
+                RequestPriority.Low
+            },
+        adminComment = null,
     )
 
     /**
@@ -94,6 +108,8 @@ data class DataRequestEntity(
             lastModifiedDate = lastModifiedDate,
             requestStatus = requestStatus,
             accessStatus = accessStatus,
+            requestPriority = requestPriority,
+            adminComment = adminComment,
         )
 
     /**

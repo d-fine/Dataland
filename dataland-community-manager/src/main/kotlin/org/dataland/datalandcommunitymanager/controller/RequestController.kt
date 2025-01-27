@@ -4,10 +4,13 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
@@ -20,7 +23,6 @@ import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -47,21 +49,20 @@ class RequestController(
         )
 
     override fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>> =
-        ResponseEntity
-            .ok(dataRequestQueryManager.getDataRequestsForRequestingUser())
+        ResponseEntity.ok(
+            dataRequestQueryManager.getDataRequestsForRequestingUser(),
+        )
 
-    override fun getAggregatedDataRequests(
-        identifierValue: String?,
+    override fun getAggregatedOpenDataRequests(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriod: String?,
-        status: RequestStatus?,
-    ): ResponseEntity<List<AggregatedDataRequest>> =
+        aggregatedPriority: AggregatedRequestPriority?,
+    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>> =
         ResponseEntity.ok(
-            dataRequestQueryManager.getAggregatedDataRequests(
-                identifierValue,
-                dataTypes,
-                reportingPeriod,
-                status,
+            dataRequestQueryManager.getAggregatedOpenDataRequestsWithAggregatedRequestPriority(
+                dataTypes = dataTypes,
+                reportingPeriod = reportingPeriod,
+                aggregatedPriority = aggregatedPriority,
             ),
         )
 
@@ -71,15 +72,18 @@ class RequestController(
         )
 
     override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
-        ResponseEntity
-            .ok(dataRequestQueryManager.getDataRequestById(dataRequestId.toString()))
+        ResponseEntity.ok(
+            dataRequestQueryManager.getDataRequestById(dataRequestId.toString()),
+        )
 
     override fun getDataRequests(
         dataType: Set<DataTypeEnum>?,
         userId: String?,
         emailAddress: String?,
+        adminComment: String?,
         requestStatus: Set<RequestStatus>?,
         accessStatus: Set<AccessStatus>?,
+        requestPriority: Set<RequestPriority>?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
         chunkSize: Int,
@@ -87,7 +91,15 @@ class RequestController(
     ): ResponseEntity<List<ExtendedStoredDataRequest>> {
         val filter =
             DataRequestsFilter(
-                dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+                dataType,
+                userId,
+                emailAddress,
+                datalandCompanyId,
+                reportingPeriod,
+                requestStatus,
+                accessStatus,
+                adminComment,
+                requestPriority,
             )
 
         val authenticationContext = DatalandAuthentication.fromContext()
@@ -99,7 +111,6 @@ class RequestController(
 
         return ResponseEntity.ok(
             dataRequestQueryManager.getDataRequests(
-                authenticationContext.roles.contains(DatalandRealmRole.ROLE_ADMIN),
                 ownedCompanyIdsByUser,
                 filter,
                 chunkIndex,
@@ -112,14 +123,24 @@ class RequestController(
         dataType: Set<DataTypeEnum>?,
         userId: String?,
         emailAddress: String?,
+        adminComment: String?,
         requestStatus: Set<RequestStatus>?,
         accessStatus: Set<AccessStatus>?,
+        requestPriority: Set<RequestPriority>?,
         reportingPeriod: String?,
         datalandCompanyId: String?,
     ): ResponseEntity<Int> {
         val filter =
             DataRequestsFilter(
-                dataType, userId, emailAddress, datalandCompanyId, reportingPeriod, requestStatus, accessStatus,
+                dataType,
+                userId,
+                emailAddress,
+                datalandCompanyId,
+                reportingPeriod,
+                requestStatus,
+                accessStatus,
+                adminComment,
+                requestPriority,
             )
 
         return ResponseEntity.ok(dataRequestQueryManager.getNumberOfDataRequests(filter))
@@ -136,18 +157,19 @@ class RequestController(
 
     override fun patchDataRequest(
         dataRequestId: UUID,
-        requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
-        contacts: Set<String>?,
-        message: String?,
+        dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
-                requestStatus,
-                accessStatus,
-                contacts,
-                message,
+                dataRequestPatch.requestStatus,
+                dataRequestPatch.accessStatus,
+                dataRequestPatch.contacts,
+                dataRequestPatch.message,
+                correlationId = null,
+                dataRequestPatch.requestPriority,
+                dataRequestPatch.adminComment,
+                dataRequestPatch.requestStatusChangeReason,
             ),
         )
 }

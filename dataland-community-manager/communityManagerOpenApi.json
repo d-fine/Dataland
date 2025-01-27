@@ -476,13 +476,72 @@
         ]
       }
     },
-    "/requests/{dataRequestId}/requestStatus": {
+    "/requests/{dataRequestId}": {
+      "get": {
+        "tags": [
+          "request-controller"
+        ],
+        "summary": "Gets a stored data request for a given ID.",
+        "description": "Gets the stored data request corresponding to the provided data request ID.",
+        "operationId": "getDataRequestById",
+        "parameters": [
+          {
+            "name": "dataRequestId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved data request for the provided ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoredDataRequest"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "patch": {
         "tags": [
           "request-controller"
         ],
         "summary": "Updates a data request.",
-        "description": "Updates status and message history of data request given data request id.",
+        "description": "Updates a data request given the data request id.",
         "operationId": "patchDataRequest",
         "parameters": [
           {
@@ -493,44 +552,18 @@
               "type": "string",
               "format": "uuid"
             }
-          },
-          {
-            "name": "requestStatus",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
-            }
-          },
-          {
-            "name": "accessStatus",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "$ref": "#/components/schemas/AccessStatus"
-            }
-          },
-          {
-            "name": "contacts",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "uniqueItems": true,
-              "type": "array",
-              "items": {
-                "type": "string"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataRequestPatch"
               }
             }
           },
-          {
-            "name": "message",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "Successfully patched data request.",
@@ -705,6 +738,14 @@
             }
           },
           {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "requestStatus",
             "in": "query",
             "required": false,
@@ -725,6 +766,18 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestPriority"
               }
             }
           },
@@ -775,67 +828,6 @@
                   "items": {
                     "$ref": "#/components/schemas/ExtendedStoredDataRequest"
                   }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/requests/{dataRequestId}": {
-      "get": {
-        "tags": [
-          "request-controller"
-        ],
-        "summary": "Gets a stored data request for a given ID.",
-        "description": "Gets the stored data request corresponding to the provided data request ID.",
-        "operationId": "getDataRequestById",
-        "parameters": [
-          {
-            "name": "dataRequestId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved data request for the provided ID.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StoredDataRequest"
                 }
               }
             }
@@ -974,6 +966,14 @@
             }
           },
           {
+            "name": "adminComment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "requestStatus",
             "in": "query",
             "required": false,
@@ -994,6 +994,18 @@
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/AccessStatus"
+              }
+            }
+          },
+          {
+            "name": "requestPriority",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RequestPriority"
               }
             }
           },
@@ -1062,18 +1074,10 @@
         "tags": [
           "request-controller"
         ],
-        "summary": "Get aggregated data requests.",
-        "description": "Gets all data requests that match the given filters, while aggregating userIDs.",
-        "operationId": "getAggregatedDataRequests",
+        "summary": "Get aggregated open data requests.",
+        "description": "Gets aggregated open data requests based on the chosen filters.",
+        "operationId": "getAggregatedOpenDataRequests",
         "parameters": [
-          {
-            "name": "identifierValue",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "dataTypes",
             "in": "query",
@@ -1107,11 +1111,11 @@
             }
           },
           {
-            "name": "status",
+            "name": "aggregatedPriority",
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/RequestStatus"
+              "$ref": "#/components/schemas/AggregatedRequestPriority"
             }
           }
         ],
@@ -1123,7 +1127,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AggregatedDataRequest"
+                    "$ref": "#/components/schemas/AggregatedDataRequestWithAggregatedPriority"
                   }
                 }
               }
@@ -1276,7 +1280,7 @@
                   }
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -1287,7 +1291,7 @@
                   }
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
@@ -1339,12 +1343,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
+              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
               },
-              "application/vnd.spring-boot.actuator.v2+json": {
+              "application/json": {
                 "schema": {
                   "type": "object"
                 }
@@ -1390,63 +1394,12 @@
                   "type": "object"
                 }
               },
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
               "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/actuator/health/**": {
-      "get": {
-        "tags": [
-          "Actuator"
-        ],
-        "summary": "Actuator web endpoint \u0027health-path\u0027",
-        "operationId": "health-path",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/vnd.spring-boot.actuator.v3+json": {
-                "schema": {
-                  "type": "object"
-                }
               },
               "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              },
-              "application/vnd.spring-boot.actuator.v2+json": {
                 "schema": {
                   "type": "object"
                 }
@@ -1672,16 +1625,6 @@
           }
         }
       },
-      "RequestStatus": {
-        "type": "string",
-        "enum": [
-          "Open",
-          "Answered",
-          "Resolved",
-          "Withdrawn",
-          "Closed"
-        ]
-      },
       "AccessStatus": {
         "type": "string",
         "enum": [
@@ -1690,6 +1633,59 @@
           "Pending",
           "Public",
           "Revoked"
+        ]
+      },
+      "DataRequestPatch": {
+        "type": "object",
+        "properties": {
+          "requestStatus": {
+            "$ref": "#/components/schemas/RequestStatus"
+          },
+          "accessStatus": {
+            "$ref": "#/components/schemas/AccessStatus"
+          },
+          "contacts": {
+            "uniqueItems": true,
+            "type": "array",
+            "example": [
+              "testuser@example.com"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "adminComment": {
+            "type": "string"
+          },
+          "requestStatusChangeReason": {
+            "type": "string"
+          }
+        }
+      },
+      "RequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Baseline",
+          "High",
+          "Urgent"
+        ]
+      },
+      "RequestStatus": {
+        "type": "string",
+        "enum": [
+          "Open",
+          "Answered",
+          "Resolved",
+          "Withdrawn",
+          "Closed",
+          "NonSourceable"
         ]
       },
       "StoredDataRequest": {
@@ -1703,6 +1699,7 @@
           "lastModifiedDate",
           "messageHistory",
           "reportingPeriod",
+          "requestPriority",
           "requestStatus",
           "userId"
         ],
@@ -1751,6 +1748,12 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "adminComment": {
+            "type": "string"
           }
         }
       },
@@ -1794,6 +1797,9 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestStatusChangeReason": {
+            "type": "string"
           }
         }
       },
@@ -1807,6 +1813,7 @@
           "datalandCompanyId",
           "lastModifiedDate",
           "reportingPeriod",
+          "requestPriority",
           "requestStatus",
           "userId"
         ],
@@ -1846,14 +1853,31 @@
           },
           "accessStatus": {
             "$ref": "#/components/schemas/AccessStatus"
+          },
+          "requestPriority": {
+            "$ref": "#/components/schemas/RequestPriority"
+          },
+          "adminComment": {
+            "type": "string"
           }
         }
       },
-      "AggregatedDataRequest": {
+      "AggregatedRequestPriority": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Normal",
+          "Baseline",
+          "High",
+          "VeryHigh",
+          "Urgent"
+        ]
+      },
+      "AggregatedDataRequestWithAggregatedPriority": {
         "required": [
+          "aggregatedPriority",
           "count",
-          "datalandCompanyId",
-          "requestStatus"
+          "datalandCompanyId"
         ],
         "type": "object",
         "properties": {
@@ -1878,8 +1902,8 @@
           "datalandCompanyId": {
             "type": "string"
           },
-          "requestStatus": {
-            "type": "string"
+          "aggregatedPriority": {
+            "$ref": "#/components/schemas/AggregatedRequestPriority"
           },
           "count": {
             "type": "integer",

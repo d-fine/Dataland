@@ -36,10 +36,11 @@ local
 gitinfo
 .envrc
 
-/dataland-automated-qa-service/dataland-automated-qa-service.iml
-
 # eurodat-client secret files
 **/secret_files/
 client.env
 keystore.jks
 tls.crt
+
+# local logging data
+/dataland-loki/data

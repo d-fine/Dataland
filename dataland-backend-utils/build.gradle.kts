@@ -25,6 +25,7 @@ plugins {
 // apply(plugin = "io.spring.dependency-management")
 
 dependencies {
+    implementation(libs.jakarta.persistence.api)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.okhttp)
     implementation(libs.slf4j.api)

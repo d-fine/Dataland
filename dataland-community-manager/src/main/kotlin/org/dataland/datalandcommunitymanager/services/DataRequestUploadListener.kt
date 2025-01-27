@@ -7,7 +7,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
@@ -33,7 +33,7 @@ class DataRequestUploadListener(
     private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
     /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered
      * @param jsonString the message describing the result of the completed QA process
      * @param type the type of the message
@@ -50,7 +50,7 @@ class DataRequestUploadListener(
                             Argument(name = "defaultRequeueRejected", value = "false"),
                         ],
                     ),
-                exchange = Exchange(ExchangeName.DATA_QUALITY_ASSURED, declare = "false"),
+                exchange = Exchange(ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS, declare = "false"),
                 key = [RoutingKeyNames.DATA],
             ),
         ],
@@ -61,26 +61,26 @@ class DataRequestUploadListener(
         @Header(MessageHeaderKey.TYPE) type: String,
         @Header(MessageHeaderKey.CORRELATION_ID) id: String,
     ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.QA_COMPLETED)
-        val qaCompletedMessage = MessageQueueUtils.readMessagePayload<QaCompletedMessage>(jsonString, objectMapper)
-        val dataId = qaCompletedMessage.identifier
+        MessageQueueUtils.validateMessageType(type, MessageType.QA_STATUS_UPDATED)
+        val qaStatusChangeMessage = MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(jsonString, objectMapper)
+        val dataId = qaStatusChangeMessage.dataId
         if (dataId.isEmpty()) {
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         logger.info("Received data QA completed message for dataset with ID $dataId")
-        if (qaCompletedMessage.validationResult != QaStatus.Accepted) {
+        if (qaStatusChangeMessage.updatedQaStatus != QaStatus.Accepted) {
             logger.info("Dataset with ID $dataId was not accepted and request matching is cancelled")
             return
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 
     /**
-     * Checks if for a given dataset there are open requests with matching company identifier, reporting period
+     * Checks if, for a given dataset, there are open requests with matching company identifier, reporting period
      * and data type and sets their status to answered and handles the update of the access status
-     * @param dataId the dataId of the uploaded data
+     * @param payload the message body containing the dataId of the uploaded data
      * @param type the type of the message
      */
     @RabbitListener(
@@ -113,7 +113,7 @@ class DataRequestUploadListener(
             throw MessageQueueRejectException("Provided data ID is empty")
         }
         MessageQueueUtils.rejectMessageOnException {
-            dataRequestAlterationManager.patchRequestStatusFromOpenToAnsweredByDataId(dataId, correlationId = id)
+            dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(dataId, correlationId = id)
         }
     }
 }

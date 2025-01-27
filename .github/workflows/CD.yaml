@@ -20,6 +20,7 @@ on:
         description: 'Ignore errors due to external factors on startup of the external storage'
         required: false
         type: boolean
+        default: true
       whichEnvironment:
         description: "Choose environment"
         required: true
@@ -69,7 +70,7 @@ jobs:
           mkdir -p ./dataland-frontend/ 
           docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
       - name: Store generated frontend API clients for use by cypress
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/
@@ -79,19 +80,19 @@ jobs:
       - e2e-tests
     steps:
       - name: Merge Docker Image Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: dockerImageVersions
           pattern: dockerImageVersions-*
           delete-merged: true
       - name: Merge Parameter Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: parameters
           pattern: parameters-*
           delete-merged: true
       - name: Merge Cypress Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: cypress
           pattern: cypress-*
@@ -117,7 +118,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -149,7 +150,6 @@ jobs:
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${{ secrets.DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET }}
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_EMAIL_SERVICE_CLIENT_SECRET  }}
           DATALAND_BACKEND_CLIENT_SECRET: ${{ secrets.DATALAND_BACKEND_CLIENT_SECRET }}
-          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${{ secrets.DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET }}
           DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${{ secrets.DATALAND_DATA_EXPORTER_CLIENT_SECRET }}
           KEYCLOAK_READER_VALUE: ${{ secrets.KEYCLOAK_READER_VALUE }}
           KEYCLOAK_READER_SALT: ${{ secrets.KEYCLOAK_READER_SALT }}
@@ -193,6 +193,11 @@ jobs:
           IGNORE_EXTERNAL_STORAGE_ERROR: ${{ github.event.inputs.ignoreExternalStorageError }}
           COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: ${{ vars.COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG }}
           DATA_EXPORTER_OUTPUT_DIRECTORY: ${{ secrets.DATA_EXPORTER_OUTPUT_DIRECTORY }}
+          LOGGING_OPTIONS_MAX_SIZE: ${{ vars.LOGGING_OPTIONS_MAX_SIZE }}
+          LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
+          GRAFANA_ADMIN: ${{ vars.GRAFANA_ADMIN }}
+          GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
+          LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -270,13 +275,17 @@ jobs:
           RABBITMQ_USER: ${{ vars.RABBITMQ_USER }}
           RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
           RABBITMQ_PASS_HASH: ${{ secrets.RABBITMQ_PASS_HASH }}
+          LOGGING_OPTIONS_MAX_SIZE: ${{ vars.LOGGING_OPTIONS_MAX_SIZE }}
+          LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
+          GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
+          LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
       - name: Move Cypress Results
         if: always()
         run: |
           mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.SENSITIVE_ARTIFACT_ENCRYPTION_KEY }}" ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z ./dataland-frontend/cypress/
       - name: Upload FE E2E Cypress Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: cypress-${{ matrix.testGroup }}
           path: ./dataland-frontend/cypressresult/

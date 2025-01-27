@@ -191,7 +191,7 @@ export default defineComponent({
       toggleEmailDetailsError: false,
       activeTab: 'update request',
       hasValidEmailForm: false,
-      emailContacts: undefined as Set<string> | undefined,
+      emailContacts: undefined as string[] | undefined,
       emailMessage: undefined as string | undefined,
       showUpdateRequestDialog: false,
       answeredDataRequestsForViewPage: [] as ExtendedStoredDataRequest[],
@@ -317,7 +317,7 @@ export default defineComponent({
       dataRequestId: string,
       requestStatusToPatch: RequestStatus,
       accessStatus?: AccessStatus,
-      contacts?: Set<string>,
+      contacts?: string[],
       message?: string
     ) {
       try {
@@ -325,8 +325,10 @@ export default defineComponent({
           dataRequestId,
           requestStatusToPatch,
           accessStatus,
-          contacts,
+          // as unknown as Set<string> cast required to ensure proper json is created
+          contacts as unknown as Set<string>,
           message,
+          undefined,
           this.getKeycloakPromise
         );
       } catch (e) {
@@ -404,7 +406,7 @@ export default defineComponent({
      * @param contacts email addresses
      * @param message the content
      */
-    updateEmailFields(hasValidForm: boolean, contacts: Set<string>, message: string) {
+    updateEmailFields(hasValidForm: boolean, contacts: string[], message: string) {
       this.hasValidEmailForm = hasValidForm;
       this.emailContacts = contacts;
       this.emailMessage = message;

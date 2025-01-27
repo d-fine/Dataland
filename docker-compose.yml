@@ -21,7 +21,12 @@ x-dummy-eurodat-db-settings: &dummy-eurodat-db-settings
   POSTGRES_DB: eurodat_db_name
   POSTGRES_USER: eurodat_db_user
   POSTGRES_PASSWORD: eurodat_db_password
-
+x-logging: &loki-logging
+  driver: json-file
+  options:
+    tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    max-size: ${LOGGING_OPTIONS_MAX_SIZE}
+    max-file: ${LOGGING_OPTIONS_MAX_FILE}
 
 services:
   proxy:
@@ -50,6 +55,8 @@ services:
       BACKEND_URL: ${BACKEND_URL}
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *loki-logging
   admin-proxy:
     image: ghcr.io/d-fine/dataland/dataland_inbound_admin_proxy:${DATALAND_INBOUND_ADMIN_PROXY_VERSION}
     restart: always
@@ -65,10 +72,13 @@ services:
       - qa-service-db
       - community-manager-db
       - email-service-db
+      - grafana
     ports:
       - "127.0.0.1:6789:6789"
       - "127.0.0.1:5433-5440:5433-5440"
       - "127.0.0.1:5672:5672"
+    logging:
+      <<: *loki-logging
   api-key-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -84,12 +94,14 @@ services:
     environment:
       API_KEY_MANAGER_DB_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+    logging:
+      <<: *loki-logging
   api-key-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -101,6 +113,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   document-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -119,12 +133,14 @@ services:
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
     depends_on:
       - document-manager-db
+    logging:
+      <<: *loki-logging
   document-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -136,6 +152,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   backend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -154,12 +172,14 @@ services:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       BACKEND_MIGRATION_BASELINE_VERSION: ${BACKEND_MIGRATION_BASELINE_VERSION:-1}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
+    logging:
+      <<: *loki-logging
   backend-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -179,6 +199,8 @@ services:
       -c effective_cache_size=4GB
       -c shared_buffers=1GB
       -c temp_buffers=512MB
+    logging:
+      <<: *loki-logging
   e2etests:
     profiles: [ "testing" ]
     image: ghcr.io/d-fine/dataland/dataland_e2etests:${DATALAND_E2ETESTS_VERSION}
@@ -197,6 +219,8 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       PGADMIN_PASSWORD: ${PGADMIN_PASSWORD}
+      GRAFANA_ADMIN: ${GRAFANA_ADMIN}
+      GRAFANA_PASSWORD: ${GRAFANA_PASSWORD}
       CYPRESS_EXECUTION_ENVIRONMENT: ${CYPRESS_EXECUTION_ENVIRONMENT}
       CYPRESS_TEST_GROUP: ${CYPRESS_TEST_GROUP}
       CYPRESS_SINGLE_POPULATE: ${CYPRESS_SINGLE_POPULATE:-false}
@@ -204,6 +228,8 @@ services:
     links:
       - proxy:local-dev.dataland.com
       - admin-proxy:dataland-admin
+    logging:
+      <<: *loki-logging
   frontend-dev:
     # This container has been introduced to work around a docker bug where requests from a docker network to the host
     # don't work anymore after a certain amount of requests
@@ -222,6 +248,8 @@ services:
     <<: *uncritical-constants-env
     environment:
       POLLING: "false"
+    logging:
+      <<: *loki-logging
   frontend:
     restart: always
     profiles: [ "production", "testing" ]
@@ -229,6 +257,8 @@ services:
     networks:
       - internal
     <<: *uncritical-constants-env
+    logging:
+      <<: *loki-logging
   internal-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -246,12 +276,14 @@ services:
       - internal-storage-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *loki-logging
   internal-storage-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -263,12 +295,14 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   keycloak-db:
     restart: always
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -280,6 +314,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   keycloak:
     restart: always
     profiles: [ "production", "development" ]
@@ -295,6 +331,8 @@ services:
       KEYCLOAK_FRONTEND_URL: ${KEYCLOAK_FRONTEND_URL}
     depends_on:
       - keycloak-db
+    logging:
+      <<: *loki-logging
   keycloak-initializer:
     profiles: [ "testing", "init" ]
     networks:
@@ -330,7 +368,6 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
-      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
@@ -341,6 +378,8 @@ services:
     depends_on:
       keycloak-db:
         condition: service_healthy
+    logging:
+      <<: *loki-logging
   pgadmin:
     restart: always
     image: ghcr.io/d-fine/dataland/dataland_pgadmin:${DATALAND_PGADMIN_VERSION}
@@ -370,6 +409,8 @@ services:
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
+    logging:
+      <<: *loki-logging
   rabbitmq:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -390,23 +431,8 @@ services:
         limits:
           # Always maintain 1.5 ratio between disk_free_limit.absolute of rabbitMQ conf and the memory here
           memory: 512M
-  automated-qa-service:
-    restart: always
-    profiles: [ "production", "testing", "development" ]
-    image: ${AUTOMATED_QA_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_automated_qa_service_test:${DATALAND_AUTOMATED_QA_SERVICE_TEST_VERSION}}
-    networks:
-      - internal
-    expose:
-      - "8080"
-    environment:
-      <<: *rabbit-mq-user-and-pass
-      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-      DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: ${DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET}
-      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-    depends_on:
-      - qa-service
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    logging:
+      <<: *loki-logging
   qa-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -427,12 +453,14 @@ services:
       - qa-service-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *loki-logging
   qa-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -444,6 +472,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   batch-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -460,6 +490,8 @@ services:
       - batch_manager_data:/deltafiles
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *loki-logging
   community-manager:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -481,12 +513,14 @@ services:
       - community-manager-db
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      <<: *loki-logging
   community-manager-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: postgres:15.7@sha256:68b988a164c8bdf0752fa7a4ae2d4b34a058e21c6327e69f741c081a38e97254
+    image: postgres:15.9@sha256:4aea4ddff8a3b411d6644e2cec3748c365189de1a2ffd5a7ac579dfbe45845a0
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -498,6 +532,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   specification-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -509,6 +545,8 @@ services:
     <<: *uncritical-constants-env
     environment:
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+    logging:
+      <<: *loki-logging
   email-service:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -527,12 +565,14 @@ services:
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
+    logging:
+      <<: *loki-logging
   email-service-db:
     restart: always
     profiles: [ "production", "testing", "development" ]
     networks:
       - email-service-db
-    image: postgres:17.0@sha256:8d3be35b184e70d81e54cbcbd3df3c0b47f37d06482c0dd1c140db5dbcc6a808
+    image: postgres:17.0@sha256:f176fef320ed02c347e9f85352620945547a9a23038f02b57cf7939a198182ae
     volumes:
       - email_service_data:/var/lib/postgresql/data
     environment:
@@ -544,6 +584,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   external-storage:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -558,6 +600,8 @@ services:
       IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:-false}
     extra_hosts:
      - "host.docker.internal:host-gateway"
+    logging:
+      <<: *loki-logging
   eurodat-client:
     restart: always
     profiles: [ "production", "development" ]
@@ -570,6 +614,8 @@ services:
       - ./dataland-eurodat-client/secret_files:/crt
     env_file:
       - ./dataland-eurodat-client/secret_files/client.env
+    logging:
+      <<: *loki-logging
   dummy-eurodat-client:
     restart: always
     profiles: [ "testing" ]
@@ -580,10 +626,12 @@ services:
       - "8080"
     environment:
       <<: *dummy-eurodat-db-settings
+    logging:
+      <<: *loki-logging
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:14195b0729fce792f47ae3c3704d6fd04305826d57af3b01d5b4d004667df174
+    image: postgres:alpine@sha256:0bcc5bbbb2aa9c9b4c6505845918c7eb55d783cf5c1f434fac33012579fb149d
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data
@@ -595,6 +643,8 @@ services:
       test: [ "CMD-SHELL", "pg_isready || false" ]
       interval: 30s
       timeout: 3s
+    logging:
+      <<: *loki-logging
   data-exporter:
     restart: always
     profiles: [ "production", "testing", "development" ]
@@ -610,6 +660,58 @@ services:
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
     volumes:
       - ${DATA_EXPORTER_OUTPUT_DIRECTORY}:/var/export
+    logging:
+      <<: *loki-logging
+  grafana:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${GRAFANA_IMAGE:-ghcr.io/d-fine/dataland/dataland_grafana:${DATALAND_GRAFANA_VERSION}}
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
+    expose:
+      - "3000"
+    volumes:
+      - grafana_data:/var/lib/grafana/data
+    depends_on:
+      - loki
+    networks:
+      - grafana
+      - loki
+    logging:
+      <<: *loki-logging
+  loki:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${LOKI_IMAGE:-ghcr.io/d-fine/dataland/dataland_loki:${DATALAND_LOKI_VERSION}}
+    expose:
+      - "3100"
+    environment:
+      INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
+    volumes:
+      - ${LOKI_VOLUME}:/loki
+    networks:
+      - loki
+    logging:
+      <<: *loki-logging
+  alloy:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    image: ${ALLOY_IMAGE:-ghcr.io/d-fine/dataland/dataland_alloy:${DATALAND_ALLOY_VERSION}}
+    expose:
+      - "8080"
+    environment:
+      INTERNAL_ALLOY_URL: ${INTERNAL_ALLOY_URL:-http://alloy:8080}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - alloy_data:/var/lib/alloy/data
+    depends_on:
+      - loki
+    networks:
+      - loki
+    logging:
+      <<: *loki-logging
 networks:
   internal:
   external:
@@ -621,6 +723,8 @@ networks:
   qa-service-db:
   community-manager-db:
   email-service-db:
+  loki:
+  grafana:
 volumes:
   keycloak_data:
     driver: local
@@ -647,4 +751,8 @@ volumes:
   batch_manager_data:
     driver: local
   email_service_data:
+    driver: local
+  grafana_data:
+    driver: local
+  alloy_data:
     driver: local

@@ -46,7 +46,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -59,19 +59,19 @@ jobs:
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: componentTestCypressLogs
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: lcovResults-frontend
           path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
@@ -93,7 +93,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -105,7 +105,7 @@ jobs:
           echo "frameworkList=$(<./dataland-framework-toolbox/build/framework-list.json)" >> "$GITHUB_OUTPUT"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: JaCoCoResultsToolbox-list
           path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
@@ -131,7 +131,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -146,7 +146,7 @@ jobs:
         if: always()
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: JaCoCoResultsToolbox-${{ matrix.framework }}
           path: ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
@@ -166,7 +166,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -175,7 +175,7 @@ jobs:
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
@@ -196,7 +196,7 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: temurin
           java-version: 21
@@ -248,7 +248,7 @@ jobs:
           ! grep -ri "it\.only" dataland-frontend/tests/
       - name: Upload Test and Coverage Reports
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: GradleReports
           path: |
@@ -256,7 +256,7 @@ jobs:
             ./**/coverage
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: JaCoCoResultsUnitTests-Gradle
           path: ./**/*.exec
@@ -264,57 +264,6 @@ jobs:
         if: always()
         with:
           subfolder: 'unit-tests-backend'
-  python-tests:
-    runs-on: ubuntu-latest
-    if: github.event_name != 'workflow_dispatch'
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - uses: ./.github/workflows/logObjects
-        name: log job contexts
-        with:
-          task: "python-tests"
-          env: ${{ toJSON(env) }}
-          job: ${{ toJSON(job) }}
-          steps: ${{ toJSON(steps) }}
-          strategy: ${{ toJSON(strategy) }}
-          matrix: ${{ toJSON(matrix) }}
-          needs: ${{ toJSON(needs) }}
-          inputs: ${{ toJSON(inputs) }}
-          vars: ${{ toJSON(vars) }}
-      - name: Prepare python environment
-        if: always()
-        run: | 
-          cd ./dataland-automated-qa-service
-          pip install --no-cache-dir -r requirements.txt
-          pip install -e .
-          openapi-python-client generate --path ../dataland-document-manager/documentManagerOpenApi.json
-          openapi-python-client generate --path ../dataland-backend/backendOpenApi.json
-          pip install --no-cache-dir ./dataland-backend-api-documentation-client
-          pip install --no-cache-dir ./dataland-document-manager-api-documentation-client
-      - name: Python linting
-        if: always()
-        run: |
-          pip install ruff
-          ruff check --preview ./dataland-automated-qa-service/src
-      - name: Execute python unit tests and measure coverage
-        if: always()
-        run: |
-          cd ./dataland-automated-qa-service
-          coverage run --source="./src/main" -m pytest -o log_cli=true -o log_cli_level=INFO
-          coverage xml
-          mv ./coverage.xml ./automated-qa-service-unit-test.xml
-        env:
-          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "dummy"
-          RABBITMQ_USER: "dummy"
-          RABBITMQ_PASS: "dummy"
-          PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
-          INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
-      - name: Upload Python Unit Test Coverage Results
-        if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
-        with:
-          name: PythonUnitTestCoverage
-          path: ./dataland-automated-qa-service/automated-qa-service-unit-test.xml
   e2e-tests:
     runs-on: ubuntu-latest
     if: github.event_name != 'workflow_dispatch'
@@ -378,7 +327,6 @@ jobs:
           DATALAND_EMAIL_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: "password"
           DATALAND_BACKEND_CLIENT_SECRET: "password"
-          DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET: "password"
           DATALAND_DATA_EXPORTER_CLIENT_SECRET: "password"
           KEYCLOAK_READER_VALUE: "Dic1AEUG0nKnZ8me/3GMxgfyUmbwmJwDWNXkC7arLcij2BDB0xeOgk8ZpfZPKmFNikr9Is5I4+Nyk3MB9zs7mA=="
           KEYCLOAK_READER_SALT: "K9nzg086pCNjq8dxl84GZg=="
@@ -418,27 +366,26 @@ jobs:
           IGNORE_EXTERNAL_STORAGE_ERROR: "false"
           COMMUNITY_MANAGER_NOTIFICATION_SERVICE_FEATURE_FLAG: true
           DATA_EXPORTER_OUTPUT_DIRECTORY: "/tmp"
+          LOGGING_OPTIONS_MAX_SIZE: "1G"
+          LOGGING_OPTIONS_MAX_FILE: 1
+          GRAFANA_ADMIN: "admin"
+          GRAFANA_PASSWORD: "password"
+          LOKI_VOLUME: "./dataland-loki/data"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: JaCoCoResultsE2ETest-${{ matrix.testGroup }}
           path: ./*.exec
-      - name: Upload Python Coverage Results
-        if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
-        with:
-          name: PythonE2eTestCoverage-${{ matrix.testGroup }}
-          path: ./*.xml
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: lcovResults-${{ matrix.testGroup }}
           path: ./*.info
       - name: Upload E2E Test and Cypress Reports
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: e2eTestReports-${{ matrix.testGroup }}
           path: |
@@ -447,7 +394,7 @@ jobs:
             ./reports
       - name: Upload database dumps
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: e2eTestDatabaseDumps-${{ matrix.testGroup }}
           path: ./dbdumps/
@@ -462,7 +409,6 @@ jobs:
       - e2e-tests
       - gradle-based-tests
       - frontend-component-tests
-      - python-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
     steps:
@@ -481,29 +427,11 @@ jobs:
           needs: ${{ toJSON(needs) }}
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
-      - uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4
+      - uses: actions/setup-java@7a6d8a8234af8eb26422e24e3006232cccaa061b # v4
         with:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        name: PythonUnitTestCoverage
-        with:
-          pattern: PythonUnitTestCoverage
-          path: python-coverage
-          merge-multiple: true
-      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        name: PythonE2eTestCoverage
-        with:
-          pattern: PythonE2eTestCoverage-*
-          path: python-coverage
-          merge-multiple: true
-      - name: Convert Python coverage paths
-        if: always()
-        run: |
-          cd ./python-coverage
-          sed -i "s%src/main%/home/runner/work/Dataland/Dataland/dataland-automated-qa-service/src/main%g" ./*.xml
-          sed -i "s%.//home%/home%g" ./*.xml
       - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         name: JaCoCoResultsUnitTests
         with:
@@ -554,7 +482,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload Reports
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: SonarStageReports
           path: ./build/reports
@@ -573,75 +501,67 @@ jobs:
       - e2e-tests
       - gradle-based-tests
       - frontend-component-tests
-      - python-tests
       - framework-toolbox-integration-tests
       - framework-toolbox-consistency-tests
     if: ${{ success() }}
     steps:
       - name: Merge Parameters Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         with:
           name: parameters
           pattern: parameters-*
           delete-merged: true
       - name: Merge Docker Logs Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: dockerLogs
           pattern: dockerLogs-*
           delete-merged: true
       - name: Merge Jacoco E2E Test Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: JaCoCoResultsE2ETest
           pattern: JaCoCoResultsE2ETest-*
           delete-merged: true
       - name: Merge Jacoco Framework Toolbox Test Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: JaCoCoResultsToolbox
           pattern: JaCoCoResultsToolbox-*
           delete-merged: true
-      - name: Merge Python Test Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
-        if: always()
-        with:
-          name: PythonE2eTestCoverage
-          pattern: PythonE2eTestCoverage-*
-          delete-merged: true
       - name: Merge lcovResults Test Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: lcovResults
           pattern: lcovResults-*
           delete-merged: true
       - name: Merge E2E Test Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: e2eTestReports
           pattern: e2eTestReports-*
           delete-merged: true
       - name: Merge E2E DB dump Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: e2eTestDatabaseDumps
           pattern: e2eTestDatabaseDumps-*
           delete-merged: true
       - name: Merge Jacoco Unit Test Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: JaCoCoResultsUnitTests
           pattern: JaCoCoResultsUnitTests-*
           delete-merged: true
       - name: Merge Docker Image Artifacts
-        uses: actions/upload-artifact/merge@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4
+        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
         if: always()
         with:
           name: dockerImageVersions

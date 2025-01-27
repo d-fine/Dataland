@@ -110,7 +110,7 @@ export default defineComponent({
   },
 });
 
-interface Tab {
+export interface Tab {
   label: string;
   route: string;
   isVisible: boolean;

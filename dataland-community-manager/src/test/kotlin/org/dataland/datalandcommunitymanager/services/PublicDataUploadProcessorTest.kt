@@ -9,7 +9,7 @@ import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.Ele
 import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.messages.QaCompletedMessage
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.json.JSONObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -30,6 +30,7 @@ class PublicDataUploadProcessorTest {
     private lateinit var elementaryEventRepositoryMock: ElementaryEventRepository
 
     private var dataId = UUID.randomUUID()
+    private val activeDataId = UUID.randomUUID()
     private var companyId = UUID.randomUUID()
 
     @BeforeEach
@@ -85,20 +86,30 @@ class PublicDataUploadProcessorTest {
 
     @Test
     fun `do not create an elementary event when the dataset has been rejected`() {
-        val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Rejected, "reviewerId", "message")
-        val payload = objectMapper.writeValueAsString(qaCompletedMessage)
+        val qaStatusChangeMessage =
+            QaStatusChangeMessage(
+                dataId = dataId.toString(),
+                updatedQaStatus = QaStatus.Rejected,
+                currentlyActiveDataId = activeDataId.toString(),
+            )
+        val payload = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
-        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_COMPLETED)
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_UPDATED)
 
         Mockito.verifyNoInteractions(elementaryEventRepositoryMock)
     }
 
     @Test
     fun `create an elementary event when the dataset has been approved`() {
-        val qaCompletedMessage = QaCompletedMessage(dataId.toString(), QaStatus.Accepted, "reviewerId", "message")
-        val payload = objectMapper.writeValueAsString(qaCompletedMessage)
+        val qaStatusChangeMessage =
+            QaStatusChangeMessage(
+                dataId = dataId.toString(),
+                updatedQaStatus = QaStatus.Accepted,
+                currentlyActiveDataId = dataId.toString(),
+            )
+        val payload = objectMapper.writeValueAsString(qaStatusChangeMessage)
 
-        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_COMPLETED)
+        publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_UPDATED)
 
         verify(elementaryEventRepositoryMock, times(1)).saveAndFlush(any())
     }

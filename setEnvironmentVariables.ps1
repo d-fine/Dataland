@@ -39,7 +39,7 @@
 [Environment]::SetEnvironmentVariable("DATALAND_QA_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("DATALAND_BACKEND_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
-[Environment]::SetEnvironmentVariable("DATALAND_AUTOMATED_QA_SERVICE_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
+
 [Environment]::SetEnvironmentVariable("DATALAND_DATA_EXPORTER_CLIENT_SECRET", "password", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("EXPECT_STACKTRACE", "true", [System.EnvironmentVariableTarget]::User)
 [Environment]::SetEnvironmentVariable("NOTIFICATION_INTERNAL_RECEIVERS", "dummy.mail@example.com", [System.EnvironmentVariableTarget]::User)
@@ -70,3 +70,9 @@
 # [Environment]::SetEnvironmentVariable("QUARKUS_HTTP_SSL_CERTIFICATE_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
 # [Environment]::SetEnvironmentVariable("QUARKUS_OIDC_CLIENT_CREDENTIALS_JWT_KEY_STORE_PASSWORD", "", [System.EnvironmentVariableTarget]::User)
+
+[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_SIZE", "100M", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("LOGGING_OPTIONS_MAX_FILE", "1", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GRAFANA_ADMIN", "admin", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("GRAFANA_PASSWORD", "password", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("LOKI_VOLUME", "./dataland-loki/data", [System.EnvironmentVariableTarget]::User)

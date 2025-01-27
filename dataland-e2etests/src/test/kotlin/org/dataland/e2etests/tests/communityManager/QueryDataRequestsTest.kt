@@ -4,6 +4,7 @@ import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
@@ -174,7 +176,7 @@ class QueryDataRequestsTest {
         assertEquals(DataTypeEnum.p2p.value, storedDataRequestB.dataType)
         assertEquals("2023", storedDataRequestB.reportingPeriod)
 
-        api.patchDataRequest(dataRequestIdB, RequestStatus.Answered)
+        api.patchDataRequest(dataRequestIdB, DataRequestPatch(RequestStatus.Answered))
 
         val answeredDataRequests =
             api
@@ -320,5 +322,12 @@ class QueryDataRequestsTest {
                     chunkSize = chunkSize,
                 ).filter { it.creationTimestamp > timestampBeforePost }
         assertEquals(1, combinedQueryResults.size)
+    }
+
+    @Test
+    fun `test that querying by email does not throw an error due to the setupEmailAddressFilter not being called`() {
+        assertDoesNotThrow {
+            api.getDataRequests(emailAddress = "test@test.com", chunkSize = chunkSize)
+        }
     }
 }

@@ -7,10 +7,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedDataRequestWithAggregatedPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.AggregatedRequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.ExtendedStoredDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
@@ -78,12 +81,12 @@ interface RequestApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDataRequestsForRequestingUser(): ResponseEntity<List<ExtendedStoredDataRequest>>
 
-    /** Retrieves aggregated data requests by aggregating all userIds
-     * @return aggregated data requests that match the given filters
+    /** Retrieves aggregated open data requests by aggregating open requests over all userIds
+     * @return aggregated open data requests that match the given filters
      */
     @Operation(
-        summary = "Get aggregated data requests.",
-        description = "Gets all data requests that match the given filters, while aggregating userIDs.",
+        summary = "Get aggregated open data requests.",
+        description = "Gets aggregated open data requests based on the chosen filters.",
     )
     @ApiResponses(
         value = [
@@ -95,12 +98,11 @@ interface RequestApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getAggregatedDataRequests(
-        @RequestParam identifierValue: String? = null,
+    fun getAggregatedOpenDataRequests(
         @RequestParam dataTypes: Set<DataTypeEnum>? = null,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam status: RequestStatus? = null,
-    ): ResponseEntity<List<AggregatedDataRequest>>
+        @RequestParam aggregatedPriority: AggregatedRequestPriority? = null,
+    ): ResponseEntity<List<AggregatedDataRequestWithAggregatedPriority>>
 
     /**
      * A method to post a single request to Dataland.
@@ -149,13 +151,15 @@ interface RequestApi {
         @PathVariable dataRequestId: UUID,
     ): ResponseEntity<StoredDataRequest>
 
-    /** Changes request status and message history of existing data request
+    /** A method to patch an existing data request
+     * @param dataRequestId The request id of the data request to patch
+     * @param dataRequestPatch The data with which the request is updated
      * @return the modified data request
      */
-
+    @Suppress("LongParameterList")
     @Operation(
         summary = "Updates a data request.",
-        description = "Updates status and message history of data request given data request id.",
+        description = "Updates a data request given the data request id.",
     )
     @ApiResponses(
         value = [
@@ -163,26 +167,17 @@ interface RequestApi {
         ],
     )
     @PatchMapping(
-        value = ["/{dataRequestId}/requestStatus"],
+        value = ["/{dataRequestId}"],
+        consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize(
-        "hasRole('ROLE_ADMIN') or " +
-            "(@SecurityUtilsService.isUserAskingForOwnRequest(#dataRequestId) and " +
-            "@SecurityUtilsService.isRequestStatusChangeableByUser(#dataRequestId, #requestStatus) and " +
-            "@SecurityUtilsService.isNotTryingToPatchAccessStatus(#accessStatus) and " +
-            "@SecurityUtilsService.isRequestMessageHistoryChangeableByUser(" +
-            "#dataRequestId, #requestStatus, #contacts,#message)" +
-            ") or" +
-            "@SecurityUtilsService.isUserCompanyOwnerForRequestId(#dataRequestId) and" +
-            "@SecurityUtilsService.areOnlyAuthorizedFieldsPatched(#requestStatus, #contacts, #message) ",
+        "hasRole('ROLE_ADMIN') or @SecurityUtilsService.canUserPatchDataRequest(#dataRequestId, #dataRequestPatch)",
     )
     fun patchDataRequest(
-        @PathVariable dataRequestId: UUID,
-        @RequestParam requestStatus: RequestStatus?,
-        @RequestParam accessStatus: AccessStatus?,
-        @RequestParam contacts: Set<String>?,
-        @RequestParam message: String?,
+        @PathVariable("dataRequestId") dataRequestId: UUID,
+        @Valid @RequestBody
+        dataRequestPatch: DataRequestPatch,
     ): ResponseEntity<StoredDataRequest>
 
     /** A method for searching data requests based on filters.
@@ -190,8 +185,10 @@ interface RequestApi {
      * @param userId If set, only the requests from this user are returned
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  returned
+     * @param adminComment If set, only comments with this substring are returned
      * @param requestStatus If set, only the requests with a request status in requestStatus are returned
      * @param accessStatus If set, only the requests with an access status in accessStatus are returned
+     * @param requestPriority If set, only the requests with this priority are returned
      * @param reportingPeriod If set, only the requests with this reportingPeriod are returned
      * @param datalandCompanyId If set, only the requests for this company are returned
      * @param chunkSize Limits the number of returned requests
@@ -219,8 +216,10 @@ interface RequestApi {
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam userId: String?,
         @RequestParam emailAddress: String?,
+        @RequestParam adminComment: String?,
         @RequestParam requestStatus: Set<RequestStatus>?,
         @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam requestPriority: Set<RequestPriority>?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
         @RequestParam(defaultValue = "100") chunkSize: Int,
@@ -232,8 +231,10 @@ interface RequestApi {
      * @param userId If set, only the requests from this user are counted
      * @param emailAddress If set, only the requests from users which email address partially matches emailAddress are
      *  counted
+     * @param adminComment If set, only comments with this substring are counted
      * @param requestStatus If set, only the requests with a request status in requestStatus are counted
      * @param accessStatus If set, only the requests with an access status in accessStatus are counted
+     * @param requestPriority If set, only the requests with this priority are counted
      * @param reportingPeriod If set, only the requests with this reportingPeriod are counted
      * @param datalandCompanyId If set, only the requests for this company are counted
      * @return The number of requests that match the filter
@@ -259,8 +260,10 @@ interface RequestApi {
         @RequestParam dataType: Set<DataTypeEnum>?,
         @RequestParam userId: String?,
         @RequestParam emailAddress: String?,
+        @RequestParam adminComment: String?,
         @RequestParam requestStatus: Set<RequestStatus>?,
         @RequestParam accessStatus: Set<AccessStatus>?,
+        @RequestParam requestPriority: Set<RequestPriority>?,
         @RequestParam reportingPeriod: String?,
         @RequestParam datalandCompanyId: String?,
     ): ResponseEntity<Int>

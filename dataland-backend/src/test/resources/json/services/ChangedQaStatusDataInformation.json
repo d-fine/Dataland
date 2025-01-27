@@ -1,0 +1,28 @@
+{
+  "dataId": "ChangedStatusDataId",
+  "company": {
+    "companyId": "ChangedStatusCompanyId",
+    "companyName": "Test Company",
+    "companyAlternativeNames": ["Test Company Ltd.", "TC"],
+    "companyContactDetails": ["123456789", "contact@testcompany.com"],
+    "companyLegalForm": "GmbH",
+    "headquarters": "Berlin",
+    "headquartersPostalCode": "10115",
+    "sector": "Technology",
+    "sectorCodeWz": "6201",
+    "identifiers": [
+      { "identifierType": "Lei", "identifierValue": "123456789" }
+    ],
+    "parentCompanyLei": "987654321",
+    "dataRegisteredByDataland": [],
+    "countryCode": "DE",
+    "isTeaserCompany": true,
+    "website": "https://www.testcompany.com"
+  },
+  "dataType": "sfdr",
+  "uploaderUserId": "user123",
+  "uploadTime": 1698150000000,
+  "reportingPeriod": "2023",
+  "currentlyActive": false,
+  "qaStatus": "Pending"
+}

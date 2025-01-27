@@ -47,7 +47,7 @@ abstract class BaseEventProcessor(
         val visibilityType =
             when (messageType) {
                 MessageType.PRIVATE_DATA_RECEIVED -> "private"
-                MessageType.QA_COMPLETED -> "public"
+                MessageType.QA_STATUS_UPDATED -> "public"
                 else -> ""
             }
 

@@ -137,6 +137,11 @@ body {
     background: var(--yellow-100);
   }
 
+  &.badge-orange {
+    color: var(--orange-700);
+    background: var(--orange-100);
+  }
+
   &.badge-green,
   &.p-badge-success {
     color: var(--green-700);

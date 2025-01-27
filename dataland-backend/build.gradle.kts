@@ -28,6 +28,7 @@ plugins {
 dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(libs.jackson.module.kotlin)
+    implementation(libs.jackson.dataformat.csv)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
@@ -57,6 +58,7 @@ dependencies {
     testImplementation(Spring.boot.test)
     testImplementation(Testing.mockito.core)
     testImplementation(Spring.security.spring_security_test)
+    testImplementation(libs.mockito.kotlin)
     kapt(Spring.boot.configurationProcessor)
 }
 
@@ -100,6 +102,11 @@ tasks.register<Copy>("getTestData") {
 
 tasks.getByName("processTestResources") {
     dependsOn("getTestData")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }
 
 gitProperties {
@@ -232,6 +239,37 @@ tasks.register("generateDocumentManagerClient", org.openapitools.generator.gradl
     )
 }
 
+tasks.register("generateSpecificationServiceClient", org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
+    description = "Task to generate clients for the specification service."
+    group = "clients"
+    val specificationServiceClientDestinationPackage = "org.dataland.specificationservice.openApiClient"
+    input = project.file("${project.rootDir}/dataland-specification-service/specificationServiceOpenApi.json").path
+    outputDir.set(
+        layout.buildDirectory
+            .dir("clients/specification-service")
+            .get()
+            .toString(),
+    )
+    packageName.set(specificationServiceClientDestinationPackage)
+    modelPackage.set("$specificationServiceClientDestinationPackage.model")
+    apiPackage.set("$specificationServiceClientDestinationPackage.api")
+    generatorName.set("kotlin")
+
+    configOptions.set(
+        mapOf(
+            "dateLibrary" to "java21",
+            "useTags" to "true",
+            "withInterfaces" to "true",
+            "withSeparateModelsAndApi" to "true",
+        ),
+    )
+    additionalProperties.set(
+        mapOf(
+            "removeEnumValuePrefix" to false,
+        ),
+    )
+}
+
 tasks.register("generateClients") {
     description = "Task to generate all required clients for the service."
     group = "clients"
@@ -239,6 +277,7 @@ tasks.register("generateClients") {
     dependsOn("generateExternalStorageClient")
     dependsOn("generateCommunityManagerClient")
     dependsOn("generateDocumentManagerClient")
+    dependsOn("generateSpecificationServiceClient")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -255,6 +294,7 @@ sourceSets {
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/external-storage/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/community-manager/src/main/kotlin"))
     main.kotlin.srcDir(layout.buildDirectory.dir("clients/document-manager/src/main/kotlin"))
+    main.kotlin.srcDir(layout.buildDirectory.dir("clients/specification-service/src/main/kotlin"))
 }
 
 ktlint {

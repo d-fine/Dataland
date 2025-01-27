@@ -3,10 +3,12 @@ package org.dataland.e2etests.utils.communityManager
 import org.dataland.communitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
-import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequest
+import org.dataland.communitymanager.openApiClient.model.AggregatedDataRequestWithAggregatedPriority
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequest
 import org.dataland.communitymanager.openApiClient.model.BulkDataRequestResponse
+import org.dataland.communitymanager.openApiClient.model.DataRequestPatch
 import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataRequest
+import org.dataland.communitymanager.openApiClient.model.RequestPriority
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.StoredDataRequestMessageObject
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
@@ -30,13 +32,15 @@ fun retrieveTimeAndWaitOneMillisecond(): Long {
     return timestamp
 }
 
-fun findAggregatedDataRequestDataTypeForFramework(framework: BulkDataRequest.DataTypes): AggregatedDataRequest.DataType =
-    AggregatedDataRequest.DataType.entries.find { dataType -> dataType.value == framework.value }!!
+fun findAggregatedDataRequestDataTypeForFramework(
+    framework: BulkDataRequest.DataTypes,
+): AggregatedDataRequestWithAggregatedPriority.DataType =
+    AggregatedDataRequestWithAggregatedPriority.DataType.entries.find { dataType -> dataType.value == framework.value }!!
 
 fun findRequestControllerApiDataTypeForFramework(
     framework: BulkDataRequest.DataTypes,
-): RequestControllerApi.DataTypesGetAggregatedDataRequests =
-    RequestControllerApi.DataTypesGetAggregatedDataRequests.entries.find { dataType ->
+): RequestControllerApi.DataTypesGetAggregatedOpenDataRequests =
+    RequestControllerApi.DataTypesGetAggregatedOpenDataRequests.entries.find { dataType ->
         dataType.value == framework.value
     }!!
 
@@ -161,7 +165,7 @@ fun check400ClientExceptionErrorMessage(clientException: ClientException) {
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-    aggregatedDataRequests: List<AggregatedDataRequest>,
+    aggregatedDataRequestsWithAggregatedPriority: List<AggregatedDataRequestWithAggregatedPriority>,
     framework: BulkDataRequest.DataTypes,
     reportingPeriod: String,
     identifierValue: String,
@@ -169,10 +173,10 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
 ) {
     val companyIdForIdentifierValue = getUniqueDatalandCompanyIdForIdentifierValue(identifierValue)
     val matchingAggregatedRequests =
-        aggregatedDataRequests.filter { aggregatedDataRequest ->
-            aggregatedDataRequest.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
-                aggregatedDataRequest.reportingPeriod == reportingPeriod &&
-                aggregatedDataRequest.datalandCompanyId == companyIdForIdentifierValue
+        aggregatedDataRequestsWithAggregatedPriority.filter { aggregatedDataRequestWithAggregatedPriority ->
+            aggregatedDataRequestWithAggregatedPriority.dataType == findAggregatedDataRequestDataTypeForFramework(framework) &&
+                aggregatedDataRequestWithAggregatedPriority.reportingPeriod == reportingPeriod &&
+                aggregatedDataRequestWithAggregatedPriority.datalandCompanyId == companyIdForIdentifierValue
         }
     assertEquals(
         1,
@@ -189,7 +193,7 @@ fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
 }
 
 fun iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
-    aggregatedDataRequests: List<AggregatedDataRequest>,
+    aggregatedDataRequestWithAggregatedPriority: List<AggregatedDataRequestWithAggregatedPriority>,
     frameworks: Set<BulkDataRequest.DataTypes>,
     reportingPeriods: Set<String>,
     identifiers: Set<String>,
@@ -199,7 +203,7 @@ fun iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
         reportingPeriods.forEach { reportingPeriod ->
             identifiers.forEach { identifier ->
                 checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(
-                    aggregatedDataRequests, framework, reportingPeriod, identifier, count,
+                    aggregatedDataRequestWithAggregatedPriority, framework, reportingPeriod, identifier, count,
                 )
             }
         }
@@ -215,17 +219,62 @@ fun assertStatusForDataRequestId(
     assertEquals(expectedStatus, retrievedStoredDataRequest.requestStatus)
 }
 
+fun assertPriorityForDataRequestId(
+    dataRequestId: UUID,
+    expectedPriority: RequestPriority,
+) {
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+    val retrievedStoredDataRequest = requestControllerApi.getDataRequestById(dataRequestId)
+    assertEquals(expectedPriority, retrievedStoredDataRequest.requestPriority)
+}
+
+fun assertAdminCommentForDataRequestId(
+    dataRequestId: UUID,
+    expectedAdminComment: String?,
+) {
+    jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+    val retrievedStoredDataRequest = requestControllerApi.getDataRequestById(dataRequestId)
+    assertEquals(expectedAdminComment, retrievedStoredDataRequest.adminComment)
+}
+
 fun patchDataRequestAndAssertNewStatusAndLastModifiedUpdated(
     dataRequestId: UUID,
     newStatus: RequestStatus,
 ) {
     val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
-    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, newStatus)
+    val statusDataRequestPatch = DataRequestPatch(requestStatus = newStatus)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, statusDataRequestPatch)
     val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
     assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
     assertEquals(newLastUpdatedTimestamp, storedDataRequestAfterPatch.lastModifiedDate)
     assertEquals(newStatus, storedDataRequestAfterPatch.requestStatus)
     assertStatusForDataRequestId(dataRequestId, newStatus)
+}
+
+fun patchDataRequestAdminCommentAndAssertLastModifiedNotUpdated(
+    dataRequestId: UUID,
+    newAdminComment: String,
+) {
+    val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    val adminCommentDataRequestPatch = DataRequestPatch(adminComment = newAdminComment)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, adminCommentDataRequestPatch)
+    val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    assertTrue(oldLastUpdatedTimestamp == newLastUpdatedTimestamp)
+    assertEquals(newAdminComment, storedDataRequestAfterPatch.adminComment)
+    assertAdminCommentForDataRequestId(dataRequestId, newAdminComment)
+}
+
+fun patchDataRequestPriorityAndAssertLastModifiedUpdated(
+    dataRequestId: UUID,
+    newRequestPriority: RequestPriority,
+) {
+    val oldLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    val priorityDataRequestPatch = DataRequestPatch(requestPriority = newRequestPriority)
+    val storedDataRequestAfterPatch = requestControllerApi.patchDataRequest(dataRequestId, priorityDataRequestPatch)
+    val newLastUpdatedTimestamp = requestControllerApi.getDataRequestById(dataRequestId).lastModifiedDate
+    assertTrue(oldLastUpdatedTimestamp < newLastUpdatedTimestamp)
+    assertEquals(newRequestPriority, storedDataRequestAfterPatch.requestPriority)
+    assertPriorityForDataRequestId(dataRequestId, newRequestPriority)
 }
 
 fun generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMap: Map<IdentifierType, String>) {

@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.stereotype.Component
 
@@ -57,6 +58,24 @@ class LogMessageBuilder {
     ): String =
         "Received a request from user '$userId' to post company associated data of type $dataType " +
             "for company ID '$companyId' and the reporting period $reportingPeriod"
+
+    /**
+     * Generates a message to inform that a dataset for a specific company shall be posted
+     * @param userId The ID of the user who requests the post
+     * @param uploadedDatapoint The data point that shall be posted
+     * @param bypassQa Whether the QA process shall be bypassed
+     * @param correlationId The correlation ID in association with this operation
+     * @returns the message to log
+     */
+    fun postDataPointMessage(
+        userId: String,
+        uploadedDatapoint: UploadedDataPoint,
+        bypassQa: Boolean,
+        correlationId: String,
+    ): String =
+        "Received a request from user '$userId' to post a '${uploadedDatapoint.dataPointType}' data point with bypassQa: " +
+            "$bypassQa for company ID '${uploadedDatapoint.companyId}' and reporting period '${uploadedDatapoint.reportingPeriod}'. " +
+            "The correlation ID is '$correlationId'."
 
     /**
      * Generates a message to inform that a dataset for a specific company has been successfully posted

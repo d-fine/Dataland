@@ -99,8 +99,7 @@ sonar {
         )
         property(
             "sonar.sources",
-            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> } +
-                fileTree("$projectDir/dataland-automated-qa-service").files,
+            subprojects.flatMap { project -> project.properties["sonarSources"] as Iterable<*> },
         )
         property("sonar.verbose", "true")
         property("sonar.scanner.metadataFilePath", "$projectDir/build/reports/report_task.txt")
@@ -174,7 +173,8 @@ sonar {
                 "Activity.kt," +
 
                 // qa-service
-                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**",
+                "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
+                "dataland-qa-service/src/main/kotlin/db/migration/V7__UpdateSfdrQaReports.kt",
         )
     }
 }

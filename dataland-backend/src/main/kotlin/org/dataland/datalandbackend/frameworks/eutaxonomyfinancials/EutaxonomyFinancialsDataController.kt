@@ -8,9 +8,11 @@ import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.Eutaxo
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -25,10 +27,12 @@ import org.springframework.web.bind.annotation.RestController
 class EutaxonomyFinancialsDataController(
     @Autowired var myDataManager: DataManager,
     @Autowired var myMetaDataManager: DataMetaInformationManager,
+    @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
 ) : DataController<EutaxonomyFinancialsData>(
         myDataManager,
         myMetaDataManager,
+        myDataExportService,
         myObjectMapper,
         EutaxonomyFinancialsData::class.java,
     ) {
@@ -41,6 +45,18 @@ class EutaxonomyFinancialsDataController(
         companyAssociatedData: CompanyAssociatedData<EutaxonomyFinancialsData>,
         bypassQa: Boolean,
     ): ResponseEntity<DataMetaInformation> = super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
+
+    @Operation(operationId = "exportCompanyAssociatedEutaxonomyFinancialsDataToJson")
+    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToJson(dataId)
+
+    @Operation(operationId = "exportCompanyAssociatedEutaxonomyFinancialsDataToCsv")
+    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToCsv(dataId)
+
+    @Operation(operationId = "exportCompanyAssociatedEutaxonomyFinancialsDataToExcel")
+    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> =
+        super.exportCompanyAssociatedDataToExcel(dataId)
 
     @Operation(operationId = "getAllCompanyEutaxonomyFinancialsData")
     override fun getFrameworkDatasetsForCompany(

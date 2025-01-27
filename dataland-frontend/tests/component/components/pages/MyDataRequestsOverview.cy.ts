@@ -1,4 +1,9 @@
-import { AccessStatus, type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
+import {
+  AccessStatus,
+  type ExtendedStoredDataRequest,
+  RequestPriority,
+  RequestStatus,
+} from '@clients/communitymanager';
 import MyDataRequestsOverview from '@/components/pages/MyDataRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
@@ -17,6 +22,7 @@ before(function () {
    * @param companyId to include in the data request
    * @param requestStatus to set in the data request
    * @param accessStatus to set in the data request
+   * @param requestPriority to set in the data request
    * @returns an extended sorted data request object
    */
   function buildExtendedStoredDataRequest(
@@ -25,7 +31,8 @@ before(function () {
     companyName: string,
     companyId: string,
     requestStatus: RequestStatus,
-    accessStatus: AccessStatus
+    accessStatus: AccessStatus,
+    requestPriority: RequestPriority
   ): ExtendedStoredDataRequest {
     return {
       dataRequestId: dummyRequestId,
@@ -38,6 +45,7 @@ before(function () {
       lastModifiedDate: 1709204495770,
       requestStatus: requestStatus,
       accessStatus: accessStatus,
+      requestPriority: requestPriority,
     };
   }
 
@@ -48,7 +56,8 @@ before(function () {
       'companyAnswered',
       'compA',
       RequestStatus.Answered,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Low
     )
   );
 
@@ -59,7 +68,8 @@ before(function () {
       'companyNotAnsweredSfdr',
       'someId',
       RequestStatus.Open,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Low
     )
   );
 
@@ -70,7 +80,8 @@ before(function () {
       'z-company-that-will-always-be-sorted-to-bottom',
       'someId',
       RequestStatus.Resolved,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Low
     )
   );
 
@@ -81,7 +92,8 @@ before(function () {
       'companyNotAnsweredEU',
       'someId',
       RequestStatus.Open,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Low
     )
   );
 
@@ -92,7 +104,8 @@ before(function () {
       'a-company-that-will-always-be-sorted-to-top',
       'someId',
       RequestStatus.Answered,
-      AccessStatus.Pending
+      AccessStatus.Pending,
+      RequestPriority.Low
     )
   );
 });
@@ -131,13 +144,14 @@ describe('Component tests for the data requests search page', function (): void 
       body: [],
       status: 200,
     }).as('UserRequests');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       cy.get('[data-test="requested-Datasets-table"]').should('not.exist');
       cy.get('[data-test="bulkDataRequestButton"]').should('exist').should('be.visible').click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/bulkdatarequest');
+      cy.get('@routerPush').should('have.been.calledWith', '/bulkdatarequest');
     });
   });
 
@@ -201,11 +215,12 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
+    cy.spy(router, 'push').as('routerPush');
 
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       cy.get('[data-test="requested-Datasets-searchbar"]')
         .should('exist')
         .should('not.be.disabled')
@@ -218,7 +233,7 @@ describe('Component tests for the data requests search page', function (): void 
         .clear()
         .type('companyAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('exist').should('be.visible').click();
-      cy.wrap(mounted.component).its('$route.path').should('eq', '/companies/compA/frameworks/p2p');
+      cy.get('@routerPush').should('have.been.calledWith', '/companies/compA/frameworks/p2p');
     });
   });
 
@@ -260,14 +275,15 @@ describe('Component tests for the data requests search page', function (): void 
       body: mockDataRequests,
       status: 200,
     }).as('UserRequests');
+    cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(MyDataRequestsOverview, {
       keycloak: minimalKeycloakMock({}),
       router: router,
-    }).then((mounted) => {
+    }).then(() => {
       cy.get('[data-test="requested-Datasets-table"]').within(() => {
         cy.get('tr:last').click();
       });
-      cy.wrap(mounted.component).its('$route.path').should('eq', `/requests/${dummyRequestId}`);
+      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
     });
   });
 });

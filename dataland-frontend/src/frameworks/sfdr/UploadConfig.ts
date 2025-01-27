@@ -454,7 +454,8 @@ export const sfdrDataModel = [
           {
             name: 'nonRenewableEnergyConsumptionCrudeOilInGWh',
             label: 'Non-Renewable Energy Consumption Crude Oil',
-            description: 'Energy consumption from crude oil (non-renewable energy source)',
+            description:
+              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source)',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -1080,21 +1081,20 @@ export const sfdrDataModel = [
             showIf: (): boolean => true,
           },
           {
-            name: 'rateOfAccidentsInPercent',
+            name: 'rateOfAccidents',
             label: 'Rate Of Accidents',
             description:
               'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000',
 
-            unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,
-            validation: 'between:0,100',
+            validation: 'min:0',
           },
           {
             name: 'workdaysLostInDays',
             label: 'Workdays Lost',
-            description: 'Number of workdays lost to injuries, accidents, fatalities or illness',
+            description: 'Number of workdays lost to injuries, accidents, fatalities or illness in total',
 
             unit: 'Days',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -1153,23 +1153,11 @@ export const sfdrDataModel = [
             validation: 'integer|min:0',
           },
           {
-            name: 'ceoToEmployeePayGapRatio',
-            label: 'CEO to Employee Pay Gap Ratio',
-            description:
-              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual).',
-
-            component: 'BigDecimalExtendedDataPointFormField',
-            required: false,
-            showIf: (): boolean => true,
-            validation: 'min:0',
-          },
-          {
-            name: 'excessiveCeoPayRatioInPercent',
+            name: 'excessiveCeoPayRatio',
             label: 'Excessive CEO pay ratio',
             description:
-              'Average ratio of the annual total compensation for the highest compensated individual to the median annual total compensation for all employees (excluding the highest-compensated individual)',
+              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual)',
 
-            unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
             showIf: (): boolean => true,

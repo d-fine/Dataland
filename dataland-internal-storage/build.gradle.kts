@@ -27,6 +27,7 @@ plugins {
 
 dependencies {
     implementation(libs.springdoc.openapi.ui)
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.log4j)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
@@ -134,4 +135,9 @@ ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    dependsOn(":dataland-backend-utils:assemble")
+    dependsOn(":dataland-message-queue-utils:assemble")
 }

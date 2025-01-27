@@ -5,7 +5,7 @@
   "schema": {
     "test1": {
       "test2": {
-        "test3": "test-datapoint"
+        "test3": "test-datapoint-type"
       }
     }
   }

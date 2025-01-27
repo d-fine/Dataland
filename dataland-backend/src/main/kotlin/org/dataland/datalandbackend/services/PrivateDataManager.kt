@@ -88,11 +88,11 @@ class PrivateDataManager(
         storeJsonInMemory(dataId, storableDataSet, correlationId)
         val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
-        val documentHashes =
+        val documentHashes: Map<String, String> =
             documents
                 ?.takeIf { it.isNotEmpty() }
                 ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
-                ?: mutableMapOf()
+                ?: mapOf()
         sendReceptionMessage(dataId, storableDataSet, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
@@ -226,7 +226,7 @@ class PrivateDataManager(
                 eurodatId = "JSON",
             )
         dataIdAndHashToEurodatIdMappingRepository.save(dataIdToJsonMappingEntity)
-        val documentHashes = documentHashesInMemoryStorage[dataId]
+        val documentHashes: Map<String, String>? = documentHashesInMemoryStorage[dataId]
         if (!documentHashes.isNullOrEmpty()) {
             val dataIdToDocumentHashMappingEntities =
                 documentHashes.map { documentHash ->
@@ -251,8 +251,19 @@ class PrivateDataManager(
             "Persisting meta info for dataId $dataId and correlationId $correlationId",
         )
         val dataMetaInfoEntityForDataId = metaInfoEntityInMemoryStorage[dataId]
-        metaDataManager.setNewDatasetActiveAndOldDatasetInactive(dataMetaInfoEntityForDataId!!)
-        return metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
+        if (dataMetaInfoEntityForDataId != null) {
+            metaDataManager.setCurrentlyActiveDatasetInactive(
+                dataMetaInfoEntityForDataId.company,
+                dataMetaInfoEntityForDataId.dataType,
+                dataMetaInfoEntityForDataId.reportingPeriod,
+            )
+            dataMetaInfoEntityForDataId.currentlyActive = true
+            return metaDataManager.storeDataMetaInformation(dataMetaInfoEntityForDataId)
+        }
+        throw NoSuchElementException(
+            "Could not retrieve dataMetaInformation from memoryStorage for dataId $dataId" +
+                " (correlationId $correlationId)",
+        )
     }
 
     private fun removeDocumentsAndHashesFromInMemoryStorages(

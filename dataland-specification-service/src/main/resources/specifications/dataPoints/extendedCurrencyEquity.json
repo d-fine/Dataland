@@ -1,7 +1,0 @@
-{
-  "id" : "extendedCurrencyEquity",
-  "name" : "Equity",
-  "businessDefinition" : "The value of ownership interest in the company, calculated as total assets minus total liabilities.",
-  "dataPointTypeId" : "extendedCurrency",
-  "frameworkOwnership" : "additional-company-information"
-}

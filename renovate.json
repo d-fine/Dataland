@@ -13,8 +13,8 @@
   "minimumReleaseAge": "5 days",
   "updateNotScheduled": false,
   "schedule": [
-    "after 8pm every weekday",
-    "before 5am every weekday",
+    "after 11pm every weekday",
+    "before 6am every weekday",
     "every weekend"
   ],
   "packageRules": [
@@ -34,6 +34,15 @@
       "labels": [
         "dependencies",
         "MAJOR"
+      ]
+    },
+    {
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "labels": [
+        "dependencies",
+        "Minor"
       ]
     },
     {

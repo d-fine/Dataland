@@ -1,4 +1,4 @@
-import { AccessStatus, RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
+import { AccessStatus, RequestPriority, RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import { DataTypeEnum } from '@clients/backend';
 import { generateInt } from '@e2e/fixtures/common/NumberFixtures';
 import { generateReportingPeriod } from '@e2e/fixtures/common/ReportingPeriodFixtures';
@@ -94,6 +94,7 @@ export function generateStoredDataRequest(): StoredDataRequest {
     lastModifiedDate: lastModifiedTime,
     requestStatus: status,
     accessStatus: accessStatus,
+    requestPriority: RequestPriority.Low,
   };
 }
 /**
