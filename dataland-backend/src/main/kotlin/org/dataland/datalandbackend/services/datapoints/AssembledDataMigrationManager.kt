@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonComparator
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -89,6 +90,15 @@ class AssembledDataMigrationManager
         @Transactional
         fun migrateStoredDatasetToAssembledDataset(dataId: String) {
             val dataMetaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
+            val dataPoints = assembledDataManager.getDataPointIdsForDataset(dataId)
+
+            if (dataPoints.isNotEmpty()) {
+                throw InvalidInputApiException(
+                    summary = "Data already migrated.",
+                    message = "Data with dataId '$dataId' has already been migrated to an assembled dataset.",
+                )
+            }
+
             val correlationId = IdUtils.generateCorrelationId(dataMetaInfo.company.companyId, dataMetaInfo.dataId)
             val storedDataset =
                 storedDataManager.getPublicDataset(

@@ -94,14 +94,14 @@ class AssembledDatasetTest {
             val expectedQaStatus = if (bypassQa) QaStatus.Accepted else QaStatus.Pending
             val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = bypassQa)
 
-            QaService.QaControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataMetaInformation.dataId)).let {
+            QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataMetaInformation.dataId)).let {
                 assertEquals(expectedQaStatus, it.qaStatus)
             }
 
             val allUploadedFacts = Backend.metaDataControllerApi.getContainedDataPoints(dataMetaInformation.dataId).values
 
             allUploadedFacts.forEach { factId ->
-                QaService.QaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
+                QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
                     assertEquals(expectedQaStatus, it[0].qaStatus)
                 }
             }
@@ -112,10 +112,10 @@ class AssembledDatasetTest {
     fun `ensure that accepting an assembled dataset also accepts all datapoints`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = false)
-        QaService.QaControllerApi.changeQaStatus(dataMetaInformation.dataId, QaStatus.Accepted)
+        QaService.qaControllerApi.changeQaStatus(dataMetaInformation.dataId, QaStatus.Accepted)
         val allUploadedFacts = Backend.metaDataControllerApi.getContainedDataPoints(dataMetaInformation.dataId).values
         allUploadedFacts.forEach { factId ->
-            QaService.QaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
+            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
                 assertEquals(QaStatus.Accepted, it[0].qaStatus)
             }
         }
@@ -139,7 +139,7 @@ class AssembledDatasetTest {
                 bypassQa = false,
             )
         val uploadedQaReport =
-            QaService.AdditionalCompanyInformationDataQaReportControllerApi.postAdditionalCompanyInformationDataQaReport(
+            QaService.additionalCompanyInformationDataQaReportControllerApi.postAdditionalCompanyInformationDataQaReport(
                 uploadedDataset.dataId,
                 linkedQaReportData.qaReport,
             )
@@ -154,7 +154,7 @@ class AssembledDatasetTest {
     @Test
     fun `ensure a qa report for an assembled dataset can be downloaded`() {
         val linkedQaReportMetaInfo = uploadAdditionalCompanyInformationWithLinkedQaReport()
-        QaService.AdditionalCompanyInformationDataQaReportControllerApi
+        QaService.additionalCompanyInformationDataQaReportControllerApi
             .getAdditionalCompanyInformationDataQaReport(linkedQaReportMetaInfo.dataId, linkedQaReportMetaInfo.qaReportId)
             .let {
                 assertEquals(linkedQaReportData.qaReport, it.report)
@@ -212,10 +212,10 @@ class AssembledDatasetTest {
         val datasetComposition = Backend.metaDataControllerApi.getContainedDataPoints(linkedQaReportMetaInfo.dataId)
         expectedDataPointInformation.forEach { (dataPointType, expectedData) ->
             val dataPointId = datasetComposition[dataPointType]!!
-            QaService.QaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
+            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPointId).let {
                 assertEquals(expectedData.qaStatus, it[0].qaStatus)
             }
-            QaService.DataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
+            QaService.dataPointQaReportControllerApi.getAllQaReportsForDataPoint(dataPointId).let {
                 assertQaReportsAlign(expectedData.qaReport, it[0])
             }
         }

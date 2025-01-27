@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.controller
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.api.DataMigrationApi
+import org.dataland.datalandbackend.api.AssembledDatasetMigrationApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController
  * Controller for the DataMigrationApi
  */
 @RestController
-class DataMigrationController
+class AssembledDatasetMigrationController
     @Autowired
     constructor(
         private val migrationManager: AssembledDataMigrationManager,
         private val dataControllerProviderService: DataControllerProviderService,
         private val objectMapper: ObjectMapper,
-    ) : DataMigrationApi {
+    ) : AssembledDatasetMigrationApi {
         override fun migrateStoredDatasetToAssembledDataset(dataId: String) {
             migrationManager.migrateStoredDatasetToAssembledDataset(dataId)
         }

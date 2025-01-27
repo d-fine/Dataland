@@ -1412,7 +1412,7 @@
     "/assembled-dataset-migration/upload-as-stored-dataset/{dataType}": {
       "post": {
         "tags": [
-          "data-migration-controller"
+          "assembled-dataset-migration-controller"
         ],
         "summary": "Triggers a forced upload of a dataset as a stored dataset for testing.",
         "description": "The data is stored.",
@@ -1491,7 +1491,7 @@
     "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration/{dataId}": {
       "post": {
         "tags": [
-          "data-migration-controller"
+          "assembled-dataset-migration-controller"
         ],
         "summary": "Triggers the migration from stored datasets to assembled datasets.",
         "description": "The data is migrated.",
@@ -20333,10 +20333,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
@@ -20374,10 +20374,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

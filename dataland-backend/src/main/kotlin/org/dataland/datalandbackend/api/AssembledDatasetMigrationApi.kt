@@ -19,12 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam
 /**
  * Defines the restful dataland-backend API regarding migration from stored datasets to assembled datasets.
  * This is an internal API
- * TODO: Move this to the /internal path before merging
  */
 @RequestMapping("/assembled-dataset-migration")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
-interface DataMigrationApi {
+interface AssembledDatasetMigrationApi {
     /**
      * A method to migrate data from stored datasets to assembled datasets
      * @param dataId to migrate
