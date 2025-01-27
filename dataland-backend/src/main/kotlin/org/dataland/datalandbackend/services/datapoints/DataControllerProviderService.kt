@@ -59,8 +59,9 @@ class DataControllerProviderService
          * Get the class for a data type
          */
         fun getClassForDataType(dataType: DataType): Class<*> {
-            if (dataTypeClassCache.containsKey(dataType)) {
-                return dataTypeClassCache[dataType]!!
+            val valueFromCache = dataTypeClassCache[dataType]
+            if (valueFromCache != null) {
+                return valueFromCache
             }
             val provider = ClassPathScanningCandidateComponentProvider(false)
             provider.addIncludeFilter(AnnotationTypeFilter(org.dataland.datalandbackend.annotations.DataType::class.java))

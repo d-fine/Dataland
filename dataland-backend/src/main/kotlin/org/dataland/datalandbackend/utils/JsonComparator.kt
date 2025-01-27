@@ -44,12 +44,19 @@ object JsonComparator {
             return
         }
 
-        if (expected.isObject && actual.isObject) {
-            compareObjects(expected, ignoredKeys, actual, currentPath, differenceList)
-        } else if (expected.isArray && actual.isArray) {
-            compareArrays(expected, actual, currentPath, ignoredKeys, differenceList)
-        } else if (expected != actual) {
-            differenceList.add(JsonDiff(currentPath, expected, actual))
+        when {
+            expected.isObject && actual.isObject -> {
+                compareObjects(expected, ignoredKeys, actual, currentPath, differenceList)
+            }
+            expected.isArray && actual.isArray -> {
+                compareArrays(expected, actual, currentPath, ignoredKeys, differenceList)
+            }
+            expected != actual -> {
+                differenceList.add(JsonDiff(currentPath, expected, actual))
+            }
+            else -> {
+                // The nodes are equal
+            }
         }
     }
 

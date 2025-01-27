@@ -67,13 +67,14 @@ class AssembledDataMigrationTrigger
             waitUntilInternalStorageHealthy()
             val dataIdsToMigrate = getAllDataIdsThatNeedToBeMigrated()
             logger.info("Preparing to migrate ${dataIdsToMigrate.size} datasets.")
-            SecurityContextHolder.getContext().authentication = DatalandApiKeyAuthentication(
-                "internal-api-key",
-                ApiKeyMetaInfo(
-                    keycloakUserId = "internal-api-key",
-                    keycloakRoles = listOf("ROLE_ADMIN")
+            SecurityContextHolder.getContext().authentication =
+                DatalandApiKeyAuthentication(
+                    "internal-api-key",
+                    ApiKeyMetaInfo(
+                        keycloakUserId = "internal-api-key",
+                        keycloakRoles = listOf("ROLE_ADMIN"),
+                    ),
                 )
-            )
             dataIdsToMigrate.forEach {
                 @Suppress("TooGenericExceptionCaught")
                 try {

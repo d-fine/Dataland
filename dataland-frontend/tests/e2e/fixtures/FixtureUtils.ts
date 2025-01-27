@@ -47,7 +47,7 @@ export function generateFixtureDataset<T>(
  * @param data the data object to search for file references
  * @param documents the documents to remove unused references from
  */
-function removeAllUnusedReferencedReports(data: Record<string, unknown>, documents: ReferencedDocuments): void {
+export function removeAllUnusedReferencedReports(data: Record<string, unknown>, documents: ReferencedDocuments): void {
   const usedFileReferences = new Set<string>();
   findAllFileReferencesRecursive(data, usedFileReferences);
   const unusedFileReferences = Object.entries(documents).filter(
