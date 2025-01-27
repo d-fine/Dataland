@@ -7,6 +7,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.treeToValue
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
@@ -74,15 +75,7 @@ class AssembledDatasetQaReportManager(
         uploadTime: Long,
         correlationId: String,
     ): MutableList<String> {
-        val specification = getFrameworkSpecification(dataType)
-
-        val associatedDataPoints =
-            dataPointCompositionService.getCompositionOfDataset(dataId) ?: throw
-                IllegalStateException("The dataset with id $dataId is not a composition of data points")
-        val decomposedQaReport =
-            JsonSpecificationUtils.dehydrateJsonSpecification(
-                specification, objectMapper.valueToTree(report),
-            )
+        val (associatedDataPoints, decomposedQaReport) = splitQaReportIntoDataPoints(dataType, dataId, report)
 
         val unwantedAdditionalQaFeatures = decomposedQaReport.keys - associatedDataPoints.keys
         if (unwantedAdditionalQaFeatures.isNotEmpty()) {
@@ -116,6 +109,26 @@ class AssembledDatasetQaReportManager(
             )
         }
         return dataPointQaReportIds
+    }
+
+    /**
+     * Splits a QA report into data points and their associated data IDs
+     */
+    fun <QaReportType> splitQaReportIntoDataPoints(
+        dataType: String,
+        dataId: String,
+        report: QaReportType,
+    ): Pair<Map<String, String>, Map<String, JsonSpecificationLeaf>> {
+        val specification = getFrameworkSpecification(dataType)
+
+        val associatedDataPoints =
+            dataPointCompositionService.getCompositionOfDataset(dataId)
+                ?: throw IllegalStateException("The dataset with id $dataId is not a composition of data points")
+        val decomposedQaReport =
+            JsonSpecificationUtils.dehydrateJsonSpecification(
+                specification, objectMapper.valueToTree(report),
+            )
+        return Pair(associatedDataPoints, decomposedQaReport)
     }
 
     private fun getFrameworkSpecification(dataType: String): ObjectNode {

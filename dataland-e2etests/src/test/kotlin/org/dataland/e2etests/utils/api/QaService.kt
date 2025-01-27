@@ -14,4 +14,7 @@ object QaService {
             .DataPointQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
     val additionalCompanyInformationDataQaReportControllerApi =
         AdditionalCompanyInformationDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val assembledDataMigrationControllerApi =
+        org.dataland.datalandqaservice.openApiClient.api
+            .AssembledDataMigrationControllerApi(BASE_PATH_TO_QA_SERVICE)
 }

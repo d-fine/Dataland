@@ -7,6 +7,7 @@ object MessageType {
     const val PUBLIC_DATA_RECEIVED = "Public Data received"
     const val DELETE_DATA = "Delete Data"
     const val DATA_STORED = "Data stored"
+    const val DATA_MIGRATED = "Data migrated"
     const val DOCUMENT_RECEIVED = "Document received"
     const val DOCUMENT_STORED = "Document stored"
     const val QA_REQUESTED = "QA requested"

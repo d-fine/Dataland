@@ -1,20 +1,17 @@
-package org.dataland.datalandbackend.api
+package org.dataland.datalandqaservice.org.dataland.datalandqaservice.api
 
 import com.fasterxml.jackson.databind.JsonNode
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 
 /**
  * Defines the restful dataland-backend API regarding migration from stored datasets to assembled datasets.
@@ -45,8 +42,8 @@ interface AssembledDatasetMigrationApi {
     )
 
     /**
-     * A method to force upload a dataset as a stored dataset for testing.
-     * This endpoint is potentially dangerous and should only be used for testing purposes.
+     * A method to force upload a qa report as a stored qa report for testing.
+     * This endpoint is dangerous as it is fully unchecked and should only be used for testing purposes.
      */
     @Operation(
         summary = "Triggers a forced upload of a dataset as a stored dataset for testing.",
@@ -54,14 +51,13 @@ interface AssembledDatasetMigrationApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Data Stored."),
+            ApiResponse(responseCode = "200", description = "Data stored."),
         ],
     )
-    @PostMapping("/upload-as-stored-dataset/{dataType}")
+    @PostMapping("/stored-qa-report/{dataId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun forceUploadDatasetAsStoredDataset(
-        @PathVariable("dataType") dataType: DataType,
-        @RequestBody companyAssociatedData: CompanyAssociatedData<JsonNode>,
-        @RequestParam(defaultValue = "false")bypassQa: Boolean,
-    ): ResponseEntity<DataMetaInformation>
+    fun forceUploadStoredQaReport(
+        @PathVariable("dataId") dataId: String,
+        @RequestBody data: JsonNode,
+    ): ResponseEntity<QaReportMetaInformation>
 }

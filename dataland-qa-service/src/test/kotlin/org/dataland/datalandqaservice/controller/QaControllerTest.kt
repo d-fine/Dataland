@@ -27,6 +27,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as OpenApiClientQaStatus
 import org.dataland.datalandbackendutils.model.QaStatus as BackendUtilsQaStatus
@@ -126,7 +127,7 @@ class QaControllerTest(
             qaController.changeDataPointQaStatus(dataId, BackendUtilsQaStatus.Pending, "Pending")
             qaController.changeDataPointQaStatus(dataId, BackendUtilsQaStatus.Accepted, "Accepted")
             qaController.changeDataPointQaStatus(dataId, BackendUtilsQaStatus.Rejected, "Rejected")
-
+            TransactionSynchronizationManager.getSynchronizations().forEach { it.afterCommit() }
             verify(cloudEventMessageHandler, times(1)).buildCEMessageAndSendToQueue(
                 eq(expectedBodyForNewSetToActive),
                 eq(MessageType.QA_STATUS_UPDATED),

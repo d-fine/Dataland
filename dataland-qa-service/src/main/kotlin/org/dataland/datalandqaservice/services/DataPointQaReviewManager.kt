@@ -18,6 +18,8 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataP
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Instant
 
 /**
@@ -138,14 +140,19 @@ class DataPointQaReviewManager(
                 updatedQaStatus = dataPointQaReviewEntity.qaStatus,
                 currentlyActiveDataId = currentlyActiveDataId,
             )
-
-        logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(qaStatusChangeMessage),
-            type = MessageType.QA_STATUS_UPDATED,
-            correlationId = correlationId,
-            exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
-            routingKey = RoutingKeyNames.DATA_POINT_QA,
+        TransactionSynchronizationManager.registerSynchronization(
+            object : TransactionSynchronization {
+                override fun afterCommit() {
+                    logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
+                    cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                        body = objectMapper.writeValueAsString(qaStatusChangeMessage),
+                        type = MessageType.QA_STATUS_UPDATED,
+                        correlationId = correlationId,
+                        exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                        routingKey = RoutingKeyNames.DATA_POINT_QA,
+                    )
+                }
+            },
         )
     }
 

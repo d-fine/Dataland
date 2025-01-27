@@ -134,7 +134,7 @@ class AssembledDatasetTest {
                 CompanyAssociatedDataAdditionalCompanyInformationData(
                     companyId = companyId,
                     reportingPeriod = "2025",
-                    data = dummyDataset,
+                    data = linkedQaReportData.data,
                 ),
                 bypassQa = false,
             )

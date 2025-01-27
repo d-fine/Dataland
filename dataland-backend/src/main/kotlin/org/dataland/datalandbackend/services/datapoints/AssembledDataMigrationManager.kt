@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -25,6 +26,7 @@ class AssembledDataMigrationManager
         private val assembledDataManager: AssembledDataManager,
         private val objectMapper: ObjectMapper,
         private val dataControllerProviderService: DataControllerProviderService,
+        private val messageQueuePublications: MessageQueuePublications,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -69,7 +71,11 @@ class AssembledDataMigrationManager
 
             val differences =
                 JsonComparator
-                    .compareJson(expectedDataAsJson, actualDataAsJson, ignoredKeys = setOf("referencedReports", "publicationDate"))
+                    .compareJson(
+                        expectedDataAsJson,
+                        actualDataAsJson,
+                        ignoredKeys = setOf("referencedReports", "publicationDate"),
+                    )
             if (differences.isNotEmpty()) {
                 logger.error(
                     "Migration failed for dataId: ${dataMetaInfo.dataId} with correlationId: $correlationId." +
@@ -108,5 +114,6 @@ class AssembledDataMigrationManager
                 )
             performMigration(dataMetaInfo, storedDataset.data, correlationId)
             verifyNoDataWasLostDuringMigration(dataMetaInfo, storedDataset.data, correlationId)
+            messageQueuePublications.publishDatasetMigratedMessage(dataId, correlationId)
         }
     }

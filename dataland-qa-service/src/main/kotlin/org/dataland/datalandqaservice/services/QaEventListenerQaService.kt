@@ -13,10 +13,12 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDataMigrationManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -40,14 +42,16 @@ import org.springframework.stereotype.Component
 @Component
 class QaEventListenerQaService
     @Suppress("LongParameterList")
+    @Autowired
     constructor(
-        @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-        @Autowired var objectMapper: ObjectMapper,
-        @Autowired val qaReviewManager: QaReviewManager,
-        @Autowired val dataPointQaReviewManager: DataPointQaReviewManager,
-        @Autowired val qaReportManager: QaReportManager,
-        @Autowired val metaDataControllerApi: MetaDataControllerApi,
-        @Autowired val dataPointControllerApi: DataPointControllerApi,
+        private val cloudEventMessageHandler: CloudEventMessageHandler,
+        private val objectMapper: ObjectMapper,
+        private val qaReviewManager: QaReviewManager,
+        private val dataPointQaReviewManager: DataPointQaReviewManager,
+        private val qaReportManager: QaReportManager,
+        private val metaDataControllerApi: MetaDataControllerApi,
+        private val dataPointControllerApi: DataPointControllerApi,
+        private val assembledDataMigrationManager: AssembledDataMigrationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -203,6 +207,42 @@ class QaEventListenerQaService
                 MessageQueueUtils.validateDataId(dataId)
                 qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
                 qaReviewManager.deleteAllByDataId(dataId, correlationId)
+            }
+        }
+
+        /**
+         * Method that listens to the BACKEND_DATASET_EVENTS Exchange for migration messages
+         * and carries the migration to the QA reports
+         * @param payload the content of the message
+         * @param correlationId the correlation ID of the current user process
+         * @param type the type of the message
+         */
+        @RabbitListener(
+            bindings = [
+                QueueBinding(
+                    value =
+                        Queue(
+                            QueueNames.QA_SERVICE_DATASET_MIGRATION,
+                            arguments = [
+                                Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                                Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                                Argument(name = "defaultRequeueRejected", value = "false"),
+                            ],
+                        ),
+                    exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
+                    key = [RoutingKeyNames.DATASET_STORED_TO_ASSEMBLED_MIGRATION],
+                ),
+            ],
+        )
+        fun migrateStoredDatasetToAssembledDataset(
+            @Payload payload: String,
+            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+            @Header(MessageHeaderKey.TYPE) type: String,
+        ) {
+            MessageQueueUtils.validateMessageType(type, MessageType.DATA_MIGRATED)
+            MessageQueueUtils.rejectMessageOnException {
+                val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+                assembledDataMigrationManager.migrateStoredDatasetToAssembledDataset(dataId, correlationId)
             }
         }
 

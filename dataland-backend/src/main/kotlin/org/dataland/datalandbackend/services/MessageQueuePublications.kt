@@ -139,6 +139,26 @@ class MessageQueuePublications(
     }
 
     /**
+     * Method to publish a message that a dataset has been migrated to an assembled dataset
+     */
+    fun publishDatasetMigratedMessage(
+        dataId: String,
+        correlationId: String,
+    ) {
+        logger.info(
+            "Publish message that dataset with ID '$dataId' was migrated to an assembled dataset. " +
+                "Correlation ID: '$correlationId'.",
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+            type = MessageType.DATA_MIGRATED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = RoutingKeyNames.DATASET_STORED_TO_ASSEMBLED_MIGRATION,
+        )
+    }
+
+    /**
      * Method to publish a message that a dataset has been uploaded and either needs to be stored or just undergo QA
      * @param dataId The ID of the uploaded dataset
      * @param bypassQa Whether the QA process should be bypassed
