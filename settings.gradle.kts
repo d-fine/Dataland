@@ -1,5 +1,6 @@
 @file:Suppress("ktlint:standard:comment-spacing")
 
+import de.fayard.refreshVersions.core.StabilityLevel
 rootProject.name = "Dataland"
 
 include(
@@ -24,6 +25,17 @@ include(
     "dataland-specification-lib",
     "dataland-specification-service",
 )
+
+plugins {
+    // See https://splitties.github.io/refreshVersions
+    id("de.fayard.refreshVersions") version "0.60.5"
+}
+
+refreshVersions {
+    rejectVersionIf {
+        candidate.stabilityLevel != StabilityLevel.Stable
+    }
+}
 
 dependencyResolutionManagement {
     versionCatalogs {
