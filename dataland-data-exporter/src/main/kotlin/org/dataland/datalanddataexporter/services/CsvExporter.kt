@@ -51,7 +51,7 @@ class CsvExporter(
     }
 
     @Suppress("UnusedPrivateMember") // Detect does not recognise the scheduled execution of this function
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     private fun triggerExport() {
         val outputDirectory = "/var/export/csv/sql_server"
         exportSfdrData(outputDirectory)
