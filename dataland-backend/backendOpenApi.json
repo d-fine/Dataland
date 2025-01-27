@@ -1448,7 +1448,7 @@
         },
         "responses": {
           "200": {
-            "description": "Migration successful.",
+            "description": "Data Stored.",
             "content": {
               "*/*": {
                 "schema": {
