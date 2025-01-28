@@ -32,5 +32,26 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     var qaStatus: QaStatus,
     @field:JsonProperty(required = true)
-    val url: String = "https://dataland.com/companies/$companyId/frameworks/$dataId",
-)
+    val url: String,
+) {
+    constructor(
+        dataId: String,
+        companyId: String,
+        dataType: DataType,
+        uploaderUserId: String? = null,
+        uploadTime: Long,
+        reportingPeriod: String,
+        currentlyActive: Boolean,
+        qaStatus: QaStatus,
+    ) : this(
+        dataId = dataId,
+        companyId = companyId,
+        dataType = dataType,
+        uploaderUserId = uploaderUserId,
+        uploadTime = uploadTime,
+        reportingPeriod = reportingPeriod,
+        currentlyActive = currentlyActive,
+        qaStatus = qaStatus,
+        url = "https://dataland.com/companies/$companyId/frameworks/$dataId/$dataId",
+    )
+}
