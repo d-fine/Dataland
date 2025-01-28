@@ -7,7 +7,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
-import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -84,7 +84,7 @@ class MessageQueuePublications(
                 "Correlation ID: '$correlationId'.",
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataMetaInfoPatchMessage(dataId = dataId, uploaderUserId = uploaderUserId)),
+            body = objectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId = dataId, uploaderUserId = uploaderUserId)),
             type = MessageType.METAINFO_UPDATED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
@@ -123,7 +123,7 @@ class MessageQueuePublications(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body =
                 objectMapper.writeValueAsString(
-                    DataMetaInfoPatchMessage(
+                    DataMetaInfoPatchPayload(
                         dataId = dataId,
                         uploaderUserId = dataMetaInformationPatch.uploaderUserId,
                     ),

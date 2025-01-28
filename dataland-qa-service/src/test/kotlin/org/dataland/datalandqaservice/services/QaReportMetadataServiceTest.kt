@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import java.time.Instant
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -42,11 +41,8 @@ class QaReportMetadataServiceTest(
     @Autowired private val qaReportMetadataService: QaReportMetadataService,
     @Autowired private val qaReportRepository: QaReportRepository,
 ) {
-    @MockBean
-    lateinit var companyController: CompanyDataControllerApi
-
-    @MockBean
-    lateinit var metadataController: MetaDataControllerApi
+    private val companyController: CompanyDataControllerApi = Mockito.mock(CompanyDataControllerApi::class.java)
+    private val metadataController: MetaDataControllerApi = Mockito.mock(MetaDataControllerApi::class.java)
 
     val reporterId1: UUID = UUID.randomUUID()
     val reporterId2: UUID = UUID.randomUUID()

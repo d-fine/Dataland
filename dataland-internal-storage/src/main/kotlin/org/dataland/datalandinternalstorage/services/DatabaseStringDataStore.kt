@@ -16,10 +16,11 @@ import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
-import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -52,9 +53,10 @@ class DatabaseStringDataStore(
     /**
      * Method that listens to the storage_queue and stores data into the database in case there is a message on the
      * storage_queue
-     * @param payload the content of the message
+     * @param message the message sent via the message queue
+     * @param payload the deserialized content of the message as json
      * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
+     * @param messageType the type of the message
      */
     @RabbitListener(
         bindings = [
@@ -74,16 +76,18 @@ class DatabaseStringDataStore(
         ],
     )
     fun storeDataset(
+        message: Message,
         @Payload payload: String,
         @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-        @Header(MessageHeaderKey.ROUTING_KEY) routingKey: String,
+        @Header(MessageHeaderKey.TYPE) messageType: String,
     ) {
+        val receivedRoutingKey = message.messageProperties.receivedRoutingKey
+
         MessageQueueUtils.rejectMessageOnException {
             val dataId =
-                when (routingKey) {
+                when (receivedRoutingKey) {
                     RoutingKeyNames.DATASET_UPLOAD -> {
-                        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.PUBLIC_DATA_RECEIVED)
                         MessageQueueUtils
                             .readMessagePayload<DataUploadedPayload>(
                                 payload,
@@ -91,15 +95,15 @@ class DatabaseStringDataStore(
                             ).dataId
                     }
                     RoutingKeyNames.METAINFORMATION_PATCH -> {
-                        MessageQueueUtils.validateMessageType(type, MessageType.METAINFO_UPDATED)
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
                         MessageQueueUtils
-                            .readMessagePayload<DataMetaInfoPatchMessage>(
+                            .readMessagePayload<DataMetaInfoPatchPayload>(
                                 payload,
                                 objectMapper,
                             ).dataId
                     }
                     else -> throw MessageQueueRejectException(
-                        "Routing Key $routingKey unknown. " +
+                        "Routing Key '$receivedRoutingKey' unknown. " +
                             "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
                     )
                 }

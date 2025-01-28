@@ -12,7 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
-import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -25,6 +25,8 @@ import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.internal.verification.VerificationModeFactory.times
+import org.springframework.amqp.core.Message
+import org.springframework.amqp.core.MessageProperties
 import java.util.Optional
 import java.util.UUID
 
@@ -39,6 +41,7 @@ class DatabaseStringDataStoreTest {
     private val objectMapper: ObjectMapper = jacksonObjectMapper()
 
     private val dataId = UUID.randomUUID().toString()
+    private val dummyData = "{some dummy data}"
     private val correlationId = UUID.randomUUID().toString()
 
     @BeforeEach
@@ -62,19 +65,22 @@ class DatabaseStringDataStoreTest {
 
     @Test
     fun `check that storeUploadedDatasets works on upload event`() {
-        val dummyData = "{some dummy data}"
+        val routingKey = RoutingKeyNames.DATASET_UPLOAD
+        val messageProperties = MessageProperties()
+        messageProperties.receivedRoutingKey = routingKey
+        val message = Message(dummyData.toByteArray(), messageProperties)
+
         val dataUploadedPayload =
             objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = false))
-        val routingKey = RoutingKeyNames.DATASET_UPLOAD
 
         `when`(mockTemporarilyCachedDataControllerApi.getReceivedPublicData(dataId)).thenReturn(dummyData)
 
         assertDoesNotThrow {
             databaseStringDataStore.storeDataset(
+                message,
                 dataUploadedPayload,
                 correlationId,
                 MessageType.PUBLIC_DATA_RECEIVED,
-                routingKey,
             )
         }
         verify(mockTemporarilyCachedDataControllerApi, times(1)).getReceivedPublicData(dataId)
@@ -91,19 +97,22 @@ class DatabaseStringDataStoreTest {
     @Test
     fun `check that storeUploadedDatasets works on patch event`() {
         val uploaderUserId = "uploader1234"
-        val dummyData = "{some dummy data}"
-        val dataPatchPayload =
-            objectMapper.writeValueAsString(DataMetaInfoPatchMessage(dataId, uploaderUserId))
         val routingKey = RoutingKeyNames.METAINFORMATION_PATCH
+        val messageProperties = MessageProperties()
+        messageProperties.receivedRoutingKey = routingKey
+        val message = Message(dummyData.toByteArray(), messageProperties)
+
+        val dataPatchPayload =
+            objectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId, uploaderUserId))
 
         `when`(mockTemporarilyCachedDataControllerApi.getReceivedPublicData(dataId)).thenReturn(dummyData)
 
         assertDoesNotThrow {
             databaseStringDataStore.storeDataset(
+                message,
                 dataPatchPayload,
                 correlationId,
                 MessageType.METAINFO_UPDATED,
-                routingKey,
             )
         }
         verify(mockTemporarilyCachedDataControllerApi, times(1)).getReceivedPublicData(dataId)
@@ -120,20 +129,22 @@ class DatabaseStringDataStoreTest {
     @Test
     fun `check that storeUploadedDatasets throws an error on unknown routing key`() {
         val unknownRoutingKey = "someWeirdRoutingKey"
+        val messageProperties = MessageProperties()
+        messageProperties.receivedRoutingKey = unknownRoutingKey
 
         val exceptionThrown =
             assertThrows<MessageQueueRejectException> {
                 databaseStringDataStore.storeDataset(
+                    Message(dummyData.toByteArray(), messageProperties),
                     "",
                     correlationId,
                     MessageType.METAINFO_UPDATED,
-                    unknownRoutingKey,
                 )
             }
         Assertions.assertEquals(
             exceptionThrown.message,
-            "Routing Key $unknownRoutingKey unknown. " +
-                "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
+            "Message was rejected: Routing Key '$unknownRoutingKey' unknown. " +
+                    "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
         )
         verify(mockTemporarilyCachedDataControllerApi, times(0)).getReceivedPublicData(dataId)
     }
@@ -144,10 +155,10 @@ class DatabaseStringDataStoreTest {
 
         assertThrows<MessageQueueRejectException> {
             databaseStringDataStore.storeDataset(
+                Message(dummyData.toByteArray()),
                 "",
                 correlationId,
                 unknownMessageType,
-                RoutingKeyNames.DATASET_UPLOAD,
             )
         }
         verify(mockTemporarilyCachedDataControllerApi, times(0)).getReceivedPublicData(dataId)

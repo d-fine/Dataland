@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
@@ -24,6 +23,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
 
@@ -41,6 +41,35 @@ class QaReviewManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    @Transactional
+    fun addDatasetToQaReviewRepository(dataId: String, bypassQa: Boolean, correlationId: String) {
+        logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
+        val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
+        val qaStatus: QaStatus
+        var comment: String? = null
+
+        when (bypassQa) {
+            true -> {
+                qaStatus = QaStatus.Accepted
+                comment = "Automatically QA approved."
+            }
+
+            false -> qaStatus = QaStatus.Pending
+        }
+
+        val qaReviewEntity = saveQaReviewEntity(
+            dataId = dataId,
+            qaStatus = qaStatus,
+            triggeringUserId = triggeringUserId,
+            comment = comment,
+            correlationId = correlationId,
+        )
+
+        this.sendQaStatusUpdateMessage(
+            qaReviewEntity = qaReviewEntity, correlationId = correlationId,
+        )
+    }
+
     /**
      * The method returns a list of unreviewed datasets with corresponding information for the specified input params
      * @param dataTypes the datatype of the dataset
@@ -49,7 +78,7 @@ class QaReviewManager(
      * @param chunkIndex the chunkIndex of the request
      * @param chunkSize the chunkSize of the request
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun getInfoOnPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
@@ -96,12 +125,35 @@ class QaReviewManager(
      * Retrieves from database a QaReviewEntity by its dataId
      * @param dataId: dataID
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
         val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         return qaReviewRepository
             .findFirstByDataIdOrderByTimestampDesc(dataId.toString())
             ?.toQaReviewResponse(userIsAdmin)
+    }
+
+    /**
+     * Method called to update triggeringUserId for first Pending entry of a dataset.
+     * This effectively updates the uploaderUserId of the dataset. Method is only triggered via messageQueue.
+     * Due to Spring JPA, the object is saved when the transaction is committed without explicitly calling save().
+     * @param dataId identifier of dataset
+     * @param uploaderUserId the new uploaderUserId aka the triggeringUserId of the upload event
+     * @param correlationId
+     */
+    @Transactional
+    fun patchUploaderUserIdInQaReviewEntry(dataId: String, uploaderUserId: String, correlationId: String) {
+        logger.info("Received message to patch uploaderUserId for dataset with dataId $dataId (correlationId: $correlationId).")
+        val qaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
+
+        requireNotNull(qaReviewEntity)
+        require(qaReviewEntity.qaStatus == QaStatus.Pending)
+
+        logger.info("Updating triggeringUserId for first qa review entry for dataset with dataId $dataId$. " +
+                "Old triggeringUserId was ${qaReviewEntity.triggeringUserId}, new triggeringUserId is $uploaderUserId " +
+                "(correlationId: $correlationId).")
+
+        qaReviewEntity.triggeringUserId = uploaderUserId
     }
 
     /**
@@ -144,7 +196,6 @@ class QaReviewManager(
      * @param qaReviewEntity qaReviewEntity for which to send the QaStatusChangeMessage
      * @param correlationId the ID for the process triggering the change
      */
-    @Transactional
     fun sendQaStatusUpdateMessage(
         qaReviewEntity: QaReviewEntity,
         correlationId: String,
@@ -153,7 +204,11 @@ class QaReviewManager(
             if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
                 qaReviewEntity.dataId
             } else {
-                getDataIdOfCurrentlyActiveDataset(qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod)
+                getDataIdOfCurrentlyActiveDataset(
+                    qaReviewEntity.companyId,
+                    qaReviewEntity.framework,
+                    qaReviewEntity.reportingPeriod
+                )
             }
 
         val qaStatusChangeMessage =
@@ -200,7 +255,7 @@ class QaReviewManager(
     ): String? {
         logger.info(
             "Searching for currently active dataset for company $companyId, " +
-                "dataType $dataType, and reportingPeriod $reportingPeriod",
+                    "dataType $dataType, and reportingPeriod $reportingPeriod",
         )
         val searchFilter =
             QaSearchFilter(

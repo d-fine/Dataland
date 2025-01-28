@@ -30,7 +30,6 @@ class CloudEventMessageHandler(
         body: String,
         type: String,
         correlationId: String,
-        routingKey: String,
     ): MessageMQ {
         val bodyInBytes = body.toByteArray()
         val message =
@@ -39,7 +38,6 @@ class CloudEventMessageHandler(
                 .setId(correlationId)
                 .setType(type)
                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-                .setHeader(MessageHeaderKey.ROUTING_KEY, routingKey)
                 .build(CloudEventMessageUtils.AMQP_ATTR_PREFIX)
         return convertMessage(message)
     }
@@ -58,7 +56,7 @@ class CloudEventMessageHandler(
         exchange: String,
         routingKey: String = "",
     ) {
-        val messageInput = buildCEMessage(body, type, correlationId, routingKey)
+        val messageInput = buildCEMessage(body, type, correlationId)
         try {
             rabbitTemplate.send(exchange, routingKey, messageInput)
         } catch (exception: AmqpException) {
