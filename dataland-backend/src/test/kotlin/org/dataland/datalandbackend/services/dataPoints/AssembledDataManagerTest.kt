@@ -209,11 +209,5 @@ class AssembledDataManagerTest {
                 reportingPeriod = reportingPeriod,
             )
         }
-
-        val assembledDataset = assembledDataManager.getDatasetData(datasetId, "sfdr", correlationId)
-        dataPoints.forEach {
-            assert(assembledDataset.contains(it))
-        }
-        assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 }

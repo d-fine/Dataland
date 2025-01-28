@@ -121,14 +121,6 @@ abstract class DataController<T>(
         return objectMapper.readValue(dataAsString, clazz)
     }
 
-    private fun getData(
-        dataId: String,
-        correlationId: String,
-    ): T {
-        val dataAsString = datasetStorageService.getDatasetData(dataId, dataType.toString(), correlationId)
-        return objectMapper.readValue(dataAsString, clazz)
-    }
-
     override fun getFrameworkDatasetsForCompany(
         companyId: String,
         showOnlyActive: Boolean,
