@@ -1409,6 +1409,138 @@
         ]
       }
     },
+    "/assembled-dataset-migration/upload-as-stored-dataset/{dataType}": {
+      "post": {
+        "tags": [
+          "assembled-dataset-migration-controller"
+        ],
+        "summary": "Triggers a forced upload of a dataset as a stored dataset for testing.",
+        "description": "The data is stored.",
+        "operationId": "forceUploadDatasetAsStoredDataset",
+        "parameters": [
+          {
+            "name": "dataType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DataTypeEnum"
+            }
+          },
+          {
+            "name": "bypassQa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompanyAssociatedDataJsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Data Stored.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration/{dataId}": {
+      "post": {
+        "tags": [
+          "assembled-dataset-migration-controller"
+        ],
+        "summary": "Triggers the migration from stored datasets to assembled datasets.",
+        "description": "The data is migrated.",
+        "operationId": "migrateStoredDatasetToAssembledDataset",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Migration successful."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}": {
       "head": {
         "tags": [
@@ -19844,6 +19976,28 @@
           }
         }
       },
+      "CompanyAssociatedDataJsonNode": {
+        "required": [
+          "companyId",
+          "data",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/JsonNode"
+          }
+        }
+      },
+      "JsonNode": {
+        "type": "object"
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -20171,20 +20325,20 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
           "companyName": {
             "type": "string"
           },
           "companyId": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryCode": {
             "type": "string"
           },
           "lei": {
