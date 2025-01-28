@@ -25,6 +25,18 @@ class FrameworkDataModelBuilder(
     private val frameworkBasePackageQualifier =
         "org.dataland.datalandbackend.frameworks.${removeUnallowedJavaIdentifierCharacters(framework.identifier)}"
 
+    private val storedDataManager =
+        TypeReference(
+            "org.dataland.datalandbackend.services.DataManager",
+            false,
+        )
+
+    private val assembledDataManager =
+        TypeReference(
+            "org.dataland.datalandbackend.services.datapoints.AssembledDataManager",
+            false,
+        )
+
     val rootPackageBuilder: PackageBuilder =
         PackageBuilder(
             "$frameworkBasePackageQualifier.model",
@@ -50,6 +62,7 @@ class FrameworkDataModelBuilder(
     private fun buildFrameworkSpecificApiController(
         into: DatalandRepository,
         privateFrameworkBoolean: Boolean,
+        assembledDataset: Boolean,
     ) {
         logger.trace("Building the framework-specific API Controller")
         val targetPath =
@@ -70,6 +83,7 @@ class FrameworkDataModelBuilder(
         val writer = FileWriter(targetPath.toFile())
         freemarkerTemplate.process(
             mapOf(
+                "frameworkDataManager" to if (assembledDataset) assembledDataManager else storedDataManager,
                 "frameworkIdentifier" to framework.identifier,
                 "frameworkPackageName" to removeUnallowedJavaIdentifierCharacters(framework.identifier),
                 "frameworkDataType" to rootDataModelClass.getTypeReference(false),
@@ -87,12 +101,13 @@ class FrameworkDataModelBuilder(
         into: DatalandRepository,
         buildApiController: Boolean,
         privateFrameworkBoolean: Boolean,
+        assembledDataset: Boolean,
     ) {
         logger.info("Starting to build to backend data-model into the dataland-repository at ${into.path}")
         rootPackageBuilder.build(into.backendKotlinSrc)
 
         if (buildApiController) {
-            buildFrameworkSpecificApiController(into, privateFrameworkBoolean)
+            buildFrameworkSpecificApiController(into, privateFrameworkBoolean, assembledDataset)
         }
 
         logger.info("Generation completed. Verifying generated files and updating OpenApi-Spec")

@@ -99,4 +99,17 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
     ): List<DataPointQaReviewEntity>
+
+    /**
+     * Find the latest QA information items per dataPointId where the dataPointId is in the provided list [dataPointIds].
+     */
+    @Query(
+        "SELECT dataPointQaReview FROM DataPointQaReviewEntity dataPointQaReview " +
+            "WHERE dataPointQaReview.timestamp = " +
+            "(SELECT MAX(subDataPointQaReview.timestamp) FROM DataPointQaReviewEntity subDataPointQaReview " +
+            "WHERE subDataPointQaReview.dataPointId = dataPointQaReview.dataPointId) " +
+            "AND  dataPointQaReview.dataPointId IN :#{#dataPointIds} " +
+            "ORDER BY dataPointQaReview.timestamp DESC ",
+    )
+    fun findLatestWhereDataPointIdIn(dataPointIds: List<String>): List<DataPointQaReviewEntity>
 }

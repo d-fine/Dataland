@@ -63,6 +63,7 @@ class QaController(
         dataId: String,
         qaStatus: QaStatus,
         comment: String?,
+        overwriteDataPointQaStatus: Boolean,
     ) {
         val correlationId = randomUUID().toString()
         val reviewerId = DatalandAuthentication.fromContext().userId
@@ -79,7 +80,14 @@ class QaController(
                 comment = comment,
                 correlationId = correlationId,
             )
-
+        dataPointQaReviewManager.reviewAssembledDataset(
+            dataId = dataId,
+            qaStatus = qaStatus,
+            triggeringUserId = reviewerId,
+            comment = comment,
+            correlationId = correlationId,
+            overwriteDataPointQaStatus = overwriteDataPointQaStatus,
+        )
         qaReviewManager.sendQaStatusUpdateMessage(
             qaReviewEntity = qaReviewEntity, correlationId = correlationId,
         )

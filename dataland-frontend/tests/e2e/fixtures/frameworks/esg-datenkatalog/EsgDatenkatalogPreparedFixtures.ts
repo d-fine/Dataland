@@ -24,6 +24,7 @@ function generateFixtureForNoNullFieldsAndOnlyYesAnswers(): FixtureData<EsgDaten
 
   setAllYesNoValuesToYesInCategoryAllgemein(newFixture);
   setAllYesNoValuesToYesInCategoriesUmwelSozialsGovernance(newFixture);
+  newFixture.t.allgemein!!.generelleEsgStrategie!!.nachhaltigkeitsstrategieVorhanden = YesNo.Yes;
   return newFixture;
 }
 

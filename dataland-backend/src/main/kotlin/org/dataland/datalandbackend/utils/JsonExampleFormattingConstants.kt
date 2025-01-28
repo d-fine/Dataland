@@ -104,7 +104,7 @@ object JsonExampleFormattingConstants {
         "{" +
             "\"fileReference\": \"string\"," +
             "\"fileName\": \"string\"," +
-            "\"publicationDate\": \"2023-10-12\"," +
+            "\"publicationDate\": \"2023-10-12\"" +
             "}"
 
     const val REFERENCED_REPORTS_DEFAULT_VALUE: String =

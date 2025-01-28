@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoRespo
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
+import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -21,7 +22,7 @@ import java.util.UUID
  * Controller for the company metadata endpoints
  * @param dataMetaInformationManager service for handling data meta information
  * @param logMessageBuilder a helper for building log messages
- * @param nonSourceableDataManager service for handling information on data sets and their sourceability
+ * @param nonSourceableDataManager service for handling information on datasets and their sourceability
  */
 
 @RestController
@@ -29,6 +30,7 @@ class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired val assembledDataManager: AssembledDataManager,
 ) : MetaDataApi {
     override fun getListOfDataMetaInfo(
         companyId: String?,
@@ -66,7 +68,7 @@ class MetaDataController(
         return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
     }
 
-    override fun getInfoOnNonSourceabilityOfDataSets(
+    override fun getInfoOnNonSourceabilityOfDatasets(
         companyId: String?,
         dataType: DataType?,
         reportingPeriod: String?,
@@ -101,5 +103,16 @@ class MetaDataController(
                         "and reportingPeriod $reportingPeriod.",
             )
         }
+    }
+
+    override fun getContainedDataPoints(dataId: String): ResponseEntity<Map<String, String>> {
+        val dataPoints = assembledDataManager.getDataPointIdsForDataset(dataId)
+        if (dataPoints.isEmpty()) {
+            throw ResourceNotFoundApiException(
+                summary = "No data point mapping found for dataset.",
+                message = "Either the provided dataset ID $dataId is invalid or the corresponding framework does not support data points.",
+            )
+        }
+        return ResponseEntity.ok(dataPoints)
     }
 }
