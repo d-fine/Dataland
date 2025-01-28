@@ -211,7 +211,7 @@ class DataRequestProcessingUtils
         }
 
         /**
-         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered"
+         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
          * @param companyId the company ID of the data request
          * @param framework the framework of the data request
          * @param reportingPeriod the reporting period of the data request
