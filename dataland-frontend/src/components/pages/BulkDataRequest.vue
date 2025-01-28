@@ -55,14 +55,14 @@
                   </div>
                 </div>
                 <BulkDataRequestSummary
-                    :humanized-reporting-periods="humanizedReportingPeriods"
-                    :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
-                    :humanized-selected-frameworks="humanizedSelectedFrameworks"
-                    :summary-section-frameworks-heading="summarySectionFrameworksHeading"
-                    :rejected-company-identifiers="rejectedCompanyIdentifiers"
-                    :created-requests="createdRequests"
-                    :not-created-requests="notCreatedRequests"
-                    :rejectedCompanyIdentifiers="rejectedCompanyIdentifiers"
+                  :humanized-reporting-periods="humanizedReportingPeriods"
+                  :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
+                  :humanized-selected-frameworks="humanizedSelectedFrameworks"
+                  :summary-section-frameworks-heading="summarySectionFrameworksHeading"
+                  :rejected-company-identifiers="rejectedCompanyIdentifiers"
+                  :created-requests="createdRequests"
+                  :not-created-requests="notCreatedRequests"
+                  :rejectedCompanyIdentifiers="rejectedCompanyIdentifiers"
                 />
               </template>
             </template>
@@ -186,7 +186,7 @@ import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue'
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
 import { type ExistingDataResponse } from '@/utils/RequestUtils.ts';
-import BulkDataRequestSummary from "@/components/pages/BulkDataRequestSummary.vue";
+import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
   name: 'BulkDataRequest',
