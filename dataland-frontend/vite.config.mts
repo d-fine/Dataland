@@ -89,6 +89,7 @@ export default defineConfig({
       ignored: ['**/coverage/**'],
       usePolling: process.env.POLLING === 'true',
     },
+    allowedHosts: ['frontend'],
   },
   css: {
     preprocessorOptions: {
