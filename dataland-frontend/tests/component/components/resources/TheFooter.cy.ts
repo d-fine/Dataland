@@ -1,6 +1,5 @@
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { mount } from 'cypress/vue';
-import { checkImage } from '@ct/testUtils/ExistenceChecks';
 
 describe('Component test for DatalandFooter', () => {
   it('Check if footer is as expected', () => {
