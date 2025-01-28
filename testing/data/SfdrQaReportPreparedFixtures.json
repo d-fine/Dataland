@@ -2,35 +2,40 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "West Covina",
-			"headquartersPostalCode": "30025-2331",
-			"sector": "convergence",
+			"headquarters": "Marianneside",
+			"headquartersPostalCode": "30690",
+			"sector": "initiatives",
 			"identifiers": {
 				"Lei": [
-					"ZDaG2ANMPw9BQTqWsmdA"
+					"9KT68Clm7WCWnsbkazW0"
 				],
 				"Isin": [
-					"DFYupSxrmiEu"
+					"ZhVQNcBY1QBY",
+					"PzwkpMXsHJZE"
 				],
-				"PermId": [
-					"0W4ImgPO7y"
-				],
+				"PermId": [],
 				"Ticker": [
-					"2mQNNPv"
+					"E5pYc9N"
 				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"vWlZBIggy"
+				],
+				"CompanyRegistrationNumber": [
+					"RtEoAguHlxzs1Uh"
+				]
 			},
-			"countryCode": "FM",
+			"countryCode": "BY",
 			"companyContactDetails": [
-				"Ismael82@example.com"
+				"Donny.Hoppe24@example.com"
 			],
 			"companyAlternativeNames": [
-				"Cronin - Graham"
+				"Abernathy - Gulgowski",
+				"Fisher - Gulgowski",
+				"Hills and Sons"
 			],
-			"companyLegalForm": "GmbH",
-			"website": "https://boring-labour.biz/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://primary-pear.com",
 			"isTeaserCompany": false
 		},
 		"t": {
