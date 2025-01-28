@@ -51,8 +51,7 @@ export function removeAllUnusedReferencedReports(data: Record<string, unknown>, 
   const usedFileReferences = new Set<string>();
   findAllFileReferencesRecursive(data, usedFileReferences);
   const unusedFileReferences = Object.entries(documents).filter(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ([_ignored, value]) => !usedFileReferences.has(value.fileReference)
+    ([, value]) => !usedFileReferences.has(value.fileReference)
   );
   for (const [key] of unusedFileReferences) {
     delete documents[key];

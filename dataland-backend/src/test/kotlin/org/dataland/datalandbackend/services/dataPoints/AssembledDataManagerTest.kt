@@ -49,7 +49,7 @@ class AssembledDataManagerTest {
     private val specificationClient = mock(SpecificationControllerApi::class.java)
     private val datasetDatapointRepository = mock(DatasetDatapointRepository::class.java)
 
-    private val frameworkSpecificationFile = "./json/frameworkTemplate/frameworkSpecification.json"
+    private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
 
@@ -69,10 +69,10 @@ class AssembledDataManagerTest {
 
     private val correlationId = "test-correlation-id"
     private val uploaderUserId = "test-user-id"
-    private val reportingPeriod = "test-period"
+    private val reportingPeriod = "2022"
     private val companyId = "test-company-id"
     private val datasetId = "test-dataset-id"
-    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(frameworkSpecificationFile)
+    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
 
     @BeforeEach
     fun resetMocks() {

@@ -55,6 +55,7 @@
             <PrimeButton
               class="uppercase p-button p-button-sm d-letters ml-3"
               aria-label="DOWNLOAD DATA"
+              v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               @click="isDownloadModalOpen = true"
               data-test="downloadDataButton"
             >
@@ -62,6 +63,7 @@
             </PrimeButton>
 
             <DownloadDatasetModal
+              v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               :isDownloadModalOpen="isDownloadModalOpen"
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
               :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
@@ -143,10 +145,11 @@ import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/u
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
-import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry.ts';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
+import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
+import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -252,6 +255,7 @@ export default defineComponent({
     window.addEventListener('scroll', this.windowScrollHandler);
   },
   methods: {
+    getAllPrivateFrameworkIdentifiers,
     /**
      * Triggered by event "closeDownloadModal" emitted by the DownloadDatasetModal component
      */
@@ -450,10 +454,11 @@ export default defineComponent({
 
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const frameworkDefinition = getBasePublicFrameworkDefinition(this.dataType);
-        const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = frameworkDefinition
-          ? frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance)
-          : null;
+        // DataExport Button does not exist for private frameworks, so cast is safe
+        const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
+          this.dataType,
+          apiClientProvider
+        ) as PublicFrameworkDataApi<FrameworkData>;
 
         if (!frameworkDataApi) {
           throw new ReferenceError('Retrieving dataApi for framework failed.');

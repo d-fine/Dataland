@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "3.12.49",
-    "@faker-js/faker": "8.4.1",
+    "@faker-js/faker": "9.4.0",
     "@rushstack/eslint-patch": "1.10.5",
     "@tsconfig/node20": "20.1.4",
     "@types/dompurify": "3.0.5",
@@ -64,7 +64,7 @@
     "lint-staged": "15.3.0",
     "markdown-it": "14.1.0",
     "mocha": "10.8.2",
-    "npm-check-updates": "17.1.13",
+    "npm-check-updates": "17.1.14",
     "otplib": "12.0.1",
     "prettier": "3.3.3",
     "sass": "1.83.1",

@@ -26,91 +26,101 @@ import org.springframework.stereotype.Service
  */
 @Service
 @Suppress("LongParameterList")
-class AssembledDatasetQaReportManager(
-    @Autowired private val objectMapper: ObjectMapper,
-    @Autowired override val qaReportRepository: QaReportRepository,
-    @Autowired override val qaReportSecurityPolicy: QaReportSecurityPolicy,
-    @Autowired private val datalandBackendAccessor: DatalandBackendAccessor,
-    @Autowired private val specificationControllerApi: SpecificationControllerApi,
-    @Autowired private val dataPointCompositionService: DataPointCompositionService,
-    @Autowired private val dataPointQaReportManager: DataPointQaReportManager,
-    @Autowired private val dataPointQaReportRepository: DataPointQaReportRepository,
-) : DatasetQaReportService(qaReportRepository = qaReportRepository, qaReportSecurityPolicy = qaReportSecurityPolicy) {
-    override val logger = LoggerFactory.getLogger(javaClass)
+class AssembledDatasetQaReportManager
+    @Autowired
+    constructor(
+        private val objectMapper: ObjectMapper,
+        override val qaReportRepository: QaReportRepository,
+        override val qaReportSecurityPolicy: QaReportSecurityPolicy,
+        private val datalandBackendAccessor: DatalandBackendAccessor,
+        private val specificationControllerApi: SpecificationControllerApi,
+        private val dataPointCompositionService: DataPointCompositionService,
+        private val dataPointQaReportManager: DataPointQaReportManager,
+        private val dataPointQaReportRepository: DataPointQaReportRepository,
+    ) : DatasetQaReportService(qaReportRepository = qaReportRepository, qaReportSecurityPolicy = qaReportSecurityPolicy) {
+        override val logger = LoggerFactory.getLogger(javaClass)
 
-    @Transactional
-    override fun <QaReportType> createQaReport(
-        report: QaReportType,
-        dataId: String,
-        dataType: String,
-        reporterUserId: String,
-        uploadTime: Long,
-    ): QaReportMetaInformation {
-        val correlationId = generateUUID()
+        @Transactional
+        override fun <QaReportType> createQaReport(
+            report: QaReportType,
+            dataId: String,
+            dataType: String,
+            reporterUserId: String,
+            uploadTime: Long,
+        ): QaReportMetaInformation {
+            val correlationId = generateUUID()
 
-        datalandBackendAccessor.ensureDatalandDataExists(dataId, dataType)
-        val dataPointQaReportIds = dehydrateAndSaveDataPointQaReports(dataType, dataId, report, reporterUserId, uploadTime, correlationId)
+            datalandBackendAccessor.ensureDatalandDataExists(dataId, dataType)
+            val dataPointQaReportIds =
+                dehydrateAndSaveDataPointQaReports(dataType, dataId, report, reporterUserId, uploadTime, correlationId)
 
-        qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
-        val savedEntity =
-            qaReportRepository.save(
-                QaReportEntity(
-                    qaReportId = generateUUID(),
-                    qaReport = objectMapper.writeValueAsString(dataPointQaReportIds),
-                    dataId = dataId,
-                    dataType = dataType,
-                    reporterUserId = reporterUserId,
-                    uploadTime = uploadTime,
-                    active = true,
-                ),
-            )
-        return savedEntity.toMetaInformationApiModel()
-    }
-
-    private fun <QaReportType> dehydrateAndSaveDataPointQaReports(
-        dataType: String,
-        dataId: String,
-        report: QaReportType,
-        reporterUserId: String,
-        uploadTime: Long,
-        correlationId: String,
-    ): MutableList<String> {
-        val (associatedDataPoints, decomposedQaReport) = splitQaReportIntoDataPoints(dataType, dataId, report)
-
-        val unwantedAdditionalQaFeatures = decomposedQaReport.keys - associatedDataPoints.keys
-        if (unwantedAdditionalQaFeatures.isNotEmpty()) {
-            throw InvalidInputApiException(
-                "The QA report contains to many datapoints",
-                "The QA report contains the following datapoints," +
-                    " that were not part of the original data set: $unwantedAdditionalQaFeatures",
-            )
-        }
-
-        val dataPointQaReportIds = mutableListOf<String>()
-        for ((dataPointId, dataPointReport) in decomposedQaReport) {
-            val dataPointDataId = requireNotNull(associatedDataPoints[dataPointId])
-            val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
-            val translatedQaReport =
-                QaReportDataPoint<String?>(
-                    comment = parsedQaReport.comment,
-                    verdict = parsedQaReport.verdict,
-                    correctedData = objectMapper.writeValueAsString(parsedQaReport.correctedData),
-                )
-
-            dataPointQaReportIds.add(
-                dataPointQaReportManager
-                    .createQaReport(
-                        report = translatedQaReport,
-                        dataId = dataPointDataId,
+            qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
+            val savedEntity =
+                qaReportRepository.save(
+                    QaReportEntity(
+                        qaReportId = generateUUID(),
+                        qaReport = objectMapper.writeValueAsString(dataPointQaReportIds),
+                        dataId = dataId,
+                        dataType = dataType,
                         reporterUserId = reporterUserId,
                         uploadTime = uploadTime,
-                        correlationId = correlationId,
-                    ).qaReportId,
-            )
+                        active = true,
+                    ),
+                )
+            return savedEntity.toMetaInformationApiModel()
         }
-        return dataPointQaReportIds
-    }
 
+        private fun <QaReportType> dehydrateAndSaveDataPointQaReports(
+            dataType: String,
+            dataId: String,
+            report: QaReportType,
+            reporterUserId: String,
+            uploadTime: Long,
+            correlationId: String,
+        ): MutableList<String> {
+            val (associatedDataPoints, decomposedQaReport) = splitQaReportIntoDataPoints(dataType, dataId, report)
+
+            val unwantedAdditionalQaFeatures = decomposedQaReport.keys - associatedDataPoints.keys
+            if (unwantedAdditionalQaFeatures.isNotEmpty()) {
+                throw InvalidInputApiException(
+                    "The QA report contains to many datapoints",
+                    "The QA report contains the following datapoints," +
+                        " that were not part of the original data set: $unwantedAdditionalQaFeatures",
+                )
+            }
+
+            val dataPointQaReportIds = mutableListOf<String>()
+            for ((dataPointId, dataPointReport) in decomposedQaReport) {
+                val dataPointDataId = requireNotNull(associatedDataPoints[dataPointId])
+                val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
+                val translatedQaReport =
+                    QaReportDataPoint<String?>(
+                        comment = parsedQaReport.comment,
+                        verdict = parsedQaReport.verdict,
+                        correctedData = objectMapper.writeValueAsString(parsedQaReport.correctedData),
+                    )
+
+                dataPointQaReportIds.add(
+                    dataPointQaReportManager
+                        .createQaReport(
+                            report = translatedQaReport,
+                            dataId = dataPointDataId,
+                            reporterUserId = reporterUserId,
+                            uploadTime = uploadTime,
+                            correlationId = correlationId,
+                        ).qaReportId,
+                )
+            }
+            return dataPointQaReportIds
+        }
+
+        private fun getFrameworkSpecification(dataType: String): ObjectNode {
+            val specification =
+                objectMapper.readTree(
+                    specificationControllerApi.getFrameworkSpecification(dataType).schema,
+                ) as ObjectNode
+            return specification
+        }
     /**
      * Splits a QA report into data points and their associated data IDs
      */
@@ -131,45 +141,37 @@ class AssembledDatasetQaReportManager(
         return Pair(associatedDataPoints, decomposedQaReport)
     }
 
-    private fun getFrameworkSpecification(dataType: String): ObjectNode {
-        val specification =
-            objectMapper.readTree(
-                specificationControllerApi.getFrameworkSpecification(dataType).schema,
-            ) as ObjectNode
-        return specification
-    }
-
-    @Transactional
-    override fun setQaReportStatusInt(
-        qaReportEntity: QaReportEntity,
-        statusToSet: Boolean,
-    ): QaReportEntity {
-        qaReportEntity.active = statusToSet
-        val dataPointQaReportIdList = objectMapper.readValue<List<String>>(qaReportEntity.qaReport)
-        dataPointQaReportRepository.findAllById(dataPointQaReportIdList).forEach {
-            it.active = statusToSet
-        }
-        return qaReportEntity
-    }
-
-    override fun <ReportType> qaReportEntityToModel(
-        qaReportEntity: QaReportEntity,
-        objectMapper: ObjectMapper,
-        clazz: Class<ReportType>,
-    ): QaReportWithMetaInformation<ReportType> {
-        val dataPointQaReportIdList = objectMapper.readValue<List<String>>(qaReportEntity.qaReport)
-        val dataPointReports =
-            dataPointQaReportRepository.findAllById(dataPointQaReportIdList).associate {
-                it.dataPointType to objectMapper.valueToTree<JsonNode>(it.toDatasetApiModel(objectMapper))
+        @Transactional
+        override fun setQaReportStatusInt(
+            qaReportEntity: QaReportEntity,
+            statusToSet: Boolean,
+        ): QaReportEntity {
+            qaReportEntity.active = statusToSet
+            val dataPointQaReportIdList = objectMapper.readValue<List<String>>(qaReportEntity.qaReport)
+            dataPointQaReportRepository.findAllById(dataPointQaReportIdList).forEach {
+                it.active = statusToSet
             }
-        val hydratedQaReport =
-            JsonSpecificationUtils.hydrateJsonSpecification(
-                getFrameworkSpecification(qaReportEntity.dataType),
-            ) { dataPointReports[it] }
+            return qaReportEntity
+        }
 
-        return QaReportWithMetaInformation(
-            report = objectMapper.treeToValue(hydratedQaReport, clazz),
-            metaInfo = qaReportEntity.toMetaInformationApiModel(),
-        )
+        override fun <ReportType> qaReportEntityToModel(
+            qaReportEntity: QaReportEntity,
+            objectMapper: ObjectMapper,
+            clazz: Class<ReportType>,
+        ): QaReportWithMetaInformation<ReportType> {
+            val dataPointQaReportIdList = objectMapper.readValue<List<String>>(qaReportEntity.qaReport)
+            val dataPointReports =
+                dataPointQaReportRepository.findAllById(dataPointQaReportIdList).associate {
+                    it.dataPointType to objectMapper.valueToTree<JsonNode>(it.toDatasetApiModel(objectMapper))
+                }
+            val hydratedQaReport =
+                JsonSpecificationUtils.hydrateJsonSpecification(
+                    getFrameworkSpecification(qaReportEntity.dataType),
+                ) { dataPointReports[it] }
+
+            return QaReportWithMetaInformation(
+                report = objectMapper.treeToValue(hydratedQaReport, clazz),
+                metaInfo = qaReportEntity.toMetaInformationApiModel(),
+            )
+        }
     }
-}

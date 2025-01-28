@@ -100,8 +100,8 @@ class MessageQueuePublications(
     }
 
     /**
-     * Method to publish a message that a dataset has been uploaded
-     * @param dataId The ID of the uploaded dataset
+     * Method to publish a message that a dataset requires QA
+     * @param dataId The ID of the dataset
      * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */

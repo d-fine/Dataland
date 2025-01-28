@@ -3,52 +3,57 @@
 		"general": {
 			"general": {
 				"referencedReports": {
-					"SustainabilityReport": {
+					"ESEFReport": {
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-09-24"
+					},
+					"SustainabilityReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 						"fileName": "SustainabilityReport",
-						"publicationDate": "2023-09-19"
+						"publicationDate": "2023-12-21"
 					}
 				}
 			},
 			"financialInformation": {
 				"equity": {
-					"value": 7977554542.02,
+					"value": 5925197060.02,
 					"dataSource": {
-						"page": "222-279",
+						"page": "574-877",
 						"fileName": "SustainabilityReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "action-items",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "AI",
 						"publicationDate": null
 					},
-					"comment": "connect auxiliary sensor",
-					"quality": "Reported",
-					"currency": "SSP"
+					"comment": "navigate multi-byte sensor",
+					"quality": "Audited",
+					"currency": "BSD"
 				},
 				"debt": {
-					"value": 3790624169.63,
+					"value": 2535600674.39,
 					"dataSource": {
-						"page": "444-500",
-						"fileName": "SustainabilityReport",
+						"page": "793",
+						"fileName": "ESEFReport",
 						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "e-business",
+						"tagName": "relationships",
 						"publicationDate": null
 					},
-					"comment": "back up multi-byte circuit",
-					"quality": "NoDataFound",
-					"currency": "BND"
+					"comment": "parse cross-platform circuit",
+					"quality": "Estimated",
+					"currency": "TJS"
 				},
 				"evic": {
-					"value": 2985546942.8,
+					"value": 9757891598.3,
 					"dataSource": {
-						"page": "96",
+						"page": "240-480",
 						"fileName": "SustainabilityReport",
-						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-						"tagName": "ROI",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "initiatives",
 						"publicationDate": null
 					},
-					"comment": "quantify auxiliary microchip",
+					"comment": "back up haptic port",
 					"quality": "Estimated",
-					"currency": "NGN"
+					"currency": "AMD"
 				}
 			}
 		}
@@ -70,17 +75,17 @@
 					"verdict": "QaRejected",
 					"comment": "EVIC is not correct",
 					"correctedData": {
-						"value": 5909087220.21,
+						"value": 9294439715.69,
 						"dataSource": {
-							"page": "203-833",
+							"page": "747",
 							"fileName": "SustainabilityReport",
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "channels",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "markets",
 							"publicationDate": null
 						},
-						"comment": "bypass mobile matrix",
-						"quality": "NoDataFound",
-						"currency": "TOP"
+						"comment": "bypass 1080p interface",
+						"quality": "Estimated",
+						"currency": "GBP"
 					}
 				}
 			}
