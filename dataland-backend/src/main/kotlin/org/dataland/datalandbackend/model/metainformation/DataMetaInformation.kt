@@ -15,7 +15,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
  * @param url direct link to the page displaying the specified data set
  */
-data class DataMetaInformation private constructor(
+data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val dataId: String,
     @field:JsonProperty(required = true)
@@ -32,26 +32,5 @@ data class DataMetaInformation private constructor(
     @field:JsonProperty(required = true)
     var qaStatus: QaStatus,
     @field:JsonProperty(required = true)
-    val url: String,
-) {
-    constructor(
-        dataId: String,
-        companyId: String,
-        dataType: DataType,
-        uploaderUserId: String? = null,
-        uploadTime: Long,
-        reportingPeriod: String,
-        currentlyActive: Boolean,
-        qaStatus: QaStatus,
-    ) : this(
-        dataId = dataId,
-        companyId = companyId,
-        dataType = dataType,
-        uploaderUserId = uploaderUserId,
-        uploadTime = uploadTime,
-        reportingPeriod = reportingPeriod,
-        currentlyActive = currentlyActive,
-        qaStatus = qaStatus,
-        url = "https://dataland.com/companies/$companyId/frameworks/$dataId/$dataId",
-    )
-}
+    val url: String = "https://dataland.com/companies/$companyId/frameworks/$dataId",
+)

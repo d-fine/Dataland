@@ -77,14 +77,14 @@ interface MetaDataApi {
             ApiResponse(responseCode = "200", description = "Successfully retrieved meta info."),
         ],
     )
-    @GetMapping(
+    @PostMapping(
         value = ["/batch"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
-    fun getListOfDataMetaInfo(
-        @RequestParam dataMetaInformationRequests: List<DataMetaInformationRequest>,
+    fun postListOfDataMetaInfoRequests(
+        @RequestBody dataMetaInformationRequests: List<DataMetaInformationRequest>,
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
