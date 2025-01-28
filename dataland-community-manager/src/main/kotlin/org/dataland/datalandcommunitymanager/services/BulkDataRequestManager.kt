@@ -14,7 +14,6 @@ import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestE
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -28,7 +27,6 @@ class BulkDataRequestManager(
     @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
     @Autowired private val metaDataController: MetaDataControllerApi,
-    @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
 ) {
     /**
      * Processes a bulk data request from a user
@@ -41,10 +39,9 @@ class BulkDataRequestManager(
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
-        val acceptedUserInputIdentifiers = mutableListOf<String>()
-        val acceptedCompanyIds = mutableListOf<String>()
+
         val rejectedIdentifiers = mutableListOf<String>()
-        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, CompanyIdAndName>()
+        val acceptedUserIdToCompanyIdAndName = mutableMapOf<String, CompanyIdAndName>()
 
         for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
             val datalandCompanyIdAndName =
@@ -53,33 +50,32 @@ class BulkDataRequestManager(
                 rejectedIdentifiers.add(userProvidedIdentifier)
                 continue
             }
-            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] = datalandCompanyIdAndName
-            acceptedUserInputIdentifiers.add(userProvidedIdentifier)
-            acceptedCompanyIds.add(datalandCompanyIdAndName.companyId)
+            acceptedUserIdToCompanyIdAndName[userProvidedIdentifier] = datalandCompanyIdAndName
         }
 
-        val acceptedCompanyIdsSet = acceptedCompanyIds.toMutableSet()
+        val acceptedCompanyIdsSet: Set<String> = acceptedUserIdToCompanyIdAndName.values.map { it.companyId }.toSet()
+        val acceptedUserInputIdentifiers: Set<String> = acceptedUserIdToCompanyIdAndName.keys
 
-        val informationRequestList =
+        val validRequestsList =
             getInformationRequestList(
                 dataTypes = bulkDataRequest.dataTypes,
                 reportingPeriods = bulkDataRequest.reportingPeriods,
                 datalandCompanyIds = acceptedCompanyIdsSet,
             )
 
-        val alreadyExistingDatasets = metaDataController.postListOfDataMetaInfoRequests(informationRequestList)
+        val alreadyExistingDatasets = metaDataController.postListOfDataMetaInfoRequests(validRequestsList)
 
         val alreadyExistingDataSetsResponse =
-            convertToAlreadyExistingDataSetsResponse(alreadyExistingDatasets, userProvidedIdentifierToDatalandCompanyIdMapping)
+            convertToAlreadyExistingDataSetsResponse(alreadyExistingDatasets, acceptedUserIdToCompanyIdAndName)
 
-        val nonExistingDatasets = getNonexistingDataSets(informationRequestList, alreadyExistingDatasets)
+        val nonExistingDatasets = getNonexistingDataSets(validRequestsList, alreadyExistingDatasets)
 
         val acceptedDataRequestsResponse =
-            storeDataRequests(dataMetaInformationRequest = nonExistingDatasets, userProvidedIdentifierToDatalandCompanyIdMapping)
+            storeDataRequests(dataMetaInformationRequest = nonExistingDatasets, acceptedUserIdToCompanyIdAndName)
 
         if (acceptedUserInputIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         sendBulkDataRequestInternalEmailMessage(
-            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
+            bulkDataRequest, acceptedUserIdToCompanyIdAndName.values.toList(), correlationId,
         )
         return buildResponseForBulkDataRequest(acceptedDataRequestsResponse, alreadyExistingDataSetsResponse, rejectedIdentifiers)
     }
@@ -94,16 +90,16 @@ class BulkDataRequestManager(
             val entry =
                 userProvidedIdentifierToDatalandCompanyIdMapping.entries
                     .find { it.value.companyId == companyId }
-            val userProvidedId = entry?.key
+            val userProvidedCompanyId = entry?.key
             val companyName = entry?.value?.companyName
-            if (userProvidedId != null && companyName != null) {
+            if (userProvidedCompanyId != null && companyName != null) {
                 val element =
                     AlreadyExistingDataSetsResponse(
-                        userProvidedId = userProvidedId,
+                        userProvidedCompanyId = userProvidedCompanyId,
                         companyName = companyName,
                         framework = metaData.dataType.toString(),
                         reportingPeriod = metaData.reportingPeriod,
-                        datasetId = userProvidedId,
+                        datasetId = metaData.dataId,
                         datasetUrl = metaData.url,
                     )
                 alreadyExistingDataSetsResponse.add(element)
@@ -184,12 +180,12 @@ class BulkDataRequestManager(
                 if (userProvidedId != null && companyName != null) {
                     val element =
                         AcceptedDataRequestsResponse(
-                            userProvidedId = userProvidedId,
+                            userProvidedCompanyId = userProvidedId,
                             companyName = companyName,
                             framework = dataMetaInformation.dataType.toString(),
                             reportingPeriod = dataMetaInformation.reportingPeriod,
                             requestId = response.dataRequestId,
-                            requestUrl = "https://$proxyPrimaryUrl/requests/" + response.dataRequestId,
+                            requestUrl = "https://www.dataland.com/requests/" + response.dataRequestId,
                         )
                     acceptedDataRequests.add(element)
                 }

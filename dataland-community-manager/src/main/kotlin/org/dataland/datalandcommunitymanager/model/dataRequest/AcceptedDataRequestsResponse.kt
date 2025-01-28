@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class AcceptedDataRequestsResponse(
     @field:JsonProperty(required = true)
-    val userProvidedId: String,
+    val userProvidedCompanyId: String,
     @field:JsonProperty(required = true)
     val companyName: String,
     @field:JsonProperty(required = true)

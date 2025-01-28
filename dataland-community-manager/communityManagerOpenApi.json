@@ -1572,6 +1572,68 @@
           }
         }
       },
+      "AcceptedDataRequestsResponse": {
+        "required": [
+          "companyName",
+          "framework",
+          "reportingPeriod",
+          "requestId",
+          "requestUrl",
+          "userProvidedId"
+        ],
+        "type": "object",
+        "properties": {
+          "userProvidedId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "requestUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "AlreadyExistingDataSetsResponse": {
+        "required": [
+          "companyName",
+          "datasetId",
+          "datasetUrl",
+          "framework",
+          "reportingPeriod",
+          "userProvidedId"
+        ],
+        "type": "object",
+        "properties": {
+          "userProvidedId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datasetId": {
+            "type": "string"
+          },
+          "datasetUrl": {
+            "type": "string"
+          }
+        }
+      },
       "BulkDataRequestResponse": {
         "required": [
           "acceptedDataRequests",
@@ -1587,13 +1649,13 @@
           "acceptedDataRequests": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DataMetaInformation"
+              "$ref": "#/components/schemas/AcceptedDataRequestsResponse"
             }
           },
           "alreadyExistingDataRequests": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DataMetaInformation"
+              "$ref": "#/components/schemas/AlreadyExistingDataSetsResponse"
             }
           },
           "rejectedCompanyIdentifiers": {
@@ -1601,66 +1663,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "DataMetaInformation": {
-        "required": [
-          "companyId",
-          "currentlyActive",
-          "dataId",
-          "dataType",
-          "qaStatus",
-          "reportingPeriod",
-          "uploadTime",
-          "url"
-        ],
-        "type": "object",
-        "properties": {
-          "dataId": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "dataType": {
-            "type": "string",
-            "enum": [
-              "eutaxonomy-financials",
-              "eutaxonomy-non-financials",
-              "nuclear-and-gas",
-              "lksg",
-              "p2p",
-              "sfdr",
-              "vsme",
-              "esg-datenkatalog",
-              "heimathafen",
-              "additional-company-information"
-            ]
-          },
-          "uploadTime": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "currentlyActive": {
-            "type": "boolean"
-          },
-          "qaStatus": {
-            "type": "string",
-            "enum": [
-              "Pending",
-              "Accepted",
-              "Rejected"
-            ]
-          },
-          "url": {
-            "type": "string"
-          },
-          "uploaderUserId": {
-            "type": "string"
           }
         }
       },
