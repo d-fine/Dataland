@@ -85,7 +85,7 @@ class MessageQueuePublications(
         )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(DataMetaInfoPatchMessage(dataId = dataId, uploaderUserId = uploaderUserId)),
-            type = MessageType.PUBLIC_DATA_RECEIVED,
+            type = MessageType.METAINFO_UPDATED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.METAINFORMATION_PATCH,

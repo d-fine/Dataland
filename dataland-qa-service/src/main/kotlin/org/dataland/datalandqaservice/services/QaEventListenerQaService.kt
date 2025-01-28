@@ -13,6 +13,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
@@ -95,6 +96,7 @@ class QaEventListenerQaService
                         qaStatus = QaStatus.Accepted
                         comment = "Automatically QA approved."
                     }
+
                     false -> qaStatus = QaStatus.Pending
                 }
 
@@ -110,6 +112,53 @@ class QaEventListenerQaService
                 qaReviewManager.sendQaStatusUpdateMessage(
                     qaReviewEntity = qaReviewEntity, correlationId = correlationId,
                 )
+            }
+        }
+
+        /**
+         * Retrieves message from BACKEND_DATASET_EVENTS exchange that metadata of a dataset has been updated.
+         * Currently, this only happens, when the uploaderId is changed; thus the triggeringUserId for the
+         * QaReviewEntry corresponding to the upload event has to be changed accordingly
+         * @param payload the message body as a json string
+         * @param correlationId the correlation ID of the current user process
+         * @param type the type of the message
+         */
+        @RabbitListener(
+            bindings = [
+                QueueBinding(
+                    value =
+                        Queue(
+                            QueueNames.QA_SERVICE_METAINFO_UPDATE,
+                            arguments = [
+                                Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                                Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                                Argument(name = "defaultRequeueRejected", value = "false"),
+                            ],
+                        ),
+                    exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
+                    key = [RoutingKeyNames.METAINFORMATION_PATCH],
+                ),
+            ],
+        )
+        fun updateQaReviewEntry(
+            @Payload payload: String,
+            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+            @Header(MessageHeaderKey.TYPE) type: String,
+        ) {
+            MessageQueueUtils.validateMessageType(type, MessageType.METAINFO_UPDATED)
+
+            MessageQueueUtils.rejectMessageOnException {
+                val dataMetaInfoPatchMessage =
+                    MessageQueueUtils.readMessagePayload<DataMetaInfoPatchMessage>(payload, objectMapper)
+                val dataId = dataMetaInfoPatchMessage.dataId
+                MessageQueueUtils.validateDataId(dataId)
+                logger.info(
+                    "Received message to patch metainfo for data with dataId $dataId on QA message queue " +
+                        "(correlation Id: $correlationId)",
+                )
+                val triggeringUserId = requireNotNull(dataMetaInfoPatchMessage.uploaderUserId)
+
+                logger.info("QA Service successfully received message to update triggeringUserId to $triggeringUserId.")
             }
         }
 
@@ -161,7 +210,10 @@ class QaEventListenerQaService
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    messageToSend, MessageType.QA_STATUS_UPDATED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                    messageToSend,
+                    MessageType.QA_STATUS_UPDATED,
+                    correlationId,
+                    ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
                     RoutingKeyNames.DOCUMENT,
                 )
             }

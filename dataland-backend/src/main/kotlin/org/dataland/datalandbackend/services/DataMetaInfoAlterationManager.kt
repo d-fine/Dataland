@@ -66,12 +66,9 @@ class DataMetaInfoAlterationManager
             logger.info("Updating MetaInformation within StorableDataSet with dataId $dataId. CorrelationId: $correlationId.")
             this.updateStorableDataSetFromMetaInfo(storableDataSet, dataMetaInformationPatch)
 
-//        logger.info(objectMapper.writeValueAsString(storableDataSet))
-
-            dataManager.storeDataSetInTemporaryStoreAndSendUploadMessage(
+            dataManager.storeDataSetInTemporaryStoreAndSendPatchMessage(
                 dataId = dataId,
                 storableDataSet = storableDataSet,
-                bypassQa = true,
                 correlationId = correlationId,
             )
 

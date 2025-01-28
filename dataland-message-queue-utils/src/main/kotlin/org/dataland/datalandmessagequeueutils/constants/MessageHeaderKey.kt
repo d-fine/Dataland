@@ -6,4 +6,5 @@ package org.dataland.datalandmessagequeueutils.constants
 object MessageHeaderKey {
     const val TYPE = "cloudEvents:type"
     const val CORRELATION_ID = "cloudEvents:id"
+    const val ROUTING_KEY = "cloudEvents:key"
 }

@@ -133,7 +133,6 @@ class DataManager
          * @param storableDataSet The data set to store
          * @param bypassQa Whether the data set should be sent to QA or not
          * @param correlationId The correlation id of the request initiating the storing of data
-         * @param routingKey Allows to specify a routingKey for the message sent to messageQueue. By default, it's the key
          * for a dataset upload, but it can be used to specify when a dataset is merely updated.
          * @return ID of the stored data set
          */
@@ -155,9 +154,7 @@ class DataManager
          * Method to temporarily store a data set in a hash map and send a message to the storage_queue
          * @param dataId The id of the inserted data set
          * @param storableDataSet The data set to store
-         * @param bypassQa Whether the data set should be sent to QA or not
          * @param correlationId The correlation id of the request initiating the storing of data
-         * @param routingKey Allows to specify a routingKey for the message sent to messageQueue. By default, it's the key
          * for a dataset upload, but it can be used to specify when a dataset is merely updated.
          * @return ID of the stored data set
          */
