@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationRequest
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -60,6 +61,30 @@ interface MetaDataApi {
         @RequestParam reportingPeriod: String? = null,
         @RequestParam uploaderUserIds: Set<UUID>? = null,
         @RequestParam qaStatus: QaStatus? = null,
+    ): ResponseEntity<List<DataMetaInformation>>
+
+    /**
+     * A method to bulk search for meta info about data sets registered by Dataland
+     * @param dataMetaInformationRequests A list of data meta information request filters
+     * @return a list of matching DataMetaInformation
+     */
+    @Operation(
+        summary = "Search in Dataland for meta info about data using multiple filters.",
+        description = "Meta info about data sets registered by Dataland can be retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info."),
+        ],
+    )
+    @PostMapping(
+        value = ["/batch"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
+    fun postListOfDataMetaInfoRequests(
+        @RequestBody dataMetaInformationRequests: List<DataMetaInformationRequest>,
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
