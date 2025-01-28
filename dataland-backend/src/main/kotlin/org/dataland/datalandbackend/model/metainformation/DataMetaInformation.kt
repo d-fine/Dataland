@@ -52,6 +52,6 @@ data class DataMetaInformation(
         reportingPeriod = reportingPeriod,
         currentlyActive = currentlyActive,
         qaStatus = qaStatus,
-        url = "https://dataland.com/companies/$companyId/frameworks/$dataId/$dataId",
+        url = "https://dataland.com/companies/$companyId/frameworks/$dataId",
     )
 }
