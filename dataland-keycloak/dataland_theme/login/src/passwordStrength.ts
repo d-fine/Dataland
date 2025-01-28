@@ -1,14 +1,14 @@
 import { zxcvbn, zxcvbnOptions, debounce } from "@zxcvbn-ts/core";
-import zxcvbnCommonPackage from "@zxcvbn-ts/language-common";
-import zxcvbnEnPackage from "@zxcvbn-ts/language-en";
+import { adjacencyGraphs, dictionary as commonDictionary } from "@zxcvbn-ts/language-common";
+import { translations, dictionary } from "@zxcvbn-ts/language-en";
 import { InputField } from "./utils/InputField";
 
 zxcvbnOptions.setOptions({
-  translations: zxcvbnEnPackage.translations,
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  translations: translations,
+  graphs: adjacencyGraphs,
   dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
+    ...commonDictionary,
+    ...dictionary,
   },
 });
 
