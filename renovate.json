@@ -37,6 +37,15 @@
       ]
     },
     {
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "labels": [
+        "dependencies",
+        "Minor"
+      ]
+    },
+    {
       "groupName": "formkit-packages",
       "matchPackageNames": [
         "/^@formkit//"

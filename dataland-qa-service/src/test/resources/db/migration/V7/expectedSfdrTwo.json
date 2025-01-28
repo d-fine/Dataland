@@ -1,0 +1,1296 @@
+{
+  "general": null,
+  "environmental": {
+    "greenhouseGasEmissions": {
+      "scope1GhgEmissionsInTonnes": {
+        "comment": "The scope 1 CO2e emissions for Randstad N.V. in 2023 are reported as 57.0 thousand metric tons.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 57000,
+          "quality": "Reported",
+          "comment": "The scope 1 CO2e emissions for Randstad N.V. in 2023 are reported as 57.0 thousand metric tons.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "scope2GhgEmissionsInTonnes": {
+        "comment": "The relevant document states that the CO2e emissions for Scope 2 in 2023 are 1.2 thousand metric tons.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 1200,
+          "quality": "Reported",
+          "comment": "The relevant document states that the CO2e emissions for Scope 2 in 2023 are 1.2 thousand metric tons.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "scope2GhgEmissionsLocationBasedInTonnes": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope2GhgEmissionsMarketBasedInTonnes": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope1And2GhgEmissionsInTonnes": {
+        "comment": "The relevant document states that the CO2e emissions for Scope 1 and 2 combined in 2023 are 58.2 thousand metric tons.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 58200.0,
+          "quality": "Reported",
+          "comment": "The relevant document states that the CO2e emissions for Scope 1 and 2 combined in 2023 are 58.2 thousand metric tons.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "scope1And2GhgEmissionsLocationBasedInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope1And2GhgEmissionsMarketBasedInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope3GhgEmissionsInTonnes": {
+        "comment": "The relevant document states that the CO2e emissions for Scope 3 in 2023 are 174.9 thousand metric tons.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 174900,
+          "quality": "Reported",
+          "comment": "The relevant document states that the CO2e emissions for Scope 3 in 2023 are 174.9 thousand metric tons.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "scope3UpstreamGhgEmissionsInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope3DownstreamGhgEmissionsInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope1And2And3GhgEmissionsInTonnes": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 233100.0,
+          "quality": "Reported",
+          "comment": "The table specifies total GHG emissions as 233.1 thousand metric tons.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "scope1And2And3GhgEmissionsLocationBasedInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "scope4GhgEmissionsInTonnes": null,
+      "enterpriseValue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      },
+      "totalRevenue": {
+        "comment": "The total revenue for Randstad N.V. in 2023 is reported as 25,426 million Euros.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 25426000000,
+          "quality": "Reported",
+          "comment": "The total revenue for Randstad N.V. in 2023 is reported as 25,426 million Euros.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "304",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          },
+          "currency": "EUR"
+        }
+      },
+      "carbonFootprintInTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityInTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope1InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "fossilFuelSectorExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "financedScope1AndScope2Emissions": null,
+      "financedScope3Emissions": null
+    },
+    "energyPerformance": {
+      "renewableEnergyProductionInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "renewableEnergyConsumptionInGWh": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 47.5,
+          "quality": "Estimated",
+          "comment": "Converted from 171,000 GJ of sustainable electricity to GWh.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "nonRenewableEnergyProductionInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "relativeNonRenewableEnergyProductionInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionInGWh": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 0.555,
+          "quality": "Estimated",
+          "comment": "Converted from 2,000 GJ to GWh for non-renewable electricity.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "relativeNonRenewableEnergyConsumptionInPercent": {
+        "comment": "In 2023, 99% of Randstad N.V.'s electricity came from sustainable sources, implying that 1% came from non-renewable sources.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 1.16,
+          "quality": "Estimated",
+          "comment": "In 2023, 99% of Randstad N.V.'s electricity came from sustainable sources, implying that 1% came from non-renewable sources.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "applicableHighImpactClimateSectors": null,
+      "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionFossilFuelsInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionLigniteInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionCoalInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRenewableEnergyConsumptionOtherInGWh": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "biodiversity": {
+      "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "protectedAreasExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "rareOrEndangeredEcosystemsExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "highlyBiodiverseGrasslandExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "manufactureOfAgrochemicalPesticidesProducts": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "landDegradationDesertificationSoilSealingExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "sustainableAgriculturePolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "sustainableOceansAndSeasPolicy": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "threatenedSpeciesExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "biodiversityProtectionPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "deforestationPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "water": {
+      "emissionsToWaterInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "waterConsumptionInCubicMeters": {
+        "comment": "The estimated water usage in 2023 was 280,000 cubic meters.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 280000,
+          "quality": "Reported",
+          "comment": "The estimated water usage in 2023 was 280,000 cubic meters.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "waterReusedInCubicMeters": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "waterManagementPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "highWaterStressAreaExposure": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "waste": {
+      "hazardousAndRadioactiveWasteInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "nonRecycledWasteInTonnes": {
+        "comment": "The relevant document states that the waste amounted to 1,500 metric tons in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 1500,
+          "quality": "Reported",
+          "comment": "The relevant document states that the waste amounted to 1,500 metric tons in 2023.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "160",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      }
+    },
+    "emissions": {
+      "emissionsOfInorganicPollutantsInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "emissionsOfAirPollutantsInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "emissionsOfOzoneDepletionSubstancesInTonnes": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "carbonReductionInitiatives": {
+        "comment": "The document mentions that Randstad has policies and procedures for carbon emission reduction, including SBTi validation, net-zero reporting, and various initiatives such as transitioning to electric vehicles, energy efficiency in buildings, and switching to 100% renewable energy.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Randstad has several carbon reduction initiatives, including transitioning to electric vehicles, energy efficiency in buildings, and switching to 100% renewable energy.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "83",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      }
+    }
+  },
+  "social": {
+    "socialAndEmployeeMatters": {
+      "humanRightsLegalProceedings": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "iloCoreLabourStandards": {
+        "comment": "The document explicitly mentions that Randstad adheres to the principles regarding labor outlined in the ILO Declaration on Fundamental Principles and Rights at Work.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Randstad adheres to the ILO core labour standards as part of their commitment to labor rights, including freedom of association, elimination of forced labor, child labor, and discrimination.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "75",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "environmentalPolicy": {
+        "comment": "The document mentions Randstad's environmental policy, including initiatives to reduce the carbon impact of business-related travel and engagement with suppliers to enhance sustainability.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The company mentions having an environmental policy and initiatives related to reducing carbon impact, sustainable travel, and supplier engagement, but the specific policy content is not detailed.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "84",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "corruptionLegalProceedings": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "The report discusses Randstad's strong stance against bribery and corruption, their policies, and training, but does not explicitly mention any involvement in legal proceedings related to corruption.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "86",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "transparencyDisclosurePolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "humanRightsDueDiligencePolicy": {
+        "comment": "The document explicitly mentions that Randstad has a human rights policy and conducts due diligence to ensure business activities do not negatively impact human rights.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The company has a human rights due diligence policy as it mentions organizing human rights due diligence in line with their policy and preparing for upcoming legislation.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "76",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "policyAgainstChildLabour": {
+        "comment": "The document explicitly mentions that Randstad adheres to the principles regarding labor outlined in the ILO Declaration on Fundamental Principles and Rights at Work, which includes the abolition of child labor.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Randstad has a zero tolerance policy on child labor, which is included in their Human Rights policy.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "75",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "policyAgainstForcedLabour": {
+        "comment": "The document explicitly mentions that Randstad takes a zero-tolerance approach to modern slavery and does not engage in any form of forced labor.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Randstad has a zero-tolerance approach to modern slavery and forced labor, with strict standards and rules to prevent such practices.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "77",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "policyAgainstDiscriminationInTheWorkplace": {
+        "comment": "The document mentions that Randstad promotes equal treatment in the workplace and strives to give everyone the same access to employment opportunities, regardless of their background. This indicates the existence of a policy against discrimination in the workplace.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The company mentions promoting equal treatment and fostering equity at work, which implies a policy against workplace discrimination.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "77",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "iso14001Certificate": {
+        "comment": "The document explicitly mentions that Randstad N.V. has ISO 14001 certificates for environmental management in several countries, including Brazil, Germany, Italy, the Netherlands, Norway, Spain, and Sweden.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "The company holds an ISO 14001 certificate for environmental management in several countries including Brazil, Germany, Italy, Netherlands, Norway, Spain, and Sweden.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "313",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "policyAgainstBriberyAndCorruption": {
+        "comment": "The document explicitly mentions that Randstad's CEO and CFO have signed the UN's Call to Action to Governments to promote anti-corruption measures and to implement policies to establish systems of good governance, indicating the existence of a policy on anti-corruption and anti-bribery.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Randstad has policies covering anti-bribery and anti-corruption, and the CEO and CFO have signed the UN's Call to Action to promote anti-corruption measures.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "85",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "fairBusinessMarketingAdvertisingPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "technologiesExpertiseTransferPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "fairCompetitionPolicy": {
+        "comment": "The document mentions that training on competition law compliance, core values, and business principles forms an integral part of Randstad's onboarding and refresher programs. It also states that management ensures written acknowledgment of understanding and compliance, and that legal departments and competition law experts are consulted when developing new business models or concepts to ensure compliance.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Randstad has a policy on fair competition, as indicated by their training on competition law compliance and the involvement of legal departments to ensure compliance with competition regulations.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "143",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "violationOfTaxRulesAndRegulation": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "Randstad emphasizes compliance with tax rules and regulations, transparency, and alignment with OECD guidelines. However, there is no explicit mention of violations.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "94",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "unGlobalCompactPrinciplesCompliancePolicy": {
+        "comment": "The document explicitly mentions Randstad's support and respect for the protection of internationally proclaimed human rights, elimination of forced and compulsory labor, refraining from child labor, elimination of discrimination in employment, and other principles aligned with the UN Global Compact principles.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "Randstad supports and respects the protection of internationally proclaimed human rights, upholds freedom of association, eliminates forced labor, refrains from child labor, eliminates discrimination, supports environmental challenges, promotes environmental responsibility, encourages environmentally friendly technologies, and disputes corruption.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "310",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+        "comment": "The document mentions that Randstad has a misconduct reporting procedure that aligns with the requirements of the EU Whistleblower Directive and allows for the reporting of serious misconduct, including breaches of human rights, bribery, competition issues, and unethical or unlawful behavior in tax-related matters. This indicates the existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The document explicitly mentions that Randstad has a misconduct reporting procedure that aligns with the requirements of the EU Whistleblower Directive and allows for the reporting of serious misconduct, including breaches of human rights, bribery, competition issues, and unethical or unlawful behavior in tax-related matters which follow OECD guidelines.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "86",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "averageGrossHourlyEarningsMaleEmployees": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      },
+      "averageGrossHourlyEarningsFemaleEmployees": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      },
+      "unadjustedGenderPayGapInPercent": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "femaleBoardMembersSupervisoryBoard": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 3,
+          "quality": "Reported",
+          "comment": "The report lists three women as supervisory board members",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "186",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "femaleBoardMembersBoardOfDirectors": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 1,
+          "quality": "Reported",
+          "comment": "The reports lists one woman as part of the executive board which corresponds to the Board of Directors.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "186",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "maleBoardMembersSupervisoryBoard": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 4,
+          "quality": "Reported",
+          "comment": "The report lists four men as supervisory board members.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "186",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "maleBoardMembersBoardOfDirectors": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 3,
+          "quality": "Reported",
+          "comment": "The reports lists three men as part of the executive board which corresponds to the Board of Directors.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "186",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "boardGenderDiversitySupervisoryBoardInPercent": {
+        "comment": "The relevant document states that 43% of the members of the Supervisory Board are women in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 43,
+          "quality": "Reported",
+          "comment": "The relevant document states that 43% of the members of the Supervisory Board are women in 2023.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "180",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "boardGenderDiversityBoardOfDirectorsInPercent": {
+        "comment": "The relevant document states that 25% of the members of the Executive Board are women in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 25,
+          "quality": "Reported",
+          "comment": "The relevant document states that 25% of the members of the Executive Board are women in 2023.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "180",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "controversialWeaponsExposure": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "workplaceAccidentPreventionPolicy": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "The report mentions tracking work-related accidents and incidents, and sharing guidance and best practices for health and safety, but does not provide a specific workplace accident prevention policy.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "55",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "rateOfAccidents": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "workdaysLostInDays": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "supplierCodeOfConduct": {
+        "comment": "The document mentions that 43% of procurement expenditure was covered by Randstad's supplier code in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The report mentions that 43% of procurement expenditure was covered by their supplier code, indicating the existence of a supplier code of conduct.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "85",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "grievanceHandlingMechanism": {
+        "comment": "The document explicitly mentions that Randstad has a misconduct reporting procedure that aligns with the requirements of the EU Whistleblower Directive, allowing employees and other stakeholders to report concerns, including breaches of human rights, bribery, competition issues, discrimination, harassment, and unethical or unlawful behavior.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Randstad has a comprehensive grievance handling mechanism, including a misconduct reporting procedure aligned with the EU Whistleblower Directive, accessible to all stakeholders, and an integrity line operated by an independent provider.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "86",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "whistleblowerProtectionPolicy": {
+        "comment": "The document explicitly mentions that Randstad has a misconduct reporting procedure that aligns with the requirements of the EU Whistleblower Directive, ensuring the protection of whistleblowers.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Randstad has a whistleblower protection policy that aligns with the EU Whistleblower Directive, ensuring confidentiality, privacy, data protection, and protection against retaliation for those reporting misconduct.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "86",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "reportedIncidentsOfDiscrimination": {
+        "comment": "The relevant document states that there were 5 proven complaints related to discrimination in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 5,
+          "quality": "Reported",
+          "comment": "The relevant document states that there were 5 proven complaints related to discrimination in 2023.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "168",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "sanctionedIncidentsOfDiscrimination": {
+        "comment": "The relevant document states that there were 5 proven complaints related to discrimination in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 5,
+          "quality": "Estimated",
+          "comment": "The relevant document states that there were 5 proven complaints related to discrimination in 2023.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "168",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "excessiveCeoPayRatio": {
+        "comment": "The internal pay ratio between the average pay of Randstad employees and the CEO in 2023 is 40:1.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": 40.0,
+          "quality": "Reported",
+          "comment": "The internal pay ratio between the average pay of Randstad employees and the CEO in 2023 is 40:1.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "205",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      }
+    },
+    "greenSecurities": {
+      "securitiesNotCertifiedAsGreen": {
+        "comment": "No QA is attempted for Data Quality NoDataFound",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "humanRights": {
+      "humanRightsPolicy": {
+        "comment": "The document explicitly mentions that Randstad has a human rights policy, which was updated in 2021 and further progressed in 2023.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Reported",
+          "comment": "Randstad has a human rights policy updated in 2021, outlining principles for employees and stakeholders, covering issues like non-discrimination, health and safety, and labor rights. The policy includes a due-diligence process and initiatives for awareness and training.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "76",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "humanRightsDueDiligence": {
+        "comment": "The document explicitly mentions that Randstad has a human rights policy and conducts due diligence to ensure business activities do not negatively impact human rights. It also mentions progress in organizing human rights due diligence in line with their policy.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The company has a human rights due diligence process in place, as indicated by their commitment to protecting vulnerable groups and addressing salient human rights risks through capacity building and stakeholder dialogues.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "76",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "traffickingInHumanBeingsPolicy": {
+        "comment": "The document mentions that Randstad's human rights policy includes principles such as protection against modern slavery, which encompasses trafficking in human beings.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "The company updated its human rights policy in 2021, which includes principles against modern slavery, indicating a policy against trafficking in human beings.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "76",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "reportedChildLabourIncidents": {
+        "comment": "",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "reportedForcedOrCompulsoryLabourIncidents": {
+        "comment": "The document explicitly mentions that Randstad takes a zero-tolerance approach to modern slavery and does not engage in any form of forced labor, including human trafficking.",
+        "verdict": "QaAccepted",
+        "correctedData": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "The report states a zero-tolerance approach to modern slavery and forced labor, indicating that no such incidents are tolerated or reported.",
+          "dataSource": {
+            "fileReference": "d163dfc8de26ca04c438e891a66a8e658f620f9c4490224da10a2c01d27102f4",
+            "page": "77",
+            "tagName": "",
+            "fileName": "RandstadNV-7245009EAAUUQJ0U4T57-2023-annual_report"
+          }
+        }
+      },
+      "numberOfReportedIncidentsOfHumanRightsViolations": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      }
+    },
+    "antiCorruptionAndAntiBribery": {
+      "casesOfInsufficientActionAgainstBriberyAndCorruption": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "reportedConvictionsOfBriberyAndCorruption": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+        "comment": "",
+        "verdict": "QaNotAttempted",
+        "correctedData": {
+          "value": null,
+          "quality": null,
+          "comment": null,
+          "dataSource": null,
+          "currency": null
+        }
+      }
+    }
+  }
+}

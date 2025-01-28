@@ -40,17 +40,17 @@ class ReferencedReportsUtilities(
         }
         val referencedReports = objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
         val observedFileReferences = mutableSetOf<String>()
-        for ((key, companyReport) in referencedReports.entries) {
+        for ((nameAccordingToKey, companyReport) in referencedReports.entries) {
             if (companyReport.fileReference in observedFileReferences) {
                 throw InvalidInputApiException(
-                    "Inconsistent reference reports field",
+                    "Inconsistent reference reports field.",
                     "The file reference ${companyReport.fileReference} is used multiple times.",
                 )
             }
-            if (companyReport.fileName != key) {
+            if (companyReport.fileName != null && companyReport.fileName != nameAccordingToKey) {
                 throw InvalidInputApiException(
-                    "Inconsistent reference reports field",
-                    "The file name ${companyReport.fileName} does not match the dictionary key $key.",
+                    "Inconsistent reference reports field.",
+                    "The file name ${companyReport.fileName} does not match the dictionary key $nameAccordingToKey.",
                 )
             }
             observedFileReferences.add(companyReport.fileReference)
@@ -77,7 +77,7 @@ class ReferencedReportsUtilities(
                     "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
                         "but the publication date listed in the referenced reports is '${matchingReport.publicationDate}'.",
                 )
-            } else if (report.fileName != null && report.fileName != matchingReport.fileName) {
+            } else if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
                 InvalidInputApiException(
                     "Inconsistent file name",
                     "The file name of the report '${report.fileName}' is not consistent " +

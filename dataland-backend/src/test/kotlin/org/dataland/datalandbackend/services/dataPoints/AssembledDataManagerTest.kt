@@ -50,7 +50,7 @@ class AssembledDataManagerTest {
     private val specificationClient = mock(SpecificationControllerApi::class.java)
     private val datasetDatapointRepository = mock(DatasetDatapointRepository::class.java)
 
-    private val frameworkSpecificationFile = "./json/frameworkTemplate/frameworkSpecification.json"
+    private val inputFrameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
     private val inputData = "./json/frameworkTemplate/frameworkWithReferencedReports.json"
     private val currencyDataPoint = "./json/frameworkTemplate/currencyDataPointWithExtendedDocumentReference.json"
 
@@ -70,12 +70,12 @@ class AssembledDataManagerTest {
 
     private val correlationId = "test-correlation-id"
     private val uploaderUserId = "test-user-id"
-    private val reportingPeriod = "test-period"
+    private val reportingPeriod = "2022"
     private val companyId = "test-company-id"
     private val datasetId = "test-dataset-id"
     private val dataPointType = "extendedEnumFiscalYearDeviation"
     private val dataPointId = "test-data-point-1"
-    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(frameworkSpecificationFile)
+    private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
     private val framework = "sfdr"
     private val dataDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
 
@@ -102,6 +102,8 @@ class AssembledDataManagerTest {
         TransactionSynchronizationManager.initSynchronization()
         val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
+
+        `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
 
         val uploadedDataset =
             StorableDataset(
@@ -207,5 +209,11 @@ class AssembledDataManagerTest {
                 reportingPeriod = reportingPeriod,
             )
         }
+
+        val assembledDataset = assembledDataManager.getDatasetData(datasetId, "sfdr", correlationId)
+        dataPoints.forEach {
+            assert(assembledDataset.contains(it))
+        }
+        assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 }
