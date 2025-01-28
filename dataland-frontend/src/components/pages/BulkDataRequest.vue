@@ -54,95 +54,16 @@
                     />
                   </div>
                 </div>
-
-                <div class="col-8 col-offset-2 bg-white mt-4">
-                  <h1 class="middle-center-div">Data Request Summary</h1>
-                  <div class="summary-section border-bottom py-4">
-                    <div class="summary-wrapper">
-                      <div class="grid col-6">
-                        <div class="col">
-                          <h6 class="middle-center-div summary-section-heading m-0">
-                            {{ summarySectionReportingPeriodsHeading }}
-                          </h6>
-                          <p class="middle-center-div summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
-                        </div>
-                        <div class="col">
-                          <h6 class="middle-center-div summary-section-heading m-0">
-                            {{ summarySectionFrameworksHeading }}
-                          </h6>
-                          <p class="middle-center-div summary-section-data m-0 mt-3">
-                            {{ humanizedSelectedFrameworks.join(', ') }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="summary-section border-bottom py-4">
-                    <Accordion>
-                      <AccordionTab>
-                        <template #header>
-                          <span class="flex align-items-center gap-2 w-full">
-                            <em class="material-icons info-icon green-text">check_circle</em>
-                            <span class="summary-section-heading">CREATED REQUESTS</span>
-                            <Badge :value="createdRequests.length" class="ml-auto mr-2" />
-                          </span>
-                        </template>
-                        <template v-for="entry in createdRequests" :key="entry">
-                          <div class="grid-container align-items-center">
-                            <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
-                            <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
-                            <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-                            <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
-                          </div>
-                        </template>
-                      </AccordionTab>
-                    </Accordion>
-                  </div>
-                  <div class="summary-section border-bottom py-4">
-                    <Accordion :active-index="0">
-                      <AccordionTab>
-                        <template #header>
-                          <span class="flex align-items-center gap-2 w-full">
-                            <em class="material-icons info-icon new-color">info</em>
-                            <span class="summary-section-heading">SKIPPED REQUESTS (data already exists)</span>
-                            <Badge :value="notCreatedRequests.length" class="ml-auto mr-2" />
-                          </span>
-                        </template>
-                        <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
-                          If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single
-                          data request on the corresponding dataset page.
-                        </div>
-                        <template v-for="entry in notCreatedRequests" :key="entry">
-                          <div class="grid-container align-items-center">
-                            <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
-                            <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
-                            <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-                            <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
-                            <a :href="entry.url" target="_blank" class="col bold-text new-color">View Data</a>
-                          </div>
-                        </template>
-                      </AccordionTab>
-                    </Accordion>
-                  </div>
-                  <div class="summary-section border-bottom py-4">
-                    <Accordion>
-                      <AccordionTab>
-                        <template #header>
-                          <span class="flex align-items-center gap-2 w-full">
-                            <em class="material-icons info-icon red-text">error</em>
-                            <span class="summary-section-heading">REJECTED IDENTIFIERS</span>
-                            <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
-                          </span>
-                        </template>
-                        <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
-                          <div class="grid-container align-items-center">
-                            <div class="col bold-text middle-center-div">{{ entry }}</div>
-                          </div>
-                        </template>
-                      </AccordionTab>
-                    </Accordion>
-                  </div>
-                </div>
+                <BulkDataRequestSummary
+                    :humanized-reporting-periods="humanizedReportingPeriods"
+                    :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
+                    :humanized-selected-frameworks="humanizedSelectedFrameworks"
+                    :summary-section-frameworks-heading="summarySectionFrameworksHeading"
+                    :rejected-company-identifiers="rejectedCompanyIdentifiers"
+                    :created-requests="createdRequests"
+                    :not-created-requests="notCreatedRequests"
+                    :rejectedCompanyIdentifiers="rejectedCompanyIdentifiers"
+                />
               </template>
             </template>
             <template v-else>
@@ -265,10 +186,12 @@ import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue'
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
 import { type ExistingDataResponse } from '@/utils/RequestUtils.ts';
+import BulkDataRequestSummary from "@/components/pages/BulkDataRequestSummary.vue";
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
+    BulkDataRequestSummary,
     Accordion,
     AccordionTab,
     Badge,
