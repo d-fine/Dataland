@@ -94,6 +94,13 @@ class DataPointQaReviewManager
             }
         }
 
+        /**
+         * Checks if the QA service knows the dataId
+         */
+        @Transactional
+        fun checkIfQaServiceKnowsDataId(dataId: String): Boolean =
+            dataPointQaReviewRepository.findFirstByDataPointIdOrderByTimestampDesc(dataId) != null
+
         private fun saveDataPointQaReviewEntity(
             dataId: String,
             qaStatus: QaStatus,

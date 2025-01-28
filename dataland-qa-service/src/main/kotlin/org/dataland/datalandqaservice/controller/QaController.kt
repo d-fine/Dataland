@@ -1,6 +1,7 @@
 package org.dataland.datalandqaservice.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
@@ -65,6 +66,13 @@ class QaController(
         comment: String?,
         overwriteDataPointQaStatus: Boolean,
     ) {
+        if (!qaReviewManager.checkIfQaServiceKnowsDataId(dataId)) {
+            throw ResourceNotFoundApiException(
+                "Data ID not known to QA service",
+                "Dataland does not know the data id $dataId",
+            )
+        }
+
         val correlationId = randomUUID().toString()
         val reviewerId = DatalandAuthentication.fromContext().userId
         logger.info(
@@ -126,6 +134,12 @@ class QaController(
         qaStatus: QaStatus,
         comment: String?,
     ) {
+        if (!dataPointQaReviewManager.checkIfQaServiceKnowsDataId(dataId)) {
+            throw ResourceNotFoundApiException(
+                "Data ID not known to QA service",
+                "Dataland does not know the data id $dataId",
+            )
+        }
         val correlationId = randomUUID().toString()
         val reviewerId = DatalandAuthentication.fromContext().userId
         logger.info(

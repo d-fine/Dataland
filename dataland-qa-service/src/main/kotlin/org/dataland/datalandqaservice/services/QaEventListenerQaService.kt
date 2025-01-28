@@ -90,18 +90,20 @@ class QaEventListenerQaService
                 val dataId = dataUploadedPayload.dataId
                 MessageQueueUtils.validateDataId(dataId)
                 val bypassQa: Boolean = dataUploadedPayload.bypassQa
-                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
-                val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
-                val qaStatus: QaStatus
-                var comment: String? = null
 
-                when (bypassQa) {
-                    true -> {
-                        qaStatus = QaStatus.Accepted
-                        comment = "Automatically QA approved."
-                    }
-                    false -> qaStatus = QaStatus.Pending
+                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
+                if (qaReviewManager.checkIfQaServiceKnowsDataId(dataId)) {
+                    logger.info("QA Service already knows dataId $dataId, skipping QA review creation (correlation Id: $correlationId)")
+                    return@rejectMessageOnException
                 }
+
+                val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
+
+                val (qaStatus, comment) =
+                    when (bypassQa) {
+                        true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
+                        false -> Pair(QaStatus.Pending, null)
+                    }
 
                 val qaReviewEntity =
                     qaReviewManager.saveQaReviewEntity(
@@ -284,6 +286,13 @@ class QaEventListenerQaService
                         "initial QA status ${dataUploadedPayload.initialQaStatus} and message " +
                         "${dataUploadedPayload.initialQaComment} (correlation Id: $correlationId)",
                 )
+                if (dataPointQaReviewManager.checkIfQaServiceKnowsDataId(dataUploadedPayload.dataId)) {
+                    logger.info(
+                        "QA Service already knows dataId ${dataUploadedPayload.dataId}, " +
+                            "skipping QA review creation (correlation Id: $correlationId)",
+                    )
+                    return@rejectMessageOnException
+                }
 
                 saveQaReviewEntityFromMessage(dataUploadedPayload, correlationId)
             }

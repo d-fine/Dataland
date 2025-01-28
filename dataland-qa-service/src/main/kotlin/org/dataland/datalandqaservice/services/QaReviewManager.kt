@@ -140,6 +140,12 @@ class QaReviewManager(
     }
 
     /**
+     * Checks if the QA service knows the dataId
+     */
+    @Transactional
+    fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId) != null
+
+    /**
      * Send the information that the QA status was updated to the message queue
      * @param qaReviewEntity qaReviewEntity for which to send the QaStatusChangeMessage
      * @param correlationId the ID for the process triggering the change

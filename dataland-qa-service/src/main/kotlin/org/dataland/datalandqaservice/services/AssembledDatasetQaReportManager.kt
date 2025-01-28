@@ -121,25 +121,26 @@ class AssembledDatasetQaReportManager
                 ) as ObjectNode
             return specification
         }
-    /**
-     * Splits a QA report into data points and their associated data IDs
-     */
-    fun <QaReportType> splitQaReportIntoDataPoints(
-        dataType: String,
-        dataId: String,
-        report: QaReportType,
-    ): Pair<Map<String, String>, Map<String, JsonSpecificationLeaf>> {
-        val specification = getFrameworkSpecification(dataType)
 
-        val associatedDataPoints =
-            dataPointCompositionService.getCompositionOfDataset(dataId)
-                ?: throw IllegalStateException("The dataset with id $dataId is not a composition of data points")
-        val decomposedQaReport =
-            JsonSpecificationUtils.dehydrateJsonSpecification(
-                specification, objectMapper.valueToTree(report),
-            )
-        return Pair(associatedDataPoints, decomposedQaReport)
-    }
+        /**
+         * Splits a QA report into data points and their associated data IDs
+         */
+        fun <QaReportType> splitQaReportIntoDataPoints(
+            dataType: String,
+            dataId: String,
+            report: QaReportType,
+        ): Pair<Map<String, String>, Map<String, JsonSpecificationLeaf>> {
+            val specification = getFrameworkSpecification(dataType)
+
+            val associatedDataPoints =
+                dataPointCompositionService.getCompositionOfDataset(dataId)
+                    ?: throw IllegalStateException("The dataset with id $dataId is not a composition of data points")
+            val decomposedQaReport =
+                JsonSpecificationUtils.dehydrateJsonSpecification(
+                    specification, objectMapper.valueToTree(report),
+                )
+            return Pair(associatedDataPoints, decomposedQaReport)
+        }
 
         @Transactional
         override fun setQaReportStatusInt(
