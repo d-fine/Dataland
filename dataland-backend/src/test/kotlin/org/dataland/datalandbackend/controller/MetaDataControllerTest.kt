@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationRequest
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -26,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -94,6 +96,50 @@ internal class MetaDataControllerTest(
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
+    }
+
+    @Test
+    fun `check if DataMetaInformationRequest is correctly transformed into DataMetaInformation`() {
+        val dataId = "data-id-for-testing-postListOfDataMetaInfoRequests"
+        val dataType = DataType.of(SfdrData::class.java)
+        val reportingPeriod = "2022"
+        val uploaderUserId = UUID.randomUUID()
+        val qaStatus = QaStatus.Accepted
+        val testCompanyInformation =
+            testDataProvider.getCompanyInformationWithoutIdentifiers(1).last()
+        val storedCompany = companyManager.addCompany(testCompanyInformation)
+        val companyId = storedCompany.companyId
+        val url = "https://dataland.com/companies/$companyId/frameworks/$dataId"
+        val amountStoredDataMetaInfos = 1
+        val dataMetaInformationRequest =
+            DataMetaInformationRequest(
+                companyId, dataType, true,
+                reportingPeriod, setOf(uploaderUserId), qaStatus,
+            )
+        dataMetaInformationManager.storeDataMetaInformation(
+            DataMetaInformationEntity(
+                dataId, company = storedCompany,
+                dataType.toString(),
+                uploaderUserId.toString(),
+                uploadTime = 0, reportingPeriod, currentlyActive = true,
+                qaStatus,
+            ),
+        )
+
+        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        val listDataMetaInfos =
+            metaDataController.postListOfDataMetaInfoRequests(listOf(dataMetaInformationRequest)).body
+
+        assertEquals(amountStoredDataMetaInfos, listDataMetaInfos?.size)
+        val dataMetaInfo = listDataMetaInfos?.get(0)
+        if (dataMetaInfo != null) {
+            assertEquals(companyId, dataMetaInfo.companyId)
+            assertEquals(dataType, dataMetaInfo.dataType)
+            assertEquals(qaStatus, dataMetaInfo.qaStatus)
+            assertTrue(dataMetaInfo.currentlyActive)
+            assertEquals(uploaderUserId.toString(), dataMetaInfo.uploaderUserId)
+            assertEquals(url, dataMetaInfo.url)
+        }
     }
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {
