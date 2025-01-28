@@ -49,8 +49,9 @@ class AssembledDatasetQaReportManager
         ): QaReportMetaInformation {
             val correlationId = generateUUID()
 
-        datalandBackendAccessor.ensureDatalandDataExists(dataId, dataType)
-        val dataPointQaReportIds = dehydrateAndSaveDataPointQaReports(dataType, dataId, report, reporterUserId, uploadTime, correlationId)
+            datalandBackendAccessor.ensureDatalandDataExists(dataId, dataType)
+            val dataPointQaReportIds =
+                dehydrateAndSaveDataPointQaReports(dataType, dataId, report, reporterUserId, uploadTime, correlationId)
 
             qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
             val savedEntity =

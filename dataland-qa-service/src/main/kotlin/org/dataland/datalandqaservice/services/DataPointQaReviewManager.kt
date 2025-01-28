@@ -57,50 +57,50 @@ class DataPointQaReviewManager
         }
 
         /**
-     * Review an assembled dataset and change the QA status of the contained data points depending on [overwriteDataPointQaStatus]
-     * @param dataId dataId of dataset of which to change qaStatus
-     * @param qaStatus new qaStatus to be set
-     * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
-     * @param correlationId the ID for the process triggering the change
-     * @param overwriteDataPointQaStatus if true: the QA status of all data points in the dataset will be overwritten,
-     * if false: only data points with QA status 'Pending' will be updated
-     */
-    @Transactional
-    fun reviewAssembledDataset(
-        dataId: String,
-        qaStatus: QaStatus,
-        triggeringUserId: String,
-        comment: String?,
-        correlationId: String,
-        overwriteDataPointQaStatus: Boolean,
-    ) {
-        val composition = compositionService.getCompositionOfDataset(dataId) ?: return
-        val allDataIds = composition.values.toList()
+         * Review an assembled dataset and change the QA status of the contained data points depending on [overwriteDataPointQaStatus]
+         * @param dataId dataId of dataset of which to change qaStatus
+         * @param qaStatus new qaStatus to be set
+         * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
+         * @param correlationId the ID for the process triggering the change
+         * @param overwriteDataPointQaStatus if true: the QA status of all data points in the dataset will be overwritten,
+         * if false: only data points with QA status 'Pending' will be updated
+         */
+        @Transactional
+        fun reviewAssembledDataset(
+            dataId: String,
+            qaStatus: QaStatus,
+            triggeringUserId: String,
+            comment: String?,
+            correlationId: String,
+            overwriteDataPointQaStatus: Boolean,
+        ) {
+            val composition = compositionService.getCompositionOfDataset(dataId) ?: return
+            val allDataIds = composition.values.toList()
 
-        if (overwriteDataPointQaStatus) {
-            allDataIds.forEach {
-                reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)
-            }
-        } else {
-            val qaStatusOfAllDataIds =
-                dataPointQaReviewRepository.findLatestWhereDataPointIdIn(allDataIds).associate { it.dataPointId to it.qaStatus }
-            allDataIds.forEach {
-                if (it !in qaStatusOfAllDataIds || qaStatusOfAllDataIds[it] == QaStatus.Pending) {
+            if (overwriteDataPointQaStatus) {
+                allDataIds.forEach {
                     reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)
+                }
+            } else {
+                val qaStatusOfAllDataIds =
+                    dataPointQaReviewRepository.findLatestWhereDataPointIdIn(allDataIds).associate { it.dataPointId to it.qaStatus }
+                allDataIds.forEach {
+                    if (it !in qaStatusOfAllDataIds || qaStatusOfAllDataIds[it] == QaStatus.Pending) {
+                        reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)
+                    }
                 }
             }
         }
-    }
 
-    private fun saveDataPointQaReviewEntity(
-        dataId: String,
-        qaStatus: QaStatus,
-        triggeringUserId: String,
-        comment: String?,
-        correlationId: String,
-    ): DataPointQaReviewEntity {
-        val dataMetaInfo = dataPointControllerApi.getDataPointMetaInfo(dataId)
-        val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
+        private fun saveDataPointQaReviewEntity(
+            dataId: String,
+            qaStatus: QaStatus,
+            triggeringUserId: String,
+            comment: String?,
+            correlationId: String,
+        ): DataPointQaReviewEntity {
+            val dataMetaInfo = dataPointControllerApi.getDataPointMetaInfo(dataId)
+            val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
             logger.info("Assigning quality status $qaStatus to data point with ID $dataId (correlationID: $correlationId)")
 
