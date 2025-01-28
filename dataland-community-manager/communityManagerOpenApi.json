@@ -1574,7 +1574,8 @@
       },
       "BulkDataRequestResponse": {
         "required": [
-          "acceptedCompanyIdentifiers",
+          "acceptedDataRequests",
+          "alreadyExistingDataRequests",
           "message",
           "rejectedCompanyIdentifiers"
         ],
@@ -1583,10 +1584,16 @@
           "message": {
             "type": "string"
           },
-          "acceptedCompanyIdentifiers": {
+          "acceptedDataRequests": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/DataMetaInformation"
+            }
+          },
+          "alreadyExistingDataRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataMetaInformation"
             }
           },
           "rejectedCompanyIdentifiers": {
@@ -1594,6 +1601,66 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "DataMetaInformation": {
+        "required": [
+          "companyId",
+          "currentlyActive",
+          "dataId",
+          "dataType",
+          "qaStatus",
+          "reportingPeriod",
+          "uploadTime",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "dataId": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string",
+            "enum": [
+              "eutaxonomy-financials",
+              "eutaxonomy-non-financials",
+              "nuclear-and-gas",
+              "lksg",
+              "p2p",
+              "sfdr",
+              "vsme",
+              "esg-datenkatalog",
+              "heimathafen",
+              "additional-company-information"
+            ]
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "currentlyActive": {
+            "type": "boolean"
+          },
+          "qaStatus": {
+            "type": "string",
+            "enum": [
+              "Pending",
+              "Accepted",
+              "Rejected"
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "uploaderUserId": {
+            "type": "string"
           }
         }
       },

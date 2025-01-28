@@ -6090,7 +6090,8 @@
           "dataType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime"
+          "uploadTime",
+          "url"
         ],
         "type": "object",
         "properties": {
@@ -6132,6 +6133,9 @@
               "Accepted",
               "Rejected"
             ]
+          },
+          "url": {
+            "type": "string"
           },
           "uploaderUserId": {
             "type": "string"
