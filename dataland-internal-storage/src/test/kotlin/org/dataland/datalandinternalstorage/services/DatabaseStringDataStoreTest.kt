@@ -144,7 +144,7 @@ class DatabaseStringDataStoreTest {
         Assertions.assertEquals(
             exceptionThrown.message,
             "Message was rejected: Routing Key '$unknownRoutingKey' unknown. " +
-                    "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
+                "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
         )
         verify(mockTemporarilyCachedDataControllerApi, times(0)).getReceivedPublicData(dataId)
     }

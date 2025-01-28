@@ -41,8 +41,20 @@ class QaReviewManager(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    /**
+     * Add a new qa review entry corresponding to a data set event (upload, qa status change, etc) to the qa review
+     * history
+     * @param dataId identifier of the dataset
+     * @param bypassQa whether to bypass the qa process or not; if true, qa status of dataset is automatically set to
+     * Accepted
+     * @param correlationId
+     */
     @Transactional
-    fun addDatasetToQaReviewRepository(dataId: String, bypassQa: Boolean, correlationId: String) {
+    fun addDatasetToQaReviewRepository(
+        dataId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+    ) {
         logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
         val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
         val qaStatus: QaStatus
@@ -57,13 +69,14 @@ class QaReviewManager(
             false -> qaStatus = QaStatus.Pending
         }
 
-        val qaReviewEntity = saveQaReviewEntity(
-            dataId = dataId,
-            qaStatus = qaStatus,
-            triggeringUserId = triggeringUserId,
-            comment = comment,
-            correlationId = correlationId,
-        )
+        val qaReviewEntity =
+            saveQaReviewEntity(
+                dataId = dataId,
+                qaStatus = qaStatus,
+                triggeringUserId = triggeringUserId,
+                comment = comment,
+                correlationId = correlationId,
+            )
 
         this.sendQaStatusUpdateMessage(
             qaReviewEntity = qaReviewEntity, correlationId = correlationId,
@@ -142,16 +155,22 @@ class QaReviewManager(
      * @param correlationId
      */
     @Transactional
-    fun patchUploaderUserIdInQaReviewEntry(dataId: String, uploaderUserId: String, correlationId: String) {
+    fun patchUploaderUserIdInQaReviewEntry(
+        dataId: String,
+        uploaderUserId: String,
+        correlationId: String,
+    ) {
         logger.info("Received message to patch uploaderUserId for dataset with dataId $dataId (correlationId: $correlationId).")
         val qaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
 
         requireNotNull(qaReviewEntity)
         require(qaReviewEntity.qaStatus == QaStatus.Pending)
 
-        logger.info("Updating triggeringUserId for first qa review entry for dataset with dataId $dataId$. " +
+        logger.info(
+            "Updating triggeringUserId for first qa review entry for dataset with dataId $dataId$. " +
                 "Old triggeringUserId was ${qaReviewEntity.triggeringUserId}, new triggeringUserId is $uploaderUserId " +
-                "(correlationId: $correlationId).")
+                "(correlationId: $correlationId).",
+        )
 
         qaReviewEntity.triggeringUserId = uploaderUserId
     }
@@ -207,7 +226,7 @@ class QaReviewManager(
                 getDataIdOfCurrentlyActiveDataset(
                     qaReviewEntity.companyId,
                     qaReviewEntity.framework,
-                    qaReviewEntity.reportingPeriod
+                    qaReviewEntity.reportingPeriod,
                 )
             }
 
@@ -255,7 +274,7 @@ class QaReviewManager(
     ): String? {
         logger.info(
             "Searching for currently active dataset for company $companyId, " +
-                    "dataType $dataType, and reportingPeriod $reportingPeriod",
+                "dataType $dataType, and reportingPeriod $reportingPeriod",
         )
         val searchFilter =
             QaSearchFilter(

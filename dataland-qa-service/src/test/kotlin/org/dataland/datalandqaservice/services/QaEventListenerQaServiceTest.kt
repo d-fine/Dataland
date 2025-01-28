@@ -5,33 +5,19 @@ import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.StoredCompany
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
-import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageType
-import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
-import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandqaservice.DatalandQaService
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.repositories.QaReviewRepository
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
-import org.springframework.amqp.AmqpException
-import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import java.util.UUID
 
 @Transactional
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)

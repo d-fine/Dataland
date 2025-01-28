@@ -5,4 +5,4 @@ package org.dataland.datalandmessagequeueutils.messages.data
  */
 data class DataIdPayload(
     override val dataId: String,
-): DataPayload
+) : DataPayload

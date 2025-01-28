@@ -21,15 +21,14 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.nullable
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock as ktmock
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.UUID
+import org.mockito.kotlin.mock as ktmock
 
 class QaReviewManagerTest {
     private val mockQaReviewRepository: QaReviewRepository = mock(QaReviewRepository::class.java)
@@ -38,25 +37,29 @@ class QaReviewManagerTest {
     private val mockCloudEventMessageHandler: CloudEventMessageHandler = ktmock<CloudEventMessageHandler>()
     private val mockExceptionForwarder: ExceptionForwarder = ktmock<ExceptionForwarder>()
 
-    private val mockCompanyInformation = ktmock<CompanyInformation> {
-        on { companyName } doReturn "dummyCompanyName"
-    }
-    private val mockStoredCompany = ktmock<StoredCompany> {
-        on { companyInformation } doReturn mockCompanyInformation
-    }
+    private val mockCompanyInformation =
+        ktmock<CompanyInformation> {
+            on { companyName } doReturn "dummyCompanyName"
+        }
+    private val mockStoredCompany =
+        ktmock<StoredCompany> {
+            on { companyInformation } doReturn mockCompanyInformation
+        }
     private val dummyUploaderId = "dummyUploaderId"
-    private val mockDataMetaInformation = ktmock<DataMetaInformation> {
-        on { uploaderUserId } doReturn dummyUploaderId
-        on { companyId } doReturn "dummyCompanyId"
-        on { dataType } doReturn DataTypeEnum.sfdr
-        on { reportingPeriod } doReturn "dummyReportingPeriod"
-    }
+    private val mockDataMetaInformation =
+        ktmock<DataMetaInformation> {
+            on { uploaderUserId } doReturn dummyUploaderId
+            on { companyId } doReturn "dummyCompanyId"
+            on { dataType } doReturn DataTypeEnum.sfdr
+            on { reportingPeriod } doReturn "dummyReportingPeriod"
+        }
     private val dummyDataId: String = UUID.randomUUID().toString()
     private val correlationId: String = "correlationId"
     private val bypassQaComment = "Automatically QA approved."
     private val objectMapper = jacksonObjectMapper()
 
     private lateinit var qaReviewManager: QaReviewManager
+    private lateinit var spyQaReviewManager: QaReviewManager
 
     @BeforeEach
     fun setup() {
@@ -65,7 +68,7 @@ class QaReviewManagerTest {
             mockCompanyDataControllerApi,
             mockMetaDataControllerApi,
             mockCloudEventMessageHandler,
-            mockExceptionForwarder
+            mockExceptionForwarder,
         )
         qaReviewManager = QaReviewManager(
             mockQaReviewRepository,
@@ -75,6 +78,11 @@ class QaReviewManagerTest {
             objectMapper,
             mockExceptionForwarder,
         )
+        spyQaReviewManager = spy(qaReviewManager)
+
+        doReturn(ktmock<QaReviewEntity>()).whenever(spyQaReviewManager)
+            .saveQaReviewEntity(any(), any(), any(), nullable(String::class.java), any())
+        doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(ktmock<QaReviewEntity>(), correlationId)
 
         `when`(mockMetaDataControllerApi.getDataMetaInfo(any())).thenReturn(mockDataMetaInformation)
         `when`(mockCompanyDataControllerApi.getCompanyById(any())).thenReturn(mockStoredCompany)
@@ -118,6 +126,17 @@ class QaReviewManagerTest {
 //    }
 
     @Test
+    fun `test if spy works`() {
+        assertDoesNotThrow {
+            spyQaReviewManager.addDatasetToQaReviewRepository(
+                dummyDataId,
+                true,
+                correlationId
+            )
+        }
+    }
+
+    @Test
     fun `check that saving QaReviewEntity works as expected`() {
         assertDoesNotThrow {
             qaReviewManager.saveQaReviewEntity(
@@ -130,5 +149,4 @@ class QaReviewManagerTest {
         }
         verify(mockQaReviewRepository, times(1)).save(any<QaReviewEntity>())
     }
-
 }

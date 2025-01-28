@@ -1,6 +1,5 @@
 package org.dataland.datalandmessagequeueutils.cloudevents
 
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.rabbit.core.RabbitTemplate
