@@ -10,6 +10,7 @@ import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointCurre
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
@@ -17,6 +18,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
+import org.springframework.http.HttpStatus
 import java.io.File
 import java.util.UUID
 
@@ -58,7 +62,6 @@ class AssembledDatasetTest {
                 ),
                 bypassQa = bypassQa,
             )
-        Thread.sleep(1000) // wait for the data to be processed
         return dataMetaInformationResponse
     }
 
@@ -86,25 +89,33 @@ class AssembledDatasetTest {
         )
     }
 
-    @Test
-    fun `ensure an uploaded assembled dataset ends up in the qa queues with the correct qa status`() {
+    @ParameterizedTest
+    @ValueSource(booleans = [true, false])
+    fun `ensure an uploaded assembled dataset ends up in the qa queues with the correct qa status`(bypassQa: Boolean) {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
-        for (bypassQa in listOf(true, false)) {
-            val expectedQaStatus = if (bypassQa) QaStatus.Accepted else QaStatus.Pending
-            val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = bypassQa)
+        val expectedQaStatus = if (bypassQa) QaStatus.Accepted else QaStatus.Pending
+        val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = bypassQa)
 
-            QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataMetaInformation.dataId)).let {
+        ApiAwait
+            .waitForData(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+                QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataMetaInformation.dataId))
+            }.let {
                 assertEquals(expectedQaStatus, it.qaStatus)
             }
 
-            val allUploadedFacts = Backend.metaDataControllerApi.getContainedDataPoints(dataMetaInformation.dataId).values
+        val allUploadedFacts = Backend.metaDataControllerApi.getContainedDataPoints(dataMetaInformation.dataId).values
 
-            allUploadedFacts.forEach { factId ->
-                QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
+        allUploadedFacts.forEach { factId ->
+            ApiAwait
+                .waitForData(
+                    supplier = {
+                        QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(factId)
+                    },
+                    condition = { it.isNotEmpty() },
+                ).let {
                     assertEquals(expectedQaStatus, it[0].qaStatus)
                 }
-            }
         }
     }
 
@@ -112,12 +123,21 @@ class AssembledDatasetTest {
     fun `ensure that accepting an assembled dataset also accepts all datapoints`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = false)
-        QaService.qaControllerApi.changeQaStatus(dataMetaInformation.dataId, QaStatus.Accepted)
+
+        ApiAwait.waitForSuccess(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+            QaService.qaControllerApi.changeQaStatus(dataMetaInformation.dataId, QaStatus.Accepted)
+        }
+
         val allUploadedFacts = Backend.metaDataControllerApi.getContainedDataPoints(dataMetaInformation.dataId).values
+
         allUploadedFacts.forEach { factId ->
-            QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(factId).let {
-                assertEquals(QaStatus.Accepted, it[0].qaStatus)
-            }
+            ApiAwait
+                .waitForData(
+                    supplier = { QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(factId) },
+                    condition = { it.size >= 2 },
+                ).let {
+                    assertEquals(QaStatus.Accepted, it[0].qaStatus)
+                }
         }
     }
 
@@ -139,10 +159,12 @@ class AssembledDatasetTest {
                 bypassQa = false,
             )
         val uploadedQaReport =
-            QaService.additionalCompanyInformationDataQaReportControllerApi.postAdditionalCompanyInformationDataQaReport(
-                uploadedDataset.dataId,
-                linkedQaReportData.qaReport,
-            )
+            ApiAwait.waitForData {
+                QaService.additionalCompanyInformationDataQaReportControllerApi.postAdditionalCompanyInformationDataQaReport(
+                    uploadedDataset.dataId,
+                    linkedQaReportData.qaReport,
+                )
+            }
 
         return LinkedQaReportMetaInfo(
             companyId = companyId,

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -18,8 +19,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataP
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.support.TransactionSynchronization
-import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Instant
 
 /**
@@ -78,6 +77,14 @@ class DataPointQaReviewManager
         ) {
             val composition = compositionService.getCompositionOfDataset(dataId) ?: return
             val allDataIds = composition.values.toList()
+            allDataIds.forEach {
+                if (!checkIfQaServiceKnowsDataId(it)) {
+                    throw ResourceNotFoundApiException(
+                        "Data ID not known to QA service",
+                        "Dataland does not know the data id $it",
+                    )
+                }
+            }
 
             if (overwriteDataPointQaStatus) {
                 allDataIds.forEach {
@@ -150,19 +157,13 @@ class DataPointQaReviewManager
                     currentlyActiveDataId = currentlyActiveDataId,
                 )
 
-            TransactionSynchronizationManager.registerSynchronization(
-                object : TransactionSynchronization {
-                    override fun afterCommit() {
-                        logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
-                        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                            body = objectMapper.writeValueAsString(qaStatusChangeMessage),
-                            type = MessageType.QA_STATUS_UPDATED,
-                            correlationId = correlationId,
-                            exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
-                            routingKey = RoutingKeyNames.DATA_POINT_QA,
-                        )
-                    }
-                },
+            logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
+            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                body = objectMapper.writeValueAsString(qaStatusChangeMessage),
+                type = MessageType.QA_STATUS_UPDATED,
+                correlationId = correlationId,
+                exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                routingKey = RoutingKeyNames.DATA_POINT_QA,
             )
         }
 

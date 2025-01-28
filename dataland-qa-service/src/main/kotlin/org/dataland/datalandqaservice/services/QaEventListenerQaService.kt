@@ -92,10 +92,6 @@ class QaEventListenerQaService
                 val bypassQa: Boolean = dataUploadedPayload.bypassQa
 
                 logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
-                if (qaReviewManager.checkIfQaServiceKnowsDataId(dataId)) {
-                    logger.info("QA Service already knows dataId $dataId, skipping QA review creation (correlation Id: $correlationId)")
-                    return@rejectMessageOnException
-                }
 
                 val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
 
@@ -282,17 +278,10 @@ class QaEventListenerQaService
                 val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper)
                 MessageQueueUtils.validateDataId(dataUploadedPayload.dataId)
                 logger.info(
-                    "Received QA required for dataId ${dataUploadedPayload.dataId} with " +
+                    "Received QA required for datapoint dataId ${dataUploadedPayload.dataId} with " +
                         "initial QA status ${dataUploadedPayload.initialQaStatus} and message " +
                         "${dataUploadedPayload.initialQaComment} (correlation Id: $correlationId)",
                 )
-                if (dataPointQaReviewManager.checkIfQaServiceKnowsDataId(dataUploadedPayload.dataId)) {
-                    logger.info(
-                        "QA Service already knows dataId ${dataUploadedPayload.dataId}, " +
-                            "skipping QA review creation (correlation Id: $correlationId)",
-                    )
-                    return@rejectMessageOnException
-                }
 
                 saveQaReviewEntityFromMessage(dataUploadedPayload, correlationId)
             }

@@ -136,7 +136,7 @@ class QaController(
     ) {
         if (!dataPointQaReviewManager.checkIfQaServiceKnowsDataId(dataId)) {
             throw ResourceNotFoundApiException(
-                "Data ID not known to QA service",
+                "DataPoint ID not known to QA service",
                 "Dataland does not know the data id $dataId",
             )
         }

@@ -15,6 +15,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandqaservice.DatalandQaService
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDataMigrationManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
@@ -51,6 +52,7 @@ class QaEventListenerQaServiceTest(
     lateinit var mockMetaDataControllerApi: MetaDataControllerApi
     lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
     lateinit var mockDataPointControllerApi: DataPointControllerApi
+    lateinit var mockAssembledDataMigrationManager: AssembledDataMigrationManager
 
     val dataId = "TestDataId"
     val correlationId = "correlationId"
@@ -76,6 +78,7 @@ class QaEventListenerQaServiceTest(
         mockDataPointQaReviewManager = mock(DataPointQaReviewManager::class.java)
         mockQaReportManager = mock(QaReportManager::class.java)
         mockDataPointControllerApi = mock(DataPointControllerApi::class.java)
+        mockAssembledDataMigrationManager = mock(AssembledDataMigrationManager::class.java)
         qaEventListenerQaService =
             QaEventListenerQaService(
                 mockCloudEventMessageHandler,
@@ -85,6 +88,7 @@ class QaEventListenerQaServiceTest(
                 mockQaReportManager,
                 mockMetaDataControllerApi,
                 mockDataPointControllerApi,
+                mockAssembledDataMigrationManager,
             )
     }
 
