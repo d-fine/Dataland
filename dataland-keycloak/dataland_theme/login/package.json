@@ -12,8 +12,8 @@
   "dependencies": {
     "@ibm/plex": "^6.4.1",
     "@zxcvbn-ts/core": "^3.0.4",
-    "@zxcvbn-ts/language-common": "^2.0.1",
-    "@zxcvbn-ts/language-en": "^2.1.0",
+    "@zxcvbn-ts/language-common": "^3.0.4",
+    "@zxcvbn-ts/language-en": "^3.0.2",
     "material-icons": "^1.13.13",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0"
