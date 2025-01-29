@@ -99,7 +99,7 @@ class BulkDataRequestManager(
                 throw IllegalArgumentException("Entry not found for companyId: $companyId")
             }
 
-            val element =
+            val singleExistingDataSetsResponse =
                 AlreadyExistingDataSetsResponse(
                     userProvidedCompanyId = userProvidedCompanyId,
                     companyName = companyName,
@@ -108,7 +108,7 @@ class BulkDataRequestManager(
                     datasetId = metaData.dataId,
                     datasetUrl = metaData.url,
                 )
-            alreadyExistingDataSetsResponse.add(element)
+            alreadyExistingDataSetsResponse.add(singleExistingDataSetsResponse)
         }
 
         return alreadyExistingDataSetsResponse
@@ -243,41 +243,16 @@ class BulkDataRequestManager(
         }
     }
 
-    private fun buildResponseMessageForBulkDataRequest(
-        totalNumberOfRequestedCompanyIdentifiers: Int,
-        numberOfRejectedCompanyIdentifiers: Int,
-    ): String =
-        when (numberOfRejectedCompanyIdentifiers) {
-            0 -> "All of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
-            1 ->
-                "One of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers was rejected " +
-                    "because it could not be uniquely matched with an existing company on Dataland."
-
-            else ->
-                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers distinct " +
-                    "company identifiers were rejected because they could not be uniquely matched with existing " +
-                    "companies on Dataland."
-        }
-
     private fun buildResponseForBulkDataRequest(
-        acceptedDataRequestsResponse: List<AcceptedDataRequestsResponse>,
-        alreadyExistingDataSetsResponse: List<AlreadyExistingDataSetsResponse>,
+        acceptedRequests: List<AcceptedDataRequestsResponse>,
+        existingDataSets: List<AlreadyExistingDataSetsResponse>,
         rejectedIdentifiers: List<String>,
-    ): BulkDataRequestResponse {
-        val message =
-            buildResponseMessageForBulkDataRequest(
-                acceptedDataRequestsResponse.size,
-                rejectedIdentifiers.size,
-            )
-        val bulkDataRequestResponse =
-            BulkDataRequestResponse(
-                message = message,
-                acceptedDataRequests = acceptedDataRequestsResponse,
-                alreadyExistingDataRequests = alreadyExistingDataSetsResponse,
-                rejectedCompanyIdentifiers = rejectedIdentifiers,
-            )
-        return bulkDataRequestResponse
-    }
+    ): BulkDataRequestResponse =
+        BulkDataRequestResponse(
+            acceptedDataRequests = acceptedRequests,
+            alreadyExistingDataRequests = existingDataSets,
+            rejectedCompanyIdentifiers = rejectedIdentifiers,
+        )
 
     private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
