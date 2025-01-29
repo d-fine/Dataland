@@ -181,16 +181,16 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
-import { type ExistingDataResponse } from '@/utils/RequestUtils.ts';
+import {
+  type AcceptedDataRequests,
+  type ExistingDataRequests,
+} from '@/utils/RequestUtils.ts';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
     BulkDataRequestSummary,
-    Accordion,
-    AccordionTab,
-    Badge,
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,
     TheHeader,
@@ -218,8 +218,8 @@ export default defineComponent({
       identifiersInString: '',
       identifiers: [] as Array<string>,
       rejectedCompanyIdentifiers: [] as Array<string>,
-      createdRequests: [] as Array<ExistingDataResponse>,
-      notCreatedRequests: [] as Array<ExistingDataResponse>,
+      createdRequests: [] as Array<AcceptedDataRequests>,
+      notCreatedRequests: [] as Array<ExistingDataRequests>,
       submittingSucceeded: true,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,

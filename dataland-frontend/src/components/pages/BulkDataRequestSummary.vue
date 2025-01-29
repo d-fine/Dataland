@@ -33,11 +33,11 @@
           </template>
           <template v-for="entry in createdRequests" :key="entry">
             <div class="grid-container align-items-center">
-              <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
+              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
               <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
-              <router-link :to="entry.url.toString()" class="text-primary no-underline font-bold">
+              <router-link :to="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>VIEW REQUEST</span>
                   <span class="ml-3">></span>
@@ -64,11 +64,11 @@
           </div>
           <template v-for="entry in notCreatedRequests" :key="entry">
             <div class="grid-container align-items-center">
-              <div class="col bold-text middle-center-div">{{ entry.companyIdentifier }}</div>
+              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
               <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
-              <router-link :to="entry.url.toString()" class="text-primary no-underline font-bold">
+              <router-link :to="entry.datasetUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>VIEW DATA</span>
                   <span class="ml-3">></span>
@@ -105,7 +105,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import type { ExistingDataResponse } from '@/utils/RequestUtils.ts';
+import {AcceptedDataRequests, ExistingDataRequests} from '@/utils/RequestUtils.ts';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
@@ -116,8 +116,8 @@ const props = defineProps<{
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
   rejectedCompanyIdentifiers: string[];
-  notCreatedRequests: Array<ExistingDataResponse>;
-  createdRequests: Array<ExistingDataResponse>;
+  notCreatedRequests: Array<ExistingDataRequests>;
+  createdRequests: Array<AcceptedDataRequests>;
 }>();
 </script>
 
