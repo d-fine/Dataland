@@ -19,12 +19,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito
 import org.mockito.Mockito.nullable
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -64,7 +64,7 @@ class QaReviewManagerTest {
 
     @BeforeEach
     fun setup() {
-        Mockito.reset(
+        reset(
             mockQaReviewRepository,
             mockCompanyDataControllerApi,
             mockMetaDataControllerApi,
@@ -111,7 +111,6 @@ class QaReviewManagerTest {
                 correlationId = correlationId,
             )
         }
-
         verify(spyQaReviewManager, times(1)).saveQaReviewEntity(
             dataId = dataId,
             qaStatus = QaStatus.Accepted,
@@ -119,7 +118,6 @@ class QaReviewManagerTest {
             comment = bypassQaComment,
             correlationId = correlationId,
         )
-
         verify(spyQaReviewManager, times(1)).sendQaStatusUpdateMessage(
             mockQaReviewEntity,
             correlationId,
@@ -129,10 +127,10 @@ class QaReviewManagerTest {
     @Test
     fun `check that adding a new qa review entry works on valid input with bypassQa false`() {
         setupSpy()
+
         assertDoesNotThrow {
             spyQaReviewManager.addDatasetToQaReviewRepository(dataId, bypassQa = false, correlationId = correlationId)
         }
-
         verify(spyQaReviewManager, times(1)).saveQaReviewEntity(
             dataId = dataId,
             qaStatus = QaStatus.Pending,
@@ -140,7 +138,6 @@ class QaReviewManagerTest {
             comment = null,
             correlationId = correlationId,
         )
-
         verify(spyQaReviewManager, times(1)).sendQaStatusUpdateMessage(
             mockQaReviewEntity,
             correlationId,

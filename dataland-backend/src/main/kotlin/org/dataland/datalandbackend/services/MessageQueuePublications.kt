@@ -53,7 +53,7 @@ class MessageQueuePublications(
      * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
-    fun publishDataSetUploadedMessage(
+    fun publishDatasetUploadedMessage(
         dataId: String,
         bypassQa: Boolean,
         correlationId: String,
@@ -74,7 +74,7 @@ class MessageQueuePublications(
      * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
-    fun publishDataSetMetaInfoPatchMessage(
+    fun publishDatasetMetaInfoPatchMessage(
         dataId: String,
         uploaderUserId: String,
         correlationId: String,
@@ -97,7 +97,7 @@ class MessageQueuePublications(
      * @param dataId The ID of the data set to be deleted
      * @param correlationId The correlation ID of the request initiating the event
      */
-    fun publishDataSetDeletionMessage(
+    fun publishDatasetDeletionMessage(
         dataId: String,
         correlationId: String,
     ) {
