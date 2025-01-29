@@ -33,8 +33,8 @@ ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
 # Transfer the scripts to the server
-scp ./healthCheck.sh ubuntu@"$target_server_url":/usr/local/bin/healthCheck.sh
-scp ./health-check.service ubuntu@"$target_server_url":/etc/systemd/system/health-check.service
+sudo scp ./healthCheck.sh ubuntu@"$target_server_url":/usr/local/bin/healthCheck.sh
+sudo scp ./health-check.service ubuntu@"$target_server_url":/etc/systemd/system/health-check.service
 sudo chmod +x /usr/local/bin/healthCheck.sh  # Make the script executable
 sudo systemctl daemon-reload  # Reload the systemd daemon configuration
 sudo systemctl enable health-check.service  # Enable the service
