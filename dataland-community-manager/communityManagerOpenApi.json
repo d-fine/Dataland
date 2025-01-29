@@ -1579,11 +1579,11 @@
           "reportingPeriod",
           "requestId",
           "requestUrl",
-          "userProvidedId"
+          "userProvidedCompanyId"
         ],
         "type": "object",
         "properties": {
-          "userProvidedId": {
+          "userProvidedCompanyId": {
             "type": "string"
           },
           "companyName": {
@@ -1610,11 +1610,11 @@
           "datasetUrl",
           "framework",
           "reportingPeriod",
-          "userProvidedId"
+          "userProvidedCompanyId"
         ],
         "type": "object",
         "properties": {
-          "userProvidedId": {
+          "userProvidedCompanyId": {
             "type": "string"
           },
           "companyName": {

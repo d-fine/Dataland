@@ -14,6 +14,7 @@ import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestE
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -27,6 +28,7 @@ class BulkDataRequestManager(
     @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
     @Autowired private val metaDataController: MetaDataControllerApi,
+    @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
     /**
      * Processes a bulk data request from a user
@@ -92,18 +94,21 @@ class BulkDataRequestManager(
                     .find { it.value.companyId == companyId }
             val userProvidedCompanyId = entry?.key
             val companyName = entry?.value?.companyName
-            if (userProvidedCompanyId != null && companyName != null) {
-                val element =
-                    AlreadyExistingDataSetsResponse(
-                        userProvidedCompanyId = userProvidedCompanyId,
-                        companyName = companyName,
-                        framework = metaData.dataType.toString(),
-                        reportingPeriod = metaData.reportingPeriod,
-                        datasetId = metaData.dataId,
-                        datasetUrl = metaData.url,
-                    )
-                alreadyExistingDataSetsResponse.add(element)
+
+            if (userProvidedCompanyId == null || companyName == null) {
+                throw IllegalArgumentException("Entry not found for companyId: $companyId")
             }
+
+            val element =
+                AlreadyExistingDataSetsResponse(
+                    userProvidedCompanyId = userProvidedCompanyId,
+                    companyName = companyName,
+                    framework = metaData.dataType.toString(),
+                    reportingPeriod = metaData.reportingPeriod,
+                    datasetId = metaData.dataId,
+                    datasetUrl = metaData.url,
+                )
+            alreadyExistingDataSetsResponse.add(element)
         }
 
         return alreadyExistingDataSetsResponse
@@ -174,21 +179,22 @@ class BulkDataRequestManager(
                 val entry =
                     userProvidedIdentifierToDatalandCompanyIdMapping.entries
                         .find { it.value.companyId == companyId }
-                val userProvidedId = entry?.key
+                val userProvidedCompanyId = entry?.key
                 val companyName = entry?.value?.companyName
 
-                if (userProvidedId != null && companyName != null) {
-                    val element =
-                        AcceptedDataRequestsResponse(
-                            userProvidedCompanyId = userProvidedId,
-                            companyName = companyName,
-                            framework = dataMetaInformation.dataType.toString(),
-                            reportingPeriod = dataMetaInformation.reportingPeriod,
-                            requestId = response.dataRequestId,
-                            requestUrl = "https://www.dataland.com/requests/" + response.dataRequestId,
-                        )
-                    acceptedDataRequests.add(element)
+                if (userProvidedCompanyId == null || companyName == null) {
+                    throw IllegalArgumentException("Entry not found for companyId: $companyId")
                 }
+                val element =
+                    AcceptedDataRequestsResponse(
+                        userProvidedCompanyId = userProvidedCompanyId,
+                        companyName = companyName,
+                        framework = dataMetaInformation.dataType.toString(),
+                        reportingPeriod = dataMetaInformation.reportingPeriod,
+                        requestId = response.dataRequestId,
+                        requestUrl = "https://$proxyPrimaryUrl/requests/" + response.dataRequestId,
+                    )
+                acceptedDataRequests.add(element)
             }
         }
         return acceptedDataRequests
