@@ -1,0 +1,22 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: Slack Alert Bot
+    receivers:
+    - uid: bearmkv0f864hb
+      type: slack
+      settings:
+        title: '{{ template "alert_title_template" . }}'
+        text: '{{ template "alert_message_template" . }}'
+        url: https://hooks.slack.com/services/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
+      disableResolveMessage: false
+  - orgId: 1
+    name: Slack Critical Alerts
+    receivers:
+    - uid: beaumxiswxjb5c
+      type: slack
+      settings:
+        title: '{{ template "alert_title_template" . }}'
+        text: '{{ template "alert_message_template" . }}'
+        url: https://hooks.slack.com/services/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
+      disableResolveMessage: false

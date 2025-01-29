@@ -1,0 +1,50 @@
+apiVersion: 1
+
+templates:
+  - orgId: 1
+    name: alert_title_template
+    template: |
+      {{ define "alert_title_template" }}
+        {{ if gt (len .Alerts.Firing) 0 }}
+        ⛔ {{ len .Alerts.Firing }} {{ .CommonLabels.alertname }} Alert(s) triggered.
+        {{ index .Alerts.Firing 0 | .Annotations.description }}
+        {{ end }}
+        {{ if gt (len .Alerts.Resolved) 0 }}
+        ✅ {{ len .Alerts.Resolved }} {{ .CommonLabels.alertname }} Alert(s) resolved.
+        {{ end }}
+      {{ end }}
+
+  - orgId: 1
+    name: alert_message_template
+    template: |
+      {{ define "alert_message_template" }}
+        {{ if gt (len .Alerts.Firing) 0 }}
+          *Firing Alerts:*
+          {{ range .Alerts.Firing }} {{ template "alert_firing_template" . }} {{ end }}
+        {{ end }}
+        {{ if gt (len .Alerts.Resolved) 0 }}
+          *Resolved Alerts:*
+          {{ range .Alerts.Resolved }} {{ template "alert_resolved_template" . }} {{ end }}
+        {{ end }}
+      {{ end }}
+
+  - orgId: 1
+    name: alert_firing_template
+    template: |
+      {{ define "alert_firing_template" }}
+      *Service:* {{ .Labels.service_name }}
+      *detected level:* {{ .Labels.detected_level }}
+      - Errors/minute: {{ .Values.B }}
+      - Dashboard: {{ .DashboardURL }}
+      - Panel: {{ .PanelURL }}
+      - Source: {{ .GeneratorURL }}
+      {{ end }}
+  
+
+  - orgId: 1
+    name: alert_resolved_template
+    template: |
+      {{ define "alert_resolved_template" }}
+      *Service:* {{ .Labels.service_name }}
+      *Resolved Time:* {{ .Annotations.resolved_time }}
+      {{ end }}
