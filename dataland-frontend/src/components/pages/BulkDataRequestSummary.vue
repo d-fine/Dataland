@@ -105,7 +105,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import {AcceptedDataRequests, ExistingDataRequests} from '@/utils/RequestUtils.ts';
+import { AcceptedDataRequests, ExistingDataRequests } from '@/utils/RequestUtils.ts';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
