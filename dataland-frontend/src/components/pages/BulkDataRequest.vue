@@ -181,10 +181,7 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
-import {
-  type AcceptedDataRequests,
-  type ExistingDataRequests,
-} from '@/utils/RequestUtils.ts';
+import { type AcceptedDataRequests, type ExistingDataRequests } from '@/utils/RequestUtils.ts';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
