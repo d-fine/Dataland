@@ -5,7 +5,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.StoredCompany
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -60,7 +59,6 @@ class QaEventListenerQaServiceTest(
     private val mockQaReviewManager: QaReviewManager = mock<QaReviewManager>()
     private val mockDataPointQaReviewManager: DataPointQaReviewManager = mock<DataPointQaReviewManager>()
     private val mockQaReportManager: QaReportManager = mock<QaReportManager>()
-    private val mockMetaDataControllerApi: MetaDataControllerApi = mock<MetaDataControllerApi>()
     private val mockCompanyDataControllerApi: CompanyDataControllerApi = mock<CompanyDataControllerApi>()
     private val mockDataPointControllerApi: DataPointControllerApi = mock<DataPointControllerApi>()
 
@@ -74,7 +72,6 @@ class QaEventListenerQaServiceTest(
     fun setup() {
         reset(
             mockCloudEventMessageHandler,
-            mockMetaDataControllerApi,
             mockCompanyDataControllerApi,
             mockQaReviewManager,
             mockDataPointQaReviewManager,
@@ -88,7 +85,6 @@ class QaEventListenerQaServiceTest(
                 mockQaReviewManager,
                 mockDataPointQaReviewManager,
                 mockQaReportManager,
-                mockMetaDataControllerApi,
                 mockDataPointControllerApi,
             )
     }
@@ -168,6 +164,23 @@ class QaEventListenerQaServiceTest(
     }
 
     @Test
+    fun `check that processing patch breaks on uploaderUserId null`() {
+        val mockMessage = setupMockMessage(RoutingKeyNames.METAINFORMATION_PATCH)
+        val payload = getDataMetaInfoPatchPayload(dataId, null)
+        doNothing().whenever(mockQaReviewManager).patchUploaderUserIdInQaReviewEntry(any(), any(), any())
+
+        assertThrows<MessageQueueRejectException> {
+            qaEventListenerQaService.processBackendDatasetEvents(
+                mockMessage,
+                payload,
+                correlationId,
+                MessageType.METAINFO_UPDATED,
+            )
+        }
+        verify(mockQaReviewManager, times(0)).patchUploaderUserIdInQaReviewEntry(any(), any(), any())
+    }
+
+    @Test
     fun `check that processing method correctly throws if routing key is unknown`() {
         val receivedRoutingKey = "someWeirdRoutingKey"
         val mockMessage = setupMockMessage(receivedRoutingKey)
@@ -237,7 +250,6 @@ class QaEventListenerQaServiceTest(
         val acceptedDataMetaInformation: DataMetaInformation = acceptedStoredCompany.dataRegisteredByDataland[0]
         val acceptedDataId = acceptedDataMetaInformation.dataId
 
-        doReturn(acceptedDataMetaInformation).whenever(mockMetaDataControllerApi).getDataMetaInfo(dataId)
         doReturn(acceptedStoredCompany)
             .whenever(mockCompanyDataControllerApi)
             .getCompanyById(acceptedDataMetaInformation.companyId)
