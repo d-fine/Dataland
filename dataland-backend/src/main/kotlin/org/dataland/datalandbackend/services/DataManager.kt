@@ -251,7 +251,6 @@ class DataManager
                         summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
                         message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
                     )
-            // handle check for visibility
             return getPublicDataset(dataId, DataType.valueOf(dataDimensions.dataType), correlationId).data
         }
     }

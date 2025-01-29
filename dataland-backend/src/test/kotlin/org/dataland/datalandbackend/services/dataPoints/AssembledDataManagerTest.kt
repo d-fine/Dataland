@@ -37,6 +37,8 @@ import org.mockito.kotlin.verify
 import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Instant
 import java.util.Optional
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.junit.jupiter.api.assertThrows
 
 class AssembledDataManagerTest {
     private val dataManager = mock(DataManager::class.java)
@@ -171,6 +173,15 @@ class AssembledDataManagerTest {
         assert(!dynamicDataset.isNullOrEmpty())
         assert(dynamicDataset!!.contains(dataPoint))
         assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+    }
+
+    @Test
+    fun `check that an exception is thrown if no data exists for the dynamic dataset`() {
+        `when`(metaDataManager.getCurrentlyActiveDataId(any())).thenReturn(null)
+
+        assertThrows<ResourceNotFoundApiException> {
+            assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        }
     }
 
     private fun setMockData(
