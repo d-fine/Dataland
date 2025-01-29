@@ -707,6 +707,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - alloy_data:/var/lib/alloy/data
+      - /var/log:/var/log
     depends_on:
       - loki
     networks:
