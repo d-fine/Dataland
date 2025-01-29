@@ -7,3 +7,9 @@ COPY ./gradlew .
 RUN  ./gradlew --version
 COPY ./build.gradle.kts ./gradle.properties ./settings.gradle.kts ./versions.properties ./
 RUN ./gradlew --no-daemon --stacktrace
+
+# Copy the health check script and service file into the image
+COPY ./healthCheck.sh /usr/local/bin/healthCheck.sh
+# Make the script executable
+RUN chmod +x /usr/local/bin/healthCheck.sh
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD /usr/local/bin/healthCheck.sh
