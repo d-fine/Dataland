@@ -8,8 +8,14 @@ local.file_match "system" {
 
 loki.source.file "system" {
 	targets               = local.file_match.system.targets
-	forward_to            = [loki.write.local_loki.receiver]
-	legacy_positions_file = "/tmp/positions.yaml"
+	forward_to            = [loki.write.logs_default.receiver]
+}
+
+loki.write "logs_default" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+	}
+	external_labels = {}
 }
 
 discovery.docker "containers" {
