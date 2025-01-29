@@ -37,12 +37,12 @@
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
               <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
-              <router-link :to="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
+              <a :href="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>VIEW REQUEST</span>
                   <span class="ml-3">></span>
                 </div>
-              </router-link>
+              </a>
             </div>
           </template>
         </AccordionTab>
@@ -68,12 +68,12 @@
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
               <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
-              <router-link :to="entry.datasetUrl.toString()" class="text-primary no-underline font-bold">
+              <a :href="entry.datasetUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>VIEW DATA</span>
                   <span class="ml-3">></span>
                 </div>
-              </router-link>
+              </a>
             </div>
           </template>
         </AccordionTab>
