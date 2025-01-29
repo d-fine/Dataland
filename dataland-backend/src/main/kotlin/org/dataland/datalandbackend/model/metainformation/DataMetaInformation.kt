@@ -36,7 +36,7 @@ data class DataMetaInformation(
 ) {
     companion object {
         @Suppress("MayBeConst")
-        private val proxyPrimaryUrl: String = "\${dataland.proxy.primary.url}"
+        private val proxyPrimaryUrl: String = "\${dataland.backend.proxy-primary-url}"
     }
 
     constructor(
