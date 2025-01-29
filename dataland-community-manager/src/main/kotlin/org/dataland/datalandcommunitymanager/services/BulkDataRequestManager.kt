@@ -10,9 +10,11 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.AcceptedDataReque
 import org.dataland.datalandcommunitymanager.model.dataRequest.AlreadyExistingDataSetsResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.ValidSingleDataRequest
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -30,6 +32,8 @@ class BulkDataRequestManager(
     @Autowired private val metaDataController: MetaDataControllerApi,
     @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
+    private val bulkDataRequestLogger = LoggerFactory.getLogger(BulkDataRequestManager::class.java)
+
     /**
      * Processes a bulk data request from a user
      * @param bulkDataRequest info provided by a user in order to request a bulk of datasets on Dataland.
@@ -41,7 +45,6 @@ class BulkDataRequestManager(
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
-
         val rejectedIdentifiers = mutableListOf<String>()
         val acceptedUserIdToCompanyIdAndName = mutableMapOf<String, CompanyIdAndName>()
 
@@ -58,6 +61,9 @@ class BulkDataRequestManager(
         val acceptedCompanyIdsSet: Set<String> = acceptedUserIdToCompanyIdAndName.values.map { it.companyId }.toSet()
         val acceptedUserInputIdentifiers: Set<String> = acceptedUserIdToCompanyIdAndName.keys
 
+        bulkDataRequestLogger.info("Number of accepted company ids: ${acceptedCompanyIdsSet.size}")
+        bulkDataRequestLogger.info("Number of rejected company ids: ${rejectedIdentifiers.size}")
+
         val validRequestsList =
             getInformationRequestList(
                 dataTypes = bulkDataRequest.dataTypes,
@@ -65,20 +71,42 @@ class BulkDataRequestManager(
                 datalandCompanyIds = acceptedCompanyIdsSet,
             )
 
+        bulkDataRequestLogger.info(
+            "Number of total single requests considered: ${validRequestsList.size}",
+        )
         val alreadyExistingDatasets = metaDataController.postListOfDataMetaInfoRequests(validRequestsList)
-
+        bulkDataRequestLogger.info(
+            "Number of datasets that already exist: ${validRequestsList.size}",
+        )
         val alreadyExistingDataSetsResponse =
             convertToAlreadyExistingDataSetsResponse(alreadyExistingDatasets, acceptedUserIdToCompanyIdAndName)
-
         val nonExistingDatasets = getNonexistingDataSets(validRequestsList, alreadyExistingDatasets)
+        bulkDataRequestLogger.info(
+            "Number of requests that will be newly created: ${validRequestsList.size}",
+        )
 
         val acceptedDataRequestsResponse =
-            storeDataRequests(dataMetaInformationRequest = nonExistingDatasets, acceptedUserIdToCompanyIdAndName)
+            storeDataRequests(nonExistingDatasets, acceptedUserIdToCompanyIdAndName)
 
+        bulkDataRequestLogger.info(
+            "Number of requests that have been newly created: ${acceptedDataRequestsResponse.size}",
+        )
         if (acceptedUserInputIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
         sendBulkDataRequestInternalEmailMessage(
             bulkDataRequest, acceptedUserIdToCompanyIdAndName.values.toList(), correlationId,
         )
+        bulkDataRequestLogger.info(
+            "Returning Accepted: $acceptedDataRequestsResponse",
+        )
+
+        bulkDataRequestLogger.info(
+            "Returning Already Existing: $alreadyExistingDataSetsResponse",
+        )
+
+        bulkDataRequestLogger.info(
+            "Returning Rejected Identifiers: $rejectedIdentifiers",
+        )
+
         return buildResponseForBulkDataRequest(acceptedDataRequestsResponse, alreadyExistingDataSetsResponse, rejectedIdentifiers)
     }
 
@@ -87,47 +115,63 @@ class BulkDataRequestManager(
         userProvidedIdentifierToDatalandCompanyIdMapping: MutableMap<String, CompanyIdAndName>,
     ): List<AlreadyExistingDataSetsResponse> {
         val alreadyExistingDataSetsResponse = mutableListOf<AlreadyExistingDataSetsResponse>()
-        for (metaData in metaDataList) {
-            val companyId = metaData.companyId
-            val entry =
-                userProvidedIdentifierToDatalandCompanyIdMapping.entries
-                    .find { it.value.companyId == companyId }
-            val userProvidedCompanyId = entry?.key
-            val companyName = entry?.value?.companyName
+        if (metaDataList.isNotEmpty()) {
+            for (metaData in metaDataList) {
+                val companyId = metaData.companyId
+                val entry =
+                    userProvidedIdentifierToDatalandCompanyIdMapping.entries
+                        .find { it.value.companyId == companyId }
+                val userProvidedCompanyId = entry?.key
+                val companyName = entry?.value?.companyName
 
-            if (userProvidedCompanyId == null || companyName == null) {
-                throw IllegalArgumentException("Entry not found for companyId: $companyId")
+                if (userProvidedCompanyId == null || companyName == null) {
+                    throw IllegalArgumentException("Entry not found for companyId: $companyId")
+                }
+
+                val singleExistingDataSetsResponse =
+                    AlreadyExistingDataSetsResponse(
+                        userProvidedCompanyId = userProvidedCompanyId,
+                        companyName = companyName,
+                        framework = metaData.dataType.toString(),
+                        reportingPeriod = metaData.reportingPeriod,
+                        datasetId = metaData.dataId,
+                        datasetUrl = metaData.url,
+                    )
+                alreadyExistingDataSetsResponse.add(singleExistingDataSetsResponse)
             }
-
-            val singleExistingDataSetsResponse =
-                AlreadyExistingDataSetsResponse(
-                    userProvidedCompanyId = userProvidedCompanyId,
-                    companyName = companyName,
-                    framework = metaData.dataType.toString(),
-                    reportingPeriod = metaData.reportingPeriod,
-                    datasetId = metaData.dataId,
-                    datasetUrl = metaData.url,
-                )
-            alreadyExistingDataSetsResponse.add(singleExistingDataSetsResponse)
         }
-
         return alreadyExistingDataSetsResponse
     }
 
     private fun getNonexistingDataSets(
-        informationRequestList: List<DataMetaInformationRequest>,
-        alreadyExistingDatasets: List<DataMetaInformation>,
-    ): List<DataMetaInformation> =
-        alreadyExistingDatasets.filter { existingData ->
-            val existingCriteria = Triple(existingData.companyId, existingData.dataType, existingData.reportingPeriod)
+        allRequestsList: List<DataMetaInformationRequest>,
+        existingDatasets: List<DataMetaInformation>,
+    ): List<ValidSingleDataRequest> {
+        val existingCriteriaSet =
+            existingDatasets
+                .map {
+                    Triple(it.companyId, it.dataType, it.reportingPeriod)
+                }.toSet()
 
-            val doesExist =
-                informationRequestList.any { request ->
+        val nonExistingRequests =
+            allRequestsList
+                .filter { request ->
                     val requestCriteria = Triple(request.companyId, request.dataType, request.reportingPeriod)
-                    existingCriteria == requestCriteria
+
+                    if (request.companyId == null || request.dataType == null || request.reportingPeriod == null) {
+                        throw IllegalArgumentException("Request cannot have null values: $request")
+                    }
+                    requestCriteria !in existingCriteriaSet
+                }.map { request ->
+                    ValidSingleDataRequest(
+                        companyIdentifier = request.companyId!!,
+                        dataType = request.dataType!!,
+                        reportingPeriod = request.reportingPeriod!!,
+                    )
                 }
-            !doesExist
-        }
+
+        return if (nonExistingRequests.isNotEmpty()) nonExistingRequests else emptyList()
+    }
 
     private fun getInformationRequestList(
         dataTypes: Set<DataTypeEnum>,
@@ -156,26 +200,26 @@ class BulkDataRequestManager(
     }
 
     private fun storeDataRequests(
-        dataMetaInformationRequest: List<DataMetaInformation>,
+        validSingleDataRequests: List<ValidSingleDataRequest>,
         userProvidedIdentifierToDatalandCompanyIdMapping: MutableMap<String, CompanyIdAndName>,
     ): List<AcceptedDataRequestsResponse> {
         val acceptedDataRequests = mutableListOf<AcceptedDataRequestsResponse>()
 
-        for (dataMetaInformation in dataMetaInformationRequest) {
+        for (validSingleRequest in validSingleDataRequests) {
             if (!utils.existsDataRequestWithNonFinalStatus(
-                    dataMetaInformation.companyId,
-                    dataMetaInformation.dataType,
-                    dataMetaInformation.reportingPeriod,
+                    validSingleRequest.companyIdentifier,
+                    validSingleRequest.dataType,
+                    validSingleRequest.reportingPeriod,
                 )
             ) {
                 val response =
                     utils.storeDataRequestEntityAsOpen(
-                        dataMetaInformation.companyId,
-                        dataMetaInformation.dataType,
-                        dataMetaInformation.reportingPeriod,
+                        validSingleRequest.companyIdentifier,
+                        validSingleRequest.dataType,
+                        validSingleRequest.reportingPeriod,
                     )
 
-                val companyId = dataMetaInformation.companyId
+                val companyId = validSingleRequest.companyIdentifier
                 val entry =
                     userProvidedIdentifierToDatalandCompanyIdMapping.entries
                         .find { it.value.companyId == companyId }
@@ -185,16 +229,16 @@ class BulkDataRequestManager(
                 if (userProvidedCompanyId == null || companyName == null) {
                     throw IllegalArgumentException("Entry not found for companyId: $companyId")
                 }
-                val element =
+                val singleAcceptedDataRequest =
                     AcceptedDataRequestsResponse(
                         userProvidedCompanyId = userProvidedCompanyId,
                         companyName = companyName,
-                        framework = dataMetaInformation.dataType.toString(),
-                        reportingPeriod = dataMetaInformation.reportingPeriod,
+                        framework = validSingleRequest.dataType.toString(),
+                        reportingPeriod = validSingleRequest.reportingPeriod,
                         requestId = response.dataRequestId,
                         requestUrl = "https://$proxyPrimaryUrl/requests/" + response.dataRequestId,
                     )
-                acceptedDataRequests.add(element)
+                acceptedDataRequests.add(singleAcceptedDataRequest)
             }
         }
         return acceptedDataRequests
@@ -247,12 +291,20 @@ class BulkDataRequestManager(
         acceptedRequests: List<AcceptedDataRequestsResponse>,
         existingDataSets: List<AlreadyExistingDataSetsResponse>,
         rejectedIdentifiers: List<String>,
-    ): BulkDataRequestResponse =
-        BulkDataRequestResponse(
-            acceptedDataRequests = acceptedRequests,
-            alreadyExistingDataRequests = existingDataSets,
-            rejectedCompanyIdentifiers = rejectedIdentifiers,
+    ): BulkDataRequestResponse {
+        val bulkRequestRespone =
+            BulkDataRequestResponse(
+                acceptedDataRequests = acceptedRequests,
+                alreadyExistingDataRequests = existingDataSets,
+                rejectedCompanyIdentifiers = rejectedIdentifiers,
+            )
+
+        bulkDataRequestLogger.info(
+            "Bulk request response: $bulkRequestRespone",
         )
+
+        return bulkRequestRespone
+    }
 
     private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
