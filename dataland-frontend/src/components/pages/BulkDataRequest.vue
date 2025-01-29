@@ -62,7 +62,6 @@
                   :rejected-company-identifiers="rejectedCompanyIdentifiers"
                   :created-requests="createdRequests"
                   :not-created-requests="notCreatedRequests"
-                  :rejectedCompanyIdentifiers="rejectedCompanyIdentifiers"
                 />
               </template>
             </template>
@@ -163,9 +162,6 @@
 // @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import PrimeButton from 'primevue/button';
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
-import Badge from 'primevue/badge';
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
