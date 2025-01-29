@@ -52,7 +52,7 @@ import { defineComponent, type PropType, inject } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
-import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_UPLOAD_FORM, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { getDatasetStatus } from '@/components/resources/datasetOverview/DatasetTableInfo';
 import DatasetStatusBadge from '@/components/general/DatasetStatusBadge.vue';
@@ -60,6 +60,7 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
+import { isFrameworkPrivate } from '@/utils/Frameworks.ts';
 
 export default defineComponent({
   name: 'MetaInfoPerCompanyAndFramework',
@@ -103,7 +104,7 @@ export default defineComponent({
   mounted() {
     this.isFrontendViewPageExisting = FRAMEWORKS_WITH_VIEW_PAGE.includes(this.dataType as DataTypeEnum);
     this.isFrontendUploadFormExisting = FRAMEWORKS_WITH_UPLOAD_FORM.includes(this.dataType as DataTypeEnum);
-    this.isPrivateFramework = PRIVATE_FRAMEWORKS.includes(this.dataType as DataTypeEnum);
+    this.isPrivateFramework = isFrameworkPrivate(this.dataType as DataTypeEnum);
   },
   created() {
     void this.setCompanyOwnerRights();

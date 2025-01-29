@@ -1,5 +1,8 @@
 import { zxcvbn, zxcvbnOptions, debounce } from "@zxcvbn-ts/core";
-import { adjacencyGraphs, dictionary as commonDictionary } from "@zxcvbn-ts/language-common";
+import {
+  adjacencyGraphs,
+  dictionary as commonDictionary,
+} from "@zxcvbn-ts/language-common";
 import { translations, dictionary } from "@zxcvbn-ts/language-en";
 import { InputField } from "./utils/InputField";
 
