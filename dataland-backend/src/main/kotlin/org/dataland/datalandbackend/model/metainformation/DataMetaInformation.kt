@@ -3,6 +3,8 @@ package org.dataland.datalandbackend.model.metainformation
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 
 /**
  * --- API model ---
@@ -15,6 +17,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
  * @param url direct link to the page displaying the specified data set
  */
+@Component
 data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val dataId: String,
@@ -32,12 +35,10 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     var qaStatus: QaStatus,
     @field:JsonProperty(required = true)
-    val url: String,
+    var url: String,
 ) {
-    companion object {
-        @Suppress("MayBeConst")
-        private val proxyPrimaryUrl: String = "\${dataland.backend.proxy-primary-url}"
-    }
+    @Value("\${dataland.backend.proxy-primary-url}")
+    private lateinit var proxyPrimaryUrl: String
 
     constructor(
         dataId: String,
@@ -57,6 +58,12 @@ data class DataMetaInformation(
         reportingPeriod = reportingPeriod,
         currentlyActive = currentlyActive,
         qaStatus = qaStatus,
-        url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataId",
-    )
+        url = "",
+    ) {
+        initializeUrl()
+    }
+
+    private fun initializeUrl() {
+        url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataId"
+    }
 }
