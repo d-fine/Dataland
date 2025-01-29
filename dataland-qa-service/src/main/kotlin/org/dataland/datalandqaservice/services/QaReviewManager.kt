@@ -161,7 +161,7 @@ class QaReviewManager(
         correlationId: String,
     ) {
         logger.info("Received message to patch uploaderUserId for dataset with dataId $dataId (correlationId: $correlationId).")
-        val qaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
+        val qaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampAsc(dataId)
 
         requireNotNull(qaReviewEntity)
         require(qaReviewEntity.qaStatus == QaStatus.Pending)
@@ -291,6 +291,9 @@ class QaReviewManager(
             ?.dataId
     }
 
+    /**
+     * Calls backend to return companyIds for companyName
+     */
     private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {
