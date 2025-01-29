@@ -1,6 +1,6 @@
 local.file_match "system" {
 	path_targets = [{
-		__address__ = "localhost",
+		__address__ = "loki:3100",
 		__path__    = "/var/log/*log",
 		job         = "varlogs",
 	}]
