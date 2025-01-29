@@ -34,6 +34,11 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val url: String,
 ) {
+    companion object {
+        @Suppress("MayBeConst")
+        private val proxyPrimaryUrl: String = "\${dataland.proxy.primary.url}"
+    }
+
     constructor(
         dataId: String,
         companyId: String,
@@ -52,6 +57,6 @@ data class DataMetaInformation(
         reportingPeriod = reportingPeriod,
         currentlyActive = currentlyActive,
         qaStatus = qaStatus,
-        url = "https://dataland.com/companies/$companyId/frameworks/$dataId",
+        url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataId",
     )
 }
