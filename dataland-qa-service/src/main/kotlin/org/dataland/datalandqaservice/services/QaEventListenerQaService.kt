@@ -54,6 +54,8 @@ class QaEventListenerQaService
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
+         * In case of DATASET_UPLOAD OR DATASET_QA events, we generate a new QaReviewEntity entry in the database.
+         * In case of METAINFORMATION_PATCH, the corresponding entry is patched.
          * @param payload the message body as a json string
          * @param correlationId the correlation ID of the current user process
          * @param messageType the type of the message
@@ -71,7 +73,7 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
-                    key = [RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.METAINFORMATION_PATCH],
+                    key = [RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.METAINFORMATION_PATCH, RoutingKeyNames.DATASET_QA],
                 ),
             ],
         )
@@ -85,7 +87,7 @@ class QaEventListenerQaService
 
             MessageQueueUtils.rejectMessageOnException {
                 when (receivedRoutingKey) {
-                    RoutingKeyNames.DATASET_UPLOAD -> {
+                    RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.DATASET_QA -> {
                         MessageQueueUtils.validateMessageType(messageType, MessageType.PUBLIC_DATA_RECEIVED)
                         val messagePayload =
                             MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)

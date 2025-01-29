@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.dataPoints
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -12,15 +11,18 @@ import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 
 class DataPointManagerTest {
     private val dataManager = mock(DataManager::class.java)
@@ -28,7 +30,6 @@ class DataPointManagerTest {
     private val storageClient = mock(StorageControllerApi::class.java)
     private val messageQueuePublications = mock(MessageQueuePublications::class.java)
     private val dataPointValidator = mock(DataPointValidator::class.java)
-    private val objectMapper = mock(ObjectMapper::class.java)
     private val companyQueryManager = mock(CompanyQueryManager::class.java)
     private val companyRoleChecker = mock(CompanyRoleChecker::class.java)
     private val logMessageBuilder = mock(LogMessageBuilder::class.java)
@@ -36,13 +37,21 @@ class DataPointManagerTest {
     private val dataPointManager =
         DataPointManager(
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
-            companyQueryManager, companyRoleChecker, objectMapper, logMessageBuilder,
+            companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
         )
 
     private val correlationId = "test-correlation-id"
     private val uploaderUserId = "test-user-id"
     private val dataPointType = "test-type"
     private val reportingPeriod = "test-period"
+
+    @BeforeEach
+    fun resetMocks() {
+        reset(
+            dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
+            companyQueryManager, companyRoleChecker, logMessageBuilder,
+        )
+    }
 
     @Test
     fun `check that the storeDataPoint function executes the expected calls and returns the expected results`() {
@@ -53,8 +62,7 @@ class DataPointManagerTest {
                 companyId = IdUtils.generateUUID(),
                 reportingPeriod = reportingPeriod,
             )
-
-        `when`(objectMapper.writeValueAsString(uploadedDataPoint)).thenReturn("json-content")
+        val expectedString = testObjectMapper.writeValueAsString(uploadedDataPoint)
 
         `when`(metaDataManager.storeDataPointMetaInformation(any())).thenAnswer { invocation ->
             val argument = invocation.getArgument<DataPointMetaInformationEntity>(0)
@@ -74,7 +82,7 @@ class DataPointManagerTest {
         val result = dataPointManager.storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, correlationId)
 
         verify(metaDataManager).storeDataPointMetaInformation(any())
-        verify(dataManager).storeDataInTemporaryStorage(eq(dataId), eq("json-content"), eq(correlationId))
+        verify(dataManager).storeDataInTemporaryStorage(eq(dataId), eq(expectedString), eq(correlationId))
         assert(result.companyId == uploadedDataPoint.companyId)
         assert(result.dataPointType == uploadedDataPoint.dataPointType)
         assert(result.reportingPeriod == uploadedDataPoint.reportingPeriod)

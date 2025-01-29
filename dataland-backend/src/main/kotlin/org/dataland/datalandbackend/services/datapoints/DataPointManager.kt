@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.services.CompanyQueryManager
@@ -102,7 +103,7 @@ class DataPointManager
          * Retrieves a single data point from the internal storage
          * @param dataId the id of the data point
          * @param correlationId the correlation id for the operation
-         * @return the data point in form of a StorableDataSet
+         * @return the data point in form of a StorableDataset
          */
         fun retrieveDataPoint(
             dataId: String,
@@ -115,6 +116,11 @@ class DataPointManager
             val dataPointType = metaInfo.dataPointType
             logger.info("Retrieving $dataPointType data point with id $dataId (correlation ID: $correlationId).")
             dataPointValidator.validateDataPointTypeExists(dataPointType)
+
+            val dataFromCache = dataManager.getDataFromCache(dataId)
+            if (dataFromCache != null) {
+                return objectMapper.readValue(dataFromCache)
+            }
 
             val storedDataPoint = storageClient.selectDataPointById(dataId, correlationId)
             return UploadedDataPoint(

@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -48,8 +47,8 @@ class MessageQueuePublications(
     }
 
     /**
-     * Method to publish a message that a data set has been uploaded
-     * @param dataId The ID of the uploaded data set
+     * Method to publish a message that a dataset has been uploaded
+     * @param dataId The ID of the uploaded dataset
      * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
@@ -58,12 +57,10 @@ class MessageQueuePublications(
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        logger.info("Publish message that data set with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
-            type = MessageType.PUBLIC_DATA_RECEIVED,
+        publishDatasetUploadMessage(
+            dataId = dataId,
+            bypassQa = bypassQa,
             correlationId = correlationId,
-            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_UPLOAD,
         )
     }
@@ -93,15 +90,35 @@ class MessageQueuePublications(
     }
 
     /**
-     * Method to publish a message that a data set has to be deleted
-     * @param dataId The ID of the data set to be deleted
+     * Method to publish a message that a dataset requires QA
+     * @param dataId The ID of the dataset
+     * @param bypassQa Whether the QA process should be bypassed
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDatasetQaRequiredMessage(
+        dataId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+    ) {
+        logger.info("Publish message that dataset with ID '$dataId' needs to undergo QA. Correlation ID: '$correlationId'.")
+        publishDatasetUploadMessage(
+            dataId = dataId,
+            bypassQa = bypassQa,
+            correlationId = correlationId,
+            routingKey = RoutingKeyNames.DATASET_QA,
+        )
+    }
+
+    /**
+     * Method to publish a message that a dataset has to be deleted
+     * @param dataId The ID of the dataset to be deleted
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDatasetDeletionMessage(
         dataId: String,
         correlationId: String,
     ) {
-        logger.info("Publish message that data set with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
+        logger.info("Publish message that dataset with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
             type = MessageType.DELETE_DATA,
@@ -112,26 +129,25 @@ class MessageQueuePublications(
     }
 
     /**
-     * Method to publish a message that the metainformation for a dataset has to be patched
+     * Method to publish a message that a dataset has been uploaded and either needs to be stored or just undergo QA
+     * @param dataId The ID of the uploaded dataset
+     * @param bypassQa Whether the QA process should be bypassed
+     * @param correlationId The correlation ID of the request initiating the event
+     * @param routingKey The routing key to steer which consumers pick up on the event
      */
-    fun publishDataMetaInfoPatchMessage(
+    private fun publishDatasetUploadMessage(
         dataId: String,
-        dataMetaInformationPatch: DataMetaInformationPatch,
+        bypassQa: Boolean,
         correlationId: String,
+        routingKey: String,
     ) {
-        logger.info("Publish message that data set with dataId $dataId needs to be patched. Correlation ID: $correlationId.")
+        logger.info("Publish message that dataset with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body =
-                objectMapper.writeValueAsString(
-                    DataMetaInfoPatchPayload(
-                        dataId = dataId,
-                        uploaderUserId = dataMetaInformationPatch.uploaderUserId,
-                    ),
-                ),
-            type = MessageType.METAINFO_UPDATED,
+            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
+            type = MessageType.PUBLIC_DATA_RECEIVED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
-            routingKey = RoutingKeyNames.METAINFORMATION_PATCH,
+            routingKey = routingKey,
         )
     }
 }
