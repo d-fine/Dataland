@@ -1638,14 +1638,10 @@
         "required": [
           "acceptedDataRequests",
           "alreadyExistingDataRequests",
-          "message",
           "rejectedCompanyIdentifiers"
         ],
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
-          },
           "acceptedDataRequests": {
             "type": "array",
             "items": {
