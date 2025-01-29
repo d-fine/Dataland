@@ -1,0 +1,14 @@
+[Unit]
+Description=Continuous Health Check Script
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/local/bin/healthCheck.sh
+Restart=always
+RestartSec=15
+StandardOutput=append:/var/log/health-check.log
+StandardError=append:/var/log/health-check.error.log
+
+[Install]
+WantedBy=multi-user.target
