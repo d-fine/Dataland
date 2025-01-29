@@ -51,7 +51,7 @@ import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import RenderSanitizedMarkdownInput from '@/components/general/RenderSanitizedMarkdownInput.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataPointDataTableRefProps } from "@/utils/Frameworks.ts";
+import { type DataPointDataTableRefProps } from '@/utils/Frameworks';
 
 export default defineComponent({
   methods: {
