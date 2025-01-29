@@ -59,7 +59,6 @@ class BulkDataRequestManager(
         }
 
         val acceptedCompanyIdsSet: Set<String> = acceptedUserIdToCompanyIdAndName.values.map { it.companyId }.toSet()
-        val acceptedUserInputIdentifiers: Set<String> = acceptedUserIdToCompanyIdAndName.keys
 
         bulkDataRequestLogger.info("Number of accepted company ids: ${acceptedCompanyIdsSet.size}")
         bulkDataRequestLogger.info("Number of rejected company ids: ${rejectedIdentifiers.size}")
@@ -76,13 +75,13 @@ class BulkDataRequestManager(
         )
         val alreadyExistingDatasets = metaDataController.postListOfDataMetaInfoRequests(validRequestsList)
         bulkDataRequestLogger.info(
-            "Number of datasets that already exist: ${validRequestsList.size}",
+            "Number of datasets that already exist: ${alreadyExistingDatasets.size}",
         )
         val alreadyExistingDataSetsResponse =
             convertToAlreadyExistingDataSetsResponse(alreadyExistingDatasets, acceptedUserIdToCompanyIdAndName)
         val nonExistingDatasets = getNonexistingDataSets(validRequestsList, alreadyExistingDatasets)
         bulkDataRequestLogger.info(
-            "Number of requests that will be newly created: ${validRequestsList.size}",
+            "Number of requests that will be newly created: ${nonExistingDatasets.size}",
         )
 
         val acceptedDataRequestsResponse =
@@ -91,7 +90,7 @@ class BulkDataRequestManager(
         bulkDataRequestLogger.info(
             "Number of requests that have been newly created: ${acceptedDataRequestsResponse.size}",
         )
-        if (acceptedUserInputIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+
         sendBulkDataRequestInternalEmailMessage(
             bulkDataRequest, acceptedUserIdToCompanyIdAndName.values.toList(), correlationId,
         )
@@ -317,16 +316,5 @@ class BulkDataRequestManager(
             correlationId,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)
-    }
-
-    private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers are not unique or could not be recognized."
-        val message =
-            "The company identifiers you provided could not be uniquely matched with an existing " +
-                "company on dataland"
-        throw InvalidInputApiException(
-            summary,
-            message,
-        )
     }
 }
