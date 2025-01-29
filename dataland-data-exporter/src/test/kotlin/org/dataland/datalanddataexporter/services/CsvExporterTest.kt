@@ -48,6 +48,7 @@ class CsvExporterTest {
                 qaStatus = QaStatus.Accepted,
                 uploadTime = 1,
                 currentlyActive = true,
+                url = "test",
             ),
         )
 

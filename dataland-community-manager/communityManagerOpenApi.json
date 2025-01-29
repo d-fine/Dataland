@@ -1572,9 +1572,72 @@
           }
         }
       },
+      "AcceptedDataRequestsResponse": {
+        "required": [
+          "companyName",
+          "framework",
+          "reportingPeriod",
+          "requestId",
+          "requestUrl",
+          "userProvidedCompanyId"
+        ],
+        "type": "object",
+        "properties": {
+          "userProvidedCompanyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string"
+          },
+          "requestUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "AlreadyExistingDataSetsResponse": {
+        "required": [
+          "companyName",
+          "datasetId",
+          "datasetUrl",
+          "framework",
+          "reportingPeriod",
+          "userProvidedCompanyId"
+        ],
+        "type": "object",
+        "properties": {
+          "userProvidedCompanyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "datasetId": {
+            "type": "string"
+          },
+          "datasetUrl": {
+            "type": "string"
+          }
+        }
+      },
       "BulkDataRequestResponse": {
         "required": [
-          "acceptedCompanyIdentifiers",
+          "acceptedDataRequests",
+          "alreadyExistingDataRequests",
           "message",
           "rejectedCompanyIdentifiers"
         ],
@@ -1583,10 +1646,16 @@
           "message": {
             "type": "string"
           },
-          "acceptedCompanyIdentifiers": {
+          "acceptedDataRequests": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/AcceptedDataRequestsResponse"
+            }
+          },
+          "alreadyExistingDataRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlreadyExistingDataSetsResponse"
             }
           },
           "rejectedCompanyIdentifiers": {

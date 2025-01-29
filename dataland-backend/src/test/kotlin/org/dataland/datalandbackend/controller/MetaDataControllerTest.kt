@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationRequest
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -26,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -94,6 +96,67 @@ internal class MetaDataControllerTest(
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
+    }
+
+    @Test
+    fun `check if DataMetaInformationRequest is correctly transformed into DataMetaInformation`() {
+        val dataId = "data-id-for-testing-postListOfDataMetaInfoRequests"
+        val dataType = DataType.of(SfdrData::class.java)
+        val reportingPeriod = "2022"
+        val uploaderUserId = UUID.randomUUID()
+        val qaStatus = QaStatus.Accepted
+        val amountStoredCompanies = 2
+        val testCompanyInformation =
+            testDataProvider.getCompanyInformationWithoutIdentifiers(amountStoredCompanies)
+        val storedCompany1 = companyManager.addCompany(testCompanyInformation[0])
+        val storedCompany2 = companyManager.addCompany(testCompanyInformation[1])
+        val companyId1 = storedCompany1.companyId
+        val companyId2 = storedCompany2.companyId
+        val url = "https://dataland.com/companies/$companyId1/frameworks/$dataId"
+        val dataMetaInformationRequest =
+            listOf(
+                DataMetaInformationRequest(
+                    companyId1, dataType, true,
+                    reportingPeriod, setOf(uploaderUserId), qaStatus,
+                ),
+                DataMetaInformationRequest(
+                    companyId2, dataType, true,
+                    reportingPeriod, setOf(uploaderUserId), qaStatus,
+                ),
+            )
+        dataMetaInformationManager.storeDataMetaInformation(
+            DataMetaInformationEntity(
+                dataId, company = storedCompany1,
+                dataType.toString(),
+                uploaderUserId.toString(),
+                uploadTime = 0, reportingPeriod, currentlyActive = true,
+                qaStatus,
+            ),
+        )
+        dataMetaInformationManager.storeDataMetaInformation(
+            DataMetaInformationEntity(
+                "dataId", company = storedCompany2,
+                dataType.toString(),
+                uploaderUserId.toString(),
+                uploadTime = 0, reportingPeriod, currentlyActive = true,
+                qaStatus,
+            ),
+        )
+
+        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        val listDataMetaInfos =
+            metaDataController.postListOfDataMetaInfoRequests(dataMetaInformationRequest).body
+
+        assertEquals(amountStoredCompanies, listDataMetaInfos?.size)
+        val dataMetaInfo = listDataMetaInfos?.get(0)
+        if (dataMetaInfo != null) {
+            assertEquals(companyId1, dataMetaInfo.companyId)
+            assertEquals(dataType, dataMetaInfo.dataType)
+            assertEquals(qaStatus, dataMetaInfo.qaStatus)
+            assertTrue(dataMetaInfo.currentlyActive)
+            assertEquals(uploaderUserId.toString(), dataMetaInfo.uploaderUserId)
+            assertEquals(url, dataMetaInfo.url)
+        }
     }
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {

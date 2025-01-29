@@ -38,7 +38,7 @@ class EmailMessageListener(
     private val logger = LoggerFactory.getLogger(EmailMessageListener::class.java)
 
     /**
-     * Checks if a message object in the queue fits the expected RoutingKey and EmailMessage Type
+     * Checks if a message object in the queue fits the expected RoutingKey and EmailMessage Type+
      * to process it as an email.
      * @param jsonString the message object which should be sent out as a mail
      * @param type the type of the message

@@ -414,6 +414,72 @@
         ]
       }
     },
+    "/metadata/batch": {
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Search in Dataland for meta info about data using multiple filters.",
+        "description": "Meta info about data sets registered by Dataland can be retrieved.",
+        "operationId": "postListOfDataMetaInfoRequests",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DataMetaInformationRequest"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/vsme": {
       "post": {
         "tags": [
@@ -5929,7 +5995,8 @@
           "dataType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime"
+          "uploadTime",
+          "url"
         ],
         "type": "object",
         "properties": {
@@ -5958,6 +6025,9 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "url": {
+            "type": "string"
           }
         }
       },
@@ -6015,6 +6085,50 @@
           },
           "reason": {
             "type": "string"
+          }
+        }
+      },
+      "DataMetaInformationRequest": {
+        "required": [
+          "showOnlyActive"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataType": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataTypeEnum"
+              }
+            ]
+          },
+          "showOnlyActive": {
+            "type": "boolean"
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "nullable": true
+          },
+          "uploaderUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "qaStatus": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QaStatus"
+              }
+            ]
           }
         }
       },
@@ -20061,16 +20175,16 @@
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
           },
-          "companyId": {
+          "headquarters": {
+            "type": "string"
+          },
+          "countryCode": {
             "type": "string"
           },
           "lei": {
@@ -20098,10 +20212,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
