@@ -268,7 +268,7 @@ class DatabaseStringDataStore(
      * @param dataId the ID of the data to be retrieved
      * @return the data as json string with ID dataId
      */
-    fun selectDataSet(
+    fun selectDataset(
         dataId: String,
         correlationId: String,
     ): String =

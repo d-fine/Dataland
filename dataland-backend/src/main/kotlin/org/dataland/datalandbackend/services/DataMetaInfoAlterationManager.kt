@@ -2,7 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -38,7 +38,7 @@ class DataMetaInfoAlterationManager
             dataMetaInformationPatch: DataMetaInformationPatch,
             correlationId: String,
         ): DataMetaInformationEntity {
-//        if (!dataManager.isDataSetPublic(dataId)) throw InvalidInputApiException(
+//        if (!dataManager.isDatasetPublic(dataId)) throw InvalidInputApiException(
 //            summary = "Not a public dataset.",
 //            message = "The provided dataId does not belong to a public dataset. Patching of meta information is only " +
 //                    "supported for public dataset."
@@ -53,22 +53,22 @@ class DataMetaInfoAlterationManager
             val dataMetaInformation: DataMetaInformationEntity =
                 dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
 
-            logger.info("Retrieving StorableDataSet with dataId $dataId from Storage. CorrelationId: $correlationId.")
+            logger.info("Retrieving StorableDataset with dataId $dataId from Storage. CorrelationId: $correlationId.")
 
-            val storableDataSet: StorableDataSet =
-                dataManager.getPublicDataSet(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
+            val storableDataset: StorableDataset =
+                dataManager.getPublicDataset(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
 
             logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
 
             dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
             dataMetaInformationManager.storeDataMetaInformation(dataMetaInformation)
 
-            logger.info("Updating MetaInformation within StorableDataSet with dataId $dataId. CorrelationId: $correlationId.")
-            this.updateStorableDataSetFromMetaInfo(storableDataSet, dataMetaInformationPatch)
+            logger.info("Updating MetaInformation within StorableDataset with dataId $dataId. CorrelationId: $correlationId.")
+            this.updateStorableDatasetFromMetaInfo(storableDataset, dataMetaInformationPatch)
 
             dataManager.storeDatasetInTemporaryStoreAndSendPatchMessage(
                 dataId = dataId,
-                storableDataSet = storableDataSet,
+                storableDataset = storableDataset,
                 correlationId = correlationId,
             )
 
@@ -83,15 +83,15 @@ class DataMetaInfoAlterationManager
         }
 
         /**
-         * Update MetaInformation within StorableDataSet
+         * Update MetaInformation within StorableDataset
          */
-        private fun updateStorableDataSetFromMetaInfo(
-            storableDataSet: StorableDataSet,
+        private fun updateStorableDatasetFromMetaInfo(
+            storableDataset: StorableDataset,
             dataMetaInformationPatch: DataMetaInformationPatch,
-        ): StorableDataSet {
+        ): StorableDataset {
             dataMetaInformationPatch.uploaderUserId?.let {
-                storableDataSet.uploaderUserId = it
+                storableDataset.uploaderUserId = it
             }
-            return storableDataSet
+            return storableDataset
         }
     }

@@ -60,7 +60,7 @@ class DatabaseStringDataStoreTest {
     @Test
     fun `check that a ResourceNotFoundApiException is thrown if the dataset could not be found`() {
         `when`(mockDataItemRepository.findById(dataId)).thenReturn(Optional.empty())
-        assertThrows<ResourceNotFoundApiException> { databaseStringDataStore.selectDataSet(dataId, correlationId) }
+        assertThrows<ResourceNotFoundApiException> { databaseStringDataStore.selectDataset(dataId, correlationId) }
     }
 
     @Test
