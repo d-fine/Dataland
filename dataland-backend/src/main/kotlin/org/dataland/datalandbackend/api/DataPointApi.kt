@@ -45,7 +45,7 @@ interface DataPointApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun validateDataPoint(
         @Valid @RequestBody dataPoint: DataPointToValidate,
-    ): ResponseEntity<Unit>
+    ): ResponseEntity<Void>
 
     /**
      * A method to store a data point via Dataland into a data store

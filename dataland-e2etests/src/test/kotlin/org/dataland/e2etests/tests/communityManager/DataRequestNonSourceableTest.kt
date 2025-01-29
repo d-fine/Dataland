@@ -132,7 +132,7 @@ class DataRequestNonSourceableTest {
     fun `validate that the get info on sourceability of a dataset endpoint is working`() {
         postNonSourceableInfo(nonSourceableInfoRequest2023)
         val receivedNonSourceableInfoList =
-            apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDataSets(
+            apiAccessor.metaDataControllerApi.getInfoOnNonSourceabilityOfDatasets(
                 companyId = nonSourceableInfoRequest2023.companyId,
                 dataType = nonSourceableInfoRequest2023.dataType,
                 reportingPeriod = nonSourceableInfoRequest2023.reportingPeriod,

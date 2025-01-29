@@ -192,6 +192,7 @@ abstract class PavedRoadFramework(
             into = datalandProject,
             buildApiController = enabledFeatures.contains(FrameworkGenerationFeatures.BackendApiController),
             privateFrameworkBoolean = isPrivateFramework,
+            assembledDataset = enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications),
         )
     }
 
@@ -204,6 +205,7 @@ abstract class PavedRoadFramework(
 
         qaModelBuilder.build(
             into = datalandProject,
+            assembledDataset = enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications),
         )
     }
 

@@ -1,12 +1,10 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportWithMetaInformation
 
 /**
  * The database entity for storing metadata regarding QA reports uploaded to dataland
@@ -32,22 +30,6 @@ data class QaReportEntity(
     @Column(name = "active", nullable = false)
     var active: Boolean,
 ) {
-    /**
-     * Method to convert the QA report entity to a model containing the report and its meta information
-     * @param objectMapper the object mapper to use for deserialization
-     * @param clazz the class of the report to deserialize
-     */
-    fun <ReportType> toFullApiModel(
-        objectMapper: ObjectMapper,
-        clazz: Class<ReportType>,
-    ): QaReportWithMetaInformation<ReportType> {
-        val report = objectMapper.readValue(qaReport, clazz)
-        return QaReportWithMetaInformation(
-            metaInfo = toMetaInformationApiModel(),
-            report = report,
-        )
-    }
-
     /**
      * Method to convert the QA report entity to a model containing only the meta information of the report
      */

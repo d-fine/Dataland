@@ -29,7 +29,7 @@ class DataPointController(
     @Autowired private val dataPointValidator: DataPointValidator,
     @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {
-    override fun validateDataPoint(dataPoint: DataPointToValidate): ResponseEntity<Unit> {
+    override fun validateDataPoint(dataPoint: DataPointToValidate): ResponseEntity<Void> {
         val correlationId = IdUtils.generateCorrelationId(null, null)
         dataPointValidator.validateDataPoint(dataPoint.dataPointType, dataPoint.dataPoint, correlationId)
         return ResponseEntity.noContent().build()
