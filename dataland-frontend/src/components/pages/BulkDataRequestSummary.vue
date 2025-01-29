@@ -37,6 +37,12 @@
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
               <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+              <router-link :to="entry.url.toString()" class="text-primary no-underline font-bold">
+                <div class="text-right">
+                  <span>VIEW REQUEST</span>
+                  <span class="ml-3">></span>
+                </div>
+              </router-link>
             </div>
           </template>
         </AccordionTab>
@@ -64,7 +70,7 @@
               <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
               <router-link :to="entry.url.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
-                  <span>VIEW</span>
+                  <span>VIEW DATA</span>
                   <span class="ml-3">></span>
                 </div>
               </router-link>
@@ -83,6 +89,9 @@
               <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
             </span>
           </template>
+          <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
+            No company is known within Dataland for the following Company identifiers
+          </div>
           <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
             <div class="grid-container align-items-center">
               <div class="col bold-text middle-center-div">{{ entry }}</div>

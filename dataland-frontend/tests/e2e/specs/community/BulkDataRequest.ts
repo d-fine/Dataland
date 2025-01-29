@@ -9,7 +9,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 
 describeIf(
-  'As a user I want to be able to conduct a bulk request request',
+  'As a user I want to be able to conduct a bulk data request',
   {
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
