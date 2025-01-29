@@ -24,7 +24,7 @@ interface TemporarilyCachedDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(
@@ -45,7 +45,7 @@ interface TemporarilyCachedDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(

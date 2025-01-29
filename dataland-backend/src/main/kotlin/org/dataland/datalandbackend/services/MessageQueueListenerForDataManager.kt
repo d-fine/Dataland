@@ -151,7 +151,7 @@ class MessageQueueListenerForDataManager(
             val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
             MessageQueueUtils.validateDataId(dataId)
             logger.info("Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: $correlationId.")
-            dataManager.removeDataSetFromInMemoryStore(dataId)
+            dataManager.removeDatasetFromInMemoryStore(dataId)
         }
     }
 

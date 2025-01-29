@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.entities.DataIdAndHashToEurodatIdMappingEnti
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.repositories.DataIdAndHashToEurodatIdMappingRepository
@@ -74,8 +74,8 @@ class PrivateDataManager(
         )
 
         val userAuthentication = DatalandAuthentication.fromContext()
-        val storableDataSet =
-            StorableDataSet(
+        val storableDataset =
+            StorableDataset(
                 companyId = companyAssociatedVsmeData.companyId,
                 dataType = DataType.of(VsmeData::class.java),
                 uploaderUserId = userAuthentication.userId,
@@ -85,43 +85,43 @@ class PrivateDataManager(
             )
         val dataId = generateUUID()
 
-        storeJsonInMemory(dataId, storableDataSet, correlationId)
-        val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataSet)
+        storeJsonInMemory(dataId, storableDataset, correlationId)
+        val metaInfoEntity = buildMetaInfoEntity(dataId, storableDataset)
         storeMetaInfoEntityInMemory(dataId, metaInfoEntity, correlationId)
         val documentHashes: Map<String, String> =
             documents
                 ?.takeIf { it.isNotEmpty() }
                 ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
                 ?: mapOf()
-        sendReceptionMessage(dataId, storableDataSet, correlationId, documentHashes)
+        sendReceptionMessage(dataId, storableDataset, correlationId, documentHashes)
         return metaInfoEntity.toApiModel(userAuthentication)
     }
 
     private fun storeJsonInMemory(
         dataId: String,
-        storableDataSet: StorableDataSet,
+        storableDataset: StorableDataset,
         correlationId: String,
     ) {
-        val storableVsmeDatasetAsString = objectMapper.writeValueAsString(storableDataSet)
+        val storableVsmeDatasetAsString = objectMapper.writeValueAsString(storableDataset)
         jsonDataInMemoryStorage[dataId] = storableVsmeDatasetAsString
         logger.info(
-            "Stored JSON in memory for companyId ${storableDataSet.companyId} dataId $dataId and " +
+            "Stored JSON in memory for companyId ${storableDataset.companyId} dataId $dataId and " +
                 "correlationId $correlationId",
         )
     }
 
     private fun buildMetaInfoEntity(
         dataId: String,
-        storableDataSet: StorableDataSet,
+        storableDataset: StorableDataset,
     ): DataMetaInformationEntity {
-        val company = dataManagerUtils.getCompanyByCompanyId(storableDataSet.companyId)
+        val company = dataManagerUtils.getCompanyByCompanyId(storableDataset.companyId)
         return DataMetaInformationEntity(
             dataId,
             company,
-            storableDataSet.dataType.toString(),
-            storableDataSet.uploaderUserId,
-            storableDataSet.uploadTime,
-            storableDataSet.reportingPeriod,
+            storableDataset.dataType.toString(),
+            storableDataset.uploaderUserId,
+            storableDataset.uploadTime,
+            storableDataset.reportingPeriod,
             true,
             QaStatus.Accepted,
         )
@@ -164,7 +164,7 @@ class PrivateDataManager(
 
     private fun sendReceptionMessage(
         dataId: String,
-        storableDataset: StorableDataSet,
+        storableDataset: StorableDataset,
         correlationId: String,
         documentHashes: Map<String, String>,
     ) {

@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.model.DataType
 
 /**
  * --- API model ---
- * NonSourceableInfo storing the history of whether a data set is sourceable or not used for posting and for message queue.
+ * NonSourceableInfo storing the history of whether a dataset is sourceable or not used for posting and for message queue.
  * @param companyId unique identifier to identify the company the data is associated with
  * @param dataType type of the data
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid

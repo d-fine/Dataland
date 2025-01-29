@@ -1,0 +1,94 @@
+{
+	"data": {
+		"general": {
+			"general": {
+				"referencedReports": {
+					"ESEFReport": {
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"fileName": "ESEFReport",
+						"publicationDate": "2023-09-24"
+					},
+					"SustainabilityReport": {
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"fileName": "SustainabilityReport",
+						"publicationDate": "2023-12-21"
+					}
+				}
+			},
+			"financialInformation": {
+				"equity": {
+					"value": 5925197060.02,
+					"dataSource": {
+						"page": "574-877",
+						"fileName": "SustainabilityReport",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "AI",
+						"publicationDate": null
+					},
+					"comment": "navigate multi-byte sensor",
+					"quality": "Audited",
+					"currency": "BSD"
+				},
+				"debt": {
+					"value": 2535600674.39,
+					"dataSource": {
+						"page": "793",
+						"fileName": "ESEFReport",
+						"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+						"tagName": "relationships",
+						"publicationDate": null
+					},
+					"comment": "parse cross-platform circuit",
+					"quality": "Estimated",
+					"currency": "TJS"
+				},
+				"evic": {
+					"value": 9757891598.3,
+					"dataSource": {
+						"page": "240-480",
+						"fileName": "SustainabilityReport",
+						"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+						"tagName": "initiatives",
+						"publicationDate": null
+					},
+					"comment": "back up haptic port",
+					"quality": "Estimated",
+					"currency": "AMD"
+				}
+			}
+		}
+	},
+	"qaReport": {
+		"general": {
+			"financialInformation": {
+				"equity": {
+					"verdict": "QaAccepted",
+					"comment": "Equity is fine",
+					"correctedData": {}
+				},
+				"debt": {
+					"verdict": "QaNotAttempted",
+					"comment": "Qa for debt was inconclusive",
+					"correctedData": {}
+				},
+				"evic": {
+					"verdict": "QaRejected",
+					"comment": "EVIC is not correct",
+					"correctedData": {
+						"value": 9294439715.69,
+						"dataSource": {
+							"page": "747",
+							"fileName": "SustainabilityReport",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "markets",
+							"publicationDate": null
+						},
+						"comment": "bypass 1080p interface",
+						"quality": "Estimated",
+						"currency": "GBP"
+					}
+				}
+			}
+		}
+	}
+}

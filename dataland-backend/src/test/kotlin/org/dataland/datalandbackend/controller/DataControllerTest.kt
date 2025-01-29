@@ -5,7 +5,6 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -38,9 +37,9 @@ import java.util.UUID
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 internal class DataControllerTest(
     @Autowired @Spy
-    val objectMapper: ObjectMapper,
+    private val objectMapper: ObjectMapper,
     @Autowired
-    val dataExportService: DataExportService,
+    private val dataExportService: DataExportService,
 ) {
     private final val testDataProvider = TestDataProvider(objectMapper)
 
@@ -102,16 +101,8 @@ internal class DataControllerTest(
                 otherUserAcceptedDataMetaInformationEntity,
             ),
         )
-        `when`(mockDataManager.getPublicDataSet(anyString(), notNull() ?: testDataType, anyString())).thenReturn(
-            StorableDataSet(
-                testCompanyId,
-                testDataType,
-                "",
-                0,
-                testReportingPeriod,
-                someEuTaxoDataAsString,
-            ),
-        )
+        `when`(mockDataManager.getDatasetData(anyString(), notNull() ?: testDataType.toString(), anyString()))
+            .thenReturn(someEuTaxoDataAsString)
         dataController =
             EutaxonomyNonFinancialsDataController(
                 mockDataManager,
