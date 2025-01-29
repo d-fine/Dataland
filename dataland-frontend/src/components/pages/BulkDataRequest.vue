@@ -221,72 +221,20 @@ export default defineComponent({
       selectedFrameworks: ['lksg', 'sfdr', 'eutaxonomy-non-financials'] as Array<DataTypeEnum>,
       identifiersInString: '',
       identifiers: [] as Array<string>,
-      acceptedCompanyIdentifiers: ['Test123', 'AnotherTest'] as Array<string>,
-      rejectedCompanyIdentifiers: ['Rejected123', 'AnotherReject'] as Array<string>,
-      createdRequests: [
-        {
-          companyIdentifier: '1',
-          companyName: 'VW',
-          reportingPeriod: '2023',
-          framework: 'sfdr',
-          url: 'https://dataland.com',
-        },
-        {
-          companyIdentifier: '2',
-          companyName: 'Siemens',
-          reportingPeriod: '2025',
-          framework: 'lksg',
-          url: 'https://dataland.com',
-        },
-        {
-          companyIdentifier: '3',
-          companyName: 'BASF',
-          reportingPeriod: '2019',
-          framework: 'eu-taxonomy',
-          url: 'https://dataland.com',
-        },
-        {
-          companyIdentifier: '4',
-          companyName: 'Bayer',
-          reportingPeriod: '2018',
-          framework: 'eu-taxonomy',
-          url: 'https://dataland.com',
-        },
-      ] as Array<ExistingDataResponse>,
-      notCreatedRequests: [
-        {
-          companyIdentifier: '123',
-          companyName: 'Adidas',
-          reportingPeriod: '2024',
-          framework: 'sfdr',
-          url: 'https://dataland.com',
-        },
-        {
-          companyIdentifier: '456',
-          companyName: 'Daimler',
-          reportingPeriod: '2022',
-          framework: 'lksg',
-          url: 'https://dataland.com',
-        },
-        {
-          companyIdentifier: '789',
-          companyName: 'Deutsche Bank',
-          reportingPeriod: '2021',
-          framework: 'eu-taxonomy',
-          url: 'https://dataland.com',
-        },
-      ] as Array<ExistingDataResponse>,
+      rejectedCompanyIdentifiers: [] as Array<string>,
+      createdRequests: [] as Array<ExistingDataResponse>,
+      notCreatedRequests: [] as Array<ExistingDataResponse>,
       submittingSucceeded: true,
       submittingInProgress: false,
-      postBulkDataRequestObjectProcessed: true,
+      postBulkDataRequestObjectProcessed: false,
       message: '',
       footerContent,
       selectedReportingPeriodsError: false,
       reportingPeriods: [
-        { name: '2024', value: true },
+        { name: '2024', value: false },
         { name: '2023', value: false },
         { name: '2022', value: false },
-        { name: '2021', value: true },
+        { name: '2021', value: false },
         { name: '2020', value: false },
       ],
     };
@@ -379,8 +327,9 @@ export default defineComponent({
 
         this.message = response.data.message;
         this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
-        this.submittingSucceeded = this.acceptedCompanyIdentifiers.length > 0;
+        this.notCreatedRequests = response.data.alreadyExistingDataRequests;
+        this.createdRequests = response.data.acceptedDataRequests;
+        this.submittingSucceeded = this.createdRequests.length > 0;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
