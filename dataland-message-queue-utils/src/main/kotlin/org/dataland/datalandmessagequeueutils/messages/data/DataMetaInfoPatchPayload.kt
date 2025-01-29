@@ -6,4 +6,4 @@ package org.dataland.datalandmessagequeueutils.messages.data
 data class DataMetaInfoPatchPayload(
     override val dataId: String,
     val uploaderUserId: String?,
-): DataPayload
+) : DataPayload

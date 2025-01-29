@@ -12,11 +12,9 @@ data class DataMetaInformationPatch(
     @field:JsonProperty(required = false)
     val uploaderUserId: String? = null,
 ) {
-    // TODO check why this is necessary...why are methods serialized?
     /**
      * Returns true if all fields are set to null; false otherwise.
      * JsonIgnore is necessary, otherwise this function would be serialized.
      */
-    @JsonIgnore
-    fun isNullOrEmpty(): Boolean = uploaderUserId.isNullOrEmpty()
+    @JsonIgnore fun isNullOrEmpty(): Boolean = uploaderUserId.isNullOrEmpty()
 }

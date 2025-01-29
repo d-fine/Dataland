@@ -18,10 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 class DataMetaInfoAlterationManager
     @Autowired
     constructor(
-//        private val objectMapper: ObjectMapper,
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val dataManager: DataManager,
-//        private val messageQueuePublications: MessageQueuePublications,
         private val keycloakUserService: KeycloakUserService,
     ) {
         private val logger = LoggerFactory.getLogger(DataMetaInfoAlterationManager::class.java)
@@ -38,11 +36,14 @@ class DataMetaInfoAlterationManager
             dataMetaInformationPatch: DataMetaInformationPatch,
             correlationId: String,
         ): DataMetaInformationEntity {
-//        if (!dataManager.isDatasetPublic(dataId)) throw InvalidInputApiException(
-//            summary = "Not a public dataset.",
-//            message = "The provided dataId does not belong to a public dataset. Patching of meta information is only " +
-//                    "supported for public dataset."
-//        )
+            if (!dataManager.isDatasetPublic(dataId)) {
+                throw InvalidInputApiException(
+                    summary = "Not a public dataset.",
+                    message =
+                        "The provided dataId does not belong to a public dataset. Patching of meta information is only " +
+                            "supported for public dataset.",
+                )
+            }
 
             dataMetaInformationPatch.uploaderUserId?.let { keycloakUserService.getUser(it).userId.isEmpty() }
                 ?: throw InvalidInputApiException(
@@ -71,14 +72,6 @@ class DataMetaInfoAlterationManager
                 storableDataset = storableDataset,
                 correlationId = correlationId,
             )
-
-//        messageQueuePublications.publishDataMetaInfoPatchMessage(
-//            dataId,
-//            dataMetaInformationPatch,
-//            correlationId,
-//        )
-//        dataMetaInformationPatch.uploaderUserId?.let { dataMetaInformationEntity.uploaderUserId = it }
-//        return dataMetaInformationRepository.save(dataMetaInformationEntity)
             return dataMetaInformation
         }
 
