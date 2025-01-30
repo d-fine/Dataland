@@ -130,8 +130,8 @@ class BulkDataRequestManager(
                 .filter { request ->
                     val requestCriteria = Triple(request.companyId, request.dataType, request.reportingPeriod)
 
-                    if (request.companyId == null || request.dataType == null || request.reportingPeriod == null) {
-                        throw IllegalArgumentException("Request cannot have null values: $request")
+                    require(!(request.companyId == null || request.dataType == null || request.reportingPeriod == null)) {
+                        "Request cannot have null values: $request"
                     }
                     requestCriteria !in existingCriteriaSet
                 }.map { request ->

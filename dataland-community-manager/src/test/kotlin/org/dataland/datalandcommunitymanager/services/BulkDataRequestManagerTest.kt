@@ -44,6 +44,7 @@ class BulkDataRequestManagerTest {
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
+    private val dummyReportingPeriod = "2023-Q1"
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
@@ -115,7 +116,7 @@ class BulkDataRequestManagerTest {
             BulkDataRequest(
                 companyIdentifiers = setOf("companyId1"),
                 dataTypes = setOf(DataTypeEnum.sfdr),
-                reportingPeriods = setOf("2023-Q1"),
+                reportingPeriods = setOf(dummyReportingPeriod),
             )
 
         val expectedAcceptedDataRequest =
@@ -124,7 +125,7 @@ class BulkDataRequestManagerTest {
                     userProvidedCompanyId = "companyId1",
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
-                    reportingPeriod = "2023-Q1",
+                    reportingPeriod = dummyReportingPeriod,
                     requestId = "request-id",
                     requestUrl = "https://dataland.com/requests/request-id",
                 ),
@@ -147,7 +148,7 @@ class BulkDataRequestManagerTest {
                         companyId = dummyCompanyIdAndName.companyId,
                         dataType = DataTypeEnum.sfdr,
                         uploadTime = System.currentTimeMillis(),
-                        reportingPeriod = "2023-Q1",
+                        reportingPeriod = dummyReportingPeriod,
                         currentlyActive = true,
                         qaStatus = QaStatus.Accepted,
                         url = "https://example.com/dataId1",
@@ -160,7 +161,7 @@ class BulkDataRequestManagerTest {
             BulkDataRequest(
                 companyIdentifiers = setOf("companyId1"),
                 dataTypes = setOf(DataTypeEnum.sfdr),
-                reportingPeriods = setOf("2023-Q1"),
+                reportingPeriods = setOf(dummyReportingPeriod),
             )
 
         val expectedAlreadyExistingDataSetsResponse =
@@ -169,7 +170,7 @@ class BulkDataRequestManagerTest {
                     userProvidedCompanyId = "companyId1",
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
-                    reportingPeriod = "2023-Q1",
+                    reportingPeriod = dummyReportingPeriod,
                     datasetId = "dataId1",
                     datasetUrl = "https://example.com/dataId1",
                 ),
