@@ -27,9 +27,15 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyBoolean
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.beans.factory.annotation.Autowired
@@ -55,8 +61,8 @@ class DataManagerTest(
     @Autowired val companyRoleChecker: CompanyRoleChecker,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
 ) {
-    val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
-    val messageQueuePublications: MessageQueuePublications = mock(MessageQueuePublications::class.java)
+    val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
+    val mockMessageQueuePublications: MessageQueuePublications = mock<MessageQueuePublications>()
     val testDataProvider = TestDataProvider(objectMapper)
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
@@ -65,11 +71,12 @@ class DataManagerTest(
     val dataUUID = "JustSomeUUID"
 
     @BeforeEach
-    fun reset() {
+    fun setup() {
+        reset(mockStorageClient, mockMessageQueuePublications)
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, dataMetaInformationManager,
-                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, mockMessageQueuePublications,
             )
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
@@ -217,7 +224,7 @@ class DataManagerTest(
             addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
 
         `when`(
-            messageQueuePublications.publishDatasetUploadedMessage(
+            mockMessageQueuePublications.publishDatasetUploadedMessage(
                 anyString(), anyBoolean(), anyString(),
             ),
         ).thenThrow(AmqpException::class.java)
@@ -229,6 +236,27 @@ class DataManagerTest(
     }
 
     @Test
+    fun `check that processing a patch event works as expected`() {
+        val storableEuTaxonomyDatasetForNonFinancials =
+            addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+
+        doNothing().whenever(mockMessageQueuePublications).publishDatasetMetaInfoPatchMessage(any(), any(), anyString())
+
+        assertDoesNotThrow {
+            spyDataManager.storeDatasetInTemporaryStoreAndSendPatchMessage(
+                dataUUID, storableEuTaxonomyDatasetForNonFinancials, correlationId,
+            )
+        }
+
+        verify(mockMessageQueuePublications, times(1))
+            .publishDatasetMetaInfoPatchMessage(
+                dataUUID,
+                storableEuTaxonomyDatasetForNonFinancials.uploaderUserId,
+                correlationId,
+            )
+    }
+
+    @Test
     fun `check a ResourceNotFoundApiException if the dataset could not be found`() {
         val mockMetaInfo =
             DataMetaInformationEntity(
@@ -236,7 +264,7 @@ class DataManagerTest(
                 qaStatus = QaStatus.Pending, company = testDataProvider.getEmptyStoredCompanyEntity(),
                 reportingPeriod = "2023", currentlyActive = true,
             )
-        val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
+        val mockDataMetaInformationManager = mock<DataMetaInformationManager>()
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
         `when`(mockStorageClient.selectDataById(anyString(), anyString())).thenThrow(
             ClientException(statusCode = HttpStatus.NOT_FOUND.value()),
@@ -244,7 +272,7 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, mockDataMetaInformationManager,
-                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, mockMessageQueuePublications,
             )
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataset(
