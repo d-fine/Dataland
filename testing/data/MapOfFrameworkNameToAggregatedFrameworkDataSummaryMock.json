@@ -1,32 +1,32 @@
 {
 	"eutaxonomy-financials": {
-		"numberOfProvidedReportingPeriods": 19
+		"numberOfProvidedReportingPeriods": 24
 	},
 	"eutaxonomy-non-financials": {
-		"numberOfProvidedReportingPeriods": 7
+		"numberOfProvidedReportingPeriods": 6
 	},
 	"nuclear-and-gas": {
-		"numberOfProvidedReportingPeriods": 14
+		"numberOfProvidedReportingPeriods": 6
 	},
 	"lksg": {
-		"numberOfProvidedReportingPeriods": 29
+		"numberOfProvidedReportingPeriods": 24
 	},
 	"p2p": {
-		"numberOfProvidedReportingPeriods": 14
+		"numberOfProvidedReportingPeriods": 30
 	},
 	"sfdr": {
-		"numberOfProvidedReportingPeriods": 26
-	},
-	"vsme": {
 		"numberOfProvidedReportingPeriods": 22
 	},
+	"vsme": {
+		"numberOfProvidedReportingPeriods": 20
+	},
 	"esg-datenkatalog": {
-		"numberOfProvidedReportingPeriods": 15
+		"numberOfProvidedReportingPeriods": 26
 	},
 	"heimathafen": {
-		"numberOfProvidedReportingPeriods": 14
+		"numberOfProvidedReportingPeriods": 13
 	},
 	"additional-company-information": {
-		"numberOfProvidedReportingPeriods": 3
+		"numberOfProvidedReportingPeriods": 11
 	}
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-8 col-offset-2 bg-white mt-4">
+  <div class="col-8 mx-auto bg-white mt-4">
     <h1 class="middle-center-div">Data Request Summary</h1>
     <div class="summary-section border-bottom py-4">
       <div class="summary-wrapper">
@@ -49,20 +49,20 @@
       </Accordion>
     </div>
     <div class="summary-section border-bottom py-4">
-      <Accordion :active-index="0">
+      <Accordion>
         <AccordionTab>
           <template #header>
             <span class="flex align-items-center gap-2 w-full">
               <em class="material-icons info-icon new-color">info</em>
-              <span class="summary-section-heading">SKIPPED REQUESTS (data already exists)</span>
-              <Badge :value="notCreatedRequests.length" class="ml-auto mr-2" />
+              <span class="summary-section-heading">SKIPPED REQUESTS - DATA ALREADY EXISTS</span>
+              <Badge :value="existingDataSets.length" class="ml-auto mr-2" />
             </span>
           </template>
           <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
             If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single
             data request on the corresponding dataset page.
           </div>
-          <template v-for="entry in notCreatedRequests" :key="entry">
+          <template v-for="entry in existingDataSets" :key="entry">
             <div class="grid-container align-items-center">
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
@@ -84,13 +84,40 @@
         <AccordionTab>
           <template #header>
             <span class="flex align-items-center gap-2 w-full">
+              <em class="material-icons info-icon new-color">info</em>
+              <span class="summary-section-heading">SKIPPED REQUESTS - REQUESTS ALREADY EXIST</span>
+              <Badge :value="existingRequests.length" class="ml-auto mr-2" />
+            </span>
+          </template>
+          <template v-for="entry in existingRequests" :key="entry">
+            <div class="grid-container align-items-center">
+              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
+              <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
+              <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
+              <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+              <a :href="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
+                <div class="text-right">
+                  <span>VIEW DATA</span>
+                  <span class="ml-3">></span>
+                </div>
+              </a>
+            </div>
+          </template>
+        </AccordionTab>
+      </Accordion>
+    </div>
+    <div class="summary-section border-bottom py-4">
+      <Accordion>
+        <AccordionTab>
+          <template #header>
+            <span class="flex align-items-center gap-2 w-full">
               <em class="material-icons info-icon red-text">error</em>
               <span class="summary-section-heading">REJECTED IDENTIFIERS</span>
               <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
             </span>
           </template>
           <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
-            No company is known within Dataland for the following Company identifiers
+            No company or companies are known on Dataland for the following company identifier(s)
           </div>
           <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
             <div class="grid-container align-items-center">
@@ -105,7 +132,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { AcceptedDataRequests, ExistingDataRequests } from '@/utils/RequestUtils.ts';
+import { DataRequests, DataSets } from '@/utils/RequestUtils.ts';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
@@ -116,8 +143,9 @@ const props = defineProps<{
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
   rejectedCompanyIdentifiers: string[];
-  notCreatedRequests: Array<ExistingDataRequests>;
-  createdRequests: Array<AcceptedDataRequests>;
+  existingDataSets: Array<DataSets>;
+  createdRequests: Array<DataRequests>;
+  existingRequests: Array<DataRequests>;
 }>();
 </script>
 
