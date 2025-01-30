@@ -153,20 +153,20 @@ export function getRequestStatusLabel(requestStatus: RequestStatus): string {
   return requestStatus === RequestStatus.NonSourceable ? 'No sources available' : requestStatus;
 }
 
-export interface AcceptedDataRequests {
+export interface DataSets {
   userProvidedCompanyId: String;
   companyName: String;
   reportingPeriod: String;
   framework: String;
-  requestId: String;
-  requestUrl: String;
+  datasetId: String;
+  datasetUrl: String;
 }
 
-export interface ExistingDataRequests {
+export interface DataRequests {
   userProvidedCompanyId: String;
   companyName: String;
-  datasetId: String;
+  requestId: String;
   reportingPeriod: String;
   framework: String;
-  datasetUrl: String;
+  requestUrl: String;
 }

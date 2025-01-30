@@ -40,7 +40,7 @@
                     <div class="col-4 col-offset-4">
                       {{ rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
                       identifiers could not be recognized and were rejected. {{ createdRequests.length }} data requests
-                      were created and {{ notCreatedRequests.length }} skipped. More details can be found in the summary
+                      were created and {{ existingDataSets.length }} skipped. More details can be found in the summary
                       below.
                     </div>
 
@@ -60,8 +60,9 @@
                   :humanized-selected-frameworks="humanizedSelectedFrameworks"
                   :summary-section-frameworks-heading="summarySectionFrameworksHeading"
                   :rejected-company-identifiers="rejectedCompanyIdentifiers"
+                  :existing-data-sets="existingDataSets"
+                  :existing-requests="existingRequests"
                   :created-requests="createdRequests"
-                  :not-created-requests="notCreatedRequests"
                 />
               </template>
             </template>
@@ -181,7 +182,7 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
-import { type AcceptedDataRequests, type ExistingDataRequests } from '@/utils/RequestUtils.ts';
+import { type DataRequests, DataSets } from '@/utils/RequestUtils.ts';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
@@ -215,8 +216,9 @@ export default defineComponent({
       identifiersInString: '',
       identifiers: [] as Array<string>,
       rejectedCompanyIdentifiers: [] as Array<string>,
-      createdRequests: [] as Array<AcceptedDataRequests>,
-      notCreatedRequests: [] as Array<ExistingDataRequests>,
+      createdRequests: [] as Array<DataRequests>,
+      existingDataSets: [] as Array<DataSets>,
+      existingRequests: [] as Array<DataRequests>,
       submittingSucceeded: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
@@ -319,9 +321,11 @@ export default defineComponent({
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
         this.message = response.data.message;
+        console.log(response.data);
         this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.notCreatedRequests = response.data.alreadyExistingDataRequests;
+        this.existingDataSets = response.data.alreadyExistingDataSets;
         this.createdRequests = response.data.acceptedDataRequests;
+        this.existingRequests = response.data.alreadyExistingNonFinalRequests;
         this.submittingSucceeded = this.createdRequests.length > 0;
       } catch (error) {
         console.error(error);
