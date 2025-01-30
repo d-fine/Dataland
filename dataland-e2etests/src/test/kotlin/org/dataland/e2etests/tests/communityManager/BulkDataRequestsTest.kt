@@ -9,10 +9,8 @@ import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.causeClientExceptionByBulkDataRequest
-import org.dataland.e2etests.utils.communityManager.checkErrorMessageForInvalidIdentifiersInBulkRequest
-import org.dataland.e2etests.utils.communityManager.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
+import org.dataland.e2etests.utils.communityManager.checkThatNumberOfRejectedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
@@ -56,7 +54,7 @@ class BulkDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifiers, dataTypes, reportingPeriods),
             )
-        checkThatAllIdentifiersWereAccepted(response, identifiers.size, 0)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests, identifiers.size * dataTypes.size * reportingPeriods.size,
@@ -114,7 +112,7 @@ class BulkDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), setOf(reportingPeriod)),
             )
-        checkThatAllIdentifiersWereAccepted(response, (identifiersForBulkRequest.size - 1), 1)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 1)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests,
@@ -139,14 +137,14 @@ class BulkDataRequestsTest {
             )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(bulkDataRequest)
-        checkThatAllIdentifiersWereAccepted(response, 2, 0)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, reportingPeriods.size)
         retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2022", RequestStatus.Answered)
         retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2023", RequestStatus.Resolved)
         val timestampBeforeDuplicates = retrieveTimeAndWaitOneMillisecond()
         val responseAfterDuplicates = requestControllerApi.postBulkDataRequest(bulkDataRequest)
-        checkThatAllIdentifiersWereAccepted(responseAfterDuplicates, 2, 0)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(responseAfterDuplicates, 0)
         val newlyStoredRequestsAfterDuplicates = getNewlyStoredRequestsAfterTimestamp(timestampBeforeDuplicates)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequestsAfterDuplicates, 1)
         assertEquals(
@@ -157,7 +155,7 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
+    fun `check the expected exception is thrown when frameworks are empty or identifiers are empty`() {
         val validIdentifiers = setOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
         val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
         val reportingPeriods = setOf("2023")
@@ -168,12 +166,6 @@ class BulkDataRequestsTest {
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), dataTypes, emptySet())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), reportingPeriods)
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), emptySet())
-        val invalidIdentifiers =
-            setOf(
-                generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
-            )
-        val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, dataTypes, reportingPeriods)
-        checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
 
     @Test

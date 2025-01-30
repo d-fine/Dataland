@@ -204,7 +204,7 @@ class BulkDataRequestManager(
                         framework = request.dataType.toString(),
                         reportingPeriod = request.reportingPeriod,
                         requestId = storedRequest.dataRequestId,
-                        requestUrl = "https://$proxyPrimaryUrl/requests/" + storedRequest.dataRequestId,
+                        requestUrl = "https://$proxyPrimaryUrl/requests/${storedRequest.dataRequestId}",
                     )
                 acceptedDataRequests.add(singleAcceptedDataRequest)
             } else {
@@ -215,7 +215,7 @@ class BulkDataRequestManager(
                         framework = request.dataType.toString(),
                         reportingPeriod = request.reportingPeriod,
                         requestId = existingRequestId,
-                        requestUrl = "https://$proxyPrimaryUrl/requests/" + existingRequestId,
+                        requestUrl = "https://$proxyPrimaryUrl/requests/$existingRequestId",
                     )
                 userNonFinalRequests.add(userNonFinalRequest)
             }
