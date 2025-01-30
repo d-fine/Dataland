@@ -117,7 +117,7 @@
             </span>
           </template>
           <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
-            No company is known within Dataland for the following Company identifiers
+            No company or companies are known on Dataland for the following company identifier(s)
           </div>
           <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
             <div class="grid-container align-items-center">
