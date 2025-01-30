@@ -7,6 +7,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -58,14 +59,22 @@ class DataMetaInfoAlterationManagerTest {
         doReturn(partiallyMockedDataMetaInformationEntity)
             .whenever(mockDataMetaInformationManager)
             .getDataMetaInformationByDataId(any())
-        doNothing().whenever(mockDataManager).storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
+        doNothing()
+            .whenever(mockDataManager)
+            .storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
         doReturn(storableDataset).whenever(mockDataManager).getPublicDataset(any(), any(), any())
 
         dataMetaInfoAlterationManager =
             DataMetaInfoAlterationManager(
-                mockDataMetaInformationManager,
-                mockDataManager,
+                this.mockDataMetaInformationManager,
+                this.mockDataManager,
             )
+    }
+
+    @AfterEach
+    fun resetPartialMocks() {
+        storableDataset.uploaderUserId = initialUploaderUserId
+        partiallyMockedDataMetaInformationEntity.uploaderUserId = initialUploaderUserId
     }
 
     @Test
@@ -74,7 +83,11 @@ class DataMetaInfoAlterationManagerTest {
         val dataMetaInformationPatch = DataMetaInformationPatch(newUploaderUserId)
 
         assertDoesNotThrow {
-            dataMetaInfoAlterationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
+            dataMetaInfoAlterationManager.patchDataMetaInformation(
+                dataId,
+                dataMetaInformationPatch,
+                correlationId,
+            )
         }
         assertEquals(newUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
         assertEquals(newUploaderUserId, storableDataset.uploaderUserId)
@@ -82,10 +95,12 @@ class DataMetaInfoAlterationManagerTest {
 
     @Test
     fun `ensure that metaInfo and storableDataset are not patched if uploaderUserId is null`() {
-        val dataMetaInformationPatch = DataMetaInformationPatch()
-
         assertDoesNotThrow {
-            dataMetaInfoAlterationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
+            dataMetaInfoAlterationManager.patchDataMetaInformation(
+                dataId,
+                DataMetaInformationPatch(uploaderUserId = null),
+                correlationId,
+            )
         }
         assertEquals(initialUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
         assertEquals(initialUploaderUserId, storableDataset.uploaderUserId)
