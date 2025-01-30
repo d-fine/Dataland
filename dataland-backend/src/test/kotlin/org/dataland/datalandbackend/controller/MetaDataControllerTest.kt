@@ -45,6 +45,10 @@ internal class MetaDataControllerTest(
 ) {
     private lateinit var testCompanyInformation: CompanyInformation
     private lateinit var storedCompany: StoredCompanyEntity
+    private val adminUserId = "admin-user-id"
+    private val readerUserId = "reader-user-id"
+    private val uploaderUserId = "uploader-user-id"
+    private val dummyReportingPeriod = "reporting-period"
 
     val testDataProvider = TestDataProvider(objectMapper)
 
@@ -71,16 +75,16 @@ internal class MetaDataControllerTest(
             dataMetaInformationManager.storeDataMetaInformation(
                 DataMetaInformationEntity(
                     dataId = "data-id-for-testing-user-access", company = storedCompany,
-                    dataType = DataType.of(LksgData::class.java).toString(), uploaderUserId = "uploader-user-id",
-                    uploadTime = 0, reportingPeriod = "reporting-period", currentlyActive = null,
+                    dataType = DataType.of(LksgData::class.java).toString(), uploaderUserId = uploaderUserId,
+                    uploadTime = 0, reportingPeriod = dummyReportingPeriod, currentlyActive = null,
                     qaStatus = QaStatus.Pending,
                 ),
             )
-        mockSecurityContext(userId = "reader-user-id", roles = expectedSetOfRolesForReader)
+        mockSecurityContext(userId = readerUserId, roles = expectedSetOfRolesForReader)
         assertMetaDataNotVisible(metaInfo)
-        mockSecurityContext(userId = "uploader-user-id", roles = expectedSetOfRolesForUploader)
+        mockSecurityContext(userId = uploaderUserId, roles = expectedSetOfRolesForUploader)
         assertMetaDataVisible(metaInfo)
-        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
     }
 
@@ -92,44 +96,35 @@ internal class MetaDataControllerTest(
                     dataId = "data-id-for-testing-user-access-to-rejected-datasets", company = storedCompany,
                     dataType = DataType.of(SfdrData::class.java).toString(),
                     uploaderUserId = "uploader-user-id-of-rejected-dataset",
-                    uploadTime = 0, reportingPeriod = "reporting-period", currentlyActive = null,
+                    uploadTime = 0, reportingPeriod = dummyReportingPeriod, currentlyActive = null,
                     qaStatus = QaStatus.Rejected,
                 ),
             )
-        mockSecurityContext(userId = "reader-user-id", roles = expectedSetOfRolesForReader)
+        mockSecurityContext(userId = readerUserId, roles = expectedSetOfRolesForReader)
         assertMetaDataNotVisible(metaInfo)
         mockSecurityContext(userId = "uploader-user-id-of-rejected-dataset", roles = expectedSetOfRolesForUploader)
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "different-uploader-user-id", roles = expectedSetOfRolesForUploader)
         assertMetaDataNotVisible(metaInfo)
-        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
     }
 
     @Test
-    fun `ensure that meta info patch endpoint cannot be accessed by non-admins`() {
+    fun `ensure that meta info patch endpoint cannot be accessed by non admins`() {
         val metaInfo =
             dataMetaInformationManager.storeDataMetaInformation(
-                DataMetaInformationEntity(
-                    dataId = "data-id-for-testing-admin-access-to-patch-endpoint",
-                    company = storedCompany,
-                    dataType = DataType.of(SfdrData::class.java).toString(),
-                    uploaderUserId = "uploader-user-id",
-                    uploadTime = 0,
-                    reportingPeriod = "reporting-period",
-                    currentlyActive = true,
-                    qaStatus = QaStatus.Accepted,
-                ),
+                buildMetaInfoForPatchTestWithDatatype(DataType.of(SfdrData::class.java)),
             )
         val dataMetaInformationPatch =
             DataMetaInformationPatch(
-                uploaderUserId = "reader-user-id",
+                uploaderUserId = readerUserId,
             )
-        mockSecurityContext(userId = "reader-user-id", roles = expectedSetOfRolesForReader)
+        mockSecurityContext(userId = readerUserId, roles = expectedSetOfRolesForReader)
         assertMetaDataNotPatchableWithException<AccessDeniedException>(metaInfo, dataMetaInformationPatch)
-        mockSecurityContext(userId = "uploader-user-id", roles = expectedSetOfRolesForUploader)
+        mockSecurityContext(userId = uploaderUserId, roles = expectedSetOfRolesForUploader)
         assertMetaDataNotPatchableWithException<AccessDeniedException>(metaInfo, dataMetaInformationPatch)
         mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForReviewer)
         assertMetaDataNotPatchableWithException<AccessDeniedException>(metaInfo, dataMetaInformationPatch)
@@ -139,16 +134,7 @@ internal class MetaDataControllerTest(
     fun `ensure that meta info patch endpoint rejects empty patches`() {
         val metaInfo =
             dataMetaInformationManager.storeDataMetaInformation(
-                DataMetaInformationEntity(
-                    dataId = "data-id-for-testing-admin-access-to-patch-endpoint",
-                    company = storedCompany,
-                    dataType = DataType.of(SfdrData::class.java).toString(),
-                    uploaderUserId = "uploader-user-id",
-                    uploadTime = 0,
-                    reportingPeriod = "reporting-period",
-                    currentlyActive = true,
-                    qaStatus = QaStatus.Accepted,
-                ),
+                buildMetaInfoForPatchTestWithDatatype(DataType.of(SfdrData::class.java)),
             )
         val emptyDataMetaInformationPatch =
             DataMetaInformationPatch(
@@ -156,7 +142,7 @@ internal class MetaDataControllerTest(
             )
         val nullDataMetaInformationPatch = DataMetaInformationPatch()
 
-        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, emptyDataMetaInformationPatch)
         assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, nullDataMetaInformationPatch)
     }
@@ -165,21 +151,24 @@ internal class MetaDataControllerTest(
     fun `ensure that meta info patch endpoint rejects vmse data`() {
         val metaInfo =
             dataMetaInformationManager.storeDataMetaInformation(
-                DataMetaInformationEntity(
-                    dataId = "data-id-for-testing-admin-access-to-patch-endpoint",
-                    company = storedCompany,
-                    dataType = DataType.of(VsmeData::class.java).toString(),
-                    uploaderUserId = "uploader-user-id",
-                    uploadTime = 0,
-                    reportingPeriod = "reporting-period",
-                    currentlyActive = true,
-                    qaStatus = QaStatus.Accepted,
-                ),
+                buildMetaInfoForPatchTestWithDatatype(DataType.of(VsmeData::class.java)),
             )
 
-        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, mock<DataMetaInformationPatch>())
     }
+
+    private fun buildMetaInfoForPatchTestWithDatatype(dataType: DataType): DataMetaInformationEntity =
+        DataMetaInformationEntity(
+            dataId = "data-id-for-testing-admin-access-to-patch-endpoint",
+            company = storedCompany,
+            dataType = dataType.toString(),
+            uploaderUserId = uploaderUserId,
+            uploadTime = 0,
+            reportingPeriod = dummyReportingPeriod,
+            currentlyActive = true,
+            qaStatus = QaStatus.Accepted,
+        )
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {
         val allMetaInformation =

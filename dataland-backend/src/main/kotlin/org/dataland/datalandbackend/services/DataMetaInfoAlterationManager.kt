@@ -37,14 +37,13 @@ class DataMetaInfoAlterationManager
                 dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
 
             logger.info("Retrieving StorableDataset with dataId $dataId from Storage. CorrelationId: $correlationId.")
-
             val storableDataset: StorableDataset =
                 dataManager.getPublicDataset(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
 
             logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
-
-            // TODO
-            dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId!!
+            dataMetaInformationPatch.uploaderUserId?.let {
+                dataMetaInformation.uploaderUserId = it
+            }
             dataMetaInformationManager.storeDataMetaInformation(dataMetaInformation)
 
             logger.info("Updating MetaInformation within StorableDataset with dataId $dataId. CorrelationId: $correlationId.")
