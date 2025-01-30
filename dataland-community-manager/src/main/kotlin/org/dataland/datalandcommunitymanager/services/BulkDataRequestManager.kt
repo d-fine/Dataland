@@ -130,8 +130,8 @@ class BulkDataRequestManager(
                 .filter { request ->
                     val requestCriteria = Triple(request.companyId, request.dataType, request.reportingPeriod)
 
-                    if (request.companyId == null || request.dataType == null || request.reportingPeriod == null) {
-                        throw IllegalArgumentException("Request cannot have null values: $request")
+                    require(!(request.companyId == null || request.dataType == null || request.reportingPeriod == null)) {
+                        "Request cannot have null values: $request"
                     }
                     requestCriteria !in existingCriteriaSet
                 }.map { request ->
@@ -204,7 +204,7 @@ class BulkDataRequestManager(
                         framework = request.dataType.toString(),
                         reportingPeriod = request.reportingPeriod,
                         requestId = storedRequest.dataRequestId,
-                        requestUrl = "https://$proxyPrimaryUrl/requests/" + storedRequest.dataRequestId,
+                        requestUrl = "https://$proxyPrimaryUrl/requests/${storedRequest.dataRequestId}",
                     )
                 acceptedDataRequests.add(singleAcceptedDataRequest)
             } else {
@@ -215,7 +215,7 @@ class BulkDataRequestManager(
                         framework = request.dataType.toString(),
                         reportingPeriod = request.reportingPeriod,
                         requestId = existingRequestId,
-                        requestUrl = "https://$proxyPrimaryUrl/requests/" + existingRequestId,
+                        requestUrl = "https://$proxyPrimaryUrl/requests/$existingRequestId",
                     )
                 userNonFinalRequests.add(userNonFinalRequest)
             }

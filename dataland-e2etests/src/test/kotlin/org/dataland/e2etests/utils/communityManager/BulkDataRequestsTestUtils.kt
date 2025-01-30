@@ -31,12 +31,10 @@ fun checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(
     )
 }
 
-fun checkThatAllIdentifiersWereAccepted(
+fun checkThatNumberOfRejectedIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {
-    checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers)
     checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
 }
 
@@ -109,22 +107,6 @@ private fun errorMessageForEmptyInputConfigurations(
         dataTypes.isEmpty() -> "The list of frameworks is empty."
         else -> "The list of reporting periods is empty."
     }
-
-fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
-    check400ClientExceptionErrorMessage(clientException)
-    val responseBody = (clientException.response as ClientError<*>).body as String
-    assertTrue(
-        responseBody.contains(
-            "All provided company identifiers are not unique or could not be " +
-                "recognized.",
-        ),
-    )
-    assertTrue(
-        responseBody.contains(
-            "The company identifiers you provided could not be uniquely matched with an existing company on dataland",
-        ),
-    )
-}
 
 fun retrieveDataRequestIdForReportingPeriodAndUpdateStatus(
     dataRequests: List<ExtendedStoredDataRequest>,

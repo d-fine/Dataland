@@ -44,12 +44,14 @@ class BulkDataRequestManagerTest {
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
+    private val dummyReportingPeriod = "2023-Q1"
+    private val dummyUserProvidedCompanyId = "companyId1"
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
         mockBulkDataRequestEmailMessageSender = mock(BulkDataRequestEmailMessageSender::class.java)
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
-        mockMetaDataController = createMetaDataControllerMock()
+        mockMetaDataController = mock(MetaDataControllerApi::class.java)
 
         bulkDataRequestManager =
             BulkDataRequestManager(
@@ -74,29 +76,6 @@ class BulkDataRequestManagerTest {
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         `when`(mockAuthentication.credentials).thenReturn("")
         return mockSecurityContext
-    }
-
-    private fun createMetaDataControllerMock(): MetaDataControllerApi {
-        val metaDataControllerMock = mock(MetaDataControllerApi::class.java)
-
-        `when`(metaDataControllerMock.postListOfDataMetaInfoRequests(anyList())).thenAnswer {
-            val dataMetaInformationList =
-                listOf(
-                    DataMetaInformation(
-                        dataId = "dataId1",
-                        companyId = dummyCompanyIdAndName.companyId,
-                        dataType = DataTypeEnum.sfdr,
-                        uploadTime = System.currentTimeMillis(),
-                        reportingPeriod = "2023-Q1",
-                        currentlyActive = true,
-                        qaStatus = QaStatus.Accepted,
-                        url = "https://example.com/dataId1",
-                    ),
-                )
-            return@thenAnswer dataMetaInformationList
-        }
-
-        return metaDataControllerMock
     }
 
     private fun createDataRequestProcessingUtilsMock(): DataRequestProcessingUtils {
@@ -131,55 +110,77 @@ class BulkDataRequestManagerTest {
 
     @Test
     fun `process bulk data request with no existing data`() {
+        val emptyList: List<DataMetaInformation> = listOf()
+        whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
+
         val bulkDataRequest =
             BulkDataRequest(
-                companyIdentifiers = setOf("companyId1"),
+                companyIdentifiers = setOf(dummyUserProvidedCompanyId),
                 dataTypes = setOf(DataTypeEnum.sfdr),
-                reportingPeriods = setOf("2023-Q1"),
+                reportingPeriods = setOf(dummyReportingPeriod),
             )
 
         val expectedAcceptedDataRequest =
             listOf(
                 DataRequestResponse(
-                    userProvidedCompanyId = "companyId1",
+                    userProvidedCompanyId = dummyUserProvidedCompanyId,
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
-                    reportingPeriod = "2023-Q1",
+                    reportingPeriod = dummyReportingPeriod,
                     requestId = "request-id",
                     requestUrl = "https://dataland.com/requests/request-id",
                 ),
             )
-        val emptyList: List<DataMetaInformation> = listOf()
-
-        whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
 
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(expectedAcceptedDataRequest, response.acceptedDataRequests)
+        assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
+        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
     }
 
     @Test
     fun `process bulk data request with existing data`() {
+        `when`(mockMetaDataController.postListOfDataMetaInfoRequests(anyList())).thenAnswer {
+            val dataMetaInformationList =
+                listOf(
+                    DataMetaInformation(
+                        dataId = "dataId1",
+                        companyId = dummyCompanyIdAndName.companyId,
+                        dataType = DataTypeEnum.sfdr,
+                        uploadTime = System.currentTimeMillis(),
+                        reportingPeriod = dummyReportingPeriod,
+                        currentlyActive = true,
+                        qaStatus = QaStatus.Accepted,
+                        url = "https://example.com/dataId1",
+                    ),
+                )
+            dataMetaInformationList
+        }
+
         val bulkDataRequest =
             BulkDataRequest(
-                companyIdentifiers = setOf("companyId1"),
+                companyIdentifiers = setOf(dummyUserProvidedCompanyId),
                 dataTypes = setOf(DataTypeEnum.sfdr),
-                reportingPeriods = setOf("2023-Q1"),
+                reportingPeriods = setOf(dummyReportingPeriod),
             )
 
         val expectedAlreadyExistingDataSetsResponse =
             listOf(
                 DataSetsResponse(
-                    userProvidedCompanyId = "companyId1",
+                    userProvidedCompanyId = dummyUserProvidedCompanyId,
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
-                    reportingPeriod = "2023-Q1",
+                    reportingPeriod = dummyReportingPeriod,
                     datasetId = "dataId1",
                     datasetUrl = "https://example.com/dataId1",
                 ),
             )
 
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
-        print(response.alreadyExistingDataSets)
+        assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
+        assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDataSets)
+        assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
     }
 }
