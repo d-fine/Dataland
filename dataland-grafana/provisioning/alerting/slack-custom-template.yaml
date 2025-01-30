@@ -34,7 +34,7 @@ templates:
       {{ define "alert_firing_template" }}
       *Service:* {{ .Labels.service_name }}
       *detected level:* {{ .Labels.detected_level }}
-      - Errors/minute: {{ .Values.B }}
+      - {{ .Values.B }} error logs
       - Dashboard: {{ .DashboardURL }}
       - Panel: {{ .PanelURL }}
       - Source: {{ .GeneratorURL }}

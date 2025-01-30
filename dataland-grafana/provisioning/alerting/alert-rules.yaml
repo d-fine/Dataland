@@ -88,6 +88,89 @@ groups:
         isPaused: false
         notification_settings:
           receiver: Slack Critical Alerts
+      - uid: unhealthy_container
+        title: Unhealthy Container
+        condition: C
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 21600
+              to: 0
+            datasourceUid: P8E80F9AEF21F6940
+            model:
+              datasource:
+                type: loki
+                uid: P8E80F9AEF21F6940
+              editorMode: code
+              expr: count_over_time({service_name="varlogs"} |= "unhealthy" [1m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: range
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [ ]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: max
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: beb8ybzf6qupsc
+        panelId: 2
+        noDataState: OK
+        execErrState: Error
+        for: 1m
+        annotations:
+          __dashboardUid__: beb8ybzf6qupsc
+          __panelId__: "2"
+          description: 'Unhealthy container detected.'
+        labels: { }
+        isPaused: false
+        notification_settings:
+          receiver: Slack Critical Alerts
       - uid: stack_traces
         title: Stack Trace
         condition: C
@@ -165,7 +248,7 @@ groups:
         for: 1m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "2"
+          __panelId__: "3"
           description: 'Stack Trace detected.'
         labels: { }
         isPaused: false
@@ -242,13 +325,13 @@ groups:
               refId: C
               type: threshold
         dashboardUid: beb8ybzf6qupsc
-        panelId: 3
+        panelId: 4
         noDataState: OK
         execErrState: Error
         for: 1m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "3"
+          __panelId__: "4"
           description: 'Error Log Messages detected.'
         labels: { }
         isPaused: false
