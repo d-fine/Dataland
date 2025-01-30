@@ -1,5 +1,5 @@
 <template>
-  <div class="col-8 col-offset-2 bg-white mt-4">
+  <div class="col-8 mx-auto bg-white mt-4">
     <h1 class="middle-center-div">Data Request Summary</h1>
     <div class="summary-section border-bottom py-4">
       <div class="summary-wrapper">

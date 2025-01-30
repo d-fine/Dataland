@@ -17,7 +17,7 @@
           id="requestDataFormId"
           name="requestDataFormName"
         >
-          <div class="px-8 py-4 justify-content-center uploadFormWrapper">
+          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
             <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
               <template v-if="submittingInProgress">
                 <div class="status-wrapper">
