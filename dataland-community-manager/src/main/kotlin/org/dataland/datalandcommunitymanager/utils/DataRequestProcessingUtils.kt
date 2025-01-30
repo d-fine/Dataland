@@ -250,6 +250,46 @@ class DataRequestProcessingUtils
         }
 
         /**
+         * Checks whether a request already exists on Dataland in a non-final status (i.e. in status "Open" or "Answered")
+         * and returns the request id
+         * @param companyId the company ID of the data request
+         * @param framework the framework of the data request
+         * @param reportingPeriod the reporting period of the data request
+         * @return the requestId if a request in non-final status exists, else null
+         */
+        fun getRequestIdForDataRequestWithNonFinalStatus(
+            companyId: String,
+            framework: DataTypeEnum,
+            reportingPeriod: String,
+        ): String? {
+            val openDataRequests =
+                findAlreadyExistingDataRequestForCurrentUser(
+                    companyId, framework, reportingPeriod, RequestStatus.Open,
+                )
+
+            val answeredDataRequests =
+                findAlreadyExistingDataRequestForCurrentUser(
+                    companyId, framework, reportingPeriod, RequestStatus.Answered,
+                )
+
+            openDataRequests?.takeIf { it.size > 1 }?.let {
+                throw ConflictApiException(
+                    "More than one open data request.",
+                    "There seems to be more than one open data request with the same specifications.",
+                )
+            }
+
+            answeredDataRequests?.takeIf { it.size > 1 }?.let {
+                throw ConflictApiException(
+                    "More than one answered data request.",
+                    "There seems to be more than one answered data request with the same specifications.",
+                )
+            }
+
+            return openDataRequests?.firstOrNull()?.dataRequestId ?: answeredDataRequests?.firstOrNull()?.dataRequestId
+        }
+
+        /**
          * This method checks if a dataset exists for the specified parameters
          * @param companyId the dataland companyId of the company from which data is requested
          * @param reportingPeriod the reportingPeriod for which data is requested

@@ -6,10 +6,10 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandcommunitymanager.model.dataRequest.AcceptedDataRequestsResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.AlreadyExistingDataSetsResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataSetsResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ValidSingleDataRequest
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -90,7 +90,7 @@ class BulkDataRequestManager(
     private fun getAlreadyExistingDataSetsResponse(
         metaDataList: List<DataMetaInformation>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
-    ): List<AlreadyExistingDataSetsResponse> {
+    ): List<DataSetsResponse> {
         if (metaDataList.isEmpty()) {
             return emptyList()
         }
@@ -104,7 +104,7 @@ class BulkDataRequestManager(
 
             companyMappingEntry ?: throw IllegalArgumentException("Can't match: $companyId to a user provided company identifier.")
 
-            AlreadyExistingDataSetsResponse(
+            DataSetsResponse(
                 userProvidedCompanyId = companyMappingEntry.key,
                 companyName = companyMappingEntry.value.companyName,
                 framework = metaData.dataType.toString(),
@@ -168,46 +168,59 @@ class BulkDataRequestManager(
     private fun storeDataRequests(
         validSingleDataRequests: List<ValidSingleDataRequest>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
-    ): List<AcceptedDataRequestsResponse> {
-        val acceptedDataRequests = mutableListOf<AcceptedDataRequestsResponse>()
+    ): Pair<List<DataRequestResponse>, List<DataRequestResponse>> {
+        val acceptedDataRequests = mutableListOf<DataRequestResponse>()
+        val userNonFinalRequests = mutableListOf<DataRequestResponse>()
 
-        for (validSingleRequest in validSingleDataRequests) {
-            if (!utils.existsDataRequestWithNonFinalStatus(
-                    validSingleRequest.companyIdentifier,
-                    validSingleRequest.dataType,
-                    validSingleRequest.reportingPeriod,
+        for (request in validSingleDataRequests) {
+            val existingRequestId =
+                utils.getRequestIdForDataRequestWithNonFinalStatus(
+                    request.companyIdentifier,
+                    request.dataType,
+                    request.reportingPeriod,
                 )
-            ) {
-                val response =
+
+            val companyId = request.companyIdentifier
+            val entry =
+                userProvidedIdentifierToDatalandCompanyIdMapping.entries
+                    .find { it.value.companyId == companyId }
+                    ?: throw IllegalArgumentException("Entry not found for companyId: $companyId")
+
+            val userProvidedCompanyId = entry.key
+            val companyName = entry.value.companyName
+
+            if (existingRequestId == null) {
+                val storedRequest =
                     utils.storeDataRequestEntityAsOpen(
-                        validSingleRequest.companyIdentifier,
-                        validSingleRequest.dataType,
-                        validSingleRequest.reportingPeriod,
+                        request.companyIdentifier,
+                        request.dataType,
+                        request.reportingPeriod,
                     )
 
-                val companyId = validSingleRequest.companyIdentifier
-                val entry =
-                    userProvidedIdentifierToDatalandCompanyIdMapping.entries
-                        .find { it.value.companyId == companyId }
-                val userProvidedCompanyId = entry?.key
-                val companyName = entry?.value?.companyName
-
-                if (userProvidedCompanyId == null || companyName == null) {
-                    throw IllegalArgumentException("Entry not found for companyId: $companyId")
-                }
                 val singleAcceptedDataRequest =
-                    AcceptedDataRequestsResponse(
+                    DataRequestResponse(
                         userProvidedCompanyId = userProvidedCompanyId,
                         companyName = companyName,
-                        framework = validSingleRequest.dataType.toString(),
-                        reportingPeriod = validSingleRequest.reportingPeriod,
-                        requestId = response.dataRequestId,
-                        requestUrl = "https://$proxyPrimaryUrl/requests/" + response.dataRequestId,
+                        framework = request.dataType.toString(),
+                        reportingPeriod = request.reportingPeriod,
+                        requestId = storedRequest.dataRequestId,
+                        requestUrl = "https://$proxyPrimaryUrl/requests/" + storedRequest.dataRequestId,
                     )
                 acceptedDataRequests.add(singleAcceptedDataRequest)
+            } else {
+                val userNonFinalRequest =
+                    DataRequestResponse(
+                        userProvidedCompanyId = userProvidedCompanyId,
+                        companyName = companyName,
+                        framework = request.dataType.toString(),
+                        reportingPeriod = request.reportingPeriod,
+                        requestId = existingRequestId,
+                        requestUrl = "https://$proxyPrimaryUrl/requests/" + existingRequestId,
+                    )
+                userNonFinalRequests.add(userNonFinalRequest)
             }
         }
-        return acceptedDataRequests
+        return acceptedDataRequests to userNonFinalRequests
     }
 
     private fun errorMessageForEmptyInputConfigurations(
@@ -260,8 +273,11 @@ class BulkDataRequestManager(
         rejectedIdentifiers: List<String>,
         correlationId: String,
     ): BulkDataRequestResponse {
-        val acceptedRequests =
+        val requestResults =
             storeDataRequests(acceptedRequestCombinations, acceptedIdentifiersToCompanyIdAndName)
+
+        val acceptedRequests = requestResults.first
+        val existingNonFinalRequests = requestResults.second
 
         val existingDataSets =
             getAlreadyExistingDataSetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
@@ -269,7 +285,8 @@ class BulkDataRequestManager(
         val bulkRequestResponse =
             BulkDataRequestResponse(
                 acceptedDataRequests = acceptedRequests,
-                alreadyExistingDataRequests = existingDataSets,
+                alreadyExistingNonFinalRequests = existingNonFinalRequests,
+                alreadyExistingDataSets = existingDataSets,
                 rejectedCompanyIdentifiers = rejectedIdentifiers,
             )
 

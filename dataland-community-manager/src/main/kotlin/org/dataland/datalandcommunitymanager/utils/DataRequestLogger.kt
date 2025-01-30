@@ -104,7 +104,7 @@ class DataRequestLogger {
     ) {
         bulkDataRequestLogger.info("Processed bulk data request with correlationId: $correlationId.")
         bulkDataRequestLogger.info("Accepted requests: ${r.acceptedDataRequests}")
-        bulkDataRequestLogger.info("Already existing datasets: ${r.alreadyExistingDataRequests}")
+        bulkDataRequestLogger.info("Already existing datasets: ${r.alreadyExistingDataSets}")
         bulkDataRequestLogger.info("Rejected identifiers: ${r.rejectedCompanyIdentifiers}")
     }
 

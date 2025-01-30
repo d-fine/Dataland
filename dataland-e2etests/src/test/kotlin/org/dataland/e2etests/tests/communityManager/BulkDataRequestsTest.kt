@@ -13,7 +13,6 @@ import org.dataland.e2etests.utils.communityManager.causeClientExceptionByBulkDa
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForInvalidIdentifiersInBulkRequest
 import org.dataland.e2etests.utils.communityManager.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
-import org.dataland.e2etests.utils.communityManager.checkThatMessageIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
@@ -91,7 +90,6 @@ class BulkDataRequestsTest {
             )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, validIdentifiers.size)
         checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, invalidIdentifiers.size)
-        checkThatMessageIsAsExpected(response, validIdentifiers.size, invalidIdentifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, validIdentifiers.size)
         assertFalse(
@@ -209,6 +207,5 @@ class BulkDataRequestsTest {
             )
         checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, 1)
         checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, 1)
-        checkThatMessageIsAsExpected(response, 1, 1)
     }
 }
