@@ -85,7 +85,7 @@ abstract class DataController<T>(
         ResponseEntity
             .ok(retrieveDataset(dataId))
 
-    override fun getCompanyAssociatedData(
+    override fun getCompanyAssociatedDataByDimensions(
         reportingPeriod: String,
         companyId: String,
     ): ResponseEntity<CompanyAssociatedData<T>> {

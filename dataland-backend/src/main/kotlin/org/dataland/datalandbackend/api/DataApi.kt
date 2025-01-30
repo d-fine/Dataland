@@ -92,7 +92,7 @@ interface DataApi<T> {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getCompanyAssociatedData(
+    fun getCompanyAssociatedDataByDimensions(
         @RequestParam reportingPeriod: String,
         @RequestParam companyId: String,
     ): ResponseEntity<CompanyAssociatedData<T>>

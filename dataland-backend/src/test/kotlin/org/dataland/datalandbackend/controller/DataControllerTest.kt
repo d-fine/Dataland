@@ -154,14 +154,14 @@ internal class DataControllerTest(
     @Test
     fun `test that no dataset is returned for a combination of reporting period company id and data type that does not exist`() {
         assertThrows<ResourceNotFoundApiException> {
-            dataController.getCompanyAssociatedData(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
+            dataController.getCompanyAssociatedDataByDimensions(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
         }
     }
 
     @Test
     fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
         `when`(mockDataManager.getDatasetData(eq(testDataDimensions), any())).thenReturn(someEuTaxoDataAsString)
-        val response = dataController.getCompanyAssociatedData(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
+        val response = dataController.getCompanyAssociatedDataByDimensions(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
         Assertions.assertEquals(someEuTaxoData, response.body!!.data)
     }
 

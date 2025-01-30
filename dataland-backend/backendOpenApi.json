@@ -2651,9 +2651,7 @@
         "tags": [
           "sfdr-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData",
+        "operationId": "getCompanyAssociatedSfdrDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -3034,7 +3032,7 @@
         ],
         "summary": "Retrieve data for the company ID and reporting period provided.",
         "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_1",
+        "operationId": "getCompanyAssociatedDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -3413,9 +3411,7 @@
         "tags": [
           "nuclear-and-gas-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_2",
+        "operationId": "getCompanyAssociatedNuclearAndGasDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -3794,9 +3790,7 @@
         "tags": [
           "lksg-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_3",
+        "operationId": "getCompanyAssociatedLksgDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -4175,9 +4169,7 @@
         "tags": [
           "heimathafen-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_4",
+        "operationId": "getCompanyAssociatedHeimathafenDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -4556,9 +4548,7 @@
         "tags": [
           "eutaxonomy-non-financials-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_5",
+        "operationId": "getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -4937,9 +4927,7 @@
         "tags": [
           "eutaxonomy-financials-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_6",
+        "operationId": "getCompanyAssociatedEutaxonomyFinancialsDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -5318,9 +5306,7 @@
         "tags": [
           "esg-datenkatalog-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_7",
+        "operationId": "getCompanyAssociatedEsgDatenkatalogDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
@@ -5699,9 +5685,7 @@
         "tags": [
           "additional-company-information-data-controller"
         ],
-        "summary": "Retrieve data for the company ID and reporting period provided.",
-        "description": "Data identified by the company ID and reporting Period is retrieved, if available.",
-        "operationId": "getCompanyAssociatedData_8",
+        "operationId": "getCompanyAssociatedAdditionalCompanyInformationDataByDimensions",
         "parameters": [
           {
             "name": "reportingPeriod",
