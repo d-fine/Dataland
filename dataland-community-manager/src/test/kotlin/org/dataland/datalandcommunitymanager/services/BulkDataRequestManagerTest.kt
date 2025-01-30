@@ -45,6 +45,7 @@ class BulkDataRequestManagerTest {
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
     private val dummyReportingPeriod = "2023-Q1"
+    private val dummyUserProvidedCompanyId = "companyId1"
 
     @BeforeEach
     fun setUpBulkDataRequestManager() {
@@ -114,7 +115,7 @@ class BulkDataRequestManagerTest {
 
         val bulkDataRequest =
             BulkDataRequest(
-                companyIdentifiers = setOf("companyId1"),
+                companyIdentifiers = setOf(dummyUserProvidedCompanyId),
                 dataTypes = setOf(DataTypeEnum.sfdr),
                 reportingPeriods = setOf(dummyReportingPeriod),
             )
@@ -122,7 +123,7 @@ class BulkDataRequestManagerTest {
         val expectedAcceptedDataRequest =
             listOf(
                 DataRequestResponse(
-                    userProvidedCompanyId = "companyId1",
+                    userProvidedCompanyId = dummyUserProvidedCompanyId,
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
                     reportingPeriod = dummyReportingPeriod,
@@ -159,7 +160,7 @@ class BulkDataRequestManagerTest {
 
         val bulkDataRequest =
             BulkDataRequest(
-                companyIdentifiers = setOf("companyId1"),
+                companyIdentifiers = setOf(dummyUserProvidedCompanyId),
                 dataTypes = setOf(DataTypeEnum.sfdr),
                 reportingPeriods = setOf(dummyReportingPeriod),
             )
@@ -167,7 +168,7 @@ class BulkDataRequestManagerTest {
         val expectedAlreadyExistingDataSetsResponse =
             listOf(
                 DataSetsResponse(
-                    userProvidedCompanyId = "companyId1",
+                    userProvidedCompanyId = dummyUserProvidedCompanyId,
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
                     reportingPeriod = dummyReportingPeriod,
