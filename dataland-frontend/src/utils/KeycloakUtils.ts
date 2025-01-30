@@ -1,5 +1,5 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from 'keycloak-js';
+import Keycloak from '../../node_modules/keycloak-js/lib/keycloak.js';
 
 /**
  * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function
@@ -75,9 +75,9 @@ export function logoutAndRedirectToUri(keycloak: Keycloak, additionToBasePath: s
  * Logs the user in and redirects her/him to the Dataland companies search page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
+export async function loginAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
-  const url = keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
+  const url = await keycloak.createLoginUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
 }
 
@@ -85,9 +85,9 @@ export function loginAndRedirectToSearchPage(keycloak: Keycloak): void {
  * Registers and logs the user in and redirects her/him to the Dataland companies search page.
  * @param keycloak is the keycloak adaptor used to do the login
  */
-export function registerAndRedirectToSearchPage(keycloak: Keycloak): void {
+export async function registerAndRedirectToSearchPage(keycloak: Keycloak): Promise<void> {
   const baseUrl = window.location.origin;
-  const url = keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
+  const url = await keycloak.createRegisterUrl({ redirectUri: `${baseUrl}/companies` });
   location.assign(url);
 }
 
