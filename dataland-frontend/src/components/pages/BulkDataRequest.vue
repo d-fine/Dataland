@@ -87,7 +87,7 @@
                       </p>
                     </BasicFormSection>
 
-                    <BasicFormSection :data-test="selectFrameworkDiv" header="Select at least one framework">
+                    <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select at least one framework">
                       <MultiSelectFormFieldBindData
                         name="FrameworkSelection"
                         data-test="selectFrameworkSelect"
