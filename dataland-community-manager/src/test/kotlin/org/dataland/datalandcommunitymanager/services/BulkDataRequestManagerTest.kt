@@ -103,15 +103,15 @@ class BulkDataRequestManagerTest {
                 adminComment = "dummyAdminComment",
             )
         }
-        `when`(utilsMock.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
         return utilsMock
     }
 
     @Test
-    fun `process bulk data request with no existing data`() {
+    fun `process bulk data request`() {
         val emptyList: List<DataMetaInformation> = listOf()
         whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
+        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
+            .thenReturn(dummyCompanyIdAndName)
 
         val bulkDataRequest =
             BulkDataRequest(
@@ -140,7 +140,44 @@ class BulkDataRequestManagerTest {
     }
 
     @Test
+    fun `process bulk data request with existing request`() {
+        val emptyList: List<DataMetaInformation> = listOf()
+        whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
+        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
+            .thenReturn(dummyCompanyIdAndName)
+        `when`(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
+            .thenReturn("request-id")
+
+        val bulkDataRequest =
+            BulkDataRequest(
+                companyIdentifiers = setOf(dummyUserProvidedCompanyId),
+                dataTypes = setOf(DataTypeEnum.sfdr),
+                reportingPeriods = setOf(dummyReportingPeriod),
+            )
+
+        val expectedAlreadyExistingDataRequest =
+            listOf(
+                DataRequestResponse(
+                    userProvidedCompanyId = dummyUserProvidedCompanyId,
+                    companyName = dummyCompanyIdAndName.companyName,
+                    framework = "sfdr",
+                    reportingPeriod = dummyReportingPeriod,
+                    requestId = "request-id",
+                    requestUrl = "https://dataland.com/requests/request-id",
+                ),
+            )
+
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
+        assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
+        assertEquals(expectedAlreadyExistingDataRequest, response.alreadyExistingNonFinalRequests)
+        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
+    }
+
+    @Test
     fun `process bulk data request with existing data`() {
+        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
+            .thenReturn(dummyCompanyIdAndName)
         `when`(mockMetaDataController.postListOfDataMetaInfoRequests(anyList())).thenAnswer {
             val dataMetaInformationList =
                 listOf(
@@ -182,5 +219,30 @@ class BulkDataRequestManagerTest {
         assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
         assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDataSets)
         assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
+    }
+
+    @Test
+    fun `process bulk data request with no valid company identifiers data`() {
+        val emptyList: List<DataMetaInformation> = listOf()
+
+        whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
+        `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
+            .thenReturn(null)
+
+        val bulkDataRequest =
+            BulkDataRequest(
+                companyIdentifiers = setOf(dummyUserProvidedCompanyId),
+                dataTypes = setOf(DataTypeEnum.sfdr),
+                reportingPeriods = setOf(dummyReportingPeriod),
+            )
+
+        val expectedRejectedCompanyIdentifiers =
+            listOf(dummyUserProvidedCompanyId)
+
+        val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
+        assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
+        assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
+        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(expectedRejectedCompanyIdentifiers, response.rejectedCompanyIdentifiers)
     }
 }
