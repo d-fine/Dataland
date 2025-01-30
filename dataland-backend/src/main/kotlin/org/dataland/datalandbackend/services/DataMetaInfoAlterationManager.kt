@@ -4,8 +4,6 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -20,7 +18,6 @@ class DataMetaInfoAlterationManager
     constructor(
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val dataManager: DataManager,
-        private val keycloakUserService: KeycloakUserService,
     ) {
         private val logger = LoggerFactory.getLogger(DataMetaInfoAlterationManager::class.java)
 
@@ -36,21 +33,6 @@ class DataMetaInfoAlterationManager
             dataMetaInformationPatch: DataMetaInformationPatch,
             correlationId: String,
         ): DataMetaInformationEntity {
-            if (!dataManager.isDatasetPublic(dataId)) {
-                throw InvalidInputApiException(
-                    summary = "Not a public dataset.",
-                    message =
-                        "The provided dataId does not belong to a public dataset. Patching of meta information is only " +
-                            "supported for public dataset.",
-                )
-            }
-
-            dataMetaInformationPatch.uploaderUserId?.let { keycloakUserService.getUser(it).userId.isEmpty() }
-                ?: throw InvalidInputApiException(
-                    summary = "UploaderUserId invalid.",
-                    message = "The provided uploaderUserId could not be found.",
-                )
-
             val dataMetaInformation: DataMetaInformationEntity =
                 dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
 
@@ -61,7 +43,8 @@ class DataMetaInfoAlterationManager
 
             logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
 
-            dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
+            // TODO
+            dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId!!
             dataMetaInformationManager.storeDataMetaInformation(dataMetaInformation)
 
             logger.info("Updating MetaInformation within StorableDataset with dataId $dataId. CorrelationId: $correlationId.")

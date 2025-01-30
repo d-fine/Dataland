@@ -32,8 +32,8 @@ import java.util.UUID
 
 @RestController
 class MetaDataController(
-    @Autowired var dataMetaInformationManager: DataMetaInformationManager,
-    @Autowired var dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
+    @Autowired val dataMetaInformationManager: DataMetaInformationManager,
+    @Autowired val dataMetaInfoAlterationManager: DataMetaInfoAlterationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
     @Autowired val assembledDataManager: AssembledDataManager,
@@ -84,17 +84,16 @@ class MetaDataController(
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         val companyId = metaInfo.company.companyId
         val correlationId = IdUtils.generateCorrelationId(companyId, dataId)
-        if (!metaInfo.isDatasetViewableByUser(currentUser)) {
-            throw AccessDeniedException(
-                logMessageBuilder.generateAccessDeniedExceptionMessage(
-                    metaInfo.qaStatus,
-                ),
-            )
-        }
         if (dataMetaInformationPatch.isNullOrEmpty()) {
             throw InvalidInputApiException(
                 summary = "Empty Request Body",
                 message = "Request body must not be null nor empty",
+            )
+        }
+        if (metaInfo.dataType == "vsme") {
+            throw InvalidInputApiException(
+                summary = "Data of dataType ${metaInfo.dataType} cannot be patched.",
+                message = "Patching metadata is only permitted for public datasets.",
             )
         }
         logger.info(
@@ -137,7 +136,8 @@ class MetaDataController(
         dataType: DataType,
         reportingPeriod: String,
     ) {
-        val latestNonSourceableInfo = nonSourceableDataManager.getLatestNonSourceableInfoForDataset(companyId, dataType, reportingPeriod)
+        val latestNonSourceableInfo =
+            nonSourceableDataManager.getLatestNonSourceableInfoForDataset(companyId, dataType, reportingPeriod)
 
         if (latestNonSourceableInfo?.isNonSourceable != true) {
             throw ResourceNotFoundApiException(

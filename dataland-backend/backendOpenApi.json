@@ -20248,11 +20248,9 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "sector": {
             "type": "string",
@@ -20264,9 +20262,11 @@
           "countryCode": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
           }
         }
       },
@@ -20289,10 +20289,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

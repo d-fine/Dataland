@@ -90,8 +90,7 @@ class QaEventListenerQaServiceTest(
     }
 
     private fun setupMockMessage(routingKey: String): Message {
-        val mockMessageProperties =
-            mock<MessageProperties> { on { receivedRoutingKey } doReturn routingKey }
+        val mockMessageProperties = mock<MessageProperties> { on { receivedRoutingKey } doReturn routingKey }
         return mock<Message> { on { messageProperties } doReturn mockMessageProperties }
     }
 
@@ -116,13 +115,12 @@ class QaEventListenerQaServiceTest(
         val noIdPayload = getDataUploadPayload("", false)
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
-                qaEventListenerQaService
-                    .processBackendDatasetEvents(
-                        mockMessage,
-                        noIdPayload,
-                        correlationId,
-                        MessageType.PUBLIC_DATA_RECEIVED,
-                    )
+                qaEventListenerQaService.processBackendDatasetEvents(
+                    mockMessage,
+                    noIdPayload,
+                    correlationId,
+                    MessageType.PUBLIC_DATA_RECEIVED,
+                )
             }
         Assertions.assertEquals("Invalid UUID string: ", thrown.message)
     }
@@ -169,14 +167,19 @@ class QaEventListenerQaServiceTest(
         val payload = getDataMetaInfoPatchPayload(dataId, null)
         doNothing().whenever(mockQaReviewManager).patchUploaderUserIdInQaReviewEntry(any(), any(), any())
 
-        assertThrows<MessageQueueRejectException> {
-            qaEventListenerQaService.processBackendDatasetEvents(
-                mockMessage,
-                payload,
-                correlationId,
-                MessageType.METAINFO_UPDATED,
-            )
-        }
+        val exceptionThrown =
+            assertThrows<MessageQueueRejectException> {
+                qaEventListenerQaService.processBackendDatasetEvents(
+                    mockMessage,
+                    payload,
+                    correlationId,
+                    MessageType.METAINFO_UPDATED,
+                )
+            }
+        Assertions.assertEquals(
+            "Message was rejected: Received message to update uploaderUserId in QA database but transmitted uploaderUserId was null.",
+            exceptionThrown.message,
+        )
         verify(mockQaReviewManager, times(0)).patchUploaderUserIdInQaReviewEntry(any(), any(), any())
     }
 
@@ -245,8 +248,7 @@ class QaEventListenerQaServiceTest(
         val dataUploadedPayload = getDataUploadPayload(dataId, bypassQa = true)
 
         val acceptedStoredCompanyJson = "json/services/StoredCompanyAccepted.json"
-        val acceptedStoredCompany =
-            objectMapper.readValue<StoredCompany>(getJsonString(acceptedStoredCompanyJson))
+        val acceptedStoredCompany = objectMapper.readValue<StoredCompany>(getJsonString(acceptedStoredCompanyJson))
         val acceptedDataMetaInformation: DataMetaInformation = acceptedStoredCompany.dataRegisteredByDataland[0]
         val acceptedDataId = acceptedDataMetaInformation.dataId
 

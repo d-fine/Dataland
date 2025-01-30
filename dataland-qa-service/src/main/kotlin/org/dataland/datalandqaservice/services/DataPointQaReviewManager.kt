@@ -83,7 +83,9 @@ class DataPointQaReviewManager
                 }
             } else {
                 val qaStatusOfAllDataIds =
-                    dataPointQaReviewRepository.findLatestWhereDataPointIdIn(allDataIds).associate { it.dataPointId to it.qaStatus }
+                    dataPointQaReviewRepository
+                        .findLatestWhereDataPointIdIn(allDataIds)
+                        .associate { it.dataPointId to it.qaStatus }
                 allDataIds.forEach {
                     if (it !in qaStatusOfAllDataIds || qaStatusOfAllDataIds[it] == QaStatus.Pending) {
                         reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)

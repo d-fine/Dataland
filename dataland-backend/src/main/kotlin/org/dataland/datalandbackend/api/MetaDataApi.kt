@@ -109,9 +109,7 @@ interface MetaDataApi {
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize(
-        "hasRole('ROLE_ADMIN')",
-    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDataMetaInfo(
         @PathVariable("dataId") dataId: String,
         @Valid @RequestBody(required = true)
