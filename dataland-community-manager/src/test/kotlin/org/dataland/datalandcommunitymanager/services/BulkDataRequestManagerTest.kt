@@ -6,9 +6,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
-import org.dataland.datalandcommunitymanager.model.dataRequest.AcceptedDataRequestsResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.AlreadyExistingDataSetsResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataSetsResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -140,7 +140,7 @@ class BulkDataRequestManagerTest {
 
         val expectedAcceptedDataRequest =
             listOf(
-                AcceptedDataRequestsResponse(
+                DataRequestResponse(
                     userProvidedCompanyId = "companyId1",
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
@@ -168,7 +168,7 @@ class BulkDataRequestManagerTest {
 
         val expectedAlreadyExistingDataSetsResponse =
             listOf(
-                AlreadyExistingDataSetsResponse(
+                DataSetsResponse(
                     userProvidedCompanyId = "companyId1",
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
@@ -179,7 +179,7 @@ class BulkDataRequestManagerTest {
             )
 
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
-        print(response.alreadyExistingDataRequests)
-        assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDataRequests)
+        print(response.alreadyExistingDataSets)
+        assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDataSets)
     }
 }

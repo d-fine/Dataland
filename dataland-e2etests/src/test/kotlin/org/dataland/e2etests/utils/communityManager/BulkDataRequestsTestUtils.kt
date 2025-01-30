@@ -26,7 +26,7 @@ fun checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(
 ) {
     Assertions.assertEquals(
         expectedNumberOfAcceptedIdentifiers,
-        requestResponse.acceptedCompanyIdentifiers.size,
+        requestResponse.acceptedDataRequests.size,
         "Not every combination of identifier and framework was sent as a request as expected.",
     )
 }
@@ -38,10 +38,6 @@ fun checkThatAllIdentifiersWereAccepted(
 ) {
     checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers)
     checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
-    checkThatMessageIsAsExpected(
-        requestResponse, expectedNumberOfAcceptedIdentifiers,
-        expectedNumberOfRejectedIdentifiers,
-    )
 }
 
 fun causeClientExceptionByBulkDataRequest(
