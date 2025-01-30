@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
@@ -30,21 +31,28 @@ class MetaDataController(
     @Autowired var dataMetaInformationManager: DataMetaInformationManager,
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) : MetaDataApi {
     private fun getListOfDataMetaInfoForUser(
         user: DatalandAuthentication?,
         dataMetaInformationRequest: DataMetaInformationRequest,
-    ): List<DataMetaInformation> =
-        dataMetaInformationManager
-            .searchDataMetaInfo(
-                dataMetaInformationRequest.companyId,
-                dataMetaInformationRequest.dataType,
-                dataMetaInformationRequest.showOnlyActive,
-                dataMetaInformationRequest.reportingPeriod,
-                dataMetaInformationRequest.uploaderUserIds,
-                dataMetaInformationRequest.qaStatus,
-            ).filter { it.isDatasetViewableByUser(user) }
-            .map { it.toApiModel(user) }
+    ): List<DataMetaInformation> {
+        val listDataMetaInformation =
+            dataMetaInformationManager
+                .searchDataMetaInfo(
+                    dataMetaInformationRequest.companyId,
+                    dataMetaInformationRequest.dataType,
+                    dataMetaInformationRequest.showOnlyActive,
+                    dataMetaInformationRequest.reportingPeriod,
+                    dataMetaInformationRequest.uploaderUserIds,
+                    dataMetaInformationRequest.qaStatus,
+                ).filter { it.isDatasetViewableByUser(user) }
+                .map { it.toApiModel(user) }
+        listDataMetaInformation.forEach {
+            it.url = "https://$proxyPrimaryUrl/companies/${it.companyId}/frameworks/${it.dataType}"
+        }
+        return listDataMetaInformation
+    }
 
     override fun getListOfDataMetaInfo(
         companyId: String?,

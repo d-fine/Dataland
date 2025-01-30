@@ -3,8 +3,6 @@ package org.dataland.datalandbackend.model.metainformation
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Component
 
 /**
  * --- API model ---
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Component
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
  * @param url direct link to the page displaying the specified data set
  */
-@Component
 data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val dataId: String,
@@ -37,9 +34,6 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     var url: String,
 ) {
-    @Value("\${dataland.backend.proxy-primary-url}")
-    private lateinit var proxyPrimaryUrl: String
-
     constructor(
         dataId: String,
         companyId: String,
@@ -59,11 +53,5 @@ data class DataMetaInformation(
         currentlyActive = currentlyActive,
         qaStatus = qaStatus,
         url = "",
-    ) {
-        initializeUrl()
-    }
-
-    private fun initializeUrl() {
-        url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataId"
-    }
+    )
 }
