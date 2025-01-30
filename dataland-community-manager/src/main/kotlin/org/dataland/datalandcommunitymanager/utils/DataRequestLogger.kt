@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.BulkDataRequestManager
@@ -92,6 +93,19 @@ class DataRequestLogger {
                 "can be associated with the companyId $companyId on Dataland."
             }
         bulkDataRequestLogger.info(logMessage)
+    }
+
+    /**
+     * Logs an appropriate message when a data request has been stored in the database.
+     */
+    fun logBulkDataOverwiew(
+        r: BulkDataRequestResponse,
+        correlationId: String,
+    ) {
+        bulkDataRequestLogger.info("Processed bulk data request with correlationId: $correlationId.")
+        bulkDataRequestLogger.info("Accepted requests: ${r.acceptedDataRequests}")
+        bulkDataRequestLogger.info("Already existing datasets: ${r.alreadyExistingDataRequests}")
+        bulkDataRequestLogger.info("Rejected identifiers: ${r.rejectedCompanyIdentifiers}")
     }
 
     /**
