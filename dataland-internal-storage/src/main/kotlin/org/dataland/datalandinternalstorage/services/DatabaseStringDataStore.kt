@@ -155,7 +155,7 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper).dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper).dataPointId
             MessageQueueUtils.validateDataId(dataId)
             val dataPointString = retrieveData(dataId, correlationId)
             val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)

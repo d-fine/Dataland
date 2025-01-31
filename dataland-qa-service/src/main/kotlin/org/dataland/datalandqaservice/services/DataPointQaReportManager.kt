@@ -103,7 +103,7 @@ class DataPointQaReportManager(
         val mappedQaStatus = report.verdict.toQaStatus()
         if (mappedQaStatus != null) {
             dataPointQaReviewManager.reviewDataPoint(
-                dataId = dataId,
+                dataPointId = dataId,
                 triggeringUserId = reporterUserId,
                 comment = report.comment,
                 correlationId = correlationId,

@@ -14,39 +14,19 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 
 /**
- * Defines the restful dataland-backend API regarding migration from stored datasets to assembled datasets.
- * This is an internal API
+ * Defines the restful dataland-qa-service API regarding migration from stored datasets to assembled datasets.
+ * This is an internal API.
  */
 @RequestMapping("/assembled-dataset-migration")
 @SecurityRequirement(name = "default-bearer-auth")
 @SecurityRequirement(name = "default-oauth")
 interface AssembledDatasetMigrationApi {
     /**
-     * A method to migrate data from stored datasets to assembled datasets
-     * @param dataId to migrate
-     */
-    @Operation(
-        summary = "Triggers the migration from stored datasets to assembled datasets.",
-        description = "The data is migrated.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Migration successful."),
-        ],
-    )
-    @PostMapping("/stored-dataset-to-assembled-dataset-migration/{dataId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun migrateStoredDatasetToAssembledDataset(
-        @PathVariable("dataId")
-        dataId: String,
-    )
-
-    /**
      * A method to force upload a qa report as a stored qa report for testing.
      * This endpoint is dangerous as it is fully unchecked and should only be used for testing purposes.
      */
     @Operation(
-        summary = "Triggers a forced upload of a dataset as a stored dataset for testing.",
+        summary = "Triggers a forced upload of a QA Report as a stored QA Report for testing.",
         description = "The data is stored.",
     )
     @ApiResponses(

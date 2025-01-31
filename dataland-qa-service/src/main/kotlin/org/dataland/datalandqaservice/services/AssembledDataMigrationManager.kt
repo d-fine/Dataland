@@ -41,9 +41,9 @@ class AssembledDataMigrationManager
                 qaReportRepository.searchQaReportMetaInformation(
                     dataId = dataId,
                     showInactive = true,
-                    reporterUserId = null,
                 )
             allQaReports.forEach {
+                // The qaReport string contains a json array when it has been migrated (i.e., is assembled)
                 val isQaReportJsonArray = it.qaReport.startsWith("[")
                 val isQaReportStored = !isQaReportJsonArray
                 if (isQaReportStored) {

@@ -16,7 +16,9 @@ object ApiAwait {
     ): Boolean {
         val isApiError = exception.javaClass.simpleName == "ClientException" || exception.javaClass.simpleName == "ServerException"
         if (!isApiError) return false
-        val statusCodeProperty = exception::class.members.first { it.name == "statusCode" } as KProperty1<Any, *>
+        val statusCodeProperty =
+            exception::class.members.first { it.name == "statusCode" } as? KProperty1<Any, *>
+                ?: throw IllegalArgumentException("Exception does not have a statusCode property")
         val statusCode = statusCodeProperty.get(exception) as Int
 
         return HttpStatus.valueOf(statusCode) in allowedCodes

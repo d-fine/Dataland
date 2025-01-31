@@ -276,9 +276,9 @@ class QaEventListenerQaService
 
             MessageQueueUtils.rejectMessageOnException {
                 val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper)
-                MessageQueueUtils.validateDataId(dataUploadedPayload.dataId)
+                MessageQueueUtils.validateDataId(dataUploadedPayload.dataPointId)
                 logger.info(
-                    "Received QA required for datapoint dataId ${dataUploadedPayload.dataId} with " +
+                    "Received QA required for datapoint dataId ${dataUploadedPayload.dataPointId} with " +
                         "initial QA status ${dataUploadedPayload.initialQaStatus} and message " +
                         "${dataUploadedPayload.initialQaComment} (correlation Id: $correlationId)",
                 )
@@ -297,13 +297,13 @@ class QaEventListenerQaService
             dataUploadedPayload: DataPointUploadedPayload,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val dataId = dataUploadedPayload.dataId
-            val triggeringUserId = requireNotNull(dataPointControllerApi.getDataPointMetaInfo(dataId).uploaderUserId)
+            val dataPointId = dataUploadedPayload.dataPointId
+            val triggeringUserId = requireNotNull(dataPointControllerApi.getDataPointMetaInfo(dataPointId).uploaderUserId)
 
             val qaStatus = QaStatus.valueOf(dataUploadedPayload.initialQaStatus)
 
             return dataPointQaReviewManager.reviewDataPoint(
-                dataId = dataId,
+                dataPointId = dataPointId,
                 qaStatus = qaStatus,
                 triggeringUserId = triggeringUserId,
                 comment = dataUploadedPayload.initialQaComment,

@@ -7,7 +7,6 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.api.Assembl
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDataMigrationManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,21 +15,16 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 
 /**
- * Controller for the DataMigrationApi
+ * Controller for the DataMigrationApi in the QA Service
  */
 @RestController
 class AssembledDataMigrationController
     @Autowired
     constructor(
-        private val assembledDataMigrationManager: AssembledDataMigrationManager,
         private val metaDataControllerApi: MetaDataControllerApi,
         private val qaReportRepository: QaReportRepository,
         private val objectMapper: ObjectMapper,
     ) : AssembledDatasetMigrationApi {
-        override fun migrateStoredDatasetToAssembledDataset(dataId: String) {
-            assembledDataMigrationManager.migrateStoredDatasetToAssembledDataset(dataId, IdUtils.generateUUID())
-        }
-
         override fun forceUploadStoredQaReport(
             dataId: String,
             data: JsonNode,

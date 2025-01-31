@@ -134,12 +134,7 @@ class QaController(
         qaStatus: QaStatus,
         comment: String?,
     ) {
-        if (!dataPointQaReviewManager.checkIfQaServiceKnowsDataId(dataId)) {
-            throw ResourceNotFoundApiException(
-                "DataPoint ID not known to QA service",
-                "Dataland does not know the data id $dataId",
-            )
-        }
+        dataPointQaReviewManager.assertQaServiceKnowsDataId(dataId)
         val correlationId = randomUUID().toString()
         val reviewerId = DatalandAuthentication.fromContext().userId
         logger.info(

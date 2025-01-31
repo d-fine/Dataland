@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -28,23 +29,19 @@ class MessageQueuePublications(
 
     /**
      * Method to publish a message that a data point has been uploaded
-     * @param dataId The ID of the uploaded data point
+     * @param dataPointId The ID of the uploaded data point
      * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataPointUploadedMessageWithBypassQa(
-        dataId: String,
+        dataPointId: String,
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        val (qaStatus, comment) =
-            when (bypassQa) {
-                true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
-                false -> Pair(QaStatus.Pending, null)
-            }
+        val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
 
         publishDataPointUploadedMessage(
-            dataId = dataId,
+            dataPointId = dataPointId,
             initialQaStatus = qaStatus,
             initialQaComment = comment,
             correlationId = correlationId,
@@ -53,23 +50,23 @@ class MessageQueuePublications(
 
     /**
      * Method to publish a message that a data point has been uploaded
-     * @param dataId The ID of the uploaded data point
+     * @param dataPointId The ID of the uploaded data point
      * @param initialQaStatus The initial QA status of the data point
      * @param initialQaComment The initial QA status message of the data point
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDataPointUploadedMessage(
-        dataId: String,
+        dataPointId: String,
         initialQaStatus: QaStatus,
         initialQaComment: String?,
         correlationId: String,
     ) {
-        logger.info("Publish message that data point with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
+        logger.info("Publish message that data point with ID '$dataPointId' has been uploaded. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body =
                 objectMapper.writeValueAsString(
                     DataPointUploadedPayload(
-                        dataId = dataId,
+                        dataPointId = dataPointId,
                         initialQaStatus = initialQaStatus.toString(), initialQaComment = initialQaComment,
                     ),
                 ),

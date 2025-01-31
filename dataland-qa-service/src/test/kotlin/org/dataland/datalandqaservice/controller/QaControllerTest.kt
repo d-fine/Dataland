@@ -126,7 +126,7 @@ class QaControllerTest(
         val expectedBodyForOriginalSetToActive: String = createMessageBody(dataId, BackendUtilsQaStatus.Rejected, originalActiveDataId)
         for (mockDataId in listOf(dataId, originalActiveDataId)) {
             dataPointQaReviewManager.reviewDataPoint(
-                dataId = mockDataId,
+                dataPointId = mockDataId,
                 qaStatus = QaStatus.Pending,
                 triggeringUserId = "some-user-id",
                 comment = "This simulates the message queue event from the backend.",
