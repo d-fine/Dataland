@@ -104,7 +104,7 @@ class AssembledDatasetQaReportManager
                     dataPointQaReportManager
                         .createQaReport(
                             report = translatedQaReport,
-                            dataId = dataPointDataId,
+                            dataPointId = dataPointDataId,
                             reporterUserId = reporterUserId,
                             uploadTime = uploadTime,
                             correlationId = correlationId,

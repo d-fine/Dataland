@@ -102,7 +102,7 @@ class AssembledDataManagerTest {
 
         expectedDataPointTypes.forEach {
             verify(spyDataPointManager, times(1)).storeDataPoint(
-                argThat { dataPointType == it }, any(), any(), any(),
+                argThat { dataPointType == it }, any(), any(), any(), any()
             )
         }
         verify(messageQueuePublications, times(expectedDataPointTypes.size)).publishDataPointUploadedMessage(any(), any(), eq(null), any())
@@ -142,7 +142,7 @@ class AssembledDataManagerTest {
             ),
         )
 
-        `when`(metaDataManager.getDataPointMetaInformationByDataId(any())).thenAnswer { invocation ->
+        `when`(metaDataManager.getDataPointMetaInformationById(any())).thenAnswer { invocation ->
             val dataPointId = invocation.getArgument<String>(0)
             DataPointMetaInformationEntity(
                 dataPointId = dataPointId,

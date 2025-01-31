@@ -5342,7 +5342,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/metadata": {
+    "/data-points/{dataPointId}/metadata": {
       "get": {
         "tags": [
           "data-point-controller"
@@ -5352,7 +5352,7 @@
         "operationId": "getDataPointMetaInfo",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -20325,10 +20325,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
@@ -20366,10 +20366,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }
