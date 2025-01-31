@@ -190,7 +190,7 @@ interface QaApi {
     @PreAuthorize(
         "hasRole('ROLE_REVIEWER') " +
             "or hasRole('ROLE_ADMIN') " +
-                "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
+            "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
     )
     fun getDataPointQaReviewInformationByDataId(
         @PathVariable("dataPointId") dataPointId: String,

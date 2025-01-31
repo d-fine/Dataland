@@ -102,7 +102,7 @@ class AssembledDataManagerTest {
 
         expectedDataPointTypes.forEach {
             verify(spyDataPointManager, times(1)).storeDataPoint(
-                argThat { dataPointType == it }, any(), any(), any(), any()
+                argThat { dataPointType == it }, any(), any(), any(), any(),
             )
         }
         verify(messageQueuePublications, times(expectedDataPointTypes.size)).publishDataPointUploadedMessage(any(), any(), eq(null), any())
