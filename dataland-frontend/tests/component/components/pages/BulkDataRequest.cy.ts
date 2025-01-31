@@ -1,8 +1,10 @@
 import BulkDataRequest from '@/components/pages/BulkDataRequest.vue';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Component tests for the BulkDataRequest page', () => {
   it('Should display the BulkRequestSummary with internal data', () => {
     cy.mountWithPlugins(BulkDataRequest, {
+      keycloak: minimalKeycloakMock({}),
       data() {
         return {
           bulkDataRequestModel: {},
