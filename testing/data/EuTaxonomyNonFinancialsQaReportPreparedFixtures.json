@@ -2,35 +2,35 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Robelburgh",
-			"headquartersPostalCode": null,
-			"sector": "ROI",
+			"headquarters": "Lake Marquiseburgh",
+			"headquartersPostalCode": "68964-2847",
+			"sector": "channels",
 			"identifiers": {
 				"Lei": [
-					"6TGtm1nKMi5pP1Ru4tgA"
+					"mfgMyuCjrEiPzYyHl6Pv"
 				],
 				"Isin": [
-					"IRKfw3aiBP59"
+					"ZRklmfBFn06s"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"MSXXwLNKAWEawTK"
-				]
+				"Duns": [
+					"wWWzed9VX"
+				],
+				"VatNumber": [
+					"N2KFe0mD4"
+				],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PY",
-			"companyContactDetails": [
-				"Rupert_Crona@example.com",
-				"Kamron30@example.com"
-			],
+			"countryCode": "BV",
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Harris LLC",
-				"Rath, Fisher and Harvey"
+				"Effertz, Runte and Nitzsche",
+				"Fay, Ullrich and Prohaska",
+				"Hintz - Walsh"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://reasonable-instance.net/",
+			"companyLegalForm": null,
+			"website": "https://modern-necklace.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -98,6 +98,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2024"
+		"reportingPeriod": "2020"
 	}
 ]

@@ -20,12 +20,12 @@ import java.util.UUID
 private val jwtHelper = JwtAuthenticationHelper()
 private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-fun checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(
+fun checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(
     requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
+    expectedNumberOfAcceptedDataRequests: Int,
 ) {
     Assertions.assertEquals(
-        expectedNumberOfAcceptedIdentifiers,
+        expectedNumberOfAcceptedDataRequests,
         requestResponse.acceptedDataRequests.size,
         "Not every combination of identifier and framework was sent as a request as expected.",
     )
@@ -35,7 +35,27 @@ fun checkThatNumberOfRejectedIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {
-    checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
+    checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
+}
+
+fun checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(
+    requestResponse: BulkDataRequestResponse,
+    expectedNumberOfAlreadyExistingNonFinalRequests: Int,
+) {
+    Assertions.assertEquals(
+        expectedNumberOfAlreadyExistingNonFinalRequests,
+        requestResponse.alreadyExistingNonFinalRequests.size,
+    )
+}
+
+fun checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(
+    requestResponse: BulkDataRequestResponse,
+    expectedNumberOfAlreadyExistingDatasets: Int,
+) {
+    Assertions.assertEquals(
+        expectedNumberOfAlreadyExistingDatasets,
+        requestResponse.alreadyExistingDatasets.size,
+    )
 }
 
 fun causeClientExceptionByBulkDataRequest(

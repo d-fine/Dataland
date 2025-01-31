@@ -286,7 +286,7 @@ class BulkDataRequestManager(
             BulkDataRequestResponse(
                 acceptedDataRequests = acceptedRequests,
                 alreadyExistingNonFinalRequests = existingNonFinalRequests,
-                alreadyExistingDataSets = existingDataSets,
+                alreadyExistingDatasets = existingDataSets,
                 rejectedCompanyIdentifiers = rejectedIdentifiers,
             )
 

@@ -135,7 +135,7 @@ class BulkDataRequestManagerTest {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(expectedAcceptedDataRequest, response.acceptedDataRequests)
         assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
-        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDatasets)
         assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
     }
 
@@ -170,7 +170,7 @@ class BulkDataRequestManagerTest {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
         assertEquals(expectedAlreadyExistingDataRequest, response.alreadyExistingNonFinalRequests)
-        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDatasets)
         assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
     }
 
@@ -217,7 +217,7 @@ class BulkDataRequestManagerTest {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
         assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
-        assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDataSets)
+        assertEquals(expectedAlreadyExistingDataSetsResponse, response.alreadyExistingDatasets)
         assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
     }
 
@@ -242,7 +242,7 @@ class BulkDataRequestManagerTest {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
         assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
-        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDatasets)
         assertEquals(expectedRejectedCompanyIdentifiers, response.rejectedCompanyIdentifiers)
     }
 }
