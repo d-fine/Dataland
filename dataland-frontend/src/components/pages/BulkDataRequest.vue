@@ -184,7 +184,7 @@ import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue'
 import {
   type BulkDataRequest,
   type BulkDataRequestDataTypesEnum,
-  BulkDataRequestResponse,
+  type BulkDataRequestResponse,
 } from '@clients/communitymanager';
 import router from '@/router';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';

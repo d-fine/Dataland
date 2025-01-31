@@ -135,7 +135,7 @@ import { defineProps } from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
-import { BulkDataRequestResponse } from '@clients/communitymanager';
+import { type BulkDataRequestResponse } from '@clients/communitymanager';
 import { getFrameworkTitle } from '@/utils/StringFormatter';
 
 const props = defineProps<{
@@ -148,7 +148,7 @@ const props = defineProps<{
 const {
   acceptedDataRequests: createdRequests,
   alreadyExistingNonFinalRequests: existingRequests,
-  alreadyExistingDataSets: existingDataSets,
+  alreadyExistingDatasets: existingDataSets,
   rejectedCompanyIdentifiers: rejectedCompanyIdentifiers,
 } = props.bulkDataRequestResponse;
 </script>

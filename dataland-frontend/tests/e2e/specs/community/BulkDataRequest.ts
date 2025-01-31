@@ -117,7 +117,7 @@ describeIf(
     function checkIfIdentifiersProperlyDisplayed(interception: Interception): void {
       if (interception.response !== undefined) {
         const rejectedIdentifiers = (interception.response.body as BulkDataRequestResponse).rejectedCompanyIdentifiers;
-        const acceptedIdentifiers = (interception.response.body as BulkDataRequestResponse).acceptedCompanyIdentifiers;
+        const acceptedIdentifiers = (interception.response.body as BulkDataRequestResponse).acceptedDataRequests;
         if (rejectedIdentifiers.length > 0) {
           cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersList"]')
             .children()

@@ -420,7 +420,7 @@
           "meta-data-controller"
         ],
         "summary": "Search in Dataland for meta info about data using multiple filters.",
-        "description": "Meta info about data sets registered by Dataland can be retrieved.",
+        "description": "Meta info about datasets registered by Dataland can be retrieved.",
         "operationId": "postListOfDataMetaInfoRequests",
         "requestBody": {
           "content": {
@@ -20289,13 +20289,13 @@
             "type": "string",
             "nullable": true
           },
-          "countryCode": {
+          "companyName": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "companyName": {
+          "countryCode": {
             "type": "string"
           },
           "companyId": {
