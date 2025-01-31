@@ -2,6 +2,7 @@ import jsdoc from 'eslint-plugin-jsdoc';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
+import typescriptEslint from 'typescript-eslint';
 import { FlatCompat } from '@eslint/eslintrc';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,13 +26,18 @@ export default [
       '**/plugins/index.js',
     ],
   },
+  js.configs.recommended,
+  jsdoc.configs['flat/recommended'],
+  ...typescriptEslint.configs.recommended,
   ...compat.extends(
     'plugin:vue/vue3-essential',
     'eslint:recommended',
-    '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier/skip-formatting',
-    'plugin:jsdoc/recommended'
   ),
+  ...compat.extends('plugin:cypress/recommended').map((config) => ({
+    ...config,
+    files: ['tests/sharedUtils/**/*', 'tests/e2e/**/*'],
+  })),
   {
     plugins: {
       jsdoc,
@@ -101,8 +107,4 @@ export default [
       ],
     },
   },
-  ...compat.extends('plugin:cypress/recommended').map((config) => ({
-    ...config,
-    files: ['tests/sharedUtils/**/*', 'tests/e2e/**/*'],
-  })),
 ];

@@ -23,6 +23,8 @@
     "checkdependencies": "depcheck --ignores='@clients/*,@e2e/*,@sharedUtils/*,@ct/*,@vue/tsconfig,axios,tsconfig-paths,eslint-plugin-*,@vue/eslint-config-*,lint-staged,@types/dompurify,@types/markdown-it'"
   },
   "dependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.19.0",
     "@formkit/core": "^1.6.9",
     "@formkit/themes": "^1.6.9",
     "@formkit/vue": "^1.6.9",
@@ -37,6 +39,7 @@
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
     "primevue": "~3.44.0",
+    "typescript-eslint": "^8.22.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
@@ -71,7 +74,7 @@
     "sass": "1.83.4",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.7.3",
+    "typescript": "^5.7.3",
     "vite": "6.0.11",
     "vite-plugin-istanbul": "6.0.2",
     "vue-markdown-render": "2.2.1",
