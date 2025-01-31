@@ -31,8 +31,8 @@
               <Badge :value="createdRequests.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <template v-for="entry in createdRequests" :key="entry">
-            <div class="grid-container align-items-center">
+          <div v-bind="createdRequests" data-test="createdRequests">
+            <div class="grid-container align-items-center" v-for="(entry, index) in createdRequests" :key="index">
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
@@ -44,26 +44,22 @@
                 </div>
               </a>
             </div>
-          </template>
+          </div>
         </AccordionTab>
-      </Accordion>
-    </div>
-    <div class="summary-section border-bottom py-4">
-      <Accordion>
         <AccordionTab>
           <template #header>
             <span class="flex align-items-center gap-2 w-full">
               <em class="material-icons info-icon new-color">info</em>
               <span class="summary-section-heading">SKIPPED REQUESTS - DATA ALREADY EXISTS</span>
-              <Badge :value="existingDataSets.length" class="ml-auto mr-2" />
+              <Badge :value="existingDatasets.length" class="ml-auto mr-2" />
             </span>
           </template>
           <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
             If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single
             data request on the corresponding dataset page.
           </div>
-          <template v-for="entry in existingDataSets" :key="entry">
-            <div class="grid-container align-items-center">
+          <div v-bind="existingDatasets" data-test="existingDatasets">
+            <div class="grid-container align-items-center" v-for="(entry, index) in existingDatasets" :key="index">
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
@@ -75,12 +71,8 @@
                 </div>
               </a>
             </div>
-          </template>
+          </div>
         </AccordionTab>
-      </Accordion>
-    </div>
-    <div class="summary-section border-bottom py-4">
-      <Accordion>
         <AccordionTab>
           <template #header>
             <span class="flex align-items-center gap-2 w-full">
@@ -89,8 +81,8 @@
               <Badge :value="existingRequests.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <template v-for="entry in existingRequests" :key="entry">
-            <div class="grid-container align-items-center">
+          <div v-bind="existingRequests" data-test="existingRequests">
+            <div class="grid-container align-items-center" v-for="(entry, index) in existingRequests" :key="index">
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
@@ -102,12 +94,8 @@
                 </div>
               </a>
             </div>
-          </template>
+          </div>
         </AccordionTab>
-      </Accordion>
-    </div>
-    <div class="summary-section border-bottom py-4">
-      <Accordion>
         <AccordionTab>
           <template #header>
             <span class="flex align-items-center gap-2 w-full">
@@ -119,11 +107,11 @@
           <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
             No company or companies are known on Dataland for the following company identifier(s)
           </div>
-          <template v-for="entry in rejectedCompanyIdentifiers" :key="entry">
-            <div class="grid-container align-items-center">
+          <div v-bind="rejectedCompanyIdentifiers" data-test="rejectedCompanyIdentifiers">
+            <div class="grid-container align-items-center" v-for="entry in rejectedCompanyIdentifiers" :key="entry">
               <div class="col bold-text middle-center-div">{{ entry }}</div>
             </div>
-          </template>
+          </div>
         </AccordionTab>
       </Accordion>
     </div>
@@ -143,7 +131,7 @@ const props = defineProps<{
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
   rejectedCompanyIdentifiers: string[];
-  existingDataSets: Array<DataSets>;
+  existingDatasets: Array<DataSets>;
   createdRequests: Array<DataRequests>;
   existingRequests: Array<DataRequests>;
 }>();
@@ -160,6 +148,7 @@ const props = defineProps<{
       line-height: 48px;
       letter-spacing: 0.25px;
     }
+
     .info-icon {
       font-size: 48px;
     }
@@ -169,15 +158,18 @@ const props = defineProps<{
     &.border-bottom {
       border-bottom: 1px solid #dadada;
     }
+
     .summary-section-heading {
       font-weight: 500;
       font-size: 16px;
       line-height: 20px;
+
       .info-icon {
         margin-bottom: -2px;
         vertical-align: bottom;
       }
     }
+
     .summary-section-data {
       font-weight: 700;
 
