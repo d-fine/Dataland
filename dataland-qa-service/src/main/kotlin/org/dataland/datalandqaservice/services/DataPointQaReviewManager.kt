@@ -78,7 +78,7 @@ class DataPointQaReviewManager
             val composition = compositionService.getCompositionOfDataset(dataId) ?: return
             val allDataIds = composition.values.toList()
             allDataIds.forEach {
-                assertQaServiceKnowsDataId(it)
+                assertQaServiceKnowsDataPointId(it)
             }
 
             if (overwriteDataPointQaStatus) {
@@ -100,11 +100,11 @@ class DataPointQaReviewManager
          * Asserts that the QA service knows the dataId
          */
         @Transactional
-        fun assertQaServiceKnowsDataId(dataId: String) {
-            if (!checkIfQaServiceKnowsDataPointId(dataId)) {
+        fun assertQaServiceKnowsDataPointId(dataPointId: String) {
+            if (!checkIfQaServiceKnowsDataPointId(dataPointId)) {
                 throw ResourceNotFoundApiException(
-                    "Data ID not known to QA service",
-                    "Dataland does not know the data id $dataId",
+                    "Data Point ID not known to QA service",
+                    "Dataland does not know the data point with id $dataPointId",
                 )
             }
         }

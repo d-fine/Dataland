@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -95,11 +96,7 @@ class QaEventListenerQaService
 
                 val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
 
-                val (qaStatus, comment) =
-                    when (bypassQa) {
-                        true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
-                        false -> Pair(QaStatus.Pending, null)
-                    }
+                val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
 
                 val qaReviewEntity =
                     qaReviewManager.saveQaReviewEntity(

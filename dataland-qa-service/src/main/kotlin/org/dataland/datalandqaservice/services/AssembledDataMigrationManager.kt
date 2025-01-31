@@ -86,8 +86,8 @@ class AssembledDataMigrationManager
             }
 
             val dataPointQaReportIds = mutableListOf<String>()
-            for ((dataPointId, dataPointReport) in decomposedQaReport) {
-                val dataPointDataId = requireNotNull(associatedDataPoints[dataPointId])
+            for ((dataPointType, dataPointReport) in decomposedQaReport) {
+                val dataPointId = requireNotNull(associatedDataPoints[dataPointType])
                 val parsedQaReport = objectMapper.treeToValue<QaReportDataPoint<Any?>>(dataPointReport.content)
                 val translatedQaReport =
                     QaReportDataPoint<String?>(
@@ -100,8 +100,8 @@ class AssembledDataMigrationManager
                         .save(
                             DataPointQaReportEntity(
                                 qaReportId = IdUtils.generateUUID(),
-                                dataPointId = dataPointDataId,
-                                dataPointType = dataPointId,
+                                dataPointId = dataPointId,
+                                dataPointType = dataPointType,
                                 reporterUserId = qaReport.reporterUserId,
                                 uploadTime = qaReport.uploadTime,
                                 active = qaReport.active,
