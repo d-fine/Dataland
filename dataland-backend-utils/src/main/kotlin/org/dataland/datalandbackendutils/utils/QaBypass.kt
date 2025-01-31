@@ -9,10 +9,9 @@ object QaBypass {
     /**
      * Get the comment and status for a QA bypass.
      */
-    fun getCommentAndStatusForBypass(bypassQa: Boolean): Pair<QaStatus, String?> {
-        return when (bypassQa) {
-                true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
-                false -> Pair(QaStatus.Pending, null)
-            }
-    }
+    fun getCommentAndStatusForBypass(bypassQa: Boolean): Pair<QaStatus, String?> =
+        when (bypassQa) {
+            true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
+            false -> Pair(QaStatus.Pending, null)
+        }
 }

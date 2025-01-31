@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.services.datapoints
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.MessageQueuePublications
@@ -40,11 +41,17 @@ class AssembledDataMigrationManager
 
             val splitDataset = assembledDataManager.splitDatasetIntoDataPoints(data, dataMetaInfo.dataType)
             assembledDataManager.storeDataPointsForDataset(
+                uploadedDataset =
+                    StorableDataset(
+                        uploaderUserId = dataMetaInfo.uploaderUserId,
+                        companyId = dataMetaInfo.company.companyId,
+                        reportingPeriod = dataMetaInfo.reportingPeriod,
+                        dataType = DataType.valueOf(dataMetaInfo.dataType),
+                        uploadTime = dataMetaInfo.uploadTime,
+                        data = "",
+                    ),
                 datasetId = dataMetaInfo.dataId,
-                uploaderUserId = dataMetaInfo.uploaderUserId,
-                companyId = dataMetaInfo.company.companyId,
                 correlationId = correlationId,
-                reportingPeriod = dataMetaInfo.reportingPeriod,
                 dataContent = splitDataset.dataContent,
                 fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
                 initialQaStatus = dataMetaInfo.qaStatus,

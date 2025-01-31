@@ -19,6 +19,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -126,9 +127,7 @@ class AssembledDataManager
          * @param fileReferenceToPublicationDateMapping a mapping of file references to publication dates
          * @param dataPointType the type of the data point
          * @param correlationId the correlation id for the operation
-         * @param companyId the id of the company the data point belongs to
-         * @param reportingPeriod the reporting period of the data point
-         * @param uploaderUserId the id of the user who uploaded the data point
+         * @param uploadedDataset the dataset the data point belongs to
          * @return the id of the stored data point
          */
         private fun storeIndividualDataPoint(
@@ -136,11 +135,7 @@ class AssembledDataManager
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
             dataPointType: String,
             correlationId: String,
-            companyId: String,
-            reportingPeriod: String,
-            uploaderUserId: String,
-            initialQaStatus: QaStatus,
-            initialQaComment: String?,
+            uploadedDataset: StorableDataset,
         ): String? {
             val dataPoint = dataPointJsonLeaf.content
             if (dataPoint.isEmpty) return null
@@ -155,23 +150,21 @@ class AssembledDataManager
                     "under ${dataPointJsonLeaf.jsonPath} (correlation ID: $correlationId)",
             )
 
-            val dataId = IdUtils.generateUUID()
+            val dataPointId = IdUtils.generateUUID()
             dataPointManager.storeDataPoint(
-                UploadedDataPoint(
-                    dataPoint = objectMapper.writeValueAsString(dataPoint),
-                    dataPointType = dataPointType,
-                    companyId = companyId,
-                    reportingPeriod = reportingPeriod,
-                ),
-                dataId,
-                uploaderUserId,
-                correlationId,
+                uploadedDataPoint =
+                    UploadedDataPoint(
+                        dataPoint = objectMapper.writeValueAsString(dataPoint),
+                        dataPointType = dataPointType,
+                        companyId = uploadedDataset.companyId,
+                        reportingPeriod = uploadedDataset.reportingPeriod,
+                    ),
+                dataPointId = dataPointId,
+                uploaderUserId = uploadedDataset.uploaderUserId,
+                uploadTime = uploadedDataset.uploadTime,
+                correlationId = correlationId,
             )
-            messageQueuePublications.publishDataPointUploadedMessage(
-                dataId, initialQaStatus,
-                initialQaComment, correlationId,
-            )
-            return dataId
+            return dataPointId
         }
 
         /**
@@ -182,9 +175,7 @@ class AssembledDataManager
             datasetId: String,
             dataContent: Map<String, JsonSpecificationLeaf>,
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
-            companyId: String,
-            reportingPeriod: String,
-            uploaderUserId: String,
+            uploadedDataset: StorableDataset,
             correlationId: String,
             initialQaStatus: QaStatus,
             initialQaComment: String?,
@@ -198,12 +189,16 @@ class AssembledDataManager
                     fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
                     dataPointType = dataPointType,
                     correlationId = correlationId,
-                    companyId = companyId,
-                    reportingPeriod = reportingPeriod,
-                    uploaderUserId = uploaderUserId,
-                    initialQaComment = initialQaComment,
-                    initialQaStatus = initialQaStatus,
-                )?.let { createdDataIds[dataPointType] = it }
+                    uploadedDataset = uploadedDataset,
+                )?.let {
+                    messageQueuePublications.publishDataPointUploadedMessage(
+                        dataPointId = it,
+                        initialQaStatus = initialQaStatus,
+                        initialQaComment = initialQaComment,
+                        correlationId = correlationId,
+                    )
+                    createdDataIds[dataPointType] = it
+                }
             }
             this.datasetDatapointRepository.save(
                 DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
@@ -231,19 +226,13 @@ class AssembledDataManager
             dataManager.storeMetaDataFrom(datasetId, uploadedDataset, correlationId)
             messageQueuePublications.publishDatasetQaRequiredMessage(datasetId, bypassQa, correlationId)
 
-            val (qaStatus, comment) =
-                when (bypassQa) {
-                    true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
-                    false -> Pair(QaStatus.Pending, null)
-                }
+            val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
 
             storeDataPointsForDataset(
                 datasetId = datasetId,
                 dataContent = dataContent,
                 fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
-                companyId = uploadedDataset.companyId,
-                reportingPeriod = uploadedDataset.reportingPeriod,
-                uploaderUserId = uploadedDataset.uploaderUserId,
+                uploadedDataset = uploadedDataset,
                 correlationId = correlationId,
                 initialQaStatus = qaStatus,
                 initialQaComment = comment,

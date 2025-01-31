@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
+import java.time.Instant
 
 /**
  * Class for managing data points and associated validations
@@ -57,20 +58,27 @@ class DataPointManager
         ): DataPointMetaInformation {
             dataPointValidator.validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
             logger.info("Storing '${uploadedDataPoint.dataPointType}' data point with bypassQa set to: $bypassQa.")
-            val dataId = IdUtils.generateUUID()
+            val dataPointId = IdUtils.generateUUID()
 
             if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataPoint.companyId)) {
                 throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
             }
 
-            val dataPointMetaInformation = storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, correlationId)
-            messageQueuePublications.publishDataPointUploadedMessageWithBypassQa(dataId, bypassQa, correlationId)
+            val dataPointMetaInformation =
+                storeDataPoint(
+                    uploadedDataPoint = uploadedDataPoint,
+                    dataPointId = dataPointId,
+                    uploaderUserId = uploaderUserId,
+                    correlationId = correlationId,
+                    uploadTime = Instant.now().toEpochMilli(),
+                )
+            messageQueuePublications.publishDataPointUploadedMessageWithBypassQa(dataPointId, bypassQa, correlationId)
             return dataPointMetaInformation
         }
 
         /**
          * Stores a single data point in the internal storage
-         * @param dataId the ID of the data point
+         * @param dataPointId the ID of the data point
          * @param uploadedDataPoint the data point to store
          * @param uploaderUserId the user id of the user who uploaded the data point
          * @param correlationId the correlation id for the operation
@@ -78,13 +86,14 @@ class DataPointManager
          */
         fun storeDataPoint(
             uploadedDataPoint: UploadedDataPoint,
-            dataId: String,
+            dataPointId: String,
             uploaderUserId: String,
+            uploadTime: Long,
             correlationId: String,
         ): DataPointMetaInformation {
-            val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataId, uploaderUserId)
+            val dataPointMetaInformationEntity = uploadedDataPoint.toDataPointMetaInformationEntity(dataPointId, uploaderUserId, uploadTime)
             metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
-            dataManager.storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
+            dataManager.storeDataInTemporaryStorage(dataPointId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
 
             return dataPointMetaInformationEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
         }
