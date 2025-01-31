@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+import org.dataland.datalandbackend.services.DatasetStorageService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
 import org.springframework.core.type.filter.AnnotationTypeFilter
@@ -27,18 +28,25 @@ class DataControllerProviderService
     ) {
         private val dataTypeClassCache = ConcurrentHashMap<DataType, Class<*>>()
 
+        private fun getDataController(
+            dataTypeClass: Class<*>,
+            dataManager: DatasetStorageService,
+        ): DataController<Any> =
+            DataController(
+                dataManager,
+                metaDataManager,
+                dataExportService,
+                objectMapper,
+                dataTypeClass as? Class<Any>
+                    ?: throw IllegalArgumentException("Class type for data type is not compatible."),
+            )
+
         /**
          * Get a data controller for a framework using a stored data manager
          */
         fun getStoredDataControllerForFramework(dataType: DataType): DataController<Any> {
             val dataTypeClass = getClassForDataType(dataType)
-            return DataController(
-                storedDataManager,
-                metaDataManager,
-                dataExportService,
-                objectMapper,
-                dataTypeClass as Class<Any>,
-            )
+            return getDataController(dataTypeClass, storedDataManager)
         }
 
         /**
@@ -46,13 +54,7 @@ class DataControllerProviderService
          */
         fun getAssembledDataControllerForFramework(dataType: DataType): DataController<Any> {
             val dataTypeClass = getClassForDataType(dataType)
-            return DataController(
-                assembledDataManager,
-                metaDataManager,
-                dataExportService,
-                objectMapper,
-                dataTypeClass as Class<Any>,
-            )
+            return getDataController(dataTypeClass, assembledDataManager)
         }
 
         /**
