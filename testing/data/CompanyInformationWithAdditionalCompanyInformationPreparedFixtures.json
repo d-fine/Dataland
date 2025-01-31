@@ -2,142 +2,130 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Nienowshire",
-			"headquartersPostalCode": "02199-0994",
-			"sector": null,
+			"headquarters": "Toystead",
+			"headquartersPostalCode": null,
+			"sector": "lifetime value",
 			"identifiers": {
 				"Lei": [],
 				"Isin": [
-					"Dq6d8MiHRTZG"
+					"yV7YC5eoLvOM",
+					"vIC7eN0WbKAs"
 				],
-				"PermId": [
-					"hj5snyfWes"
-				],
+				"PermId": [],
 				"Ticker": [
-					"EFUzYWQ"
+					"NNbSVWO"
 				],
 				"Duns": [
-					"SZ96gyHqy"
+					"HK9c0NusB"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"CompanyRegistrationNumber": [
+					"4mtohdmOskA6Fn3"
+				]
 			},
-			"countryCode": "UA",
+			"countryCode": "FM",
 			"companyContactDetails": [
-				"Torrance71@example.com",
-				"Candice15@example.com",
-				"Weston_Casper37@example.com",
-				"Modesto.Ruecker25@example.com"
+				"Jonatan_Schuppe@example.com"
 			],
 			"companyAlternativeNames": [
-				"Brown Group",
-				"Kertzmann - Hintz"
+				"Hansen, Stiedemann and Kozey",
+				"Wolff, Gutkowski and Von"
 			],
 			"companyLegalForm": null,
-			"website": "https://variable-trumpet.com",
+			"website": "https://serene-bourgeoisie.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
 					"fiscalYearDeviation": {
-						"value": "Deviation",
+						"value": "NoDeviation",
 						"dataSource": {
-							"page": "397-806",
+							"page": "1188",
 							"fileName": "SustainabilityReport",
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
-							"tagName": "deliverables",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "networks",
 							"publicationDate": null
 						},
-						"comment": "connect haptic application",
-						"quality": "NoDataFound"
+						"comment": "transmit multi-byte protocol",
+						"quality": "Reported"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-04-30",
+						"value": "2024-11-09",
 						"dataSource": {
-							"page": "1034-1064",
+							"page": "254",
 							"fileName": "SustainabilityReport",
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
-							"tagName": "communities",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
 							"publicationDate": null
 						},
-						"comment": "index bluetooth transmitter",
-						"quality": "Estimated"
+						"comment": "override solid state monitor",
+						"quality": "NoDataFound"
 					},
 					"referencedReports": {
-						"IntegratedReport": {
-							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"fileName": "IntegratedReport",
-							"publicationDate": "2024-01-21"
-						},
-						"ESEFReport": {
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"fileName": "ESEFReport",
-							"publicationDate": "2023-12-23"
-						},
 						"SustainabilityReport": {
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-10-09"
+							"publicationDate": "2023-10-23"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 3590393294.58,
+						"value": 1371402224.13,
 						"dataSource": {
-							"page": "873-1099",
+							"page": "284-733",
 							"fileName": "SustainabilityReport",
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "schemas",
+							"publicationDate": null
+						},
+						"comment": "bypass haptic bus",
+						"quality": "Reported",
+						"currency": "MWK"
+					},
+					"debt": {
+						"value": 4081221785.44,
+						"dataSource": {
+							"page": "671",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
 							"tagName": "ROI",
 							"publicationDate": null
 						},
-						"comment": "connect bluetooth driver",
-						"quality": "NoDataFound",
-						"currency": "SHP"
-					},
-					"debt": {
-						"value": 3321109884.42,
-						"dataSource": {
-							"page": "490-1253",
-							"fileName": "SustainabilityReport",
-							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
-							"tagName": "lifetime value",
-							"publicationDate": null
-						},
-						"comment": "navigate online panel",
-						"quality": "Audited",
-						"currency": "UGX"
+						"comment": "input cross-platform firewall",
+						"quality": "Incomplete",
+						"currency": "GIP"
 					},
 					"balanceSheetTotal": {
-						"value": 2933890086.13,
+						"value": 3396198318.78,
 						"dataSource": {
-							"page": "717-750",
-							"fileName": "IntegratedReport",
+							"page": "609",
+							"fileName": "SustainabilityReport",
 							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
-							"tagName": "models",
+							"tagName": "infrastructures",
 							"publicationDate": null
 						},
-						"comment": "parse redundant matrix",
-						"quality": "Reported",
-						"currency": "BND"
+						"comment": "navigate 1080p protocol",
+						"quality": "Incomplete",
+						"currency": "UGX"
 					},
 					"evic": {
-						"value": 761164708.52,
+						"value": 4004570079.45,
 						"dataSource": {
-							"page": "222",
-							"fileName": "ESEFReport",
-							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
-							"tagName": "systems",
+							"page": "1175",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
 							"publicationDate": null
 						},
-						"comment": "back up redundant bandwidth",
+						"comment": "reboot multi-byte driver",
 						"quality": "Audited",
-						"currency": "MGA"
+						"currency": "COP"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]

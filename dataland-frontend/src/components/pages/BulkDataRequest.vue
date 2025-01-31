@@ -409,7 +409,7 @@ export default defineComponent({
   align-items: center;
 }
 
-.info-color {
+.new-color {
   color: $orange-prime;
 }
 

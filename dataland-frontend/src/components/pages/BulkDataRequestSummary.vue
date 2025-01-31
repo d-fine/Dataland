@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="summary-section py-4">
+    <div class="summary-section border-bottom py-4">
       <Accordion>
         <AccordionTab>
           <template #header>
@@ -127,7 +127,7 @@ import { defineProps } from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
-import type { BulkDataRequestResponse } from '@clients/communitymanager';
+import type { type BulkDataRequestResponse } from '@clients/communitymanager';
 import { getFrameworkTitle } from '@/utils/StringFormatter';
 
 const props = defineProps<{
