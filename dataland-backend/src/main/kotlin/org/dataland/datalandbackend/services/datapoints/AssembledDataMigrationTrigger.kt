@@ -36,12 +36,11 @@ class AssembledDataMigrationTrigger
         private fun waitUntilInternalStorageHealthy() {
             Thread.sleep(WAIT_TIME_FOR_INTERNAL_STORAGE)
             for (attempt in 1..TRIES_TO_WAIT_FOR_INTERNAL_STORAGE) {
-                @Suppress("TooGenericExceptionCaught")
                 try {
                     actuatorApi.health()
                     return
-                } catch (e: Exception) {
-                    logger.info("Internal Storage not ready yet. Attempt $attempt/10. Waiting 10 seconds.", e)
+                } catch (ignore: Exception) {
+                    logger.info("Internal Storage not ready yet. Attempt $attempt/10. Waiting 10 seconds.", ignore)
                     Thread.sleep(WAIT_TIME_FOR_INTERNAL_STORAGE)
                 }
             }
@@ -76,11 +75,10 @@ class AssembledDataMigrationTrigger
                     ),
                 )
             dataIdsToMigrate.forEach {
-                @Suppress("TooGenericExceptionCaught")
                 try {
                     assembledDataMigrationManager.migrateStoredDatasetToAssembledDataset(it)
-                } catch (e: Exception) {
-                    logger.error("Migration failed for dataId: $it", e)
+                } catch (ignore: Exception) {
+                    logger.error("Migration failed for dataId: $it", ignore)
                 }
             }
         }
