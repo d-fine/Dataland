@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * Contains all relevant info that a user receives regarding already existing datasets
 
  */
-data class DataSetsResponse(
+data class DatasetsResponse(
     @field:JsonProperty(required = true)
     val userProvidedCompanyId: String,
     @field:JsonProperty(required = true)

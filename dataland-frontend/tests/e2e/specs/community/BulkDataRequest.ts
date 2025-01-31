@@ -116,17 +116,18 @@ describeIf(
      */
     function checkIfIdentifiersProperlyDisplayed(interception: Interception): void {
       if (interception.response !== undefined) {
-        const rejectedIdentifiers = (interception.response.body as BulkDataRequestResponse).rejectedCompanyIdentifiers;
-        const acceptedIdentifiers = (interception.response.body as BulkDataRequestResponse).acceptedCompanyIdentifiers;
-        if (rejectedIdentifiers.length > 0) {
-          cy.get('[data-test="rejectedIdentifiers"] [data-test="identifiersList"]')
+        const rejectedCompanyIdentifiers = (interception.response.body as BulkDataRequestResponse)
+          .rejectedCompanyIdentifiers;
+        const acceptedDataRequests = (interception.response.body as BulkDataRequestResponse).acceptedDataRequests;
+        if (rejectedCompanyIdentifiers.length > 0) {
+          cy.get('[data-test="rejectedCompanyIdentifiers"] [data-test="identifiersList"]')
             .children()
-            .should('have.length', rejectedIdentifiers.length);
+            .should('have.length', rejectedCompanyIdentifiers.length);
         }
-        if (acceptedIdentifiers.length > 0) {
+        if (acceptedDataRequests.length > 0) {
           cy.get('[data-test="acceptedIdentifiers"] [data-test="identifiersList"]').should(
             'have.length',
-            acceptedIdentifiers.length
+            acceptedDataRequests.length
           );
         }
       }

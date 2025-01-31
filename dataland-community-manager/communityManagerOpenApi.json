@@ -1596,7 +1596,7 @@
           "alreadyExistingDatasets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DataSetsResponse"
+              "$ref": "#/components/schemas/DatasetsResponse"
             }
           },
           "rejectedCompanyIdentifiers": {
@@ -1638,7 +1638,7 @@
           }
         }
       },
-      "DataSetsResponse": {
+      "DatasetsResponse": {
         "required": [
           "companyName",
           "datasetId",

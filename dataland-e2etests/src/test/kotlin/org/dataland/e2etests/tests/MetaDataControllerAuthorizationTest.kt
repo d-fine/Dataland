@@ -111,7 +111,7 @@ class MetaDataControllerAuthorizationTest {
             apiAccessor
                 .uploadCompanyAndFrameworkDataForMultipleFrameworks(
                     companyInformationPerFramework = mapOf(testDataType to listOfOneNonTeaserTestCompanyInformation),
-                    numberOfDataSetsPerCompany = 1,
+                    numberOfDatasetsPerCompany = 1,
                     uploadConfig = UploadConfiguration(TechnicalUser.Uploader, false),
                     ensureQaPassed = false,
                 )[0]

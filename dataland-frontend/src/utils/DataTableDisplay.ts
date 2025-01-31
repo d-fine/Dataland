@@ -8,10 +8,10 @@ import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation
  * @returns list of sorted objects
  */
 export function sortReportingPeriodsToDisplayAsColumns(
-  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDataSetWithId[]
-): ReportingPeriodOfDataSetWithId[] {
-  return listOfDataDateToDisplayAsColumns.sort((dataSetA, dataSetB) =>
-    compareReportingPeriods(dataSetA.reportingPeriod, dataSetB.reportingPeriod)
+  listOfDataDateToDisplayAsColumns: ReportingPeriodOfDatasetWithId[]
+): ReportingPeriodOfDatasetWithId[] {
+  return listOfDataDateToDisplayAsColumns.sort((datasetA, datasetB) =>
+    compareReportingPeriods(datasetA.reportingPeriod, datasetB.reportingPeriod)
   );
 }
 
@@ -23,8 +23,8 @@ export function sortReportingPeriodsToDisplayAsColumns(
 export function sortDatasetsByReportingPeriod<T>(
   listOfDatasets: DataAndMetaInformation<T>[]
 ): DataAndMetaInformation<T>[] {
-  return listOfDatasets.sort((dataSetA, dataSetB) =>
-    compareReportingPeriods(dataSetA.metaInfo.reportingPeriod, dataSetB.metaInfo.reportingPeriod)
+  return listOfDatasets.sort((datasetA, datasetB) =>
+    compareReportingPeriods(datasetA.metaInfo.reportingPeriod, datasetB.metaInfo.reportingPeriod)
   );
 }
 
@@ -52,7 +52,7 @@ export function compareReportingPeriods(firstReportingPeriod: string, secondRepo
   }
 }
 
-export type ReportingPeriodOfDataSetWithId = {
+export type ReportingPeriodOfDatasetWithId = {
   dataId: string;
   reportingPeriod: string;
 };

@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 
 @Transactional
@@ -42,7 +42,7 @@ class QaReportControllerTest(
     @Autowired private val qaReportController: SfdrDataQaReportController,
     @Autowired private val qaReportRepository: QaReportRepository,
 ) {
-    @MockBean
+    @MockitoBean
     private lateinit var metaDataControllerApi: MetaDataControllerApi
 
     private fun createMockDataIdForAnSfdrDataset(): String {
@@ -56,6 +56,7 @@ class QaReportControllerTest(
                 qaStatus = QaStatus.Accepted,
                 currentlyActive = true,
                 uploadTime = 0,
+                url = "",
             ),
         )
         return dataId
@@ -196,6 +197,7 @@ class QaReportControllerTest(
                     qaStatus = QaStatus.Accepted,
                     currentlyActive = true,
                     uploadTime = 0,
+                    url = "",
                 ),
             )
             val ex =

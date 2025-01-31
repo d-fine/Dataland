@@ -42,7 +42,7 @@
                       {{ identifiers.length }} provided company identifiers could not be recognized and were rejected.
                       {{ bulkDataRequestResponse.acceptedDataRequests.length }} data requests were created and
                       {{
-                        bulkDataRequestResponse.alreadyExistingDataSets.length +
+                        bulkDataRequestResponse.alreadyExistingDatasets.length +
                         bulkDataRequestResponse.alreadyExistingNonFinalRequests.length
                       }}
                       skipped. More details can be found in the summary below.
@@ -181,11 +181,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AxiosError } from 'axios';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
-import {
-  type BulkDataRequest,
-  type BulkDataRequestDataTypesEnum,
-  BulkDataRequestResponse,
-} from '@clients/communitymanager';
+import type { BulkDataRequest, BulkDataRequestDataTypesEnum, BulkDataRequestResponse } from '@clients/communitymanager';
 import router from '@/router';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
