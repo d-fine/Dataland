@@ -38,10 +38,14 @@
                       </div>
                     </div>
                     <div class="col-4 col-offset-4">
-                      {{ bulkDataRequestResponse.rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
-                      identifiers could not be recognized and were rejected. {{ bulkDataRequestResponse.acceptedDataRequests.length }} data requests
-                      were created and {{ bulkDataRequestResponse.alreadyExistingDataSets.length + bulkDataRequestResponse.alreadyExistingNonFinalRequests.length}} skipped. More details can be found in the summary
-                      below.
+                      {{ bulkDataRequestResponse.rejectedCompanyIdentifiers.length }} out of
+                      {{ identifiers.length }} provided company identifiers could not be recognized and were rejected.
+                      {{ bulkDataRequestResponse.acceptedDataRequests.length }} data requests were created and
+                      {{
+                        bulkDataRequestResponse.alreadyExistingDataSets.length +
+                        bulkDataRequestResponse.alreadyExistingNonFinalRequests.length
+                      }}
+                      skipped. More details can be found in the summary below.
                     </div>
 
                     <p v-if="message" class="py-3">{{ message }}</p>
@@ -55,7 +59,7 @@
                   </div>
                 </div>
                 <BulkDataRequestSummary
-                    :bulk-data-request-response="bulkDataRequestResponse"
+                  :bulk-data-request-response="bulkDataRequestResponse"
                   :humanized-reporting-periods="humanizedReportingPeriods"
                   :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
                   :humanized-selected-frameworks="humanizedSelectedFrameworks"
@@ -180,7 +184,7 @@ import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue'
 import {
   type BulkDataRequest,
   type BulkDataRequestDataTypesEnum,
-  BulkDataRequestResponse
+  BulkDataRequestResponse,
 } from '@clients/communitymanager';
 import router from '@/router';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
@@ -307,7 +311,7 @@ export default defineComponent({
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
         this.message = response.data.message;
-        this.bulkDataRequestResponse=response.data
+        this.bulkDataRequestResponse = response.data;
         this.submittingSucceeded = this.bulkDataRequestResponse.acceptedDataRequests.length > 0;
       } catch (error) {
         console.error(error);

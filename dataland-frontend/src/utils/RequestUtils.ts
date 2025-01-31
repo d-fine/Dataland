@@ -152,4 +152,3 @@ export function priorityBadgeClass(priority: RequestPriority): string {
 export function getRequestStatusLabel(requestStatus: RequestStatus): string {
   return requestStatus === RequestStatus.NonSourceable ? 'No sources available' : requestStatus;
 }
-

@@ -131,13 +131,12 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps} from 'vue';
+import { defineProps } from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
-import {BulkDataRequestResponse} from "@clients/communitymanager";
-import {getFrameworkTitle
-} from '@/utils/StringFormatter';
+import { BulkDataRequestResponse } from '@clients/communitymanager';
+import { getFrameworkTitle } from '@/utils/StringFormatter';
 
 const props = defineProps<{
   bulkDataRequestResponse: BulkDataRequestResponse;
@@ -146,7 +145,12 @@ const props = defineProps<{
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
 }>();
-const { acceptedDataRequests: createdRequests, alreadyExistingNonFinalRequests: existingRequests, alreadyExistingDataSets: existingDataSets, rejectedCompanyIdentifiers: rejectedCompanyIdentifiers } = props.bulkDataRequestResponse;
+const {
+  acceptedDataRequests: createdRequests,
+  alreadyExistingNonFinalRequests: existingRequests,
+  alreadyExistingDataSets: existingDataSets,
+  rejectedCompanyIdentifiers: rejectedCompanyIdentifiers,
+} = props.bulkDataRequestResponse;
 </script>
 
 <style scoped lang="scss">
