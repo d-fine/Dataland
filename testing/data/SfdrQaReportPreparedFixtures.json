@@ -2,41 +2,40 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Aliso Viejo",
-			"headquartersPostalCode": "95970",
-			"sector": "convergence",
+			"headquarters": "Marianneside",
+			"headquartersPostalCode": "30690",
+			"sector": "initiatives",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"9KT68Clm7WCWnsbkazW0"
+				],
 				"Isin": [
-					"VhYn2C8A4b01"
+					"ZhVQNcBY1QBY",
+					"PzwkpMXsHJZE"
 				],
-				"PermId": [
-					"7CaScjSidt"
-				],
+				"PermId": [],
 				"Ticker": [
-					"NhJNVgx"
+					"E5pYc9N"
 				],
-				"Duns": [
-					"d7trno2rw"
-				],
+				"Duns": [],
 				"VatNumber": [
-					"HJmC3OgK0"
+					"vWlZBIggy"
 				],
 				"CompanyRegistrationNumber": [
-					"KcRKVagkX8eqQvk"
+					"RtEoAguHlxzs1Uh"
 				]
 			},
-			"countryCode": "AZ",
+			"countryCode": "BY",
 			"companyContactDetails": [
-				"Scarlett.Runte48@example.com",
-				"Lisette_Gusikowski@example.com"
+				"Donny.Hoppe24@example.com"
 			],
 			"companyAlternativeNames": [
-				"Daniel, Grant and Ernser",
-				"Macejkovic, Koepp and O'Conner"
+				"Abernathy - Gulgowski",
+				"Fisher - Gulgowski",
+				"Hills and Sons"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://circular-case.net/",
+			"companyLegalForm": "Sole Trader",
+			"website": "https://primary-pear.com",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -53,6 +52,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	}
 ]

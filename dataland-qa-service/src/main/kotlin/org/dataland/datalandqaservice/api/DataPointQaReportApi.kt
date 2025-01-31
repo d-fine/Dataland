@@ -107,7 +107,7 @@ interface DataPointQaReportApi {
      */
     @Operation(
         summary = "Retrieve all QA reports.",
-        description = "Retrieve all QA reports associated to given dataset.",
+        description = "Retrieve all QA reports associated to given data point.",
     )
     @ApiResponses(
         value = [
@@ -119,7 +119,7 @@ interface DataPointQaReportApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getAllQaReportsForDataset(
+    fun getAllQaReportsForDataPoint(
         @PathVariable("dataId") dataId: String,
         @RequestParam(required = false) showInactive: Boolean?,
         @RequestParam(required = false) reporterUserId: String?,

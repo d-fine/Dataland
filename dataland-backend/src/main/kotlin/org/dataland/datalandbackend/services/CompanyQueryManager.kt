@@ -133,10 +133,10 @@ class CompanyQueryManager(
     fun isCompanyPublic(companyId: String): Boolean = getCompanyById(companyId).isTeaserCompany
 
     /**
-     * Counts the active data sets of a company and a specific data type
+     * Counts the active datasets of a company and a specific data type
      * @param companyId the ID of the company
      * @param dataType the data type for which the datasets should be counted
-     * @returns the number of active data sets of the specified company and data type
+     * @returns the number of active datasets of the specified company and data type
      */
     fun countActiveDatasets(
         companyId: String,

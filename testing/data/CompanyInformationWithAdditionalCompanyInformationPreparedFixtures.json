@@ -2,134 +2,130 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Kerlukeshire",
-			"headquartersPostalCode": "60933",
-			"sector": "relationships",
+			"headquarters": "Toystead",
+			"headquartersPostalCode": null,
+			"sector": "lifetime value",
 			"identifiers": {
-				"Lei": [
-					"d6G2Ns6yWmAfnDlKzyE8"
-				],
+				"Lei": [],
 				"Isin": [
-					"OQhtTJtNKGxt"
+					"yV7YC5eoLvOM",
+					"vIC7eN0WbKAs"
 				],
 				"PermId": [],
 				"Ticker": [
-					"KusqRjv"
+					"NNbSVWO"
 				],
 				"Duns": [
-					"2VGFoj3pY"
+					"HK9c0NusB"
 				],
 				"VatNumber": [],
 				"CompanyRegistrationNumber": [
-					"cmxecBpkXRn7jzV"
+					"4mtohdmOskA6Fn3"
 				]
 			},
-			"countryCode": "PA",
+			"countryCode": "FM",
 			"companyContactDetails": [
-				"Leo62@example.com",
-				"Freida_Heller@example.com",
-				"Lavada29@example.com",
-				"Shea.Boyle53@example.com",
-				"Casimir80@example.com"
+				"Jonatan_Schuppe@example.com"
 			],
 			"companyAlternativeNames": [
-				"Hoppe Group",
-				"Pagac Group"
+				"Hansen, Stiedemann and Kozey",
+				"Wolff, Gutkowski and Von"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://wide-eyed-object.org/",
+			"companyLegalForm": null,
+			"website": "https://serene-bourgeoisie.com",
 			"isTeaserCompany": false
 		},
 		"t": {
 			"general": {
 				"general": {
 					"fiscalYearDeviation": {
-						"value": "Deviation",
+						"value": "NoDeviation",
 						"dataSource": {
-							"page": "404",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
-						},
-						"comment": "generate 1080p system",
-						"quality": "NoDataFound"
-					},
-					"fiscalYearEnd": {
-						"value": "2024-05-08",
-						"dataSource": {
-							"page": "392",
+							"page": "1188",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "networks",
+							"publicationDate": null
 						},
-						"comment": "override optical interface",
+						"comment": "transmit multi-byte protocol",
 						"quality": "Reported"
 					},
-					"referencedReports": {
-						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"fileName": "ESEFReport",
-							"publicationDate": "2023-05-09"
-						},
-						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+					"fiscalYearEnd": {
+						"value": "2024-11-09",
+						"dataSource": {
+							"page": "254",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-04-15"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
+						},
+						"comment": "override solid state monitor",
+						"quality": "NoDataFound"
+					},
+					"referencedReports": {
+						"SustainabilityReport": {
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"fileName": "SustainabilityReport",
+							"publicationDate": "2023-10-23"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 3015959701,
+						"value": 1371402224.13,
 						"dataSource": {
-							"page": "214-1233",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"page": "284-733",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "schemas",
+							"publicationDate": null
 						},
-						"comment": "calculate wireless interface",
-						"quality": "NoDataFound",
-						"currency": "LSL"
+						"comment": "bypass haptic bus",
+						"quality": "Reported",
+						"currency": "MWK"
 					},
 					"debt": {
-						"value": 5636161134.16,
+						"value": 4081221785.44,
 						"dataSource": {
-							"page": "883",
+							"page": "671",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "ROI",
+							"publicationDate": null
 						},
-						"comment": "navigate bluetooth alarm",
-						"quality": "Audited",
-						"currency": "LAK"
+						"comment": "input cross-platform firewall",
+						"quality": "Incomplete",
+						"currency": "GIP"
 					},
 					"balanceSheetTotal": {
-						"value": 1374657419.22,
+						"value": 3396198318.78,
 						"dataSource": {
-							"page": "665",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"page": "609",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "infrastructures",
+							"publicationDate": null
 						},
-						"comment": "index virtual sensor",
-						"quality": "Audited",
-						"currency": "PGK"
+						"comment": "navigate 1080p protocol",
+						"quality": "Incomplete",
+						"currency": "UGX"
 					},
 					"evic": {
-						"value": 6458550405.32,
+						"value": 4004570079.45,
 						"dataSource": {
-							"page": "153-923",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"page": "1175",
+							"fileName": "SustainabilityReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "experiences",
+							"publicationDate": null
 						},
-						"comment": "calculate wireless capacitor",
-						"quality": "Reported",
-						"currency": "NPR"
+						"comment": "reboot multi-byte driver",
+						"quality": "Audited",
+						"currency": "COP"
 					}
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2022"
 	}
 ]

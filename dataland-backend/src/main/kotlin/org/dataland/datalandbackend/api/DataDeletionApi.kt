@@ -24,7 +24,7 @@ fun interface DataDeletionApi {
      * @return meta info about the stored data including the ID of the created entry in the data store
      */
     @Operation(
-        summary = "Delete a data set.",
+        summary = "Delete a dataset.",
         description = "The data is removed from the data store.",
     )
     @ApiResponses(

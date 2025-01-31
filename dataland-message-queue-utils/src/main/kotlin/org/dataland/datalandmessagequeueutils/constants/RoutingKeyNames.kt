@@ -14,6 +14,7 @@ object RoutingKeyNames {
     const val DATA_POINT_UPLOAD = "dataPoint.upload"
     const val DATA_POINT_QA = "dataPoint.qa"
     const val DATASET_UPLOAD = "dataset.upload"
+    const val DATASET_QA = "dataset.qa"
     const val DATASET_DELETION = "dataset.deletion"
     const val DATA_NONSOURCEABLE = "dataNonSourceable"
 }

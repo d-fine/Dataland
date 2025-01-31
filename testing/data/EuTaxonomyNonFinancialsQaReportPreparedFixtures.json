@@ -2,37 +2,35 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Denesikport",
-			"headquartersPostalCode": "28692-7152",
-			"sector": "paradigms",
+			"headquarters": "Robelburgh",
+			"headquartersPostalCode": null,
+			"sector": "ROI",
 			"identifiers": {
 				"Lei": [
-					"GczmeVXsx6ipAhYkW4xv"
+					"6TGtm1nKMi5pP1Ru4tgA"
 				],
 				"Isin": [
-					"0djLRssaGyqY",
-					"IRTovuaD70PK"
+					"IRKfw3aiBP59"
 				],
 				"PermId": [],
 				"Ticker": [],
-				"Duns": [
-					"KT68Clm7W"
-				],
-				"VatNumber": [
-					"WnsbkazW0"
-				],
-				"CompanyRegistrationNumber": []
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": [
+					"MSXXwLNKAWEawTK"
+				]
 			},
-			"countryCode": "IL",
-			"companyContactDetails": null,
-			"companyAlternativeNames": [
-				"Huels Inc",
-				"Jones LLC",
-				"Nikolaus Group",
-				"Witting and Sons"
+			"countryCode": "PY",
+			"companyContactDetails": [
+				"Rupert_Crona@example.com",
+				"Kamron30@example.com"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://petty-puritan.biz",
+			"companyAlternativeNames": [
+				"Harris LLC",
+				"Rath, Fisher and Harvey"
+			],
+			"companyLegalForm": "Public Limited Company (PLC)",
+			"website": "https://reasonable-instance.net/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -100,6 +98,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2024"
 	}
 ]
