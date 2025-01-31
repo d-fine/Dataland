@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="summary-section border-bottom py-4">
+    <div class="summary-section py-4">
       <Accordion>
         <AccordionTab>
           <template #header>
@@ -31,7 +31,7 @@
               <Badge :value="createdRequests.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <div v-bind="createdRequests" data-test="createdRequests">
+          <div data-test="createdRequests">
             <div class="grid-container align-items-center" v-for="(entry, index) in createdRequests" :key="index">
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
@@ -49,16 +49,16 @@
         <AccordionTab>
           <template #header>
             <span class="flex align-items-center gap-2 w-full">
-              <em class="material-icons info-icon new-color">info</em>
+              <em class="material-icons info-icon info-color">info</em>
               <span class="summary-section-heading">SKIPPED REQUESTS - DATA ALREADY EXISTS</span>
               <Badge :value="existingDatasets.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
+          <div class="text-center bg-gray-300 p-1 mt-1 mb-3">
             If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single
             data request on the corresponding dataset page.
           </div>
-          <div v-bind="existingDatasets" data-test="existingDatasets">
+          <div data-test="existingDatasets">
             <div class="grid-container align-items-center" v-for="(entry, index) in existingDatasets" :key="index">
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
@@ -76,12 +76,12 @@
         <AccordionTab>
           <template #header>
             <span class="flex align-items-center gap-2 w-full">
-              <em class="material-icons info-icon new-color">info</em>
+              <em class="material-icons info-icon info-color">info</em>
               <span class="summary-section-heading">SKIPPED REQUESTS - REQUESTS ALREADY EXIST</span>
               <Badge :value="existingRequests.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <div v-bind="existingRequests" data-test="existingRequests">
+          <div data-test="existingRequests">
             <div class="grid-container align-items-center" v-for="(entry, index) in existingRequests" :key="index">
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
@@ -104,11 +104,15 @@
               <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <div class="text-center bg-gray-300 py-1 mt-1 mb-3">
+          <div class="text-center bg-gray-300 p-1 mt-1 mb-3">
             No company or companies are known on Dataland for the following company identifier(s)
           </div>
-          <div v-bind="rejectedCompanyIdentifiers" data-test="rejectedCompanyIdentifiers">
-            <div class="grid-container align-items-center" v-for="entry in rejectedCompanyIdentifiers" :key="entry">
+          <div data-test="rejectedCompanyIdentifiers">
+            <div
+              class="grid-container align-items-center"
+              v-for="(entry, index) in rejectedCompanyIdentifiers"
+              :key="index"
+            >
               <div class="col bold-text middle-center-div">{{ entry }}</div>
             </div>
           </div>
@@ -142,48 +146,24 @@ const {
 </script>
 
 <style scoped lang="scss">
-.uploadFormWrapper {
-  min-height: calc(100vh - 200px);
+.border-bottom {
+  border-bottom: 1px solid #dadada;
+}
 
-  .status {
-    .status-text {
-      font-weight: 700;
-      font-size: 48px;
-      line-height: 48px;
-      letter-spacing: 0.25px;
-    }
+div.summary-section {
+  .summary-section-heading {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
 
     .info-icon {
-      font-size: 48px;
+      margin-bottom: -2px;
+      vertical-align: bottom;
     }
   }
 
-  div.summary-section {
-    &.border-bottom {
-      border-bottom: 1px solid #dadada;
-    }
-
-    .summary-section-heading {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 20px;
-
-      .info-icon {
-        margin-bottom: -2px;
-        vertical-align: bottom;
-      }
-    }
-
-    .summary-section-data {
-      font-weight: 700;
-
-      .identifier {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 26px;
-        letter-spacing: 0.44px;
-      }
-    }
+  .summary-section-data {
+    font-weight: 700;
   }
 }
 
@@ -194,29 +174,12 @@ const {
   gap: 16px; /* Adjust the gap as needed */
 }
 
-.status-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.status-container {
-  display: flex;
-  align-items: center;
-}
-
-.new-color {
+.info-color {
   color: $orange-prime;
 }
 
 .bold-text {
   font-weight: bold;
-}
-
-.no-framework {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .grid-container {

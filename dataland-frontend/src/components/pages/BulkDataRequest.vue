@@ -215,7 +215,7 @@ export default defineComponent({
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: '',
       identifiers: [] as Array<string>,
-      bulkDataRequestResponse: [] as Array<BulkDataRequestResponse>,
+      bulkDataRequestResponse: {} as BulkDataRequestResponse,
       submittingSucceeded: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
@@ -409,7 +409,7 @@ export default defineComponent({
   align-items: center;
 }
 
-.new-color {
+.info-color {
   color: $orange-prime;
 }
 
