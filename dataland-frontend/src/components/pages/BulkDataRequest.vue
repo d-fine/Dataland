@@ -38,9 +38,9 @@
                       </div>
                     </div>
                     <div class="col-4 col-offset-4">
-                      {{ rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
-                      identifiers could not be recognized and were rejected. {{ createdRequests.length }} data requests
-                      were created and {{ existingDataSets.length }} skipped. More details can be found in the summary
+                      {{ bulkDataRequestResponse.rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
+                      identifiers could not be recognized and were rejected. {{ bulkDataRequestResponse.acceptedDataRequests.length }} data requests
+                      were created and {{ bulkDataRequestResponse.alreadyExistingDataSets.length + bulkDataRequestResponse.alreadyExistingNonFinalRequests.length}} skipped. More details can be found in the summary
                       below.
                     </div>
 
@@ -55,14 +55,11 @@
                   </div>
                 </div>
                 <BulkDataRequestSummary
+                    :bulk-data-request-response="bulkDataRequestResponse"
                   :humanized-reporting-periods="humanizedReportingPeriods"
                   :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
                   :humanized-selected-frameworks="humanizedSelectedFrameworks"
                   :summary-section-frameworks-heading="summarySectionFrameworksHeading"
-                  :rejected-company-identifiers="rejectedCompanyIdentifiers"
-                  :existing-data-sets="existingDataSets"
-                  :existing-requests="existingRequests"
-                  :created-requests="createdRequests"
                 />
               </template>
             </template>
@@ -180,9 +177,12 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AxiosError } from 'axios';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
-import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
+import {
+  type BulkDataRequest,
+  type BulkDataRequestDataTypesEnum,
+  BulkDataRequestResponse
+} from '@clients/communitymanager';
 import router from '@/router';
-import { type DataRequests, DataSets } from '@/utils/RequestUtils.ts';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
@@ -215,10 +215,7 @@ export default defineComponent({
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: '',
       identifiers: [] as Array<string>,
-      rejectedCompanyIdentifiers: [] as Array<string>,
-      createdRequests: [] as Array<DataRequests>,
-      existingDataSets: [] as Array<DataSets>,
-      existingRequests: [] as Array<DataRequests>,
+      bulkDataRequestResponse: [] as Array<BulkDataRequestResponse>,
       submittingSucceeded: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
@@ -268,17 +265,6 @@ export default defineComponent({
       }
     },
     /**
-     * Creates section title for identifiers
-     * @param items string array to calculate size and proper grammar
-     * @param statusText optional text identifying the status of the heading
-     * @returns a formatted heading
-     */
-    summarySectionIdentifiersHeading(items: string[], statusText = ''): string {
-      const numberOfItems = items.length;
-      const messageSegments = [items.length, statusText, `IDENTIFIER${numberOfItems > 1 ? 'S' : ''}`];
-      return messageSegments.filter((segment) => !!segment).join(' ');
-    },
-    /**
      * Remove framework from selected frameworks from array
      * @param it - framework to remove
      */
@@ -321,12 +307,8 @@ export default defineComponent({
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
 
         this.message = response.data.message;
-        console.log(response.data);
-        this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.existingDataSets = response.data.alreadyExistingDataSets;
-        this.createdRequests = response.data.acceptedDataRequests;
-        this.existingRequests = response.data.alreadyExistingNonFinalRequests;
-        this.submittingSucceeded = this.createdRequests.length > 0;
+        this.bulkDataRequestResponse=response.data
+        this.submittingSucceeded = this.bulkDataRequestResponse.acceptedDataRequests.length > 0;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {

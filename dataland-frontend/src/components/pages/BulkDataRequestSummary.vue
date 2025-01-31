@@ -36,7 +36,7 @@
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
               <a :href="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>VIEW REQUEST</span>
@@ -67,7 +67,7 @@
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
               <a :href="entry.datasetUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>VIEW DATA</span>
@@ -94,7 +94,7 @@
               <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
+              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
               <a :href="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>VIEW REQUEST</span>
@@ -131,22 +131,22 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import { type DataRequests, type DataSets } from '@/utils/RequestUtils.ts';
+import {defineProps} from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
+import {BulkDataRequestResponse} from "@clients/communitymanager";
+import {getFrameworkTitle
+} from '@/utils/StringFormatter';
 
 const props = defineProps<{
+  bulkDataRequestResponse: BulkDataRequestResponse;
   humanizedReportingPeriods: string;
   summarySectionReportingPeriodsHeading: string;
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
-  rejectedCompanyIdentifiers: string[];
-  existingDataSets: Array<DataSets>;
-  createdRequests: Array<DataRequests>;
-  existingRequests: Array<DataRequests>;
 }>();
+const { acceptedDataRequests: createdRequests, alreadyExistingNonFinalRequests: existingRequests, alreadyExistingDataSets: existingDataSets, rejectedCompanyIdentifiers: rejectedCompanyIdentifiers } = props.bulkDataRequestResponse;
 </script>
 
 <style scoped lang="scss">
