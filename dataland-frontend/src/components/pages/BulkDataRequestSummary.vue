@@ -97,7 +97,7 @@
               <div class="col bold-text middle-center-div">{{ entry.framework }}</div>
               <a :href="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
                 <div class="text-right">
-                  <span>VIEW DATA</span>
+                  <span>VIEW REQUEST</span>
                   <span class="ml-3">></span>
                 </div>
               </a>
@@ -132,7 +132,7 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { DataRequests, DataSets } from '@/utils/RequestUtils.ts';
+import { type DataRequests, type DataSets } from '@/utils/RequestUtils.ts';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';

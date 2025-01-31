@@ -53,24 +53,32 @@ describe('Component tests for the BulkDataRequest page', () => {
     cy.get('.summary-section-heading').contains('SKIPPED REQUESTS - REQUESTS ALREADY EXIST').should('exist');
     cy.get('.summary-section-heading').contains('REJECTED IDENTIFIERS').should('exist');
 
-    cy.get('.badge').contains('1').should('exist');
-    cy.get('.badge').contains('1').should('exist');
-    cy.get('.badge').contains('1').should('exist');
-    cy.get('.badge').contains('1').should('exist');
+    cy.get('.grid-container')
+      .first()
+      .within(() => {
+        cy.get('.bold-text').contains('Company B').should('exist');
+        cy.get('.bold-text').contains('2022').should('exist');
+        cy.get('.text-primary').contains('VIEW REQUEST').should('exist');
+      });
 
-    cy.get('.grid-container').within(() => {
-      cy.get('.bold-text').contains('Company B').should('exist');
-      cy.get('.bold-text').contains('2022').should('exist');
-      cy.get('.text-primary').contains('VIEW REQUEST').should('exist');
-    });
+    cy.get('.grid-container')
+      .eq(1)
+      .within(() => {
+        cy.get('.bold-text').contains('Company A').should('exist');
+        cy.get('.text-primary').contains('VIEW DATA').should('exist');
+      });
 
-    cy.get('.grid-container').within(() => {
-      cy.get('.bold-text').contains('Company A').should('exist');
-      cy.get('.text-primary').contains('VIEW DATA').should('exist');
-    });
+    cy.get('.grid-container')
+      .eq(2)
+      .within(() => {
+        cy.get('.bold-text').contains('Company C').should('exist');
+        cy.get('.text-primary').contains('VIEW REQUEST').should('exist');
+      });
 
-    cy.get('.grid-container').within(() => {
-      cy.get('.bold-text').contains('REJECT123').should('exist');
-    });
+    cy.get('.grid-container')
+      .eq(3)
+      .within(() => {
+        cy.get('.bold-text').contains('REJECT123').should('exist');
+      });
   });
 });
