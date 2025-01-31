@@ -16,7 +16,7 @@ data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)
     val alreadyExistingNonFinalRequests: List<DataRequestResponse>,
     @field:JsonProperty(required = true)
-    val alreadyExistingDataSets: List<DataSetsResponse>,
+    val alreadyExistingDatasets: List<DatasetsResponse>,
     @field:JsonProperty(required = true)
     val rejectedCompanyIdentifiers: List<String>,
 )

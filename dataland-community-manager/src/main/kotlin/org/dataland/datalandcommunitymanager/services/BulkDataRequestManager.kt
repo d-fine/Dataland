@@ -9,7 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.DataSetsResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetsResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ValidSingleDataRequest
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -87,10 +87,10 @@ class BulkDataRequestManager(
         )
     }
 
-    private fun getAlreadyExistingDataSetsResponse(
+    private fun getAlreadyExistingDatasetsResponse(
         metaDataList: List<DataMetaInformation>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
-    ): List<DataSetsResponse> {
+    ): List<DatasetsResponse> {
         if (metaDataList.isEmpty()) {
             return emptyList()
         }
@@ -104,7 +104,7 @@ class BulkDataRequestManager(
 
             companyMappingEntry ?: throw IllegalArgumentException("Can't match: $companyId to a user provided company identifier.")
 
-            DataSetsResponse(
+            DatasetsResponse(
                 userProvidedCompanyId = companyMappingEntry.key,
                 companyName = companyMappingEntry.value.companyName,
                 framework = metaData.dataType.toString(),
@@ -279,14 +279,14 @@ class BulkDataRequestManager(
         val acceptedRequests = requestResults.first
         val existingNonFinalRequests = requestResults.second
 
-        val existingDataSets =
-            getAlreadyExistingDataSetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
+        val existingDatasets =
+            getAlreadyExistingDatasetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
 
         val bulkRequestResponse =
             BulkDataRequestResponse(
                 acceptedDataRequests = acceptedRequests,
                 alreadyExistingNonFinalRequests = existingNonFinalRequests,
-                alreadyExistingDataSets = existingDataSets,
+                alreadyExistingDatasets = existingDatasets,
                 rejectedCompanyIdentifiers = rejectedIdentifiers,
             )
 

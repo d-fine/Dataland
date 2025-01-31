@@ -120,18 +120,18 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { type DataRequests, type DataSets } from '@/utils/RequestUtils.ts';
+import { type DataRequests, type Datasets } from '@/utils/RequestUtils.ts';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
 
-const props = defineProps<{
+defineProps<{
   humanizedReportingPeriods: string;
   summarySectionReportingPeriodsHeading: string;
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
   rejectedCompanyIdentifiers: string[];
-  existingDatasets: Array<DataSets>;
+  existingDatasets: Array<Datasets>;
   createdRequests: Array<DataRequests>;
   existingRequests: Array<DataRequests>;
 }>();

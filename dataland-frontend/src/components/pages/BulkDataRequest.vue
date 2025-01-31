@@ -40,7 +40,7 @@
                     <div class="col-4 col-offset-4">
                       {{ rejectedCompanyIdentifiers.length }} out of {{ identifiers.length }} provided company
                       identifiers could not be recognized and were rejected. {{ createdRequests.length }} data requests
-                      were created and {{ existingDataSets.length }} skipped. More details can be found in the summary
+                      were created and {{ existingDatasets.length }} skipped. More details can be found in the summary
                       below.
                     </div>
 
@@ -60,7 +60,7 @@
                   :humanized-selected-frameworks="humanizedSelectedFrameworks"
                   :summary-section-frameworks-heading="summarySectionFrameworksHeading"
                   :rejected-company-identifiers="rejectedCompanyIdentifiers"
-                  :existing-data-sets="existingDataSets"
+                  :existing-datasets="existingDatasets"
                   :existing-requests="existingRequests"
                   :created-requests="createdRequests"
                 />
@@ -182,7 +182,7 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
-import { type DataRequests, DataSets } from '@/utils/RequestUtils.ts';
+import type { DataRequests, Datasets } from '@/utils/RequestUtils.ts';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
@@ -217,7 +217,7 @@ export default defineComponent({
       identifiers: [] as Array<string>,
       rejectedCompanyIdentifiers: [] as Array<string>,
       createdRequests: [] as Array<DataRequests>,
-      existingDataSets: [] as Array<DataSets>,
+      existingDatasets: [] as Array<Datasets>,
       existingRequests: [] as Array<DataRequests>,
       submittingSucceeded: false,
       submittingInProgress: false,
@@ -268,17 +268,6 @@ export default defineComponent({
       }
     },
     /**
-     * Creates section title for identifiers
-     * @param items string array to calculate size and proper grammar
-     * @param statusText optional text identifying the status of the heading
-     * @returns a formatted heading
-     */
-    summarySectionIdentifiersHeading(items: string[], statusText = ''): string {
-      const numberOfItems = items.length;
-      const messageSegments = [items.length, statusText, `IDENTIFIER${numberOfItems > 1 ? 'S' : ''}`];
-      return messageSegments.filter((segment) => !!segment).join(' ');
-    },
-    /**
      * Remove framework from selected frameworks from array
      * @param it - framework to remove
      */
@@ -323,7 +312,7 @@ export default defineComponent({
         this.message = response.data.message;
         console.log(response.data);
         this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.existingDataSets = response.data.alreadyExistingDataSets;
+        this.existingDatasets = response.data.alreadyExistingDatasets;
         this.createdRequests = response.data.acceptedDataRequests;
         this.existingRequests = response.data.alreadyExistingNonFinalRequests;
         this.submittingSucceeded = this.createdRequests.length > 0;

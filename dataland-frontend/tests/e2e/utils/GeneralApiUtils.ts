@@ -37,7 +37,7 @@ export async function searchBasicCompanyInformationForDataType(
  * @param dataType The data type to use while counting companies and number of datasets for that data type
  * @returns an object which contains the resulting number of companies and number of datasets
  */
-export async function countCompaniesAndDataSetsForDataType(
+export async function countCompaniesAndDatasetsForDataType(
   token: string,
   dataType: DataTypeEnum
 ): Promise<{ numberOfCompaniesForDataType: number; numberOfDataSetsForDataType: number }> {

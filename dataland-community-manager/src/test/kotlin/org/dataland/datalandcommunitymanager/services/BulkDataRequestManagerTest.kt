@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.DataSetsResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetsResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -135,7 +135,7 @@ class BulkDataRequestManagerTest {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(expectedAcceptedDataRequest, response.acceptedDataRequests)
         assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
-        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<DatasetsResponse>(), response.alreadyExistingDataSets)
         assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
     }
 
@@ -170,7 +170,7 @@ class BulkDataRequestManagerTest {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
         assertEquals(expectedAlreadyExistingDataRequest, response.alreadyExistingNonFinalRequests)
-        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<DatasetsResponse>(), response.alreadyExistingDataSets)
         assertEquals(emptyList<String>(), response.rejectedCompanyIdentifiers)
     }
 
@@ -204,7 +204,7 @@ class BulkDataRequestManagerTest {
 
         val expectedAlreadyExistingDataSetsResponse =
             listOf(
-                DataSetsResponse(
+                DatasetsResponse(
                     userProvidedCompanyId = dummyUserProvidedCompanyId,
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
@@ -242,7 +242,7 @@ class BulkDataRequestManagerTest {
         val response = bulkDataRequestManager.processBulkDataRequest(bulkDataRequest)
         assertEquals(emptyList<DataRequestResponse>(), response.acceptedDataRequests)
         assertEquals(emptyList<DataRequestResponse>(), response.alreadyExistingNonFinalRequests)
-        assertEquals(emptyList<DataSetsResponse>(), response.alreadyExistingDataSets)
+        assertEquals(emptyList<DatasetsResponse>(), response.alreadyExistingDataSets)
         assertEquals(expectedRejectedCompanyIdentifiers, response.rejectedCompanyIdentifiers)
     }
 }

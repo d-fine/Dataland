@@ -18,8 +18,8 @@ export type ReferencedDocuments = { [key: string]: CompanyReport | BaseDocumentR
 export function generateFixtureDataset<T>(
   frameworkDataGenerator: () => T,
   numElements: number,
-  reportingPeriodGenerator: (dataSet: T) => string = generateReportingPeriod,
-  referencedReportsAccessor?: (dataSet: T) => ReferencedDocuments | undefined | null
+  reportingPeriodGenerator: (dataset: T) => string = generateReportingPeriod,
+  referencedReportsAccessor?: (dataset: T) => ReferencedDocuments | undefined | null
 ): Array<FixtureData<T>> {
   const fixtureDataset = [];
   for (let id = 1; id <= numElements; id++) {
