@@ -146,6 +146,9 @@ class QaReviewManager(
     @Transactional
     fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId) != null
 
+    /**
+     * Asserts that the QA service knows the dataId
+     */
     @Transactional
     fun assertQaServiceKnowsDataId(dataId: String) {
         if (!checkIfQaServiceKnowsDataId(dataId)) {
