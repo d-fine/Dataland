@@ -84,7 +84,7 @@ fun getIdForUploadedCompanyWithIdentifiers(
     permId: String? = null,
 ): String = apiAccessor.uploadOneCompanyWithIdentifiers(lei, isins, permId)!!.actualStoredCompany.companyId
 
-fun checkThatTheNumberOfRejectedIdentifiersIsAsExpected(
+fun checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {

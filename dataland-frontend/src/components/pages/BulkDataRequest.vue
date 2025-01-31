@@ -182,7 +182,7 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
 import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
 import router from '@/router';
-import { type DataRequests, DataSets } from '@/utils/RequestUtils.ts';
+import { type DataRequests, type DataSets } from '@/utils/RequestUtils.ts';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
@@ -267,17 +267,20 @@ export default defineComponent({
         this.selectedReportingPeriodsError = true;
       }
     },
+    /*
     /**
      * Creates section title for identifiers
      * @param items string array to calculate size and proper grammar
      * @param statusText optional text identifying the status of the heading
      * @returns a formatted heading
      */
+    /*
     summarySectionIdentifiersHeading(items: string[], statusText = ''): string {
       const numberOfItems = items.length;
       const messageSegments = [items.length, statusText, `IDENTIFIER${numberOfItems > 1 ? 'S' : ''}`];
       return messageSegments.filter((segment) => !!segment).join(' ');
     },
+    */
     /**
      * Remove framework from selected frameworks from array
      * @param it - framework to remove
@@ -323,7 +326,7 @@ export default defineComponent({
         this.message = response.data.message;
         console.log(response.data);
         this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.existingDataSets = response.data.alreadyExistingDataSets;
+        this.existingDataSets = response.data.alreadyExistingDatasets;
         this.createdRequests = response.data.acceptedDataRequests;
         this.existingRequests = response.data.alreadyExistingNonFinalRequests;
         this.submittingSucceeded = this.createdRequests.length > 0;
