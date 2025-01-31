@@ -2,41 +2,35 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "Aliso Viejo",
-			"headquartersPostalCode": "95970",
+			"headquarters": "West Covina",
+			"headquartersPostalCode": "30025-2331",
 			"sector": "convergence",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"ZDaG2ANMPw9BQTqWsmdA"
+				],
 				"Isin": [
-					"VhYn2C8A4b01"
+					"DFYupSxrmiEu"
 				],
 				"PermId": [
-					"7CaScjSidt"
+					"0W4ImgPO7y"
 				],
 				"Ticker": [
-					"NhJNVgx"
+					"2mQNNPv"
 				],
-				"Duns": [
-					"d7trno2rw"
-				],
-				"VatNumber": [
-					"HJmC3OgK0"
-				],
-				"CompanyRegistrationNumber": [
-					"KcRKVagkX8eqQvk"
-				]
+				"Duns": [],
+				"VatNumber": [],
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "AZ",
+			"countryCode": "FM",
 			"companyContactDetails": [
-				"Scarlett.Runte48@example.com",
-				"Lisette_Gusikowski@example.com"
+				"Ismael82@example.com"
 			],
 			"companyAlternativeNames": [
-				"Daniel, Grant and Ernser",
-				"Macejkovic, Koepp and O'Conner"
+				"Cronin - Graham"
 			],
-			"companyLegalForm": "Partnership without Limited Liability",
-			"website": "https://circular-case.net/",
+			"companyLegalForm": "GmbH",
+			"website": "https://boring-labour.biz/",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -53,6 +47,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2023"
+		"reportingPeriod": "2020"
 	}
 ]

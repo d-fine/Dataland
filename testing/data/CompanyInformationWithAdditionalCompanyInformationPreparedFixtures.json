@@ -2,42 +2,39 @@
 	{
 		"companyInformation": {
 			"companyName": "additional-company-information-dataset-with-no-null-fields",
-			"headquarters": "Kerlukeshire",
-			"headquartersPostalCode": "60933",
-			"sector": "relationships",
+			"headquarters": "Nienowshire",
+			"headquartersPostalCode": "02199-0994",
+			"sector": null,
 			"identifiers": {
-				"Lei": [
-					"d6G2Ns6yWmAfnDlKzyE8"
-				],
+				"Lei": [],
 				"Isin": [
-					"OQhtTJtNKGxt"
+					"Dq6d8MiHRTZG"
 				],
-				"PermId": [],
+				"PermId": [
+					"hj5snyfWes"
+				],
 				"Ticker": [
-					"KusqRjv"
+					"EFUzYWQ"
 				],
 				"Duns": [
-					"2VGFoj3pY"
+					"SZ96gyHqy"
 				],
 				"VatNumber": [],
-				"CompanyRegistrationNumber": [
-					"cmxecBpkXRn7jzV"
-				]
+				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "PA",
+			"countryCode": "UA",
 			"companyContactDetails": [
-				"Leo62@example.com",
-				"Freida_Heller@example.com",
-				"Lavada29@example.com",
-				"Shea.Boyle53@example.com",
-				"Casimir80@example.com"
+				"Torrance71@example.com",
+				"Candice15@example.com",
+				"Weston_Casper37@example.com",
+				"Modesto.Ruecker25@example.com"
 			],
 			"companyAlternativeNames": [
-				"Hoppe Group",
-				"Pagac Group"
+				"Brown Group",
+				"Kertzmann - Hintz"
 			],
-			"companyLegalForm": "Public Limited Company (PLC)",
-			"website": "https://wide-eyed-object.org/",
+			"companyLegalForm": null,
+			"website": "https://variable-trumpet.com",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -46,86 +43,97 @@
 					"fiscalYearDeviation": {
 						"value": "Deviation",
 						"dataSource": {
-							"page": "404",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "paradigms"
+							"page": "397-806",
+							"fileName": "SustainabilityReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "deliverables",
+							"publicationDate": null
 						},
-						"comment": "generate 1080p system",
+						"comment": "connect haptic application",
 						"quality": "NoDataFound"
 					},
 					"fiscalYearEnd": {
-						"value": "2024-05-08",
+						"value": "2024-04-30",
 						"dataSource": {
-							"page": "392",
+							"page": "1034-1064",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "users"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "communities",
+							"publicationDate": null
 						},
-						"comment": "override optical interface",
-						"quality": "Reported"
+						"comment": "index bluetooth transmitter",
+						"quality": "Estimated"
 					},
 					"referencedReports": {
+						"IntegratedReport": {
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"fileName": "IntegratedReport",
+							"publicationDate": "2024-01-21"
+						},
 						"ESEFReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
 							"fileName": "ESEFReport",
-							"publicationDate": "2023-05-09"
+							"publicationDate": "2023-12-23"
 						},
 						"SustainabilityReport": {
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
 							"fileName": "SustainabilityReport",
-							"publicationDate": "2023-04-15"
+							"publicationDate": "2023-10-09"
 						}
 					}
 				},
 				"financialInformation": {
 					"equity": {
-						"value": 3015959701,
+						"value": 3590393294.58,
 						"dataSource": {
-							"page": "214-1233",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "architectures"
+							"page": "873-1099",
+							"fileName": "SustainabilityReport",
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "ROI",
+							"publicationDate": null
 						},
-						"comment": "calculate wireless interface",
+						"comment": "connect bluetooth driver",
 						"quality": "NoDataFound",
-						"currency": "LSL"
+						"currency": "SHP"
 					},
 					"debt": {
-						"value": 5636161134.16,
+						"value": 3321109884.42,
 						"dataSource": {
-							"page": "883",
+							"page": "490-1253",
 							"fileName": "SustainabilityReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "models"
+							"fileReference": "595456e5719f4a5240ef63219625da1024431a7dbba2a4a2cc4e392c37b8c14e",
+							"tagName": "lifetime value",
+							"publicationDate": null
 						},
-						"comment": "navigate bluetooth alarm",
+						"comment": "navigate online panel",
 						"quality": "Audited",
-						"currency": "LAK"
+						"currency": "UGX"
 					},
 					"balanceSheetTotal": {
-						"value": 1374657419.22,
+						"value": 2933890086.13,
 						"dataSource": {
-							"page": "665",
-							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "synergies"
+							"page": "717-750",
+							"fileName": "IntegratedReport",
+							"fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+							"tagName": "models",
+							"publicationDate": null
 						},
-						"comment": "index virtual sensor",
-						"quality": "Audited",
-						"currency": "PGK"
+						"comment": "parse redundant matrix",
+						"quality": "Reported",
+						"currency": "BND"
 					},
 					"evic": {
-						"value": 6458550405.32,
+						"value": 761164708.52,
 						"dataSource": {
-							"page": "153-923",
+							"page": "222",
 							"fileName": "ESEFReport",
-							"fileReference": "50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63",
-							"tagName": "initiatives"
+							"fileReference": "2e7270a3e823927740609089091805c1cedd3cec291175a5ca08c24a8a4b1342",
+							"tagName": "systems",
+							"publicationDate": null
 						},
-						"comment": "calculate wireless capacitor",
-						"quality": "Reported",
-						"currency": "NPR"
+						"comment": "back up redundant bandwidth",
+						"quality": "Audited",
+						"currency": "MGA"
 					}
 				}
 			}

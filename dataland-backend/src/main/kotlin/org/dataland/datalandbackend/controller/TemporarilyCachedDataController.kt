@@ -21,7 +21,7 @@ class TemporarilyCachedDataController(
     @Autowired var privateDataManager: PrivateDataManager,
 ) : TemporarilyCachedDataApi {
     override fun getReceivedPublicData(dataId: String): ResponseEntity<String> =
-        ResponseEntity.ok(dataManager.selectPublicDataSetFromTemporaryStorage(dataId))
+        ResponseEntity.ok(dataManager.selectPublicDatasetFromTemporaryStorage(dataId))
 
     override fun getReceivedPrivateJson(dataId: String): ResponseEntity<String> =
         ResponseEntity

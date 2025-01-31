@@ -26,7 +26,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " country_code AS countryCode, " +
                 " sector, " +
                 " identifier_value AS lei " +
-                // get required information from stored companies where active data set exists
+                // get required information from stored companies where active dataset exists
                 " FROM (" +
                 " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
                 " WHERE company_id IN " +

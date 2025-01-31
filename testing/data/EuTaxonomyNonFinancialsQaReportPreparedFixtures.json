@@ -2,37 +2,35 @@
 	{
 		"companyInformation": {
 			"companyName": "eutaxonomy-non-financials-qa-report-with-one-correction",
-			"headquarters": "Denesikport",
-			"headquartersPostalCode": "28692-7152",
-			"sector": "paradigms",
+			"headquarters": "Lake Marquiseburgh",
+			"headquartersPostalCode": "68964-2847",
+			"sector": "channels",
 			"identifiers": {
 				"Lei": [
-					"GczmeVXsx6ipAhYkW4xv"
+					"mfgMyuCjrEiPzYyHl6Pv"
 				],
 				"Isin": [
-					"0djLRssaGyqY",
-					"IRTovuaD70PK"
+					"ZRklmfBFn06s"
 				],
 				"PermId": [],
 				"Ticker": [],
 				"Duns": [
-					"KT68Clm7W"
+					"wWWzed9VX"
 				],
 				"VatNumber": [
-					"WnsbkazW0"
+					"N2KFe0mD4"
 				],
 				"CompanyRegistrationNumber": []
 			},
-			"countryCode": "IL",
-			"companyContactDetails": null,
+			"countryCode": "BV",
+			"companyContactDetails": [],
 			"companyAlternativeNames": [
-				"Huels Inc",
-				"Jones LLC",
-				"Nikolaus Group",
-				"Witting and Sons"
+				"Effertz, Runte and Nitzsche",
+				"Fay, Ullrich and Prohaska",
+				"Hintz - Walsh"
 			],
-			"companyLegalForm": "GmbH & Co. KG",
-			"website": "https://petty-puritan.biz",
+			"companyLegalForm": null,
+			"website": "https://modern-necklace.biz",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -100,6 +98,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2022"
+		"reportingPeriod": "2020"
 	}
 ]

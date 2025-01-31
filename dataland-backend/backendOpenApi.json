@@ -275,9 +275,9 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Retrieve information about the sourceability of data sets",
-        "description": "Retrieve information about the sourceability of data sets by the filters.",
-        "operationId": "getInfoOnNonSourceabilityOfDataSets",
+        "summary": "Retrieve information about the sourceability of datasets",
+        "description": "Retrieve information about the sourceability of datasets by the filters.",
+        "operationId": "getInfoOnNonSourceabilityOfDatasets",
         "parameters": [
           {
             "name": "companyId",
@@ -314,7 +314,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data sets.",
+            "description": "Successfully retrieved datasets.",
             "content": {
               "application/json": {
                 "schema": {
@@ -360,8 +360,8 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Adds a data set with information on sourceability.",
-        "description": "A data set is added with information on its sourceability.",
+        "summary": "Adds a dataset with information on sourceability.",
+        "description": "A dataset is added with information on its sourceability.",
         "operationId": "postNonSourceabilityOfADataset",
         "requestBody": {
           "content": {
@@ -1265,8 +1265,7 @@
         },
         "responses": {
           "204": {
-            "description": "Successfully verified specification conformity.",
-            "content": {}
+            "description": "Successfully verified specification conformity."
           },
           "default": {
             "description": "An error occurred",
@@ -1481,8 +1480,8 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Checks if a data set is non-sourceable.",
-        "description": "Checks if a specific data set is non-sourceable.",
+        "summary": "Checks if a dataset is non-sourceable.",
+        "description": "Checks if a specific dataset is non-sourceable.",
         "operationId": "isDataNonSourceable",
         "parameters": [
           {
@@ -1512,10 +1511,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully checked that data set is non-sourceable."
+            "description": "Successfully checked that dataset is non-sourceable."
           },
           "404": {
-            "description": "Successfully checked that data set is sourceable."
+            "description": "Successfully checked that dataset is sourceable."
           },
           "default": {
             "description": "An error occurred",
@@ -1800,7 +1799,7 @@
           "meta-data-controller"
         ],
         "summary": "Search in Dataland for meta info about data.",
-        "description": "Meta info about data sets registered by Dataland can be retrieved.",
+        "description": "Meta info about datasets registered by Dataland can be retrieved.",
         "operationId": "getListOfDataMetaInfo",
         "parameters": [
           {
@@ -1908,8 +1907,8 @@
         "tags": [
           "meta-data-controller"
         ],
-        "summary": "Look up meta info about a specific data set.",
-        "description": "Meta info about a specific data set registered by Dataland and identified by its data ID is retrieved.",
+        "summary": "Look up meta info about a specific dataset.",
+        "description": "Meta info about a specific dataset registered by Dataland and identified by its data ID is retrieved.",
         "operationId": "getDataMetaInfo",
         "parameters": [
           {
@@ -1928,6 +1927,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/metadata/{dataId}/data-points": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
+        "description": "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+        "operationId": "getContainedDataPoints",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list of data point IDs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -1983,7 +2045,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2035,7 +2097,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2138,7 +2200,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2355,7 +2417,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2668,7 +2730,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2981,7 +3043,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3294,7 +3356,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3607,7 +3669,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3920,7 +3982,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4233,7 +4295,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4546,7 +4608,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -4859,7 +4921,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved data set.",
+            "description": "Successfully retrieved dataset.",
             "content": {
               "application/json": {
                 "schema": {
@@ -5850,7 +5912,7 @@
         "tags": [
           "data-deletion-controller"
         ],
-        "summary": "Delete a data set.",
+        "summary": "Delete a dataset.",
         "description": "The data is removed from the data store.",
         "operationId": "deleteCompanyAssociatedData",
         "parameters": [
@@ -6216,6 +6278,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -6257,7 +6324,13 @@
             "nullable": true
           }
         },
-        "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+        "example": {
+          "string": {
+            "fileReference": "string",
+            "fileName": "string",
+            "publicationDate": "2023-10-12"
+          }
+        }
       },
       "ExtendedDataPointBigDecimal": {
         "type": "object",
@@ -6308,6 +6381,11 @@
           },
           "fileReference": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -6446,7 +6524,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -8087,7 +8171,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -10208,7 +10298,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           },
           "nuclearEnergyRelatedActivitiesSection426": {
             "nullable": true,
@@ -15436,7 +15532,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -17168,7 +17270,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           },
           "areAllGroupEntitiesCovered": {
             "nullable": true,
@@ -19703,7 +19811,13 @@
               "$ref": "#/components/schemas/CompanyReport"
             },
             "nullable": true,
-            "example": "{\"string\": {\"fileReference\": \"string\",\"fileName\": \"string\",\"publicationDate\": \"2023-10-12\",}}"
+            "example": {
+              "string": {
+                "fileReference": "string",
+                "fileName": "string",
+                "publicationDate": "2023-10-12"
+              }
+            }
           }
         }
       },
@@ -20171,9 +20285,15 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
+          "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
           },
           "companyName": {
             "type": "string"
@@ -20181,13 +20301,7 @@
           "companyId": {
             "type": "string"
           },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
-          },
-          "sector": {
+          "lei": {
             "type": "string",
             "nullable": true
           }
