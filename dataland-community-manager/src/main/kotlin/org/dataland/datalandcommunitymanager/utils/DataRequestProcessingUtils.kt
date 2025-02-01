@@ -195,11 +195,11 @@ class DataRequestProcessingUtils
             val foundRequests =
                 dataRequestRepository
                     .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                        requestingUserId, companyId, framework.name, reportingPeriod,
+                        requestingUserId, companyId, framework.value, reportingPeriod,
                     )?.filter {
                         it.requestStatus == requestStatus
                     }
-            if (foundRequests != null) {
+            if (!foundRequests.isNullOrEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
                     companyId,
                     framework,
