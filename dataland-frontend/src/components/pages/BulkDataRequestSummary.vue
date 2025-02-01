@@ -127,7 +127,7 @@ import { defineProps } from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
-import type { type BulkDataRequestResponse } from '@clients/communitymanager';
+import type { BulkDataRequestResponse } from '@clients/communitymanager';
 import { getFrameworkTitle } from '@/utils/StringFormatter';
 
 const props = defineProps<{
