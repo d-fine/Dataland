@@ -10,6 +10,7 @@ import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSuppo
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
@@ -186,24 +187,23 @@ class DataRequestProcessingUtils
          * @return a list of the found data requests, or null if none was found
          */
         fun findAlreadyExistingDataRequestForCurrentUser(
-            companyId: String,
-            framework: DataTypeEnum,
-            reportingPeriod: String,
+            dataDimensions: BasicDataDimensions,
             requestStatus: RequestStatus,
         ): List<DataRequestEntity>? {
             val requestingUserId = DatalandAuthentication.fromContext().userId
             val foundRequests =
                 dataRequestRepository
                     .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(
-                        requestingUserId, companyId, framework.value, reportingPeriod,
+                        requestingUserId,
+                        dataDimensions.companyId,
+                        dataDimensions.dataType,
+                        dataDimensions.reportingPeriod,
                     )?.filter {
                         it.requestStatus == requestStatus
                     }
             if (!foundRequests.isNullOrEmpty()) {
                 dataRequestLogger.logMessageForCheckingIfDataRequestAlreadyExists(
-                    companyId,
-                    framework,
-                    reportingPeriod,
+                    dataDimensions,
                     requestStatus,
                 )
             }
@@ -217,18 +217,14 @@ class DataRequestProcessingUtils
          * @param reportingPeriod the reporting period of the data request
          * @return true if the data request already exists for the current user, false otherwise
          */
-        fun existsDataRequestWithNonFinalStatus(
-            companyId: String,
-            framework: DataTypeEnum,
-            reportingPeriod: String,
-        ): Boolean {
+        fun existsDataRequestWithNonFinalStatus(dataDimensions: BasicDataDimensions): Boolean {
             val openDataRequests =
                 findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Open,
+                    dataDimensions, RequestStatus.Open,
                 )
             val answeredDataRequests =
                 findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Answered,
+                    dataDimensions, RequestStatus.Answered,
                 )
             return if (openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty()) {
                 false
@@ -257,18 +253,15 @@ class DataRequestProcessingUtils
          * @param reportingPeriod the reporting period of the data request
          * @return the requestId if a request in non-final status exists, else null
          */
-        fun getRequestIdForDataRequestWithNonFinalStatus(
-            companyId: String,
-            framework: DataTypeEnum,
-            reportingPeriod: String,
-        ): String? {
+        fun getRequestIdForDataRequestWithNonFinalStatus(dataDimensions: BasicDataDimensions): String? {
             val foundRequests = mutableListOf<DataRequestEntity>()
             findAlreadyExistingDataRequestForCurrentUser(
-                companyId, framework, reportingPeriod, RequestStatus.Open,
+                dataDimensions,
+                RequestStatus.Open,
             )?.forEach { foundRequests.add(it) }
 
             findAlreadyExistingDataRequestForCurrentUser(
-                companyId, framework, reportingPeriod, RequestStatus.Answered,
+                dataDimensions, RequestStatus.Answered,
             )?.forEach { foundRequests.add(it) }
 
             return foundRequests.firstOrNull()?.dataRequestId

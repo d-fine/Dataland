@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationRequest
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
@@ -180,9 +181,11 @@ class BulkDataRequestManager(
         for (request in validSingleDataRequests) {
             val existingRequestId =
                 utils.getRequestIdForDataRequestWithNonFinalStatus(
-                    request.companyIdentifier,
-                    request.dataType,
-                    request.reportingPeriod,
+                    BasicDataDimensions(
+                        request.companyIdentifier,
+                        request.dataType.value,
+                        request.reportingPeriod,
+                    ),
                 )
             if (existingRequestId != null) {
                 val (userProvidedCompanyId, companyName) =

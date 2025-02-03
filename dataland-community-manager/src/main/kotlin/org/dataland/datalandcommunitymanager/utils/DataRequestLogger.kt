@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.utils
 
-import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
@@ -65,15 +65,13 @@ class DataRequestLogger {
      * returned "true".
      */
     fun logMessageForCheckingIfDataRequestAlreadyExists(
-        companyId: String,
-        framework: DataTypeEnum,
-        reportingPeriod: String,
+        dataDimensions: BasicDataDimensions,
         requestStatus: RequestStatus,
     ) {
         bulkDataRequestLogger.info(
             "The following data request already exists for the requesting user and therefore " +
-                "is not being recreated: (companyId: $companyId, framework: $framework, " +
-                "reportingPeriod: $reportingPeriod, requestStatus: $requestStatus)",
+                "is not being recreated: (companyId: ${dataDimensions.companyId}, framework: ${dataDimensions.dataType}, " +
+                "reportingPeriod: ${dataDimensions.reportingPeriod}, requestStatus: $requestStatus)",
         )
     }
 
