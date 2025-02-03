@@ -14,7 +14,7 @@
   </AuthenticationWrapper>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import TheHeader from '@/components/generics/TheHeader.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import { DataTypeEnum } from '@clients/backend';
@@ -36,70 +36,44 @@ import BackButton from '@/components/general/BackButton.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import { redirectToMyDatasets } from '@/components/resources/uploadDataset/DatasetCreationRedirect';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
-import { defineComponent } from 'vue';
+import { computed } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
 
-export default defineComponent({
-  name: 'UploadFormWrapper',
-  components: {
-    MarginWrapper,
-    TheContent,
-    AuthorizationWrapper,
-    TheHeader,
-    AuthenticationWrapper,
-    CompanyInformation,
-    TheFooter,
-    BackButton,
-  },
-  data() {
-    const content: Content = contentData;
-    const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
-    const footerContent = footerPage?.sections;
-    return {
-      KEYCLOAK_ROLE_UPLOADER,
-      footerContent,
-    };
-  },
-  props: {
-    companyID: {
-      type: String,
-      required: true,
-    },
-    frameworkType: {
-      type: String,
-      required: true,
-    },
-  },
-  methods: { redirectToMyDatasets },
-  computed: {
-    frameworkToUploadComponent() {
-      switch (this.frameworkType) {
-        case `${DataTypeEnum.EutaxonomyNonFinancials}`:
-          return CreateEuTaxonomyNonFinancials;
-        case `${DataTypeEnum.EutaxonomyFinancials}`:
-          return CreateEuTaxonomyForFinancials;
-        case `${DataTypeEnum.P2p}`:
-          return CreateP2pDataset;
-        case `${DataTypeEnum.Lksg}`:
-          return CreateLksgDataset;
-        case `${DataTypeEnum.Sfdr}`:
-          return CreateSfdrDataset;
-        case `${DataTypeEnum.Heimathafen}`:
-          return CreateHeimathafenDataset;
-        case `${DataTypeEnum.EsgDatenkatalog}`:
-          return CreateEsgDatenkatalogDataset;
-        case `${DataTypeEnum.Vsme}`:
-          return CreateVsmeDataset;
-        case `${DataTypeEnum.NuclearAndGas}`:
-          return CreateNuclearAndGasDataset;
-        case `${DataTypeEnum.AdditionalCompanyInformation}`:
-          return CreateAdditionalCompanyInformationDataset;
-        default:
-          return null;
-      }
-    },
-  },
+const props = defineProps<{
+  companyID: string;
+  frameworkType: string;
+}>();
+
+const content: Content = contentData;
+const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
+const footerContent = footerPage?.sections;
+
+const frameworkToUploadComponent = computed(() => {
+  switch (props.frameworkType) {
+    case `${DataTypeEnum.EutaxonomyNonFinancials}`:
+      return CreateEuTaxonomyNonFinancials;
+    case `${DataTypeEnum.EutaxonomyFinancials}`:
+      return CreateEuTaxonomyForFinancials;
+    case `${DataTypeEnum.P2p}`:
+      return CreateP2pDataset;
+    case `${DataTypeEnum.Lksg}`:
+      return CreateLksgDataset;
+    case `${DataTypeEnum.Sfdr}`:
+      return CreateSfdrDataset;
+    case `${DataTypeEnum.Heimathafen}`:
+      return CreateHeimathafenDataset;
+    case `${DataTypeEnum.EsgDatenkatalog}`:
+      return CreateEsgDatenkatalogDataset;
+    case `${DataTypeEnum.Vsme}`:
+      return CreateVsmeDataset;
+    case `${DataTypeEnum.NuclearAndGas}`:
+      return CreateNuclearAndGasDataset;
+    case `${DataTypeEnum.AdditionalCompanyInformation}`:
+      return CreateAdditionalCompanyInformationDataset;
+    default:
+      return null;
+  }
 });
 </script>
