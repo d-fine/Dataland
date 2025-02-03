@@ -28,11 +28,15 @@
                 <div>
                   <div class="status text-center">
                     <div class="status-wrapper">
-                      <div v-if="submittingSucceeded" class="status-container">
+                      <div v-if="successStatus === SuccessStatus.Success" class="status-container">
                         <em class="col material-icons info-icon green-text">check_circle</em>
                         <h1 class="col status-text" data-test="requestStatusText">Success</h1>
                       </div>
-                      <div v-else class="status-container">
+                      <div v-if="successStatus === SuccessStatus.PartialSuccess" class="status-container">
+                        <em class="col material-icons info-icon info-color-text">info</em>
+                        <h1 class="col status-text" data-test="requestStatusText">Partial Success</h1>
+                      </div>
+                      <div v-if="successStatus === SuccessStatus.NoSuccess" class="status-container">
                         <em class="material-icons info-icon red-text">error</em>
                         <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
                       </div>
@@ -185,6 +189,12 @@ import type { BulkDataRequest, BulkDataRequestDataTypesEnum, BulkDataRequestResp
 import router from '@/router';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
+enum SuccessStatus {
+  Success,
+  PartialSuccess,
+  NoSuccess,
+}
+
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
@@ -216,7 +226,7 @@ export default defineComponent({
       identifiersInString: '',
       identifiers: [] as Array<string>,
       bulkDataRequestResponse: {} as BulkDataRequestResponse,
-      submittingSucceeded: false,
+      successStatus: SuccessStatus,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
       message: '',
@@ -308,7 +318,8 @@ export default defineComponent({
 
         this.message = response.data.message;
         this.bulkDataRequestResponse = response.data;
-        this.submittingSucceeded = this.bulkDataRequestResponse.acceptedDataRequests.length > 0;
+
+        this.calculateSuccessStatus();
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
@@ -321,6 +332,28 @@ export default defineComponent({
       } finally {
         this.submittingInProgress = false;
         this.postBulkDataRequestObjectProcessed = true;
+      }
+    },
+
+    /**
+     * Calculate the SuccessStatus of the BulkDataRequest.
+     * If no requests rejected -> Success
+     * If some but not all rejected -> Partial Success
+     * Else -> No Success
+     */
+    calculateSuccessStatus() {
+      const sumOfAllRequestedData =
+        this.bulkDataRequestResponse.acceptedDataRequests.length +
+        this.bulkDataRequestResponse.alreadyExistingNonFinalRequests.length +
+        this.bulkDataRequestResponse.alreadyExistingDatasets.length +
+        this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
+
+      if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length === 0) {
+        this.successStatus = SuccessStatus.Success;
+      } else if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length < sumOfAllRequestedData) {
+        this.successStatus = SuccessStatus.PartialSuccess;
+      } else {
+        this.successStatus = SuccessStatus.NoSuccess;
       }
     },
 
@@ -360,6 +393,7 @@ export default defineComponent({
       line-height: 48px;
       letter-spacing: 0.25px;
     }
+
     .info-icon {
       font-size: 48px;
     }
@@ -369,15 +403,18 @@ export default defineComponent({
     &.border-bottom {
       border-bottom: 1px solid #dadada;
     }
+
     .summary-section-heading {
       font-weight: 500;
       font-size: 16px;
       line-height: 20px;
+
       .info-icon {
         margin-bottom: -2px;
         vertical-align: bottom;
       }
     }
+
     .summary-section-data {
       font-weight: 700;
 
@@ -409,7 +446,7 @@ export default defineComponent({
   align-items: center;
 }
 
-.new-color {
+.info-color-text {
   color: $orange-prime;
 }
 

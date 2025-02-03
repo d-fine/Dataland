@@ -4,13 +4,13 @@
     <div class="summary-section border-bottom py-4">
       <div class="summary-wrapper">
         <div class="grid col-6">
-          <div class="col">
+          <div class="col" data-test="reportingPeriodsHeading">
             <h4 class="middle-center-div summary-section-heading m-0">
               {{ summarySectionReportingPeriodsHeading }}
             </h4>
             <p class="middle-center-div summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
           </div>
-          <div class="col">
+          <div class="col" data-test="frameworksHeading">
             <h6 class="middle-center-div summary-section-heading m-0">
               {{ summarySectionFrameworksHeading }}
             </h6>
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="summary-section border-bottom py-4">
-      <Accordion :multiple="true" :activeIndex="activeIndex">
+      <Accordion :multiple="true" :active-index="activeIndex">
         <AccordionTab v-for="(section, index) in sections" :key="index">
           <template #header>
             <span :data-test="section.dataTestHeader" class="flex align-items-center gap-2 w-full">
@@ -34,28 +34,25 @@
           <div v-if="section.textBox" class="text-center bg-gray-300 p-1 mt-1 mb-3">
             {{ section.textBox }}
           </div>
-          <div :data-test="section.dataTestContent">
-            <div
-              v-if="section.items === createdRequests || section.items === existingRequests"
-              class="grid-container align-items-center"
-              v-for="(entry, index) in section.items"
-              :key="index"
-            >
-              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
+          <div
+            v-if="section.items === createdRequests || section.items === existingRequests"
+            class="grid-container align-items-center"
+          >
+            <div v-for="(entry, index) in section.items" :key="index" :data-test="section.dataTestContent">
+              <div class="col bold-text middle-center-div">{{ entry.userProvidedIdentifier }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
               <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
-              <a :href="entry.requestUrl.toString()" target="_blank" class="text-primary no-underline font-bold">
+              <a :href="entry.resourceUrl.toString()" target="_blank" class="text-primary no-underline font-bold">
                 <div class="text-right">
                   <span>{{ section.linkText }} </span>
                   <span class="ml-3">></span>
                 </div>
               </a>
             </div>
-
-            <div v-else v-for="(entry, idx) in section.items" :key="idx" class="grid-container align-items-center">
-              <div class="col bold-text middle-center-div">{{ entry }}</div>
-            </div>
+          </div>
+          <div v-else v-for="(entry, idx) in section.items" :key="idx" class="grid-container align-items-center">
+            <div class="col bold-text middle-center-div" :data-test="section.dataTestContent">{{ entry }}</div>
           </div>
         </AccordionTab>
       </Accordion>
@@ -78,12 +75,15 @@ const props = defineProps<{
   humanizedSelectedFrameworks: string[];
   summarySectionFrameworksHeading: string;
 }>();
+
 const {
   acceptedDataRequests: createdRequests,
   alreadyExistingNonFinalRequests: existingRequests,
   alreadyExistingDatasets: existingDatasets,
   rejectedCompanyIdentifiers: rejectedCompanyIdentifiers,
 } = props.bulkDataRequestResponse;
+
+const activeIndex: number[] = existingDatasets.length ? [1] : [0];
 
 const sections = [
   {
@@ -105,14 +105,14 @@ const sections = [
     dataTestContent: 'existingRequestsContent',
     textBox:
       'If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single\n' +
-      '            data request on the corresponding dataset page.',
+      'data request on the corresponding dataset page.',
   },
   {
     //todo: update when backend ready
     title: 'SKIPPED REQUESTS - REQUESTS ALREADY EXIST',
     icon: 'info',
     iconColor: 'info-color',
-    items: existingRequests,
+    items: existingDatasets,
     linkText: 'VIEW DATA',
     dataTestHeader: 'existingDataHeader',
     dataTestContent: 'existingDataContent',
@@ -127,11 +127,6 @@ const sections = [
     textBox: 'No company or companies are known on Dataland for the following company identifier(s)',
   },
 ];
-
-const activeIndex =
-    existingRequests.length > 0 ? [1] :
-        existingDatasets.length >0 ? [2]:
-            rejectedCompanyIdentifiers.length >0 ? [3]: [0];
 </script>
 
 <style scoped lang="scss">
