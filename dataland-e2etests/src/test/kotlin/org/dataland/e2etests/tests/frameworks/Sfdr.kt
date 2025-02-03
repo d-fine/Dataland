@@ -53,7 +53,7 @@ class Sfdr {
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOfOneSfdrDataSet,
+                listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
             )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -63,7 +63,7 @@ class Sfdr {
                     reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
                     companyId = receivedDataMetaInformation.companyId,
                 )
-        assertEquals(listOfOneSfdrDataSet[0], downloadedAssociatedData.data)
+        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test
