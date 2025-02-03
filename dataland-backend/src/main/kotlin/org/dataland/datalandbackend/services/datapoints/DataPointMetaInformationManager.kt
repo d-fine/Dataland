@@ -33,7 +33,7 @@ class DataPointMetaInformationManager
             }
 
         /**
-         * Get the currently active data id for a specific data point dimensions
+         * Get the currently active data id for a specific set of data point dimensions
          * @param dataPointDimensions the data point dimensions to get the currently active data id for
          * @return the id of the currently active data point
          */

@@ -103,4 +103,23 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
                 " ON company.company_id = datainfo.company_id",
     )
     fun getUserUploadsDataMetaInfos(userId: String): List<DatasetMetaInfoEntityForMyDatasets>
+
+    /** Queries the meta information for an active dataset for the data dimension provided
+     * @param reportingPeriod the reporting period of the dataset
+     * @param companyId the company ID of the dataset
+     * @param dataType the data type of the dataset
+     * @returns the data meta information entry of the active dataset for the given data dimension
+     */
+    @Query(
+        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
+            "WHERE dataMetaInformation.reportingPeriod = :reportingPeriod " +
+            "AND dataMetaInformation.company.companyId = :companyId " +
+            "AND dataMetaInformation.dataType = :dataType " +
+            "AND dataMetaInformation.currentlyActive = true",
+    )
+    fun findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
+        @Param("reportingPeriod") reportingPeriod: String,
+        @Param("companyId") companyId: String,
+        @Param("dataType") dataType: String,
+    ): DataMetaInformationEntity?
 }

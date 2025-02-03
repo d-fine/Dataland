@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 
 /**
  * Service to store and retrieve datasets from a backing storage engine
@@ -20,7 +21,7 @@ interface DatasetStorageService {
     ): String
 
     /**
-     * Retrieves the content of a dataset from the backend storage engine
+     * Retrieves the content of a dataset from the backend storage engine given the dataset ID
      * @param datasetId the id of the dataset
      * @param dataType the type of dataset
      * @param correlationId the correlation id for the operation
@@ -31,4 +32,15 @@ interface DatasetStorageService {
         dataType: String,
         correlationId: String,
     ): String
+
+    /**
+     * Retrieves the content of a dataset from the backend storage engine given the data dimensions
+     * @param dataDimensions the dimensions of the dataset to be retrieved
+     * @param correlationId the correlation id for the operation
+     * @return the dataset in form of a JSON string
+     */
+    fun getDatasetData(
+        dataDimensions: BasicDataDimensions,
+        correlationId: String,
+    ): String?
 }
