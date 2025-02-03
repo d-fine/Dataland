@@ -1584,19 +1584,19 @@
           "acceptedDataRequests": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DataRequestResponse"
+              "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "alreadyExistingNonFinalRequests": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DataRequestResponse"
+              "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "alreadyExistingDatasets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DatasetsResponse"
+              "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "rejectedCompanyIdentifiers": {
@@ -1607,18 +1607,18 @@
           }
         }
       },
-      "DataRequestResponse": {
+      "ResourceResponse": {
         "required": [
           "companyName",
           "framework",
           "reportingPeriod",
-          "requestId",
-          "requestUrl",
-          "userProvidedCompanyId"
+          "resourceId",
+          "resourceUrl",
+          "userProvidedIdentifier"
         ],
         "type": "object",
         "properties": {
-          "userProvidedCompanyId": {
+          "userProvidedIdentifier": {
             "type": "string"
           },
           "companyName": {
@@ -1630,41 +1630,10 @@
           "reportingPeriod": {
             "type": "string"
           },
-          "requestId": {
+          "resourceId": {
             "type": "string"
           },
-          "requestUrl": {
-            "type": "string"
-          }
-        }
-      },
-      "DatasetsResponse": {
-        "required": [
-          "companyName",
-          "datasetId",
-          "datasetUrl",
-          "framework",
-          "reportingPeriod",
-          "userProvidedCompanyId"
-        ],
-        "type": "object",
-        "properties": {
-          "userProvidedCompanyId": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "framework": {
-            "type": "string"
-          },
-          "reportingPeriod": {
-            "type": "string"
-          },
-          "datasetId": {
-            "type": "string"
-          },
-          "datasetUrl": {
+          "resourceUrl": {
             "type": "string"
           }
         }
