@@ -211,15 +211,12 @@ class BulkDataRequestManager(
         return Pair(entry.key, entry.value.companyName)
     }
 
-    /** Stores the data requests from requestsToProcess and provides a feedback list
-     * including the user-provided company identifiers.
-     *
-     * @param dimensionsToProcess The requests to store.
-     * @param userProvidedIdentifierToDatalandCompanyIdMapping A mapping that stores
-     * the user-provided identifiers and associated dataland company ids.
-     *
-     * @return A list of ResourceResponse objects that documents the stored requests
-     * and contains all necessary information to display in the frontend.
+    /** Stores the data requests from requestsToProcess and provides a feedback list including the user-provided company identifiers.
+     * @param dimensionsToProcess A list of data dimensions that requests are required for.
+     * @param userProvidedIdentifierToDatalandCompanyIdMapping A mapping that stores the user-provided identifiers and
+     * associated dataland company ids and name.
+     * @return A list of ResourceResponse objects that documents the stored requests and contains all necessary information
+     * to display in the frontend.
      */
     private fun storeDataRequests(
         dimensionsToProcess: List<BasicDataDimensions>,
