@@ -50,7 +50,7 @@ describe('Component tests for the DatasetOverview page', () => {
     if (keycloak.hasRealmRole(KEYCLOAK_ROLE_REVIEWER)) {
       cy.get(getTabSelector(2)).should('have.text', 'QA');
     } else {
-      cy.get(getTabSelector(2)).should('not.be.visible');
+      cy.get(getTabSelector(2)).should('have.class', 'p-disabled');
     }
     const inactiveTabIndices = [];
     for (let i = 0; i < 3; i++) {
