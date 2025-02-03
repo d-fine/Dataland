@@ -57,7 +57,7 @@ class BulkDataRequestManager(
 
         val validRequestCombinations = getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)
 
-        val existingDatasets = metaDataController.postListOfDataMetaInfoRequests(validRequestCombinations)
+        val existingDatasets = metaDataController.postListOfDataMetaInfoFilters(validRequestCombinations)
 
         val acceptedRequestCombinations = getAcceptedRequestCombinations(validRequestCombinations, existingDatasets)
 

@@ -109,7 +109,7 @@ class BulkDataRequestManagerTest {
     @Test
     fun `process bulk data request`() {
         val emptyList: List<DataMetaInformation> = listOf()
-        whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
+        whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
         `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
             .thenReturn(dummyCompanyIdAndName)
 
@@ -142,7 +142,7 @@ class BulkDataRequestManagerTest {
     @Test
     fun `process bulk data request with existing request`() {
         val emptyList: List<DataMetaInformation> = listOf()
-        whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
+        whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
         `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
             .thenReturn(dummyCompanyIdAndName)
         `when`(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
@@ -178,7 +178,7 @@ class BulkDataRequestManagerTest {
     fun `process bulk data request with existing data`() {
         `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
             .thenReturn(dummyCompanyIdAndName)
-        `when`(mockMetaDataController.postListOfDataMetaInfoRequests(anyList())).thenAnswer {
+        `when`(mockMetaDataController.postListOfDataMetaInfoFilters(anyList())).thenAnswer {
             val dataMetaInformationList =
                 listOf(
                     DataMetaInformation(
@@ -225,7 +225,7 @@ class BulkDataRequestManagerTest {
     fun `process bulk data request with no valid company identifiers data`() {
         val emptyList: List<DataMetaInformation> = listOf()
 
-        whenever(mockMetaDataController.postListOfDataMetaInfoRequests(any())).thenReturn(emptyList)
+        whenever(mockMetaDataController.postListOfDataMetaInfoFilters(any())).thenReturn(emptyList)
         `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
             .thenReturn(null)
 

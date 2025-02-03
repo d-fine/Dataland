@@ -100,7 +100,7 @@ internal class MetaDataControllerTest(
 
     @Test
     fun `check if DataMetaInformationRequest is correctly transformed into DataMetaInformation`() {
-        val dataId = "data-id-for-testing-postListOfDataMetaInfoRequests"
+        val dataId = "data-id-for-testing-postListOfDataMetaInfoFilters"
         val dataType = DataType.of(SfdrData::class.java)
         val reportingPeriod = "2022"
         val uploaderUserId = UUID.randomUUID()
