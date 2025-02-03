@@ -34,11 +34,13 @@
           <div v-if="section.textBox" class="text-center bg-gray-300 p-1 mt-1 mb-3">
             {{ section.textBox }}
           </div>
-          <div
-            v-if="section.items === createdRequests || section.items === existingRequests"
-            class="grid-container align-items-center"
-          >
-            <div v-for="(entry, index) in section.items" :key="index" :data-test="section.dataTestContent">
+          <div v-if="section.items === createdRequests || section.items === existingRequests">
+            <div
+              v-for="(entry, index) in section.items"
+              :key="index"
+              :data-test="section.dataTestContent"
+              class="grid-container align-items-center"
+            >
               <div class="col bold-text middle-center-div">{{ entry.userProvidedIdentifier }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
@@ -51,8 +53,10 @@
               </a>
             </div>
           </div>
-          <div v-else v-for="(entry, idx) in section.items" :key="idx" class="grid-container align-items-center">
-            <div class="col bold-text middle-center-div" :data-test="section.dataTestContent">{{ entry }}</div>
+          <div v-else class="grid">
+            <span class="col bold-text text-left px-6" :data-test="section.dataTestContent">{{
+              section.items.join(', ')
+            }}</span>
           </div>
         </AccordionTab>
       </Accordion>
@@ -83,7 +87,7 @@ const {
   rejectedCompanyIdentifiers: rejectedCompanyIdentifiers,
 } = props.bulkDataRequestResponse;
 
-const activeIndex: number[] = existingDatasets.length ? [1] : [0];
+const activeIndex: number[] = existingDatasets?.length ? [1] : [];
 
 const sections = [
   {
@@ -99,10 +103,10 @@ const sections = [
     title: 'SKIPPED REQUESTS - DATA ALREADY EXISTS',
     icon: 'info',
     iconColor: 'info-color',
-    items: existingRequests,
+    items: existingDatasets,
     linkText: 'VIEW DATA',
-    dataTestHeader: 'existingRequestsHeader',
-    dataTestContent: 'existingRequestsContent',
+    dataTestHeader: 'existingDataHeader',
+    dataTestContent: 'existingDataContent',
     textBox:
       'If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single\n' +
       'data request on the corresponding dataset page.',
@@ -111,10 +115,10 @@ const sections = [
     title: 'SKIPPED REQUESTS - REQUESTS ALREADY EXIST',
     icon: 'info',
     iconColor: 'info-color',
-    items: existingDatasets,
+    items: existingRequests,
     linkText: 'VIEW DATA',
-    dataTestHeader: 'existingDataHeader',
-    dataTestContent: 'existingDataContent',
+    dataTestHeader: 'existingRequestsHeader',
+    dataTestContent: 'existingRequestsContent',
   },
   {
     title: 'REJECTED IDENTIFIERS',
@@ -167,7 +171,7 @@ div.summary-section {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 2fr 4fr 1fr 2fr 1fr;
+  grid-template-columns: 2fr 4fr 2fr 4fr 2fr;
   gap: 1px;
 }
 </style>

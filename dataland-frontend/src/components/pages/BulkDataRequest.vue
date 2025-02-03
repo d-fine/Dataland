@@ -17,60 +17,54 @@
           id="requestDataFormId"
           name="requestDataFormName"
         >
-          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
+          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper align-items-center">
             <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
-              <template v-if="submittingInProgress">
-                <div class="status-wrapper">
-                  <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
-                </div>
-              </template>
-              <template v-else>
-                <div>
-                  <div class="status text-center">
-                    <div class="status-wrapper">
-                      <div v-if="successStatus === SuccessStatus.Success" class="status-container">
-                        <em class="col material-icons info-icon green-text">check_circle</em>
-                        <h1 class="col status-text" data-test="requestStatusText">Success</h1>
-                      </div>
-                      <div v-if="successStatus === SuccessStatus.PartialSuccess" class="status-container">
-                        <em class="col material-icons info-icon info-color-text">info</em>
-                        <h1 class="col status-text" data-test="requestStatusText">Partial Success</h1>
-                      </div>
-                      <div v-if="successStatus === SuccessStatus.NoSuccess" class="status-container">
-                        <em class="material-icons info-icon red-text">error</em>
-                        <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
-                      </div>
+              <div class="col-12">
+                <div class="status text-center">
+                  <template v-if="submittingInProgress">
+                    <div class="status-wrapper col-8 col-offset-2">
+                      <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
                     </div>
-                    <div class="col-4 col-offset-4">
-                      {{ bulkDataRequestResponse.rejectedCompanyIdentifiers.length }} out of
-                      {{ identifiers.length }} provided company identifiers could not be recognized and were rejected.
-                      {{ bulkDataRequestResponse.acceptedDataRequests.length }} data requests were created and
-                      {{
-                        bulkDataRequestResponse.alreadyExistingDatasets.length +
-                        bulkDataRequestResponse.alreadyExistingNonFinalRequests.length
-                      }}
-                      skipped. More details can be found in the summary below.
+                  </template>
+                  <template v-else>
+                    <div class="status text-center col-8 col-offset-2">
+                      <div class="status-wrapper">
+                        <div v-if="requestSuccessStatus == 'Success'" class="status-container">
+                          <em class="material-icons info-icon green-text">check_circle</em>
+                          <h1 class="status-text" data-test="requestStatusText">Success</h1>
+                        </div>
+                        <div v-if="requestSuccessStatus == 'Partial Success'" class="status-container">
+                          <em class="material-icons info-icon info-color-text">info</em>
+                          <h1 class="status-text" data-test="requestStatusText">Partial Success</h1>
+                        </div>
+                        <div v-if="!isSuccessful || requestSuccessStatus == 'No Success'" class="status-container">
+                          <em class="material-icons info-icon red-text">error</em>
+                          <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
+                        </div>
+                      </div>
+                      <p>{{ message }}</p>
+
+                      <PrimeButton
+                        type="button"
+                        @click="goToMyRequests()"
+                        label="TO MY DATA REQUESTS"
+                        class="uppercase p-button-outlined"
+                      />
                     </div>
-
-                    <p v-if="message" class="py-3">{{ message }}</p>
-
-                    <PrimeButton
-                      type="button"
-                      @click="goToMyRequests()"
-                      label="TO MY DATA REQUESTS"
-                      class="uppercase p-button-outlined"
+                    <BulkDataRequestSummary
+                      class="col-8 col-offset-2"
+                      v-if="isSuccessful"
+                      :bulk-data-request-response="bulkDataRequestResponse"
+                      :humanized-reporting-periods="humanizedReportingPeriods"
+                      :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
+                      :humanized-selected-frameworks="humanizedSelectedFrameworks"
+                      :summary-section-frameworks-heading="summarySectionFrameworksHeading"
                     />
-                  </div>
+                  </template>
                 </div>
-                <BulkDataRequestSummary
-                  :bulk-data-request-response="bulkDataRequestResponse"
-                  :humanized-reporting-periods="humanizedReportingPeriods"
-                  :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
-                  :humanized-selected-frameworks="humanizedSelectedFrameworks"
-                  :summary-section-frameworks-heading="summarySectionFrameworksHeading"
-                />
-              </template>
+              </div>
             </template>
+
             <template v-else>
               <div class="col-12 md:col-8 xl:col-6">
                 <div class="grid">
@@ -174,6 +168,7 @@ import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
+import { SuccessStatus } from '@/types/SuccessStatus.ts';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
@@ -188,12 +183,6 @@ import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue'
 import type { BulkDataRequest, BulkDataRequestDataTypesEnum, BulkDataRequestResponse } from '@clients/communitymanager';
 import router from '@/router';
 import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
-
-enum SuccessStatus {
-  Success,
-  PartialSuccess,
-  NoSuccess,
-}
 
 export default defineComponent({
   name: 'BulkDataRequest',
@@ -225,8 +214,9 @@ export default defineComponent({
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: '',
       identifiers: [] as Array<string>,
-      bulkDataRequestResponse: {} as BulkDataRequestResponse,
-      successStatus: SuccessStatus,
+      bulkDataRequestResponse: undefined as BulkDataRequestResponse | undefined,
+      requestSuccessStatus: {},
+      isSuccessful: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
       message: '',
@@ -244,7 +234,7 @@ export default defineComponent({
 
   computed: {
     humanizedSelectedFrameworks(): string[] {
-      return this.selectedFrameworks.map((it) => humanizeStringOrNumber(it));
+      return this.selectedFrameworks.map((it) => `${humanizeStringOrNumber(it)}\n`);
     },
     selectedReportingPeriods(): string[] {
       return this.reportingPeriods
@@ -315,11 +305,10 @@ export default defineComponent({
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
-
-        this.message = response.data.message;
         this.bulkDataRequestResponse = response.data;
-
-        this.calculateSuccessStatus();
+        this.calculateRequestSuccessStatus();
+        this.composeSummaryMessage();
+        this.isSuccessful = true;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
@@ -336,12 +325,31 @@ export default defineComponent({
     },
 
     /**
+     * Composes the summary message in case the bulkDataRequestResponse contains meaningful data.
+     */
+    composeSummaryMessage() {
+      if (!this.bulkDataRequestResponse || this.bulkDataRequestResponse == {}) {
+        return;
+      }
+      const numberOfAccepted = this.bulkDataRequestResponse.acceptedDataRequests.length;
+      const numberOfExisting =
+        this.bulkDataRequestResponse.alreadyExistingDatasets.length +
+        this.bulkDataRequestResponse.alreadyExistingNonFinalRequests.length;
+      const numberOfRejected = this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
+
+      this.message =
+        `${numberOfAccepted} data requests were created. ${numberOfExisting} data requests were skipped. ` +
+        `${numberOfRejected} out of ${this.identifiers.length} provided company identifiers could not be recognized and were rejected. ` +
+        'More details can be found in the summary below.';
+    },
+
+    /**
      * Calculate the SuccessStatus of the BulkDataRequest.
      * If no requests rejected -> Success
      * If some but not all rejected -> Partial Success
      * Else -> No Success
      */
-    calculateSuccessStatus() {
+    calculateRequestSuccessStatus() {
       const sumOfAllRequestedData =
         this.bulkDataRequestResponse.acceptedDataRequests.length +
         this.bulkDataRequestResponse.alreadyExistingNonFinalRequests.length +
@@ -349,11 +357,11 @@ export default defineComponent({
         this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
 
       if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length === 0) {
-        this.successStatus = SuccessStatus.Success;
+        this.requestSuccessStatus = SuccessStatus.Success;
       } else if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length < sumOfAllRequestedData) {
-        this.successStatus = SuccessStatus.PartialSuccess;
+        this.requestSuccessStatus = SuccessStatus.PartialSuccess;
       } else {
-        this.successStatus = SuccessStatus.NoSuccess;
+        this.requestSuccessStatus = SuccessStatus.NoSuccess;
       }
     },
 
@@ -428,13 +436,6 @@ export default defineComponent({
   }
 }
 
-.summary-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 16px; /* Adjust the gap as needed */
-}
-
 .status-wrapper {
   display: flex;
   justify-content: center;
@@ -450,19 +451,9 @@ export default defineComponent({
   color: $orange-prime;
 }
 
-.bold-text {
-  font-weight: bold;
-}
-
 .no-framework {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: 2fr 4fr 1fr 2fr 1fr;
-  gap: 1px;
 }
 </style>
