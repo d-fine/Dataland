@@ -1614,11 +1614,11 @@
           "reportingPeriod",
           "resourceId",
           "resourceUrl",
-          "userProvidedCompanyIdentifier"
+          "userProvidedIdentifier"
         ],
         "type": "object",
         "properties": {
-          "userProvidedCompanyIdentifier": {
+          "userProvidedIdentifier": {
             "type": "string"
           },
           "companyName": {

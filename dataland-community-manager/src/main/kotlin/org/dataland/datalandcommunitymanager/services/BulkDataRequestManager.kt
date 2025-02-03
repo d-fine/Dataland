@@ -10,7 +10,6 @@ import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.ValidSingleDataRequest
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
@@ -59,7 +58,7 @@ class BulkDataRequestManager(
 
         val existingDatasets = metaDataController.postListOfDataMetaInfoFilters(validRequestCombinations)
 
-        val acceptedRequestCombinations = getAcceptedRequestCombinations(validRequestCombinations, existingDatasets)
+        val acceptedRequestCombinations = getDimensionsWithoutRequests(validRequestCombinations, existingDatasets)
 
         sendBulkDataRequestInternalEmailMessage(
             bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
@@ -115,36 +114,26 @@ class BulkDataRequestManager(
         }
     }
 
-    private fun getAcceptedRequestCombinations(
+    private fun getDimensionsWithoutRequests(
         validRequestCombinations: List<DataMetaInformationRequest>,
         existingDatasets: List<DataMetaInformation>,
-    ): List<ValidSingleDataRequest> {
-        // rewrite once data dimension object is available
-        val existingCriteriaSet =
+    ): List<BasicDataDimensions> {
+        val dimensionsWithExistingRequests =
             existingDatasets
                 .map {
-                    Triple(it.companyId, it.dataType, it.reportingPeriod)
+                    BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod)
                 }.toSet()
 
-        val nonExistingRequests =
+        val allValidDimensions =
             validRequestCombinations
-                .filter { request ->
-                    val requestCriteria = Triple(request.companyId, request.dataType, request.reportingPeriod)
-
-                    require(request.companyId != null && request.dataType != null && request.reportingPeriod != null) {
-                        "Request cannot have null values: $request"
+                .map {
+                    require(it.companyId != null && it.dataType != null && it.reportingPeriod != null) {
+                        "Request cannot have null values: $it"
                     }
-                    requestCriteria !in existingCriteriaSet
-                }.map { request ->
-                    ValidSingleDataRequest(
-                        companyIdentifier = request.companyId!!,
-                        dataType = request.dataType!!,
-                        reportingPeriod = request.reportingPeriod!!,
-                    )
-                }
-
-        // Check why this cast is here
-        return nonExistingRequests.ifEmpty { emptyList() }
+                    BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod)
+                }.toSet()
+        val dimensionsWithoutRequests = allValidDimensions - dimensionsWithExistingRequests
+        return dimensionsWithoutRequests.toList()
     }
 
     private fun generateRequestCombinations(
@@ -167,30 +156,30 @@ class BulkDataRequestManager(
 
     /**
      * Processes data requests to remove already existing data requests
-     * @param validSingleDataRequests list of all valid data requests
+     * @param validDataDimensions list of all valid data requests
      * @param userProvidedIdentifierToDatalandCompanyIdMapping mapping of user provided company identifiers to
      * dataland company ids and names
      * @return list of data requests that already exist
      */
     private fun processExistingDataRequests(
-        validSingleDataRequests: MutableList<ValidSingleDataRequest>,
+        validDataDimensions: MutableList<BasicDataDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
         val existingDataRequests = mutableListOf<ResourceResponse>()
+        val iterator = validDataDimensions.iterator()
 
-        for (request in validSingleDataRequests) {
+        while (iterator.hasNext()) {
+            val dimension = iterator.next()
             val existingRequestId =
                 utils.getRequestIdForDataRequestWithNonFinalStatus(
-                    BasicDataDimensions(
-                        request.companyIdentifier,
-                        request.dataType.value,
-                        request.reportingPeriod,
-                    ),
+                    dimension.companyId,
+                    DataTypeEnum.valueOf(dimension.dataType),
+                    dimension.reportingPeriod,
                 )
             if (existingRequestId != null) {
                 val (userProvidedCompanyId, companyName) =
                     extractUserProvidedIdAndName(
-                        request.companyIdentifier,
+                        dimension.companyId,
                         userProvidedIdentifierToDatalandCompanyIdMapping,
                     )
 
@@ -198,13 +187,13 @@ class BulkDataRequestManager(
                     ResourceResponse(
                         userProvidedIdentifier = userProvidedCompanyId,
                         companyName = companyName,
-                        framework = request.dataType.toString(),
-                        reportingPeriod = request.reportingPeriod,
+                        framework = dimension.dataType,
+                        reportingPeriod = dimension.reportingPeriod,
                         resourceId = existingRequestId,
                         resourceUrl = "https://$proxyPrimaryUrl/requests/$existingRequestId",
                     ),
                 )
-                validSingleDataRequests.remove(request)
+                iterator.remove()
             }
         }
         return existingDataRequests
@@ -222,42 +211,39 @@ class BulkDataRequestManager(
         return Pair(entry.key, entry.value.companyName)
     }
 
-    /** Stores the data requests from requestsToProcess and provides a feedback list
-     * including the user-provided company identifiers.
-     *
-     * @param requestsToProcess The requests to store.
-     * @param userProvidedIdentifierToDatalandCompanyIdMapping A mapping that stores
-     * the user-provided identifiers and associated dataland company ids.
-     *
-     * @return A list of ResourceResponse objects that documents the stored requests
-     * and contains all necessary information to display in the frontend.
+    /** Stores the data requests from requestsToProcess and provides a feedback list including the user-provided company identifiers.
+     * @param dimensionsToProcess A list of data dimensions that requests are required for.
+     * @param userProvidedIdentifierToDatalandCompanyIdMapping A mapping that stores the user-provided identifiers and
+     * associated dataland company ids and name.
+     * @return A list of ResourceResponse objects that documents the stored requests and contains all necessary information
+     * to display in the frontend.
      */
     private fun storeDataRequests(
-        requestsToProcess: List<ValidSingleDataRequest>,
+        dimensionsToProcess: List<BasicDataDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
         val acceptedDataRequests = mutableListOf<ResourceResponse>()
 
-        for (request in requestsToProcess) {
+        dimensionsToProcess.forEach {
             val (userProvidedCompanyId, companyName) =
                 extractUserProvidedIdAndName(
-                    request.companyIdentifier,
+                    it.companyId,
                     userProvidedIdentifierToDatalandCompanyIdMapping,
                 )
 
             val storedRequest =
                 utils.storeDataRequestEntityAsOpen(
-                    request.companyIdentifier,
-                    request.dataType,
-                    request.reportingPeriod,
+                    it.companyId,
+                    DataTypeEnum.valueOf(it.dataType),
+                    it.reportingPeriod,
                 )
 
             acceptedDataRequests.add(
                 ResourceResponse(
                     userProvidedIdentifier = userProvidedCompanyId,
                     companyName = companyName,
-                    framework = request.dataType.toString(),
-                    reportingPeriod = request.reportingPeriod,
+                    framework = it.dataType,
+                    reportingPeriod = it.reportingPeriod,
                     resourceId = storedRequest.dataRequestId,
                     resourceUrl = "https://$proxyPrimaryUrl/requests/${storedRequest.dataRequestId}",
                 ),
@@ -310,7 +296,7 @@ class BulkDataRequestManager(
     }
 
     private fun createBulkDataRequests(
-        acceptedRequestCombinations: List<ValidSingleDataRequest>,
+        acceptedRequestCombinations: List<BasicDataDimensions>,
         acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,
         existingDatasets: List<DataMetaInformation>,
         rejectedIdentifiers: List<String>,
