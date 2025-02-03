@@ -1,5 +1,5 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import type Keycloak from '../../node_modules/keycloak-js/lib/keycloak.js';
+import type Keycloak from 'keycloak-js';
 
 /**
  * Asserts that the provided getter-function to get a Keycloak-promise is defined, then executes that getter-function

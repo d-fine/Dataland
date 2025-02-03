@@ -25,6 +25,13 @@ import RiskAssessmentsFormField from '@/components/forms/parts/fields/RiskAssess
 import GeneralViolationsAssessmentsFormField from '@/components/forms/parts/fields/GeneralViolationsAssessmentsFormField.vue';
 import GrievanceMechanismAssessmentsFormField from '@/components/forms/parts/fields/GrievanceMechanismAssessmentsFormField.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
+import PollutionEmissionFormField from '@/components/forms/parts/fields/PollutionEmissionFormField.vue';
+import SubsidiaryFormField from '@/components/forms/parts/fields/SubsidiaryFormField.vue';
+import WasteClassificationFormField from '@/components/forms/parts/fields/WasteClassificationFormField.vue';
+import SiteAndAreaFormField from '@/components/forms/parts/fields/SiteAndAreaFormField.vue';
+import EmployeesPerCountryFormField from '@/components/forms/parts/fields/EmployeesPerCountryFormField.vue';
+import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue';
+import UploadReports from '@/components/forms/parts/UploadReports.vue';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const componentNameMap: { [key: string]: any } = {
@@ -55,6 +62,13 @@ const componentNameMap: { [key: string]: any } = {
   GeneralViolationsAssessmentsFormField,
   GrievanceMechanismAssessmentsFormField,
   YesNoFormField,
+  PollutionEmissionFormField,
+  SubsidiaryFormField,
+  WasteClassificationFormField,
+  SiteAndAreaFormField,
+  EmployeesPerCountryFormField,
+  ListOfBaseDataPointsFormField,
+  UploadReports,
 };
 
 /**

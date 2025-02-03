@@ -71,7 +71,7 @@ export default defineComponent({
      * If the user does have the Keycloak-role "Reviewer", it is shown. Else it stays invisible.
      */
     setVisibilityForTabWithQualityAssurance() {
-      checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
+      void checkIfUserHasRole(KEYCLOAK_ROLE_REVIEWER, this.getKeycloakPromise).then((hasUserReviewerRights) => {
         this.tabs[2].isVisible = hasUserReviewerRights;
       });
     },
@@ -93,7 +93,7 @@ export default defineComponent({
      * Only Admins can see the tab.
      */
     setVisibilityForAdminTab() {
-      checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise).then((hasUserAdminRights) => {
+      void checkIfUserHasRole(KEYCLOAK_ROLE_ADMIN, this.getKeycloakPromise).then((hasUserAdminRights) => {
         this.tabs[5].isVisible = hasUserAdminRights;
       });
     },

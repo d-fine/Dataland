@@ -1,6 +1,6 @@
 import pluginVue from 'eslint-plugin-vue';
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
 // @ts-ignore
 import pluginCypress from 'eslint-plugin-cypress/flat';
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
@@ -20,6 +20,14 @@ export default defineConfigWithVueTs(
   {
     ...pluginCypress.configs.recommended,
     files: ['tests/e2e/**/*.{js,ts,jsx,tsx}', 'tests/sharedUtils/**/*.{js,ts,jsx,tsx}'],
+  },
+  {
+    name: 'Rule overwrites for tests',
+    files: ['cypress.config.ts', 'tests/**/*.{js,ts,jsx,tsx}'],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+    },
   },
   {
     plugins: {
@@ -80,6 +88,17 @@ export default defineConfigWithVueTs(
           deepData: true,
           ignorePublicMembers: false,
           unreferencedOptions: ['returnAsUnreferenced', 'unknownMemberAsUnreferenced'],
+        },
+      ],
+
+      '@typescript-eslint/ban-ts-comment': [
+        'error',
+        {
+          minimumDescriptionLength: 3,
+          'ts-check': false,
+          'ts-expect-error': 'allow-with-description',
+          'ts-ignore': false,
+          'ts-nocheck': false,
         },
       ],
     },

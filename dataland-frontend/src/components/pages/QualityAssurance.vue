@@ -214,14 +214,14 @@ export default defineComponent({
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        this.getQaDataForCurrentPage();
+        void this.getQaDataForCurrentPage();
       }
     },
     availableReportingPeriods() {
       this.currentChunkIndex = 0;
       this.firstRowIndex = 0;
       if (!this.waitingForData) {
-        this.getQaDataForCurrentPage();
+        void this.getQaDataForCurrentPage();
       }
     },
     searchBarInput() {
@@ -314,7 +314,7 @@ export default defineComponent({
       if (event.page != this.currentChunkIndex) {
         this.currentChunkIndex = event.page;
         this.firstRowIndex = this.currentChunkIndex * this.datasetsPerPage;
-        this.getQaDataForCurrentPage();
+        void this.getQaDataForCurrentPage();
       }
     },
     /**

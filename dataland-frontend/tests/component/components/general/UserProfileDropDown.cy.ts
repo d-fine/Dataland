@@ -14,7 +14,7 @@ describe('Component test for UserProfileDropDown', () => {
           picture: testImagePath,
         },
       }),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {
         onProfilePictureLoadingError: profilePictureLoadingErrorSpy,
