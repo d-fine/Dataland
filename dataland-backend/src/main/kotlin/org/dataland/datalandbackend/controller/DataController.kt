@@ -13,6 +13,8 @@ import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -66,7 +68,7 @@ abstract class DataController<T>(
         )
     }
 
-    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> {
+    private fun retrieveDataset(dataId: String): CompanyAssociatedData<T> {
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         this.verifyAccess(metaInfo)
         val companyId = metaInfo.company.companyId
@@ -76,7 +78,39 @@ abstract class DataController<T>(
         val companyAssociatedData =
             this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
         logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
-        return ResponseEntity.ok(companyAssociatedData)
+        return companyAssociatedData
+    }
+
+    override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<T>> =
+        ResponseEntity
+            .ok(retrieveDataset(dataId))
+
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<T>> {
+        val dataDimensions =
+            BasicDataDimensions(
+                companyId = companyId,
+                dataType = dataType.toString(),
+                reportingPeriod = reportingPeriod,
+            )
+        val correlationId = IdUtils.generateCorrelationId(dataDimensions)
+        val dataAsString =
+            datasetStorageService.getDatasetData(dataDimensions, correlationId)
+                ?: throw ResourceNotFoundApiException(
+                    summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                    message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+                )
+
+        val result =
+            CompanyAssociatedData(
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+                data = objectMapper.readValue(dataAsString, clazz),
+            )
+
+        return ResponseEntity.ok(result)
     }
 
     private fun getData(

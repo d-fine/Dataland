@@ -10,12 +10,15 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
+import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -48,6 +51,7 @@ class AssembledDataManager
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
+        private val logMessageBuilder = LogMessageBuilder()
 
         /**
          * Processes a dataset by breaking it up and storing its data points in the internal storage
@@ -339,5 +343,25 @@ class AssembledDataManager
             val datasetAsJsonNode = JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) { allDataPoints[it] }
 
             return datasetAsJsonNode.toString()
+        }
+
+        override fun getDatasetData(
+            dataDimensions: BasicDataDimensions,
+            correlationId: String,
+        ): String? {
+            val framework = dataDimensions.dataType
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            val relevantDataPointTypes = JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
+            val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
+
+            if (dataPointIds.isEmpty()) {
+                throw ResourceNotFoundApiException(
+                    summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                    message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+                )
+            }
+            return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
         }
     }

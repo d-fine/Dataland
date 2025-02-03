@@ -17,6 +17,9 @@ import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.TestResourceFileReader
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.model.StorableDataPoint
@@ -24,6 +27,7 @@ import org.dataland.specificationservice.openApiClient.api.SpecificationControll
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
@@ -71,7 +75,11 @@ class AssembledDataManagerTest {
     private val reportingPeriod = "2022"
     private val companyId = "test-company-id"
     private val datasetId = "test-dataset-id"
+    private val dataPointType = "extendedEnumFiscalYearDeviation"
+    private val dataPointId = "test-data-point-1"
     private val frameworkSpecification = TestResourceFileReader.getKotlinObject<FrameworkSpecification>(inputFrameworkSpecification)
+    private val framework = "sfdr"
+    private val dataDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
 
     @BeforeEach
     fun resetMocks() {
@@ -79,6 +87,11 @@ class AssembledDataManagerTest {
             dataManager, metaDataManager, storageClient, messageQueuePublications, dataPointValidator,
             companyQueryManager, companyRoleChecker, logMessageBuilder, specificationClient, datasetDatapointRepository,
         )
+    }
+
+    @BeforeEach
+    fun setGeneralMocks() {
+        `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
     }
 
     private fun simulateTransactionCommit() {
@@ -97,7 +110,7 @@ class AssembledDataManagerTest {
         val uploadedDataset =
             StorableDataset(
                 companyId = companyId,
-                dataType = DataType("sfdr"),
+                dataType = DataType(framework),
                 uploaderUserId = uploaderUserId,
                 uploadTime = Instant.now().toEpochMilli(),
                 reportingPeriod = reportingPeriod,
@@ -124,7 +137,7 @@ class AssembledDataManagerTest {
 
     @Test
     fun `check that assembling a dataset works as expected`() {
-        val dataPointMap = mapOf("extendedEnumFiscalYearDeviation" to "test-data-point-1", "extendedCurrencyEquity" to "test-data-point-2")
+        val dataPointMap = mapOf(dataPointType to dataPointId, "extendedCurrencyEquity" to "test-data-point-2")
 
         val dataPoints =
             listOf(
@@ -134,17 +147,52 @@ class AssembledDataManagerTest {
 
         val dataContentMap =
             mapOf(
-                "test-data-point-1" to dataPoints[0],
+                dataPointId to dataPoints[0],
                 "test-data-point-2" to dataPoints[1],
             )
 
-        `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
+        setMockData(dataPointMap, dataContentMap)
 
+        val assembledDataset = assembledDataManager.getDatasetData(datasetId, framework, correlationId)
+        dataPoints.forEach {
+            assert(assembledDataset.contains(it))
+        }
+        assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+    }
+
+    @Test
+    fun `check that assembling a dynamic dataset works as expected`() {
+        val dataPointMap = mapOf(dataPointType to dataPointId)
+        val dataPoint = TestResourceFileReader.getJsonString(currencyDataPoint)
+        val dataContentMap = mapOf(dataPointId to dataPoint)
+        val dataPointDimensions = BasicDataPointDimensions(companyId, dataPointType, reportingPeriod)
+        `when`(metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)).thenReturn(dataPointId)
+        setMockData(dataPointMap, dataContentMap)
+
+        val dynamicDataset = assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        assert(!dynamicDataset.isNullOrEmpty())
+        assert(dynamicDataset!!.contains(dataPoint))
+        assert(dynamicDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
+    }
+
+    @Test
+    fun `check that an exception is thrown if no data exists for the dynamic dataset`() {
+        `when`(metaDataManager.getCurrentlyActiveDataId(any())).thenReturn(null)
+
+        assertThrows<ResourceNotFoundApiException> {
+            assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        }
+    }
+
+    private fun setMockData(
+        dataPoints: Map<String, String>,
+        dataContent: Map<String, String>,
+    ) {
         `when`(datasetDatapointRepository.findById(datasetId)).thenReturn(
             Optional.of(
                 DatasetDatapointEntity(
                     datasetId = datasetId,
-                    dataPoints = dataPointMap,
+                    dataPoints = dataPoints,
                 ),
             ),
         )
@@ -154,7 +202,7 @@ class AssembledDataManagerTest {
             DataPointMetaInformationEntity(
                 dataPointId = dataPointId,
                 companyId = companyId,
-                dataPointType = dataPointMap.filterValues { it == dataPointId }.keys.first(),
+                dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
                 reportingPeriod = reportingPeriod,
                 uploaderUserId = uploaderUserId,
                 uploadTime = Instant.now().toEpochMilli(),
@@ -166,17 +214,11 @@ class AssembledDataManagerTest {
         `when`(storageClient.selectDataPointById(any(), any())).thenAnswer { invocation ->
             val dataPointId = invocation.getArgument<String>(0)
             StorableDataPoint(
-                dataPoint = dataContentMap[dataPointId] ?: "",
-                dataPointType = dataPointMap.filterValues { it == dataPointId }.keys.first(),
+                dataPoint = dataContent[dataPointId] ?: "",
+                dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
                 companyId = companyId,
                 reportingPeriod = reportingPeriod,
             )
         }
-
-        val assembledDataset = assembledDataManager.getDatasetData(datasetId, "sfdr", correlationId)
-        dataPoints.forEach {
-            assert(assembledDataset.contains(it))
-        }
-        assert(assembledDataset.contains("\"referencedReports\":{\"ESEFReport\":"))
     }
 }
