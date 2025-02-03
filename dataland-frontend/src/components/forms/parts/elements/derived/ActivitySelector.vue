@@ -107,7 +107,7 @@ export default defineComponent({
       if (this.selectedActivities?.naceCodes) {
         //@ts-ignore
         this.$refs.multiSelectFormFieldRef?.$refs.multiSelectFormElementRef.clearSelections();
-        return (this.selectedActivities.naceCodes as Array<string>).map((naceCode: string) => {
+        return (this.selectedActivities.naceCodes).map((naceCode: string) => {
           const naceCodeWithoutLetter: string = naceCode.substring(1);
           const convertedNaceCode = convertNace(
             naceCodeWithoutLetter.length === 1 ? `0${naceCodeWithoutLetter}` : naceCodeWithoutLetter

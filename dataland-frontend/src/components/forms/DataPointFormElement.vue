@@ -41,7 +41,7 @@ export default defineComponent({
      * element used to ensure that the FormKit model matches the data model expected by the API
      */
     changed: function () {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+       
       this.$refs.value.node.input(this.inputValue);
     },
   },

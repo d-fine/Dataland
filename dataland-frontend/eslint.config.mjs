@@ -1,53 +1,30 @@
+import pluginVue from 'eslint-plugin-vue';
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import pluginCypress from 'eslint-plugin-cypress/flat';
+import skipFormatting from '@vue/eslint-config-prettier/skip-formatting';
 import jsdoc from 'eslint-plugin-jsdoc';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import typescriptEslint from 'typescript-eslint';
-import { FlatCompat } from '@eslint/eslintrc';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-export default [
+export default defineConfigWithVueTs(
   {
-    ignores: [
-      '**/.eslintrc.js',
-      '**/cypress.config.ts',
-      '**/vite.config.mts',
-      '**/build/',
-      '**/coverage',
-      '**/cypress',
-      '**/dist',
-      '**/plugins/index.js',
-    ],
+    name: 'app/files-to-lint',
+    files: ['**/*.{ts,mts,tsx,vue}'],
   },
-  js.configs.recommended,
-  jsdoc.configs['flat/recommended'],
-  ...typescriptEslint.configs.recommended,
-  ...compat.extends(
-    'plugin:vue/vue3-essential',
-    'eslint:recommended',
-    '@vue/eslint-config-prettier/skip-formatting',
-  ),
-  ...compat.extends('plugin:cypress/recommended').map((config) => ({
-    ...config,
-    files: ['tests/sharedUtils/**/*', 'tests/e2e/**/*'],
-  })),
+  {
+    name: 'app/files-to-ignore',
+    ignores: ['**/dist/**', '**/buildr/**', '**/coverage/**'],
+  },
+  pluginVue.configs['flat/essential'],
+  vueTsConfigs.recommendedTypeChecked,
+  {
+    ...pluginCypress.configs.recommended,
+    files: ['tests/e2e/**/*.{js,ts,jsx,tsx}', 'tests/sharedUtils/**/*.{js,ts,jsx,tsx}'],
+  },
   {
     plugins: {
       jsdoc,
     },
-
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'script',
-    },
-
     rules: {
       '@typescript-eslint/consistent-type-imports': [
         'error',
@@ -107,4 +84,5 @@ export default [
       ],
     },
   },
-];
+  skipFormatting
+);
