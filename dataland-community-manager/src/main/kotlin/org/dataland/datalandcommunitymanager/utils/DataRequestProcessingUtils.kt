@@ -262,31 +262,16 @@ class DataRequestProcessingUtils
             framework: DataTypeEnum,
             reportingPeriod: String,
         ): String? {
-            val openDataRequests =
-                findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Open,
-                )
+            val foundRequests = mutableListOf<DataRequestEntity>()
+            findAlreadyExistingDataRequestForCurrentUser(
+                companyId, framework, reportingPeriod, RequestStatus.Open,
+            )?.forEach { foundRequests.add(it) }
 
-            val answeredDataRequests =
-                findAlreadyExistingDataRequestForCurrentUser(
-                    companyId, framework, reportingPeriod, RequestStatus.Answered,
-                )
+            findAlreadyExistingDataRequestForCurrentUser(
+                companyId, framework, reportingPeriod, RequestStatus.Answered,
+            )?.forEach { foundRequests.add(it) }
 
-            openDataRequests?.takeIf { it.size > 1 }?.let {
-                throw ConflictApiException(
-                    "More than one open data request.",
-                    "There seems to be more than one open data request with the same specifications.",
-                )
-            }
-
-            answeredDataRequests?.takeIf { it.size > 1 }?.let {
-                throw ConflictApiException(
-                    "More than one answered data request.",
-                    "There seems to be more than one answered data request with the same specifications.",
-                )
-            }
-
-            return openDataRequests?.firstOrNull()?.dataRequestId ?: answeredDataRequests?.firstOrNull()?.dataRequestId
+            return foundRequests.firstOrNull()?.dataRequestId
         }
 
         /**
