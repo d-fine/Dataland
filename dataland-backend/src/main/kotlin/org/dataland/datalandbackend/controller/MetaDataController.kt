@@ -71,7 +71,7 @@ class MetaDataController(
             ),
         )
 
-    override fun postListOfDataMetaInfoRequests(
+    override fun postListOfDataMetaInfoFilters(
         dataMetaInformationRequests: List<DataMetaInformationRequest>,
     ): ResponseEntity<List<DataMetaInformation>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
