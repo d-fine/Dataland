@@ -51,7 +51,8 @@ class MetaDataController(
                 ).filter { it.isDatasetViewableByUser(user) }
                 .map { it.toApiModel(user) }
         listDataMetaInformation.forEach {
-            it.url = "https://$proxyPrimaryUrl/companies/${it.companyId}/frameworks/${it.dataType}/${it.dataId}"
+            it.url =
+                "https://$proxyPrimaryUrl/companies/${it.companyId}/frameworks/${it.dataType}/${it.dataId}"
         }
         return listDataMetaInformation
     }

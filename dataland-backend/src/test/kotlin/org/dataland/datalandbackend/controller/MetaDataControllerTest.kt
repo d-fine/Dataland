@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
@@ -37,9 +38,9 @@ internal class MetaDataControllerTest(
     @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val metaDataController: MetaDataController,
+    @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
     val testDataProvider = TestDataProvider(objectMapper)
-
     private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
     private final val expectedSetOfRolesForUploader =
         expectedSetOfRolesForReader +
@@ -112,7 +113,7 @@ internal class MetaDataControllerTest(
         val storedCompany2 = companyManager.addCompany(testCompanyInformation[1])
         val companyId1 = storedCompany1.companyId
         val companyId2 = storedCompany2.companyId
-        val url = "https://dataland.com/companies/$companyId1/frameworks/$dataType/$dataId"
+        val url = "https://$proxyPrimaryUrl/companies/$companyId1/frameworks/$dataType/$dataId"
         val dataMetaInformationRequest =
             listOf(
                 DataMetaInformationRequest(
