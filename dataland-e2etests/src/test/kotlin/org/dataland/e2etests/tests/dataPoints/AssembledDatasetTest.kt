@@ -73,15 +73,35 @@ class AssembledDatasetTest {
             Backend.additionalCompanyInformationDataControllerApi
                 .getCompanyAssociatedAdditionalCompanyInformationData(dataMetaInformation.dataId)
 
+        compareAdditionalCompanyInformationDatasets(dummyDataset, downloadedDataset.data)
+    }
+
+    @Test
+    fun `ensure that an uploaded dataset can be downloaded via dimensions`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = true)
+        val downloadedDataset =
+            Backend.additionalCompanyInformationDataControllerApi.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+                dataMetaInformation.reportingPeriod,
+                companyId,
+            )
+
+        compareAdditionalCompanyInformationDatasets(dummyDataset, downloadedDataset.data)
+    }
+
+    private fun compareAdditionalCompanyInformationDatasets(
+        expected: AdditionalCompanyInformationData,
+        actual: AdditionalCompanyInformationData,
+    ) {
         assertEquals(
-            dummyDataset.general?.general?.referencedReports,
-            downloadedDataset.data.general
+            expected.general?.general?.referencedReports,
+            actual.general
                 ?.general
                 ?.referencedReports,
         )
         assertEquals(
-            dummyDataset.general?.financialInformation?.evic,
-            downloadedDataset.data.general
+            expected.general?.financialInformation?.evic,
+            actual.general
                 ?.financialInformation
                 ?.evic
                 // Ignore publication date as it is modified during referenced report processing

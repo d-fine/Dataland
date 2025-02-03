@@ -165,4 +165,18 @@ class DataPointManager
                 logger.info("No update of the currently active flag required (correlation ID: $correlationId).")
             }
         }
+
+        /**
+         * Retrieves the currently active data points for a list of specific data point dimensions
+         * @param dataPointDimensions the data dimensions to retrieve the data points for
+         * @return the id of the currently active data point
+         */
+        fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): List<String> {
+            val dataPointIds = mutableListOf<String>()
+            dataPointDimensions.forEach {
+                val dataPointId = metaDataManager.getCurrentlyActiveDataId(it) ?: return@forEach
+                dataPointIds.add(dataPointId)
+            }
+            return dataPointIds
+        }
     }
