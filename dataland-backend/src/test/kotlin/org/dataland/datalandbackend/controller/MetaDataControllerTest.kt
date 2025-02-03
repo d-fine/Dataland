@@ -112,7 +112,7 @@ internal class MetaDataControllerTest(
         val storedCompany2 = companyManager.addCompany(testCompanyInformation[1])
         val companyId1 = storedCompany1.companyId
         val companyId2 = storedCompany2.companyId
-        val url = "https://dataland.com/companies/$companyId1/frameworks/$dataId"
+        val url = "https://dataland.com/companies/$companyId1/frameworks/$dataType/$dataId"
         val dataMetaInformationRequest =
             listOf(
                 DataMetaInformationRequest(
