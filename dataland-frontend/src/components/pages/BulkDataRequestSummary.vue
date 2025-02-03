@@ -22,97 +22,38 @@
       </div>
     </div>
     <div class="summary-section border-bottom py-4">
-      <Accordion>
-        <AccordionTab>
+      <Accordion :multiple="true">
+        <AccordionTab v-for="(section, index) in sections" :key="index">
           <template #header>
-            <span class="flex align-items-center gap-2 w-full">
-              <em class="material-icons info-icon green-text">check_circle</em>
-              <span class="summary-section-heading">CREATED REQUESTS</span>
-              <Badge :value="createdRequests.length" class="ml-auto mr-2" />
+            <span :data-test="section.dataTestHeader" class="flex align-items-center gap-2 w-full">
+              <em class="material-icons info-icon" :class="section.iconColor">{{ section.icon }}</em>
+              <span class="summary-section-heading">{{ section.title }}</span>
+              <Badge :value="section.items.length" class="ml-auto mr-2" />
             </span>
           </template>
-          <div data-test="createdRequests">
-            <div class="grid-container align-items-center" v-for="(entry, index) in createdRequests" :key="index">
-              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
-              <a :href="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
-                <div class="text-right">
-                  <span>VIEW REQUEST</span>
-                  <span class="ml-3">></span>
-                </div>
-              </a>
-            </div>
+          <div v-if="section.textBox" class="text-center bg-gray-300 p-1 mt-1 mb-3">
+            {{ section.textBox }}
           </div>
-        </AccordionTab>
-        <AccordionTab>
-          <template #header>
-            <span class="flex align-items-center gap-2 w-full">
-              <em class="material-icons info-icon info-color">info</em>
-              <span class="summary-section-heading">SKIPPED REQUESTS - DATA ALREADY EXISTS</span>
-              <Badge :value="existingDatasets.length" class="ml-auto mr-2" />
-            </span>
-          </template>
-          <div class="text-center bg-gray-300 p-1 mt-1 mb-3">
-            If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single
-            data request on the corresponding dataset page.
-          </div>
-          <div data-test="existingDatasets">
-            <div class="grid-container align-items-center" v-for="(entry, index) in existingDatasets" :key="index">
-              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
-              <a :href="entry.datasetUrl.toString()" class="text-primary no-underline font-bold">
-                <div class="text-right">
-                  <span>VIEW DATA</span>
-                  <span class="ml-3">></span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </AccordionTab>
-        <AccordionTab>
-          <template #header>
-            <span class="flex align-items-center gap-2 w-full">
-              <em class="material-icons info-icon info-color">info</em>
-              <span class="summary-section-heading">SKIPPED REQUESTS - REQUESTS ALREADY EXIST</span>
-              <Badge :value="existingRequests.length" class="ml-auto mr-2" />
-            </span>
-          </template>
-          <div data-test="existingRequests">
-            <div class="grid-container align-items-center" v-for="(entry, index) in existingRequests" :key="index">
-              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
-              <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
-              <a :href="entry.requestUrl.toString()" class="text-primary no-underline font-bold">
-                <div class="text-right">
-                  <span>VIEW REQUEST</span>
-                  <span class="ml-3">></span>
-                </div>
-              </a>
-            </div>
-          </div>
-        </AccordionTab>
-        <AccordionTab>
-          <template #header>
-            <span class="flex align-items-center gap-2 w-full">
-              <em class="material-icons info-icon red-text">error</em>
-              <span class="summary-section-heading">REJECTED IDENTIFIERS</span>
-              <Badge :value="rejectedCompanyIdentifiers.length" class="ml-auto mr-2" />
-            </span>
-          </template>
-          <div class="text-center bg-gray-300 p-1 mt-1 mb-3">
-            No company or companies are known on Dataland for the following company identifier(s)
-          </div>
-          <div data-test="rejectedCompanyIdentifiers">
+          <div :data-test="section.dataTestContent">
             <div
+              v-if="section.items === createdRequests || section.items === existingRequests"
               class="grid-container align-items-center"
-              v-for="(entry, index) in rejectedCompanyIdentifiers"
+              v-for="(entry, index) in section.items"
               :key="index"
             >
+              <div class="col bold-text middle-center-div">{{ entry.userProvidedCompanyId }}</div>
+              <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
+              <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
+              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
+              <a :href="entry.requestUrl.toString()" target="_blank" class="text-primary no-underline font-bold">
+                <div class="text-right">
+                  <span>{{ section.linkText }} </span>
+                  <span class="ml-3">></span>
+                </div>
+              </a>
+            </div>
+
+            <div v-else v-for="(entry, idx) in section.items" :key="idx" class="grid-container align-items-center">
               <div class="col bold-text middle-center-div">{{ entry }}</div>
             </div>
           </div>
@@ -143,6 +84,49 @@ const {
   alreadyExistingDatasets: existingDatasets,
   rejectedCompanyIdentifiers: rejectedCompanyIdentifiers,
 } = props.bulkDataRequestResponse;
+
+const sections = [
+  {
+    title: 'CREATED',
+    icon: 'check_circle',
+    iconColor: 'green-text',
+    items: createdRequests,
+    linkText: 'VIEW REQUEST',
+    dataTestHeader: 'createdRequestsHeader',
+    dataTestContent: 'createdRequestsContent',
+  },
+  {
+    title: 'SKIPPED REQUESTS - DATA ALREADY EXISTS',
+    icon: 'info',
+    iconColor: 'info-color',
+    items: existingRequests,
+    linkText: 'VIEW DATA',
+    dataTestHeader: 'existingRequestsHeader',
+    dataTestContent: 'existingRequestsContent',
+    textBox:
+      'If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single\n' +
+      '            data request on the corresponding dataset page.',
+  },
+  {
+    //todo: update when backend ready
+    title: 'SKIPPED REQUESTS - REQUESTS ALREADY EXIST',
+    icon: 'info',
+    iconColor: 'info-color',
+    items: existingRequests,
+    linkText: 'VIEW DATA',
+    dataTestHeader: 'existingDataHeader',
+    dataTestContent: 'existingDataContent',
+  },
+  {
+    title: 'REJECTED IDENTIFIERS',
+    icon: 'error',
+    iconColor: 'red-text',
+    items: rejectedCompanyIdentifiers,
+    dataTestHeader: 'rejectedHeader',
+    dataTestContent: 'rejectedContent',
+    textBox: 'No company or companies are known on Dataland for the following company identifier(s)',
+  },
+];
 </script>
 
 <style scoped lang="scss">
