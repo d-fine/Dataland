@@ -94,9 +94,9 @@ import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { FRONTEND_SUPPORTED_FRAMEWORKS } from '@/utils/Constants';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 export default defineComponent({
   name: 'ChooseFramework',

@@ -35,11 +35,11 @@ import type { Content, Page } from '@/types/ContentTypes';
 import BackButton from '@/components/general/BackButton.vue';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
 import { redirectToMyDatasets } from '@/components/resources/uploadDataset/DatasetCreationRedirect';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import { computed } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 const props = defineProps<{
   companyID: string;

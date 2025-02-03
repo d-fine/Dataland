@@ -145,7 +145,6 @@ import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vu
 import { defineComponent, inject } from 'vue';
 import { ApiClientProvider } from '@/services/ApiClients';
 import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakUtils';
 import DataTable, { type DataTablePageEvent, type DataTableRowClickEvent } from 'primevue/datatable';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import Column from 'primevue/column';
@@ -160,6 +159,7 @@ import type Keycloak from 'keycloak-js';
 import { type GetInfoOnPendingDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import router from '@/router';
 import { type DataTypeEnum } from '@clients/backend';
+import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles.ts';
 
 export default defineComponent({
   name: 'QualityAssurance',

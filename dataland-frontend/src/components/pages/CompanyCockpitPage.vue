@@ -38,12 +38,13 @@ import FrameworkSummaryPanel from '@/components/resources/companyCockpit/Framewo
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { isFrameworkPublic } from '@/utils/Frameworks.ts';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',

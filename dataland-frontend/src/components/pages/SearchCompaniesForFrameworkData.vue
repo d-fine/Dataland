@@ -103,10 +103,11 @@ import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import router from '@/router';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 export default defineComponent({
   setup() {

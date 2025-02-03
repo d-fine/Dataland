@@ -1,6 +1,7 @@
 import type Keycloak from 'keycloak-js';
 import { type KeycloakInitOptions } from 'keycloak-js';
-import { KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
+
+import { KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
 
 export interface KeycloakMockConfiguration {
   userId?: string;
