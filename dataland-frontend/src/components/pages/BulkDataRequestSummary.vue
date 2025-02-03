@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="summary-section border-bottom py-4">
-      <Accordion :multiple="true">
+      <Accordion :multiple="true" :activeIndex="activeIndex">
         <AccordionTab v-for="(section, index) in sections" :key="index">
           <template #header>
             <span :data-test="section.dataTestHeader" class="flex align-items-center gap-2 w-full">
@@ -127,6 +127,11 @@ const sections = [
     textBox: 'No company or companies are known on Dataland for the following company identifier(s)',
   },
 ];
+
+const activeIndex =
+    existingRequests.length > 0 ? [1] :
+        existingDatasets.length >0 ? [2]:
+            rejectedCompanyIdentifiers.length >0 ? [3]: [0];
 </script>
 
 <style scoped lang="scss">
