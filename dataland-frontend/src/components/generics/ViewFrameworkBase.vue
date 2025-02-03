@@ -309,7 +309,6 @@ export default defineComponent({
      * Hides the dropdown of the Autocomplete-component
      */
     handleScroll() {
-       
       this.frameworkDataSearchBar?.$refs.autocomplete.hide();
       const windowScrollY = window.scrollY;
       if (this.scrollEmittedByToolbar) {

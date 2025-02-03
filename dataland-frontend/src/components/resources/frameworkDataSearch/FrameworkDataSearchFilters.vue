@@ -164,11 +164,10 @@ export default defineComponent({
     // The following method is used, the linter reports a false positive here
     // eslint-disable-next-line vue/no-unused-properties
     closeAllOpenDropDowns() {
-       
       this.countryFilter?.$refs.multiselect.hide();
-       
+
       this.sectorFilter?.$refs.multiselect.hide();
-       
+
       this.frameworkFilter?.$refs.multiselect.hide();
     },
     /**

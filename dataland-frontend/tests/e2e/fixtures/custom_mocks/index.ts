@@ -35,7 +35,7 @@ export function exportCustomMocks(): void {
     '../testing/data/DataRequestsMock.json',
     JSON.stringify(
       generateStoredDataRequests(),
-       
+
       (_key, value) => (value instanceof Set ? Array.from(value) : value),
       '\t'
     )

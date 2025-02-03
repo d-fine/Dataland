@@ -10,7 +10,6 @@ export class SfdrGenerator extends Generator {
    * @returns random map of procurement categories
    */
   generateHighImpactClimateSectors(): { [key: string]: SfdrHighImpactClimateSectorEnergyConsumption } {
-     
     const keys: HighImpactClimateSector[] = pickSubsetOfElements(Object.values(HighImpactClimateSector), 0);
     return Object.fromEntries(
       new Map<string, SfdrHighImpactClimateSectorEnergyConsumption>(

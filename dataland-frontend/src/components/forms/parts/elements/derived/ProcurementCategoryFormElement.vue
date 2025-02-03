@@ -137,7 +137,6 @@ export default defineComponent({
      */
     setPreSelectedCountries() {
       return this.allCountries.filter((element) =>
-         
         Object.keys(this.selectedProcurementCategories?.[this.name]?.numberOfSuppliersPerCountryCode)?.includes(
           element.value
         )
