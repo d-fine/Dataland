@@ -108,7 +108,6 @@ const sections = [
       'data request on the corresponding dataset page.',
   },
   {
-    //todo: update when backend ready
     title: 'SKIPPED REQUESTS - REQUESTS ALREADY EXIST',
     icon: 'info',
     iconColor: 'info-color',
