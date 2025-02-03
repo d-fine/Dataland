@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
  * --- API model ---
- * Contains all relevant info that a user receives regarding the accepted data requests
+ * Contains all relevant info that a user receives regarding already existing datasets
 
  */
-data class DataRequestResponse(
+data class ResourceResponse(
     @field:JsonProperty(required = true)
-    val userProvidedCompanyId: String,
+    val userProvidedIdentifier: String,
     @field:JsonProperty(required = true)
     val companyName: String,
     @field:JsonProperty(required = true)
@@ -17,7 +17,7 @@ data class DataRequestResponse(
     @field:JsonProperty(required = true)
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
-    val requestId: String,
+    val resourceId: String,
     @field:JsonProperty(required = true)
-    val requestUrl: String,
+    val resourceUrl: String,
 )

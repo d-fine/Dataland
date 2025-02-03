@@ -99,14 +99,14 @@ class DataRequestLogger {
      * Logs an appropriate message when a data request has been stored in the database.
      */
     fun logBulkDataOverwiew(
-        r: BulkDataRequestResponse,
+        response: BulkDataRequestResponse,
         correlationId: String,
     ) {
         bulkDataRequestLogger.info("Processed bulk data request with correlationId: $correlationId.")
-        bulkDataRequestLogger.info("Number of accepted requests: ${r.acceptedDataRequests.size}")
-        bulkDataRequestLogger.info("Number of already existing non-final requests: ${r.alreadyExistingNonFinalRequests.size}")
-        bulkDataRequestLogger.info("Number of already existing datasets: ${r.alreadyExistingDatasets.size}")
-        bulkDataRequestLogger.info("Number of rejected identifiers: ${r.rejectedCompanyIdentifiers.size}")
+        bulkDataRequestLogger.info("Number of accepted requests: ${response.acceptedDataRequests.size}")
+        bulkDataRequestLogger.info("Number of already existing non-final requests: ${response.alreadyExistingNonFinalRequests.size}")
+        bulkDataRequestLogger.info("Number of already existing datasets: ${response.alreadyExistingDatasets.size}")
+        bulkDataRequestLogger.info("Number of rejected identifiers: ${response.rejectedCompanyIdentifiers.size}")
     }
 
     /**

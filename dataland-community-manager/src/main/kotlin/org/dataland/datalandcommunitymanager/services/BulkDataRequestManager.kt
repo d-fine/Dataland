@@ -8,8 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestResponse
-import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetsResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.model.dataRequest.ValidSingleDataRequest
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
@@ -90,7 +89,7 @@ class BulkDataRequestManager(
     private fun getAlreadyExistingDatasetsResponse(
         metaDataList: List<DataMetaInformation>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
-    ): List<DatasetsResponse> {
+    ): List<ResourceResponse> {
         if (metaDataList.isEmpty()) {
             return emptyList()
         }
@@ -104,13 +103,13 @@ class BulkDataRequestManager(
 
             companyMappingEntry ?: throw IllegalArgumentException("Can't match: $companyId to a user provided company identifier.")
 
-            DatasetsResponse(
-                userProvidedCompanyId = companyMappingEntry.key,
+            ResourceResponse(
+                userProvidedIdentifier = companyMappingEntry.key,
                 companyName = companyMappingEntry.value.companyName,
                 framework = metaData.dataType.toString(),
                 reportingPeriod = metaData.reportingPeriod,
-                datasetId = metaData.dataId,
-                datasetUrl = metaData.url,
+                resourceId = metaData.dataId,
+                resourceUrl = metaData.url,
             )
         }
     }
@@ -175,8 +174,8 @@ class BulkDataRequestManager(
     private fun processExistingDataRequests(
         validSingleDataRequests: MutableList<ValidSingleDataRequest>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
-    ): List<DataRequestResponse> {
-        val existingDataRequests = mutableListOf<DataRequestResponse>()
+    ): List<ResourceResponse> {
+        val existingDataRequests = mutableListOf<ResourceResponse>()
 
         for (request in validSingleDataRequests) {
             val existingRequestId =
@@ -193,13 +192,13 @@ class BulkDataRequestManager(
                     )
 
                 existingDataRequests.add(
-                    DataRequestResponse(
-                        userProvidedCompanyId = userProvidedCompanyId,
+                    ResourceResponse(
+                        userProvidedIdentifier = userProvidedCompanyId,
                         companyName = companyName,
                         framework = request.dataType.toString(),
                         reportingPeriod = request.reportingPeriod,
-                        requestId = existingRequestId,
-                        requestUrl = "https://$proxyPrimaryUrl/requests/$existingRequestId",
+                        resourceId = existingRequestId,
+                        resourceUrl = "https://$proxyPrimaryUrl/requests/$existingRequestId",
                     ),
                 )
                 validSingleDataRequests.remove(request)
@@ -220,13 +219,23 @@ class BulkDataRequestManager(
         return Pair(entry.key, entry.value.companyName)
     }
 
+    /** Stores the data requests from requestsToProcess and provides a feedback list
+     * including the user-provided company identifiers.
+     *
+     * @param requestsToProcess The requests to store.
+     * @param userProvidedIdentifierToDatalandCompanyIdMapping A mapping that stores
+     * the user-provided identifiers and associated dataland company ids.
+     *
+     * @return A list of ResourceResponse objects that documents the stored requests
+     * and contains all necessary information to display in the frontend.
+     */
     private fun storeDataRequests(
-        validSingleDataRequests: List<ValidSingleDataRequest>,
+        requestsToProcess: List<ValidSingleDataRequest>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
-    ): List<DataRequestResponse> {
-        val acceptedDataRequests = mutableListOf<DataRequestResponse>()
+    ): List<ResourceResponse> {
+        val acceptedDataRequests = mutableListOf<ResourceResponse>()
 
-        for (request in validSingleDataRequests) {
+        for (request in requestsToProcess) {
             val (userProvidedCompanyId, companyName) =
                 extractUserProvidedIdAndName(
                     request.companyIdentifier,
@@ -241,13 +250,13 @@ class BulkDataRequestManager(
                 )
 
             acceptedDataRequests.add(
-                DataRequestResponse(
-                    userProvidedCompanyId = userProvidedCompanyId,
+                ResourceResponse(
+                    userProvidedIdentifier = userProvidedCompanyId,
                     companyName = companyName,
                     framework = request.dataType.toString(),
                     reportingPeriod = request.reportingPeriod,
-                    requestId = storedRequest.dataRequestId,
-                    requestUrl = "https://$proxyPrimaryUrl/requests/${storedRequest.dataRequestId}",
+                    resourceId = storedRequest.dataRequestId,
+                    resourceUrl = "https://$proxyPrimaryUrl/requests/${storedRequest.dataRequestId}",
                 ),
             )
         }
