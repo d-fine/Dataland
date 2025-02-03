@@ -12,11 +12,11 @@ import com.fasterxml.jackson.annotation.JsonProperty
  */
 data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)
-    val acceptedDataRequests: List<DataRequestResponse>,
+    val acceptedDataRequests: List<ResourceResponse>,
     @field:JsonProperty(required = true)
-    val alreadyExistingNonFinalRequests: List<DataRequestResponse>,
+    val alreadyExistingNonFinalRequests: List<ResourceResponse>,
     @field:JsonProperty(required = true)
-    val alreadyExistingDatasets: List<DatasetsResponse>,
+    val alreadyExistingDatasets: List<ResourceResponse>,
     @field:JsonProperty(required = true)
     val rejectedCompanyIdentifiers: List<String>,
 )
