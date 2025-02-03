@@ -145,7 +145,7 @@ internal class MetaDataControllerTest(
 
         mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
         val listDataMetaInfos =
-            metaDataController.postListOfDataMetaInfoRequests(dataMetaInformationRequest).body
+            metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationRequest).body
 
         assertEquals(amountStoredCompanies, listDataMetaInfos?.size)
         val dataMetaInfo = listDataMetaInfos?.get(0)

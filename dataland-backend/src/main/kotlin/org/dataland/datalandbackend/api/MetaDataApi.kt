@@ -64,7 +64,7 @@ interface MetaDataApi {
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
-     * A method to bulk search for meta info about datasets registered by Dataland
+     * A method to post multiple filters at once to search for meta information about datasets registered by Dataland
      * @param dataMetaInformationRequests A list of data meta information request filters
      * @return a list of matching DataMetaInformation
      */
@@ -78,12 +78,12 @@ interface MetaDataApi {
         ],
     )
     @PostMapping(
-        value = ["/batch"],
+        value = ["/filters"],
         consumes = ["application/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @CompanyQueryManager.isCompanyPublic(#companyId)")
-    fun postListOfDataMetaInfoRequests(
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postListOfDataMetaInfoFilters(
         @RequestBody dataMetaInformationRequests: List<DataMetaInformationRequest>,
     ): ResponseEntity<List<DataMetaInformation>>
 
