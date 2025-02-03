@@ -80,6 +80,7 @@ export default defineConfig({
     port: 8090,
     host: '0.0.0.0',
     strictPort: true,
+    allowedHosts: true,
     watch: {
       ignored: ['**/coverage/**'],
       usePolling: process.env.POLLING === 'true',
@@ -88,7 +89,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "./src/assets/scss/newVariables.scss"; @import "./src/assets/scss/variables.scss";`,
+        additionalData: `@import "@/assets/scss/newVariables.scss"; @import "@/assets/scss/variables.scss";`,
       },
     },
   },
