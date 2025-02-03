@@ -121,7 +121,7 @@ class BulkDataRequestManager(
         val dimensionsWithExistingRequests =
             existingDatasets
                 .map {
-                    BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod)
+                    BasicDataDimensions(it.companyId, it.dataType.value, it.reportingPeriod)
                 }.toSet()
 
         val allValidDimensions =
@@ -130,7 +130,7 @@ class BulkDataRequestManager(
                     require(it.companyId != null && it.dataType != null && it.reportingPeriod != null) {
                         "Request cannot have null values: $it"
                     }
-                    BasicDataDimensions(it.companyId, it.dataType.toString(), it.reportingPeriod)
+                    BasicDataDimensions(it.companyId, it.dataType.value, it.reportingPeriod)
                 }.toSet()
         val dimensionsWithoutRequests = allValidDimensions - dimensionsWithExistingRequests
         return dimensionsWithoutRequests.toList()

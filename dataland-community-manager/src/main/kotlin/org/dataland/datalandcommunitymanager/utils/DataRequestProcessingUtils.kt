@@ -7,7 +7,6 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
-import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
@@ -230,23 +229,7 @@ class DataRequestProcessingUtils
                 findAlreadyExistingDataRequestForCurrentUser(
                     companyId, framework, reportingPeriod, RequestStatus.Answered,
                 )
-            return if (openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty()) {
-                false
-            } else {
-                if (openDataRequests != null && openDataRequests.size > 1) {
-                    throw ConflictApiException(
-                        "More than one open data request.",
-                        "There seems to be more than one open data request with the same specifications.",
-                    )
-                }
-                if (answeredDataRequests != null && answeredDataRequests.size > 1) {
-                    throw ConflictApiException(
-                        "More than one answered data request.",
-                        "There seems to be more than one answered data request with the same specifications.",
-                    )
-                }
-                true
-            }
+            return !(openDataRequests.isNullOrEmpty() && answeredDataRequests.isNullOrEmpty())
         }
 
         /**
