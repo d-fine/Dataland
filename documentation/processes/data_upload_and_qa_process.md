@@ -44,23 +44,8 @@ sequenceDiagram
     mq -) qaService: Receive 'Public Data received'
     deactivate mq
     activate qaService
-   
-    opt bypassQa is false
-        qaService ->> qaService: Store Pending entry in QA-DB table
-        deactivate qaService
 
-        qaler ->> qaService: Get Datasets to QA
-        activate qaService
-        activate qaler
-        qaService -->> qaler: Dataset List
-        deactivate qaService
-        qaler ->> qaService: Quality Assured
-        deactivate qaler
-        activate qaService
-    end
-    
-    qaService ->> qaService: Store decision in QA-DB table
-
+    qaService ->> qaService: Store initial entry in QA-DB table
     qaService --) mq: Send 'QA status updated'
     deactivate qaService
 
@@ -75,4 +60,33 @@ sequenceDiagram
     activate community
     community ->> community: Update Data Requests and send notifications
     deactivate community
+   
+    opt Reviewer Performs Quality Assurance (if requierd)
+
+
+        qaler ->> qaService: Get Datasets to QA
+        activate qaService
+        activate qaler
+        qaService -->> qaler: Dataset List
+        deactivate qaService
+        qaler ->> qaService: Quality Assured
+        deactivate qaler
+        activate qaService
+        qaService ->> qaService: Store decision in QA-DB table
+
+        qaService --) mq: Send 'QA status updated'
+        deactivate qaService
+
+        activate mq
+        mq -) backend: Receive 'QA status updated'
+        activate backend
+        backend ->> backend: Update QA Decision in Metadata
+        deactivate backend
+
+        mq -) community: Receive 'QA status updated'
+        deactivate mq
+        activate community
+        community ->> community: Update Data Requests and send notifications
+        deactivate community
+    end
 ```

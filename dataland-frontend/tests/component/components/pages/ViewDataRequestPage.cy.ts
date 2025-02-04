@@ -13,9 +13,9 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 import router from '@/router';
 import { getRequestStatusLabel } from '@/utils/RequestUtils.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';

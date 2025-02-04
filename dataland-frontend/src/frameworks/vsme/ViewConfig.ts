@@ -1081,7 +1081,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
             valueGetter: (dataset: VsmeData): AvailableMLDTDisplayObjectTypes =>
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining?.averageHourlyPayMaleInEuroPerHour,
-                'Euro/h'
+                'Euro\/h'
               ),
           },
           {
@@ -1097,7 +1097,7 @@ export const vsmeViewConfiguration: MLDTConfig<VsmeData> = [
               formatNumberForDatatable(
                 dataset.basic?.workforceRenumerationCollectiveBargainingAndTraining
                   ?.averageHourlyPayFemaleInEuroPerHour,
-                'Euro/h'
+                'Euro\/h'
               ),
           },
           {

@@ -40,6 +40,12 @@ class SfdrDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<SfdrData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedSfdrDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<SfdrData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedSfdrData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<SfdrData>,

@@ -67,20 +67,24 @@ class ReferencedReportsUtilitiesTest {
     @Test
     fun `check that validateReferencedReportConsistency returns empty map when input is null`() {
         val dataContent = readDataContent(frameworkWithoutReferencedReports)
-        val result =
+        val referencedReports =
             referencedReportsUtilities
-                .validateReferencedReportConsistency(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
-        assertTrue(result.isEmpty())
+                .parseReferencedReportsFromJsonLeaf(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
+        referencedReportsUtilities
+            .validateReferencedReportConsistency(referencedReports)
+        assertTrue(referencedReports.isEmpty())
     }
 
     @Test
     fun `check that validateReferencedReportConsistency returns report map when input is valid`() {
         val dataContent = readDataContent(frameworkWithReferencedReports)
-        val result =
+        val referencedReports =
             referencedReportsUtilities
-                .validateReferencedReportConsistency(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
-        assertEquals(2, result.size)
-        assertEquals("70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", result["AnnualReport"]?.fileReference)
+                .parseReferencedReportsFromJsonLeaf(dataContent[ReferencedReportsUtilities.REFERENCED_REPORTS_ID])
+        referencedReportsUtilities
+            .validateReferencedReportConsistency(referencedReports)
+        assertEquals(2, referencedReports.size)
+        assertEquals("70a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63", referencedReports["AnnualReport"]?.fileReference)
     }
 
     @Test
@@ -96,7 +100,8 @@ class ReferencedReportsUtilitiesTest {
                 content = testObjectMapper.readTree(duplicateRefReferenceReport),
             )
         assertThrows<InvalidInputApiException> {
-            referencedReportsUtilities.validateReferencedReportConsistency(jsonSpecificationNode)
+            val referencedReports = referencedReportsUtilities.parseReferencedReportsFromJsonLeaf(jsonSpecificationNode)
+            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports)
         }
     }
 

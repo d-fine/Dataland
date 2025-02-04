@@ -49,6 +49,24 @@ class Sfdr {
     }
 
     @Test
+    fun `check that an uploaded dataset can be retrieved by data dimensions`() {
+        val listOfUploadInfo =
+            apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
+                listOfOneCompanyInformation,
+                listOfOneSfdrDataSet,
+                apiAccessor::sfdrUploaderFunction,
+            )
+        val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
+        val downloadedAssociatedData =
+            apiAccessor.dataControllerApiForSfdrData
+                .getCompanyAssociatedSfdrDataByDimensions(
+                    reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
+                    companyId = receivedDataMetaInformation.companyId,
+                )
+        assertEquals(listOfOneSfdrDataSet[0], downloadedAssociatedData.data)
+    }
+
+    @Test
     fun `check that Sfdr dataset cannot be uploaded if document does not exist`() {
         tryToUploadDataWithInvalidInputAndAssertThatItsForbidden(
             "TestForBrokenFileReference",

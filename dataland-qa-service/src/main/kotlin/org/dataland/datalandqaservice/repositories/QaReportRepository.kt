@@ -27,7 +27,7 @@ interface QaReportRepository : JpaRepository<QaReportEntity, String> {
     fun searchQaReportMetaInformation(
         @Param("dataId") dataId: String,
         @Param("showInactive") showInactive: Boolean,
-        @Param("reporterUserId") reporterUserId: String?,
+        @Param("reporterUserId") reporterUserId: String? = null,
     ): List<QaReportEntity>
 
     /**

@@ -273,8 +273,9 @@ import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import { type DataTypeEnum, QaStatus } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
-import { checkIfUserHasRole, getUserId, KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
 import router from '@/router';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
 export default defineComponent({
   name: 'ViewDataRequest',
@@ -326,7 +327,7 @@ export default defineComponent({
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
         this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
         this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-        this.setUserAccessFields();
+        void this.setUserAccessFields();
       })
       .catch((error) => console.error(error));
   },

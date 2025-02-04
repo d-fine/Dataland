@@ -7,16 +7,16 @@ import {
   type HeimathafenData,
 } from '@clients/backend';
 import { type FixtureData } from '@sharedUtils/Fixtures';
+import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
+import { computed } from 'vue';
+import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { getMountingFunction } from '@ct/testUtils/Mount';
 import {
   KEYCLOAK_ROLE_PREMIUM_USER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
   KEYCLOAK_ROLES,
-} from '@/utils/KeycloakUtils';
-import { setMobileDeviceViewport } from '@sharedUtils/TestSetupUtils';
-import { computed } from 'vue';
-import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
-import { getMountingFunction } from '@ct/testUtils/Mount';
+} from '@/utils/KeycloakRoles.ts';
 
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;

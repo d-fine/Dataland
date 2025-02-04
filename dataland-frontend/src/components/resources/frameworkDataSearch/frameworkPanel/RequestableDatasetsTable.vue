@@ -94,7 +94,7 @@ async function submitDataRequestsForSelection(): Promise<void> {
       });
       await router.push('/requests');
       emit('submittedAccessRequests');
-    } catch (e) {
+    } catch {
       isAccessRequestFailed.value = true;
     }
   }

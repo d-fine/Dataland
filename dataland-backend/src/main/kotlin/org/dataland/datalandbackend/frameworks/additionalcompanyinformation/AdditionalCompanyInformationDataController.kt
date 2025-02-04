@@ -40,6 +40,14 @@ class AdditionalCompanyInformationDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedAdditionalCompanyInformationDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<AdditionalCompanyInformationData>> =
+        super
+            .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedAdditionalCompanyInformationData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<AdditionalCompanyInformationData>,

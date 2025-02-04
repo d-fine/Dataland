@@ -16,7 +16,7 @@ export default defineComponent({
   name: 'ModalLinkDisplayComponent',
   computed: {
     modalOptions() {
-      let updatedModalOptions = this.content.displayValue.modalOptions;
+      const updatedModalOptions = this.content.displayValue.modalOptions;
       updatedModalOptions!.data.metaInfo = this.metaInfo;
       return updatedModalOptions;
     },

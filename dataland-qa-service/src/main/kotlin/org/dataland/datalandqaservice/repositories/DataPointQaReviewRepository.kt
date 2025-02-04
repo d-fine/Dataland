@@ -41,6 +41,12 @@ interface DataPointQaReviewRepository : JpaRepository<DataPointQaReviewEntity, U
     fun findByDataPointIdOrderByTimestampDesc(dataPointId: String): List<DataPointQaReviewEntity>
 
     /**
+     * Find QA information for a specific dataPointId. Take first entry ordered by descending timestamp.
+     * @param dataId ID to specify the data point the QA information is for
+     */
+    fun findFirstByDataPointIdOrderByTimestampDesc(dataId: String): DataPointQaReviewEntity?
+
+    /**
      * Find the latest QA information items per dataPointId and filter for the QA status 'Pending'. These entries form the review queue.
      */
     @Query(

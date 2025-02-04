@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.utils
 
 import org.dataland.datalandbackend.services.LogMessageBuilder
+import org.dataland.datalandbackendutils.interfaces.DataDimensions
 import org.slf4j.LoggerFactory
 import java.util.UUID
 
@@ -32,6 +33,22 @@ object IdUtils {
                 correlationId = correlationId,
                 companyId = companyId,
                 dataId = dataId,
+            ),
+        )
+        return correlationId
+    }
+
+    /**
+     * Generates a correlationId as UUID-string and writes a log to make it traceable and express its association
+     * with a companyId and/or dataId
+     * @returns the correlationId
+     */
+    fun generateCorrelationId(dataDimensions: DataDimensions): String {
+        val correlationId = generateUUID()
+        logger.info(
+            logMessageBuilder.generateCorrelationIdMessage(
+                dataDimensions = dataDimensions,
+                correlationId = correlationId,
             ),
         )
         return correlationId
