@@ -34,7 +34,13 @@
           <div v-if="section.textBox" class="text-center bg-gray-300 p-1 mt-1 mb-3">
             {{ section.textBox }}
           </div>
-          <div v-if="section.items === createdRequests || section.items === existingRequests">
+          <div
+            v-if="
+              section.items === acceptedDataRequests ||
+              section.items === alreadyExistingNonFinalRequests ||
+              section.items === alreadyExistingDatasets
+            "
+          >
             <div
               v-for="(entry, index) in section.items"
               :key="index"
@@ -80,21 +86,17 @@ const props = defineProps<{
   summarySectionFrameworksHeading: string;
 }>();
 
-const {
-  acceptedDataRequests: createdRequests,
-  alreadyExistingNonFinalRequests: existingRequests,
-  alreadyExistingDatasets: existingDatasets,
-  rejectedCompanyIdentifiers: rejectedCompanyIdentifiers,
-} = props.bulkDataRequestResponse;
+const { acceptedDataRequests, alreadyExistingNonFinalRequests, alreadyExistingDatasets, rejectedCompanyIdentifiers } =
+  props.bulkDataRequestResponse;
 
-const activeIndex: number[] = existingDatasets?.length ? [1] : [];
+const activeIndex: number[] = acceptedDataRequests?.length ? [1] : [];
 
 const sections = [
   {
     title: 'CREATED',
     icon: 'check_circle',
     iconColor: 'green-text',
-    items: createdRequests,
+    items: acceptedDataRequests,
     linkText: 'VIEW REQUEST',
     dataTestHeader: 'createdRequestsHeader',
     dataTestContent: 'createdRequestsContent',
@@ -103,7 +105,7 @@ const sections = [
     title: 'SKIPPED REQUESTS - DATA ALREADY EXISTS',
     icon: 'info',
     iconColor: 'info-color',
-    items: existingDatasets,
+    items: alreadyExistingDatasets,
     linkText: 'VIEW DATA',
     dataTestHeader: 'existingDataHeader',
     dataTestContent: 'existingDataContent',
@@ -115,7 +117,7 @@ const sections = [
     title: 'SKIPPED REQUESTS - REQUESTS ALREADY EXIST',
     icon: 'info',
     iconColor: 'info-color',
-    items: existingRequests,
+    items: alreadyExistingNonFinalRequests,
     linkText: 'VIEW DATA',
     dataTestHeader: 'existingRequestsHeader',
     dataTestContent: 'existingRequestsContent',
