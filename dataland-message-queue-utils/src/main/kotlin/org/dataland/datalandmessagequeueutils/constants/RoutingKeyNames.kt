@@ -17,5 +17,6 @@ object RoutingKeyNames {
     const val DATASET_UPLOAD = "dataset.upload"
     const val DATASET_QA = "dataset.qa"
     const val DATASET_DELETION = "dataset.deletion"
+    const val DATASET_STORED_TO_ASSEMBLED_MIGRATION = "dataset.storedDatasetMigratedToAssembledDataset"
     const val DATA_NONSOURCEABLE = "dataNonSourceable"
 }

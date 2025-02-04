@@ -7,7 +7,9 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -57,17 +59,7 @@ class QaReviewManager(
     ) {
         logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
         val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
-        val qaStatus: QaStatus
-        var comment: String? = null
-
-        when (bypassQa) {
-            true -> {
-                qaStatus = QaStatus.Accepted
-                comment = "Automatically QA approved."
-            }
-
-            false -> qaStatus = QaStatus.Pending
-        }
+        val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
 
         val qaReviewEntity =
             saveQaReviewEntity(
@@ -208,6 +200,25 @@ class QaReviewManager(
                 comment = comment,
             )
         return qaReviewRepository.save(qaReviewEntity)
+    }
+
+    /**
+     * Checks if the QA service knows the dataId
+     */
+    @Transactional
+    fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId) != null
+
+    /**
+     * Asserts that the QA service knows the dataId
+     */
+    @Transactional
+    fun assertQaServiceKnowsDataId(dataId: String) {
+        if (!checkIfQaServiceKnowsDataId(dataId)) {
+            throw ResourceNotFoundApiException(
+                "Data ID not known to QA service",
+                "Dataland does not know the data id $dataId",
+            )
+        }
     }
 
     /**

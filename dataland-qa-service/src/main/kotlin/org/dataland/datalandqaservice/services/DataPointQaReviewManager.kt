@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -38,20 +39,20 @@ class DataPointQaReviewManager
 
         /**
          * Review a data point and change its QA status
-         * @param dataId dataId of dataset of which to change qaStatus
+         * @param dataPointId dataId of dataset of which to change qaStatus
          * @param qaStatus new qaStatus to be set
          * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
          * @param correlationId the ID for the process triggering the change
          */
         @Transactional
         fun reviewDataPoint(
-            dataId: String,
+            dataPointId: String,
             qaStatus: QaStatus,
             triggeringUserId: String,
             comment: String?,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val reviewEntity = saveDataPointQaReviewEntity(dataId, qaStatus, triggeringUserId, comment, correlationId)
+            val reviewEntity = saveDataPointQaReviewEntity(dataPointId, qaStatus, triggeringUserId, comment, correlationId)
             sendDataPointQaStatusChangeMessage(reviewEntity, correlationId)
             return reviewEntity
         }
@@ -76,6 +77,9 @@ class DataPointQaReviewManager
         ) {
             val composition = compositionService.getCompositionOfDataset(dataId) ?: return
             val allDataIds = composition.values.toList()
+            allDataIds.forEach {
+                assertQaServiceKnowsDataPointId(it)
+            }
 
             if (overwriteDataPointQaStatus) {
                 allDataIds.forEach {
@@ -94,21 +98,41 @@ class DataPointQaReviewManager
             }
         }
 
+        /**
+         * Asserts that the QA service knows the dataId
+         */
+        @Transactional
+        fun assertQaServiceKnowsDataPointId(dataPointId: String) {
+            if (!checkIfQaServiceKnowsDataPointId(dataPointId)) {
+                throw ResourceNotFoundApiException(
+                    "Data Point ID not known to QA service",
+                    "Dataland does not know the data point with id $dataPointId",
+                )
+            }
+        }
+
+        /**
+         * Checks if the QA service knows the dataId
+         */
+        @Transactional
+        fun checkIfQaServiceKnowsDataPointId(dataPointId: String): Boolean =
+            dataPointQaReviewRepository.findFirstByDataPointIdOrderByTimestampDesc(dataPointId) != null
+
         private fun saveDataPointQaReviewEntity(
-            dataId: String,
+            dataPointId: String,
             qaStatus: QaStatus,
             triggeringUserId: String,
             comment: String?,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val dataMetaInfo = dataPointControllerApi.getDataPointMetaInfo(dataId)
+            val dataMetaInfo = dataPointControllerApi.getDataPointMetaInfo(dataPointId)
             val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
 
-            logger.info("Assigning quality status $qaStatus to data point with ID $dataId (correlationID: $correlationId)")
+            logger.info("Assigning quality status $qaStatus to data point with ID $dataPointId (correlationID: $correlationId)")
 
             val dataPointQaReviewEntity =
                 DataPointQaReviewEntity(
-                    dataPointId = dataId,
+                    dataPointId = dataPointId,
                     companyId = dataMetaInfo.companyId,
                     companyName = companyName,
                     dataPointType = dataMetaInfo.dataPointType,

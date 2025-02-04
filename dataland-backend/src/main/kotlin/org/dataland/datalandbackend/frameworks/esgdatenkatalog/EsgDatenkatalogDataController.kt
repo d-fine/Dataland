@@ -40,6 +40,12 @@ class EsgDatenkatalogDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EsgDatenkatalogData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedEsgDatenkatalogDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<EsgDatenkatalogData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedEsgDatenkatalogData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<EsgDatenkatalogData>,

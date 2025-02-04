@@ -1,12 +1,15 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,18 +30,47 @@ class MessageQueuePublications(
 
     /**
      * Method to publish a message that a data point has been uploaded
-     * @param dataId The ID of the uploaded data point
-     * @param bypassQa Whether the data point has been uploaded without QA
+     * @param dataPointId The ID of the uploaded data point
+     * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
-    fun publishDataPointUploadedMessage(
-        dataId: String,
+    fun publishDataPointUploadedMessageWithBypassQa(
+        dataPointId: String,
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        logger.info("Publish message that data point with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
+        val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
+
+        publishDataPointUploadedMessage(
+            dataPointId = dataPointId,
+            initialQaStatus = qaStatus,
+            initialQaComment = comment,
+            correlationId = correlationId,
+        )
+    }
+
+    /**
+     * Method to publish a message that a data point has been uploaded
+     * @param dataPointId The ID of the uploaded data point
+     * @param initialQaStatus The initial QA status of the data point
+     * @param initialQaComment The initial QA status message of the data point
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDataPointUploadedMessage(
+        dataPointId: String,
+        initialQaStatus: QaStatus,
+        initialQaComment: String?,
+        correlationId: String,
+    ) {
+        logger.info("Publish message that data point with ID '$dataPointId' has been uploaded. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
+            body =
+                objectMapper.writeValueAsString(
+                    DataPointUploadedPayload(
+                        dataPointId = dataPointId,
+                        initialQaStatus = initialQaStatus.toString(), initialQaComment = initialQaComment,
+                    ),
+                ),
             type = MessageType.PUBLIC_DATA_RECEIVED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_POINT_EVENTS,
@@ -125,6 +157,26 @@ class MessageQueuePublications(
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_DELETION,
+        )
+    }
+
+    /**
+     * Method to publish a message that a dataset has been migrated to an assembled dataset
+     */
+    fun publishDatasetMigratedMessage(
+        dataId: String,
+        correlationId: String,
+    ) {
+        logger.info(
+            "Publish message that dataset with ID '$dataId' was migrated to an assembled dataset. " +
+                "Correlation ID: '$correlationId'.",
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+            type = MessageType.DATA_MIGRATED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = RoutingKeyNames.DATASET_STORED_TO_ASSEMBLED_MIGRATION,
         )
     }
 

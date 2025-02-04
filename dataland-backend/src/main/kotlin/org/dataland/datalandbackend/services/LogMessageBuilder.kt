@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
+import org.dataland.datalandbackendutils.interfaces.DataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.stereotype.Component
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component
  * Enables a centralized generation of log messages for all Dataland backend operations.
  */
 
+@Suppress("TooManyFunctions")
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
     /**
@@ -18,6 +20,7 @@ class LogMessageBuilder {
     fun generateAccessDeniedExceptionMessage(qaStatus: QaStatus) = "You are trying to access a ${qaStatus.toString().lowercase()} dataset."
 
     val bypassQaDeniedExceptionMessage = "You do not have the required permissions to bypass QA checks."
+    val dynamicDatasetNotFoundSummary = "No dataset found."
 
     /**
      * Generates a message to inform that a correlationId has generated been for an operation and potentially
@@ -41,6 +44,20 @@ class LogMessageBuilder {
 
         return "Generated correlationId '$correlationId' for an operation associated with $idParts."
     }
+
+    /**
+     * Generates a message to inform that a correlationId has been generated for an operation and which [dataDimensions]
+     * are associated with it.
+     * @param correlationId that has been generated
+     * @param dataDimensions associated with the operation
+     * @returns the message to log
+     */
+    fun generateCorrelationIdMessage(
+        dataDimensions: DataDimensions,
+        correlationId: String,
+    ): String =
+        "Generated correlationId '$correlationId' for an operation associated with company ID '${dataDimensions.companyId}' " +
+            "for reporting period '${dataDimensions.reportingPeriod}' and data type '${dataDimensions.dataType}'."
 
     /**
      * Generates a message to inform that a dataset for a specific company shall be posted
@@ -129,6 +146,14 @@ class LogMessageBuilder {
     ): String =
         "Received company data with dataId '$dataId' for companyId '$companyId' from framework data storage. " +
             "Correlation ID '$correlationId'"
+
+    /**
+     * Generates a message to inform that no dataset is available for the provided parameters
+     * @param dataDimensions The data dimensions for which no dataset is available
+     */
+    fun getDynamicDatasetNotFoundMessage(dataDimensions: DataDimensions) =
+        "No dataset available for data type ${dataDimensions.dataType} " +
+            "reporting period ${dataDimensions.reportingPeriod} and company ID ${dataDimensions.companyId}."
 
     /**
      * Generates a message to inform that a request was received to return patch the meta info of a dataset

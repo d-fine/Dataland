@@ -25,7 +25,7 @@ interface DataPointQaReportApi {
     /**
      * A method to store QA reports for a specific data point
      * The new uploaded QA report is marked as active. All other QA reports for the same data point are marked as inactive.
-     * @param dataId identifier used to uniquely specify data in the data store
+     * @param dataPointId identifier used to uniquely specify data in the data store
      * @param qaReport the QA report to be stored
      * @return meta info about the stored QA report including the ID of the created entry
      */
@@ -39,18 +39,18 @@ interface DataPointQaReportApi {
         ],
     )
     @PostMapping(
-        value = ["/data-points/{dataId}/reports"],
+        value = ["/data-points/{dataPointId}/reports"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun postQaReport(
-        @PathVariable("dataId") dataId: String,
+        @PathVariable("dataPointId") dataPointId: String,
         @RequestBody qaReport: QaReportDataPoint<String?>,
     ): ResponseEntity<DataPointQaReport>
 
     /**
      * A method to change the status of a QA report. Inactive QA reports are still shown in the QA report list.
-     * @param dataId identifier used to uniquely specify data in the data store
+     * @param dataPointId identifier used to uniquely specify data in the data store
      * @param qaReportId identifier used to identify the QA report to be retrieved
      */
     @Operation(
@@ -63,19 +63,19 @@ interface DataPointQaReportApi {
         ],
     )
     @PatchMapping(
-        value = ["/data-points/{dataId}/reports/{qaReportId}/status"],
+        value = ["/data-points/{dataPointId}/reports/{qaReportId}/status"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun setQaReportStatus(
-        @PathVariable("dataId") dataId: String,
+        @PathVariable("dataPointId") dataPointId: String,
         @PathVariable("qaReportId") qaReportId: String,
         @RequestBody statusPatch: QaReportStatusPatch,
     )
 
     /**
      * A method to retrieve a QA report by the data Id and report Id
-     * @param dataId identifier used to uniquely specify data in the data store
+     * @param dataPointId identifier used to uniquely specify data in the data store
      * @param qaReportId identifier used to identify the QA report to be retrieved
      * @return information about the QA report
      */
@@ -89,18 +89,18 @@ interface DataPointQaReportApi {
         ],
     )
     @GetMapping(
-        value = ["/data-points/{dataId}/reports/{qaReportId}"],
+        value = ["/data-points/{dataPointId}/reports/{qaReportId}"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getQaReport(
-        @PathVariable("dataId") dataId: String,
+        @PathVariable("dataPointId") dataPointId: String,
         @PathVariable("qaReportId") qaReportId: String,
     ): ResponseEntity<DataPointQaReport>
 
     /**
      * A method to retrieve all QA reports associated with a data ID or reporter user ID
-     * @param dataId identifier used to uniquely specify data in the data store
+     * @param dataPointId identifier used to uniquely specify data in the data store
      * @param showInactive flag to indicate if inactive QA reports should be included in the response
      * @param reporterUserId show only QA reports uploaded by the given user
      * @return information about all QA reports associated with the data id
@@ -115,12 +115,12 @@ interface DataPointQaReportApi {
         ],
     )
     @GetMapping(
-        value = ["/data-points/{dataId}/reports"],
+        value = ["/data-points/{dataPointId}/reports"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getAllQaReportsForDataPoint(
-        @PathVariable("dataId") dataId: String,
+        @PathVariable("dataPointId") dataPointId: String,
         @RequestParam(required = false) showInactive: Boolean?,
         @RequestParam(required = false) reporterUserId: String?,
     ): ResponseEntity<List<DataPointQaReport>>
