@@ -107,8 +107,7 @@ internal class MetaDataControllerTest(
         val uploaderUserId = UUID.randomUUID()
         val qaStatus = QaStatus.Accepted
         val amountStoredCompanies = 2
-        val testCompanyInformation =
-            testDataProvider.getCompanyInformationWithoutIdentifiers(amountStoredCompanies)
+        val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(amountStoredCompanies)
         val storedCompany1 = companyManager.addCompany(testCompanyInformation[0])
         val storedCompany2 = companyManager.addCompany(testCompanyInformation[1])
         val companyId1 = storedCompany1.companyId
@@ -117,36 +116,26 @@ internal class MetaDataControllerTest(
         val dataMetaInformationRequest =
             listOf(
                 DataMetaInformationRequest(
-                    companyId1, dataType, true,
-                    reportingPeriod, setOf(uploaderUserId), qaStatus,
+                    companyId1, dataType, true, reportingPeriod, setOf(uploaderUserId), qaStatus,
                 ),
                 DataMetaInformationRequest(
-                    companyId2, dataType, true,
-                    reportingPeriod, setOf(uploaderUserId), qaStatus,
+                    companyId2, dataType, true, reportingPeriod, setOf(uploaderUserId), qaStatus,
                 ),
             )
         dataMetaInformationManager.storeDataMetaInformation(
             DataMetaInformationEntity(
-                dataId, company = storedCompany1,
-                dataType.toString(),
-                uploaderUserId.toString(),
-                uploadTime = 0, reportingPeriod, currentlyActive = true,
-                qaStatus,
+                dataId, company = storedCompany1, dataType.toString(), uploaderUserId.toString(),
+                uploadTime = 0, reportingPeriod, currentlyActive = true, qaStatus,
             ),
         )
         dataMetaInformationManager.storeDataMetaInformation(
             DataMetaInformationEntity(
-                "dataId", company = storedCompany2,
-                dataType.toString(),
-                uploaderUserId.toString(),
-                uploadTime = 0, reportingPeriod, currentlyActive = true,
-                qaStatus,
+                "dataId", company = storedCompany2, dataType.toString(), uploaderUserId.toString(),
+                uploadTime = 0, reportingPeriod, currentlyActive = true, qaStatus,
             ),
         )
-
         mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
-        val listDataMetaInfos =
-            metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationRequest).body
+        val listDataMetaInfos = metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationRequest).body
 
         assertEquals(amountStoredCompanies, listDataMetaInfos?.size)
         val dataMetaInfo = listDataMetaInfos?.get(0)

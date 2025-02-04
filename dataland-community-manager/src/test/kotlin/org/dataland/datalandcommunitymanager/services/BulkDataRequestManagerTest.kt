@@ -42,6 +42,9 @@ class BulkDataRequestManagerTest {
     private val proxyPrimaryUrl: String = "dataland.com"
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
+    private val dummyRequestId = "request-id"
+    private val dummyUserId = "user-id"
+    private val dummyAdminComment = "dummyAdminComment"
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
     private val dummyReportingPeriod = "2023-Q1"
     private val dummyUserProvidedCompanyId = "companyId1"
@@ -89,7 +92,7 @@ class BulkDataRequestManagerTest {
             ),
         ).thenAnswer {
             DataRequestEntity(
-                dataRequestId = "request-id",
+                dataRequestId = dummyRequestId,
                 datalandCompanyId = it.arguments[0] as String,
                 reportingPeriod = it.arguments[2] as String,
                 creationTimestamp = 0,
@@ -97,9 +100,9 @@ class BulkDataRequestManagerTest {
                 dataType = (it.arguments[1] as DataTypeEnum).value,
                 messageHistory = mutableListOf(),
                 dataRequestStatusHistory = emptyList(),
-                userId = "user-id",
+                userId = dummyUserId,
                 requestPriority = RequestPriority.Low,
-                adminComment = "dummyAdminComment",
+                adminComment = dummyAdminComment,
             )
         }
         return utilsMock
@@ -126,7 +129,7 @@ class BulkDataRequestManagerTest {
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
                     reportingPeriod = dummyReportingPeriod,
-                    resourceId = "request-id",
+                    resourceId = dummyRequestId,
                     resourceUrl = "https://dataland.com/requests/request-id",
                 ),
             )
@@ -145,7 +148,7 @@ class BulkDataRequestManagerTest {
         `when`(mockDataRequestProcessingUtils.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
             .thenReturn(dummyCompanyIdAndName)
         `when`(mockDataRequestProcessingUtils.getRequestIdForDataRequestWithNonFinalStatus(anyString(), any(), anyString()))
-            .thenReturn("request-id")
+            .thenReturn(dummyRequestId)
 
         val bulkDataRequest =
             BulkDataRequest(
@@ -161,7 +164,7 @@ class BulkDataRequestManagerTest {
                     companyName = dummyCompanyIdAndName.companyName,
                     framework = "sfdr",
                     reportingPeriod = dummyReportingPeriod,
-                    resourceId = "request-id",
+                    resourceId = dummyRequestId,
                     resourceUrl = "https://dataland.com/requests/request-id",
                 ),
             )
