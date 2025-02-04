@@ -79,7 +79,7 @@ class DataPointManagerTest {
         }
 
         val dataId = IdUtils.generateUUID()
-        val result = dataPointManager.storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, correlationId)
+        val result = dataPointManager.storeDataPoint(uploadedDataPoint, dataId, uploaderUserId, 0, correlationId)
 
         verify(metaDataManager).storeDataPointMetaInformation(any())
         verify(dataManager).storeDataInTemporaryStorage(eq(dataId), eq(expectedString), eq(correlationId))

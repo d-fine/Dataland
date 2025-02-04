@@ -881,7 +881,7 @@
         ]
       }
     },
-    "/data-points/{dataId}": {
+    "/data-points/{dataPointId}": {
       "get": {
         "tags": [
           "qa-controller"
@@ -891,7 +891,7 @@
         "operationId": "getDataPointQaReviewInformationByDataId",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -965,7 +965,7 @@
         "operationId": "changeDataPointQaStatus",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1024,7 +1024,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports": {
+    "/data-points/{dataPointId}/reports": {
       "get": {
         "tags": [
           "data-point-qa-report-controller"
@@ -1034,7 +1034,7 @@
         "operationId": "getAllQaReportsForDataPoint",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1111,7 +1111,7 @@
         "operationId": "postQaReport",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1136,6 +1136,76 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataPointQaReport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/assembled-dataset-migration/stored-qa-report/{dataId}": {
+      "post": {
+        "tags": [
+          "assembled-data-migration-controller"
+        ],
+        "summary": "Triggers a forced upload of a QA Report as a stored QA Report for testing.",
+        "description": "The data is stored.",
+        "operationId": "forceUploadStoredQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Data stored.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
                 }
               }
             }
@@ -1516,7 +1586,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports/{qaReportId}/status": {
+    "/data-points/{dataPointId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
           "data-point-qa-report-controller"
@@ -1526,7 +1596,7 @@
         "operationId": "setQaReportStatus",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2366,7 +2436,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports/{qaReportId}": {
+    "/data-points/{dataPointId}/reports/{qaReportId}": {
       "get": {
         "tags": [
           "data-point-qa-report-controller"
@@ -2376,7 +2446,7 @@
         "operationId": "getQaReport",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -6008,6 +6078,9 @@
           }
         }
       },
+      "JsonNode": {
+        "type": "object"
+      },
       "QaReportStatusPatch": {
         "required": [
           "active"
@@ -6215,7 +6288,7 @@
         "required": [
           "companyId",
           "companyName",
-          "dataId",
+          "dataPointId",
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
@@ -6223,7 +6296,7 @@
         ],
         "type": "object",
         "properties": {
-          "dataId": {
+          "dataPointId": {
             "type": "string"
           },
           "companyId": {

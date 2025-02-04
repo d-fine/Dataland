@@ -44,6 +44,16 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     ): List<DataMetaInformationEntity>
 
     /**
+     * Retrieves all data meta information that were not migrated to data points yet
+     */
+    @Query(
+        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
+            "FULL JOIN DatasetDatapointEntity entity ON dataMetaInformation.dataId = entity.datasetId " +
+            "WHERE entity IS NULL AND dataMetaInformation.dataType IN :allowedDataTypes",
+    )
+    fun getAllDataMetaInformationThatDoNotHaveDataPoints(allowedDataTypes: List<String>): List<DataMetaInformationEntity>
+
+    /**
      * Retrieves the currently active dataset for the given triplet of reporting Period, company and dataType
      */
     @Query(
