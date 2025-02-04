@@ -15,7 +15,7 @@
               {{ summarySectionFrameworksHeading }}
             </h6>
             <p class="middle-center-div summary-section-data m-0 mt-3">
-              {{ humanizedSelectedFrameworks.join(', ') }}
+              {{ humanizedSelectedFrameworks?.join(', ') }}
             </p>
           </div>
         </div>
@@ -71,7 +71,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
@@ -93,7 +92,7 @@ const activeIndex: number[] = alreadyExistingDatasets?.length ? [1] : [];
 
 const sections = [
   {
-    title: 'CREATED',
+    title: 'CREATED REQUESTS',
     icon: 'check_circle',
     iconColor: 'green-text',
     items: acceptedDataRequests,
