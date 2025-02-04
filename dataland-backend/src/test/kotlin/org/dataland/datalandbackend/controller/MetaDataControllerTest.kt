@@ -51,6 +51,7 @@ internal class MetaDataControllerTest(
     private final val expectedSetOfRolesForAdmin =
         expectedSetOfRolesForReader + expectedSetOfRolesForUploader +
             expectedSetOfRolesForReviewer + setOf(DatalandRealmRole.ROLE_ADMIN)
+    private val adminUserId = "admin-user-id"
 
     @Test
     fun `ensure that meta info about a pending dataset can only be retrieved by authorized users`() {
@@ -69,7 +70,7 @@ internal class MetaDataControllerTest(
         assertMetaDataNotVisible(metaInfo)
         mockSecurityContext(userId = "uploader-user-id", roles = expectedSetOfRolesForUploader)
         assertMetaDataVisible(metaInfo)
-        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
     }
 
@@ -93,7 +94,7 @@ internal class MetaDataControllerTest(
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "different-uploader-user-id", roles = expectedSetOfRolesForUploader)
         assertMetaDataNotVisible(metaInfo)
-        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
@@ -134,7 +135,7 @@ internal class MetaDataControllerTest(
                 uploadTime = 0, reportingPeriod, currentlyActive = true, qaStatus,
             ),
         )
-        mockSecurityContext(userId = "admin-user-id", roles = expectedSetOfRolesForAdmin)
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         val listDataMetaInfos = metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationRequest).body
 
         assertEquals(amountStoredCompanies, listDataMetaInfos?.size)
