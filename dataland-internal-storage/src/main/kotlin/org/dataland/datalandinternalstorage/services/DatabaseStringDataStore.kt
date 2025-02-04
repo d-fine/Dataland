@@ -15,6 +15,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.slf4j.LoggerFactory
@@ -154,7 +155,7 @@ class DatabaseStringDataStore(
     ) {
         MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
+            val dataId = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper).dataPointId
             MessageQueueUtils.validateDataId(dataId)
             val dataPointString = retrieveData(dataId, correlationId)
             val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)

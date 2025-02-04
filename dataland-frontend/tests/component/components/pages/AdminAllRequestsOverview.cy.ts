@@ -1,7 +1,6 @@
 import AdminAllRequestsOverview from '@/components/pages/AdminAllRequestsOverview.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { DataTypeEnum } from '@clients/backend';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakUtils';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import {
   AccessStatus,
@@ -12,6 +11,7 @@ import {
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];

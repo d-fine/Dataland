@@ -103,10 +103,11 @@ import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import BulkDataRequestButton from '@/components/resources/frameworkDataSearch/BulkDataRequestButton.vue';
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import router from '@/router';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
 
 export default defineComponent({
   setup() {
@@ -236,7 +237,6 @@ export default defineComponent({
      * Handles the collapsing / uncollapsing of the search bar depending on the scroll position
      */
     handleScroll() {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
       this.frameworkDataSearchBar?.$refs.autocomplete.hide();
       const windowScrollY = window.scrollY;
       if (this.scrollEmittedByToggleSearchBar) {
@@ -251,13 +251,13 @@ export default defineComponent({
           //ScrollUP event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop >= 60;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         } else {
           //ScrollDOWN event
           this.latestScrollPosition = windowScrollY;
           this.pageScrolled = document.documentElement.scrollTop > 152;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+
           this.frameworkDataSearchFilters?.closeAllOpenDropDowns();
         }
       }
@@ -371,7 +371,7 @@ export default defineComponent({
     ) {
       this.totalRecords = totalNumberOfCompanies;
       this.resultsArray = companiesReceived;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+
       if (chunkIndex == 0) this.handlePageUpdate(0);
       this.waitingForDataToDisplay = false;
       this.searchBarToggled = false;

@@ -213,7 +213,7 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
-        registerAndRedirectToSearchPage(keycloak);
+        void registerAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));

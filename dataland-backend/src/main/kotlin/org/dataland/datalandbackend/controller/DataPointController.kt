@@ -47,15 +47,15 @@ class DataPointController(
 
     override fun getDataPoint(dataPointId: String): ResponseEntity<UploadedDataPoint> {
         val correlationId = IdUtils.generateCorrelationId(null, dataPointId)
-        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataPointId)
+        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataPointId, correlationId))
     }
 
-    override fun getDataPointMetaInfo(dataId: String): ResponseEntity<DataPointMetaInformation> {
-        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataId)
+    override fun getDataPointMetaInfo(dataPointId: String): ResponseEntity<DataPointMetaInformation> {
+        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }

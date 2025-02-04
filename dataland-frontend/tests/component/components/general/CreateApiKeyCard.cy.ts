@@ -1,6 +1,6 @@
 // @ts-nocheck
 import CreateApiKeyCard from '@/components/resources/apiKey/CreateApiKeyCard.vue';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
 
 describe('Component test for CreateApiKeyCard', () => {
   it('Should have class invalidExpiryTimeText when expire time is invalid', () => {

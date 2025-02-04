@@ -1,7 +1,7 @@
 import UserProfileDropDown from '@/components/general/UserProfileDropDown.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import router from '@/router';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
 
 describe('Component test for UserProfileDropDown', () => {
   it('Should display a profile picture if the keycloak authenticator provides one', () => {
@@ -14,7 +14,7 @@ describe('Component test for UserProfileDropDown', () => {
           picture: testImagePath,
         },
       }),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {
         onProfilePictureLoadingError: profilePictureLoadingErrorSpy,

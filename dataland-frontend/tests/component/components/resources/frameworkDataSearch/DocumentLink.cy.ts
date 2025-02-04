@@ -11,7 +11,7 @@ describe('check that the document link component works and is displayed correctl
     }).as('downloadComplete');
     cy.mountWithPlugins(DocumentLink, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {
         downloadName: 'Test',
@@ -28,7 +28,6 @@ describe('check that the document link component works and is displayed correctl
   });
   it('Check that Download Progress Spinner appears if the prop changes', function (): void {
     cy.mountWithPlugins(DocumentLink, {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
         downloadName: 'Test',
@@ -57,7 +56,6 @@ describe('check that the document link component works and is displayed correctl
 
   it('Check that Download Progress Spinner disappears and the checkmark appears', function (): void {
     cy.mountWithPlugins(DocumentLink, {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
         downloadName: 'Test',
@@ -85,7 +83,6 @@ describe('check that the document link component works and is displayed correctl
   });
   it('Check that Download Progress Checkmark disappears again', function (): void {
     cy.mountWithPlugins(DocumentLink, {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       props: {
         downloadName: 'Test',
@@ -112,7 +109,7 @@ describe('check that the document link component works and is displayed correctl
   it('Check that the label does not display "page" when page number is null', function (): void {
     cy.mountWithPlugins(DataPointDataTable, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {},
       data() {

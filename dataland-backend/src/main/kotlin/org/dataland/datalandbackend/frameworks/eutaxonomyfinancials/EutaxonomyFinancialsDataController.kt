@@ -40,6 +40,14 @@ class EutaxonomyFinancialsDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<EutaxonomyFinancialsData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedEutaxonomyFinancialsDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<EutaxonomyFinancialsData>> =
+        super
+            .getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedEutaxonomyFinancialsData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<EutaxonomyFinancialsData>,
