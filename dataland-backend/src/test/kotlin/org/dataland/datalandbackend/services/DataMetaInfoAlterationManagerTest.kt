@@ -6,13 +6,16 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
@@ -24,10 +27,13 @@ import org.mockito.kotlin.whenever
 class DataMetaInfoAlterationManagerTest {
     private val mockDataMetaInformationManager = mock<DataMetaInformationManager>()
     private val mockDataManager: DataManager = mock<DataManager>()
+    private val mockKeycloakUserService = mock<KeycloakUserService>()
     private lateinit var dataMetaInfoAlterationManager: DataMetaInfoAlterationManager
 
     private val dataId = "dummyDataId"
     private val initialUploaderUserId = "initialUploaderUserId"
+    private val newValidUploaderUserId = "newValidUploaderUserId"
+    private val newUploaderUserIdUnknownToKeycloak = "newUploaderUserIdUnknownToKeycloak"
     private val correlationId = "correlationId"
 
     private val storableDataset =
@@ -54,7 +60,7 @@ class DataMetaInfoAlterationManagerTest {
 
     @BeforeEach
     fun setup() {
-        reset(mockDataMetaInformationManager, mockDataManager)
+        reset(mockDataMetaInformationManager, mockDataManager, mockKeycloakUserService)
 
         doReturn(partiallyMockedDataMetaInformationEntity)
             .whenever(mockDataMetaInformationManager)
@@ -64,10 +70,14 @@ class DataMetaInfoAlterationManagerTest {
             .storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
         doReturn(storableDataset).whenever(mockDataManager).getPublicDataset(any(), any(), any())
 
+        doReturn(false).whenever(mockKeycloakUserService).isKeycloakUserId(any())
+        doReturn(true).whenever(mockKeycloakUserService).isKeycloakUserId(newValidUploaderUserId)
+
         dataMetaInfoAlterationManager =
             DataMetaInfoAlterationManager(
                 this.mockDataMetaInformationManager,
                 this.mockDataManager,
+                this.mockKeycloakUserService,
             )
     }
 
@@ -79,8 +89,7 @@ class DataMetaInfoAlterationManagerTest {
 
     @Test
     fun `test that patch functionality runs as expected on happy path patching metaInfo and storableDataset`() {
-        val newUploaderUserId = "newUploaderUserId"
-        val dataMetaInformationPatch = DataMetaInformationPatch(newUploaderUserId)
+        val dataMetaInformationPatch = DataMetaInformationPatch(newValidUploaderUserId)
 
         assertDoesNotThrow {
             dataMetaInfoAlterationManager.patchDataMetaInformation(
@@ -89,16 +98,29 @@ class DataMetaInfoAlterationManagerTest {
                 correlationId,
             )
         }
-        assertEquals(newUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
-        assertEquals(newUploaderUserId, storableDataset.uploaderUserId)
+        assertEquals(newValidUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
+        assertEquals(newValidUploaderUserId, storableDataset.uploaderUserId)
     }
 
     @Test
-    fun `ensure that metaInfo and storableDataset are not patched if uploaderUserId is null`() {
-        assertDoesNotThrow {
+    fun `ensure that an error is thrown if uploaderUserId is null and metaInfo and storableDataset are not patched`() {
+        assertThrows<InvalidInputApiException> {
             dataMetaInfoAlterationManager.patchDataMetaInformation(
                 dataId,
                 DataMetaInformationPatch(uploaderUserId = null),
+                correlationId,
+            )
+        }
+        assertEquals(initialUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
+        assertEquals(initialUploaderUserId, storableDataset.uploaderUserId)
+    }
+
+    @Test
+    fun `ensure that an error is thrown if uploaderUserId is unknown and metaInfo and storableDataset are not patched`() {
+        assertThrows<InvalidInputApiException> {
+            dataMetaInfoAlterationManager.patchDataMetaInformation(
+                dataId,
+                DataMetaInformationPatch(newUploaderUserIdUnknownToKeycloak),
                 correlationId,
             )
         }

@@ -4,6 +4,8 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -18,6 +20,7 @@ class DataMetaInfoAlterationManager
     constructor(
         private val dataMetaInformationManager: DataMetaInformationManager,
         private val dataManager: DataManager,
+        private val keycloakUserService: KeycloakUserService,
     ) {
         private val logger = LoggerFactory.getLogger(DataMetaInfoAlterationManager::class.java)
 
@@ -40,10 +43,20 @@ class DataMetaInfoAlterationManager
             val storableDataset: StorableDataset =
                 dataManager.getPublicDataset(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
 
-            logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
-            dataMetaInformationPatch.uploaderUserId?.let {
-                dataMetaInformation.uploaderUserId = it
+            if (dataMetaInformationPatch.uploaderUserId == null ||
+                !keycloakUserService.isKeycloakUserId(
+                    dataMetaInformationPatch.uploaderUserId,
+                )
+            ) {
+                throw InvalidInputApiException(
+                    summary = "KeycloakUserId is invalid.",
+                    message = "The uploaderUserId does not belong to a Keycloak user.",
+                )
             }
+
+            logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
+            dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
+
             dataMetaInformationManager.storeDataMetaInformation(dataMetaInformation)
 
             logger.info("Updating MetaInformation within StorableDataset with dataId $dataId. CorrelationId: $correlationId.")
