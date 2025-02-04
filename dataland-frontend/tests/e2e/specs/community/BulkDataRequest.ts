@@ -30,7 +30,6 @@ describeIf(
 
     it('When identifiers are accepted and rejected', () => {
       cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
-
       checksBasicValidation();
       chooseFirstReportingPeriod();
       chooseFrameworkByIndex(1);
@@ -48,7 +47,6 @@ describeIf(
 
     it('When identifiers are accepted', () => {
       cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
-
       checksBasicValidation();
       chooseFirstReportingPeriod();
       chooseFrameworkByIndex(2);
@@ -70,14 +68,11 @@ describeIf(
       checksBasicValidation();
       chooseFirstReportingPeriod();
       chooseFrameworkByIndex(3);
-
       cy.get('textarea[name="listOfCompanyIdentifiers"]').type(permIdOfExistingCompany);
       cy.get('button[type="submit"]').should('exist').click();
 
       cy.visit('bulkdatarequest');
-
       cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
-
       checksBasicValidation();
       chooseFirstReportingPeriod();
       chooseFrameworkByIndex(3);
@@ -96,17 +91,17 @@ describeIf(
     });
 
     it('When identifiers are rejected', () => {
+      cy.intercept('POST', '**/community/requests/bulk').as('postRequestData');
       checksBasicValidation();
       chooseFirstReportingPeriod();
       chooseFrameworkByIndex(1);
 
-      cy.get('textarea[name="listOfCompanyIdentifiers"]').type('12345incorrectNumber');
+      cy.get('textarea[name="listOfCompanyIdentifiers"]').type('12345incorrectNumber, 54321incorrectnumber');
       cy.get('button[type="submit"]').should('exist').click();
 
-      cy.get('[data-test="selectedIdentifiersUnsuccessfulSubmit"]')
-        .should('exist')
-        .get('[data-test="identifiersHeading"')
-        .contains('SELECTED IDENTIFIERS');
+      cy.wait('@postRequestData', { timeout: Cypress.env('short_timeout_in_ms') as number }).then((interception) => {
+        checkIfIdentifiersProperlyDisplayed(interception);
+      });
 
       cy.get('[data-test="requestStatusText"]').should('exist').contains('Request Unsuccessful');
     });
@@ -146,29 +141,39 @@ describeIf(
       }
       const bulkDataRequestResponse = interception.response.body as BulkDataRequestResponse;
       const acceptedDataRequests = bulkDataRequestResponse.acceptedDataRequests;
-      const existingRequests = bulkDataRequestResponse.alreadyExistingNonFinalRequests;
-      const existingDatasets = bulkDataRequestResponse.alreadyExistingDatasets;
+      const alreadyExistingDatasets = bulkDataRequestResponse.alreadyExistingDatasets;
+      const alreadyExistingNonFinalRequests = bulkDataRequestResponse.alreadyExistingNonFinalRequests;
       const rejectedCompanyIdentifiers = bulkDataRequestResponse.rejectedCompanyIdentifiers;
 
-      cy.get('[data-test="createdRequestsHeader"]').find('.p-badge').contains(acceptedDataRequests.length).click();
-      cy.get('[data-test="createdRequestsContent"]').should('have.length', acceptedDataRequests.length);
-
-      cy.get('[data-test="existingDatasetsHeader"]')
+      cy.get('[data-test="acceptedDataRequestsHeader"]').find('.p-badge').contains(acceptedDataRequests.length);
+      cy.get('[data-test="alreadyExistingDatasetsHeader"]')
         .should('exist')
         .find('.p-badge')
-        .contains(existingDatasets.length)
-        .click();
-      cy.get('[data-test="existingDatasets"]').should('have.length', existingDatasets.length);
-
-      cy.get('[data-test="existingRequestsHeader"]')
+        .contains(alreadyExistingDatasets.length);
+      cy.get('[data-test="alreadyExistingNonFinalRequestsHeader"]')
         .should('exist')
         .find('.p-badge')
-        .contains(existingRequests.length)
+        .contains(alreadyExistingNonFinalRequests.length);
+      cy.get('[data-test="rejectedCompanyIdentifiersHeader"]')
+        .find('.p-badge')
+        .contains(rejectedCompanyIdentifiers.length)
         .click();
-      cy.get('[data-test="existingRequests"]').should('have.length', existingRequests.length);
 
-      cy.get('[data-test="rejectedHeader"]').find('.p-badge').contains(rejectedCompanyIdentifiers.length).click();
-      cy.get('[data-test="rejectedContent"]').should('have.length', rejectedCompanyIdentifiers.length);
+      cy.get('[data-test="acceptedDataRequestsContent"]').should('have.length', acceptedDataRequests.length);
+      cy.get('[data-test="alreadyExistingDatasetsContent"]').should('have.length', alreadyExistingDatasets.length);
+      cy.get('[data-test="alreadyExistingNonFinalRequestsContent"]').should(
+        'have.length',
+        alreadyExistingNonFinalRequests.length
+      );
+      cy.get('[data-test="rejectedCompanyIdentifiersContent"]')
+        .should('contain.text', '')
+        .within(($div) => {
+          const identifiers: string[] = $div
+            .text()
+            .split(', ')
+            .filter((identifier) => identifier != '');
+          assert(identifiers.length == rejectedCompanyIdentifiers.length);
+        });
     }
 
     /**

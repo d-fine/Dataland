@@ -89,7 +89,7 @@ const props = defineProps<{
 const { acceptedDataRequests, alreadyExistingNonFinalRequests, alreadyExistingDatasets, rejectedCompanyIdentifiers } =
   props.bulkDataRequestResponse;
 
-const activeIndex: number[] = acceptedDataRequests?.length ? [1] : [];
+const activeIndex: number[] = alreadyExistingDatasets?.length ? [1] : [];
 
 const sections = [
   {
@@ -98,8 +98,8 @@ const sections = [
     iconColor: 'green-text',
     items: acceptedDataRequests,
     linkText: 'VIEW REQUEST',
-    dataTestHeader: 'createdRequestsHeader',
-    dataTestContent: 'createdRequestsContent',
+    dataTestHeader: 'acceptedDataRequestsHeader',
+    dataTestContent: 'acceptedDataRequestsContent',
   },
   {
     title: 'SKIPPED REQUESTS - DATA ALREADY EXISTS',
@@ -107,8 +107,8 @@ const sections = [
     iconColor: 'info-color',
     items: alreadyExistingDatasets,
     linkText: 'VIEW DATA',
-    dataTestHeader: 'existingDataHeader',
-    dataTestContent: 'existingDataContent',
+    dataTestHeader: 'alreadyExistingDatasetsHeader',
+    dataTestContent: 'alreadyExistingDatasetsContent',
     textBox:
       'If you believe that a dataset is incomplete or deprecated, you can still request it by submitting a single\n' +
       'data request on the corresponding dataset page.',
@@ -118,17 +118,17 @@ const sections = [
     icon: 'info',
     iconColor: 'info-color',
     items: alreadyExistingNonFinalRequests,
-    linkText: 'VIEW DATA',
-    dataTestHeader: 'existingRequestsHeader',
-    dataTestContent: 'existingRequestsContent',
+    linkText: 'VIEW REQUEST',
+    dataTestHeader: 'alreadyExistingNonFinalRequestsHeader',
+    dataTestContent: 'alreadyExistingNonFinalRequestsContent',
   },
   {
     title: 'REJECTED IDENTIFIERS',
     icon: 'error',
     iconColor: 'red-text',
     items: rejectedCompanyIdentifiers,
-    dataTestHeader: 'rejectedHeader',
-    dataTestContent: 'rejectedContent',
+    dataTestHeader: 'rejectedCompanyIdentifiersHeader',
+    dataTestContent: 'rejectedCompanyIdentifiersContent',
     textBox: 'No company or companies are known on Dataland for the following company identifier(s)',
   },
 ];

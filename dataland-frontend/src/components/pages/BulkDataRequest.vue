@@ -30,19 +30,19 @@
                     <div class="status text-center col-8 col-offset-2">
                       <div class="status-wrapper">
                         <div v-if="requestSuccessStatus == 'Success'" class="status-container">
-                          <em class="material-icons info-icon green-text">check_circle</em>
+                          <em class="material-icons info-icon green-text mr-2">check_circle</em>
                           <h1 class="status-text" data-test="requestStatusText">Success</h1>
                         </div>
                         <div v-if="requestSuccessStatus == 'Partial Success'" class="status-container">
-                          <em class="material-icons info-icon info-color-text">info</em>
+                          <em class="material-icons info-icon info-color-text mr-2">info</em>
                           <h1 class="status-text" data-test="requestStatusText">Partial Success</h1>
                         </div>
                         <div v-if="!isSuccessful || requestSuccessStatus == 'No Success'" class="status-container">
-                          <em class="material-icons info-icon red-text">error</em>
+                          <em class="material-icons info-icon red-text mr-2">error</em>
                           <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
                         </div>
                       </div>
-                      <p>{{ message }}</p>
+                      <p class="col-6 col-offset-3 mb-4">{{ message }}</p>
 
                       <PrimeButton
                         type="button"
@@ -234,7 +234,7 @@ export default defineComponent({
 
   computed: {
     humanizedSelectedFrameworks(): string[] {
-      return this.selectedFrameworks.map((it) => `${humanizeStringOrNumber(it)}\n`);
+      return this.selectedFrameworks.map((it) => `${humanizeStringOrNumber(it)}`);
     },
     selectedReportingPeriods(): string[] {
       return this.reportingPeriods
