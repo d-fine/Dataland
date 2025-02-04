@@ -5,6 +5,7 @@ import {
   type CurrencyDataPoint,
 } from '@clients/qaservice';
 import { AdditionalCompanyInformationGenerator } from '@e2e/fixtures/frameworks/additional-company-information/AdditionalCompanyInformationGenerator.ts';
+import { removeAllUnusedReferencedReports } from '@e2e/fixtures/FixtureUtils.ts';
 
 /**
  * Generate a pair of qa report and data for the AdditionalCompanyInformation with various
@@ -50,5 +51,6 @@ export function generateAdditionalCompanyInformationLinkedQaReports(): {
       },
     },
   };
+  removeAllUnusedReferencedReports(data as Record<string, unknown>, dataGenerator.reports);
   return { data, qaReport };
 }

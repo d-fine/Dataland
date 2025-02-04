@@ -32,11 +32,11 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.Instant
 import java.util.Optional
 
@@ -94,14 +94,8 @@ class AssembledDataManagerTest {
         `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
     }
 
-    private fun simulateTransactionCommit() {
-        TransactionSynchronizationManager.getSynchronizations().forEach { it.afterCommit() }
-        TransactionSynchronizationManager.clearSynchronization()
-    }
-
     @Test
     fun `check that processing a dataset works as expected`() {
-        TransactionSynchronizationManager.initSynchronization()
         val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
@@ -118,14 +112,13 @@ class AssembledDataManagerTest {
             )
 
         assembledDataManager.storeDataset(uploadedDataset, false, correlationId)
-        simulateTransactionCommit()
 
         expectedDataPointTypes.forEach {
             verify(spyDataPointManager, times(1)).storeDataPoint(
-                argThat { dataPointType == it }, any(), any(), any(),
+                argThat { dataPointType == it }, any(), any(), any(), any(),
             )
         }
-        verify(messageQueuePublications, times(expectedDataPointTypes.size)).publishDataPointUploadedMessage(any(), any(), any())
+        verify(messageQueuePublications, times(expectedDataPointTypes.size)).publishDataPointUploadedMessage(any(), any(), eq(null), any())
         verify(messageQueuePublications, times(1)).publishDatasetQaRequiredMessage(any(), any(), any())
         verify(messageQueuePublications, times(0)).publishDatasetUploadedMessage(any(), any(), any())
         verify(datasetDatapointRepository, times(1)).save(
@@ -197,7 +190,7 @@ class AssembledDataManagerTest {
             ),
         )
 
-        `when`(metaDataManager.getDataPointMetaInformationByDataId(any())).thenAnswer { invocation ->
+        `when`(metaDataManager.getDataPointMetaInformationById(any())).thenAnswer { invocation ->
             val dataPointId = invocation.getArgument<String>(0)
             DataPointMetaInformationEntity(
                 dataPointId = dataPointId,

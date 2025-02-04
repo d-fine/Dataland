@@ -22,6 +22,7 @@ const queues = [
   'qa-service.deleteDatasets',
   'qa-service.qaDatasets',
   'qa-service.qaDataPoints',
+  'qa-service.migrateDatasets',
   'community-manager.queue.nonSourceableData',
 ];
 

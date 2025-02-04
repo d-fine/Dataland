@@ -8,10 +8,13 @@ import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
  * Utility object for accessing backend API controllers
  */
 object QaService {
-    val QaControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
-    val DataPointQaReportControllerApi =
+    val qaControllerApi = QaControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val dataPointQaReportControllerApi =
         org.dataland.datalandqaservice.openApiClient.api
             .DataPointQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
-    val AdditionalCompanyInformationDataQaReportControllerApi =
+    val additionalCompanyInformationDataQaReportControllerApi =
         AdditionalCompanyInformationDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val assembledDataMigrationControllerApi =
+        org.dataland.datalandqaservice.openApiClient.api
+            .AssembledDataMigrationControllerApi(BASE_PATH_TO_QA_SERVICE)
 }
