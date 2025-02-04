@@ -44,6 +44,16 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     ): List<DataMetaInformationEntity>
 
     /**
+     * Retrieves all data meta information that were not migrated to data points yet
+     */
+    @Query(
+        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
+            "FULL JOIN DatasetDatapointEntity entity ON dataMetaInformation.dataId = entity.datasetId " +
+            "WHERE entity IS NULL AND dataMetaInformation.dataType IN :allowedDataTypes",
+    )
+    fun getAllDataMetaInformationThatDoNotHaveDataPoints(allowedDataTypes: List<String>): List<DataMetaInformationEntity>
+
+    /**
      * Retrieves the currently active dataset for the given triplet of reporting Period, company and dataType
      */
     @Query(
@@ -103,4 +113,23 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
                 " ON company.company_id = datainfo.company_id",
     )
     fun getUserUploadsDataMetaInfos(userId: String): List<DatasetMetaInfoEntityForMyDatasets>
+
+    /** Queries the meta information for an active dataset for the data dimension provided
+     * @param reportingPeriod the reporting period of the dataset
+     * @param companyId the company ID of the dataset
+     * @param dataType the data type of the dataset
+     * @returns the data meta information entry of the active dataset for the given data dimension
+     */
+    @Query(
+        "SELECT dataMetaInformation FROM DataMetaInformationEntity dataMetaInformation " +
+            "WHERE dataMetaInformation.reportingPeriod = :reportingPeriod " +
+            "AND dataMetaInformation.company.companyId = :companyId " +
+            "AND dataMetaInformation.dataType = :dataType " +
+            "AND dataMetaInformation.currentlyActive = true",
+    )
+    fun findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
+        @Param("reportingPeriod") reportingPeriod: String,
+        @Param("companyId") companyId: String,
+        @Param("dataType") dataType: String,
+    ): DataMetaInformationEntity?
 }

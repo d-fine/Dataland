@@ -31,14 +31,20 @@ class ReferencedReportsUtilities(
     }
 
     /**
-     * Validates the consistency of the referenced reports field.
-     * This includes checking for duplicate file references.
+     * Parses the referenced reports from a JSON leaf.
      */
-    fun validateReferencedReportConsistency(referencedReportsLeaf: JsonSpecificationLeaf?): Map<String, CompanyReport> {
+    fun parseReferencedReportsFromJsonLeaf(referencedReportsLeaf: JsonSpecificationLeaf?): Map<String, CompanyReport> {
         if (referencedReportsLeaf == null) {
             return emptyMap()
         }
-        val referencedReports = objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
+        return objectMapper.convertValue<Map<String, CompanyReport>>(referencedReportsLeaf.content)
+    }
+
+    /**
+     * Validates the consistency of the referenced reports field.
+     * This includes checking for duplicate file references.
+     */
+    fun validateReferencedReportConsistency(referencedReports: Map<String, CompanyReport>) {
         val observedFileReferences = mutableSetOf<String>()
         for ((nameAccordingToKey, companyReport) in referencedReports.entries) {
             if (companyReport.fileReference in observedFileReferences) {
@@ -55,7 +61,6 @@ class ReferencedReportsUtilities(
             }
             observedFileReferences.add(companyReport.fileReference)
         }
-        return referencedReports
     }
 
     /**

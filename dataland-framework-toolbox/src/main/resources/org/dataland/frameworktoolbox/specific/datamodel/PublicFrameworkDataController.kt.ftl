@@ -44,6 +44,12 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         return super.getCompanyAssociatedData(dataId)
     }
 
+    @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}ByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(reportingPeriod: String, companyId: String):
+        ResponseEntity<CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>> {
+        return super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+    }
+
     @Operation(operationId = "postCompanyAssociated${frameworkDataType.shortenedQualifier}")
     override fun postCompanyAssociatedData(
             companyAssociatedData: CompanyAssociatedData<${frameworkDataType.shortenedQualifier}>,

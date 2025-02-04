@@ -10,14 +10,19 @@ import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
+import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
+import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
@@ -25,8 +30,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.transaction.support.TransactionSynchronization
-import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
@@ -48,6 +51,7 @@ class AssembledDataManager
         private val referencedReportsUtilities: ReferencedReportsUtilities,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
+        private val logMessageBuilder = LogMessageBuilder()
 
         /**
          * Processes a dataset by breaking it up and storing its data points in the internal storage
@@ -62,12 +66,16 @@ class AssembledDataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) = splitDatasetIntoDataPoints(uploadedDataset)
+            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) =
+                splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
             validateDataset(dataContent, referencedReports, correlationId)
             return storeSplitDataset(uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
         }
 
-        private data class SplitDataset(
+        /**
+         * Data class to store a dataset intermediately after it has been split into datapoints
+         */
+        data class SplitDataset(
             val dataContent: Map<String, JsonSpecificationLeaf>,
             val referencedReports: Map<String, CompanyReport>?,
             val fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
@@ -75,11 +83,15 @@ class AssembledDataManager
 
         /**
          * Splits the dataset into individual data points
-         * @param uploadedDataset the dataset to split
+         * @param data the dataset to split
+         * @param dataType the type of the dataset
          * @return the split dataset
          */
-        private fun splitDatasetIntoDataPoints(uploadedDataset: StorableDataset): SplitDataset {
-            val frameworkSpecification = getFrameworkSpecification(uploadedDataset.dataType.toString())
+        fun splitDatasetIntoDataPoints(
+            data: String,
+            dataType: String,
+        ): SplitDataset {
+            val frameworkSpecification = getFrameworkSpecification(dataType)
             val frameworkSchema = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             val frameworkUsesReferencedReports = frameworkSpecification.referencedReportJsonPath != null
 
@@ -90,12 +102,12 @@ class AssembledDataManager
                 JsonSpecificationUtils
                     .dehydrateJsonSpecification(
                         frameworkSchema,
-                        objectMapper.readTree(uploadedDataset.data) as ObjectNode,
+                        objectMapper.readTree(data) as ObjectNode,
                     ).toMutableMap()
 
             val referencedReports =
                 if (frameworkUsesReferencedReports) {
-                    referencedReportsUtilities.validateReferencedReportConsistency(
+                    referencedReportsUtilities.parseReferencedReportsFromJsonLeaf(
                         dataContent[REFERENCED_REPORTS_ID],
                     )
                 } else {
@@ -120,7 +132,6 @@ class AssembledDataManager
          * @param dataPointType the type of the data point
          * @param correlationId the correlation id for the operation
          * @param uploadedDataset the dataset the data point belongs to
-         * @param bypassQa whether to bypass the QA process
          * @return the id of the stored data point
          */
         private fun storeIndividualDataPoint(
@@ -129,7 +140,6 @@ class AssembledDataManager
             dataPointType: String,
             correlationId: String,
             uploadedDataset: StorableDataset,
-            bypassQa: Boolean,
         ): String? {
             val dataPoint = dataPointJsonLeaf.content
             if (dataPoint.isEmpty) return null
@@ -144,27 +154,60 @@ class AssembledDataManager
                     "under ${dataPointJsonLeaf.jsonPath} (correlation ID: $correlationId)",
             )
 
-            val dataId = IdUtils.generateUUID()
+            val dataPointId = IdUtils.generateUUID()
             dataPointManager.storeDataPoint(
-                UploadedDataPoint(
-                    dataPoint = objectMapper.writeValueAsString(dataPoint),
-                    dataPointType = dataPointType,
-                    companyId = uploadedDataset.companyId,
-                    reportingPeriod = uploadedDataset.reportingPeriod,
-                ),
-                dataId,
-                uploadedDataset.uploaderUserId,
-                correlationId,
+                uploadedDataPoint =
+                    UploadedDataPoint(
+                        dataPoint = objectMapper.writeValueAsString(dataPoint),
+                        dataPointType = dataPointType,
+                        companyId = uploadedDataset.companyId,
+                        reportingPeriod = uploadedDataset.reportingPeriod,
+                    ),
+                dataPointId = dataPointId,
+                uploaderUserId = uploadedDataset.uploaderUserId,
+                uploadTime = uploadedDataset.uploadTime,
+                correlationId = correlationId,
             )
+            return dataPointId
+        }
 
-            TransactionSynchronizationManager.registerSynchronization(
-                object : TransactionSynchronization {
-                    override fun afterCommit() {
-                        messageQueuePublications.publishDataPointUploadedMessage(dataId, bypassQa, correlationId)
-                    }
-                },
+        /**
+         * Creates all individual datapoints and associated them with the datapoints
+         */
+        @Transactional
+        fun storeDataPointsForDataset(
+            datasetId: String,
+            dataContent: Map<String, JsonSpecificationLeaf>,
+            fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            uploadedDataset: StorableDataset,
+            correlationId: String,
+            initialQaStatus: QaStatus,
+            initialQaComment: String?,
+        ) {
+            logger.info("Processing dataset with id $datasetId (correlation ID: $correlationId).")
+
+            val createdDataIds = mutableMapOf<String, String>()
+            dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->
+                storeIndividualDataPoint(
+                    dataPointJsonLeaf = dataPointJsonLeaf,
+                    fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
+                    dataPointType = dataPointType,
+                    correlationId = correlationId,
+                    uploadedDataset = uploadedDataset,
+                )?.let {
+                    messageQueuePublications.publishDataPointUploadedMessage(
+                        dataPointId = it,
+                        initialQaStatus = initialQaStatus,
+                        initialQaComment = initialQaComment,
+                        correlationId = correlationId,
+                    )
+                    createdDataIds[dataPointType] = it
+                }
+            }
+            this.datasetDatapointRepository.save(
+                DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
             )
-            return dataId
+            logger.info("Completed processing dataset (correlation ID: $correlationId).")
         }
 
         /**
@@ -185,32 +228,20 @@ class AssembledDataManager
         ): String {
             val datasetId = IdUtils.generateUUID()
             dataManager.storeMetaDataFrom(datasetId, uploadedDataset, correlationId)
+            messageQueuePublications.publishDatasetQaRequiredMessage(datasetId, bypassQa, correlationId)
 
-            TransactionSynchronizationManager.registerSynchronization(
-                object : TransactionSynchronization {
-                    override fun afterCommit() {
-                        messageQueuePublications.publishDatasetQaRequiredMessage(datasetId, bypassQa, correlationId)
-                    }
-                },
+            val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
+
+            storeDataPointsForDataset(
+                datasetId = datasetId,
+                dataContent = dataContent,
+                fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
+                uploadedDataset = uploadedDataset,
+                correlationId = correlationId,
+                initialQaStatus = qaStatus,
+                initialQaComment = comment,
             )
 
-            logger.info("Processing dataset with id $datasetId for framework ${uploadedDataset.dataType}")
-
-            val createdDataIds = mutableMapOf<String, String>()
-            dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->
-                storeIndividualDataPoint(
-                    dataPointJsonLeaf,
-                    fileReferenceToPublicationDateMapping,
-                    dataPointType,
-                    correlationId,
-                    uploadedDataset,
-                    bypassQa,
-                )?.let { createdDataIds[dataPointType] = it }
-            }
-            this.datasetDatapointRepository.save(
-                DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
-            )
-            logger.info("Completed processing dataset (correlation ID: $correlationId).")
             return datasetId
         }
 
@@ -225,6 +256,7 @@ class AssembledDataManager
             referencedReports: Map<String, CompanyReport>?,
             correlationId: String,
         ) {
+            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports ?: emptyMap())
             val observedDocumentReferences = mutableSetOf<String>()
 
             datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->
@@ -339,5 +371,25 @@ class AssembledDataManager
             val datasetAsJsonNode = JsonSpecificationUtils.hydrateJsonSpecification(frameworkTemplate as ObjectNode) { allDataPoints[it] }
 
             return datasetAsJsonNode.toString()
+        }
+
+        override fun getDatasetData(
+            dataDimensions: BasicDataDimensions,
+            correlationId: String,
+        ): String? {
+            val framework = dataDimensions.dataType
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            val relevantDataPointTypes = JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
+            val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
+
+            if (dataPointIds.isEmpty()) {
+                throw ResourceNotFoundApiException(
+                    summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                    message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+                )
+            }
+            return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
         }
     }

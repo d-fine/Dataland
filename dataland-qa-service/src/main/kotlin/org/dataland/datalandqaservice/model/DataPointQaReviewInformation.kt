@@ -5,7 +5,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 
 /**
  * API model for the QA review information of a data point building on the DataPointDimensions interface.
- * @param dataId the id of the data point this review item is for
+ * @param dataPointId the id of the data point this review item is for
  * @param companyId the id of the company this data point belongs to
  * @param companyName the name of the company this data point belongs to
  * @param dataPointType the identifier of the type of data point
@@ -16,7 +16,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
  * @param reviewerId the id of the user who uploaded the review
  */
 data class DataPointQaReviewInformation(
-    val dataId: String,
+    val dataPointId: String,
     override val companyId: String,
     val companyName: String,
     override val dataPointType: String,

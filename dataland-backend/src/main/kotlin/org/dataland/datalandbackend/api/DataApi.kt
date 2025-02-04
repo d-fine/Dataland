@@ -73,6 +73,31 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
+     * A method to retrieve specific data identified by its [reportingPeriod], [companyId] and data type [T]
+     * @param reportingPeriod specifies the reporting period
+     * @param companyId specifies the company
+     * @return the dataset stored or an error if no dataset can be found
+     */
+    @Operation(
+        summary = "Retrieve data for the company ID and reporting period provided.",
+        description = "Data identified by the company ID and reporting Period is retrieved, if available.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
+        ],
+    )
+    @GetMapping(
+        value = ["/"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompanyAssociatedDataByDimensions(
+        @RequestParam reportingPeriod: String,
+        @RequestParam companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<T>>
+
+    /**
      * A method to export the CompanyAssociatedData for a dataId to CSV
      * @param dataId identifier used to uniquely identify a dataset
      * @return CSV of companyAssociatedData in form of InputStreamResource
