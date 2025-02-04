@@ -9,10 +9,12 @@ creation URL (or simply copy this md file into the description)
 
 ### Dependency updates
 
-- In the wiki 'Problematic Updates'.
+- See 'Problematic Updates' in the wiki (evaluate if issues persist or if newer versions are available that fix them)
 
 - [ ] Take a look at the dependency dashboard and see which updates are to be applied. For a detailed description of the process,
 consult the internal Dataland Wiki.
+
+- [ ] Update the wiki page (should display current issues why specific updates were not done)
 
 ### Dataland EuroDaT client
 
