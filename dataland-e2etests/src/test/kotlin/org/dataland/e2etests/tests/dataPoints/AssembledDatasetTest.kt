@@ -80,7 +80,7 @@ class AssembledDatasetTest {
     fun `ensure that an uploaded dataset can be downloaded via dimensions`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = true)
-        Thread.sleep(1000)
+        Thread.sleep(1500)
         val downloadedDataset =
             Backend.additionalCompanyInformationDataControllerApi.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
                 dataMetaInformation.reportingPeriod,
