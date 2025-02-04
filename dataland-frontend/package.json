@@ -52,7 +52,7 @@
     "@vue/eslint-config-typescript": "14.3.0",
     "@vue/test-utils": "2.4.6",
     "@vue/tsconfig": "0.7.0",
-    "cypress": "14.0.1",
+    "cypress": "13.17.0",
     "depcheck": "1.4.7",
     "dompurify": "3.2.3",
     "eslint": "9.19.0",
