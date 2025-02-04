@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress';
-import { promises, rmdir } from 'fs';
+import { promises, rmdir, unlinkSync } from 'fs';
 import { createHash } from 'crypto';
 
 let returnEmail: string;
@@ -39,7 +39,8 @@ export default defineConfig({
   defaultCommandTimeout: 10000,
   viewportHeight: 684,
   viewportWidth: 1536,
-  video: false,
+  video: true,
+  videoCompression: true,
 
   retries: {
     runMode: 2,
@@ -143,6 +144,19 @@ export default defineConfig({
           return content.includes(term);
         },
       });
+
+      on(
+        // Copied from Cypress docs: https://docs.cypress.io/app/guides/screenshots-and-videos#Delete-videos-for-specs-without-failing-or-retried-tests
+        'after:spec',
+        (spec: Cypress.Spec, results: CypressCommandLine.RunResult) => {
+          if (results && results.video) {
+            const failures = results.tests.some((test) => test.attempts.some((attempt) => attempt.state === 'failed'));
+            if (!failures) {
+              unlinkSync(results.video);
+            }
+          }
+        }
+      );
 
       return config;
     },
