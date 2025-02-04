@@ -20,20 +20,20 @@ class DataPointMetaInformationManager
     ) {
         /**
          * Get meta info about one specific data point
-         * @param dataId filters the requested meta info to one specific data ID
+         * @param dataPointId filters the requested meta info to one specific data ID
          * @return meta info about data behind the dataId
          */
         @Transactional(readOnly = true)
-        fun getDataPointMetaInformationByDataId(dataId: String): DataPointMetaInformationEntity =
-            dataPointMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
+        fun getDataPointMetaInformationById(dataPointId: String): DataPointMetaInformationEntity =
+            dataPointMetaInformationRepositoryInterface.findById(dataPointId).orElseThrow {
                 ResourceNotFoundApiException(
                     "Data point not found",
-                    "No data point with the id: $dataId could be found in the data store.",
+                    "No data point with the id: $dataPointId could be found in the data store.",
                 )
             }
 
         /**
-         * Get the currently active data id for a specific data point dimensions
+         * Get the currently active data id for a specific set of data point dimensions
          * @param dataPointDimensions the data point dimensions to get the currently active data id for
          * @return the id of the currently active data point
          */
@@ -43,12 +43,12 @@ class DataPointMetaInformationManager
 
         /**
          * Method to get the data point dimensions from a data id
-         * @param dataId the id of the data point
+         * @param dataPointId the id of the data point
          * @return the data point dimensions
          */
         @Transactional(readOnly = true)
-        fun getDataPointDimensionFromId(dataId: String): BasicDataPointDimensions {
-            val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
+        fun getDataPointDimensionFromId(dataPointId: String): BasicDataPointDimensions {
+            val dataPointMetaInformation = getDataPointMetaInformationById(dataPointId)
             return BasicDataPointDimensions(
                 reportingPeriod = dataPointMetaInformation.reportingPeriod,
                 companyId = dataPointMetaInformation.companyId,
@@ -67,34 +67,34 @@ class DataPointMetaInformationManager
 
         /**
          * Method to update the QA status of a data point
-         * @param dataId the id of the data point to update
+         * @param dataPointId the id of the data point to update
          * @param newQaStatus the new value for the QA status
          */
         @Transactional
         fun updateQaStatusOfDataPoint(
-            dataId: String,
+            dataPointId: String,
             newQaStatus: QaStatus,
         ) {
-            val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
+            val dataPointMetaInformation = getDataPointMetaInformationById(dataPointId)
             dataPointMetaInformation.qaStatus = newQaStatus
             dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
         }
 
         /**
          * Method to update the currently active flag of a data point
-         * @param dataId the id of the data point to update
+         * @param dataPointId the id of the data point to update
          * @param newCurrentlyActiveValue the new value for the currently active flag
          */
         @Transactional
         fun updateCurrentlyActiveFlagOfDataPoint(
-            dataId: String?,
+            dataPointId: String?,
             newCurrentlyActiveValue: Boolean?,
         ) {
-            if (dataId == null) {
+            if (dataPointId == null) {
                 return
             }
             require(newCurrentlyActiveValue != false) { "Currently active can only be true or null due to a constraint in the data base." }
-            val dataPointMetaInformation = getDataPointMetaInformationByDataId(dataId)
+            val dataPointMetaInformation = getDataPointMetaInformationById(dataPointId)
             dataPointMetaInformation.currentlyActive = newCurrentlyActiveValue
             dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
         }

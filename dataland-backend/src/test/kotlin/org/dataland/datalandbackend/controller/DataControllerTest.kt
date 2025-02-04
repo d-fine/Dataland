@@ -9,6 +9,8 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -24,6 +26,8 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.Spy
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -72,6 +76,8 @@ internal class DataControllerTest(
     @Mock
     lateinit var mockDataMetaInformationManager: DataMetaInformationManager
     lateinit var dataController: EutaxonomyNonFinancialsDataController
+
+    private val testDataDimensions = BasicDataDimensions(testCompanyId, testDataType.toString(), testReportingPeriod)
 
     @BeforeEach
     fun setup() {
@@ -143,6 +149,20 @@ internal class DataControllerTest(
         assertDoesNotThrow {
             dataController.exportCompanyAssociatedDataToExcel(otherUserAcceptedDataId)
         }
+    }
+
+    @Test
+    fun `test that no dataset is returned for a combination of reporting period company id and data type that does not exist`() {
+        assertThrows<ResourceNotFoundApiException> {
+            dataController.getCompanyAssociatedDataByDimensions(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
+        }
+    }
+
+    @Test
+    fun `test that the expected dataset is returned for a combination of reporting period company id and data type`() {
+        `when`(mockDataManager.getDatasetData(eq(testDataDimensions), any())).thenReturn(someEuTaxoDataAsString)
+        val response = dataController.getCompanyAssociatedDataByDimensions(reportingPeriod = testReportingPeriod, companyId = testCompanyId)
+        Assertions.assertEquals(someEuTaxoData, response.body!!.data)
     }
 
     private fun buildDataMetaInformationEntity(
