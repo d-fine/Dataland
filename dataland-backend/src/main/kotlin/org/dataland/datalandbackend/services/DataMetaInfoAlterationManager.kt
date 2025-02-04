@@ -43,17 +43,20 @@ class DataMetaInfoAlterationManager
             val storableDataset: StorableDataset =
                 dataManager.getPublicDataset(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
 
-            dataMetaInformationPatch.uploaderUserId?.let {
-                logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
-                if (keycloakUserService.isKeycloakUserId(dataMetaInformationPatch.uploaderUserId)) {
-                    dataMetaInformation.uploaderUserId = it
-                } else {
-                    throw InvalidInputApiException(
-                        summary = "KeycloakUserId is invalid.",
-                        message = "The uploaderUserId does not belong to a Keycloak user.",
-                    )
-                }
+            if (dataMetaInformationPatch.uploaderUserId == null ||
+                !keycloakUserService.isKeycloakUserId(
+                    dataMetaInformationPatch.uploaderUserId,
+                )
+            ) {
+                throw InvalidInputApiException(
+                    summary = "KeycloakUserId is invalid.",
+                    message = "The uploaderUserId does not belong to a Keycloak user.",
+                )
             }
+
+            logger.info("Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId}")
+            dataMetaInformation.uploaderUserId = dataMetaInformationPatch.uploaderUserId
+
             dataMetaInformationManager.storeDataMetaInformation(dataMetaInformation)
 
             logger.info("Updating MetaInformation within StorableDataset with dataId $dataId. CorrelationId: $correlationId.")
