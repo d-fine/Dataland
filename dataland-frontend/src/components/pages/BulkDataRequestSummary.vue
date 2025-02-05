@@ -51,9 +51,14 @@
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
               <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
-              <a :href="entry.resourceUrl.toString()" target="_blank" class="text-primary no-underline font-bold">
+              <a
+                v-if="entry.resourceUrl"
+                :href="entry.resourceUrl.toString()"
+                target="_blank"
+                class="text-primary no-underline font-bold"
+              >
                 <div class="text-right">
-                  <span>{{ section.linkText }} </span>
+                  <span>{{ section.linkText }}</span>
                   <span class="ml-3">></span>
                 </div>
               </a>
