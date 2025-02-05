@@ -52,7 +52,7 @@ class MetaDataControllerTest {
         user: TechnicalUser,
     ) = DataMetaInformation(
         dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime, reportingPeriod = "",
-        currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId, url = "test",
+        currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId,
     )
 
     @Test
