@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.nullable
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -96,7 +96,7 @@ class QaReviewManagerTest {
         spyQaReviewManager = spy(qaReviewManager)
         doReturn(mockQaReviewEntity)
             .whenever(spyQaReviewManager)
-            .saveQaReviewEntity(any(), any(), any(), nullable(String::class.java), any())
+            .saveQaReviewEntity(any(), any(), any(), anyOrNull(), any())
         doNothing().whenever(spyQaReviewManager).sendQaStatusUpdateMessage(any<QaReviewEntity>(), any())
     }
 
