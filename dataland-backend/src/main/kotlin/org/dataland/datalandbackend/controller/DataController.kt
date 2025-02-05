@@ -19,6 +19,7 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
@@ -43,6 +44,9 @@ open class DataController<T>(
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
 
+    @Value("\${dataland.backend.proxy-primary-url}")
+    private lateinit var proxyPrimaryUrl: String
+
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<T>,
         bypassQa: Boolean,
@@ -64,6 +68,7 @@ open class DataController<T>(
                 dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
                 uploaderUserId = userId, uploadTime = uploadTime, reportingPeriod = reportingPeriod,
                 currentlyActive = false, qaStatus = QaStatus.Pending,
+                url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType/$dataIdOfPostedData",
             ),
         )
     }
