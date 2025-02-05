@@ -60,7 +60,7 @@ import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import type Keycloak from 'keycloak-js';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
-import { isFrameworkPrivate } from '@/utils/Frameworks.ts';
+import { isFrameworkPrivate } from '@/utils/Frameworks';
 
 export default defineComponent({
   name: 'MetaInfoPerCompanyAndFramework',

@@ -43,7 +43,7 @@ import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
-import { isFrameworkPublic } from '@/utils/Frameworks.ts';
+import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
