@@ -114,6 +114,8 @@ class DataRequestNonSourceableTest {
 
         postNonSourceableInfo(nonSourceableInfoRequest2023)
 
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
+
         val updatedFirstUserRequest2023 =
             requestControllerApi.getDataRequestById(requestIdFirstUserRequest2023)
 

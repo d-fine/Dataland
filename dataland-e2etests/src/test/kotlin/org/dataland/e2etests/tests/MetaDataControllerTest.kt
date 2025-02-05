@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Value
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.UUID
@@ -35,6 +36,9 @@ class MetaDataControllerTest {
             .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
     private val listOfOneTestCompanyInformation = listOf(listOfTestCompanyInformation[0])
 
+    @Value("\${dataland.backend.proxy-primary-url}")
+    private lateinit var proxyPrimaryUrl: String
+
     @BeforeAll
     fun postTestDocuments() {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
@@ -53,6 +57,7 @@ class MetaDataControllerTest {
     ) = DataMetaInformation(
         dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime, reportingPeriod = "",
         currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId,
+        url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$testDataType/$dataId",
     )
 
     @Test
