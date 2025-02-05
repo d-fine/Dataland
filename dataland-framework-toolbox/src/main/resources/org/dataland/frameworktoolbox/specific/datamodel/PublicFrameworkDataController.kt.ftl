@@ -31,7 +31,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
+    @Value("\$\{dataland.backend.proxy-primary-url\}") private val proxyPrimaryUrl: String,
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
     myDataManager,
     myMetaDataManager,
