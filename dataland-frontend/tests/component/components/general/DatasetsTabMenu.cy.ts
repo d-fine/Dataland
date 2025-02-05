@@ -2,7 +2,7 @@ import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { getMountingFunction } from '@ct/testUtils/Mount';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the tab used by logged-in users to switch pages', () => {
   enum AlwaysVisibleTabs {

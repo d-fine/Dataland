@@ -275,7 +275,7 @@ import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
 import router from '@/router';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'ViewDataRequest',

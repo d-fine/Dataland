@@ -80,7 +80,7 @@ import { AxiosError } from 'axios';
 import RequestableDatasetsTable from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTable.vue';
 import { useDialog } from 'primevue/usedialog';
 import RequestableDatasetsTableModalWrapper from '@/components/resources/frameworkDataSearch/frameworkPanel/RequestableDatasetsTableModalWrapper.vue';
-import { isFrameworkPrivate } from '@/utils/Frameworks.ts';
+import { isFrameworkPrivate } from '@/utils/Frameworks';
 
 const dialog = useDialog();
 

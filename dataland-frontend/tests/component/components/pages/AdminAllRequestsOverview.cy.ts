@@ -11,7 +11,7 @@ import {
 import { faker } from '@faker-js/faker';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import router from '@/router';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 describe('Component test for the admin-requests-overview page', () => {
   let mockRequests: ExtendedStoredDataRequest[];

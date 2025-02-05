@@ -107,7 +107,7 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import NewDatasetButton from '@/components/general/NewDatasetButton.vue';
 import router from '@/router';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   setup() {

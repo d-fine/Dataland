@@ -96,7 +96,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import { FRONTEND_SUPPORTED_FRAMEWORKS } from '@/utils/Constants';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'ChooseFramework',

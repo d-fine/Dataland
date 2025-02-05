@@ -16,7 +16,7 @@ import {
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
   KEYCLOAK_ROLES,
-} from '@/utils/KeycloakRoles.ts';
+} from '@/utils/KeycloakRoles';
 
 describe('Component test for the company cockpit', () => {
   let companyInformationForTest: CompanyInformation;

@@ -7,7 +7,7 @@ import {
 } from '@clients/backend';
 import { type RouteHandler } from 'cypress/types/net-stubbing';
 
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 
 export interface UploadIds {
   companyId: string;

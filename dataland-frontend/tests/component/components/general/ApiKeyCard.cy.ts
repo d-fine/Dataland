@@ -1,6 +1,6 @@
 // @ts-nocheck
 import ApiKeyCard from '@/components/resources/apiKey/ApiKeyCard.vue';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component test for ApiKeyCard', () => {
   it("Should contain text 'The API Key expired' when Api Key is expired", () => {

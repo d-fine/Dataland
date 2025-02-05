@@ -4,7 +4,7 @@ import type Keycloak from 'keycloak-js';
 import { verifySearchResultTableExists } from '@sharedUtils/ElementChecks';
 import { type BasicCompanyInformation } from '@clients/backend';
 import router from '@/router';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 let mockDataSearchResponse: Array<BasicCompanyInformation>;
 

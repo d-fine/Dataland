@@ -3,7 +3,7 @@ import DatasetOverview from '@/components/pages/DatasetOverview.vue';
 import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesForFrameworkData.vue';
 import type Keycloak from 'keycloak-js';
 import router from '@/router';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the DatasetOverview page', () => {
   it('Should not display the New Dataset button to non-uploader users', () => {

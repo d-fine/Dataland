@@ -15,7 +15,7 @@ import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import router from '@/router';
 import { getRequestStatusLabel } from '@/utils/RequestUtils.ts';
-import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
