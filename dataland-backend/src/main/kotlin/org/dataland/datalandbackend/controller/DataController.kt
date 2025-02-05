@@ -25,6 +25,7 @@ import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.stereotype.Controller
 import java.time.Instant
 
 /**
@@ -33,6 +34,7 @@ import java.time.Instant
  * @param dataMetaInformationManager service for handling data meta information
  * @param objectMapper the mapper to transform strings into classes and vice versa
  */
+@Controller
 open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,

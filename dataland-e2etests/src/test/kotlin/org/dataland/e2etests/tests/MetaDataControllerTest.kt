@@ -8,6 +8,7 @@ import org.dataland.e2etests.auth.GlobalAuth.jwtHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.MetaDataUtils
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
-import org.springframework.beans.factory.annotation.Value
 import java.math.BigDecimal
 import java.time.Instant
 import java.util.UUID
@@ -36,9 +36,6 @@ class MetaDataControllerTest {
             .getCompanyInformationWithoutIdentifiers(numberOfCompaniesToPostPerFramework)
     private val listOfOneTestCompanyInformation = listOf(listOfTestCompanyInformation[0])
 
-    @Value("\${dataland.backend.proxy-primary-url}")
-    private lateinit var proxyPrimaryUrl: String
-
     @BeforeAll
     fun postTestDocuments() {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
@@ -47,18 +44,6 @@ class MetaDataControllerTest {
     companion object {
         private const val SLEEP_DURATION_MS: Long = 1000
     }
-
-    fun buildAcceptedAndActiveDataMetaInformation(
-        dataId: String,
-        companyId: String,
-        testDataType: DataTypeEnum,
-        uploadTime: Long,
-        user: TechnicalUser,
-    ) = DataMetaInformation(
-        dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime, reportingPeriod = "",
-        currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId,
-        url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$testDataType/$dataId",
-    )
 
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
@@ -72,14 +57,11 @@ class MetaDataControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val actualDataMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val expectedDataMetaInfo =
-            buildAcceptedAndActiveDataMetaInformation(
+            MetaDataUtils.buildAcceptedAndActiveDataMetaInformation(
                 dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
-                testDataType = testDataType, uploadTime = Instant.now().toEpochMilli(), TechnicalUser.Admin,
+                testDataType = testDataType, TechnicalUser.Admin,
             )
-        assertEquals(
-            expectedDataMetaInfo, actualDataMetaInfo.copy(uploadTime = expectedDataMetaInfo.uploadTime),
-            "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
-        )
+        MetaDataUtils.assertDataMetaInfoMatches(actualDataMetaInfo, expectedDataMetaInfo)
         val timeDiffFromUploadToNow = actualDataMetaInfo.uploadTime - Instant.now().toEpochMilli()
         assertTrue(
             abs(timeDiffFromUploadToNow) < 60000, "The server-upload-time and the local upload time differ too much.",
