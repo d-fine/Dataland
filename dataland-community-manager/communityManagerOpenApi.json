@@ -1613,7 +1613,6 @@
           "framework",
           "reportingPeriod",
           "resourceId",
-          "resourceUrl",
           "userProvidedIdentifier"
         ],
         "type": "object",

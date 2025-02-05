@@ -18,6 +18,5 @@ data class ResourceResponse(
     val reportingPeriod: String,
     @field:JsonProperty(required = true)
     val resourceId: String,
-    @field:JsonProperty(required = true)
-    val resourceUrl: String,
+    val resourceUrl: String? = null,
 )
