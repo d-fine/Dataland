@@ -91,11 +91,4 @@ export default defineConfig({
     },
     allowedHosts: ['frontend'],
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@import "@/assets/scss/newVariables.scss"; @import "@/assets/scss/variables.scss";`,
-      },
-    },
-  },
 });
