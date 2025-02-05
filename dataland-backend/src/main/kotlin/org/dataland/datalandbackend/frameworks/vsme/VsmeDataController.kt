@@ -122,7 +122,7 @@ class VsmeDataController(
                 val data = privateDataManager.getPrivateVsmeData(it.dataId, correlationId)
                 frameworkDataAndMetaInfo.add(
                     DataAndMetaInformation(
-                        it.toApiModel(DatalandAuthentication.fromContext()), data,
+                        it.toApiModel(), data,
                     ),
                 )
             }

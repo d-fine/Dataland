@@ -6785,8 +6785,7 @@
           "dataType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime",
-          "url"
+          "uploadTime"
         ],
         "type": "object",
         "properties": {
@@ -6817,7 +6816,8 @@
             "$ref": "#/components/schemas/QaStatus"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -21039,21 +21039,21 @@
             "type": "string",
             "nullable": true
           },
-          "companyId": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
             "type": "string"
           },
-          "countryCode": {
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "countryCode": {
+            "type": "string"
           }
         }
       },
@@ -21076,10 +21076,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

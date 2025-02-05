@@ -94,7 +94,7 @@ class PrivateDataManager(
                 ?.let { storeDocumentsInMemoryAndReturnTheirHashes(dataId, it, correlationId) }
                 ?: mapOf()
         sendReceptionMessage(dataId, storableDataset, correlationId, documentHashes)
-        return metaInfoEntity.toApiModel(userAuthentication)
+        return metaInfoEntity.toApiModel()
     }
 
     private fun storeJsonInMemory(

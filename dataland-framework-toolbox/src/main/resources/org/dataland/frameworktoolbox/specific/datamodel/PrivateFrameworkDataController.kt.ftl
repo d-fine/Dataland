@@ -121,7 +121,7 @@ class ${frameworkDataType.shortenedQualifier}Controller(
                     val data = privateDataManager.getPrivate${frameworkIdentifier?cap_first}Data(it.dataId, correlationId)
                     frameworkDataAndMetaInfo.add(
                         DataAndMetaInformation(
-                            it.toApiModel(DatalandAuthentication.fromContext()), data,
+                            it.toApiModel(), data,
                         ),
                     )
                 }

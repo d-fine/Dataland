@@ -61,7 +61,7 @@ data class DataMetaInformationEntity(
     private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
         roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
-    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation =
+    override fun toApiModel(): DataMetaInformation =
         DataMetaInformation(
             dataId = dataId,
             companyId = company.companyId,
@@ -72,4 +72,13 @@ data class DataMetaInformationEntity(
             currentlyActive = currentlyActive == true,
             qaStatus = qaStatus,
         )
+
+    /** This function is undocumented.
+     *
+     */
+    fun toApiModel(proxyPrimaryUrl: String): DataMetaInformation {
+        val dataMetaInformation = this.toApiModel()
+        dataMetaInformation.url = "https://$proxyPrimaryUrl/companies/${company.companyId}/frameworks/$dataType/$dataId"
+        return dataMetaInformation
+    }
 }

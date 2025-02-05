@@ -59,6 +59,6 @@ class DataPointController(
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
-        return ResponseEntity.ok(metaInfo.toApiModel(DatalandAuthentication.fromContextOrNull()))
+        return ResponseEntity.ok(metaInfo.toApiModel())
     }
 }

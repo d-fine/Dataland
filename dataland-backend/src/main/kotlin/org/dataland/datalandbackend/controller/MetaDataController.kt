@@ -49,11 +49,7 @@ class MetaDataController(
                     dataMetaInformationRequest.uploaderUserIds,
                     dataMetaInformationRequest.qaStatus,
                 ).filter { it.isDatasetViewableByUser(user) }
-                .map { it.toApiModel(user) }
-        listDataMetaInformation.forEach {
-            it.url =
-                "https://$proxyPrimaryUrl/companies/${it.companyId}/frameworks/${it.dataType}/${it.dataId}"
-        }
+                .map { it.toApiModel(proxyPrimaryUrl) }
         return listDataMetaInformation
     }
 
@@ -95,7 +91,7 @@ class MetaDataController(
                 ),
             )
         }
-        return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
+        return ResponseEntity.ok(metaInfo.toApiModel())
     }
 
     override fun getInfoOnNonSourceabilityOfDatasets(

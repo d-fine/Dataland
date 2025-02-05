@@ -31,9 +31,9 @@ data class DataMetaInformation(
     val currentlyActive: Boolean,
     @field:JsonProperty(required = true)
     var qaStatus: QaStatus,
-    @field:JsonProperty(required = true)
-    var url: String,
+    var url: String? = null,
 ) {
+    /*
     constructor(
         dataId: String,
         companyId: String,
@@ -52,6 +52,6 @@ data class DataMetaInformation(
         reportingPeriod = reportingPeriod,
         currentlyActive = currentlyActive,
         qaStatus = qaStatus,
-        url = "",
     )
+     */
 }
