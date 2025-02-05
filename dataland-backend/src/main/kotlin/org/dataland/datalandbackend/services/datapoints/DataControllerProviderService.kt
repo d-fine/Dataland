@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AnnotationTypeFilter
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
+import org.springframework.beans.factory.annotation.Value
 
 /**
  * Provides data controllers for all framework data types
@@ -25,6 +26,7 @@ class DataControllerProviderService
         private val assembledDataManager: AssembledDataManager,
         private val metaDataManager: DataMetaInformationManager,
         private val objectMapper: ObjectMapper,
+        @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
     ) {
         private val dataTypeClassCache = ConcurrentHashMap<DataType, Class<*>>()
 
@@ -39,6 +41,7 @@ class DataControllerProviderService
                 objectMapper,
                 dataTypeClass as? Class<Any>
                     ?: throw IllegalArgumentException("Class type for data type is not compatible."),
+                proxyPrimaryUrl,
             )
 
         /**

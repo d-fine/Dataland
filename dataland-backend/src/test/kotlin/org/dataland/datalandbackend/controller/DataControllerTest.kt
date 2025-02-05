@@ -115,6 +115,7 @@ internal class DataControllerTest(
                 mockDataMetaInformationManager,
                 dataExportService,
                 objectMapper,
+                "https://example.com",
             )
     }
 

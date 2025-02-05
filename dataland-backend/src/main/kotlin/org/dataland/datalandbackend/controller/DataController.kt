@@ -19,13 +19,11 @@ import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ContentDisposition
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.stereotype.Controller
 import java.time.Instant
 
 /**
@@ -34,20 +32,18 @@ import java.time.Instant
  * @param dataMetaInformationManager service for handling data meta information
  * @param objectMapper the mapper to transform strings into classes and vice versa
  */
-@Controller
+
 open class DataController<T>(
     private val datasetStorageService: DatasetStorageService,
     private val dataMetaInformationManager: DataMetaInformationManager,
     private val dataExportService: DataExportService,
     private val objectMapper: ObjectMapper,
     private val clazz: Class<T>,
+    private val proxyPrimaryUrl: String,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
     private val logMessageBuilder = LogMessageBuilder()
-
-    @Value("\${dataland.backend.proxy-primary-url}")
-    private lateinit var proxyPrimaryUrl: String
 
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<T>,
