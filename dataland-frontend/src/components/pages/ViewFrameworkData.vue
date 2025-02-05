@@ -51,21 +51,13 @@ export default defineComponent({
     },
   },
   mounted() {
-    if (!this.dataType) {
-      return this.gotoNotFound();
-    }
-    if (!this.multiViewFrameworks.includes(this.dataType)) {
+    if (!this.dataType || !this.multiViewFrameworks.includes(this.dataType)) {
       return this.gotoNotFound();
     }
   },
   computed: {
     multiViewFrameworks(): string[] {
-      const standardMultiViewFrameworks = [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.P2p] as string[];
-
-      for (const frameworkId of getAllFrameworkIdentifiers()) {
-        standardMultiViewFrameworks.push(frameworkId);
-      }
-      return standardMultiViewFrameworks;
+      return [DataTypeEnum.P2p, ...getAllFrameworkIdentifiers()];
     },
   },
 });
