@@ -151,7 +151,7 @@ import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks.ts';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',

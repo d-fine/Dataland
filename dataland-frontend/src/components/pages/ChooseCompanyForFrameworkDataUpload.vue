@@ -70,7 +70,7 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { type CompanyIdAndName } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import router from '@/router';
-import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'ChooseCompany',

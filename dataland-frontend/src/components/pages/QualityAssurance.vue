@@ -159,7 +159,7 @@ import type Keycloak from 'keycloak-js';
 import { type GetInfoOnPendingDatasetsDataTypesEnum, type QaReviewResponse } from '@clients/qaservice';
 import router from '@/router';
 import { type DataTypeEnum } from '@clients/backend';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'QualityAssurance',

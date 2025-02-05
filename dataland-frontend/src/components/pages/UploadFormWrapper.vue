@@ -39,7 +39,7 @@ import { computed } from 'vue';
 import TheContent from '@/components/generics/TheContent.vue';
 import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 import CreateNuclearAndGasDataset from '@/components/forms/CreateNuclearAndGasDataset.vue';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 const props = defineProps<{
   companyID: string;

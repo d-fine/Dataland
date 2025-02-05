@@ -40,7 +40,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import defaultProfilePicture from '@/assets/images/elements/default_user_icon.svg';
 import { logoutAndRedirectToUri } from '@/utils/KeycloakUtils';
 import router from '@/router';
-import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_REVIEWER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'UserProfileDropDown',

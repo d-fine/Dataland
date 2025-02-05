@@ -44,7 +44,7 @@ import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { isFrameworkPublic } from '@/utils/Frameworks.ts';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',

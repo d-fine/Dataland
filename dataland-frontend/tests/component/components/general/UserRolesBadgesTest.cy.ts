@@ -5,7 +5,7 @@ import {
   KEYCLOAK_ROLE_REVIEWER,
   KEYCLOAK_ROLE_UPLOADER,
   KEYCLOAK_ROLE_USER,
-} from '@/utils/KeycloakRoles.ts';
+} from '@/utils/KeycloakRoles';
 
 describe('Component test for UserRolesBadges', () => {
   it('Should display the user roles for an uploader (READ/WRITE)', () => {
