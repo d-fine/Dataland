@@ -45,7 +45,7 @@
     "@faker-js/faker": "9.4.0",
     "@rushstack/eslint-patch": "1.10.5",
     "@tsconfig/node20": "20.1.4",
-    "@types/dompurify": "3.0.5",
+    "@types/dompurify": "3.2.0",
     "@types/markdown-it": "14.1.2",
     "@types/node": "20.14.15",
     "@vitejs/plugin-vue": "5.2.1",
