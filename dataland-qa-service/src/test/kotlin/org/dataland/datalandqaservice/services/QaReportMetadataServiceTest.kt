@@ -143,7 +143,6 @@ class QaReportMetadataServiceTest(
                     "test",
                     true,
                     QaStatus.Accepted,
-                    "",
                     reporterId1.toString(),
                 ),
             )
