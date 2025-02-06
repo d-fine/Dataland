@@ -176,9 +176,11 @@ sonar {
                 "dataland-qa-service/src/main/kotlin/org/dataland/datalandqaservice/frameworks/**," +
                 "dataland-qa-service/src/main/kotlin/db/migration/V7__UpdateSfdrQaReports.kt",
         )
-        property("sonar.issue.ignore.multicriteria", "escapecharacters")
-        property("sonar.issue.ignore.multicriteria.escapecharacters.ruleKey", "typescript:S6535")
-        property("sonar.issue.ignore.multicriteria.escapecharacters.resourceKey", "**/UploadConfig.ts")
+        property("sonar.issue.ignore.multicriteria", "upload, view")
+        property("sonar.issue.ignore.multicriteria.upload.ruleKey", "typescript:S6535")
+        property("sonar.issue.ignore.multicriteria.upload.resourceKey", "**/UploadConfig.ts")
+        property("sonar.issue.ignore.multicriteria.view.ruleKey", "typescript:S6535")
+        property("sonar.issue.ignore.multicriteria.view.resourceKey", "**/ViewConfig.ts")
     }
 }
 
