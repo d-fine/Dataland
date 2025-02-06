@@ -5,6 +5,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.ExceptionUtils.assertResourceNotFoundWrapper
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -30,10 +31,14 @@ class DataDeletionControllerTest {
 
     private fun performAndVerifyDeletion(dataId: String) {
         assertDoesNotThrow { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+        assertResourceNotFoundWrapper { apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId) }
     }
 
     private fun tryDeletionAndVerifyDenial(dataId: String) {
+        val dataMetaInfoBeforeDeletion = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
         assertAccessDeniedWrapper { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+        val dataMetaInfoAfterDeletion = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
+        assert(dataMetaInfoAfterDeletion == dataMetaInfoBeforeDeletion)
     }
 
     @BeforeAll
