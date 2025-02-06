@@ -64,7 +64,7 @@ open class DataController<T>(
             DataMetaInformation(
                 dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
                 uploaderUserId = userId, uploadTime = uploadTime, reportingPeriod = reportingPeriod,
-                currentlyActive = false, qaStatus = QaStatus.Pending
+                currentlyActive = false, qaStatus = QaStatus.Pending,
             ),
         )
     }
