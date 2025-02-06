@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests
 
+import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataDeletionControllerTest {
@@ -40,6 +42,8 @@ class DataDeletionControllerTest {
         val dataMetaInfoAfterDeletion = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
         assert(dataMetaInfoAfterDeletion == dataMetaInfoBeforeDeletion)
     }
+
+    private fun isDataSetActive(dataId: String): Boolean = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).currentlyActive
 
     @BeforeAll
     fun postTestDocuments() {
@@ -96,5 +100,37 @@ class DataDeletionControllerTest {
                 tryDeletionAndVerifyDenial(dataId)
             }
         }
+    }
+
+    @Test
+    fun `delete accepted data set and check if previously superseeded data set becomes active`() {
+        val firstUploadInfo =
+            apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
+                testCompanyInformation,
+                testDataEuTaxonomyNonFinancials,
+            )
+        val dataIdFirstUpload = firstUploadInfo.get("dataId")!!
+        assert(isDataSetActive(dataIdFirstUpload))
+        val dataIdSecondUpload =
+            apiAccessor
+                .euTaxonomyNonFinancialsUploaderFunction(
+                    firstUploadInfo.get("companyId")!!,
+                    testDataEuTaxonomyNonFinancials,
+                    "",
+                ).dataId
+
+        Awaitility
+            .await()
+            .atMost(2000, TimeUnit.MILLISECONDS)
+            .pollDelay(500, TimeUnit.MILLISECONDS)
+            .until({ isDataSetActive(dataIdSecondUpload) })
+        assert(!isDataSetActive(dataIdFirstUpload))
+
+        performAndVerifyDeletion(dataIdSecondUpload)
+        Awaitility
+            .await()
+            .atMost(2000, TimeUnit.MILLISECONDS)
+            .pollDelay(500, TimeUnit.MILLISECONDS)
+            .until({ isDataSetActive(dataIdFirstUpload) })
     }
 }
