@@ -1,6 +1,6 @@
 package org.dataland.datalandcommunitymanager.model.dataRequest
 
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationFilter
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 /**
@@ -17,11 +17,11 @@ data class DatasetDimensions(
     /**
      * Converts the DatasetDimensions object to a DataMetaInformationFilter object.
      */
-    fun toDataMetaInformationSearchFilter(): DataMetaInformationFilter =
-        DataMetaInformationFilter(
+    fun toDataMetaInformationSearchFilter(): DataMetaInformationSearchFilter =
+        DataMetaInformationSearchFilter(
             companyId = companyId,
             dataType = dataType,
             reportingPeriod = reportingPeriod,
-            showOnlyActive = true,
+            onlyActive = true,
         )
 }

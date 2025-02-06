@@ -428,7 +428,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/DataMetaInformationFilter"
+                  "$ref": "#/components/schemas/DataMetaInformationSearchFilter"
                 }
               }
             }
@@ -6878,9 +6878,9 @@
           }
         }
       },
-      "DataMetaInformationFilter": {
+      "DataMetaInformationSearchFilter": {
         "required": [
-          "showOnlyActive"
+          "onlyActive"
         ],
         "type": "object",
         "properties": {
@@ -6896,12 +6896,12 @@
               }
             ]
           },
-          "showOnlyActive": {
-            "type": "boolean"
-          },
           "reportingPeriod": {
             "type": "string",
             "nullable": true
+          },
+          "onlyActive": {
+            "type": "boolean"
           },
           "uploaderUserIds": {
             "uniqueItems": true,

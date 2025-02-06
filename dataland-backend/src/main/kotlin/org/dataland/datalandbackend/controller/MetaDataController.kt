@@ -3,9 +3,9 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformationFilter
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.NonSourceableDataManager
@@ -37,14 +37,14 @@ class MetaDataController(
 ) : MetaDataApi {
     private fun getListOfDataMetaInfoForUser(
         user: DatalandAuthentication?,
-        dataMetaInformationFilter: DataMetaInformationFilter,
+        dataMetaInformationSearchFilter: DataMetaInformationSearchFilter,
     ): List<DataMetaInformation> {
         var foundDataMetaInformation = emptyList<DataMetaInformation>()
-        if (dataMetaInformationFilter.filterContainsSearchParameter()) {
+        if (dataMetaInformationSearchFilter.filterContainsSearchParameter()) {
             foundDataMetaInformation =
                 dataMetaInformationManager
                     .searchDataMetaInfo(
-                        dataMetaInformationFilter.toDataMetaInformationSearchFilter(),
+                        dataMetaInformationSearchFilter,
                     ).filter { it.isDatasetViewableByUser(user) }
                     .map { it.toApiModel(proxyPrimaryUrl) }
         }
@@ -62,16 +62,23 @@ class MetaDataController(
         ResponseEntity.ok(
             this.getListOfDataMetaInfoForUser(
                 DatalandAuthentication.fromContextOrNull(),
-                DataMetaInformationFilter(companyId, dataType, showOnlyActive, reportingPeriod, uploaderUserIds, qaStatus),
+                DataMetaInformationSearchFilter(
+                    companyId = companyId,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    onlyActive = showOnlyActive,
+                    uploaderUserIds = uploaderUserIds,
+                    qaStatus = qaStatus,
+                ),
             ),
         )
 
     override fun postListOfDataMetaInfoFilters(
-        dataMetaInformationFilters: List<DataMetaInformationFilter>,
+        dataMetaInformationSearchFilters: List<DataMetaInformationSearchFilter>,
     ): ResponseEntity<List<DataMetaInformation>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         return ResponseEntity.ok(
-            dataMetaInformationFilters
+            dataMetaInformationSearchFilters
                 .distinct()
                 .map { this.getListOfDataMetaInfoForUser(currentUser, it) }
                 .flatten()
