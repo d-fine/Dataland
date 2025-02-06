@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
@@ -30,14 +29,12 @@ class NuclearAndGasDataController(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) : DataController<NuclearAndGasData>(
         myDataManager,
         myMetaDataManager,
         myDataExportService,
         myObjectMapper,
         NuclearAndGasData::class.java,
-        proxyPrimaryUrl,
     ) {
     @Operation(operationId = "getCompanyAssociatedNuclearAndGasData")
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =

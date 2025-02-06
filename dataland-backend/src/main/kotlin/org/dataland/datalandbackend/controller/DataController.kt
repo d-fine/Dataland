@@ -39,7 +39,6 @@ open class DataController<T>(
     private val dataExportService: DataExportService,
     private val objectMapper: ObjectMapper,
     private val clazz: Class<T>,
-    private val proxyPrimaryUrl: String,
 ) : DataApi<T> {
     private val dataType = DataType.of(clazz)
     private val logger = LoggerFactory.getLogger(javaClass)
@@ -65,8 +64,7 @@ open class DataController<T>(
             DataMetaInformation(
                 dataId = dataIdOfPostedData, companyId = companyId, dataType = dataType,
                 uploaderUserId = userId, uploadTime = uploadTime, reportingPeriod = reportingPeriod,
-                currentlyActive = false, qaStatus = QaStatus.Pending,
-                url = "https://$proxyPrimaryUrl/companies/$companyId/frameworks/$dataType/$dataIdOfPostedData",
+                currentlyActive = false, qaStatus = QaStatus.Pending
             ),
         )
     }

@@ -45,7 +45,6 @@ object MetaDataUtils {
         user: TechnicalUser,
     ) = DataMetaInformation(
         dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = 1, reportingPeriod = "",
-        currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId,
-        url = "companies/$companyId/frameworks/$testDataType/$dataId",
+        currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId
     )
 }

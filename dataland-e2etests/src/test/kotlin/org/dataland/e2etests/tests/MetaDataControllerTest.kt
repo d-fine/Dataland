@@ -61,7 +61,7 @@ class MetaDataControllerTest {
                 dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
                 testDataType = testDataType, TechnicalUser.Admin,
             )
-        MetaDataUtils.assertDataMetaInfoMatches(actualDataMetaInfo, expectedDataMetaInfo)
+        MetaDataUtils.assertDataMetaInfoMatches(expectedDataMetaInfo = expectedDataMetaInfo, actualDataMetaInfo = actualDataMetaInfo)
         val timeDiffFromUploadToNow = actualDataMetaInfo.uploadTime - Instant.now().toEpochMilli()
         assertTrue(
             abs(timeDiffFromUploadToNow) < 60000, "The server-upload-time and the local upload time differ too much.",

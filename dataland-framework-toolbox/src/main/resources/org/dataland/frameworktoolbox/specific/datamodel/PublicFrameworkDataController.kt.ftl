@@ -31,14 +31,12 @@ class ${frameworkDataType.shortenedQualifier}Controller(
     @Autowired var myMetaDataManager: DataMetaInformationManager,
     @Autowired var myDataExportService: DataExportService,
     @Autowired var myObjectMapper: ObjectMapper,
-    @Value("\$\{dataland.backend.proxy-primary-url\}") private val proxyPrimaryUrl: String,
 ) : DataController<${frameworkDataType.shortenedQualifier}>(
     myDataManager,
     myMetaDataManager,
     myDataExportService,
     myObjectMapper,
     ${frameworkDataType.shortenedQualifier}::class.java,
-    proxyPrimaryUrl,
 ) {
     @Operation(operationId = "getCompanyAssociated${frameworkDataType.shortenedQualifier}")
     override fun getCompanyAssociatedData(dataId: String):
