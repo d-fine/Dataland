@@ -60,6 +60,7 @@ data class DataMetaInformationSearchFilter(
     /**
      * Checks if the filter contains any search parameters
      */
+    @JsonIgnore
     fun isNullOrEmpty(): Boolean =
         companyId.isNullOrEmpty() &&
             dataType == null &&
