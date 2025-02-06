@@ -28,6 +28,14 @@ class DataDeletionControllerTest {
 
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
 
+    private fun performAndVerifyDeletion(dataId: String) {
+        assertDoesNotThrow { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+    }
+
+    private fun tryDeletionAndVerifyDenial(dataId: String) {
+        assertAccessDeniedWrapper { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+    }
+
     @BeforeAll
     fun postTestDocuments() {
         documentManagerAccessor.uploadAllTestDocumentsAndAssurePersistence()
@@ -41,7 +49,7 @@ class DataDeletionControllerTest {
                     testCompanyInformation,
                     testDataEuTaxonomyNonFinancials,
                 ).getValue("dataId")
-        assertDoesNotThrow { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+        performAndVerifyDeletion(dataId)
     }
 
     @Test
@@ -54,7 +62,7 @@ class DataDeletionControllerTest {
                 ).getValue("dataId")
         for (role in arrayOf(TechnicalUser.Reader, TechnicalUser.Reviewer, TechnicalUser.Uploader)) {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(role)
-            assertAccessDeniedWrapper { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+            tryDeletionAndVerifyDenial(dataId)
         }
     }
 
@@ -71,18 +79,16 @@ class DataDeletionControllerTest {
             val dataId = mapOfIds.getValue("dataId")
 
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-            assertAccessDeniedWrapper { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+            tryDeletionAndVerifyDenial(dataId)
 
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             apiAccessor.companyRolesControllerApi.assignCompanyRole(companyRole, companyId, dataReaderUserId)
 
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             if (companyRole in companyRolesAllowedToDelete) {
-                assertDoesNotThrow { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
+                performAndVerifyDeletion(dataId)
             } else {
-                assertAccessDeniedWrapper {
-                    apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId)
-                }
+                tryDeletionAndVerifyDenial(dataId)
             }
         }
     }
