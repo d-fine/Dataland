@@ -27,7 +27,7 @@ import type { NuclearAndGasEnvironmentalObjective } from '@clients/backend';
 
 interface DialogRefData {
   input: NuclearAndGasType;
-  columnHeaders: {};
+  columnHeaders: { [key: string]: [columnName: string] };
 }
 
 interface NuclearAndGasActivityDescription {

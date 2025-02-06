@@ -416,6 +416,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/variables' as *;
+
 .no-line-height {
   line-height: 0;
 }

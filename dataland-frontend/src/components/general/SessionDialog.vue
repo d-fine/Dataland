@@ -117,7 +117,7 @@ export default defineComponent({
       assertDefined(this.getKeycloakPromise)()
         .then((keycloak) => {
           if (!keycloak.authenticated) {
-            loginAndRedirectToSearchPage(keycloak);
+            void loginAndRedirectToSearchPage(keycloak);
           }
         })
         .catch((error) => console.log(error));

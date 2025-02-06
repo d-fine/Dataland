@@ -180,7 +180,7 @@ function latestDate(singleDataAndMetaInfo: DataAndMetaInformation<T>): string {
   }
   return latestDate ? dateStringFormatter(latestDate) : '';
 }
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const props = defineProps<{
   config: MLDTConfig<T>;
   dataAndMetaInfo: Array<DataAndMetaInformation<T>>;

@@ -2,8 +2,8 @@ import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import DatasetOverview from '@/components/pages/DatasetOverview.vue';
 import SearchCompaniesForFrameworkData from '@/components/pages/SearchCompaniesForFrameworkData.vue';
 import type Keycloak from 'keycloak-js';
-import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
 import router from '@/router';
+import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component tests for the DatasetOverview page', () => {
   it('Should not display the New Dataset button to non-uploader users', () => {
@@ -50,7 +50,7 @@ describe('Component tests for the DatasetOverview page', () => {
     if (keycloak.hasRealmRole(KEYCLOAK_ROLE_REVIEWER)) {
       cy.get(getTabSelector(2)).should('have.text', 'QA');
     } else {
-      cy.get(getTabSelector(2)).should('not.be.visible');
+      cy.get(getTabSelector(2)).should('have.class', 'p-disabled');
     }
     const inactiveTabIndices = [];
     for (let i = 0; i < 3; i++) {
