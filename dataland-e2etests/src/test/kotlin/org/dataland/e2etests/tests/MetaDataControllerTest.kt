@@ -42,7 +42,7 @@ class MetaDataControllerTest {
     }
 
     companion object {
-        private const val SLEEP_DURATION_MS: Long = 100000
+        private const val SLEEP_DURATION_MS: Long = 1000
     }
 
     @Test
@@ -80,13 +80,21 @@ class MetaDataControllerTest {
 
     @Test
     fun `post companies and eu taxonomy data and check meta info search with only active as filter`() {
-        val initialSizeOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = true)
+        val initialSizeOfDataMetaInfo =
+            apiAccessor.getNumberOfDataMetaInfo(
+                showOnlyActive = false,
+                dataType = DataTypeEnum.eutaxonomyMinusFinancials,
+            )
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
             mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
             numberOfDatasetsToPostPerCompany,
         )
         Thread.sleep(SLEEP_DURATION_MS)
-        val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = true)
+        val sizeOfListOfDataMetaInfo =
+            apiAccessor.getNumberOfDataMetaInfo(
+                showOnlyActive = false,
+                dataType = DataTypeEnum.eutaxonomyMinusFinancials,
+            )
         val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDatasetsPerFramework
         assertEquals(
             expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
