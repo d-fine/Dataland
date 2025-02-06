@@ -37,7 +37,7 @@ class Vsme {
 
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-    private val testVsmeData = FrameworkTestDataProvider(VsmeData::class.java).getTData(1).first()
+    private val testVsmeData = FrameworkTestDataProvider.forFrameworkFixtures(VsmeData::class.java).getTData(1).first()
 
     private val dataAdminUserId = UUID.fromString(TechnicalUser.Admin.technicalUserId)
 
