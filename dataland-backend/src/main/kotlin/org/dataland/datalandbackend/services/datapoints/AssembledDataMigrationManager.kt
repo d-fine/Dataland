@@ -31,6 +31,11 @@ class AssembledDataMigrationManager
         private val messageQueuePublications: MessageQueuePublications,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+        private val migrationCheckJsonComparisonOptions =
+            JsonComparator.JsonComparisonOptions(
+                ignoredKeys = setOf("referencedReports", "publicationDate"),
+                fullyNullObjectsAreEqualToNull = true,
+            )
 
         private fun performMigration(
             dataMetaInfo: DataMetaInformationEntity,
@@ -82,7 +87,7 @@ class AssembledDataMigrationManager
                     .compareJson(
                         expectedDataAsJson,
                         actualDataAsJson,
-                        ignoredKeys = setOf("referencedReports", "publicationDate"),
+                        migrationCheckJsonComparisonOptions,
                     )
             if (differences.isNotEmpty()) {
                 logger.error(

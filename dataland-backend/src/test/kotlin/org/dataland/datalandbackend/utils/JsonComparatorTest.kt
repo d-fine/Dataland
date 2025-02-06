@@ -2,16 +2,44 @@ package org.dataland.datalandbackend.utils
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 
 class JsonComparatorTest {
     private fun compareJsonStrings(
         expected: String,
         actual: String,
-        ignoredKeys: Set<String> = emptySet(),
+        options: JsonComparator.JsonComparisonOptions = JsonComparator.JsonComparisonOptions(),
     ): List<JsonComparator.JsonDiff> {
         val expectedJson = JsonTestUtils.testObjectMapper.readTree(expected)
         val actualJson = JsonTestUtils.testObjectMapper.readTree(actual)
-        return JsonComparator.compareJson(expectedJson, actualJson, ignoredKeys)
+        return JsonComparator.compareJson(expectedJson, actualJson, options)
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        delimiter = ';',
+        value = [
+            """{"a": null};{"a": {}}""",
+            """{"a": {}};{"a": null}""",
+            """{"a": null};{"a": {"c": null}}""",
+        ],
+    )
+    fun `should see fully null objects and null as equal iff the option is enabled`(
+        expected: String,
+        actual: String,
+    ) {
+        for (fullyNullObjectsAreEqualToNull in listOf(true, false)) {
+            val differences =
+                compareJsonStrings(
+                    expected, actual,
+                    JsonComparator.JsonComparisonOptions(
+                        fullyNullObjectsAreEqualToNull = fullyNullObjectsAreEqualToNull,
+                    ),
+                )
+
+            assertEquals(if (fullyNullObjectsAreEqualToNull) 0 else 1, differences.size)
+        }
     }
 
     @Test
@@ -46,7 +74,13 @@ class JsonComparatorTest {
         val actual = """{"equal": "hello", "nested": {"equal": "a", "delta": "5"}}"""
         val ignoredKeys = setOf("delta")
 
-        val differences = compareJsonStrings(expected, actual, ignoredKeys)
+        val differences =
+            compareJsonStrings(
+                expected, actual,
+                JsonComparator.JsonComparisonOptions(
+                    ignoredKeys = ignoredKeys,
+                ),
+            )
 
         assertEquals(0, differences.size)
     }
@@ -74,7 +108,7 @@ class JsonComparatorTest {
         assertEquals(1, differences.size)
         assertEquals("array[1]", differences[0].path)
         assertEquals("\"B\"", differences[0].expected.toString())
-        assertEquals(null, differences[0].actual)
+        assertEquals("null", differences[0].actual.toString())
     }
 
     @Test
@@ -87,7 +121,7 @@ class JsonComparatorTest {
         assertEquals(1, differences.size)
         assertEquals("A", differences[0].path)
         assertEquals("\"B\"", differences[0].expected.toString())
-        assertEquals(null, differences[0].actual)
+        assertEquals("null", differences[0].actual.toString())
     }
 
     @Test
@@ -99,7 +133,7 @@ class JsonComparatorTest {
 
         assertEquals(2, differences.size)
         assertEquals("field1", differences[0].path)
-        assertEquals(null, differences[0].expected)
+        assertEquals("null", differences[0].expected.toString())
         assertEquals("\"value1\"", differences[0].actual.toString())
     }
 }
