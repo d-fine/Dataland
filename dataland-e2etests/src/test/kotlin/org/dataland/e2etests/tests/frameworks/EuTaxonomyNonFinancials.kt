@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -41,7 +42,17 @@ class EuTaxonomyNonFinancials {
                 expectedDataMetaInformation?.dataType,
             )
         Assertions.assertTrue(
-            listOfDataMetaInfoForTestCompany.contains(expectedDataMetaInformation),
+            listOfDataMetaInfoForTestCompany.any {
+                try {
+                    assertDataMetaInfoMatches(
+                        expectedDataMetaInfo = expectedDataMetaInformation!!,
+                        actualDataMetaInfo = it,
+                    )
+                    true
+                } catch (ignore: AssertionError) {
+                    false
+                }
+            },
             "The all-data-sets-list of the posted company does not contain the posted data set.",
         )
     }
