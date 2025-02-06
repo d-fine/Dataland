@@ -9,12 +9,12 @@ import java.util.UUID
  * convenient usage of SEPL instructions in the query
  */
 data class DataMetaInformationSearchFilter(
-    val companyId: String?,
-    val dataType: DataType?,
-    val reportingPeriod: String?,
+    val companyId: String? = null,
+    val dataType: DataType? = null,
+    val reportingPeriod: String? = null,
     val onlyActive: Boolean,
-    val uploaderUserIds: Set<UUID>?,
-    val qaStatus: QaStatus?,
+    val uploaderUserIds: Set<UUID>? = null,
+    val qaStatus: QaStatus? = null,
 ) {
     val shouldFilterByCompanyId: Boolean
         get() = !companyId.isNullOrEmpty()

@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformationRequest
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -101,7 +101,7 @@ internal class MetaDataControllerTest(
     }
 
     @Test
-    fun `check if DataMetaInformationRequest is correctly transformed into DataMetaInformation`() {
+    fun `check if DataMetaInformationFilter is correctly transformed into DataMetaInformation`() {
         val dataId = "data-id-for-testing-postListOfDataMetaInfoFilters"
         val dataType = DataType.of(SfdrData::class.java)
         val reportingPeriod = "2022"
@@ -114,12 +114,12 @@ internal class MetaDataControllerTest(
         val companyId1 = storedCompany1.companyId
         val companyId2 = storedCompany2.companyId
         val url = "https://$proxyPrimaryUrl/companies/$companyId1/frameworks/$dataType/$dataId"
-        val dataMetaInformationRequest =
+        val dataMetaInformationFilters =
             listOf(
-                DataMetaInformationRequest(
+                DataMetaInformationFilter(
                     companyId1, dataType, true, reportingPeriod, setOf(uploaderUserId), qaStatus,
                 ),
-                DataMetaInformationRequest(
+                DataMetaInformationFilter(
                     companyId2, dataType, true, reportingPeriod, setOf(uploaderUserId), qaStatus,
                 ),
             )
@@ -136,7 +136,7 @@ internal class MetaDataControllerTest(
             ),
         )
         mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
-        val listDataMetaInfos = metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationRequest).body
+        val listDataMetaInfos = metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationFilters).body
 
         assertEquals(amountStoredCompanies, listDataMetaInfos?.size)
         val dataMetaInfo = listDataMetaInfos?.get(0)

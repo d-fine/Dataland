@@ -428,7 +428,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/DataMetaInformationRequest"
+                  "$ref": "#/components/schemas/DataMetaInformationFilter"
                 }
               }
             }
@@ -6878,7 +6878,7 @@
           }
         }
       },
-      "DataMetaInformationRequest": {
+      "DataMetaInformationFilter": {
         "required": [
           "showOnlyActive"
         ],

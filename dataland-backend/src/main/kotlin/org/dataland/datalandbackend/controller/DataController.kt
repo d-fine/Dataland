@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.DatasetStorageService
@@ -131,7 +132,12 @@ open class DataController<T>(
         logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
         val metaInfos =
             dataMetaInformationManager.searchDataMetaInfo(
-                companyId, dataType, showOnlyActive, reportingPeriod, null, null,
+                DataMetaInformationSearchFilter(
+                    companyId = companyId,
+                    dataType = dataType,
+                    onlyActive = showOnlyActive,
+                    reportingPeriod = reportingPeriod,
+                ),
             )
         val authentication = DatalandAuthentication.fromContextOrNull()
         val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()

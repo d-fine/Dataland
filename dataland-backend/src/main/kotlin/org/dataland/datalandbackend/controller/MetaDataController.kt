@@ -3,7 +3,7 @@ package org.dataland.datalandbackend.controller
 import org.dataland.datalandbackend.api.MetaDataApi
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformationRequest
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationFilter
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -37,20 +37,18 @@ class MetaDataController(
 ) : MetaDataApi {
     private fun getListOfDataMetaInfoForUser(
         user: DatalandAuthentication?,
-        dataMetaInformationRequest: DataMetaInformationRequest,
+        dataMetaInformationFilter: DataMetaInformationFilter,
     ): List<DataMetaInformation> {
-        val listDataMetaInformation =
-            dataMetaInformationManager
-                .searchDataMetaInfo(
-                    dataMetaInformationRequest.companyId,
-                    dataMetaInformationRequest.dataType,
-                    dataMetaInformationRequest.showOnlyActive,
-                    dataMetaInformationRequest.reportingPeriod,
-                    dataMetaInformationRequest.uploaderUserIds,
-                    dataMetaInformationRequest.qaStatus,
-                ).filter { it.isDatasetViewableByUser(user) }
-                .map { it.toApiModel(proxyPrimaryUrl) }
-        return listDataMetaInformation
+        var foundDataMetaInformation = emptyList<DataMetaInformation>()
+        if (dataMetaInformationFilter.filterContainsSearchParameter()) {
+            foundDataMetaInformation =
+                dataMetaInformationManager
+                    .searchDataMetaInfo(
+                        dataMetaInformationFilter.toDataMetaInformationSearchFilter(),
+                    ).filter { it.isDatasetViewableByUser(user) }
+                    .map { it.toApiModel(proxyPrimaryUrl) }
+        }
+        return foundDataMetaInformation
     }
 
     override fun getListOfDataMetaInfo(
@@ -64,16 +62,16 @@ class MetaDataController(
         ResponseEntity.ok(
             this.getListOfDataMetaInfoForUser(
                 DatalandAuthentication.fromContextOrNull(),
-                DataMetaInformationRequest(companyId, dataType, showOnlyActive, reportingPeriod, uploaderUserIds, qaStatus),
+                DataMetaInformationFilter(companyId, dataType, showOnlyActive, reportingPeriod, uploaderUserIds, qaStatus),
             ),
         )
 
     override fun postListOfDataMetaInfoFilters(
-        dataMetaInformationRequests: List<DataMetaInformationRequest>,
+        dataMetaInformationFilters: List<DataMetaInformationFilter>,
     ): ResponseEntity<List<DataMetaInformation>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         return ResponseEntity.ok(
-            dataMetaInformationRequests
+            dataMetaInformationFilters
                 .distinct()
                 .map { this.getListOfDataMetaInfoForUser(currentUser, it) }
                 .flatten()

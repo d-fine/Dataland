@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.repositories.utils.NonSourceableDataSearchFilter
 import org.dataland.datalandbackend.utils.IdUtils.generateCorrelationId
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -67,8 +68,13 @@ class NonSourceableDataManager(
         companyQueryManager.verifyCompanyIdExists(nonSourceableInfo.companyId)
         val dataMetaInfo =
             dataMetaInformationManager.searchDataMetaInfo(
-                nonSourceableInfo.companyId, nonSourceableInfo.dataType,
-                false, nonSourceableInfo.reportingPeriod, null, QaStatus.Accepted,
+                DataMetaInformationSearchFilter(
+                    companyId = nonSourceableInfo.companyId,
+                    dataType = nonSourceableInfo.dataType,
+                    reportingPeriod = nonSourceableInfo.reportingPeriod,
+                    qaStatus = QaStatus.Accepted,
+                    onlyActive = false,
+                ),
             )
         if (dataMetaInfo.isNotEmpty()) {
             logger.info("Creating a NonSourceableEntity failed because the dataset exists (correlationId: $correlationId)")

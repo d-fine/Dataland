@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformationRequest
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationFilter
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -65,7 +65,7 @@ interface MetaDataApi {
 
     /**
      * A method to post multiple filters at once to search for meta information about datasets registered by Dataland
-     * @param dataMetaInformationRequests A list of data meta information request filters
+     * @param dataMetaInformationFilters A list of data meta information request filters
      * @return a list of matching DataMetaInformation
      */
     @Operation(
@@ -84,7 +84,7 @@ interface MetaDataApi {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     fun postListOfDataMetaInfoFilters(
-        @RequestBody dataMetaInformationRequests: List<DataMetaInformationRequest>,
+        @RequestBody dataMetaInformationFilters: List<DataMetaInformationFilter>,
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
