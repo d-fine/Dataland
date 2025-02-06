@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && tsc -p tsconfig.config.json && vite build",
+    "build": "vite build",
     "lint": "eslint . --fix",
     "lintci": "eslint . --max-warnings 0 --no-fix",
     "updatepackages": "npm-check-updates -u",
