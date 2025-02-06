@@ -42,7 +42,7 @@ class MetaDataControllerTest {
     }
 
     companion object {
-        private const val SLEEP_DURATION_MS: Long = 2000
+        private const val SLEEP_DURATION_MS: Long = 100000
     }
 
     @Test
