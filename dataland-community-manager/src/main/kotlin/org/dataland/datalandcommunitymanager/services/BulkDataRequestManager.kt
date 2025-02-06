@@ -3,7 +3,6 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
-import org.dataland.datalandbackend.openApiClient.model.DataMetaInformationFilter
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
@@ -57,7 +56,10 @@ class BulkDataRequestManager(
         val validRequestCombinations =
             getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)
 
-        val existingDatasets = metaDataController.postListOfDataMetaInfoFilters(validRequestCombinations)
+        val existingDatasets =
+            metaDataController.postListOfDataMetaInfoFilters(
+                validRequestCombinations.map { it.toDataMetaInformationSearchFilter() },
+            )
 
         val acceptedRequestCombinations = getDimensionsWithoutRequests(validRequestCombinations, existingDatasets)
 
@@ -77,7 +79,7 @@ class BulkDataRequestManager(
     private fun getValidRequestCombinations(
         bulkDataRequest: BulkDataRequest,
         acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,
-    ): List<DataMetaInformationFilter> {
+    ): List<DatasetDimensions> {
         val acceptedCompanyIdsSet: Set<String> =
             acceptedIdentifiersToCompanyIdAndName.values.map { it.companyId }.toSet()
 
@@ -118,7 +120,7 @@ class BulkDataRequestManager(
     }
 
     private fun getDimensionsWithoutRequests(
-        validRequestCombinations: List<DataMetaInformationFilter>,
+        validRequestCombinations: List<DatasetDimensions>,
         existingDatasets: List<DataMetaInformation>,
     ): List<DatasetDimensions> {
         val dimensionsWithExistingRequests =
@@ -127,14 +129,7 @@ class BulkDataRequestManager(
                     DatasetDimensions(it.companyId, it.dataType, it.reportingPeriod)
                 }.toSet()
 
-        val allValidDimensions =
-            validRequestCombinations
-                .map {
-                    require(it.companyId != null && it.dataType != null && it.reportingPeriod != null) {
-                        "Request cannot have null values: $it"
-                    }
-                    DatasetDimensions(it.companyId!!, it.dataType!!, it.reportingPeriod!!)
-                }.toSet()
+        val allValidDimensions = validRequestCombinations.toSet()
         val dimensionsWithoutRequests = allValidDimensions - dimensionsWithExistingRequests
         return dimensionsWithoutRequests.toList()
     }
@@ -143,15 +138,14 @@ class BulkDataRequestManager(
         dataTypes: Set<DataTypeEnum>,
         reportingPeriods: Set<String>,
         datalandCompanyIds: Set<String>,
-    ): List<DataMetaInformationFilter> =
+    ): List<DatasetDimensions> =
         datalandCompanyIds.flatMap { companyId ->
             dataTypes.flatMap { dataType ->
                 reportingPeriods.map { period ->
-                    DataMetaInformationFilter(
+                    DatasetDimensions(
                         companyId = companyId,
                         dataType = dataType,
                         reportingPeriod = period,
-                        showOnlyActive = true,
                     )
                 }
             }
