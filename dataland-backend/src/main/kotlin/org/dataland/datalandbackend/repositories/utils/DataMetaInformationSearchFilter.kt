@@ -62,10 +62,14 @@ data class DataMetaInformationSearchFilter(
      */
     @JsonIgnore
     fun isNullOrEmpty(): Boolean =
-        companyId.isNullOrEmpty() &&
-            dataType == null &&
-            reportingPeriod.isNullOrEmpty() &&
+        areDataDimensionFiltersEmpty() &&
             uploaderUserIds.isNullOrEmpty() &&
             qaStatus == null &&
             !onlyActive
+
+    @JsonIgnore
+    private fun areDataDimensionFiltersEmpty(): Boolean =
+        companyId.isNullOrEmpty() &&
+            dataType == null &&
+            reportingPeriod.isNullOrEmpty()
 }
