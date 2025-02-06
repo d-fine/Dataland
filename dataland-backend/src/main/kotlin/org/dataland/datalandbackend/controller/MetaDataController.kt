@@ -40,7 +40,7 @@ class MetaDataController(
         dataMetaInformationSearchFilter: DataMetaInformationSearchFilter,
     ): List<DataMetaInformation> {
         var foundDataMetaInformation = emptyList<DataMetaInformation>()
-        if (dataMetaInformationSearchFilter.filterContainsSearchParameter()) {
+        if (!dataMetaInformationSearchFilter.isNullOrEmpty()) {
             foundDataMetaInformation =
                 dataMetaInformationManager
                     .searchDataMetaInfo(

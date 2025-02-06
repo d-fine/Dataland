@@ -60,6 +60,11 @@ data class DataMetaInformationSearchFilter(
     /**
      * Checks if the filter contains any search parameters
      */
-    fun filterContainsSearchParameter(): Boolean =
-        (companyId != null || dataType != null || reportingPeriod != null || uploaderUserIds != null || qaStatus != null) && !onlyActive
+    fun isNullOrEmpty(): Boolean =
+        companyId.isNullOrEmpty() &&
+            dataType == null &&
+            reportingPeriod.isNullOrEmpty() &&
+            uploaderUserIds.isNullOrEmpty() &&
+            qaStatus == null &&
+            !onlyActive
 }
