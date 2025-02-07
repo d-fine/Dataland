@@ -391,6 +391,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/variables' as *;
+
 .uploadFormWrapper {
   min-height: calc(100vh - 200px);
 

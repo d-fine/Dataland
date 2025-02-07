@@ -139,6 +139,8 @@ const sections = [
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/variables' as *;
+
 .border-bottom {
   border-bottom: 1px solid #dadada;
 }
