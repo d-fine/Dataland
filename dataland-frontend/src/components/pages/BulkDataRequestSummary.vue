@@ -139,7 +139,7 @@ const sections = [
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/variables';
 
 .border-bottom {
   border-bottom: 1px solid #dadada;
@@ -170,7 +170,7 @@ div.summary-section {
 }
 
 .info-color {
-  color: $orange-prime;
+  color: variables.$orange-prime;
 }
 
 .bold-text {
