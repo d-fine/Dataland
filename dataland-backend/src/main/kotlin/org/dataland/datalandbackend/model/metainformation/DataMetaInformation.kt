@@ -30,6 +30,6 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val currentlyActive: Boolean,
     @field:JsonProperty(required = true)
-    val qaStatus: QaStatus,
-    val ref: String? = null,
+    var qaStatus: QaStatus,
+    var ref: String? = null,
 )
