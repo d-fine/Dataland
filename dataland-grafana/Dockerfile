@@ -1,5 +1,5 @@
 # basis image from grafana
-FROM grafana/grafana:11.4.1@sha256:413503f21b7e854811d74ef68ae1d3dce4c4814aef5daf4424c4a7ef6d42c31d
+FROM grafana/grafana:11.5.0@sha256:0a2874cf39c6487093c682215f7c7903ed8646d78ae5f911af945d2dfcc0a447
 
 COPY ./dataland-grafana/provisioning/datasources/loki.yaml /etc/grafana/provisioning/datasources/loki.yaml
 
