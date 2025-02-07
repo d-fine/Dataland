@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.services
 
-import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -196,36 +195,18 @@ class DocumentManager(
         }
         val existingDocumentMetaInfoEntity =
             documentMetaInfoRepository.getByDocumentId(patchObject.documentId)
-                ?: throw InsufficientRightsApiException(
+                ?: throw ResourceNotFoundApiException(
                     summary = "Document with ID ${patchObject.documentId} could not be retrieved.",
                     message = "Document with ID ${patchObject.documentId} could not be retrieved.",
                 )
-        /* Here, each entry other than documentId of the patch object overwrites the
-        corresponding one in the existing database entry. In particular, null entries
-        in the patch object result in null entries of the new database entry. This
-        enables one to use the patch endpoint for deleting previously populated entries.
-         */
-        val updatedDocumentMetaInfoEntity =
-            DocumentMetaInfoEntity(
-                documentId = existingDocumentMetaInfoEntity.documentId,
-                documentType = existingDocumentMetaInfoEntity.documentType,
-                documentName = patchObject.documentName,
-                documentCategory = patchObject.documentCategory!!,
-                companyIds = patchObject.companyIds,
-                uploaderId = existingDocumentMetaInfoEntity.uploaderId,
-                uploadTime = existingDocumentMetaInfoEntity.uploadTime,
-                publicationDate = patchObject.publicationDate,
-                reportingPeriod = patchObject.reportingPeriod,
-                qaStatus = existingDocumentMetaInfoEntity.qaStatus,
-            )
-        documentMetaInfoRepository.save(updatedDocumentMetaInfoEntity)
-        return DocumentUploadResponse(
-            documentId = updatedDocumentMetaInfoEntity.documentId,
-            documentName = updatedDocumentMetaInfoEntity.documentName,
-            documentCategory = updatedDocumentMetaInfoEntity.documentCategory,
-            companyIds = updatedDocumentMetaInfoEntity.companyIds,
-            publicationDate = updatedDocumentMetaInfoEntity.publicationDate,
-            reportingPeriod = updatedDocumentMetaInfoEntity.reportingPeriod,
-        )
+
+        val updatedDocumentMetaInfoEntity = existingDocumentMetaInfoEntity
+        patchObject.documentName?.let { updatedDocumentMetaInfoEntity.documentName = it }
+        patchObject.documentCategory?.let { updatedDocumentMetaInfoEntity.documentCategory = it }
+        patchObject.companyIds?.let { updatedDocumentMetaInfoEntity.companyIds = it }
+        patchObject.publicationDate?.let { updatedDocumentMetaInfoEntity.publicationDate = it }
+        patchObject.reportingPeriod?.let { updatedDocumentMetaInfoEntity.reportingPeriod = it }
+
+        return documentMetaInfoRepository.save(updatedDocumentMetaInfoEntity).toDocumentUploadResponse()
     }
 }

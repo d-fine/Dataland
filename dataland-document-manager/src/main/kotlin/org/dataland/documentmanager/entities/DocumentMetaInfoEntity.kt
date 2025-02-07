@@ -23,15 +23,15 @@ data class DocumentMetaInfoEntity(
     val documentId: String,
     @Enumerated(EnumType.STRING)
     val documentType: DocumentType,
-    val documentName: String?,
+    var documentName: String?,
     @Convert(converter = DocumentCategoryConverter::class)
-    val documentCategory: DocumentCategory,
+    var documentCategory: DocumentCategory,
     @ElementCollection
-    val companyIds: List<String>?,
+    var companyIds: List<String>?,
     val uploaderId: String,
     val uploadTime: Long,
-    val publicationDate: String?,
-    val reportingPeriod: String?,
+    var publicationDate: String?,
+    var reportingPeriod: String?,
     @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
 ) {

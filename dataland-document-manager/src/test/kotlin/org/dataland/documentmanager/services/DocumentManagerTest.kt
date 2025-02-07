@@ -11,6 +11,8 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentMetaInfoPatch
+import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
@@ -116,25 +119,8 @@ class DocumentManagerTest(
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
-        val sampleDocMetaInfo = sampleDocumentMetaInfo()
-        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, sampleDocMetaInfo)
-        `when`(mockDocumentMetaInfoRepository.findById(anyString()))
-            .thenReturn(
-                Optional.of(
-                    DocumentMetaInfoEntity(
-                        documentType = DocumentType.Pdf,
-                        documentName = "sample.pdf",
-                        documentCategory = DocumentCategory.AnnualReport,
-                        companyIds = listOf(),
-                        publicationDate = "2023-01-01",
-                        reportingPeriod = "2023",
-                        documentId = uploadResponse.documentId,
-                        uploaderId = "",
-                        uploadTime = 0,
-                        qaStatus = QaStatus.Accepted,
-                    ),
-                ),
-            )
+        val uploadResponse = mockUpload(mockMultipartFile)
+        configureMockDocumentMetaInfoRepository(uploadResponse.documentId)
         val downloadedDocument = documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockMultipartFile.bytes))
     }
@@ -156,6 +142,60 @@ class DocumentManagerTest(
         }
     }
 
+    @Test
+    fun `check that a patch request for a non-existing documentId throws the appropriate exception`() {
+        val unknownDocumentId = "unknown-document-id"
+        val patchObject =
+            DocumentMetaInfoPatch(
+                documentId = unknownDocumentId,
+                documentName = null,
+                documentCategory = null,
+                companyIds = null,
+                publicationDate = null,
+                reportingPeriod = null,
+            )
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.updateDocumentMetaInformation(patchObject)
+        }
+    }
+
+    @Test
+    fun `check that a patch request for an existing documentId results in the desired changes`() {
+        val mockMultipartFile = mockUploadableFile(testDocument)
+        val uploadResponse = mockUpload(mockMultipartFile)
+        configureMockDocumentMetaInfoRepository(uploadResponse.documentId)
+        val patchObject =
+            DocumentMetaInfoPatch(
+                documentId = uploadResponse.documentId,
+                documentName = "new name",
+                documentCategory = DocumentCategory.SustainabilityReport,
+                companyIds = null,
+                publicationDate = "2023-01-03",
+                reportingPeriod = null,
+            )
+        val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
+        val expectedSecondDocumentMetaInfoEntity =
+            firstDocumentMetaInfoEntity?.apply {
+                documentName = "new name"
+                documentCategory = DocumentCategory.SustainabilityReport
+                publicationDate = "2023-01-03"
+            }
+        `when`(mockDocumentMetaInfoRepository.existsById(anyString())).thenReturn(true)
+        // Rewrite the stubbed save method so it acts as an identity function rather than a constant function.
+        // It is unclear to me how I can refer to the value of the any() parameter inside thenReturn().
+        `when`(mockDocumentMetaInfoRepository.save<DocumentMetaInfoEntity>(any())).thenReturn(
+            expectedSecondDocumentMetaInfoEntity,
+        )
+        `when`(mockDocumentMetaInfoRepository.getByDocumentId(anyString())).thenReturn(
+            firstDocumentMetaInfoEntity,
+        )
+        val patchResponse = documentManager.updateDocumentMetaInformation(patchObject)
+
+        assertEquals(expectedSecondDocumentMetaInfoEntity?.documentName, patchResponse.documentName)
+        assertEquals(expectedSecondDocumentMetaInfoEntity?.documentCategory, patchResponse.documentCategory)
+        assertEquals(expectedSecondDocumentMetaInfoEntity?.publicationDate, patchResponse.publicationDate)
+    }
+
     private fun mockUploadableFile(reportName: String): MockMultipartFile {
         val testFileStream = javaClass.getResourceAsStream("sampleFiles/$reportName")
         val testFileBytes = IOUtils.toByteArray(testFileStream)
@@ -163,6 +203,34 @@ class DocumentManagerTest(
             reportName, reportName,
             "application/pdf", testFileBytes,
         )
+    }
+
+    private fun mockUpload(mockMultipartFile: MockMultipartFile): DocumentUploadResponse {
+        val sampleDocMetaInfo = sampleDocumentMetaInfo()
+        return documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, sampleDocMetaInfo)
+    }
+
+    private fun sampleDocumentMetaInfoEntity(documentId: String): DocumentMetaInfoEntity =
+        DocumentMetaInfoEntity(
+            documentType = DocumentType.Pdf,
+            documentName = "sample.pdf",
+            documentCategory = DocumentCategory.AnnualReport,
+            companyIds = listOf(),
+            publicationDate = "2023-01-01",
+            reportingPeriod = "2023",
+            documentId = documentId,
+            uploaderId = "",
+            uploadTime = 0,
+            qaStatus = QaStatus.Accepted,
+        )
+
+    private fun configureMockDocumentMetaInfoRepository(documentId: String) {
+        `when`(mockDocumentMetaInfoRepository.findById(anyString()))
+            .thenReturn(
+                Optional.of(
+                    sampleDocumentMetaInfoEntity(documentId),
+                ),
+            )
     }
 
     private fun sampleDocumentMetaInfo(): DocumentMetaInfo =
