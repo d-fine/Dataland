@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.validation.Valid
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -15,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestPart
@@ -112,4 +115,34 @@ interface DocumentApi {
     fun getDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<InputStreamResource>
+
+    /**
+     * Patch the metadata information of a document.
+     * @param patchObject an object of type DocumentMetaInfoPatch which holds the document
+     * Id and all field values to patch.
+     */
+    @Operation(
+        summary = "Patch the metadata info of a document.",
+        description = "Patch the metadata info of a document.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully patched metadata information.."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to patch all fields for which a patch was requested.",
+            ),
+            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+        ],
+    )
+    @PostMapping(
+        value = ["/"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    // @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun patchDocumentMetaInfo(
+        @Valid @RequestBody(required = true) patchObject: DocumentMetaInfoPatch,
+    ): ResponseEntity<DocumentUploadResponse>
 }

@@ -80,9 +80,9 @@ class DocumentManagerTest(
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
-        val mockDocMetaInfo = mockDocumentMetaInfo()
+        val sampleDocMetaInfo = sampleDocumentMetaInfo()
 
-        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, mockDocMetaInfo)
+        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, sampleDocMetaInfo)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(
                 Optional.of(
@@ -116,8 +116,8 @@ class DocumentManagerTest(
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
-        val mockDocMetaInfo = mockDocumentMetaInfo()
-        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, mockDocMetaInfo)
+        val sampleDocMetaInfo = sampleDocumentMetaInfo()
+        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, sampleDocMetaInfo)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(
                 Optional.of(
@@ -142,7 +142,7 @@ class DocumentManagerTest(
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
-        val mockDocMetaInfo = mockDocumentMetaInfo()
+        val sampleDocMetaInfo = sampleDocumentMetaInfo()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 anyString(), eq(MessageType.DOCUMENT_RECEIVED), anyString(),
@@ -152,7 +152,7 @@ class DocumentManagerTest(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, mockDocMetaInfo)
+            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, sampleDocMetaInfo)
         }
     }
 
@@ -165,13 +165,12 @@ class DocumentManagerTest(
         )
     }
 
-    private fun mockDocumentMetaInfo(): DocumentMetaInfo {
-        val mockDocInfo = mock(DocumentMetaInfo::class.java)
-        `when`(mockDocInfo.documentName).thenReturn("sample.pdf")
-        `when`(mockDocInfo.documentCategory).thenReturn(DocumentCategory.AnnualReport)
-        `when`(mockDocInfo.companyIds).thenReturn(listOf())
-        `when`(mockDocInfo.publicationDate).thenReturn("2023-01-01")
-        `when`(mockDocInfo.reportingPeriod).thenReturn("2023")
-        return mockDocInfo
-    }
+    private fun sampleDocumentMetaInfo(): DocumentMetaInfo =
+        DocumentMetaInfo(
+            documentName = "sample.pdf",
+            documentCategory = DocumentCategory.AnnualReport,
+            companyIds = listOf("someValidId"),
+            publicationDate = "2023-01-01",
+            reportingPeriod = "2023",
+        )
 }

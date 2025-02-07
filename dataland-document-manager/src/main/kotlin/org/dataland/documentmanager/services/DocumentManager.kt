@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.services
 
+import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -10,6 +11,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
@@ -178,5 +180,52 @@ class DocumentManager(
             logger.info("Received document $documentId from storage service")
             InputStreamResource(storageApi.getBlobFromInternalStorage(documentId, correlationId))
         }
+    }
+
+    /**
+     * Update the document meta information stored under patchObject.documentId by overwriting the fields
+     * documentName, documentCategory, companyIds, publicationDate and reportingPeriod with the ones
+     * from patchObject.
+     */
+    fun updateDocumentMetaInformation(patchObject: DocumentMetaInfoPatch): DocumentUploadResponse {
+        if (!checkIfDocumentExistsWithId(patchObject.documentId)) {
+            throw ResourceNotFoundApiException(
+                summary = "Document with ID ${patchObject.documentId} does not exist",
+                message = "Document with ID ${patchObject.documentId} does not exist",
+            )
+        }
+        val existingDocumentMetaInfoEntity =
+            documentMetaInfoRepository.getByDocumentId(patchObject.documentId)
+                ?: throw InsufficientRightsApiException(
+                    summary = "Document with ID ${patchObject.documentId} could not be retrieved.",
+                    message = "Document with ID ${patchObject.documentId} could not be retrieved.",
+                )
+        /* Here, each entry other than documentId of the patch object overwrites the
+        corresponding one in the existing database entry. In particular, null entries
+        in the patch object result in null entries of the new database entry. This
+        enables one to use the patch endpoint for deleting previously populated entries.
+         */
+        val updatedDocumentMetaInfoEntity =
+            DocumentMetaInfoEntity(
+                documentId = existingDocumentMetaInfoEntity.documentId,
+                documentType = existingDocumentMetaInfoEntity.documentType,
+                documentName = patchObject.documentName,
+                documentCategory = patchObject.documentCategory!!,
+                companyIds = patchObject.companyIds,
+                uploaderId = existingDocumentMetaInfoEntity.uploaderId,
+                uploadTime = existingDocumentMetaInfoEntity.uploadTime,
+                publicationDate = patchObject.publicationDate,
+                reportingPeriod = patchObject.reportingPeriod,
+                qaStatus = existingDocumentMetaInfoEntity.qaStatus,
+            )
+        documentMetaInfoRepository.save(updatedDocumentMetaInfoEntity)
+        return DocumentUploadResponse(
+            documentId = updatedDocumentMetaInfoEntity.documentId,
+            documentName = updatedDocumentMetaInfoEntity.documentName,
+            documentCategory = updatedDocumentMetaInfoEntity.documentCategory,
+            companyIds = updatedDocumentMetaInfoEntity.companyIds,
+            publicationDate = updatedDocumentMetaInfoEntity.publicationDate,
+            reportingPeriod = updatedDocumentMetaInfoEntity.reportingPeriod,
+        )
     }
 }
