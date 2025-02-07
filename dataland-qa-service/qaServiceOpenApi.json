@@ -6218,7 +6218,7 @@
           "uploaderUserId": {
             "type": "string"
           },
-          "url": {
+          "ref": {
             "type": "string"
           }
         }

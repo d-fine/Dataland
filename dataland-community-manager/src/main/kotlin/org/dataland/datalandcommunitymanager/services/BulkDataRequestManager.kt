@@ -114,7 +114,7 @@ class BulkDataRequestManager(
                 framework = metaData.dataType.toString(),
                 reportingPeriod = metaData.reportingPeriod,
                 resourceId = metaData.dataId,
-                resourceUrl = metaData.url,
+                resourceUrl = metaData.ref,
             )
         }
     }

@@ -118,7 +118,7 @@ const sections = [
       'data request on the corresponding dataset page.',
   },
   {
-    title: 'SKIPPED REQUESTS - REQUESTS ALREADY EXIST',
+    title: 'SKIPPED REQUESTS - REQUEST ALREADY EXISTS',
     icon: 'info',
     iconColor: 'info-color',
     items: alreadyExistingNonFinalRequests,
@@ -133,7 +133,7 @@ const sections = [
     items: rejectedCompanyIdentifiers,
     dataTestHeader: 'rejectedCompanyIdentifiersHeader',
     dataTestContent: 'rejectedCompanyIdentifiersContent',
-    textBox: 'No company or companies are known on Dataland for the following company identifier(s)',
+    textBox: 'No company on Dataland is associated to any of the following identifier',
   },
 ];
 </script>

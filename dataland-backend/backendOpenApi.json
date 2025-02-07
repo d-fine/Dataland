@@ -6815,7 +6815,7 @@
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
           },
-          "url": {
+          "ref": {
             "type": "string",
             "nullable": true
           }

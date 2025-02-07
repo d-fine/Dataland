@@ -13,7 +13,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
  * @param uploaderUserId the user ID of the user who requested the upload of this dataset
  * @param uploadTime is a timestamp for the upload of this dataset
  * @param reportingPeriod marks a period - e.g. a year or a specific quarter in a year - for which the data is valid
- * @param url direct link to the page displaying the specified data set
+ * @param ref direct link to the page displaying the specified dataset
  */
 data class DataMetaInformation(
     @field:JsonProperty(required = true)
@@ -30,28 +30,6 @@ data class DataMetaInformation(
     @field:JsonProperty(required = true)
     val currentlyActive: Boolean,
     @field:JsonProperty(required = true)
-    var qaStatus: QaStatus,
-    var url: String? = null,
-) {
-    /*
-    constructor(
-        dataId: String,
-        companyId: String,
-        dataType: DataType,
-        uploaderUserId: String? = null,
-        uploadTime: Long,
-        reportingPeriod: String,
-        currentlyActive: Boolean,
-        qaStatus: QaStatus,
-    ) : this(
-        dataId = dataId,
-        companyId = companyId,
-        dataType = dataType,
-        uploaderUserId = uploaderUserId,
-        uploadTime = uploadTime,
-        reportingPeriod = reportingPeriod,
-        currentlyActive = currentlyActive,
-        qaStatus = qaStatus,
-    )
-     */
-}
+    val qaStatus: QaStatus,
+    val ref: String? = null,
+)

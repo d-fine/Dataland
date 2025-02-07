@@ -19,12 +19,12 @@ object MetaDataUtils {
         actualDataMetaInfo: DataMetaInformation,
     ) {
         assertEquals(
-            expectedDataMetaInfo.copy(url = "", uploadTime = 1), actualDataMetaInfo.copy(url = "", uploadTime = 1),
+            expectedDataMetaInfo.copy(ref = "", uploadTime = 1), actualDataMetaInfo.copy(ref = "", uploadTime = 1),
             "The meta info comparison without the reference failed.",
         )
-        if (!expectedDataMetaInfo.url.isNullOrEmpty()) {
+        if (!expectedDataMetaInfo.ref.isNullOrEmpty()) {
             assertTrue(
-                actualDataMetaInfo.url!!.contains(expectedDataMetaInfo.url!!),
+                actualDataMetaInfo.ref!!.contains(expectedDataMetaInfo.ref!!),
                 "The reference is not as expected.",
             )
         }

@@ -56,7 +56,7 @@ class QaReportControllerTest(
                 qaStatus = QaStatus.Accepted,
                 currentlyActive = true,
                 uploadTime = 0,
-                url = "",
+                ref = "",
             ),
         )
         return dataId
@@ -197,7 +197,7 @@ class QaReportControllerTest(
                     qaStatus = QaStatus.Accepted,
                     currentlyActive = true,
                     uploadTime = 0,
-                    url = "",
+                    ref = "",
                 ),
             )
             val ex =

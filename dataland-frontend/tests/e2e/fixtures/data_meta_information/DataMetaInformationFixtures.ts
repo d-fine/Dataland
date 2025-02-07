@@ -38,7 +38,7 @@ export class DataMetaInformationGenerator extends Generator {
       qaStatus: currentlyActive ? QaStatus.Accepted : pickOneElement(Object.values(QaStatus)),
       uploadTime: generateInt(),
       uploaderUserId: canSeeUploader ? this.generateId() : null,
-      url: 'https://dataland.com/',
+      ref: 'https://dataland.com/',
     };
   }
 }

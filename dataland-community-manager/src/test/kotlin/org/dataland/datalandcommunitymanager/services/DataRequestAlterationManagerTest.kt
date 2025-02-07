@@ -105,7 +105,7 @@ class DataRequestAlterationManagerTest {
             reportingPeriod = "",
             currentlyActive = false,
             qaStatus = QaStatus.Accepted,
-            url = "test",
+            ref = "test",
         )
     private val dummyMessage =
         StoredDataRequestMessageObject(

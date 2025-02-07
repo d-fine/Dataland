@@ -48,7 +48,7 @@ describe('Component tests for the BulkDataRequestSummary page', () => {
     }).then(() => {
       cy.get('.summary-section-heading').contains('CREATED REQUESTS').should('exist').click();
       cy.get('.summary-section-heading').contains('SKIPPED REQUESTS - DATA ALREADY EXISTS').should('exist');
-      cy.get('.summary-section-heading').contains('SKIPPED REQUESTS - REQUESTS ALREADY EXIST').should('exist').click();
+      cy.get('.summary-section-heading').contains('SKIPPED REQUESTS - REQUEST ALREADY EXISTS').should('exist').click();
       cy.get('.summary-section-heading').contains('REJECTED IDENTIFIERS').should('exist').click();
 
       cy.get('.grid-container').should('have.length', 3);

@@ -146,7 +146,7 @@ internal class MetaDataControllerTest(
             assertEquals(qaStatus, dataMetaInfo.qaStatus)
             assertTrue(dataMetaInfo.currentlyActive)
             assertEquals(uploaderUserId.toString(), dataMetaInfo.uploaderUserId)
-            assertEquals(url, dataMetaInfo.url)
+            assertEquals(url, dataMetaInfo.ref)
         }
     }
 

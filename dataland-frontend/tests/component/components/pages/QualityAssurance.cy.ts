@@ -313,7 +313,7 @@ describe('Component tests for the Quality Assurance page', () => {
       reportingPeriod: '2023',
       currentlyActive: false,
       qaStatus: QaStatus.Pending,
-      url: 'https://example.com',
+      ref: 'https://example.com',
     };
 
     cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
