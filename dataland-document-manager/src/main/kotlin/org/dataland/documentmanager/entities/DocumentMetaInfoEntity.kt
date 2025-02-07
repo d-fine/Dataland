@@ -1,11 +1,13 @@
 package org.dataland.documentmanager.entities
 
+import jakarta.persistence.Convert
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.dataland.datalandbackendutils.converter.DocumentCategoryConverter
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
@@ -22,7 +24,7 @@ data class DocumentMetaInfoEntity(
     @Enumerated(EnumType.STRING)
     val documentType: DocumentType,
     val documentName: String?,
-    // TODO Converter
+    @Convert(converter = DocumentCategoryConverter::class)
     val documentCategory: DocumentCategory,
     @ElementCollection
     val companyIds: List<String>?,
