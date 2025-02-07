@@ -200,8 +200,27 @@ class QaEventListenerQaService
             MessageQueueUtils.rejectMessageOnException {
                 val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
                 MessageQueueUtils.validateDataId(dataId)
+
+                val qaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(dataId)!!
+                val activeDataId =
+                    qaReviewManager.getDataIdOfCurrentlyActiveDataset(
+                        qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
+                    )
+                val deletedDataIdWasActive = (dataId == activeDataId)
+
                 qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
                 qaReviewManager.deleteAllByDataId(dataId, correlationId)
+                if (deletedDataIdWasActive) {
+                    val newActiveDataId =
+                        qaReviewManager
+                            .getDataIdOfCurrentlyActiveDataset(
+                                qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
+                            ).toString()
+                    val newQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(newActiveDataId)!!
+                    qaReviewManager.sendQaStatusUpdateMessage(
+                        qaReviewEntity = newQaReviewEntity, correlationId = newQaReviewEntity.eventId.toString(),
+                    )
+                }
             }
         }
 
