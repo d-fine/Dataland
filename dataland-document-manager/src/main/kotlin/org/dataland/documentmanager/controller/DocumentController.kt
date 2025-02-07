@@ -2,6 +2,7 @@ package org.dataland.documentmanager.controller
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.api.DocumentApi
+import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.services.DocumentManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,8 +21,11 @@ import java.io.ByteArrayInputStream
 class DocumentController(
     @Autowired private val documentManager: DocumentManager,
 ) : DocumentApi {
-    override fun postDocument(document: MultipartFile): ResponseEntity<DocumentUploadResponse> =
-        ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document))
+    override fun postDocument(
+        document: MultipartFile,
+        documentMetaInfo: DocumentMetaInfo,
+    ): ResponseEntity<DocumentUploadResponse> =
+        ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document, documentMetaInfo))
 
     override fun checkDocument(documentId: String) {
         if (!documentManager.checkIfDocumentExistsWithId(documentId)) {

@@ -1,20 +1,28 @@
 package org.dataland.documentmanager.model
 
-import org.dataland.datalandbackendutils.model.DocumentType
-import org.dataland.datalandbackendutils.model.QaStatus
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackendutils.model.DocumentCategory
 
 /**
  * --- API model ---
- * Holds the meta info of a document
- * @param [documentId] document ID
- * @param [uploaderId] uploader ID
- * @param [uploadTime] timestamp of the upload
- * @param [qaStatus] qa status of the document
+ * Holds the meta info of a document uploaded with document
+ * @param documentName
+ * @param documentCategory
+ * @param companyIds
+ * @param publicationDate
+ * @param reportingPeriod only for informative purposes
  */
 data class DocumentMetaInfo(
-    val documentId: String,
-    val documentType: DocumentType,
-    val uploaderId: String,
-    val uploadTime: Long,
-    var qaStatus: QaStatus,
+    @field:JsonProperty(required = true)
+    val documentName: String,
+    @field:JsonProperty(required = true)
+    val documentCategory: DocumentCategory,
+    @field:JsonProperty(required = true)
+    val companyIds: List<String>,
+    @field:JsonFormat(pattern = "yyyy-MM-dd")
+    @field:JsonProperty(required = true)
+    val publicationDate: String,
+    @field:JsonProperty(required = true)
+    val reportingPeriod: String?,
 )

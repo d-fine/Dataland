@@ -43,29 +43,58 @@ class DocumentManager(
 
     /**
      * Stores the meta information of a document, saves it temporarily locally and notifies that it can be
-     * retrieved for other use
+     * retrieved from internal-storage for persistence
      * @param document the multipart file which contains the uploaded document
+     * @param documentMetaInfo meta info for document provided by uploaded
      * @returns the meta information for the document
      */
-    fun temporarilyStoreDocumentAndTriggerStorage(document: MultipartFile): DocumentUploadResponse {
+    @Transactional(propagation = Propagation.NEVER)
+    fun temporarilyStoreDocumentAndTriggerStorage(
+        document: MultipartFile,
+        documentMetaInfo: DocumentMetaInfo,
+    ): DocumentUploadResponse {
         val correlationId = randomUUID().toString()
         logger.info("Started temporary storage process for document with correlation ID: $correlationId")
-        val documentType = categorizeDocumentType(document)
-        val documentMetaInfo = generateDocumentMetaInfo(document, documentType, correlationId)
-        val documentExists = documentMetaInfoRepository.existsById(documentMetaInfo.documentId)
-        if (documentExists) {
-            return DocumentUploadResponse(documentMetaInfo.documentId)
+
+        val documentId = generateDocumentId(document, correlationId)
+        if (this.checkIfDocumentExistsWithId(documentId)) {
+            return documentMetaInfoRepository.getByDocumentId(documentId)?.toDocumentUploadResponse()
+                ?: throw ResourceNotFoundApiException(
+                    summary = "Document with documentId $documentId could not be retrieved.",
+                    message = "Document with documentId $documentId exists but could not be retrieved. CorrelationId: $correlationId",
+                )
         }
+        val documentMetaInfoEntity =
+            DocumentMetaInfoEntity(
+                documentId = documentId,
+                documentType = getDocumentType(document),
+                documentName = documentMetaInfo.documentName,
+                documentCategory = documentMetaInfo.documentCategory,
+                companyIds = documentMetaInfo.companyIds,
+                uploaderId = DatalandAuthentication.fromContext().userId,
+                uploadTime = Instant.now().toEpochMilli(),
+                publicationDate = documentMetaInfo.publicationDate,
+                reportingPeriod = documentMetaInfo.reportingPeriod,
+                qaStatus = QaStatus.Pending,
+            )
+
         val documentBody = fileProcessor.processFile(document, correlationId)
-        saveMetaInfoToDatabase(documentMetaInfo, correlationId)
-        inMemoryDocumentStore.storeDataInMemory(documentMetaInfo.documentId, documentBody)
+        this.saveMetaInfoToDatabase(documentMetaInfoEntity, correlationId)
+        inMemoryDocumentStore.storeDataInMemory(documentId, documentBody)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            documentMetaInfo.documentId, MessageType.DOCUMENT_RECEIVED, correlationId, ExchangeName.DOCUMENT_RECEIVED,
+            documentId, MessageType.DOCUMENT_RECEIVED, correlationId, ExchangeName.DOCUMENT_RECEIVED,
         )
-        return DocumentUploadResponse(documentMetaInfo.documentId)
+        return DocumentUploadResponse(
+            documentId,
+            documentName = documentMetaInfoEntity.documentName,
+            documentCategory = documentMetaInfoEntity.documentCategory,
+            companyIds = documentMetaInfoEntity.companyIds,
+            publicationDate = documentMetaInfoEntity.publicationDate,
+            reportingPeriod = documentMetaInfoEntity.reportingPeriod,
+        )
     }
 
-    private fun categorizeDocumentType(document: MultipartFile): DocumentType {
+    private fun getDocumentType(document: MultipartFile): DocumentType {
         val documentExtension = document.lowercaseExtension()
         return when (documentExtension) {
             "xls" -> DocumentType.Xls
@@ -77,35 +106,24 @@ class DocumentManager(
 
     /**
      * A wrapper for storing document meta information to the database immediately
-     *
-     * @param documentMetaInfo the document meta information to store
+     * @param documentMetaInfoEntity the document meta information to store
      */
-    @Transactional(propagation = Propagation.NEVER)
     fun saveMetaInfoToDatabase(
-        documentMetaInfo: DocumentMetaInfo,
+        documentMetaInfoEntity: DocumentMetaInfoEntity,
         correlationId: String,
     ) {
         logger.info("Saving meta info of document with correlation ID: $correlationId")
-        documentMetaInfoRepository.save(DocumentMetaInfoEntity(documentMetaInfo))
+        documentMetaInfoRepository.save(documentMetaInfoEntity)
     }
 
-    private fun generateDocumentMetaInfo(
+    private fun generateDocumentId(
         document: MultipartFile,
-        documentType: DocumentType,
         correlationId: String,
-    ): DocumentMetaInfo {
+    ): String {
         logger.info("Generate document meta info for document with correlation ID: $correlationId")
         val documentId = document.bytes.sha256()
-        logger.info(
-            "Generated hash/document ID: $documentId for document with correlation ID: $correlationId. ",
-        )
-        return DocumentMetaInfo(
-            documentId = documentId,
-            documentType = documentType,
-            uploaderId = DatalandAuthentication.fromContext().userId,
-            uploadTime = Instant.now().toEpochMilli(),
-            qaStatus = QaStatus.Pending,
-        )
+        logger.info("Generated hash/document ID: $documentId for document with correlation ID: $correlationId. ")
+        return documentId
     }
 
     /**

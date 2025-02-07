@@ -1,13 +1,15 @@
 package org.dataland.documentmanager.entities
 
+import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentUploadResponse
 
 /**
  * The entity storing the document meta info
@@ -19,17 +21,28 @@ data class DocumentMetaInfoEntity(
     val documentId: String,
     @Enumerated(EnumType.STRING)
     val documentType: DocumentType,
+    val documentName: String?,
+    // TODO Converter
+    val documentCategory: DocumentCategory,
+    @ElementCollection
+    val companyIds: List<String>?,
     val uploaderId: String,
     val uploadTime: Long,
+    val publicationDate: String?,
+    val reportingPeriod: String?,
     @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
 ) {
-    constructor(documentMetaInfo: DocumentMetaInfo) :
-        this(
-            documentId = documentMetaInfo.documentId,
-            documentType = documentMetaInfo.documentType,
-            uploaderId = documentMetaInfo.uploaderId,
-            uploadTime = documentMetaInfo.uploadTime,
-            qaStatus = documentMetaInfo.qaStatus,
+    /**
+     * convert Entity to Response API Model
+     */
+    fun toDocumentUploadResponse() =
+        DocumentUploadResponse(
+            documentId = documentId,
+            documentName = documentName,
+            documentCategory = documentCategory,
+            companyIds = companyIds,
+            publicationDate = publicationDate,
+            reportingPeriod = reportingPeriod,
         )
 }

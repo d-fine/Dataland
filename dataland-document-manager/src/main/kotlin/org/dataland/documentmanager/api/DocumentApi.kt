@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -46,6 +47,7 @@ interface DocumentApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
     fun postDocument(
         @RequestPart document: MultipartFile,
+        @RequestPart documentMetaInfo: DocumentMetaInfo,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**
