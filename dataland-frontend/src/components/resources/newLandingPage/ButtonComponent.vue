@@ -22,6 +22,8 @@ const handleClick = (): void => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .button-font-style {
   font-size: 16px;
   font-weight: 600;

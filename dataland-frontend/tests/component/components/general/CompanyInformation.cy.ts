@@ -92,7 +92,7 @@ describe('Component tests for the company info sheet', function (): void {
     mockRequestsOnMounted();
     cy.mountWithPlugins(CompanyInformationComponent, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {
         companyId: dummyCompanyId,

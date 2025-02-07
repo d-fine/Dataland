@@ -309,7 +309,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Total Revenue',
             explanation:
-              "Total revenue for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time (millions)",
+              "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time (millions)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.environmental?.greenhouseGasEmissions?.totalRevenue, 'Total Revenue'),
@@ -324,7 +324,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
+                  'Tonnes \/ \u20ACM Revenue'
                 ),
                 'Carbon footprint',
                 dataset.environmental?.greenhouseGasEmissions?.carbonFootprintInTonnesPerMillionEURRevenue
@@ -339,7 +339,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
+                  'Tonnes \/ \u20ACM Revenue'
                 ),
                 'GHG intensity',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityInTonnesPerMillionEURRevenue
@@ -355,7 +355,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
+                  'Tonnes \/ \u20ACM Revenue'
                 ),
                 'GHG intensity - scope 1',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope1InTonnesPerMillionEURRevenue
@@ -371,7 +371,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
+                  'Tonnes \/ \u20ACM Revenue'
                 ),
                 'GHG intensity - scope 2',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope2InTonnesPerMillionEURRevenue
@@ -387,7 +387,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
+                  'Tonnes \/ \u20ACM Revenue'
                 ),
                 'GHG intensity - scope 3',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope3InTonnesPerMillionEURRevenue
@@ -403,7 +403,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue?.value,
-                  'Tonnes / \u20ACM Revenue'
+                  'Tonnes \/ \u20ACM Revenue'
                 ),
                 'GHG intensity - scope 4',
                 dataset.environmental?.greenhouseGasEmissions?.ghgIntensityScope4InTonnesPerMillionEURRevenue
@@ -907,7 +907,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
               wrapDisplayValueWithDatapointInformation(
                 formatNumberForDatatable(
                   dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue?.value,
-                  'Cubic Meters / \u20ACM Revenue'
+                  'Cubic Meters \/ \u20ACM Revenue'
                 ),
                 'Relative Water Usage',
                 dataset.environmental?.water?.relativeWaterUsageInCubicMetersPerMillionEURRevenue
@@ -1019,7 +1019,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions of Ozone Depletion Substances',
             explanation:
-              "Tonnes of ozone depletion substances, chemicals that destroy the earth's protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
+              "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(

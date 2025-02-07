@@ -1,156 +1,161 @@
+@use 'sass:color';
+@use '../colors';
+@use '../units';
+@use '../variables';
+
 .p-button {
-  color: $btn-primary-color;
-  background: $btn-primary-bg;
-  border: 1px solid $btn-primary-bg;
-  padding: $spacing-xxs $spacing-sm;
-  font-size: $button-fs;
-  font-weight: $button-fw;
-  font-family: $ibm-plex-sans;
+  color: colors.$btn-primary-color;
+  background: colors.$btn-primary-bg;
+  border: 1px solid colors.$btn-primary-bg;
+  padding: variables.$spacing-xxs variables.$spacing-sm;
+  font-size: units.$button-fs;
+  font-weight: units.$button-fw;
+  font-family: variables.$ibm-plex-sans;
   transition:
     background-color 0.2s,
     color 0.2s,
     border-color 0.2s,
     box-shadow 0.2s;
   border-radius: 0;
-  line-height: $line-height-1;
-  margin: $spacing-xxxs;
+  line-height: variables.$line-height-1;
+  margin: variables.$spacing-xxxs;
 
   &:enabled:hover {
-    background: darken($btn-primary-bg, 20%);
-    border-color: darken($btn-primary-bg, 20%);
+    background: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
+    border-color: color.adjust(colors.$btn-primary-bg, $lightness: -20%);
   }
 
   &:enabled:active {
-    background: darken($btn-primary-bg, 10%);
-    border-color: darken($btn-primary-bg, 10%);
+    background: color.adjust(colors.$btn-primary-bg, $lightness: -10%);
+    border-color: color.adjust(colors.$btn-primary-bg, $lightness: -10%);
   }
 
   &:disabled {
     background-color: transparent;
     border: 0;
-    color: $btn-disabled-color;
+    color: colors.$btn-disabled-color;
     cursor: not-allowed;
   }
 
   &:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem $btn-focus-border-color;
+    box-shadow: 0 0 0 0.2rem colors.$btn-focus-border-color;
   }
 
   &.p-button-danger {
-    background: $btn-danger-bg;
-    border: 1px solid $btn-danger-bg;
+    background: colors.$btn-danger-bg;
+    border: 1px solid colors.$btn-danger-bg;
 
     &:enabled:hover {
-      background: darken($btn-danger-bg, 20%);
-      border-color: darken($btn-danger-bg, 20%);
+      background: color.adjust(colors.$btn-danger-bg, $lightness: -20%);
+      border-color: color.adjust(colors.$btn-danger-bg, $lightness: -20%);
     }
 
     &:enabled:active {
-      background: darken($btn-danger-bg, 10%);
-      border-color: darken($btn-danger-bg, 10%);
+      background: color.adjust(colors.$btn-danger-bg, $lightness: -10%);
+      border-color: color.adjust(colors.$btn-danger-bg, $lightness: -10%);
     }
   }
 
   &.p-button-success {
-    background: $btn-success-bg;
-    border: 1px solid $btn-success-bg;
+    background: colors.$btn-success-bg;
+    border: 1px solid colors.$btn-success-bg;
 
     &:enabled:hover {
-      background: darken($btn-success-bg, 20%);
-      border-color: darken($btn-success-bg, 20%);
+      background: color.adjust(colors.$btn-success-bg, $lightness: -20%);
+      border-color: color.adjust(colors.$btn-success-bg, $lightness: -20%);
     }
 
     &:enabled:active {
-      background: darken($btn-success-bg, 10%);
-      border-color: darken($btn-success-bg, 10%);
+      background: color.adjust(colors.$btn-success-bg, $lightness: -10%);
+      border-color: color.adjust(colors.$btn-success-bg, $lightness: -10%);
     }
   }
 
   &.p-button-rounded {
-    border-radius: $radius-lg;
+    border-radius: variables.$radius-lg;
   }
 
   &.p-button-sm {
-    font-size: $fs-sm;
-    padding: $spacing-xxs $spacing-xs;
+    font-size: variables.$fs-sm;
+    padding: variables.$spacing-xxs variables.$spacing-xs;
   }
 
   &.p-button-icon {
-    padding: $spacing-xxxs;
+    padding: variables.$spacing-xxxs;
     line-height: 0.75rem;
 
     .pi {
-      font-size: $fs-xs;
+      font-size: variables.$fs-xs;
     }
   }
 
   &.p-button-textcolor {
     background-color: transparent;
-    color: $main-text-color;
+    color: colors.$main-text-color;
     border-color: transparent;
 
     &:enabled:hover {
-      color: $btn-primary-bg;
+      color: colors.$btn-primary-bg;
       background-color: transparent;
     }
 
     &:enabled:active {
-      color: $btn-primary-bg;
-      border-color: $btn-primary-color;
+      color: colors.$btn-primary-bg;
+      border-color: colors.$btn-primary-color;
     }
   }
 
   &.p-button-outlined {
     background-color: transparent;
-    color: $btn-primary-bg;
+    color: colors.$btn-primary-bg;
     border-style: solid;
-    border-color: $btn-primary-bg;
+    border-color: colors.$btn-primary-bg;
     border-width: 1px;
 
     &:enabled:hover {
-      background: lighten($btn-primary-bg, 45%);
+      background: color.adjust(colors.$btn-primary-bg, $lightness: 45%);
     }
 
     &:enabled:active {
-      background: lighten($btn-primary-bg, 40%);
+      background: color.adjust(colors.$btn-primary-bg, $lightness: 40%);
     }
 
     &.p-button-danger {
-      color: $btn-danger-bg;
-      border-color: $btn-danger-bg;
+      color: colors.$btn-danger-bg;
+      border-color: colors.$btn-danger-bg;
 
       &:enabled:hover {
-        background: lighten($btn-danger-bg, 45%);
+        background: color.adjust(colors.$btn-danger-bg, $lightness: 45%);
       }
 
       &:enabled:active {
-        background: lighten($btn-danger-bg, 40%);
+        background: color.adjust(colors.$btn-danger-bg, $lightness: 40%);
       }
     }
 
     &.p-button-success {
-      color: $btn-success-bg;
-      border-color: $btn-success-bg;
+      color: colors.$btn-success-bg;
+      border-color: colors.$btn-success-bg;
 
       &:enabled:hover {
-        background: lighten($btn-success-bg, 45%);
+        background: color.adjust(colors.$btn-success-bg, $lightness: 45%);
       }
 
       &:enabled:active {
-        background: lighten($btn-success-bg, 40%);
+        background: color.adjust(colors.$btn-success-bg, $lightness: 40%);
       }
     }
   }
 
   &.p-button-text {
     background-color: transparent;
-    color: $btn-primary-bg;
+    color: colors.$btn-primary-bg;
     border: 0;
 
     &:enabled:hover {
-      color: darken($btn-primary-bg, 30%);
+      color: color.adjust(colors.$btn-primary-bg, $lightness: -30%);
       background: transparent;
       border: 0;
     }
@@ -161,7 +166,7 @@
     }
 
     &.p-button-danger {
-      color: $btn-danger-bg;
+      color: colors.$btn-danger-bg;
 
       &:enabled:hover {
         background: transparent;
@@ -175,7 +180,7 @@
     }
 
     &.p-button-success {
-      color: $btn-success-bg;
+      color: colors.$btn-success-bg;
 
       &:enabled:hover {
         background: transparent;
@@ -195,23 +200,23 @@
 }
 
 .link {
-  color: $main-color;
+  color: colors.$main-color;
   background: transparent;
   border: transparent;
   cursor: pointer;
   display: flex;
 
   &:hover {
-    color: darken($main-color, 20%);
+    color: color.adjust(colors.$main-color, $lightness: -20%);
     text-decoration: underline;
   }
 
   &:active {
-    color: lighten($main-color, 10%);
+    color: color.adjust(colors.$main-color, $lightness: 10%);
   }
 
   &:focus {
-    box-shadow: 0 0 0 0.2rem $btn-focus-border-color;
+    box-shadow: 0 0 0 0.2rem colors.$btn-focus-border-color;
   }
 
   &.--underlined {

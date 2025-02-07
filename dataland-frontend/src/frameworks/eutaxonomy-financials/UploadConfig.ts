@@ -1498,7 +1498,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1511,7 +1511,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1524,7 +1524,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
             description:
-              "Taxonomy-aligned and transitional Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and transitional Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1537,7 +1537,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1550,7 +1550,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1563,7 +1563,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1576,7 +1576,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1589,7 +1589,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1602,7 +1602,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1615,7 +1615,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1628,7 +1628,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1641,7 +1641,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1654,7 +1654,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1673,7 +1673,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1686,7 +1686,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1699,7 +1699,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
             description:
-              "Taxonomy-aligned and transitional Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and transitional Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1712,7 +1712,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1725,7 +1725,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1738,7 +1738,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1751,7 +1751,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1764,7 +1764,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1777,7 +1777,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1790,7 +1790,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1803,7 +1803,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1816,7 +1816,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             description:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1829,7 +1829,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1853,9 +1853,9 @@ export const eutaxonomyFinancialsDataModel = [
         fields: [
           {
             name: 'turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
-            label: "Turnover-based Total Assets invested under Investment Firm's Activities dealing on own Account",
+            label: "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account",
             description:
-              "Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms\' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
 
             component: 'CurrencyDataPointFormField',
             required: false,
@@ -1867,7 +1867,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1880,7 +1880,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1893,7 +1893,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
             description:
-              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1906,7 +1906,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1919,7 +1919,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1932,7 +1932,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1945,7 +1945,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1958,7 +1958,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1971,7 +1971,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1984,7 +1984,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -1996,7 +1996,7 @@ export const eutaxonomyFinancialsDataModel = [
             name: 'turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible',
             label: 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2008,7 +2008,7 @@ export const eutaxonomyFinancialsDataModel = [
             name: 'turnoverBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
             label: 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2021,7 +2021,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2034,7 +2034,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2047,7 +2047,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2060,7 +2060,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2073,7 +2073,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2086,7 +2086,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2099,7 +2099,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2112,7 +2112,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2125,7 +2125,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
             description:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2138,7 +2138,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
             description:
-              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2151,7 +2151,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2167,9 +2167,9 @@ export const eutaxonomyFinancialsDataModel = [
         fields: [
           {
             name: 'capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount',
-            label: "CapEx-based Total Assets invested under Investment Firm's Activities dealing on own Account",
+            label: "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account",
             description:
-              "Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms\' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
 
             component: 'CurrencyDataPointFormField',
             required: false,
@@ -2181,7 +2181,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2193,7 +2193,7 @@ export const eutaxonomyFinancialsDataModel = [
             name: 'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeMitigationAligned',
             label: 'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2206,7 +2206,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
             description:
-              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2219,7 +2219,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2232,7 +2232,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2244,7 +2244,7 @@ export const eutaxonomyFinancialsDataModel = [
             name: 'capexBasedProportionOfAssetsSubstantiallyContributingToClimateChangeAdaptationAligned',
             label: 'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2257,7 +2257,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2270,7 +2270,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2283,7 +2283,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2296,7 +2296,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2308,7 +2308,7 @@ export const eutaxonomyFinancialsDataModel = [
             name: 'capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyEligible',
             label: 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2320,7 +2320,7 @@ export const eutaxonomyFinancialsDataModel = [
             name: 'capexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyAligned',
             label: 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2333,7 +2333,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2346,7 +2346,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2359,7 +2359,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2372,7 +2372,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2385,7 +2385,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2398,7 +2398,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2411,7 +2411,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2424,7 +2424,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2437,7 +2437,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
             description:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2450,7 +2450,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
             description:
-              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2463,7 +2463,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
             description:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
 
             unit: '%',
             component: 'PercentageExtendedDataPointFormField',
@@ -2797,7 +2797,7 @@ export const eutaxonomyFinancialsDataModel = [
             label:
               'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account',
             description:
-              "Total assets invested under investment firms' activities Other Services (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms\' activities Other Services (as per Section A of Annex I to Directive 2014/65/EU)",
 
             component: 'CurrencyDataPointFormField',
             required: false,
