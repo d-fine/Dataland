@@ -191,7 +191,7 @@ class BulkDataRequestManagerTest {
                         reportingPeriod = dummyReportingPeriod,
                         currentlyActive = true,
                         qaStatus = QaStatus.Accepted,
-                        url = "https://example.com/dataId1",
+                        ref = "https://example.com/dataId1",
                     ),
                 )
             dataMetaInformationList

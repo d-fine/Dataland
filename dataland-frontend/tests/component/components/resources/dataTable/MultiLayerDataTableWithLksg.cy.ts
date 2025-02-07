@@ -75,7 +75,7 @@ describe('Component test for the LksgPanel', () => {
     cy.get(`span.p-column-title`).should('contain.text', reportingPeriod.substring(0, 4));
     getSectionHead('Production-specific').should('have.attr', 'data-section-expanded', 'true');
     getCellValueContainer('List Of Production Sites').contains('a').should('be.visible').click();
-    lksgData.general.productionSpecific!.listOfProductionSites!.forEach((productionSite: LksgProductionSite) => {
+    lksgData.general.productionSpecific.listOfProductionSites.forEach((productionSite: LksgProductionSite) => {
       if (productionSite.addressOfProductionSite?.streetAndHouseNumber) {
         cy.get('tbody.p-datatable-tbody p').contains(productionSite.addressOfProductionSite.streetAndHouseNumber);
       }
