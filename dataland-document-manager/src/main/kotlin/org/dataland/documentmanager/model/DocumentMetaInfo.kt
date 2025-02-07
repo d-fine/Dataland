@@ -23,6 +23,5 @@ data class DocumentMetaInfo(
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     @field:JsonProperty(required = true)
     val publicationDate: String,
-    @field:JsonProperty(required = true)
     val reportingPeriod: String?,
 )

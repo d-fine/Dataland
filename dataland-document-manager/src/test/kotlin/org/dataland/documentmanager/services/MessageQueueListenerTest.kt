@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
+import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -80,6 +81,11 @@ class MessageQueueListenerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentType = DocumentType.Pdf,
+                        documentName = "sample.pdf",
+                        documentCategory = DocumentCategory.AnnualReport,
+                        companyIds = listOf(),
+                        publicationDate = "2023-01-01",
+                        reportingPeriod = "2023",
                         documentId = documentId,
                         uploaderId = "",
                         uploadTime = 0,

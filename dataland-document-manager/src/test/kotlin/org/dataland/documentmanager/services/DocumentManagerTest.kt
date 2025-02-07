@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services
 
 import org.apache.pdfbox.io.IOUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -9,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -78,13 +80,19 @@ class DocumentManagerTest(
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
+        val mockDocMetaInfo = mockDocumentMetaInfo()
 
-        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
+        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, mockDocMetaInfo)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentType = DocumentType.Pdf,
+                        documentName = "sample.pdf",
+                        documentCategory = DocumentCategory.AnnualReport,
+                        companyIds = listOf(),
+                        publicationDate = "2023-01-01",
+                        reportingPeriod = "2023",
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
@@ -108,12 +116,18 @@ class DocumentManagerTest(
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
-        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
+        val mockDocMetaInfo = mockDocumentMetaInfo()
+        val uploadResponse = documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, mockDocMetaInfo)
         `when`(mockDocumentMetaInfoRepository.findById(anyString()))
             .thenReturn(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentType = DocumentType.Pdf,
+                        documentName = "sample.pdf",
+                        documentCategory = DocumentCategory.AnnualReport,
+                        companyIds = listOf(),
+                        publicationDate = "2023-01-01",
+                        reportingPeriod = "2023",
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
@@ -128,6 +142,7 @@ class DocumentManagerTest(
     @Test
     fun `check that exception is thrown when sending notification to message queue fails during document storage`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
+        val mockDocMetaInfo = mockDocumentMetaInfo()
         `when`(
             mockCloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 anyString(), eq(MessageType.DOCUMENT_RECEIVED), anyString(),
@@ -137,7 +152,7 @@ class DocumentManagerTest(
             AmqpException::class.java,
         )
         assertThrows<AmqpException> {
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile)
+            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockMultipartFile, mockDocMetaInfo)
         }
     }
 
@@ -148,5 +163,15 @@ class DocumentManagerTest(
             reportName, reportName,
             "application/pdf", testFileBytes,
         )
+    }
+
+    private fun mockDocumentMetaInfo(): DocumentMetaInfo {
+        val mockDocInfo = mock(DocumentMetaInfo::class.java)
+        `when`(mockDocInfo.documentName).thenReturn("sample.pdf")
+        `when`(mockDocInfo.documentCategory).thenReturn(DocumentCategory.AnnualReport)
+        `when`(mockDocInfo.companyIds).thenReturn(listOf())
+        `when`(mockDocInfo.publicationDate).thenReturn("2023-01-01")
+        `when`(mockDocInfo.reportingPeriod).thenReturn("2023")
+        return mockDocInfo
     }
 }
