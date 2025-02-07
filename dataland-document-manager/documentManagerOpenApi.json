@@ -26,8 +26,18 @@
           "document-controller"
         ],
         "summary": "Upload a document.",
-        "description": "Upload a document and receive meta information",
+        "description": "Upload a document and meta information",
         "operationId": "postDocument",
+        "parameters": [
+          {
+            "name": "documentMetaInfo",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DocumentMetaInfo"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -475,6 +485,42 @@
   },
   "components": {
     "schemas": {
+      "DocumentMetaInfo": {
+        "required": [
+          "companyIds",
+          "documentCategory",
+          "documentName",
+          "publicationDate",
+          "reportingPeriod"
+        ],
+        "type": "object",
+        "properties": {
+          "documentName": {
+            "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publicationDate": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
       "DocumentUploadResponse": {
         "required": [
           "documentId"
@@ -482,6 +528,30 @@
         "type": "object",
         "properties": {
           "documentId": {
+            "type": "string"
+          },
+          "documentName": {
+            "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publicationDate": {
+            "type": "string"
+          },
+          "reportingPeriod": {
             "type": "string"
           }
         }

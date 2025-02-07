@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
@@ -29,10 +30,11 @@ interface DocumentApi {
     /**
      * Upload a document
      * @param document a document
+     * @param documentMetaInfo document meta info
      */
     @Operation(
         summary = "Upload a document.",
-        description = "Upload a document and receive meta information",
+        description = "Upload a document and meta information",
     )
     @ApiResponses(
         value = [
@@ -47,7 +49,7 @@ interface DocumentApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
     fun postDocument(
         @RequestPart document: MultipartFile,
-        @RequestPart documentMetaInfo: DocumentMetaInfo,
+        @RequestParam documentMetaInfo: DocumentMetaInfo,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**
