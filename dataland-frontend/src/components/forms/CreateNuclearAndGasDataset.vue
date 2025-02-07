@@ -236,7 +236,7 @@ export default defineComponent({
   created() {
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string') {
-      this.loadNuclearAndGasData(dataId);
+      void this.loadNuclearAndGasData(dataId);
     } else {
       this.waitingForData = false;
     }

@@ -42,7 +42,7 @@ const register = (): void => {
   assertDefined(getKeycloakPromise)()
     .then((keycloak) => {
       if (!keycloak.authenticated) {
-        registerAndRedirectToSearchPage(keycloak);
+        void registerAndRedirectToSearchPage(keycloak);
       }
     })
     .catch((error) => console.log(error));
@@ -50,6 +50,8 @@ const register = (): void => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .about-intro {
   display: flex;
   flex-direction: column;

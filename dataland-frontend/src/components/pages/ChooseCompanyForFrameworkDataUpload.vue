@@ -66,10 +66,11 @@ import AuthorizationWrapper from '@/components/wrapper/AuthorizationWrapper.vue'
 import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
 import type { Content, Page } from '@/types/ContentTypes';
-import { checkIfUserHasRole, KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { type CompanyIdAndName } from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import router from '@/router';
+import { KEYCLOAK_ROLE_ADMIN, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'ChooseCompany',
