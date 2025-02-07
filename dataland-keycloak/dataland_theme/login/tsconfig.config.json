@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "noEmit": true,
-    "module": "ESNext",
-    "moduleResolution": "Node"
+    "module": "NodeNext"
   },
   "include": [
     "vite.config.mts"

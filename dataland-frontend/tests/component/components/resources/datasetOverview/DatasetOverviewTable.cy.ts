@@ -4,7 +4,7 @@ import { type DatasetTableInfo, DatasetStatus } from '@/components/resources/dat
 import { DataTypeEnum } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakUtils';
+import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
 describe('Component test for DatasetOverviewTable', () => {
   const nameOfCompanyAlpha = 'Imaginary-Corporate';

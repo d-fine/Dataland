@@ -1,9 +1,11 @@
+@use '../variables';
+
 .dataland-toolbar {
   z-index: 1000;
 
   &.fixed {
     top: 72px;
-    border-bottom: 1px solid $gray-light;
+    border-bottom: 1px solid variables.$gray-light;
 
     .d-search-filters-panel {
       padding: 0 9px 0 0px;

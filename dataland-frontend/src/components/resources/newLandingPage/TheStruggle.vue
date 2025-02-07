@@ -26,6 +26,8 @@ const struggleSection = computed(() => {
 });
 </script>
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .struggle {
   display: flex;
   flex-direction: column;

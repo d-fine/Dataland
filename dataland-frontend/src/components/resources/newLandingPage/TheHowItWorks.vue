@@ -58,6 +58,8 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .howitworks {
   padding: 200px 0;
   background-color: var(--primary-orange);

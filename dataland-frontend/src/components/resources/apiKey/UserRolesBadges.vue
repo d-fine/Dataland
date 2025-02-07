@@ -19,11 +19,11 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 import {
-  KEYCLOAK_ROLE_USER,
-  KEYCLOAK_ROLE_UPLOADER,
-  KEYCLOAK_ROLE_REVIEWER,
   KEYCLOAK_ROLE_ADMIN,
-} from '@/utils/KeycloakUtils';
+  KEYCLOAK_ROLE_REVIEWER,
+  KEYCLOAK_ROLE_UPLOADER,
+  KEYCLOAK_ROLE_USER,
+} from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'UserRolesBadges',
