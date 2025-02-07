@@ -2,15 +2,19 @@ package org.dataland.e2etests.tests
 
 import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException
+import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.ExceptionUtils.assertResourceNotFoundWrapper
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -31,9 +35,28 @@ class DataDeletionControllerTest {
 
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
 
+    private fun awaitUntil(operation: () -> Boolean) =
+        Awaitility.await().atMost(2000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            operation()
+        }
+
+    private fun awaitUntilAsserted(operation: () -> Any) =
+        Awaitility.await().atMost(2000, TimeUnit.MILLISECONDS).pollDelay(500, TimeUnit.MILLISECONDS).untilAsserted {
+            operation()
+        }
+
+    private fun assertNoQaReviewFound(dataId: String) {
+        val errorMessage =
+            assertThrows<ClientException> {
+                apiAccessor.qaServiceControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataId))
+            }.message
+        assertEquals("Client error : 404 ", errorMessage)
+    }
+
     private fun performAndVerifyDeletion(dataId: String) {
         assertDoesNotThrow { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
         assertResourceNotFoundWrapper { apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId) }
+        awaitUntilAsserted { assertNoQaReviewFound(dataId) }
     }
 
     private fun tryDeletionAndVerifyDenial(dataId: String) {
@@ -108,29 +131,23 @@ class DataDeletionControllerTest {
             apiAccessor.uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
                 testCompanyInformation,
                 testDataEuTaxonomyNonFinancials,
+                ensureQaPassed = false,
             )
         val dataIdFirstUpload = firstUploadInfo.get("dataId")!!
+
+        awaitUntilAsserted { apiAccessor.qaServiceControllerApi.changeQaStatus(dataIdFirstUpload, QaStatus.Accepted) }
         assert(isDataSetActive(dataIdFirstUpload))
+
         val dataIdSecondUpload =
             apiAccessor
                 .euTaxonomyNonFinancialsUploaderFunction(
-                    firstUploadInfo.get("companyId")!!,
-                    testDataEuTaxonomyNonFinancials,
-                    "",
+                    firstUploadInfo.get("companyId")!!, testDataEuTaxonomyNonFinancials, "", false,
                 ).dataId
-
-        Awaitility
-            .await()
-            .atMost(2000, TimeUnit.MILLISECONDS)
-            .pollDelay(500, TimeUnit.MILLISECONDS)
-            .until({ isDataSetActive(dataIdSecondUpload) })
+        awaitUntilAsserted { apiAccessor.qaServiceControllerApi.changeQaStatus(dataIdSecondUpload, QaStatus.Accepted) }
+        awaitUntil { isDataSetActive(dataIdSecondUpload) }
         assert(!isDataSetActive(dataIdFirstUpload))
 
         performAndVerifyDeletion(dataIdSecondUpload)
-        Awaitility
-            .await()
-            .atMost(2000, TimeUnit.MILLISECONDS)
-            .pollDelay(500, TimeUnit.MILLISECONDS)
-            .until({ isDataSetActive(dataIdFirstUpload) })
+        awaitUntil { isDataSetActive(dataIdFirstUpload) }
     }
 }
