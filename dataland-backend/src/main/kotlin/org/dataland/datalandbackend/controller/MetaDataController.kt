@@ -139,7 +139,7 @@ class MetaDataController(
         )
         val patchedMetaInfo =
             dataMetaInfoAlterationManager.patchDataMetaInformation(dataId, dataMetaInformationPatch, correlationId)
-        return ResponseEntity.ok(patchedMetaInfo.toApiModel(currentUser))
+        return ResponseEntity.ok(patchedMetaInfo.toApiModel())
     }
 
     override fun getInfoOnNonSourceabilityOfDatasets(

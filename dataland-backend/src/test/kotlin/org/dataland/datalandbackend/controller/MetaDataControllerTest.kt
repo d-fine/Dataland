@@ -9,9 +9,9 @@ import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.utils.TestDataProvider
@@ -37,7 +37,6 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
-import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -67,7 +66,6 @@ internal class MetaDataControllerTest(
     private final val expectedSetOfRolesForAdmin =
         expectedSetOfRolesForReader + expectedSetOfRolesForUploader +
             expectedSetOfRolesForReviewer + setOf(DatalandRealmRole.ROLE_ADMIN)
-    private val adminUserId = "admin-user-id"
 
     @BeforeEach
     fun setup() {
@@ -227,7 +225,6 @@ internal class MetaDataControllerTest(
             currentlyActive = true,
             qaStatus = QaStatus.Accepted,
         )
-
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {
         val allMetaInformation =
