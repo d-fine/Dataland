@@ -25,40 +25,66 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Upload a document.",
-        "description": "Upload a document and meta information",
+        "summary": "Patch the metadata info of a document.",
+        "description": "Patch the metadata info of a document.",
         "operationId": "postDocument",
-        "parameters": [
-          {
-            "name": "documentMetaInfo",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/DocumentMetaInfo"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "document"
+                  "document",
+                  "documentMetaInfo"
                 ],
                 "type": "object",
                 "properties": {
                   "document": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "documentMetaInfo": {
+                    "$ref": "#/components/schemas/DocumentMetaInfo"
                   }
                 }
+              },
+              "encoding": {
+                "document": {
+                  "contentType": "application/octet-stream"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentMetaInfoPatch"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfully uploaded document.",
+            "description": "Successfully patched metadata information..",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document Id does not match any stored document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to patch all fields for which a patch was requested.",
             "content": {
               "application/json": {
                 "schema": {
@@ -490,8 +516,7 @@
           "companyIds",
           "documentCategory",
           "documentName",
-          "publicationDate",
-          "reportingPeriod"
+          "publicationDate"
         ],
         "type": "object",
         "properties": {
@@ -516,8 +541,11 @@
           "publicationDate": {
             "type": "string"
           },
-          "reportingPeriod": {
-            "type": "string"
+          "reportingPeriods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -551,8 +579,43 @@
           "publicationDate": {
             "type": "string"
           },
-          "reportingPeriod": {
+          "reportingPeriods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DocumentMetaInfoPatch": {
+        "type": "object",
+        "properties": {
+          "documentName": {
             "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publicationDate": {
+            "type": "string"
+          },
+          "reportingPeriods": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

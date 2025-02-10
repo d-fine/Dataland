@@ -85,7 +85,7 @@ class MessageQueueListenerTest(
                         documentCategory = DocumentCategory.AnnualReport,
                         companyIds = listOf(),
                         publicationDate = "2023-01-01",
-                        reportingPeriod = "2023",
+                        reportingPeriods = listOf("2023"),
                         documentId = documentId,
                         uploaderId = "",
                         uploadTime = 0,

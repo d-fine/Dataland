@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.validation.Valid
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -122,4 +124,36 @@ interface DocumentApi {
     fun getDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<InputStreamResource>
+
+    /**
+     * Patch the metadata information of a document. If patchDocument.companyIds is not null, it
+     * will get appended to the existing list of company ids. Likewise for patchDocument.reportingPeriods.
+     * @param documentId the id of the document whose metainfo shall be patched.
+     * @param patchObject an object of type DocumentMetaInfoPatch which holds all field values to patch.
+     */
+    @Operation(
+        summary = "Patch the metadata info of a document.",
+        description = "Patch the metadata info of a document.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully patched metadata information.."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to patch all fields for which a patch was requested.",
+            ),
+            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+        ],
+    )
+    @PostMapping(
+        value = ["/"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    // @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun patchDocumentMetaInfo(
+        @PathVariable("documentId") documentId: String,
+        @Valid @RequestBody(required = true) patchObject: DocumentMetaInfoPatch,
+    ): ResponseEntity<DocumentUploadResponse>
 }

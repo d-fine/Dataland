@@ -24,15 +24,16 @@ data class DocumentMetaInfoEntity(
     val documentId: String,
     @Enumerated(EnumType.STRING)
     val documentType: DocumentType,
-    val documentName: String?,
+    var documentName: String?,
     @Convert(converter = DocumentCategoryConverter::class)
-    val documentCategory: DocumentCategory,
+    var documentCategory: DocumentCategory,
     @ElementCollection(fetch = FetchType.EAGER)
-    val companyIds: List<String>?,
+    var companyIds: List<String>?,
     val uploaderId: String,
     val uploadTime: Long,
-    val publicationDate: String?,
-    val reportingPeriod: String?,
+    var publicationDate: String?,
+    @ElementCollection
+    var reportingPeriods: List<String>?,
     @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
 ) {
@@ -46,6 +47,6 @@ data class DocumentMetaInfoEntity(
             documentCategory = documentCategory,
             companyIds = companyIds,
             publicationDate = publicationDate,
-            reportingPeriod = reportingPeriod,
+            reportingPeriods = reportingPeriods,
         )
 }

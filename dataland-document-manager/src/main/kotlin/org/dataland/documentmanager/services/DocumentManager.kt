@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
@@ -74,7 +75,7 @@ class DocumentManager(
                 uploaderId = DatalandAuthentication.fromContext().userId,
                 uploadTime = Instant.now().toEpochMilli(),
                 publicationDate = documentMetaInfo.publicationDate,
-                reportingPeriod = documentMetaInfo.reportingPeriod,
+                reportingPeriods = documentMetaInfo.reportingPeriods,
                 qaStatus = QaStatus.Pending,
             )
 
@@ -90,7 +91,7 @@ class DocumentManager(
             documentCategory = documentMetaInfoEntity.documentCategory,
             companyIds = documentMetaInfoEntity.companyIds,
             publicationDate = documentMetaInfoEntity.publicationDate,
-            reportingPeriod = documentMetaInfoEntity.reportingPeriod,
+            reportingPeriods = documentMetaInfoEntity.reportingPeriods,
         )
     }
 
@@ -178,5 +179,52 @@ class DocumentManager(
             logger.info("Received document $documentId from storage service")
             InputStreamResource(storageApi.getBlobFromInternalStorage(documentId, correlationId))
         }
+    }
+
+    /**
+     * Update the document meta information stored under patchObject.documentId by overwriting the fields
+     * documentName, documentCategory publicationDate and reportingPeriod with the ones
+     * from patchObject. Moreover, if patchObject.documentIds is not null, it gets appended to the existing
+     * list of company ids.
+     */
+    fun updateDocumentMetaInformationViaPatch(
+        documentId: String,
+        patchObject: DocumentMetaInfoPatch,
+    ): DocumentUploadResponse {
+        if (!checkIfDocumentExistsWithId(documentId)) {
+            throw ResourceNotFoundApiException(
+                summary = "Document with ID $documentId does not exist",
+                message = "Document with ID $documentId does not exist",
+            )
+        }
+        val existingDocumentMetaInfoEntity =
+            documentMetaInfoRepository.getByDocumentId(documentId)
+                ?: throw ResourceNotFoundApiException(
+                    summary = "Document with ID $documentId could not be retrieved.",
+                    message = "Document with ID $documentId could not be retrieved.",
+                )
+
+        val updatedDocumentMetaInfoEntity = existingDocumentMetaInfoEntity.copy()
+        patchObject.documentName?.let { updatedDocumentMetaInfoEntity.documentName = it }
+        patchObject.documentCategory?.let { updatedDocumentMetaInfoEntity.documentCategory = it }
+        patchObject.companyIds?.let {
+            val originalCompanyIds = updatedDocumentMetaInfoEntity.companyIds
+            if (originalCompanyIds != null) {
+                updatedDocumentMetaInfoEntity.companyIds = originalCompanyIds + it
+            } else {
+                updatedDocumentMetaInfoEntity.companyIds = it
+            }
+        }
+        patchObject.publicationDate?.let { updatedDocumentMetaInfoEntity.publicationDate = it }
+        patchObject.reportingPeriods?.let {
+            val originalReportingPeriods = updatedDocumentMetaInfoEntity.reportingPeriods
+            if (originalReportingPeriods != null) {
+                updatedDocumentMetaInfoEntity.reportingPeriods = originalReportingPeriods + it
+            } else {
+                updatedDocumentMetaInfoEntity.reportingPeriods = it
+            }
+        }
+
+        return documentMetaInfoRepository.save(updatedDocumentMetaInfoEntity).toDocumentUploadResponse()
     }
 }

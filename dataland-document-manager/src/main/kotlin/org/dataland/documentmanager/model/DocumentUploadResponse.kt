@@ -11,7 +11,7 @@ import org.dataland.datalandbackendutils.model.DocumentCategory
  * @param documentCategory
  * @param companyIds
  * @param publicationDate
- * @param reportingPeriod
+ * @param reportingPeriods
  */
 data class DocumentUploadResponse(
     @field:JsonProperty(required = true)
@@ -25,5 +25,5 @@ data class DocumentUploadResponse(
     @field:JsonProperty(required = false)
     val publicationDate: String?,
     @field:JsonProperty(required = false)
-    val reportingPeriod: String?,
+    val reportingPeriods: List<String>?,
 )

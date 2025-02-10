@@ -3,6 +3,7 @@ package org.dataland.documentmanager.controller
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.api.DocumentApi
 import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.services.DocumentManager
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,4 +52,12 @@ class DocumentController(
             .header(HttpHeaders.CONTENT_TYPE, "${document.type.mediaType}")
             .body(documentContent)
     }
+
+    override fun patchDocumentMetaInfo(
+        documentId: String,
+        patchObject: DocumentMetaInfoPatch,
+    ): ResponseEntity<DocumentUploadResponse> =
+        ResponseEntity.ok(
+            documentManager.updateDocumentMetaInformationViaPatch(documentId, patchObject),
+        )
 }
