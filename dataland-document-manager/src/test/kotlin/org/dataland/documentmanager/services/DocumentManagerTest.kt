@@ -95,7 +95,7 @@ class DocumentManagerTest(
                         documentCategory = DocumentCategory.AnnualReport,
                         companyIds = listOf(),
                         publicationDate = "2023-01-01",
-                        reportingPeriod = "2023",
+                        reportingPeriods = listOf("2023"),
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
@@ -147,15 +147,14 @@ class DocumentManagerTest(
         val unknownDocumentId = "unknown-document-id"
         val patchObject =
             DocumentMetaInfoPatch(
-                documentId = unknownDocumentId,
                 documentName = null,
                 documentCategory = null,
                 companyIds = null,
                 publicationDate = null,
-                reportingPeriod = null,
+                reportingPeriods = null,
             )
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.updateDocumentMetaInformation(patchObject)
+            documentManager.updateDocumentMetaInformationViaPatch(unknownDocumentId, patchObject)
         }
     }
 
@@ -166,16 +165,15 @@ class DocumentManagerTest(
         configureMockDocumentMetaInfoRepository(uploadResponse.documentId)
         val patchObject =
             DocumentMetaInfoPatch(
-                documentId = uploadResponse.documentId,
                 documentName = "new name",
                 documentCategory = DocumentCategory.SustainabilityReport,
                 companyIds = null,
                 publicationDate = "2023-01-03",
-                reportingPeriod = null,
+                reportingPeriods = null,
             )
         val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
         val expectedSecondDocumentMetaInfoEntity =
-            firstDocumentMetaInfoEntity?.apply {
+            firstDocumentMetaInfoEntity.apply {
                 documentName = "new name"
                 documentCategory = DocumentCategory.SustainabilityReport
                 publicationDate = "2023-01-03"
@@ -189,11 +187,11 @@ class DocumentManagerTest(
         `when`(mockDocumentMetaInfoRepository.getByDocumentId(anyString())).thenReturn(
             firstDocumentMetaInfoEntity,
         )
-        val patchResponse = documentManager.updateDocumentMetaInformation(patchObject)
+        val patchResponse = documentManager.updateDocumentMetaInformationViaPatch(uploadResponse.documentId, patchObject)
 
-        assertEquals(expectedSecondDocumentMetaInfoEntity?.documentName, patchResponse.documentName)
-        assertEquals(expectedSecondDocumentMetaInfoEntity?.documentCategory, patchResponse.documentCategory)
-        assertEquals(expectedSecondDocumentMetaInfoEntity?.publicationDate, patchResponse.publicationDate)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.documentName, patchResponse.documentName)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.documentCategory, patchResponse.documentCategory)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.publicationDate, patchResponse.publicationDate)
     }
 
     private fun mockUploadableFile(reportName: String): MockMultipartFile {
@@ -217,7 +215,7 @@ class DocumentManagerTest(
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = listOf(),
             publicationDate = "2023-01-01",
-            reportingPeriod = "2023",
+            reportingPeriods = listOf("2023"),
             documentId = documentId,
             uploaderId = "",
             uploadTime = 0,
@@ -239,6 +237,6 @@ class DocumentManagerTest(
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = listOf("someValidId"),
             publicationDate = "2023-01-01",
-            reportingPeriod = "2023",
+            reportingPeriods = listOf("2023"),
         )
 }

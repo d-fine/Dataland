@@ -31,7 +31,8 @@ data class DocumentMetaInfoEntity(
     val uploaderId: String,
     val uploadTime: Long,
     var publicationDate: String?,
-    var reportingPeriod: String?,
+    @ElementCollection
+    var reportingPeriods: List<String>?,
     @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
 ) {
@@ -45,6 +46,6 @@ data class DocumentMetaInfoEntity(
             documentCategory = documentCategory,
             companyIds = companyIds,
             publicationDate = publicationDate,
-            reportingPeriod = reportingPeriod,
+            reportingPeriods = reportingPeriods,
         )
 }

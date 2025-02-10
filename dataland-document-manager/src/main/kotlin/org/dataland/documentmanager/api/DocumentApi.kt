@@ -117,9 +117,10 @@ interface DocumentApi {
     ): ResponseEntity<InputStreamResource>
 
     /**
-     * Patch the metadata information of a document.
-     * @param patchObject an object of type DocumentMetaInfoPatch which holds the document
-     * Id and all field values to patch.
+     * Patch the metadata information of a document. If patchDocument.companyIds is not null, it
+     * will get appended to the existing list of company ids. Likewise for patchDocument.reportingPeriods.
+     * @param documentId the id of the document whose metainfo shall be patched.
+     * @param patchObject an object of type DocumentMetaInfoPatch which holds all field values to patch.
      */
     @Operation(
         summary = "Patch the metadata info of a document.",
@@ -143,6 +144,7 @@ interface DocumentApi {
     // @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDocumentMetaInfo(
+        @PathVariable("documentId") documentId: String,
         @Valid @RequestBody(required = true) patchObject: DocumentMetaInfoPatch,
     ): ResponseEntity<DocumentUploadResponse>
 }

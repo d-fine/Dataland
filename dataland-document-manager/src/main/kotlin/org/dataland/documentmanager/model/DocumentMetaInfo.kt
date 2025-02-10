@@ -11,7 +11,7 @@ import org.dataland.datalandbackendutils.model.DocumentCategory
  * @param documentCategory
  * @param companyIds
  * @param publicationDate
- * @param reportingPeriod only for informative purposes
+ * @param reportingPeriods only for informative purposes
  */
 data class DocumentMetaInfo(
     @field:JsonProperty(required = true)
@@ -23,5 +23,5 @@ data class DocumentMetaInfo(
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     @field:JsonProperty(required = true)
     val publicationDate: String,
-    val reportingPeriod: String?,
+    val reportingPeriods: List<String>?,
 )

@@ -75,7 +75,7 @@ class DocumentManager(
                 uploaderId = DatalandAuthentication.fromContext().userId,
                 uploadTime = Instant.now().toEpochMilli(),
                 publicationDate = documentMetaInfo.publicationDate,
-                reportingPeriod = documentMetaInfo.reportingPeriod,
+                reportingPeriods = documentMetaInfo.reportingPeriods,
                 qaStatus = QaStatus.Pending,
             )
 
@@ -91,7 +91,7 @@ class DocumentManager(
             documentCategory = documentMetaInfoEntity.documentCategory,
             companyIds = documentMetaInfoEntity.companyIds,
             publicationDate = documentMetaInfoEntity.publicationDate,
-            reportingPeriod = documentMetaInfoEntity.reportingPeriod,
+            reportingPeriods = documentMetaInfoEntity.reportingPeriods,
         )
     }
 
@@ -183,29 +183,47 @@ class DocumentManager(
 
     /**
      * Update the document meta information stored under patchObject.documentId by overwriting the fields
-     * documentName, documentCategory, companyIds, publicationDate and reportingPeriod with the ones
-     * from patchObject.
+     * documentName, documentCategory publicationDate and reportingPeriod with the ones
+     * from patchObject. Moreover, if patchObject.documentIds is not null, it gets appended to the existing
+     * list of company ids.
      */
-    fun updateDocumentMetaInformation(patchObject: DocumentMetaInfoPatch): DocumentUploadResponse {
-        if (!checkIfDocumentExistsWithId(patchObject.documentId)) {
+    fun updateDocumentMetaInformationViaPatch(
+        documentId: String,
+        patchObject: DocumentMetaInfoPatch,
+    ): DocumentUploadResponse {
+        if (!checkIfDocumentExistsWithId(documentId)) {
             throw ResourceNotFoundApiException(
-                summary = "Document with ID ${patchObject.documentId} does not exist",
-                message = "Document with ID ${patchObject.documentId} does not exist",
+                summary = "Document with ID $documentId does not exist",
+                message = "Document with ID $documentId does not exist",
             )
         }
         val existingDocumentMetaInfoEntity =
-            documentMetaInfoRepository.getByDocumentId(patchObject.documentId)
+            documentMetaInfoRepository.getByDocumentId(documentId)
                 ?: throw ResourceNotFoundApiException(
-                    summary = "Document with ID ${patchObject.documentId} could not be retrieved.",
-                    message = "Document with ID ${patchObject.documentId} could not be retrieved.",
+                    summary = "Document with ID $documentId could not be retrieved.",
+                    message = "Document with ID $documentId could not be retrieved.",
                 )
 
         val updatedDocumentMetaInfoEntity = existingDocumentMetaInfoEntity
         patchObject.documentName?.let { updatedDocumentMetaInfoEntity.documentName = it }
         patchObject.documentCategory?.let { updatedDocumentMetaInfoEntity.documentCategory = it }
-        patchObject.companyIds?.let { updatedDocumentMetaInfoEntity.companyIds = it }
+        patchObject.companyIds?.let {
+            val originalCompanyIds = updatedDocumentMetaInfoEntity.companyIds
+            if (originalCompanyIds != null) {
+                updatedDocumentMetaInfoEntity.companyIds = originalCompanyIds + it
+            } else {
+                updatedDocumentMetaInfoEntity.companyIds = it
+            }
+        }
         patchObject.publicationDate?.let { updatedDocumentMetaInfoEntity.publicationDate = it }
-        patchObject.reportingPeriod?.let { updatedDocumentMetaInfoEntity.reportingPeriod = it }
+        patchObject.reportingPeriods?.let {
+            val originalReportingPeriods = updatedDocumentMetaInfoEntity.reportingPeriods
+            if (originalReportingPeriods != null) {
+                updatedDocumentMetaInfoEntity.reportingPeriods = originalReportingPeriods + it
+            } else {
+                updatedDocumentMetaInfoEntity.reportingPeriods = it
+            }
+        }
 
         return documentMetaInfoRepository.save(updatedDocumentMetaInfoEntity).toDocumentUploadResponse()
     }
