@@ -59,7 +59,7 @@ class CategoryBuilder(
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
-                dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}${typeNameSuffix}",
+                dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}$typeNameSuffix",
             )
         val datapoint =
             addDatapointToFrameworkHierarchy(
