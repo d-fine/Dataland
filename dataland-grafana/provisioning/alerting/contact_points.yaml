@@ -8,7 +8,7 @@ contactPoints:
       settings:
         title: '{{ template "alert_title_template" . }}'
         text: '{{ template "alert_message_template" . }}'
-        url: ${SLACK_ALERT_URL}
+        url: $SLACK_ALERT_URL
       disableResolveMessage: false
   - orgId: 1
     name: Slack Critical Alerts
@@ -18,5 +18,5 @@ contactPoints:
       settings:
         title: '{{ template "alert_title_template" . }}'
         text: '{{ template "alert_message_template" . }}'
-        url: ${SLACK_CRITICAL_ALERT_URL}
+        url: $SLACK_CRITICAL_ALERT_URL
       disableResolveMessage: false
