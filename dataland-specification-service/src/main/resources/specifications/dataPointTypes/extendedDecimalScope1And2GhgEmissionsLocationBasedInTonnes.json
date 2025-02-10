@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalScope1And2GhgEmissionsLocationBasedInTonnes",
+  "name" : "Scope 1 and 2 GHG emissions (location-based)",
+  "businessDefinition" : "Sum of scope 1 and 2 carbon emissions, using the location-based method to compute scope 2 carbon emissions",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

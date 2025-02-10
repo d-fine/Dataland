@@ -4,7 +4,6 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
-import java.math.BigDecimal
 import java.math.BigInteger
 
 /**

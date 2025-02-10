@@ -58,6 +58,6 @@ fun UploadCategoryBuilder.addStandardUploadConfigCell(
 fun ComponentBase.requireDocumentSupportIn(allowedValues: Set<DocumentSupport>) {
     require(documentSupport in allowedValues) {
         "This component (${javaClass.canonicalName}) does not support document-support $documentSupport. " +
-                "Supported values are $allowedValues."
+            "Supported values are $allowedValues."
     }
 }

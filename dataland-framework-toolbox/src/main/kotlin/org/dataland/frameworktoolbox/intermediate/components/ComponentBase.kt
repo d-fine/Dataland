@@ -140,8 +140,10 @@ open class ComponentBase(
      * generator
      */
     open fun generateDefaultDataModel(dataClassBuilder: DataClassBuilder): Unit =
-        throw IllegalStateException("This component (${javaClass.canonicalName})" +
-                " did not implement Data model generation.")
+        throw IllegalStateException(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement Data model generation.",
+        )
 
     /**
      * Build this component instance into the provided Kotlin DataClass
@@ -154,8 +156,10 @@ open class ComponentBase(
      * generator
      */
     open fun generateDefaultQaModel(dataClassBuilder: DataClassBuilder): Unit =
-        throw IllegalStateException("This component (${javaClass.canonicalName})" +
-                " did not implement QA model generation.")
+        throw IllegalStateException(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement QA model generation.",
+        )
 
     /**
      * Build this component instance into the provided Kotlin DataClass
@@ -179,16 +183,20 @@ open class ComponentBase(
      * using the default generator for this component
      */
     open fun generateDefaultViewConfig(sectionConfigBuilder: SectionConfigBuilder): Unit =
-        throw NotImplementedError("This component (${javaClass.canonicalName})" +
-                " did not implement view config conversion.")
+        throw NotImplementedError(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement view config conversion.",
+        )
 
     /**
      * Build this component instance into the provided upload-section configuration
      * using the default generator for this component
      */
     open fun generateDefaultUploadConfig(uploadCategoryBuilder: UploadCategoryBuilder): Unit =
-        throw NotImplementedError("This component (${javaClass.canonicalName})" +
-                " did not implement upload config conversion.")
+        throw NotImplementedError(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement upload config conversion.",
+        )
 
     /**
      * Build this component instance into the provided view-section configuration
@@ -207,8 +215,10 @@ open class ComponentBase(
      * Build the fixture code generation for this component using the default generator
      */
     open fun generateDefaultFixtureGenerator(sectionBuilder: FixtureSectionBuilder): Unit =
-        throw NotImplementedError("This component (${javaClass.canonicalName})" +
-                " did not implement fixture code-generation.")
+        throw NotImplementedError(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement fixture code-generation.",
+        )
 
     /**
      * Build the fixture code generation for this component
@@ -237,6 +247,8 @@ open class ComponentBase(
      * Build the specification for this component using the default generator
      */
     open fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder): Unit =
-        throw NotImplementedError("This component (${javaClass.canonicalName})" +
-                " did not implement specification generation.")
+        throw NotImplementedError(
+            "This component (${javaClass.canonicalName})" +
+                " did not implement specification generation.",
+        )
 }

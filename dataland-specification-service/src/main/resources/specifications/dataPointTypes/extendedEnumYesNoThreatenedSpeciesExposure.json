@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoThreatenedSpeciesExposure",
+  "name" : "Threatened Species Exposure",
+  "businessDefinition" : "Do you have operations which affect threatened species?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

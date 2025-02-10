@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoHumanRightsLegalProceedings",
+  "name" : "Human Rights Legal Proceedings",
+  "businessDefinition" : "Have you been involved in Human Rights related legal proceedings?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

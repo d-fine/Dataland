@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalHazardousAndRadioactiveWasteInTonnes",
+  "name" : "Hazardous and Radioactive Waste",
+  "businessDefinition" : "Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above (tonnes)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesGrievanceHandling",
+  "name" : "OECD Guidelines For Multinational Enterprises Grievance Handling",
+  "businessDefinition" : "Do you have grievance / complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

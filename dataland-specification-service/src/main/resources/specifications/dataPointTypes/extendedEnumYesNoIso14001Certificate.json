@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoIso14001Certificate",
+  "name" : "ISO 14001 Certificate",
+  "businessDefinition" : "Is your company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

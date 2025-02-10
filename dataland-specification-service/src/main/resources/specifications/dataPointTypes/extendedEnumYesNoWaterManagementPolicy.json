@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoWaterManagementPolicy",
+  "name" : "Water Management Policy",
+  "businessDefinition" : "Does the company have policies and procedures for water management? If yes, please share the relevant documents with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

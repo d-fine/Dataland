@@ -1,0 +1,7 @@
+{
+  "id" : "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption",
+  "name" : "Total Amount Of Reported Fines Of Bribery and Corruption",
+  "businessDefinition" : "Amount of fines for violations of anti-corruption and anti-bribery laws",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoFossilFuelSectorExposure",
+  "name" : "Fossil Fuel Sector Exposure",
+  "businessDefinition" : "Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

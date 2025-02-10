@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRecycledWasteInTonnes",
+  "name" : "Non-Recycled Waste",
+  "businessDefinition" : "Value of non-recycled waste generated. \"Non-recycled waste\" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

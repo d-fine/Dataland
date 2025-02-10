@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalFinancedScope3Emissions",
+  "name" : "Financed scope 3 emissions",
+  "businessDefinition" : "The scope 3 emissions of financed companies",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

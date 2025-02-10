@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalUnadjustedGenderPayGapInPercent",
+  "name" : "Unadjusted gender pay gap",
+  "businessDefinition" : "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

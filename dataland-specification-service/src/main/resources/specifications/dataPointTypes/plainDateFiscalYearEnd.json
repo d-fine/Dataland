@@ -1,0 +1,7 @@
+{
+  "id" : "plainDateFiscalYearEnd",
+  "name" : "Fiscal Year End",
+  "businessDefinition" : "The date the fiscal year ends",
+  "dataPointBaseTypeId" : "plainDate",
+  "frameworkOwnership" : "sfdr"
+}

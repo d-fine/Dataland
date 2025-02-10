@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionFossilFuelsInGWh",
+  "name" : "Non-Renewable Energy Consumption Fossil Fuels",
+  "businessDefinition" : "Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

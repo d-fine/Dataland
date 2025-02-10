@@ -1,0 +1,7 @@
+{
+  "id" : "extendedIntegerReportedConvictionsOfBriberyAndCorruption",
+  "name" : "Reported Convictions Of Bribery and Corruption",
+  "businessDefinition" : "Number of reported convictions for violations of anti-corruption and anti-bribery laws",
+  "dataPointBaseTypeId" : "extendedInteger",
+  "frameworkOwnership" : "sfdr"
+}

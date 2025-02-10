@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoViolationOfTaxRulesAndRegulation",
+  "name" : "Violation Of Tax Rules And Regulation",
+  "businessDefinition" : "Are you involved in violations of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

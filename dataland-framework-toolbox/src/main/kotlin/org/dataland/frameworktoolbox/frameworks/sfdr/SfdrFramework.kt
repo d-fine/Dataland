@@ -3,10 +3,14 @@ package org.dataland.frameworktoolbox.frameworks.sfdr
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
+import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
+import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
+import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.springframework.stereotype.Component
@@ -29,15 +33,15 @@ class SfdrFramework :
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         setSectionColorsAndExpansion(framework.root)
+        overwriteDataPointSpecificationForEnums(framework.root)
     }
 
-    private fun setSectionColorsAndExpansion(root: ComponentGroupApi) {
+    private fun overwriteDataPointSpecificationForEnums(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
-            viewPageLabelBadgeColor = LabelBadgeColor.Orange
-            viewPageExpandOnPageLoad = true
-
-            uploadPageLabelBadgeColor = LabelBadgeColor.Orange
             edit<ComponentGroup>("general") {
+                edit<ReportPreuploadComponent>("referencedReports") {
+                    isPartOfQaReport = false
+                }
                 edit<SingleSelectComponent>("fiscalYearDeviation") {
                     specificationGenerator = { categoryBuilder ->
                         categoryBuilder.addDefaultDatapointAndSpecification(
@@ -47,6 +51,17 @@ class SfdrFramework :
                         )
                     }
                 }
+            }
+        }
+    }
+
+    private fun setSectionColorsAndExpansion(root: ComponentGroupApi) {
+        root.edit<ComponentGroup>("general") {
+            viewPageLabelBadgeColor = LabelBadgeColor.Orange
+            viewPageExpandOnPageLoad = true
+
+            uploadPageLabelBadgeColor = LabelBadgeColor.Orange
+            edit<ComponentGroup>("general") {
                 viewPageExpandOnPageLoad = true
             }
         }

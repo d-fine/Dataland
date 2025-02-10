@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionInGWh",
+  "name" : "Non-Renewable Energy Consumption",
+  "businessDefinition" : "Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

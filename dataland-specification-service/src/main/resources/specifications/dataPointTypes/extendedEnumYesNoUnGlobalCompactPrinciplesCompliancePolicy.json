@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy",
+  "name" : "UN Global Compact Principles Compliance Policy",
+  "businessDefinition" : "Do you have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

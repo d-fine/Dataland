@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalRelativeWaterUsageInCubicMetersPerMillionEURRevenue",
+  "name" : "Relative Water Usage",
+  "businessDefinition" : "Average amount in cubic meters of fresh water used per million EUR revenue",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

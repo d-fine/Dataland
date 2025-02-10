@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoReportedForcedOrCompulsoryLabourIncidents",
+  "name" : "Reported Forced Or Compulsory Labour Incidents",
+  "businessDefinition" : "Has their been any reported forced or compulsory labour incident (within own operations or supply chain)?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

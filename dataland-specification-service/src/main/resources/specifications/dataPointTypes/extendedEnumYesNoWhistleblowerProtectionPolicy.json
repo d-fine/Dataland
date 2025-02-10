@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoWhistleblowerProtectionPolicy",
+  "name" : "Whistleblower Protection Policy",
+  "businessDefinition" : "Do you have a policy on the protection of whistleblowers? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

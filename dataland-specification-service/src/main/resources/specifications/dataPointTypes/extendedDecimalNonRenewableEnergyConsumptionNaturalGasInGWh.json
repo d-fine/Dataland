@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionNaturalGasInGWh",
+  "name" : "Non-Renewable Energy Consumption Natural Gas",
+  "businessDefinition" : "Energy consumption from natural gas (non-renewable energy source)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

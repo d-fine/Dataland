@@ -1,0 +1,7 @@
+{
+  "id" : "extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations",
+  "name" : "Number Of Reported Incidents Of Human Rights Violations",
+  "businessDefinition" : "Number of cases of severe human rights issues and incidents connected to the company",
+  "dataPointBaseTypeId" : "extendedInteger",
+  "frameworkOwnership" : "sfdr"
+}

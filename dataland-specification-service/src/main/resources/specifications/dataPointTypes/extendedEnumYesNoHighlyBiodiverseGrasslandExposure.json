@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoHighlyBiodiverseGrasslandExposure",
+  "name" : "Highly Biodiverse Grassland Exposure",
+  "businessDefinition" : "Do you have sites/operations located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

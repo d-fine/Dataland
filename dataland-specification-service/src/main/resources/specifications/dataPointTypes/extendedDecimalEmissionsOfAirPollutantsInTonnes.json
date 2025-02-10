@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalEmissionsOfAirPollutantsInTonnes",
+  "name" : "Emissions of Air Pollutants",
+  "businessDefinition" : "Air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

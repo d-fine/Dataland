@@ -2739,24 +2739,6 @@
           "Rejected"
         ]
       },
-      "CompanyReport": {
-        "required": [
-          "fileReference"
-        ],
-        "type": "object",
-        "properties": {
-          "fileReference": {
-            "type": "string"
-          },
-          "fileName": {
-            "type": "string"
-          },
-          "publicationDate": {
-            "type": "string",
-            "format": "date"
-          }
-        }
-      },
       "CurrencyDataPoint": {
         "type": "object",
         "properties": {
@@ -2961,28 +2943,6 @@
           }
         }
       },
-      "QaReportDataPointMapStringCompanyReport": {
-        "required": [
-          "comment",
-          "correctedData",
-          "verdict"
-        ],
-        "type": "object",
-        "properties": {
-          "comment": {
-            "type": "string"
-          },
-          "verdict": {
-            "$ref": "#/components/schemas/QaReportDataPointVerdict"
-          },
-          "correctedData": {
-            "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/CompanyReport"
-            }
-          }
-        }
-      },
       "QaReportDataPointVerdict": {
         "type": "string",
         "enum": [
@@ -2995,9 +2955,6 @@
       "SfdrData": {
         "type": "object",
         "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SfdrGeneral"
-          },
           "environmental": {
             "$ref": "#/components/schemas/SfdrEnvironmental"
           },
@@ -3251,22 +3208,6 @@
           }
         }
       },
-      "SfdrGeneral": {
-        "type": "object",
-        "properties": {
-          "general": {
-            "$ref": "#/components/schemas/SfdrGeneralGeneral"
-          }
-        }
-      },
-      "SfdrGeneralGeneral": {
-        "type": "object",
-        "properties": {
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
-          }
-        }
-      },
       "SfdrHighImpactClimateSectorEnergyConsumption": {
         "type": "object",
         "properties": {
@@ -3481,6 +3422,24 @@
           },
           "active": {
             "type": "boolean"
+          }
+        }
+      },
+      "CompanyReport": {
+        "required": [
+          "fileReference"
+        ],
+        "type": "object",
+        "properties": {
+          "fileReference": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
@@ -3881,6 +3840,28 @@
           },
           "correctedData": {
             "$ref": "#/components/schemas/ExtendedDataPointNuclearAndGasNonEligible"
+          }
+        }
+      },
+      "QaReportDataPointMapStringCompanyReport": {
+        "required": [
+          "comment",
+          "correctedData",
+          "verdict"
+        ],
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/QaReportDataPointVerdict"
+          },
+          "correctedData": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CompanyReport"
+            }
           }
         }
       },

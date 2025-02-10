@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalGhgIntensityScope3InTonnesPerMillionEURRevenue",
+  "name" : "GHG intensity - scope 3",
+  "businessDefinition" : "Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 3 carbon emissions, i.e. all indirect upstream and downstream emissions that are not included in scope 2",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

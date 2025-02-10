@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionCoalInGWh",
+  "name" : "Non-Renewable Energy Consumption Coal",
+  "businessDefinition" : "Energy consumption from coal (non-renewable energy source)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

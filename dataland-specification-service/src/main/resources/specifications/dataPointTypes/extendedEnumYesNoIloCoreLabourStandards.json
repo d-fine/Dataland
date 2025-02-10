@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoIloCoreLabourStandards",
+  "name" : "ILO Core Labour Standards",
+  "businessDefinition" : "Do you abide by the ILO Core Labour Standards?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

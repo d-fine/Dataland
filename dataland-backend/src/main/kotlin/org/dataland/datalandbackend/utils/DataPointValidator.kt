@@ -32,7 +32,7 @@ class DataPointValidator
                 setOf(
                     "java.time.LocalDate",
                     "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector," +
-                            "org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>"
+                        "org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
                 )
         }
 

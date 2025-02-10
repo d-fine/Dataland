@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoRareOrEndangeredEcosystemsExposure",
+  "name" : "Rare Or Endangered Ecosystems Exposure",
+  "businessDefinition" : "Do you have sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

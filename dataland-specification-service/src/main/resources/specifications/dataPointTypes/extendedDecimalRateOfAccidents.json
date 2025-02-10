@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalRateOfAccidents",
+  "name" : "Rate Of Accidents",
+  "businessDefinition" : "Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

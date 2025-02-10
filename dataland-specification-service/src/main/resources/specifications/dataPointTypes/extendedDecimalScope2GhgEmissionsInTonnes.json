@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalScope2GhgEmissionsInTonnes",
+  "name" : "Scope 2 GHG emissions",
+  "businessDefinition" : "Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

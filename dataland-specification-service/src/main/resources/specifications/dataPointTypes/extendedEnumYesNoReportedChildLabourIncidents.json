@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoReportedChildLabourIncidents",
+  "name" : "Reported Child Labour Incidents",
+  "businessDefinition" : "Has their been any reported child labour incident (within own operations or supply chain)?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}
