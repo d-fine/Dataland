@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
@@ -140,7 +141,7 @@ internal class MetaDataControllerTest(
             DataMetaInformationPatch(
                 uploaderUserId = "",
             )
-        val nullDataMetaInformationPatch = DataMetaInformationPatch()
+        val nullDataMetaInformationPatch = DataMetaInformationPatch(uploaderUserId = "")
 
         mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
         assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, emptyDataMetaInformationPatch)
@@ -148,14 +149,16 @@ internal class MetaDataControllerTest(
     }
 
     @Test
-    fun `ensure that meta info patch endpoint rejects vmse data`() {
+    fun `ensure that meta info patch endpoint rejects vsme data`() {
         val metaInfo =
             dataMetaInformationManager.storeDataMetaInformation(
                 buildMetaInfoForPatchTestWithDatatype(DataType.of(VsmeData::class.java)),
             )
 
         mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
-        assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, mock<DataMetaInformationPatch>())
+        val mockDataMetaInformationPatch =
+            mock<DataMetaInformationPatch> { on { uploaderUserId } doReturn uploaderUserId }
+        assertMetaDataNotPatchableWithException<InvalidInputApiException>(metaInfo, mockDataMetaInformationPatch)
     }
 
     private fun buildMetaInfoForPatchTestWithDatatype(dataType: DataType): DataMetaInformationEntity =

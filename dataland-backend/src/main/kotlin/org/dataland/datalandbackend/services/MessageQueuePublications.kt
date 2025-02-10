@@ -100,7 +100,7 @@ class MessageQueuePublications(
     /**
      * Method to publish a message that the meta info of a data set has been updated
      * @param dataId The ID of the uploaded data set
-     * @param bypassQa Whether the QA process should be bypassed
+     * @param uploaderUserId new uploaderUserId of storable dataset
      * @param correlationId The correlation ID of the request initiating the event
      */
     fun publishDatasetMetaInfoPatchMessage(

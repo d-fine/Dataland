@@ -84,7 +84,7 @@ class MetaDataController(
         val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
         val companyId = metaInfo.company.companyId
         val correlationId = IdUtils.generateCorrelationId(companyId, dataId)
-        if (dataMetaInformationPatch.isNullOrEmpty()) {
+        if (dataMetaInformationPatch.uploaderUserId.isEmpty()) {
             throw InvalidInputApiException(
                 summary = "Empty Request Body",
                 message = "Request body must not be null nor empty",

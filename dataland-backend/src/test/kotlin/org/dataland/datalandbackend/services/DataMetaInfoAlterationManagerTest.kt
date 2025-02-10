@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPat
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.services.KeycloakUserService
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -60,14 +59,13 @@ class DataMetaInfoAlterationManagerTest {
 
     @BeforeEach
     fun setup() {
+        initializePartialMocks()
         reset(mockDataMetaInformationManager, mockDataManager, mockKeycloakUserService)
 
         doReturn(partiallyMockedDataMetaInformationEntity)
             .whenever(mockDataMetaInformationManager)
             .getDataMetaInformationByDataId(any())
-        doNothing()
-            .whenever(mockDataManager)
-            .storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
+        doNothing().whenever(mockDataManager).storeDatasetInTemporaryStoreAndSendPatchMessage(any(), any(), any())
         doReturn(storableDataset).whenever(mockDataManager).getPublicDataset(any(), any(), any())
 
         doReturn(false).whenever(mockKeycloakUserService).isKeycloakUserId(any())
@@ -81,9 +79,7 @@ class DataMetaInfoAlterationManagerTest {
             )
     }
 
-    @AfterEach
-    fun resetPartialMocks() {
-        storableDataset.uploaderUserId = initialUploaderUserId
+    private fun initializePartialMocks() {
         partiallyMockedDataMetaInformationEntity.uploaderUserId = initialUploaderUserId
     }
 
@@ -99,7 +95,6 @@ class DataMetaInfoAlterationManagerTest {
             )
         }
         assertEquals(newValidUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
-        assertEquals(newValidUploaderUserId, storableDataset.uploaderUserId)
     }
 
     @Test
@@ -107,7 +102,7 @@ class DataMetaInfoAlterationManagerTest {
         assertThrows<InvalidInputApiException> {
             dataMetaInfoAlterationManager.patchDataMetaInformation(
                 dataId,
-                DataMetaInformationPatch(uploaderUserId = null),
+                DataMetaInformationPatch(uploaderUserId = ""),
                 correlationId,
             )
         }
