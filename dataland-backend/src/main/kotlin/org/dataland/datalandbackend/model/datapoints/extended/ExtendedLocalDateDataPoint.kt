@@ -1,4 +1,4 @@
-package org.dataland.datalandbackend.model.datapoints.standard
+package org.dataland.datalandbackend.model.datapoints.extended
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint
@@ -10,7 +10,7 @@ import java.time.LocalDate
  * --- API model ---
  * Fields of a data point containing only a date
  */
-data class LocalDateDataPoint(
+data class ExtendedLocalDateDataPoint(
     override val value: LocalDate? = null,
     override val quality: QualityOptions? = null,
     override val comment: String? = null,

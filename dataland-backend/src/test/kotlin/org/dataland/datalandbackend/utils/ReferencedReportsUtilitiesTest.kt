@@ -1,7 +1,7 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint
+import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
@@ -46,7 +46,7 @@ class ReferencedReportsUtilitiesTest {
     @Test
     fun `check that extraction of the referenced report works as expected`() {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
-        val dataSource = testObjectMapper.readValue(dataPoint, CurrencyDataPoint::class.java).dataSource
+        val dataSource = testObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
         val expectedCompanyReport =
             CompanyReport(
                 fileReference = dataSource?.fileReference ?: "dummy",

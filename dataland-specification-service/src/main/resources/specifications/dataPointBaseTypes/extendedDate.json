@@ -2,7 +2,7 @@
   "id" : "extendedDate",
   "name" : "General date data point with an extended source",
   "businessDefinition" : "Data point with an extended document reference as source, a date without a time-zone represented by a LocalDate. The date has to comply with ISO-8601.",
-  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.standard.LocalDateDataPoint",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedLocalDateDataPoint",
   "example" : {
     "value" : "2007-03-05",
     "quality" : "Reported",
