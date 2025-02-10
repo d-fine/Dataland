@@ -80,7 +80,7 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
 import type { BulkDataRequestResponse } from '@clients/communitymanager';
-import { getFrameworkTitle, humanizeStringOrNumber } from '@/utils/StringFormatter';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 const props = defineProps<{
   bulkDataRequestResponse: BulkDataRequestResponse;
