@@ -44,7 +44,6 @@
     "@cypress/code-coverage": "3.13.11",
     "@faker-js/faker": "9.4.0",
     "@tsconfig/node20": "20.1.4",
-    "@types/dompurify": "3.2.0",
     "@types/markdown-it": "14.1.2",
     "@types/node": "22.13.1",
     "@vitejs/plugin-vue": "5.2.1",
