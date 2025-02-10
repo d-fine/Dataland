@@ -3,6 +3,7 @@ package org.dataland.frameworktoolbox.frameworks.sfdr
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
 import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
@@ -37,6 +38,15 @@ class SfdrFramework :
 
             uploadPageLabelBadgeColor = LabelBadgeColor.Orange
             edit<ComponentGroup>("general") {
+                edit<SingleSelectComponent>("fiscalYearDeviation") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "plainEnumFiscalYearDeviation",
+                        )
+                    }
+                }
                 viewPageExpandOnPageLoad = true
             }
         }
