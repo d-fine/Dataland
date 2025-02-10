@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.entities.NonSourceableEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.repositories.NonSourceableDataRepository
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
@@ -118,23 +119,25 @@ class NonSourceableDataManagerTest(
             .verifyCompanyIdExists(nonSourceableInfo.companyId)
         whenever(
             mockDataMetaInformationManager.searchDataMetaInfo(
-                companyId = nonSourceableInfo.companyId,
-                dataType = nonSourceableInfo.dataType,
-                showOnlyActive = false,
-                reportingPeriod = nonSourceableInfo.reportingPeriod,
-                uploaderUserIds = null,
-                qaStatus = QaStatus.Accepted,
+                DataMetaInformationSearchFilter(
+                    companyId = nonSourceableInfo.companyId,
+                    dataType = nonSourceableInfo.dataType,
+                    onlyActive = false,
+                    reportingPeriod = nonSourceableInfo.reportingPeriod,
+                    qaStatus = QaStatus.Accepted,
+                ),
             ),
         ).thenReturn(emptyList())
         nonSourceableDataManager.processSourceabilityDataStorageRequest(nonSourceableInfo)
 
         verify(mockDataMetaInformationManager).searchDataMetaInfo(
-            companyId = nonSourceableInfo.companyId,
-            dataType = nonSourceableInfo.dataType,
-            showOnlyActive = false,
-            reportingPeriod = nonSourceableInfo.reportingPeriod,
-            uploaderUserIds = null,
-            qaStatus = QaStatus.Accepted,
+            DataMetaInformationSearchFilter(
+                companyId = nonSourceableInfo.companyId,
+                dataType = nonSourceableInfo.dataType,
+                onlyActive = false,
+                reportingPeriod = nonSourceableInfo.reportingPeriod,
+                qaStatus = QaStatus.Accepted,
+            ),
         )
         verify(mockCloudEventMessageHandler).buildCEMessageAndSendToQueue(
             any(), any(), any(), any(), any(),

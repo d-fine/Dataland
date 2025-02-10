@@ -84,7 +84,7 @@ fun getIdForUploadedCompanyWithIdentifiers(
     permId: String? = null,
 ): String = apiAccessor.uploadOneCompanyWithIdentifiers(lei, isins, permId)!!.actualStoredCompany.companyId
 
-fun checkThatTheNumberOfRejectedIdentifiersIsAsExpected(
+fun checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {
@@ -93,40 +93,6 @@ fun checkThatTheNumberOfRejectedIdentifiersIsAsExpected(
         requestResponse.rejectedCompanyIdentifiers.size,
         "Not all identifiers were accepted as expected.",
     )
-}
-
-fun checkThatMessageIsAsExpected(
-    requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
-    expectedNumberOfRejectedIdentifiers: Int,
-) {
-    val totalNumberOfCompanyIdentifiers = expectedNumberOfAcceptedIdentifiers + expectedNumberOfRejectedIdentifiers
-    val errorMessage = "The message sent as part of the response to the bulk data request is not as expected."
-    when (expectedNumberOfRejectedIdentifiers) {
-        0 ->
-            assertEquals(
-                "All of your $totalNumberOfCompanyIdentifiers distinct company identifiers were accepted.",
-                requestResponse.message,
-                errorMessage,
-            )
-
-        1 ->
-            assertEquals(
-                "One of your $totalNumberOfCompanyIdentifiers distinct company identifiers was rejected " +
-                    "because it could not be uniquely matched with an existing company on Dataland.",
-                requestResponse.message,
-                errorMessage,
-            )
-
-        else ->
-            assertEquals(
-                "$expectedNumberOfRejectedIdentifiers of your $totalNumberOfCompanyIdentifiers distinct company " +
-                    "identifiers were rejected because they could not be uniquely matched with existing " +
-                    "companies on Dataland.",
-                requestResponse.message,
-                errorMessage,
-            )
-    }
 }
 
 fun checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(

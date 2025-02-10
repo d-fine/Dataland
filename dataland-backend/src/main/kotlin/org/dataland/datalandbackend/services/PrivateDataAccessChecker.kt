@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandcommunitymanager.openApiClient.api.RequestControllerApi
 import org.dataland.datalandcommunitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -55,16 +56,18 @@ class PrivateDataAccessChecker(
     fun hasUserAccessToAtLeastOnePrivateResourceForCompany(companyId: String): Boolean {
         val metaDataEntities =
             dataMetaInformationManager.searchDataMetaInfo(
-                companyId = companyId,
-                dataType = DataType.of(VsmeData::class.java), showOnlyActive = true, reportingPeriod = null,
-                uploaderUserIds = null, qaStatus = null,
+                DataMetaInformationSearchFilter(
+                    companyId = companyId,
+                    dataType = DataType.of(VsmeData::class.java),
+                    onlyActive = true,
+                ),
             )
         val userId = DatalandAuthentication.fromContext().userId
         metaDataEntities.forEach { metaDataEntity ->
             try {
                 requestManager.hasAccessToDataset(
                     UUID.fromString(companyId),
-                    metaDataEntity.dataType.toString(), metaDataEntity.reportingPeriod,
+                    metaDataEntity.dataType, metaDataEntity.reportingPeriod,
                     UUID.fromString(userId),
                 )
                 return true

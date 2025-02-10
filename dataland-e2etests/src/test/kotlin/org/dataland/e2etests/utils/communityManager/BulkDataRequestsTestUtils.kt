@@ -20,27 +20,41 @@ import java.util.UUID
 private val jwtHelper = JwtAuthenticationHelper()
 private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
 
-fun checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(
+fun checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(
     requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
+    expectedNumberOfAcceptedDataRequests: Int,
 ) {
     Assertions.assertEquals(
-        expectedNumberOfAcceptedIdentifiers,
-        requestResponse.acceptedCompanyIdentifiers.size,
+        expectedNumberOfAcceptedDataRequests,
+        requestResponse.acceptedDataRequests.size,
         "Not every combination of identifier and framework was sent as a request as expected.",
     )
 }
 
-fun checkThatAllIdentifiersWereAccepted(
+fun checkThatNumberOfRejectedIdentifiersIsAsExpected(
     requestResponse: BulkDataRequestResponse,
-    expectedNumberOfAcceptedIdentifiers: Int,
     expectedNumberOfRejectedIdentifiers: Int,
 ) {
-    checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(requestResponse, expectedNumberOfAcceptedIdentifiers)
-    checkThatTheNumberOfRejectedIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
-    checkThatMessageIsAsExpected(
-        requestResponse, expectedNumberOfAcceptedIdentifiers,
-        expectedNumberOfRejectedIdentifiers,
+    checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(requestResponse, expectedNumberOfRejectedIdentifiers)
+}
+
+fun checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(
+    requestResponse: BulkDataRequestResponse,
+    expectedNumberOfAlreadyExistingNonFinalRequests: Int,
+) {
+    Assertions.assertEquals(
+        expectedNumberOfAlreadyExistingNonFinalRequests,
+        requestResponse.alreadyExistingNonFinalRequests.size,
+    )
+}
+
+fun checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(
+    requestResponse: BulkDataRequestResponse,
+    expectedNumberOfAlreadyExistingDatasets: Int,
+) {
+    Assertions.assertEquals(
+        expectedNumberOfAlreadyExistingDatasets,
+        requestResponse.alreadyExistingDatasets.size,
     )
 }
 
@@ -113,22 +127,6 @@ private fun errorMessageForEmptyInputConfigurations(
         dataTypes.isEmpty() -> "The list of frameworks is empty."
         else -> "The list of reporting periods is empty."
     }
-
-fun checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException: ClientException) {
-    check400ClientExceptionErrorMessage(clientException)
-    val responseBody = (clientException.response as ClientError<*>).body as String
-    assertTrue(
-        responseBody.contains(
-            "All provided company identifiers are not unique or could not be " +
-                "recognized.",
-        ),
-    )
-    assertTrue(
-        responseBody.contains(
-            "The company identifiers you provided could not be uniquely matched with an existing company on dataland",
-        ),
-    )
-}
 
 fun retrieveDataRequestIdForReportingPeriodAndUpdateStatus(
     dataRequests: List<ExtendedStoredDataRequest>,
