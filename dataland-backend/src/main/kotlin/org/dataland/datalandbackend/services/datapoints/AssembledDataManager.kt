@@ -142,7 +142,7 @@ class AssembledDataManager
             uploadedDataset: StorableDataset,
         ): String? {
             val dataPoint = dataPointJsonLeaf.content
-            if (dataPoint.isEmpty) return null
+            if (dataPoint.isNull || (dataPoint.isObject && dataPoint.isEmpty)) return null
 
             referencedReportsUtilities.updatePublicationDateInJsonNode(
                 dataPoint,
