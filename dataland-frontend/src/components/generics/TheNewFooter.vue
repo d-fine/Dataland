@@ -116,6 +116,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .footer {
   background-color: var(--basic-dark);
   color: var(--default-neutral-white);

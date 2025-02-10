@@ -115,6 +115,9 @@ function onCursorLeaveProvideButton(): void {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/variables' as *;
+
 .summary-panel {
   width: 100%;
   background-color: var(--surface-card);

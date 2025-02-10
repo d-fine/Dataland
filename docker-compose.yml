@@ -236,7 +236,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:20.11.1@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5
+    image: node:23.6.1@sha256:3b73c4b366d490f76908dda253bb4516bbb3398948fd880d8682c5ef16427eca
     networks:
       internal:
         aliases:
@@ -631,7 +631,7 @@ services:
   dummy-eurodat-db:
     restart: always
     profiles: [ "testing" ]
-    image: postgres:alpine@sha256:0bcc5bbbb2aa9c9b4c6505845918c7eb55d783cf5c1f434fac33012579fb149d
+    image: postgres:alpine@sha256:7e5df973a74872482e320dcbdeb055e178d6f42de0558b083892c50cda833c96
     networks:
       - internal
     tmpfs: /var/lib/postgresql/data

@@ -163,7 +163,6 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
     case 'string':
       return !!(value && value != NO_DATA_PROVIDED);
     case 'object':
-      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       if (!!value && 'modalOptions' in value) {
         return !!(
           // prettier-ignore
@@ -176,7 +175,7 @@ function checkShouldValueBeDisplayed(value: MLDTDisplayComponentTypes[MLDTDispla
       } else {
         return !!value;
       }
-    /* eslint-enable @typescript-eslint/no-unsafe-member-access */
+
     default:
       return !!value;
   }

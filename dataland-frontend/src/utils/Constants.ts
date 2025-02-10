@@ -4,12 +4,12 @@ import { DataTypeEnum } from '@clients/backend';
 
 export const ALL_FRAMEWORKS_ORDERED = Object.values(DataTypeEnum);
 export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework == DataTypeEnum.Vsme);
-export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => !PRIVATE_FRAMEWORKS.includes(framework));
+export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework != DataTypeEnum.Vsme);
 export const FRONTEND_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
 export const FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
 export const FRAMEWORKS_WITH_EDIT_FUNCTIONALITY = FRAMEWORKS_WITH_UPLOAD_FORM.filter(
-  (framework) => !PRIVATE_FRAMEWORKS.includes(framework)
+  (framework) => framework != DataTypeEnum.Vsme
 );
 
 // - Keycloak and session management related settings
