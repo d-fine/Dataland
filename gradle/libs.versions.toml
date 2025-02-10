@@ -91,7 +91,7 @@ spring-security-web = { module = "org.springframework.security:spring-security-w
 
 # Spring-related
 spring-cloud-function-context = { group = "org.springframework.cloud", name = "spring-cloud-function-context", version = "4.1.3" }
-springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "2.8.1" }
+springdoc-openapi-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version = "2.8.4" }
 spring-context = { group = "org.springframework", name = "spring-context", version.ref = "spring-framework" }
 spring-test = { group = "org.springframework", name = "spring-test", version.ref = "spring-framework" }
 
