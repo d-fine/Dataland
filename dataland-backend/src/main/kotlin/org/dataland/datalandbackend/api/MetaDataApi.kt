@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -62,6 +63,30 @@ interface MetaDataApi {
         @RequestParam reportingPeriod: String? = null,
         @RequestParam uploaderUserIds: Set<UUID>? = null,
         @RequestParam qaStatus: QaStatus? = null,
+    ): ResponseEntity<List<DataMetaInformation>>
+
+    /**
+     * A method to post multiple filters at once to search for meta information about datasets registered by Dataland
+     * @param dataMetaInformationSearchFilters A list of data meta information request filters
+     * @return a list of matching DataMetaInformation
+     */
+    @Operation(
+        summary = "Search in Dataland for meta info about data using multiple filters.",
+        description = "Meta info about datasets registered by Dataland can be retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info."),
+        ],
+    )
+    @PostMapping(
+        value = ["/filters"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postListOfDataMetaInfoFilters(
+        @RequestBody dataMetaInformationSearchFilters: List<DataMetaInformationSearchFilter>,
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**

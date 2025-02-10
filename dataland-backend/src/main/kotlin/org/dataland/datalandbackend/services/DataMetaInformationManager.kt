@@ -3,16 +3,13 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
-import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 /**
  * A service class for managing data meta-information
@@ -89,33 +86,12 @@ class DataMetaInformationManager(
 
     /**
      * Method to make the data manager search for meta info
-     * @param companyId if not empty, it filters the requested meta info to a specific company
-     * @param dataType if not empty, it filters the requested meta info to a specific data type
-     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
-     * @param showOnlyActive if true, it will only return datasets marked "active"
+     * @param searchFilter contains the filters to be applied for the search
      * @return a list of meta info about data depending on the filters
      */
-    fun searchDataMetaInfo(
-        companyId: String?,
-        dataType: DataType?,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-        uploaderUserIds: Set<UUID>?,
-        qaStatus: QaStatus?,
-    ): List<DataMetaInformationEntity> {
-        companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
-
-        val filter =
-            DataMetaInformationSearchFilter(
-                companyId = companyId,
-                dataType = dataType,
-                reportingPeriod = reportingPeriod,
-                onlyActive = showOnlyActive,
-                uploaderUserIds = uploaderUserIds,
-                qaStatus = qaStatus,
-            )
-
-        return dataMetaInformationRepository.searchDataMetaInformation(filter)
+    fun searchDataMetaInfo(searchFilter: DataMetaInformationSearchFilter): List<DataMetaInformationEntity> {
+        searchFilter.companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
+        return dataMetaInformationRepository.searchDataMetaInformation(searchFilter)
     }
 
     /**

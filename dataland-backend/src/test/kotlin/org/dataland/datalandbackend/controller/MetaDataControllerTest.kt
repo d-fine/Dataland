@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.frameworks.lksg.model.LksgData
 import org.dataland.datalandbackend.frameworks.sfdr.model.SfdrData
 import org.dataland.datalandbackend.frameworks.vsme.model.VsmeData
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.model.companies.CompanyInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.services.CompanyAlterationManager
@@ -28,12 +29,15 @@ import org.mockito.Mockito
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.util.UUID
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 
 @SpringBootTest(classes = [DatalandBackend::class], properties = ["spring.profiles.active=nodb"])
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -43,6 +47,7 @@ internal class MetaDataControllerTest(
     @Autowired private val companyManager: CompanyAlterationManager,
     @Autowired private val dataMetaInformationManager: DataMetaInformationManager,
     @Autowired private val metaDataController: MetaDataController,
+    @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
     private lateinit var testCompanyInformation: CompanyInformation
     private lateinit var storedCompany: StoredCompanyEntity
@@ -52,7 +57,6 @@ internal class MetaDataControllerTest(
     private val dummyReportingPeriod = "reporting-period"
 
     val testDataProvider = TestDataProvider(objectMapper)
-
     private final val expectedSetOfRolesForReader = setOf(DatalandRealmRole.ROLE_USER)
     private final val expectedSetOfRolesForUploader =
         expectedSetOfRolesForReader +
@@ -63,6 +67,7 @@ internal class MetaDataControllerTest(
     private final val expectedSetOfRolesForAdmin =
         expectedSetOfRolesForReader + expectedSetOfRolesForUploader +
             expectedSetOfRolesForReviewer + setOf(DatalandRealmRole.ROLE_ADMIN)
+    private val adminUserId = "admin-user-id"
 
     @BeforeEach
     fun setup() {
@@ -111,6 +116,56 @@ internal class MetaDataControllerTest(
         assertMetaDataVisible(metaInfo)
         mockSecurityContext(userId = "reviewer-user-id", roles = expectedSetOfRolesForAdmin)
         assertMetaDataVisible(metaInfo)
+    }
+
+    @Test
+    fun `check if DataMetaInformationSearchFilter is correctly transformed into DataMetaInformation`() {
+        val dataId = "data-id-for-testing-postListOfDataMetaInfoFilters"
+        val dataType = DataType.of(SfdrData::class.java)
+        val reportingPeriod = "2022"
+        val uploaderUserId = UUID.randomUUID()
+        val qaStatus = QaStatus.Accepted
+        val amountStoredCompanies = 2
+        val testCompanyInformation = testDataProvider.getCompanyInformationWithoutIdentifiers(amountStoredCompanies)
+        val storedCompany1 = companyManager.addCompany(testCompanyInformation[0])
+        val storedCompany2 = companyManager.addCompany(testCompanyInformation[1])
+        val companyId1 = storedCompany1.companyId
+        val companyId2 = storedCompany2.companyId
+        val url = "https://$proxyPrimaryUrl/companies/$companyId1/frameworks/$dataType/$dataId"
+        val dataMetaInformationSearchFilters =
+            listOf(
+                DataMetaInformationSearchFilter(
+                    companyId1, dataType, reportingPeriod, true, setOf(uploaderUserId), qaStatus,
+                ),
+                DataMetaInformationSearchFilter(
+                    companyId2, dataType, reportingPeriod, true, setOf(uploaderUserId), qaStatus,
+                ),
+            )
+        dataMetaInformationManager.storeDataMetaInformation(
+            DataMetaInformationEntity(
+                dataId, company = storedCompany1, dataType.toString(), uploaderUserId.toString(),
+                uploadTime = 0, reportingPeriod, currentlyActive = true, qaStatus,
+            ),
+        )
+        dataMetaInformationManager.storeDataMetaInformation(
+            DataMetaInformationEntity(
+                "dataId", company = storedCompany2, dataType.toString(), uploaderUserId.toString(),
+                uploadTime = 0, reportingPeriod, currentlyActive = true, qaStatus,
+            ),
+        )
+        mockSecurityContext(userId = adminUserId, roles = expectedSetOfRolesForAdmin)
+        val listDataMetaInfos = metaDataController.postListOfDataMetaInfoFilters(dataMetaInformationSearchFilters).body
+
+        assertEquals(amountStoredCompanies, listDataMetaInfos?.size)
+        val dataMetaInfo = listDataMetaInfos?.get(0)
+        if (dataMetaInfo != null) {
+            assertEquals(companyId1, dataMetaInfo.companyId)
+            assertEquals(dataType, dataMetaInfo.dataType)
+            assertEquals(qaStatus, dataMetaInfo.qaStatus)
+            assertTrue(dataMetaInfo.currentlyActive)
+            assertEquals(uploaderUserId.toString(), dataMetaInfo.uploaderUserId)
+            assertEquals(url, dataMetaInfo.ref)
+        }
     }
 
     @Test
@@ -172,6 +227,7 @@ internal class MetaDataControllerTest(
             currentlyActive = true,
             qaStatus = QaStatus.Accepted,
         )
+
 
     private fun assertMetaDataVisible(metaInfo: DataMetaInformationEntity) {
         val allMetaInformation =

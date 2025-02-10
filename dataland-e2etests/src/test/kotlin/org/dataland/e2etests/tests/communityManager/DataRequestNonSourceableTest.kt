@@ -83,7 +83,7 @@ class DataRequestNonSourceableTest {
     }
 
     private fun postADataRequestAndReturnRequestId(): UUID {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
 
         val timestampBeforeSingleRequest = retrieveTimeAndWaitOneMillisecond()
         requestControllerApi.postSingleDataRequest(secondUserRequest2023)
@@ -104,10 +104,12 @@ class DataRequestNonSourceableTest {
 
     @Test
     fun `validate that only the requests corresponding to the nonSourceable dataset are patched`() {
+        // Post requests for 2023 and 2024 as premium user.
         val requestIdsFirstUser = postTwoDataRequestForSameUserAndReturnRequestIds()
         val requestIdFirstUserRequest2023 = requestIdsFirstUser.first
         val requestIdFirstUserRequest2024 = requestIdsFirstUser.second
 
+        // Post request for 2023 as admin.
         val requestIdSecondUserRequest2023 = postADataRequestAndReturnRequestId()
 
         postNonSourceableInfo(nonSourceableInfoRequest2023)

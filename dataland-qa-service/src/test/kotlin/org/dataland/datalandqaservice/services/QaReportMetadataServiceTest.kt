@@ -115,8 +115,8 @@ class QaReportMetadataServiceTest(
     fun `search active reports without additional filter`() {
         val dataMetaInformation: List<DataMetaInformation> =
             listOf(
-                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
             )
         Mockito
             .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
@@ -176,8 +176,8 @@ class QaReportMetadataServiceTest(
     fun `search closed date range`() {
         val dataMetaInformation: List<DataMetaInformation> =
             listOf(
-                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
             )
         Mockito
             .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))
@@ -199,8 +199,8 @@ class QaReportMetadataServiceTest(
     fun `search semi open date ranges`() {
         val dataMetaInformation: List<DataMetaInformation> =
             listOf(
-                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
-                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, null),
+                DataMetaInformation(dataId1, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
+                DataMetaInformation(dataId2, companyId, DataTypeEnum.sfdr, 1, "test", true, QaStatus.Accepted, ""),
             )
         Mockito
             .`when`(metadataController.getListOfDataMetaInfo(null, null, false, null, null, null))

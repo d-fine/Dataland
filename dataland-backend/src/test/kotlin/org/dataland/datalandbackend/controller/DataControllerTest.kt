@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.DatalandBackend
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.EutaxonomyNonFinancialsDataController
 import org.dataland.datalandbackend.model.DataType
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
@@ -93,12 +94,12 @@ internal class DataControllerTest(
         `when`(
             mockDataMetaInformationManager
                 .searchDataMetaInfo(
-                    testCompanyId,
-                    testDataType,
-                    false,
-                    testReportingPeriod,
-                    uploaderUserIds = null,
-                    qaStatus = null,
+                    DataMetaInformationSearchFilter(
+                        companyId = testCompanyId,
+                        dataType = testDataType,
+                        onlyActive = false,
+                        reportingPeriod = testReportingPeriod,
+                    ),
                 ),
         ).thenReturn(
             listOf(

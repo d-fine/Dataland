@@ -6,6 +6,7 @@ import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataMetaInfoAlterationManager
 import org.dataland.datalandbackend.services.DataMetaInformationManager
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -18,6 +19,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.web.bind.annotation.RestController
@@ -37,8 +39,25 @@ class MetaDataController(
     @Autowired val logMessageBuilder: LogMessageBuilder,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
     @Autowired val assembledDataManager: AssembledDataManager,
+    @Value("\${dataland.backend.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) : MetaDataApi {
     private val logger = LoggerFactory.getLogger(javaClass)
+
+    private fun getListOfDataMetaInfoForUser(
+        user: DatalandAuthentication?,
+        dataMetaInformationSearchFilter: DataMetaInformationSearchFilter,
+    ): List<DataMetaInformation> {
+        var foundDataMetaInformation = emptyList<DataMetaInformation>()
+        if (!dataMetaInformationSearchFilter.isNullOrEmpty()) {
+            foundDataMetaInformation =
+                dataMetaInformationManager
+                    .searchDataMetaInfo(
+                        dataMetaInformationSearchFilter,
+                    ).filter { it.isDatasetViewableByUser(user) }
+                    .map { it.toApiModel(proxyPrimaryUrl) }
+        }
+        return foundDataMetaInformation
+    }
 
     override fun getListOfDataMetaInfo(
         companyId: String?,
@@ -47,19 +66,31 @@ class MetaDataController(
         reportingPeriod: String?,
         uploaderUserIds: Set<UUID>?,
         qaStatus: QaStatus?,
+    ): ResponseEntity<List<DataMetaInformation>> =
+        ResponseEntity.ok(
+            this.getListOfDataMetaInfoForUser(
+                DatalandAuthentication.fromContextOrNull(),
+                DataMetaInformationSearchFilter(
+                    companyId = companyId,
+                    dataType = dataType,
+                    reportingPeriod = reportingPeriod,
+                    onlyActive = showOnlyActive,
+                    uploaderUserIds = uploaderUserIds,
+                    qaStatus = qaStatus,
+                ),
+            ),
+        )
+
+    override fun postListOfDataMetaInfoFilters(
+        dataMetaInformationSearchFilters: List<DataMetaInformationSearchFilter>,
     ): ResponseEntity<List<DataMetaInformation>> {
         val currentUser = DatalandAuthentication.fromContextOrNull()
         return ResponseEntity.ok(
-            dataMetaInformationManager
-                .searchDataMetaInfo(
-                    companyId,
-                    dataType,
-                    showOnlyActive,
-                    reportingPeriod,
-                    uploaderUserIds,
-                    qaStatus,
-                ).filter { it.isDatasetViewableByUser(currentUser) }
-                .map { it.toApiModel(currentUser) },
+            dataMetaInformationSearchFilters
+                .distinct()
+                .map { this.getListOfDataMetaInfoForUser(currentUser, it) }
+                .flatten()
+                .distinct(),
         )
     }
 
@@ -73,7 +104,7 @@ class MetaDataController(
                 ),
             )
         }
-        return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
+        return ResponseEntity.ok(metaInfo.toApiModel())
     }
 
     override fun patchDataMetaInfo(

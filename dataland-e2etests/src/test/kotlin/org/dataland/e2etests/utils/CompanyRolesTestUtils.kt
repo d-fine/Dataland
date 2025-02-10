@@ -47,7 +47,7 @@ class CompanyRolesTestUtils {
 
     fun assertAccessDeniedWhenUploadingFrameworkData(
         companyId: UUID,
-        dataSet: EutaxonomyNonFinancialsData,
+        dataset: EutaxonomyNonFinancialsData,
         bypassQa: Boolean = false,
     ) {
         val reportingPeriod = "2022"
@@ -55,7 +55,7 @@ class CompanyRolesTestUtils {
             assertThrows<org.dataland.datalandbackend.openApiClient.infrastructure.ClientException> {
                 apiAccessor.euTaxonomyNonFinancialsUploaderFunction(
                     companyId.toString(),
-                    dataSet,
+                    dataset,
                     reportingPeriod,
                     bypassQa,
                 )

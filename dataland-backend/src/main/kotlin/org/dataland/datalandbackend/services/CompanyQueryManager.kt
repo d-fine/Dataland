@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -34,7 +33,7 @@ class CompanyQueryManager(
     }
 
     /**
-     * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeeding
+     * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeding
      * the given size
      * @param chunkSize the package size of the records
      * @param chunkIndex the index of the chunk which is requested
@@ -111,12 +110,9 @@ class CompanyQueryManager(
      * @return the StoredCompany object of the retrieved company
      */
     @Transactional
-    fun getCompanyApiModelById(
-        companyId: String,
-        viewingUser: DatalandAuthentication? = null,
-    ): StoredCompany {
+    fun getCompanyApiModelById(companyId: String): StoredCompany {
         val searchResult = getCompanyById(companyId)
-        return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel(viewingUser)
+        return fetchAllStoredCompanyFields(listOf(searchResult)).first().toApiModel()
     }
 
     /**
