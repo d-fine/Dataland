@@ -2,10 +2,8 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
-import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -76,7 +74,8 @@ class EuTaxonomyNonFinancials {
         val companyName = "TestForIncompleteReferencedReport"
 
         val companyInformation =
-            FrameworkTestDataProvider.forFrameworkPreparedFixtures(EutaxonomyNonFinancialsData::class.java).getByCompanyName(companyName)
+            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
+                .getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(companyName)
 
         val dataSet = companyInformation!!.t
 

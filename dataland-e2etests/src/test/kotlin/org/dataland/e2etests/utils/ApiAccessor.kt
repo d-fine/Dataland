@@ -58,7 +58,7 @@ class ApiAccessor {
         EutaxonomyNonFinancialsDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val unauthorizedEuTaxonomyDataNonFinancialsControllerApi = UnauthorizedEuTaxonomyDataNonFinancialsControllerApi()
     val testDataProviderForEuTaxonomyDataForNonFinancials =
-        FrameworkTestDataProvider.forFrameworkFixtures(EutaxonomyNonFinancialsData::class.java)
+        FrameworkTestDataProvider(EutaxonomyNonFinancialsData::class.java)
     val dataDeletionControllerApi = DataDeletionControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 
     fun euTaxonomyNonFinancialsUploaderFunction(
@@ -81,7 +81,7 @@ class ApiAccessor {
     val dataControllerApiForEuTaxonomyFinancials =
         EutaxonomyFinancialsDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val testDataProviderEuTaxonomyForFinancials =
-        FrameworkTestDataProvider.forFrameworkFixtures(EutaxonomyFinancialsData::class.java)
+        FrameworkTestDataProvider(EutaxonomyFinancialsData::class.java)
 
     fun euTaxonomyFinancialsUploaderFunction(
         companyId: String,
@@ -97,7 +97,7 @@ class ApiAccessor {
     }
 
     val dataControllerApiForLksgData = LksgDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForLksgData = FrameworkTestDataProvider.forFrameworkFixtures(LksgData::class.java)
+    val testDataProviderForLksgData = FrameworkTestDataProvider(LksgData::class.java)
 
     fun lksgUploaderFunction(
         companyId: String,
@@ -112,7 +112,7 @@ class ApiAccessor {
     }
 
     val dataControllerApiForP2pData = P2pDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForP2pData = FrameworkTestDataProvider.forFrameworkFixtures(PathwaysToParisData::class.java)
+    val testDataProviderForP2pData = FrameworkTestDataProvider(PathwaysToParisData::class.java)
 
     fun p2pUploaderFunction(
         companyId: String,
@@ -127,7 +127,7 @@ class ApiAccessor {
     }
 
     val dataControllerApiForSfdrData = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
-    val testDataProviderForSfdrData = FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java)
+    val testDataProviderForSfdrData = FrameworkTestDataProvider(SfdrData::class.java)
 
     fun sfdrUploaderFunction(
         companyId: String,

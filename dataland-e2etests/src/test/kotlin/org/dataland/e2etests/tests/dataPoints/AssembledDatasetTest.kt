@@ -26,7 +26,7 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AssembledDatasetTest {
-    private val testDataProvider = FrameworkTestDataProvider.forFrameworkFixtures(AdditionalCompanyInformationData::class.java)
+    private val testDataProvider = FrameworkTestDataProvider(AdditionalCompanyInformationData::class.java)
     private val dummyDataset = testDataProvider.getTData(1)[0]
     private val apiAccessor = ApiAccessor()
     private val linkedQaReportDataFile = File("./build/resources/test/AdditionalCompanyInformationQaReportPreparedFixtures.json")
