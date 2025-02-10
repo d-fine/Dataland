@@ -27,6 +27,13 @@ class DataPointValidator
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
+        companion object {
+            val WHITELSITED_CLASS_NAMES =
+                setOf(
+                    "java.time.LocalDate",
+                )
+        }
+
         /**
          * Validates a single data point by casting it to the correct class and running the validations
          * @param dataPointType the type of the data point to validate
@@ -61,6 +68,21 @@ class DataPointValidator
             }
         }
 
+        private fun assertClassNameIsAuthorized(
+            className: String,
+            correlationId: String,
+        ) {
+            if (!className.startsWith("org.dataland.datalandbackend.model.") &&
+                !WHITELSITED_CLASS_NAMES.contains(className)
+            ) {
+                logger.error("Invalid class name $className (correlation ID: $correlationId).")
+                throw InvalidInputApiException(
+                    "Invalid class name.",
+                    "The class name $className is not valid.",
+                )
+            }
+        }
+
         /**
          * Validates the consistency of a JSON string with a given class.
          * @param jsonData The JSON string to validate
@@ -72,13 +94,7 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ) {
-            if (!className.startsWith("org.dataland.datalandbackend.model.datapoints.")) {
-                logger.error("Invalid class name $className (correlation ID: $correlationId).")
-                throw InvalidInputApiException(
-                    "Invalid class name.",
-                    "The class name $className is not valid.",
-                )
-            }
+            assertClassNameIsAuthorized(className, correlationId)
             val classForValidation = Class.forName(className).kotlin.java
             val dataPointObject = checkCastIntoClass(jsonData, classForValidation, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
