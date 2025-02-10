@@ -1,10 +1,10 @@
 {
-  "id" : "extendedDecimal",
-  "name" : "General decimal data point with an extended source",
-  "businessDefinition" : "Data point with an extended document reference as source, and a decimal value.",
-  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedDecimalDataPoint",
+  "id" : "extendedInteger",
+  "name" : "General Integer data point with an extended source",
+  "businessDefinition" : "Data point with an extended document reference as source, and a integer value.",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.ExtendedIntegerDataPoint",
   "example" : {
-    "value" : 100.5,
+    "value" : 100,
     "quality" : "Reported",
     "comment" : "The value is reported by the company.",
     "dataSource" : {
