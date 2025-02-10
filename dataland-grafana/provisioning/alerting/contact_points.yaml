@@ -8,7 +8,7 @@ contactPoints:
       settings:
         title: '{{ template "alert_title_template" . }}'
         text: '{{ template "alert_message_template" . }}'
-        url: https://hooks.slack.com/services/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
+        url: ${SLACK_ALERT_URL}
       disableResolveMessage: false
   - orgId: 1
     name: Slack Critical Alerts
@@ -18,5 +18,5 @@ contactPoints:
       settings:
         title: '{{ template "alert_title_template" . }}'
         text: '{{ template "alert_message_template" . }}'
-        url: https://hooks.slack.com/services/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
+        url: ${SLACK_CRITICAL_ALERT_URL}
       disableResolveMessage: false
