@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.validation.Validation
+import jakarta.validation.Validator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
@@ -23,6 +24,7 @@ class DataPointValidator
     constructor(
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
+        private val validator: Validator
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -126,7 +128,6 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ) {
-            val validator = Validation.buildDefaultValidatorFactory().validator
             val violations = validator.validate(dataPointObject)
             if (violations.isNotEmpty()) {
                 logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): $violations")
