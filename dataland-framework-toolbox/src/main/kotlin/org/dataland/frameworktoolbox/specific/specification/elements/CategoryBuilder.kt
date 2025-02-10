@@ -45,7 +45,7 @@ class CategoryBuilder(
     fun addDefaultDatapointAndSpecification(
         component: ComponentBase,
         typeNameSuffix: String,
-        dataPointBaseTypeId: String,
+        dataPointBaseTypeId: String? = null,
     ): Pair<DataPointType, DatapointBuilder> {
         val specificationId =
             SpecificationNamingConvention.generateDataPointSpecificationName(
@@ -59,7 +59,7 @@ class CategoryBuilder(
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
-                dataPointBaseTypeId = dataPointBaseTypeId,
+                dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}${typeNameSuffix}",
             )
         val datapoint =
             addDatapointToFrameworkHierarchy(

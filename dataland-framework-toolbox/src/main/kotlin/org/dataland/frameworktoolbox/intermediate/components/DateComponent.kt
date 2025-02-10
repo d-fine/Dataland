@@ -63,10 +63,10 @@ class DateComponent(
     }
 
     override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
         specificationCategoryBuilder.addDefaultDatapointAndSpecification(
             this,
             "Date",
-            "${documentSupport.getNamingPrefix()}Date",
         )
     }
 }
