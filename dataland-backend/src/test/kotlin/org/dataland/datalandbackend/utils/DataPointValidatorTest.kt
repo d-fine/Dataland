@@ -20,7 +20,7 @@ class DataPointValidatorTest {
         DataPointValidator(objectMapper, specificationClient, Validation.buildDefaultValidatorFactory().validator)
 
     private val correlationId = "correlationId"
-    private val validationClass = "org.dataland.datalandbackend.model.datapoints.extended.CurrencyDataPoint"
+    private val validationClass = "org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint"
 
     private val currencyDataPoint = "./dataPointValidation/currencyDataPoint.json"
     private val invalidCurrencyDataPoint = "./dataPointValidation/invalidCurrencyDataPoint.json"
@@ -58,7 +58,7 @@ class DataPointValidatorTest {
     @Test
     fun `check that invalid classes are rejected`() {
         val className = "org.dataland.datalandbackend.model.datapoints.standard.DummyDataPoint"
-        assertThrows<ClassNotFoundException> { dataPointValidator.validateConsistency("{}", className, correlationId) }
+        assertThrows<IllegalArgumentException> { dataPointValidator.validateConsistency("{}", className, correlationId) }
     }
 
     @Test
