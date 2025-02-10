@@ -31,6 +31,8 @@ class DataPointValidator
             val WHITELSITED_CLASS_NAMES =
                 setOf(
                     "java.time.LocalDate",
+                    "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector," +
+                            "org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>"
                 )
         }
 
@@ -95,26 +97,24 @@ class DataPointValidator
             correlationId: String,
         ) {
             assertClassNameIsAuthorized(className, correlationId)
-            val classForValidation = Class.forName(className).kotlin.java
-            val dataPointObject = checkCastIntoClass(jsonData, classForValidation, className, correlationId)
+            val dataPointObject = checkCastIntoClass(jsonData, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
         }
 
         /**
          * Checks if the JSON data can be cast into a given class
          * @param jsonData The JSON data to check
-         * @param classForValidation The class to check against
          * @param className The name of the class to check against
          * @param correlationId The correlation ID of the operation
          */
         private fun checkCastIntoClass(
             jsonData: String,
-            classForValidation: Class<out Any>,
             className: String,
             correlationId: String,
         ): Any {
             try {
-                return objectMapper.readValue(jsonData, classForValidation)
+                val typeFactory = objectMapper.typeFactory.constructFromCanonical(className)
+                return objectMapper.readValue(jsonData, typeFactory)
             } catch (ex: JsonMappingException) {
                 logger.error("Unable to cast JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
                 throw InvalidInputApiException(
