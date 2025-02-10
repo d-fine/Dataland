@@ -57,6 +57,9 @@ export default defineConfig({
       'markdown-it',
       '@faker-js/faker',
       'primevue/icons/chevronup',
+      'primevue/accordion',
+      'primevue/accordiontab',
+      'primevue/badge',
     ],
   },
   plugins: [

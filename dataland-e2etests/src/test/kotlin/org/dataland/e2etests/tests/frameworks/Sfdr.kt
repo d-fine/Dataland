@@ -16,7 +16,7 @@ class Sfdr {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
-    private val listOfOneSfdrDataSet = apiAccessor.testDataProviderForSfdrData.getTData(1)
+    private val listOfOneSfdrDataset = apiAccessor.testDataProviderForSfdrData.getTData(1)
     private val listOfOneCompanyInformation =
         apiAccessor.testDataProviderForSfdrData
             .getCompanyInformationWithoutIdentifiers(1)
@@ -31,7 +31,7 @@ class Sfdr {
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOfOneSfdrDataSet,
+                listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
             )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -45,7 +45,7 @@ class Sfdr {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(listOfOneSfdrDataSet[0], downloadedAssociatedData.data)
+        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test
@@ -53,7 +53,7 @@ class Sfdr {
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOfOneSfdrDataSet,
+                listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
             )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -63,7 +63,7 @@ class Sfdr {
                     reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
                     companyId = receivedDataMetaInformation.companyId,
                 )
-        assertEquals(listOfOneSfdrDataSet[0], downloadedAssociatedData.data)
+        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test
@@ -92,9 +92,9 @@ class Sfdr {
             apiAccessor.testDataProviderForSfdrData
                 .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
 
-        val dataSet = companyInformation!!.t
+        val dataset = companyInformation!!.t
 
-        val uploadPair = Pair(dataSet, "2022")
+        val uploadPair = Pair(dataset, "2022")
 
         val exception =
             assertThrows<ClientException> {
