@@ -20663,11 +20663,13 @@
         "type": "object"
       },
       "DataMetaInformationPatch": {
+        "required": [
+          "uploaderUserId"
+        ],
         "type": "object",
         "properties": {
           "uploaderUserId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -20998,9 +21000,11 @@
         ],
         "type": "object",
         "properties": {
-          "lei": {
-            "type": "string",
-            "nullable": true
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
           },
           "headquarters": {
             "type": "string"
@@ -21012,11 +21016,9 @@
             "type": "string",
             "nullable": true
           },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
+          "lei": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -21039,10 +21041,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

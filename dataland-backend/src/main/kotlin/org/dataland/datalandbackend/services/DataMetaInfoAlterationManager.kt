@@ -50,7 +50,7 @@ class DataMetaInfoAlterationManager
             val updatedStorableDataset: StorableDataset =
                 dataManager
                     .getPublicDataset(dataId, DataType.valueOf(dataMetaInformation.dataType), correlationId)
-                    .copy(uploaderUserId = dataMetaInformation.uploaderUserId)
+                    .copy(uploaderUserId = dataMetaInformationPatch.uploaderUserId)
 
             logger.info(
                 "Updating uploaderUserId to ${dataMetaInformationPatch.uploaderUserId} in metaInformation. " +

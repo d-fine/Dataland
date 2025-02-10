@@ -16,10 +16,12 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -86,6 +88,7 @@ class DataMetaInfoAlterationManagerTest {
     @Test
     fun `test that patch functionality runs as expected on happy path patching metaInfo and storableDataset`() {
         val dataMetaInformationPatch = DataMetaInformationPatch(newValidUploaderUserId)
+        val argumentCaptor = argumentCaptor<StorableDataset>()
 
         assertDoesNotThrow {
             dataMetaInfoAlterationManager.patchDataMetaInformation(
@@ -95,6 +98,8 @@ class DataMetaInfoAlterationManagerTest {
             )
         }
         assertEquals(newValidUploaderUserId, partiallyMockedDataMetaInformationEntity.uploaderUserId)
+        verify(mockDataManager).storeDatasetInTemporaryStoreAndSendPatchMessage(any(), argumentCaptor.capture(), any())
+        assertEquals(newValidUploaderUserId, argumentCaptor.firstValue.uploaderUserId)
     }
 
     @Test
