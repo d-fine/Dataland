@@ -25,7 +25,10 @@ class InvalidSfdrRequestTests {
     }
 
     fun getErrorFromApi(companyName: String): ClientException {
-        val oneInvalidSfdrDataset = FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java).getByCompanyName(companyName)
+        val oneInvalidSfdrDataset =
+            FrameworkTestDataProvider
+                .forFrameworkPreparedFixtures(SfdrData::class.java)
+                .getByCompanyName(companyName)
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         val errorForInvalidInput =

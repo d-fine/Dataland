@@ -3,7 +3,6 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.validation.Validation
 import jakarta.validation.Validator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -24,7 +23,7 @@ class DataPointValidator
     constructor(
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
-        private val validator: Validator
+        private val validator: Validator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
