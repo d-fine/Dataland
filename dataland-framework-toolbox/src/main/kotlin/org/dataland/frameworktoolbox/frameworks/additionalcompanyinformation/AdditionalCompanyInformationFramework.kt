@@ -7,9 +7,6 @@ import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComp
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
-import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
-import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -26,7 +23,6 @@ class AdditionalCompanyInformationFramework :
         order = 10,
         enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
-
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
         framework.root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("general") {

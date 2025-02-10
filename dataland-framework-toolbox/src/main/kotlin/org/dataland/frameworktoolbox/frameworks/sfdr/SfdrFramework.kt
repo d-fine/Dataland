@@ -8,9 +8,6 @@ import org.dataland.frameworktoolbox.intermediate.components.SingleSelectCompone
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
 import org.dataland.frameworktoolbox.intermediate.group.ComponentGroupApi
 import org.dataland.frameworktoolbox.intermediate.group.edit
-import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
-import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
-import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.dataland.frameworktoolbox.specific.viewconfig.elements.LabelBadgeColor
 import org.dataland.frameworktoolbox.template.components.ComponentGenerationUtils
 import org.springframework.stereotype.Component

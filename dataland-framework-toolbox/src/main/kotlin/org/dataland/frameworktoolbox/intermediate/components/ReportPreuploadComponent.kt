@@ -19,7 +19,6 @@ class ReportPreuploadComponent(
     identifier: String,
     parent: FieldNodeParent,
 ) : ComponentBase(identifier, parent) {
-
     var isPartOfQaReport: Boolean = true
 
     private val companyReportType = TypeReference("org.dataland.datalandbackend.model.documents.CompanyReport", false)
