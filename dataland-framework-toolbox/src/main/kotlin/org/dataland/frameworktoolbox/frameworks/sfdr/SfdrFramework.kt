@@ -22,7 +22,7 @@ class SfdrFramework :
         explanation = "Sustainability Finance Disclosure Regulation",
         File("./dataland-framework-toolbox/inputs/sfdr/sfdr.xlsx"),
         order = 6,
-        enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.DataPointSpecifications),
+        enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = SfdrComponentGenerationUtils()
 
