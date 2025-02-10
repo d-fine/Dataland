@@ -21,12 +21,12 @@ import type { Section } from '@/types/ContentTypes';
 const { sections } = defineProps<{ sections?: Section[] }>();
 
 const brandsSection = computed(() => {
-  return sections?.find((section) => section.title === 'Brands') ?? null;
+    return sections?.find((section) => section.title === 'Brands') ?? null;
 });
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .brands {
   display: flex;
@@ -83,7 +83,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: $large) {
+@media only screen and (max-width: newVariables.$large) {
   .brands {
     &__wrap {
       grid-template-columns: repeat(12, 1fr);
@@ -101,7 +101,7 @@ const brandsSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .brands {
     padding: 32px 0 80px;
     gap: 24px;
@@ -130,7 +130,7 @@ const brandsSection = computed(() => {
   }
 }
 
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .brands {
     &__wrap {
       gap: 24px 16px;
