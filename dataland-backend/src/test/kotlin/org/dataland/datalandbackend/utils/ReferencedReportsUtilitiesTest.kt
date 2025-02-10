@@ -138,7 +138,7 @@ class ReferencedReportsUtilitiesTest {
     fun `check that updating a single data point with a publication date works as expected`() {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
 
-        val dataSource = testObjectMapper.readValue(dataPoint, CurrencyDataPoint::class.java).dataSource
+        val dataSource = testObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
         val contentNode = testObjectMapper.readTree(dataPoint)
 
         requireNotNull(dataSource) { "Data point does not contain a proper data source" }
