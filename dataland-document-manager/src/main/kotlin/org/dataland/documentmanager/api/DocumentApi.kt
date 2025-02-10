@@ -2,7 +2,10 @@ package org.dataland.documentmanager.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.headers.Header
+import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Encoding
 import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
@@ -46,10 +48,16 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["multipart/form-data"],
     )
+    @RequestBody(
+        content = [
+            Content(encoding = [Encoding(name = "documentMetaInfo", contentType = "application/json")]),
+            Content(encoding = [Encoding(name = "document", contentType = "application/octet-stream")]),
+        ],
+    )
     @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
     fun postDocument(
-        @RequestPart document: MultipartFile,
-        @RequestParam documentMetaInfo: DocumentMetaInfo,
+        @RequestPart("document") document: MultipartFile,
+        @RequestPart("documentMetaInfo") documentMetaInfo: DocumentMetaInfo,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**

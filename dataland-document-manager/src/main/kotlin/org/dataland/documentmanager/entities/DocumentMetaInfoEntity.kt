@@ -5,6 +5,7 @@ import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.converter.DocumentCategoryConverter
@@ -26,7 +27,7 @@ data class DocumentMetaInfoEntity(
     val documentName: String?,
     @Convert(converter = DocumentCategoryConverter::class)
     val documentCategory: DocumentCategory,
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     val companyIds: List<String>?,
     val uploaderId: String,
     val uploadTime: Long,
