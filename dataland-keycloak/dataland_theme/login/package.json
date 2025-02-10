@@ -3,30 +3,31 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && tsc -p tsconfig.config.json && vite build",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
-    "lintci": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --max-warnings 0 --no-fix",
+    "build": "vite build",
+    "lint": "eslint . --fix",
+    "lintci": "eslint . --max-warnings 0 --no-fix",
     "updatepackages": "npm-check-updates -u",
     "updatepackagelock": "npm update --save --include=dev && npm audit fix"
   },
   "dependencies": {
-    "@ibm/plex": "^6.4.0",
+    "@ibm/plex": "^6.4.1",
     "@zxcvbn-ts/core": "^3.0.4",
-    "@zxcvbn-ts/language-common": "^2.0.1",
-    "@zxcvbn-ts/language-en": "^2.1.0",
-    "material-icons": "^1.13.12",
+    "@zxcvbn-ts/language-common": "^3.0.4",
+    "@zxcvbn-ts/language-en": "^3.0.2",
+    "material-icons": "^1.13.13",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0"
   },
   "devDependencies": {
-    "@types/node": "20.10.8",
-    "@typescript-eslint/eslint-plugin": "7.18.0",
-    "eslint": "8.57.1",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-prettier": "5.2.1",
+    "@types/node": "22.12.0",
+    "@typescript-eslint/parser": "^8.22.0",
+    "@typescript-eslint/eslint-plugin": "8.22.0",
+    "eslint": "9.19.0",
+    "eslint-config-prettier": "10.0.1",
+    "eslint-plugin-prettier": "5.2.3",
     "npm-check-updates": "17.1.14",
-    "sass": "1.83.1",
-    "typescript": "5.4.5",
-    "vite": "4.5.5"
+    "sass": "1.83.4",
+    "typescript": "5.7.3",
+    "vite": "6.0.11"
   }
 }

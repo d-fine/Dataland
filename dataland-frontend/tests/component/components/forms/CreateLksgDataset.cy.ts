@@ -1,9 +1,11 @@
 // @ts-nocheck
 import CreateLksgDataset from '@/components/forms/CreateLksgDataset.vue';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type CompanyAssociatedDataLksgData, type LksgData } from '@clients/backend';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
+import { getMountingFunction } from '@ct/testUtils/Mount.ts';
+import { createMemoryHistory, createRouter } from 'vue-router';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 
 describe('Test YesNoBaseDataPointFormField for entries', () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -84,19 +86,22 @@ function mountEditForm(data: LksgData): Cypress.Chainable {
     data: data,
   };
   cy.intercept('**/api/data/lksg/*', dummyCompanyAssociatedData);
-  return cy.mountWithPlugins(CreateLksgDataset, {
-    keycloak: minimalKeycloakMock({}),
-    data: () => ({
-      route: {
-        query: {
-          templateDataId: 'data-id',
-        },
-      },
-    }),
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    props: {
-      companyID: 'company-id',
-    },
+  const router = createRouter({
+    routes: [{ path: '/', component: CreateLksgDataset }],
+    history: createMemoryHistory(),
   });
+  void router.push({ path: '/', query: { templateDataId: 'data-id' } });
+
+  const mountingFunction = getMountingFunction({
+    router: router,
+    keycloak: minimalKeycloakMock(),
+  });
+
+  return cy.wrap(router.isReady()).then(() =>
+    mountingFunction(CreateLksgDataset, {
+      props: {
+        companyID: 'company-id',
+      },
+    })
+  );
 }

@@ -1,14 +1,19 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
+import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.BulkDataRequestResponse
+import org.dataland.datalandcommunitymanager.model.dataRequest.DatasetDimensions
+import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -21,6 +26,8 @@ class BulkDataRequestManager(
     @Autowired private val dataRequestLogger: DataRequestLogger,
     @Autowired private val emailMessageSender: BulkDataRequestEmailMessageSender,
     @Autowired private val utils: DataRequestProcessingUtils,
+    @Autowired private val metaDataController: MetaDataControllerApi,
+    @Value("\${dataland.community-manager.proxy-primary-url}") private val proxyPrimaryUrl: String,
 ) {
     /**
      * Processes a bulk data request from a user
@@ -33,9 +40,9 @@ class BulkDataRequestManager(
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
-        val acceptedIdentifiers = mutableListOf<String>()
         val rejectedIdentifiers = mutableListOf<String>()
-        val userProvidedIdentifierToDatalandCompanyIdMapping = mutableMapOf<String, CompanyIdAndName>()
+        val acceptedIdentifiersToCompanyIdAndName = mutableMapOf<String, CompanyIdAndName>()
+
         for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
             val datalandCompanyIdAndName =
                 utils.getDatalandCompanyIdAndNameForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
@@ -43,33 +50,203 @@ class BulkDataRequestManager(
                 rejectedIdentifiers.add(userProvidedIdentifier)
                 continue
             }
-            userProvidedIdentifierToDatalandCompanyIdMapping[userProvidedIdentifier] = datalandCompanyIdAndName
-            acceptedIdentifiers.add(userProvidedIdentifier)
-            storeDataRequests(
-                dataTypes = bulkDataRequest.dataTypes,
-                reportingPeriods = bulkDataRequest.reportingPeriods,
-                datalandCompanyId = datalandCompanyIdAndName.companyId,
-            )
+            acceptedIdentifiersToCompanyIdAndName[userProvidedIdentifier] = datalandCompanyIdAndName
         }
-        if (acceptedIdentifiers.isEmpty()) throwInvalidInputApiExceptionBecauseAllIdentifiersRejected()
+
+        val validRequestCombinations =
+            getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)
+
+        val existingDatasets =
+            metaDataController.postListOfDataMetaInfoFilters(
+                validRequestCombinations.map { it.toDataMetaInformationSearchFilter() },
+            )
+
+        val acceptedRequestCombinations = getDimensionsWithoutRequests(validRequestCombinations, existingDatasets)
+
         sendBulkDataRequestInternalEmailMessage(
-            bulkDataRequest, userProvidedIdentifierToDatalandCompanyIdMapping.values.toList(), correlationId,
+            bulkDataRequest, acceptedIdentifiersToCompanyIdAndName.values.toList(), correlationId,
         )
-        return buildResponseForBulkDataRequest(bulkDataRequest, rejectedIdentifiers, acceptedIdentifiers)
+
+        return createBulkDataRequests(
+            acceptedRequestCombinations = acceptedRequestCombinations,
+            acceptedIdentifiersToCompanyIdAndName = acceptedIdentifiersToCompanyIdAndName,
+            existingDatasets = existingDatasets,
+            rejectedIdentifiers = rejectedIdentifiers,
+            correlationId = correlationId,
+        )
     }
 
-    private fun storeDataRequests(
+    private fun getValidRequestCombinations(
+        bulkDataRequest: BulkDataRequest,
+        acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,
+    ): List<DatasetDimensions> {
+        val acceptedCompanyIdsSet: Set<String> =
+            acceptedIdentifiersToCompanyIdAndName.values.map { it.companyId }.toSet()
+
+        return generateRequestCombinations(
+            dataTypes = bulkDataRequest.dataTypes,
+            reportingPeriods = bulkDataRequest.reportingPeriods,
+            datalandCompanyIds = acceptedCompanyIdsSet,
+        )
+    }
+
+    private fun getAlreadyExistingDatasetsResponse(
+        metaDataList: List<DataMetaInformation>,
+        userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
+    ): List<ResourceResponse> {
+        if (metaDataList.isEmpty()) {
+            return emptyList()
+        }
+
+        return metaDataList.map { metaData ->
+            val companyId = metaData.companyId
+
+            val companyMappingEntry =
+                userProvidedIdentifierToDatalandCompanyIdMapping.entries
+                    .firstOrNull { it.value.companyId == companyId }
+
+            companyMappingEntry
+                ?: throw IllegalArgumentException("Can't match: $companyId to a user provided company identifier.")
+
+            ResourceResponse(
+                userProvidedIdentifier = companyMappingEntry.key,
+                companyName = companyMappingEntry.value.companyName,
+                framework = metaData.dataType.toString(),
+                reportingPeriod = metaData.reportingPeriod,
+                resourceId = metaData.dataId,
+                resourceUrl = metaData.ref,
+            )
+        }
+    }
+
+    private fun getDimensionsWithoutRequests(
+        validRequestCombinations: List<DatasetDimensions>,
+        existingDatasets: List<DataMetaInformation>,
+    ): List<DatasetDimensions> {
+        val dimensionsWithExistingRequests =
+            existingDatasets
+                .map {
+                    DatasetDimensions(it.companyId, it.dataType, it.reportingPeriod)
+                }.toSet()
+
+        val allValidDimensions = validRequestCombinations.toSet()
+        val dimensionsWithoutRequests = allValidDimensions - dimensionsWithExistingRequests
+        return dimensionsWithoutRequests.toList()
+    }
+
+    private fun generateRequestCombinations(
         dataTypes: Set<DataTypeEnum>,
         reportingPeriods: Set<String>,
-        datalandCompanyId: String,
-    ) {
-        for (framework in dataTypes) {
-            for (reportingPeriod in reportingPeriods) {
-                if (!utils.existsDataRequestWithNonFinalStatus(datalandCompanyId, framework, reportingPeriod)) {
-                    utils.storeDataRequestEntityAsOpen(datalandCompanyId, framework, reportingPeriod)
+        datalandCompanyIds: Set<String>,
+    ): List<DatasetDimensions> =
+        datalandCompanyIds.flatMap { companyId ->
+            dataTypes.flatMap { dataType ->
+                reportingPeriods.map { period ->
+                    DatasetDimensions(
+                        companyId = companyId,
+                        dataType = dataType,
+                        reportingPeriod = period,
+                    )
                 }
             }
         }
+
+    /**
+     * Processes data requests to remove already existing data requests
+     * @param validDataDimensions list of all valid data requests
+     * @param userProvidedIdentifierToDatalandCompanyIdMapping mapping of user provided company identifiers to
+     * dataland company ids and names
+     * @return list of data requests that already exist
+     */
+    private fun processExistingDataRequests(
+        validDataDimensions: MutableList<DatasetDimensions>,
+        userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
+    ): List<ResourceResponse> {
+        val existingDataRequests = mutableListOf<ResourceResponse>()
+        val iterator = validDataDimensions.iterator()
+
+        while (iterator.hasNext()) {
+            val dimension = iterator.next()
+            val existingRequestId =
+                utils.getRequestIdForDataRequestWithNonFinalStatus(
+                    dimension.companyId,
+                    dimension.dataType,
+                    dimension.reportingPeriod,
+                )
+            if (existingRequestId != null) {
+                val (userProvidedCompanyId, companyName) =
+                    extractUserProvidedIdAndName(
+                        dimension.companyId,
+                        userProvidedIdentifierToDatalandCompanyIdMapping,
+                    )
+
+                existingDataRequests.add(
+                    ResourceResponse(
+                        userProvidedIdentifier = userProvidedCompanyId,
+                        companyName = companyName,
+                        framework = dimension.dataType.toString(),
+                        reportingPeriod = dimension.reportingPeriod,
+                        resourceId = existingRequestId,
+                        resourceUrl = "https://$proxyPrimaryUrl/requests/$existingRequestId",
+                    ),
+                )
+                iterator.remove()
+            }
+        }
+        return existingDataRequests
+    }
+
+    private fun extractUserProvidedIdAndName(
+        companyId: String,
+        userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
+    ): Pair<String, String> {
+        val entry =
+            userProvidedIdentifierToDatalandCompanyIdMapping.entries
+                .find { it.value.companyId == companyId }
+                ?: throw IllegalArgumentException("Entry not found for companyId: $companyId")
+
+        return Pair(entry.key, entry.value.companyName)
+    }
+
+    /** Stores the data requests from requestsToProcess and provides a feedback list including the user-provided company identifiers.
+     * @param dimensionsToProcess A list of data dimensions that requests are required for.
+     * @param userProvidedIdentifierToDatalandCompanyIdMapping A mapping that stores the user-provided identifiers and
+     * associated dataland company ids and name.
+     * @return A list of ResourceResponse objects that documents the stored requests and contains all necessary information
+     * to display in the frontend.
+     */
+    private fun storeDataRequests(
+        dimensionsToProcess: List<DatasetDimensions>,
+        userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
+    ): List<ResourceResponse> {
+        val acceptedDataRequests = mutableListOf<ResourceResponse>()
+
+        dimensionsToProcess.forEach {
+            val (userProvidedCompanyId, companyName) =
+                extractUserProvidedIdAndName(
+                    it.companyId,
+                    userProvidedIdentifierToDatalandCompanyIdMapping,
+                )
+
+            val storedRequest =
+                utils.storeDataRequestEntityAsOpen(
+                    it.companyId,
+                    it.dataType,
+                    it.reportingPeriod,
+                )
+
+            acceptedDataRequests.add(
+                ResourceResponse(
+                    userProvidedIdentifier = userProvidedCompanyId,
+                    companyName = companyName,
+                    framework = it.dataType.toString(),
+                    reportingPeriod = it.reportingPeriod,
+                    resourceId = storedRequest.dataRequestId,
+                    resourceUrl = "https://$proxyPrimaryUrl/requests/${storedRequest.dataRequestId}",
+                ),
+            )
+        }
+        return acceptedDataRequests
     }
 
     private fun errorMessageForEmptyInputConfigurations(
@@ -115,36 +292,32 @@ class BulkDataRequestManager(
         }
     }
 
-    private fun buildResponseMessageForBulkDataRequest(
-        totalNumberOfRequestedCompanyIdentifiers: Int,
-        numberOfRejectedCompanyIdentifiers: Int,
-    ): String =
-        when (numberOfRejectedCompanyIdentifiers) {
-            0 -> "All of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers were accepted."
-            1 ->
-                "One of your $totalNumberOfRequestedCompanyIdentifiers distinct company identifiers was rejected " +
-                    "because it could not be uniquely matched with an existing company on Dataland."
+    private fun createBulkDataRequests(
+        acceptedRequestCombinations: List<DatasetDimensions>,
+        acceptedIdentifiersToCompanyIdAndName: Map<String, CompanyIdAndName>,
+        existingDatasets: List<DataMetaInformation>,
+        rejectedIdentifiers: List<String>,
+        correlationId: String,
+    ): BulkDataRequestResponse {
+        val requestsToProcess = acceptedRequestCombinations.toMutableList()
+        val existingNonFinalRequests =
+            processExistingDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
+        val acceptedRequests = storeDataRequests(requestsToProcess, acceptedIdentifiersToCompanyIdAndName)
+        val existingDatasetsResponse =
+            getAlreadyExistingDatasetsResponse(existingDatasets, acceptedIdentifiersToCompanyIdAndName)
 
-            else ->
-                "$numberOfRejectedCompanyIdentifiers of your $totalNumberOfRequestedCompanyIdentifiers distinct " +
-                    "company identifiers were rejected because they could not be uniquely matched with existing " +
-                    "companies on Dataland."
-        }
+        val bulkRequestResponse =
+            BulkDataRequestResponse(
+                acceptedDataRequests = acceptedRequests,
+                alreadyExistingNonFinalRequests = existingNonFinalRequests,
+                alreadyExistingDatasets = existingDatasetsResponse,
+                rejectedCompanyIdentifiers = rejectedIdentifiers,
+            )
 
-    private fun buildResponseForBulkDataRequest(
-        bulkDataRequest: BulkDataRequest,
-        rejectedCompanyIdentifiers: List<String>,
-        acceptedCompanyIdentifiers: List<String>,
-    ): BulkDataRequestResponse =
-        BulkDataRequestResponse(
-            message =
-                buildResponseMessageForBulkDataRequest(
-                    bulkDataRequest.companyIdentifiers.size,
-                    rejectedCompanyIdentifiers.size,
-                ),
-            acceptedCompanyIdentifiers = acceptedCompanyIdentifiers,
-            rejectedCompanyIdentifiers = rejectedCompanyIdentifiers,
-        )
+        dataRequestLogger.logBulkDataOverwiew(bulkRequestResponse, correlationId)
+
+        return bulkRequestResponse
+    }
 
     private fun sendBulkDataRequestInternalEmailMessage(
         bulkDataRequest: BulkDataRequest,
@@ -157,16 +330,5 @@ class BulkDataRequestManager(
             correlationId,
         )
         dataRequestLogger.logMessageForSendBulkDataRequestEmailMessage(correlationId)
-    }
-
-    private fun throwInvalidInputApiExceptionBecauseAllIdentifiersRejected() {
-        val summary = "All provided company identifiers are not unique or could not be recognized."
-        val message =
-            "The company identifiers you provided could not be uniquely matched with an existing " +
-                "company on dataland"
-        throw InvalidInputApiException(
-            summary,
-            message,
-        )
     }
 }

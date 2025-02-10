@@ -1,2 +1,4 @@
+@use '@ibm/plex/css/ibm-plex.css';
+@use '@ibm/plex/css/ibm-plex-sans-jp.css';
+@use '@ibm/plex/css/ibm-plex-sans-kr.css';
 $font-prefix: '@ibm/plex' !default;
-@import '@ibm/plex/scss/sans/_index.scss';

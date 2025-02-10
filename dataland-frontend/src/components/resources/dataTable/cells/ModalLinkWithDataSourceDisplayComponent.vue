@@ -42,12 +42,12 @@ export default defineComponent({
       return DataPointDataTable;
     },
     modalDataOptions() {
-      let updatedDataModalOptions = this.content.displayValue.modalOptions;
+      const updatedDataModalOptions = this.content.displayValue.modalOptions;
       updatedDataModalOptions!.data.metaInfo = this.metaInfo;
       return updatedDataModalOptions;
     },
     modalDataSourceOptions() {
-      let updatedDataSourceModalOptions = this.content.displayValue.modalOptions;
+      const updatedDataSourceModalOptions = this.content.displayValue.modalOptions;
       updatedDataSourceModalOptions!.props!.header = 'Data Source and Quality';
       return updatedDataSourceModalOptions;
     },

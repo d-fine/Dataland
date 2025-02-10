@@ -14,7 +14,7 @@ COPY ./.git/ ./.git
 
 RUN ./gradlew dataland-frontend:generateClients --no-daemon --stacktrace
 
-FROM node:20.11.1@sha256:e06aae17c40c7a6b5296ca6f942a02e6737ae61bbbf3e2158624bb0f887991b5 as production-stage
+FROM node:23.6.1@sha256:3b73c4b366d490f76908dda253bb4516bbb3398948fd880d8682c5ef16427eca as production-stage
 COPY ./dataland-frontend /app/dataland-frontend
 COPY --from=build-stage /app/dataland-frontend/build/clients /app/dataland-frontend/build/clients
 

@@ -2076,7 +2076,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2094,7 +2094,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2113,7 +2113,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
             explanation:
-              "Taxonomy-aligned and transitional Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and transitional Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2132,7 +2132,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2150,7 +2150,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2169,7 +2169,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2188,7 +2188,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2207,7 +2207,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2226,7 +2226,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2245,7 +2245,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2264,7 +2264,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2283,7 +2283,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2302,7 +2302,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of Turnover-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2329,7 +2329,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2347,7 +2347,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2366,7 +2366,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional',
             explanation:
-              "Taxonomy-aligned and transitional Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and transitional Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2385,7 +2385,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2403,7 +2403,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Climate Change Adaptation in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Climate Change Adaptation - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2422,7 +2422,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2441,7 +2441,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Sustainable Use and Protection of Water and Marine Resources - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2460,7 +2460,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2478,7 +2478,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Transition to a Circular Economy in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Circular Economy - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2497,7 +2497,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2516,7 +2516,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2535,7 +2535,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Aligned',
             explanation:
-              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2554,7 +2554,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Share of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+              "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - provided \'do-not-significant harm\' (DNSH) and social safeguards positive assessment",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2586,15 +2586,15 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
         children: [
           {
             type: 'cell',
-            label: "Turnover-based Total Assets invested under Investment Firm's Activities dealing on own Account",
+            label: "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account",
             explanation:
-              "Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms\' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
                 dataset.investmentFirms?.dealingOnOwnAccountServicesTurnoverBased
                   ?.turnoverBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
-                "Turnover-based Total Assets invested under Investment Firm's Activities dealing on own Account"
+                "Turnover-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
           },
           {
@@ -2602,7 +2602,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2620,7 +2620,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2638,7 +2638,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
             explanation:
-              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2657,7 +2657,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2676,7 +2676,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2694,7 +2694,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2712,7 +2712,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2731,7 +2731,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2750,7 +2750,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2769,7 +2769,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2787,7 +2787,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             type: 'cell',
             label: 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2804,7 +2804,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             type: 'cell',
             label: 'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2822,7 +2822,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2840,7 +2840,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2859,7 +2859,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2878,7 +2878,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2897,7 +2897,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2916,7 +2916,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2935,7 +2935,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2954,7 +2954,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2973,7 +2973,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
             explanation:
-              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2992,7 +2992,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
             explanation:
-              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and transitional Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3011,7 +3011,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3035,15 +3035,15 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
         children: [
           {
             type: 'cell',
-            label: "CapEx-based Total Assets invested under Investment Firm's Activities dealing on own Account",
+            label: "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account",
             explanation:
-              "Total assets invested under investment firms' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms\' activities dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
                 dataset.investmentFirms?.dealingOnOwnAccountServicesCapexBased
                   ?.capexBasedTotalAssetsInvestedUnderInvestmentFirmsActivitiesDealingOnOwnAccount,
-                "CapEx-based Total Assets invested under Investment Firm's Activities dealing on own Account"
+                "CapEx-based Total Assets invested under Investment Firm\'s Activities dealing on own Account"
               ),
           },
           {
@@ -3051,7 +3051,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Eligible',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3068,7 +3068,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             type: 'cell',
             label: 'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Aligned',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3086,7 +3086,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Transitional',
             explanation:
-              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3105,7 +3105,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Mitigation - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Mitigation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3124,7 +3124,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Eligible',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3141,7 +3141,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             type: 'cell',
             label: 'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Aligned',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3159,7 +3159,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Climate Change Adaptation - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Climate Change Adaptation",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3178,7 +3178,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3197,7 +3197,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Aligned',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3216,7 +3216,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3234,7 +3234,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             type: 'cell',
             label: 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Eligible',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3251,7 +3251,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             type: 'cell',
             label: 'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Aligned',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3269,7 +3269,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3287,7 +3287,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Eligible',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3306,7 +3306,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Aligned',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3324,7 +3324,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Pollution Prevention and Control - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Pollution Prevention and Control",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3343,7 +3343,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Eligible',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3362,7 +3362,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Aligned',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3381,7 +3381,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to Protection and Restoration of Biodiversity and Ecosystems - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3400,7 +3400,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Eligible',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3419,7 +3419,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Aligned',
             explanation:
-              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3438,7 +3438,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Transitional',
             explanation:
-              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and transitional CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3457,7 +3457,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling',
             explanation:
-              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+              "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms\' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -3934,7 +3934,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
             label:
               'CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account',
             explanation:
-              "Total assets invested under investment firms' activities Other Services (as per Section A of Annex I to Directive 2014/65/EU)",
+              "Total assets invested under investment firms\' activities Other Services (as per Section A of Annex I to Directive 2014/65/EU)",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(

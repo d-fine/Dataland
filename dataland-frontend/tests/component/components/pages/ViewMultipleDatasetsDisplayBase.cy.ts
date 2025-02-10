@@ -9,8 +9,8 @@ import {
   QaStatus,
 } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
 import router from '@/router';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 describe('Component test for the view multiple dataset display base component', () => {
   let preparedFixtures: Array<FixtureData<LksgData>>;
@@ -34,7 +34,7 @@ describe('Component test for the view multiple dataset display base component', 
     cy.intercept(`/api/metadata?companyId=mock-company-id`, [mockedData.metaInfo]);
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {
         companyId: mockedData.metaInfo.companyId,
@@ -67,7 +67,7 @@ describe('Component test for the view multiple dataset display base component', 
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
       router: router,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {
         companyId: mockedData2023.metaInfo.companyId,

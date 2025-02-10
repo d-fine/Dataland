@@ -9,14 +9,12 @@ import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.causeClientExceptionByBulkDataRequest
-import org.dataland.e2etests.utils.communityManager.checkErrorMessageForInvalidIdentifiersInBulkRequest
-import org.dataland.e2etests.utils.communityManager.checkThatAllIdentifiersWereAccepted
 import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
-import org.dataland.e2etests.utils.communityManager.checkThatMessageIsAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
-import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAcceptedIdentifiersIsAsExpected
-import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfRejectedIdentifiersIsAsExpected
+import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAcceptedDataRequestsIsAsExpected
+import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected
+import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected
+import org.dataland.e2etests.utils.communityManager.checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.communityManager.generateCompaniesWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.communityManager.generateMapWithOneRandomValueForEachIdentifierType
 import org.dataland.e2etests.utils.communityManager.generateRandomIsin
@@ -57,7 +55,13 @@ class BulkDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifiers, dataTypes, reportingPeriods),
             )
-        checkThatAllIdentifiersWereAccepted(response, identifiers.size, 0)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(
+            response,
+            identifiers.size * dataTypes.size * reportingPeriods.size,
+        )
+        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests, identifiers.size * dataTypes.size * reportingPeriods.size,
@@ -89,9 +93,10 @@ class BulkDataRequestsTest {
                     setOf("2023"),
                 ),
             )
-        checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, validIdentifiers.size)
-        checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, invalidIdentifiers.size)
-        checkThatMessageIsAsExpected(response, validIdentifiers.size, invalidIdentifiers.size)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, validIdentifiers.size)
+        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, invalidIdentifiers.size)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, validIdentifiers.size)
         assertFalse(
@@ -116,7 +121,10 @@ class BulkDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifiersForBulkRequest, frameworksForBulkRequest.toSet(), setOf(reportingPeriod)),
             )
-        checkThatAllIdentifiersWereAccepted(response, (identifiersForBulkRequest.size - 1), 1)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
+        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 1)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(
             newlyStoredRequests,
@@ -141,14 +149,20 @@ class BulkDataRequestsTest {
             )
         val timestampBeforeBulkRequest = retrieveTimeAndWaitOneMillisecond()
         val response = requestControllerApi.postBulkDataRequest(bulkDataRequest)
-        checkThatAllIdentifiersWereAccepted(response, 2, 0)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, reportingPeriods.size)
+        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 0)
         val newlyStoredRequests = getNewlyStoredRequestsAfterTimestamp(timestampBeforeBulkRequest)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequests, reportingPeriods.size)
         retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2022", RequestStatus.Answered)
         retrieveDataRequestIdForReportingPeriodAndUpdateStatus(newlyStoredRequests, "2023", RequestStatus.Resolved)
         val timestampBeforeDuplicates = retrieveTimeAndWaitOneMillisecond()
         val responseAfterDuplicates = requestControllerApi.postBulkDataRequest(bulkDataRequest)
-        checkThatAllIdentifiersWereAccepted(responseAfterDuplicates, 2, 0)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(responseAfterDuplicates, 1)
+        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(responseAfterDuplicates, 2)
+        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(responseAfterDuplicates, 0)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(responseAfterDuplicates, 0)
         val newlyStoredRequestsAfterDuplicates = getNewlyStoredRequestsAfterTimestamp(timestampBeforeDuplicates)
         checkThatTheAmountOfNewlyStoredRequestsIsAsExpected(newlyStoredRequestsAfterDuplicates, 1)
         assertEquals(
@@ -159,7 +173,7 @@ class BulkDataRequestsTest {
     }
 
     @Test
-    fun `check the expected exception is thrown when frameworks are empty or identifiers are empty or invalid only`() {
+    fun `check the expected exception is thrown when frameworks are empty or identifiers are empty`() {
         val validIdentifiers = setOf(generateRandomLei(), generateRandomIsin(), generateRandomPermId())
         val dataTypes = enumValues<BulkDataRequest.DataTypes>().toSet()
         val reportingPeriods = setOf("2023")
@@ -170,12 +184,6 @@ class BulkDataRequestsTest {
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), dataTypes, emptySet())
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), reportingPeriods)
         sendBulkRequestWithEmptyInputAndCheckErrorMessage(emptySet(), emptySet(), emptySet())
-        val invalidIdentifiers =
-            setOf(
-                generateRandomLei() + "F", generateRandomIsin() + "F", generateRandomPermId() + "F",
-            )
-        val clientException = causeClientExceptionByBulkDataRequest(invalidIdentifiers, dataTypes, reportingPeriods)
-        checkErrorMessageForInvalidIdentifiersInBulkRequest(clientException)
     }
 
     @Test
@@ -207,8 +215,9 @@ class BulkDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(setOf(permId1, permId2), setOf(BulkDataRequest.DataTypes.sfdr), setOf("2023")),
             )
-        checkThatTheNumberOfAcceptedIdentifiersIsAsExpected(response, 1)
-        checkThatTheNumberOfRejectedIdentifiersIsAsExpected(response, 1)
-        checkThatMessageIsAsExpected(response, 1, 1)
+        checkThatTheNumberOfAcceptedDataRequestsIsAsExpected(response, 1)
+        checkThatTheNumberOfAlreadyExistingNonFinalRequestsIsAsExpected(response, 0)
+        checkThatTheNumberOfAlreadyExistingDatasetsIsAsExpected(response, 0)
+        checkThatTheNumberOfRejectedCompanyIdentifiersIsAsExpected(response, 1)
     }
 }
