@@ -100,7 +100,7 @@ const handleInputBlur = (): void => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .intro {
   text-align: center;
@@ -136,7 +136,7 @@ const handleInputBlur = (): void => {
     display: none;
   }
 }
-@media only screen and (max-width: $large) {
+@media only screen and (max-width: newVariables.$large) {
   .intro {
     &__img {
       margin-bottom: 31px;
@@ -157,7 +157,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .intro {
     &__text {
       font-size: 48px;
@@ -174,7 +174,7 @@ const handleInputBlur = (): void => {
   }
 }
 
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .intro {
     margin: 64px auto;
     padding-inline: 16px;
@@ -210,7 +210,6 @@ const handleInputBlur = (): void => {
         position: absolute;
         left: -8px;
         top: 50%;
-        transform: translateY(-50%);
         width: 16px;
         height: 16px;
         background-image: url(/static/icons/Arrow--right.svg);
@@ -352,7 +351,7 @@ const handleInputBlur = (): void => {
 }
 @media only screen and (max-width: $small) {
   .search__autocomplete {
-    padding: 0px;
+    padding: 0;
     top: 47px !important;
     left: -26px !important;
     overflow: hidden;

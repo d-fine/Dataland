@@ -116,7 +116,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .footer {
   background-color: var(--basic-dark);
@@ -333,7 +333,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .footer {
     &__row--top {
       flex-direction: column;
@@ -341,7 +341,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .footer {
     padding: 64px 24px 40px;
 
