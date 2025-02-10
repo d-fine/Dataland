@@ -76,13 +76,13 @@ groups:
               refId: C
               type: threshold
         dashboardUid: beb8ybzf6qupsc
-        panelId: 1
+        panelId: 4
         noDataState: OK
         execErrState: Error
         for: 1m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "1"
+          __panelId__: "4"
           description: 'Internal Server Error 500 detected.'
         labels: { }
         isPaused: false
@@ -159,13 +159,13 @@ groups:
               refId: C
               type: threshold
         dashboardUid: beb8ybzf6qupsc
-        panelId: 2
+        panelId: 5
         noDataState: OK
         execErrState: Error
         for: 1m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "2"
+          __panelId__: "5"
           description: 'Unhealthy container detected.'
         labels: { }
         isPaused: false
@@ -242,20 +242,20 @@ groups:
               refId: C
               type: threshold
         dashboardUid: beb8ybzf6qupsc
-        panelId: 3
+        panelId: 7
         noDataState: OK
         execErrState: Error
         for: 1m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "3"
+          __panelId__: "7"
           description: 'Stack Trace detected.'
         labels: { }
         isPaused: false
         notification_settings:
           receiver: Slack Alert Bot
-      - uid: error_messages
-        title: Error Messages
+      - uid: error_message
+        title: Error Message
         condition: C
         data:
           - refId: A
@@ -325,13 +325,13 @@ groups:
               refId: C
               type: threshold
         dashboardUid: beb8ybzf6qupsc
-        panelId: 4
+        panelId: 8
         noDataState: OK
         execErrState: Error
         for: 1m
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "4"
+          __panelId__: "8"
           description: 'Error Log Messages detected.'
         labels: { }
         isPaused: false
