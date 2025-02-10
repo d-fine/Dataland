@@ -71,11 +71,11 @@ class DocumentManager(
                 documentType = getDocumentType(document),
                 documentName = documentMetaInfo.documentName,
                 documentCategory = documentMetaInfo.documentCategory,
-                companyIds = documentMetaInfo.companyIds,
+                companyIds = documentMetaInfo.companyIds.toMutableList(),
                 uploaderId = DatalandAuthentication.fromContext().userId,
                 uploadTime = Instant.now().toEpochMilli(),
                 publicationDate = documentMetaInfo.publicationDate,
-                reportingPeriods = documentMetaInfo.reportingPeriods,
+                reportingPeriods = documentMetaInfo.reportingPeriods?.toMutableList() ?: mutableListOf(),
                 qaStatus = QaStatus.Pending,
             )
 
@@ -182,49 +182,44 @@ class DocumentManager(
     }
 
     /**
-     * Update the document meta information stored under patchObject.documentId by overwriting the fields
-     * documentName, documentCategory publicationDate and reportingPeriod with the ones
-     * from patchObject. Moreover, if patchObject.documentIds is not null, it gets appended to the existing
-     * list of company ids.
+     * Update the document meta information with [documentId].
+     * Fields 'companyIds' and 'reportingPeriods' will be extended instead
+     * of overwritten.
+     * @param documentId identifier of document to be patched
+     * @param documentMetaInfoPatch meta data patch object
+     * @return DocumentUploadResponse object to be sent to patching user
      */
-    fun updateDocumentMetaInformationViaPatch(
+    fun patchDocumentMetaInformation(
         documentId: String,
-        patchObject: DocumentMetaInfoPatch,
+        documentMetaInfoPatch: DocumentMetaInfoPatch,
     ): DocumentUploadResponse {
+        val correlationId = randomUUID().toString()
+        logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
         if (!checkIfDocumentExistsWithId(documentId)) {
             throw ResourceNotFoundApiException(
-                summary = "Document with ID $documentId does not exist",
-                message = "Document with ID $documentId does not exist",
+                summary = "Document with ID $documentId does not exist.",
+                message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
             )
         }
-        val existingDocumentMetaInfoEntity =
+        val documentMetaInfoEntity =
             documentMetaInfoRepository.getByDocumentId(documentId)
                 ?: throw ResourceNotFoundApiException(
                     summary = "Document with ID $documentId could not be retrieved.",
-                    message = "Document with ID $documentId could not be retrieved.",
+                    message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
                 )
 
-        val updatedDocumentMetaInfoEntity = existingDocumentMetaInfoEntity.copy()
-        patchObject.documentName?.let { updatedDocumentMetaInfoEntity.documentName = it }
-        patchObject.documentCategory?.let { updatedDocumentMetaInfoEntity.documentCategory = it }
-        patchObject.companyIds?.let {
-            val originalCompanyIds = updatedDocumentMetaInfoEntity.companyIds
-            if (originalCompanyIds != null) {
-                updatedDocumentMetaInfoEntity.companyIds = originalCompanyIds + it
-            } else {
-                updatedDocumentMetaInfoEntity.companyIds = it
-            }
+        logger.info("Updating meta information for document with ID $documentId. CorrelationID: $correlationId.")
+
+        documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
+        documentMetaInfoPatch.documentCategory?.let { documentMetaInfoEntity.documentCategory = it }
+        documentMetaInfoPatch.companyIds?.let {
+            documentMetaInfoEntity.companyIds.addAll(documentMetaInfoPatch.companyIds)
         }
-        patchObject.publicationDate?.let { updatedDocumentMetaInfoEntity.publicationDate = it }
-        patchObject.reportingPeriods?.let {
-            val originalReportingPeriods = updatedDocumentMetaInfoEntity.reportingPeriods
-            if (originalReportingPeriods != null) {
-                updatedDocumentMetaInfoEntity.reportingPeriods = originalReportingPeriods + it
-            } else {
-                updatedDocumentMetaInfoEntity.reportingPeriods = it
-            }
+        documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
+        documentMetaInfoPatch.reportingPeriods?.let {
+            documentMetaInfoEntity.reportingPeriods.addAll(documentMetaInfoPatch.reportingPeriods)
         }
 
-        return documentMetaInfoRepository.save(updatedDocumentMetaInfoEntity).toDocumentUploadResponse()
+        return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
     }
 }

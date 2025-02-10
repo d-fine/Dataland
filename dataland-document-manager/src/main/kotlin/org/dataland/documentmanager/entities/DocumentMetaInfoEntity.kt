@@ -28,14 +28,14 @@ data class DocumentMetaInfoEntity(
     @Convert(converter = DocumentCategoryConverter::class)
     var documentCategory: DocumentCategory,
     @ElementCollection(fetch = FetchType.EAGER)
-    var companyIds: List<String>?,
+    val companyIds: MutableList<String> = mutableListOf(),
     val uploaderId: String,
     val uploadTime: Long,
     var publicationDate: String?,
-    @ElementCollection
-    var reportingPeriods: List<String>?,
+    @ElementCollection(fetch = FetchType.EAGER)
+    val reportingPeriods: MutableList<String> = mutableListOf(),
     @Enumerated(EnumType.STRING)
-    var qaStatus: QaStatus,
+    val qaStatus: QaStatus,
 ) {
     /**
      * convert Entity to Response API Model

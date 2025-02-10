@@ -154,7 +154,7 @@ class DocumentManagerTest(
                 reportingPeriods = null,
             )
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.updateDocumentMetaInformationViaPatch(unknownDocumentId, patchObject)
+            documentManager.patchDocumentMetaInformation(unknownDocumentId, patchObject)
         }
     }
 
@@ -187,7 +187,7 @@ class DocumentManagerTest(
         `when`(mockDocumentMetaInfoRepository.getByDocumentId(anyString())).thenReturn(
             firstDocumentMetaInfoEntity,
         )
-        val patchResponse = documentManager.updateDocumentMetaInformationViaPatch(uploadResponse.documentId, patchObject)
+        val patchResponse = documentManager.patchDocumentMetaInformation(uploadResponse.documentId, patchObject)
 
         assertEquals(expectedSecondDocumentMetaInfoEntity.documentName, patchResponse.documentName)
         assertEquals(expectedSecondDocumentMetaInfoEntity.documentCategory, patchResponse.documentCategory)

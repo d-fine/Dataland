@@ -3,6 +3,7 @@ package org.dataland.documentmanager.model
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackendutils.model.DocumentCategory
+import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -22,6 +23,6 @@ data class DocumentMetaInfo(
     val companyIds: List<String>,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     @field:JsonProperty(required = true)
-    val publicationDate: String,
+    val publicationDate: LocalDate,
     val reportingPeriods: List<String>?,
 )

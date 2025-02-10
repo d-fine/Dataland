@@ -55,9 +55,9 @@ class DocumentController(
 
     override fun patchDocumentMetaInfo(
         documentId: String,
-        patchObject: DocumentMetaInfoPatch,
+        documentMetaInfoPatch: DocumentMetaInfoPatch,
     ): ResponseEntity<DocumentUploadResponse> =
         ResponseEntity.ok(
-            documentManager.updateDocumentMetaInformationViaPatch(documentId, patchObject),
+            documentManager.patchDocumentMetaInformation(documentId, documentMetaInfoPatch),
         )
 }

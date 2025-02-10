@@ -1,7 +1,9 @@
 package org.dataland.documentmanager.model
 
 // import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonFormat
 import org.dataland.datalandbackendutils.model.DocumentCategory
+import java.time.LocalDate
 
 /**
  * --- API model ---
@@ -16,7 +18,7 @@ data class DocumentMetaInfoPatch(
     val documentName: String?,
     val documentCategory: DocumentCategory?,
     val companyIds: List<String>?,
-    // @field:JsonFormat(pattern = "yyyy-MM-dd")
-    val publicationDate: String?,
+    @field:JsonFormat(pattern = "yyyy-MM-dd")
+    val publicationDate: LocalDate?,
     val reportingPeriods: List<String>?,
 )

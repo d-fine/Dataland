@@ -2,8 +2,6 @@ package org.dataland.documentmanager.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.headers.Header
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Encoding
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -18,6 +16,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -50,16 +49,41 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["multipart/form-data"],
     )
-    @RequestBody(
-        content = [
-            Content(encoding = [Encoding(name = "documentMetaInfo", contentType = "application/json")]),
-            Content(encoding = [Encoding(name = "document", contentType = "application/octet-stream")]),
-        ],
-    )
     @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
     fun postDocument(
         @RequestPart("document") document: MultipartFile,
         @RequestPart("documentMetaInfo") documentMetaInfo: DocumentMetaInfo,
+    ): ResponseEntity<DocumentUploadResponse>
+
+    /**
+     * Patch the metadata information of a document. If patchDocument.companyIds is not null, it
+     * will get appended to the existing list of company ids. Likewise for patchDocument.reportingPeriods.
+     * @param documentId the id of the document whose metainfo shall be patched.
+     * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to patch.
+     */
+    @Operation(
+        summary = "Patch the metadata info of a document.",
+        description = "Patch the metadata info of a document.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully patched metadata information.."),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to patch all fields for which a patch was requested.",
+            ),
+            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{documentId}"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER') and @UserRolesChecker.areOnlyAllowedFieldsPatched(#documentMetaInfoPatch)")
+    fun patchDocumentMetaInfo(
+        @PathVariable("documentId") documentId: String,
+        @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**
@@ -124,36 +148,4 @@ interface DocumentApi {
     fun getDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<InputStreamResource>
-
-    /**
-     * Patch the metadata information of a document. If patchDocument.companyIds is not null, it
-     * will get appended to the existing list of company ids. Likewise for patchDocument.reportingPeriods.
-     * @param documentId the id of the document whose metainfo shall be patched.
-     * @param patchObject an object of type DocumentMetaInfoPatch which holds all field values to patch.
-     */
-    @Operation(
-        summary = "Patch the metadata info of a document.",
-        description = "Patch the metadata info of a document.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully patched metadata information.."),
-            ApiResponse(
-                responseCode = "403",
-                description = "You do not have the right to patch all fields for which a patch was requested.",
-            ),
-            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
-        ],
-    )
-    @PostMapping(
-        value = ["/"],
-        produces = ["application/json"],
-        consumes = ["application/json"],
-    )
-    // @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    fun patchDocumentMetaInfo(
-        @PathVariable("documentId") documentId: String,
-        @Valid @RequestBody(required = true) patchObject: DocumentMetaInfoPatch,
-    ): ResponseEntity<DocumentUploadResponse>
 }
