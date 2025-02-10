@@ -47,7 +47,7 @@ export default defineComponent({
   components: { PrimeMenu },
   emits: ['profilePictureLoadingError', 'profilePictureObtained'],
   setup() {
-    const menu: Ref<PrimeMenu | undefined> = ref();
+    const menu: Ref<typeof PrimeMenu | undefined> = ref();
 
     /**
      * Toggles the dropdown menu (shows/hides it) on a mouse click.
