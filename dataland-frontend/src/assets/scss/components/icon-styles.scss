@@ -1,3 +1,7 @@
+@use '../colors';
+@use '../mixins';
+@use '../variables';
+
 .positionRelative {
   position: relative;
 }
@@ -10,7 +14,7 @@
 
 .p-input-icon-left > em:first-of-type {
   left: 0.5rem;
-  color: $brown-dark;
+  color: variables.$brown-dark;
 }
 
 .p-input-icon-left {
@@ -24,7 +28,7 @@
 
 .p-input-icon-right em:last-of-type {
   right: 0.5rem;
-  color: $brown-dark;
+  color: variables.$brown-dark;
 }
 
 .p-input-icon-right > .p-inputtext {
@@ -32,19 +36,19 @@
 }
 
 .pi {
-  font-size: $fs-base;
+  font-size: variables.$fs-base;
 }
 
 .p-rowgroup-header {
   .p-row-toggler-icon {
-    font-size: $fs-xl;
-    color: $main-color;
+    font-size: variables.$fs-xl;
+    color: colors.$main-color;
     &.pi-chevron-down {
-      @include icon-override('\e5c6');
+      @include mixins.icon-override('\e5c6');
       transform: rotate(180deg);
     }
     &.pi-chevron-right {
-      @include icon-override('\e5c6');
+      @include mixins.icon-override('\e5c6');
     }
   }
 }
@@ -60,5 +64,5 @@
   position: absolute;
   right: 5px;
   top: 5px;
-  color: $gray;
+  color: variables.$gray;
 }
