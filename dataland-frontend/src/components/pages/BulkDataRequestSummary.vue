@@ -50,7 +50,7 @@
               <div class="col bold-text middle-center-div">{{ entry.userProvidedIdentifier }}</div>
               <div class="col bold-text middle-center-div">{{ entry.companyName }}</div>
               <div class="col bold-text middle-center-div">{{ entry.reportingPeriod }}</div>
-              <div class="col bold-text middle-center-div">{{ getFrameworkTitle(entry.framework) }}</div>
+              <div class="col bold-text middle-center-div">{{ humanizeStringOrNumber(entry.framework) }}</div>
               <a
                 v-if="entry.resourceUrl"
                 :href="entry.resourceUrl.toString()"
@@ -80,7 +80,7 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
 import type { BulkDataRequestResponse } from '@clients/communitymanager';
-import { getFrameworkTitle } from '@/utils/StringFormatter';
+import { getFrameworkTitle, humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 const props = defineProps<{
   bulkDataRequestResponse: BulkDataRequestResponse;
