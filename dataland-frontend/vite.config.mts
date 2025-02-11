@@ -43,6 +43,7 @@ export default defineConfig({
       'primevue/columngroup',
       'primevue/radiobutton',
       'primevue/icons/chevrondown',
+      'primevue/icons/chevronup',
       'primevue/icons/chevronleft',
       'primevue/config',
       'primevue/dialogservice',
@@ -56,7 +57,6 @@ export default defineConfig({
       'vue-markdown-render',
       'markdown-it',
       '@faker-js/faker',
-      'primevue/icons/chevronup',
     ],
   },
   plugins: [
