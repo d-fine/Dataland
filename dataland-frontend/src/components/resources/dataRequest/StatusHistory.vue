@@ -7,11 +7,11 @@
   >
     <div v-show="!isStatusHistoryVisible" style="display: flex; align-items: center">
       <span> Show Request Status History </span>
-      <ChevronDownIcon class="p-icon p-row-toggler-icon ml-2" />
+      <i class=" pi-chevron-down:before p-icon p-row-toggler-icon ml-2"></i>
     </div>
     <div v-show="isStatusHistoryVisible" style="display: flex; align-items: center">
       <span> Hide Request Status History </span>
-      <ChevronUpIcon class="p-icon p-row-toggler-icon ml-2" />
+      <i class="pi-chevron-up:before p-icon p-row-toggler-icon ml-2"></i>
     </div>
   </div>
 
@@ -64,13 +64,11 @@ import { defineComponent } from 'vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { accessStatusBadgeClass, badgeClass, getRequestStatusLabel } from '@/utils/RequestUtils';
 import { type StoredDataRequestStatusObject } from '@clients/communitymanager';
-import ChevronDownIcon from '@primevue/icons/chevrondown';
-import ChevronUpIcon from '@primevue/icons/chevronup';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 export default defineComponent({
   name: 'StatusHistory',
-  components: { ChevronUpIcon, ChevronDownIcon, DataTable, Column },
+  components: { DataTable, Column },
   props: {
     statusHistory: {
       type: Array<StoredDataRequestStatusObject>,
