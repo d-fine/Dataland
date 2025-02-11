@@ -1,6 +1,5 @@
 package org.dataland.documentmanager.model
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import java.time.LocalDate
@@ -13,7 +12,7 @@ import java.time.LocalDate
  * @param documentCategory
  * @param companyIds
  * @param publicationDate
- * @param reportingPeriods
+ * @param reportingPeriod
  */
 data class DocumentUploadResponse(
     @field:JsonProperty(required = true)
@@ -24,9 +23,8 @@ data class DocumentUploadResponse(
     val documentCategory: DocumentCategory?,
     @field:JsonProperty(required = false)
     val companyIds: List<String>?,
-    @field:JsonFormat(pattern = "yyyy-MM-dd")
     @field:JsonProperty(required = false)
     val publicationDate: LocalDate?,
     @field:JsonProperty(required = false)
-    val reportingPeriods: List<String>?,
+    val reportingPeriod: String?,
 )

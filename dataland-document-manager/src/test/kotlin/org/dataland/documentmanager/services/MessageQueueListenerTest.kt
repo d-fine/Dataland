@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
 import java.util.Optional
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
@@ -83,9 +84,9 @@ class MessageQueueListenerTest(
                         documentType = DocumentType.Pdf,
                         documentName = "sample.pdf",
                         documentCategory = DocumentCategory.AnnualReport,
-                        companyIds = listOf(),
-                        publicationDate = "2023-01-01",
-                        reportingPeriods = listOf("2023"),
+                        companyIds = mutableListOf(),
+                        publicationDate = LocalDate.of(2023, 1, 1),
+                        reportingPeriod = "2023",
                         documentId = documentId,
                         uploaderId = "",
                         uploadTime = 0,

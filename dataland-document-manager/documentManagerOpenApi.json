@@ -25,10 +25,9 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Patch the metadata info of a document.",
-        "description": "Patch the metadata info of a document.",
+        "summary": "Upload a document and metadata.",
+        "description": "Upload a document and meta information",
         "operationId": "postDocument",
-        "parameters": [],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -47,44 +46,13 @@
                     "$ref": "#/components/schemas/DocumentMetaInfo"
                   }
                 }
-              },
-              "encoding": {
-                "document": {
-                  "contentType": "application/octet-stream"
-                }
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DocumentMetaInfoPatch"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successfully patched metadata information..",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Document Id does not match any stored document.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "You do not have the right to patch all fields for which a patch was requested.",
+            "description": "Successfully uploaded document.",
             "content": {
               "application/json": {
                 "schema": {
@@ -252,6 +220,182 @@
           },
           "200": {
             "description": "Successfully checked document existence."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Patch the metadata info of a document.",
+        "description": "Patch the metadata info of a document.",
+        "operationId": "patchDocumentMetaInfo",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentMetaInfoPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully patched companyIds field in document metainformation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document Id does not match any stored document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to patch all fields for which a patch was requested.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{documentId}/companies/{companyId}": {
+      "patch": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Patch the company id list of a document.",
+        "description": "Patch the company id list of a document by adding a single company id.",
+        "operationId": "patchDocumentMetaInfoCompanyIds",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully patched companyIds field in document metainformation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document Id does not match any stored document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to patch the companyIds field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -539,13 +683,11 @@
             }
           },
           "publicationDate": {
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
-          "reportingPeriods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "reportingPeriod": {
+            "type": "string"
           }
         }
       },
@@ -577,13 +719,11 @@
             }
           },
           "publicationDate": {
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
-          "reportingPeriods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "reportingPeriod": {
+            "type": "string"
           }
         }
       },
@@ -609,13 +749,11 @@
             }
           },
           "publicationDate": {
-            "type": "string"
+            "type": "string",
+            "format": "date"
           },
-          "reportingPeriods": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "reportingPeriod": {
+            "type": "string"
           }
         }
       },

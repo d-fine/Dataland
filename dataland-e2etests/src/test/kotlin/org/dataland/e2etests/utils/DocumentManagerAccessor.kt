@@ -1,6 +1,8 @@
 package org.dataland.e2etests.utils
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
+import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfo
+import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfo.DocumentCategory
 import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -31,8 +33,16 @@ class DocumentManagerAccessor {
     fun uploadAllTestDocumentsAndAssurePersistence() {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val documentIds = mutableListOf<String>()
+        val documentMetaInfo =
+            DocumentMetaInfo(
+                documentName = "sample document",
+                documentCategory = DocumentCategory.AnnualReport,
+                companyIds = listOf(),
+                publicationDate = "2023-01-01",
+                reportingPeriods = listOf("2023"),
+            )
         testFiles.forEach { file ->
-            documentIds.add(documentControllerApi.postDocument(file).documentId)
+            documentIds.add(documentControllerApi.postDocument(file, documentMetaInfo).documentId)
         }
         documentIds.forEach { documentId -> executeDocumentExistenceCheckWithRetries(documentId) }
     }

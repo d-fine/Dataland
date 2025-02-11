@@ -67,6 +67,14 @@ class DocumentController(
             documentManager.patchDocumentMetaInformation(documentId, documentMetaInfoPatch),
         )
 
+    override fun patchDocumentMetaInfoCompanyIds(
+        documentId: String,
+        companyId: String,
+    ): ResponseEntity<DocumentUploadResponse> =
+        ResponseEntity.ok(
+            documentManager.patchDocumentMetaInformationCompanyIds(documentId, companyId),
+        )
+
     /**
      * Checks if passed companyId is valid by calling respective HEAD endpoint in backend companyDataController
      * @param companyId

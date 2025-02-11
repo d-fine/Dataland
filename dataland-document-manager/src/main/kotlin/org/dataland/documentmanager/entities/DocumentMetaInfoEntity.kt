@@ -33,8 +33,7 @@ data class DocumentMetaInfoEntity(
     val uploaderId: String,
     val uploadTime: Long,
     var publicationDate: LocalDate?,
-    @ElementCollection(fetch = FetchType.EAGER)
-    val reportingPeriods: MutableList<String> = mutableListOf(),
+    var reportingPeriod: String?,
     @Enumerated(EnumType.STRING)
     var qaStatus: QaStatus,
 ) {
@@ -48,6 +47,6 @@ data class DocumentMetaInfoEntity(
             documentCategory = documentCategory,
             companyIds = companyIds,
             publicationDate = publicationDate,
-            reportingPeriods = reportingPeriods,
+            reportingPeriod = reportingPeriod,
         )
 }

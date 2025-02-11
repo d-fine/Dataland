@@ -94,9 +94,9 @@ class DocumentManagerTest(
                         documentType = DocumentType.Pdf,
                         documentName = "sample.pdf",
                         documentCategory = DocumentCategory.AnnualReport,
-                        companyIds = mutableListOf<String>(),
+                        companyIds = mutableListOf(),
                         publicationDate = LocalDate.parse("2023-01-01"),
-                        reportingPeriods = mutableListOf("2023"),
+                        reportingPeriod = "2023",
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
@@ -152,15 +152,18 @@ class DocumentManagerTest(
                 documentCategory = null,
                 companyIds = null,
                 publicationDate = null,
-                reportingPeriods = null,
+                reportingPeriod = null,
             )
         assertThrows<ResourceNotFoundApiException> {
             documentManager.patchDocumentMetaInformation(unknownDocumentId, patchObject)
         }
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.patchDocumentMetaInformationCompanyIds(unknownDocumentId, "some-company-id")
+        }
     }
 
     @Test
-    fun `check that a patch request for an existing documentId results in the desired changes`() {
+    fun `check that an admin patch request for an existing documentId results in the desired changes`() {
         val mockMultipartFile = mockUploadableFile(testDocument)
         val uploadResponse = mockUpload(mockMultipartFile)
         configureMockDocumentMetaInfoRepository(uploadResponse.documentId)
@@ -168,16 +171,19 @@ class DocumentManagerTest(
             DocumentMetaInfoPatch(
                 documentName = "new name",
                 documentCategory = DocumentCategory.SustainabilityReport,
-                companyIds = null,
-                publicationDate = "2023-01-03",
-                reportingPeriods = null,
+                companyIds = listOf("company-id-2", "company-id-3"),
+                publicationDate = LocalDate.parse("2023-01-03"),
+                reportingPeriod = null,
             )
         val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
         val expectedSecondDocumentMetaInfoEntity =
             firstDocumentMetaInfoEntity.apply {
                 documentName = "new name"
                 documentCategory = DocumentCategory.SustainabilityReport
-                publicationDate = "2023-01-03"
+                companyIds.clear()
+                companyIds.add("company-id-2")
+                companyIds.add("company-id-3")
+                publicationDate = LocalDate.of(2023, 1, 3)
             }
         `when`(mockDocumentMetaInfoRepository.existsById(anyString())).thenReturn(true)
         // Rewrite the stubbed save method so it acts as an identity function rather than a constant function.
@@ -192,7 +198,42 @@ class DocumentManagerTest(
 
         assertEquals(expectedSecondDocumentMetaInfoEntity.documentName, patchResponse.documentName)
         assertEquals(expectedSecondDocumentMetaInfoEntity.documentCategory, patchResponse.documentCategory)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.companyIds, patchResponse.companyIds)
         assertEquals(expectedSecondDocumentMetaInfoEntity.publicationDate, patchResponse.publicationDate)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.reportingPeriod, patchResponse.reportingPeriod)
+    }
+
+    @Test
+    fun `check that an uploader patch request for an existing documentId results in the desired change`() {
+        val mockMultipartFile = mockUploadableFile(testDocument)
+        val uploadResponse = mockUpload(mockMultipartFile)
+        configureMockDocumentMetaInfoRepository(uploadResponse.documentId)
+        val newCompanyId = "company-id-2"
+        val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
+        val expectedSecondDocumentMetaInfoEntity =
+            firstDocumentMetaInfoEntity.apply {
+                companyIds.add(newCompanyId)
+            }
+        `when`(mockDocumentMetaInfoRepository.existsById(anyString())).thenReturn(true)
+        // Rewrite the stubbed save method so it acts as an identity function rather than a constant function.
+        // It is unclear to me how I can refer to the value of the any() parameter inside thenReturn().
+        `when`(mockDocumentMetaInfoRepository.save<DocumentMetaInfoEntity>(any())).thenReturn(
+            expectedSecondDocumentMetaInfoEntity,
+        )
+        `when`(mockDocumentMetaInfoRepository.getByDocumentId(anyString())).thenReturn(
+            firstDocumentMetaInfoEntity,
+        )
+        val patchResponse =
+            documentManager.patchDocumentMetaInformationCompanyIds(
+                uploadResponse.documentId,
+                newCompanyId,
+            )
+
+        assertEquals(expectedSecondDocumentMetaInfoEntity.documentName, patchResponse.documentName)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.documentCategory, patchResponse.documentCategory)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.companyIds, patchResponse.companyIds)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.publicationDate, patchResponse.publicationDate)
+        assertEquals(expectedSecondDocumentMetaInfoEntity.reportingPeriod, patchResponse.reportingPeriod)
     }
 
     private fun mockUploadableFile(reportName: String): MockMultipartFile {
@@ -214,9 +255,9 @@ class DocumentManagerTest(
             documentType = DocumentType.Pdf,
             documentName = "sample.pdf",
             documentCategory = DocumentCategory.AnnualReport,
-            companyIds = listOf(),
-            publicationDate = "2023-01-01",
-            reportingPeriods = listOf("2023"),
+            companyIds = mutableListOf("company-id-1"),
+            publicationDate = LocalDate.of(2023, 1, 1),
+            reportingPeriod = "2023",
             documentId = documentId,
             uploaderId = "",
             uploadTime = 0,
@@ -236,8 +277,8 @@ class DocumentManagerTest(
         DocumentMetaInfo(
             documentName = "sample.pdf",
             documentCategory = DocumentCategory.AnnualReport,
-            companyIds = listOf("someValidId"),
-            publicationDate = "2023-01-01",
-            reportingPeriods = listOf("2023"),
+            companyIds = listOf("company-id-1"),
+            publicationDate = LocalDate.of(2023, 1, 1),
+            reportingPeriod = "2023",
         )
 }
