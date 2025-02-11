@@ -50,7 +50,7 @@ const register = (): void => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .about-intro {
   display: flex;
@@ -86,7 +86,7 @@ const register = (): void => {
   }
 }
 
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .about-intro {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -96,7 +96,7 @@ const register = (): void => {
   }
 }
 
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .about-intro {
     padding: 32px 0 40px;
     background-color: var(--grey-tones-100);

@@ -58,7 +58,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .about-principles {
   padding: 200px 0;
@@ -227,7 +227,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .about-principles {
     &__title {
       font-size: 40px;
@@ -235,7 +235,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .about-principles {
     padding: 0 0 80px;
     &__wrapper {

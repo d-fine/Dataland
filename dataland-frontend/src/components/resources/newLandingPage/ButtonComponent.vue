@@ -22,7 +22,7 @@ const handleClick = (): void => {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .button-font-style {
   font-size: 16px;
@@ -39,7 +39,7 @@ const handleClick = (): void => {
   color: var(--default-neutral-white);
   border: 2px solid var(--primary-orange);
   cursor: pointer;
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: newVariables.$small) {
     padding: 10px 16px;
     font-size: 14px;
     letter-spacing: 0.25px;
