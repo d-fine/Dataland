@@ -1,6 +1,7 @@
-# basis image from grafana
+# Base image from grafana
 FROM grafana/grafana:11.4.0@sha256:d8ea37798ccc41061a62ab080f2676dda6bf7815558499f901bdb0f533a456fb
 
+# Copy provisioning files
 COPY ./dataland-grafana/provisioning /etc/grafana/provisioning
 
 CMD ["/run.sh"]

@@ -33,13 +33,13 @@ templates:
     template: |
       {{ define "alert_firing_template" }}
       *Service:* {{ .Labels.service_name }}
-      *detected level:* {{ .Labels.detected_level }}
+      *Detected level:* {{ .Labels.detected_level }}
+      *Env:* {{ .Labels.env }}
       - {{ .Values.B }} error logs
       - Dashboard: {{ .DashboardURL }}
       - Panel: {{ .PanelURL }}
       - Source: {{ .GeneratorURL }}
       {{ end }}
-  
 
   - orgId: 1
     name: alert_resolved_template
@@ -48,88 +48,3 @@ templates:
       *Service:* {{ .Labels.service_name }}
       *Resolved Time:* {{ .Annotations.resolved_time }}
       {{ end }}
-
-
-      - uid: internal_server_error
-        title: Internal Server Error 500
-        condition: C
-        data:
-          - refId: A
-            queryType: range
-            relativeTimeRange:
-              from: 21600
-              to: 0
-            datasourceUid: P8E80F9AEF21F6940
-            model:
-              datasource:
-                type: loki
-                uid: P8E80F9AEF21F6940
-              editorMode: code
-              expr: count_over_time({service_name=~".+"} |~ "500 Internal Server Error" != "query_hash=" [1m])
-              intervalMs: 1000
-              maxDataPoints: 43200
-              queryType: range
-              refId: A
-          - refId: B
-            datasourceUid: __expr__
-            model:
-              conditions:
-                - evaluator:
-                    params: [ ]
-                    type: gt
-                  operator:
-                    type: and
-                  query:
-                    params:
-                      - B
-                  reducer:
-                    params: [ ]
-                    type: last
-                  type: query
-              datasource:
-                type: __expr__
-                uid: __expr__
-              expression: A
-              intervalMs: 1000
-              maxDataPoints: 43200
-              reducer: max
-              refId: B
-              type: reduce
-          - refId: C
-            datasourceUid: __expr__
-            model:
-              conditions:
-                - evaluator:
-                    params:
-                      - 0
-                    type: gt
-                  operator:
-                    type: and
-                  query:
-                    params:
-                      - C
-                  reducer:
-                    params: [ ]
-                    type: last
-                  type: query
-              datasource:
-                type: __expr__
-                uid: __expr__
-              expression: B
-              intervalMs: 1000
-              maxDataPoints: 43200
-              refId: C
-              type: threshold
-        dashboardUid: beb8ybzf6qupsc
-        panelId: 4
-        noDataState: OK
-        execErrState: Error
-        for: 1m
-        annotations:
-          __dashboardUid__: beb8ybzf6qupsc
-          __panelId__: "4"
-          description: 'Internal Server Error 500 detected.'
-        labels: { }
-        isPaused: false
-        notification_settings:
-          receiver: Slack Critical Alerts
