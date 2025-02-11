@@ -59,6 +59,8 @@ expected_vars=( \
   GRAFANA_ADMIN \
   GRAFANA_PASSWORD \
   LOKI_VOLUME \
+  SLACK_ALERT_URL \
+  SLACK_CRITICAL_ALERT_URL \
 )
 
 for var in "${expected_vars[@]}"
