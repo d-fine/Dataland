@@ -95,7 +95,7 @@ class DocumentManagerTest(
                         documentName = "sample.pdf",
                         documentCategory = DocumentCategory.AnnualReport,
                         companyIds = mutableListOf(),
-                        publicationDate = LocalDate.of(2023, 1, 1),
+                        publicationDate = LocalDate.parse("2023-01-01"),
                         reportingPeriod = "2023",
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
@@ -172,7 +172,7 @@ class DocumentManagerTest(
                 documentName = "new name",
                 documentCategory = DocumentCategory.SustainabilityReport,
                 companyIds = listOf("company-id-2", "company-id-3"),
-                publicationDate = LocalDate.of(2023, 1, 3),
+                publicationDate = LocalDate.parse("2023-01-03"),
                 reportingPeriod = null,
             )
         val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
