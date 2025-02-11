@@ -33,6 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.time.LocalDate
 import java.util.Optional
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
@@ -93,9 +94,9 @@ class DocumentManagerTest(
                         documentType = DocumentType.Pdf,
                         documentName = "sample.pdf",
                         documentCategory = DocumentCategory.AnnualReport,
-                        companyIds = listOf(),
-                        publicationDate = "2023-01-01",
-                        reportingPeriods = listOf("2023"),
+                        companyIds = mutableListOf<String>(),
+                        publicationDate = LocalDate.parse("2023-01-01"),
+                        reportingPeriods = mutableListOf("2023"),
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,

@@ -1,5 +1,7 @@
 package org.dataland.documentmanager.controller
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.api.DocumentApi
 import org.dataland.documentmanager.model.DocumentMetaInfo
@@ -9,6 +11,7 @@ import org.dataland.documentmanager.services.DocumentManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
@@ -21,12 +24,15 @@ import java.io.ByteArrayInputStream
 @RestController
 class DocumentController(
     @Autowired private val documentManager: DocumentManager,
+    @Autowired private val companyDataControllerApi: CompanyDataControllerApi,
 ) : DocumentApi {
     override fun postDocument(
         document: MultipartFile,
         documentMetaInfo: DocumentMetaInfo,
-    ): ResponseEntity<DocumentUploadResponse> =
-        ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document, documentMetaInfo))
+    ): ResponseEntity<DocumentUploadResponse> {
+        documentMetaInfo.companyIds.forEach { isCompanyIdValid(it) }
+        return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document, documentMetaInfo))
+    }
 
     override fun checkDocument(documentId: String) {
         if (!documentManager.checkIfDocumentExistsWithId(documentId)) {
@@ -60,4 +66,25 @@ class DocumentController(
         ResponseEntity.ok(
             documentManager.patchDocumentMetaInformation(documentId, documentMetaInfoPatch),
         )
+
+    /**
+     * Checks if passed companyId is valid by calling respective HEAD endpoint in backend companyDataController
+     * @param companyId
+     * @return returns true if companyId is valid
+     */
+    private fun isCompanyIdValid(companyId: String): Boolean {
+        try {
+            companyDataControllerApi.isCompanyIdValid(companyId)
+            return true
+        } catch (exception: ClientException) {
+            if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
+                throw ResourceNotFoundApiException(
+                    summary = "Company with CompanyId $companyId not found.",
+                    message = "Company with CompanyId $companyId not found.",
+                )
+            } else {
+                throw exception
+            }
+        }
+    }
 }
