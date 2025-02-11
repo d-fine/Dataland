@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class P2p {
     private val apiAccessor = ApiAccessor()
 
-    private val listOfOneP2pDataSet = apiAccessor.testDataProviderForP2pData.getTData(1)
+    private val listOfOneP2pDataset = apiAccessor.testDataProviderForP2pData.getTData(1)
     private val listOfOneCompanyInformation =
         apiAccessor.testDataProviderForP2pData
             .getCompanyInformationWithoutIdentifiers(1)
@@ -31,7 +31,7 @@ class P2p {
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOfOneP2pDataSet,
+                listOfOneP2pDataset,
                 apiAccessor::p2pUploaderFunction,
             )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -46,7 +46,7 @@ class P2p {
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
         Assertions.assertEquals(
-            getP2pDatasetWithSortedSectors(listOfOneP2pDataSet[0]),
+            getP2pDatasetWithSortedSectors(listOfOneP2pDataset[0]),
             getP2pDatasetWithSortedSectors(downloadedAssociatedData.data),
         )
     }
