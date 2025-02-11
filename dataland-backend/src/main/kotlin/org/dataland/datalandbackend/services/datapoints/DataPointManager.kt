@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 
 /**
@@ -50,6 +51,7 @@ class DataPointManager
          * @param correlationId the correlation id for the operation
          * @return the meta information of the stored data point
          */
+        @Transactional
         fun processDataPoint(
             uploadedDataPoint: UploadedDataPoint,
             uploaderUserId: String,
@@ -64,6 +66,11 @@ class DataPointManager
                 throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
             }
 
+            val companyInformation =
+                companyQueryManager
+                    .getCompanyById(uploadedDataPoint.companyId)
+                    .toApiModel(null)
+
             val dataPointMetaInformation =
                 storeDataPoint(
                     uploadedDataPoint = uploadedDataPoint,
@@ -72,7 +79,12 @@ class DataPointManager
                     correlationId = correlationId,
                     uploadTime = Instant.now().toEpochMilli(),
                 )
-            messageQueuePublications.publishDataPointUploadedMessageWithBypassQa(dataPointId, bypassQa, correlationId)
+            messageQueuePublications.publishDataPointUploadedMessageWithBypassQa(
+                dataPointMetaInformation = dataPointMetaInformation,
+                companyInformation = companyInformation,
+                bypassQa = bypassQa,
+                correlationId = correlationId,
+            )
             return dataPointMetaInformation
         }
 
@@ -84,6 +96,7 @@ class DataPointManager
          * @param correlationId the correlation id for the operation
          * @return the id of the stored data point
          */
+        @Transactional
         fun storeDataPoint(
             uploadedDataPoint: UploadedDataPoint,
             dataPointId: String,
@@ -103,6 +116,7 @@ class DataPointManager
          * @param dataId the id of the data point
          * @return true if the company is associated with the data point, false otherwise
          */
+        @Transactional(readOnly = true)
         fun isCompanyAssociatedWithDataPointMarkedForPublicAccess(dataId: String): Boolean {
             val metaInfo = metaDataManager.getDataPointMetaInformationById(dataId)
             return companyQueryManager.isCompanyPublic(metaInfo.companyId)
@@ -114,6 +128,7 @@ class DataPointManager
          * @param correlationId the correlation id for the operation
          * @return the data point in form of a StorableDataset
          */
+        @Transactional(readOnly = true)
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
@@ -146,6 +161,7 @@ class DataPointManager
          * @param newActiveDataId the id of the new active data point
          * @param correlationId the correlation id for the operation
          */
+        @Transactional
         fun updateCurrentlyActiveDataPoint(
             dataPointDimensions: BasicDataPointDimensions,
             newActiveDataId: String?,
@@ -171,6 +187,7 @@ class DataPointManager
          * @param dataPointDimensions the data dimensions to retrieve the data points for
          * @return the id of the currently active data point
          */
+        @Transactional(readOnly = true)
         fun getAssociatedDataPointIds(dataPointDimensions: List<BasicDataPointDimensions>): List<String> {
             val dataPointIds = mutableListOf<String>()
             dataPointDimensions.forEach {

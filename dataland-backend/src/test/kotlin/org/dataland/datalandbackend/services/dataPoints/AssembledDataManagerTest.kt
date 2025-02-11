@@ -16,6 +16,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformation
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -63,11 +64,14 @@ class AssembledDataManagerTest {
         )
 
     private val spyDataPointManager = spy(dataPointManager)
+    private val testDataProvider = TestDataProvider(testObjectMapper)
 
     private val assembledDataManager =
         AssembledDataManager(
             dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
-            specificationClient, datasetDatapointRepository, spyDataPointManager, ReferencedReportsUtilities(testObjectMapper),
+            specificationClient, datasetDatapointRepository, spyDataPointManager,
+            ReferencedReportsUtilities(testObjectMapper),
+            companyQueryManager,
         )
 
     private val correlationId = "test-correlation-id"
@@ -100,6 +104,7 @@ class AssembledDataManagerTest {
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
         `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
+        `when`(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())
 
         val uploadedDataset =
             StorableDataset(
@@ -118,7 +123,8 @@ class AssembledDataManagerTest {
                 argThat { dataPointType == it }, any(), any(), any(), any(),
             )
         }
-        verify(messageQueuePublications, times(expectedDataPointTypes.size)).publishDataPointUploadedMessage(any(), any(), eq(null), any())
+        verify(messageQueuePublications, times(expectedDataPointTypes.size))
+            .publishDataPointUploadedMessage(any(), any(), any(), eq(null), any())
         verify(messageQueuePublications, times(1)).publishDatasetQaRequiredMessage(any(), any(), any())
         verify(messageQueuePublications, times(0)).publishDatasetUploadedMessage(any(), any(), any())
         verify(datasetDatapointRepository, times(1)).save(
