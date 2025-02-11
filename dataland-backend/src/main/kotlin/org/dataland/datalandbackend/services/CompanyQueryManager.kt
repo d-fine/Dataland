@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.services
 
+import org.dataland.datalandbackend.LEIList
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -49,10 +50,14 @@ class CompanyQueryManager(
         val offset = chunkIndex * (chunkSize ?: 0)
         return if (filter.searchStringLength == 0) {
             if (areAllDropdownFiltersDeactivated(filter)) {
-                companyRepository
-                    .getAllCompaniesWithDataset(
-                        chunkSize, offset,
-                    )
+                val listOfAllCompanies =
+                    companyRepository
+                        .getAllCompaniesWithDataset(
+                            chunkSize, offset,
+                        )
+                val listOfLeis = LEIList.leis.values
+                val (filteredCompanies, remainingCompanies) = listOfAllCompanies.partition { it.lei in listOfLeis }
+                filteredCompanies + remainingCompanies
             } else {
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
