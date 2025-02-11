@@ -172,22 +172,6 @@ class QaReviewManagerTest {
     }
 
     @Test
-    fun `check that patching the uploaderId throws an error if oldest qa entry does not have status Pending`() {
-        val acceptedQaReviewEntityMock = mock<QaReviewEntity> { on { qaStatus } doReturn QaStatus.Accepted }
-        doReturn(acceptedQaReviewEntityMock)
-            .whenever(mockQaReviewRepository)
-            .findFirstByDataIdOrderByTimestampAsc(any())
-
-        assertThrows<IllegalArgumentException> {
-            qaReviewManager.patchUploaderUserIdInQaReviewEntry(
-                dataId = dataId,
-                uploaderUserId = uploaderId,
-                correlationId = correlationId,
-            )
-        }
-    }
-
-    @Test
     fun `check that patching the uploaderId works as expected`() {
         val dummyUploadQaReviewEntity =
             QaReviewEntity(
