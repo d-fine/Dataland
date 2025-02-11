@@ -18,6 +18,36 @@ loki.write "logs_default" {
 	external_labels = {}
 }
 
+local.file_match "health_checks" {
+  path_targets = [{
+    __address__ = "loki:3100",
+    __path__ = "/var/log/health-check-log/*/health-check.log",
+    job      = "health_checks",
+  }]
+}
+
+loki.source.file "health_checks" {
+  targets = local.file_match.health_checks.targets
+  forward_to = [loki.write.logs_health.receiver]
+}
+
+loki.relabel "health_checks" {
+  rule {
+    action       = "replace"
+    source_labels = ["__path__"]
+    regex         = ".*/health-check-log/([^/]+)/health-check.log"
+    target_label  = "service_name"
+    replacement = "$1"
+  }
+  forward_to = [loki.write.logs_health.receiver]
+}
+
+loki.write "logs_health" {
+	endpoint {
+		url = "http://loki:3100/loki/api/v1/push"
+	}
+}
+
 discovery.docker "containers" {
   host = "unix:///var/run/docker.sock"
 }

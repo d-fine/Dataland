@@ -32,16 +32,18 @@ scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$locatio
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
-# Transfer the scripts to the server
-scp ./healthCheck.sh ubuntu@"$target_server_url":"$location"/healthCheck.sh
-scp ./health-check.service ubuntu@"$target_server_url":"$location"/health-check.service
-
-ssh ubuntu@"$target_server_url" "sudo cp $location/healthCheck.sh /usr/local/bin/healthCheck.sh"
-ssh ubuntu@"$target_server_url" "sudo cp $location/health-check.service /etc/systemd/system/health-check.service"
-ssh ubuntu@"$target_server_url" "sudo chmod +x /usr/local/bin/healthCheck.sh"  # Make the script executable
-ssh ubuntu@"$target_server_url" "sudo systemctl daemon-reload"  # Reload the systemd daemon configuration
-ssh ubuntu@"$target_server_url" "sudo systemctl enable health-check.service"  # Enable the service
-ssh ubuntu@"$target_server_url" "sudo systemctl start health-check.service"  # Start the health check service
+# Container health check
+health_check_location=$location/health-check/
+scp -r ./health-check/ ubuntu@"$target_server_url":"$health_check_location"
+ssh ubuntu@"$target_server_url" << 'EOF'
+  sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
+  sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
+  sudo mv "$health_check_location/health-check" /etc/logrotate.d/health-check &&
+  sudo chmod +x /usr/local/bin/healthCheck.sh &&
+  sudo systemctl daemon-reload &&
+  sudo systemctl enable health-check.service &&
+  sudo systemctl start health-check.service
+EOF
 
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
 

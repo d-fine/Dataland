@@ -92,5 +92,11 @@ else
   docker compose "${compose_profiles[@]}" up -d --build
 fi
 
+# Setup the docker container health status check job
+while true; do
+  ./health-check/healthCheck.sh
+  sleep 60  # check health status every minute
+done
+
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace
