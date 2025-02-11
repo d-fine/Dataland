@@ -73,6 +73,7 @@ class QaControllerTest(
                 qaStatus = OpenApiClientQaStatus.Accepted,
                 currentlyActive = true,
                 uploadTime = 0,
+                uploaderUserId = "",
             ),
         )
 
