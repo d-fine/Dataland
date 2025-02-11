@@ -119,16 +119,6 @@ class DocumentManager
             documentMetaInfoRepository.save(documentMetaInfoEntity)
         }
 
-        private fun generateDocumentId(
-            document: MultipartFile,
-            correlationId: String,
-        ): String {
-            logger.info("Generate document meta info for document with correlation ID: $correlationId")
-            val documentId = document.bytes.sha256()
-            logger.info("Generated hash/document ID: $documentId for document with correlation ID: $correlationId. ")
-            return documentId
-        }
-
         /**
          * This method checks whether a document is already stored in the database or not
          * @param documentId the documentId of the document to be checked
@@ -143,6 +133,67 @@ class DocumentManager
                 logger.info("Document with ID: $documentId does not exist")
             }
             return documentExists
+        }
+
+        /**
+         * Update the document meta information with [documentId].
+         * Fields 'companyIds' and 'reportingPeriods' will be extended instead
+         * of overwritten.
+         * @param documentId identifier of document to be patched
+         * @param documentMetaInfoPatch meta data patch object
+         * @return DocumentUploadResponse object to be sent to patching user
+         */
+        fun patchDocumentMetaInformation(
+            documentId: String,
+            documentMetaInfoPatch: DocumentMetaInfoPatch,
+        ): DocumentUploadResponse {
+            val correlationId = randomUUID().toString()
+            logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
+            if (!checkIfDocumentExistsWithId(documentId)) {
+                throw ResourceNotFoundApiException(
+                    summary = "Document with ID $documentId does not exist.",
+                    message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
+                )
+            }
+            val documentMetaInfoEntity =
+                documentMetaInfoRepository.getByDocumentId(documentId)
+                    ?: throw ResourceNotFoundApiException(
+                        summary = "Document with ID $documentId could not be retrieved.",
+                        message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
+                    )
+
+            logger.info("Updating meta information for document with ID $documentId. CorrelationID: $correlationId.")
+
+            documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
+            documentMetaInfoPatch.documentCategory?.let { documentMetaInfoEntity.documentCategory = it }
+            documentMetaInfoPatch.companyIds?.let {
+                documentMetaInfoEntity.companyIds = it.toMutableList()
+            }
+            documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
+            documentMetaInfoPatch.reportingPeriod?.let { documentMetaInfoEntity.reportingPeriod = it }
+
+            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
+        }
+
+        /**
+         * Update the document meta information with [documentId].
+         * This version only adds a single companyId to the companyIds list.
+         * @param documentId identifier of document to be patched
+         * @param companyId the company id to add
+         * @return DocumentUploadResponse object to be sent to patching user
+         */
+        fun patchDocumentMetaInformationCompanyIds(
+            documentId: String,
+            companyId: String,
+        ): DocumentUploadResponse {
+            val correlationId = randomUUID().toString()
+            val documentMetaInfoEntity = retrieveDocumentById(documentId, correlationId)
+
+            logger.info("Updating company ids for document with ID $documentId. CorrelationID: $correlationId.")
+
+            documentMetaInfoEntity.companyIds?.add(companyId)
+
+            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
         }
 
         /**
@@ -183,66 +234,14 @@ class DocumentManager
             }
         }
 
-        /**
-         * Update the document meta information with [documentId].
-         * Fields 'companyIds' and 'reportingPeriods' will be extended instead
-         * of overwritten.
-         * @param documentId identifier of document to be patched
-         * @param documentMetaInfoPatch meta data patch object
-         * @return DocumentUploadResponse object to be sent to patching user
-         */
-        fun patchDocumentMetaInformation(
-            documentId: String,
-            documentMetaInfoPatch: DocumentMetaInfoPatch,
-        ): DocumentUploadResponse {
-            val correlationId = randomUUID().toString()
-            logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
-            if (!checkIfDocumentExistsWithId(documentId)) {
-                throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId does not exist.",
-                    message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
-                )
-            }
-            val documentMetaInfoEntity =
-                documentMetaInfoRepository.getByDocumentId(documentId)
-                    ?: throw ResourceNotFoundApiException(
-                        summary = "Document with ID $documentId could not be retrieved.",
-                        message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
-                    )
-
-            logger.info("Updating meta information for document with ID $documentId. CorrelationID: $correlationId.")
-
-            documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
-            documentMetaInfoPatch.documentCategory?.let { documentMetaInfoEntity.documentCategory = it }
-            documentMetaInfoPatch.companyIds?.let {
-                documentMetaInfoEntity.companyIds =
-                    documentMetaInfoEntity.companyIds?.apply { addAll(it) } ?: it.toMutableList()
-            }
-            documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
-            documentMetaInfoPatch.reportingPeriod?.let { documentMetaInfoEntity.reportingPeriod = it }
-
-            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
-        }
-
-        /**
-         * Update the document meta information with [documentId].
-         * This version only adds a single companyId to the companyIds list.
-         * @param documentId identifier of document to be patched
-         * @param companyId the company id to add
-         * @return DocumentUploadResponse object to be sent to patching user
-         */
-        fun patchDocumentMetaInformationCompanyIds(
-            documentId: String,
-            companyId: String,
-        ): DocumentUploadResponse {
-            val correlationId = randomUUID().toString()
-            val documentMetaInfoEntity = retrieveDocumentById(documentId, correlationId)
-
-            logger.info("Updating company ids for document with ID $documentId. CorrelationID: $correlationId.")
-
-            documentMetaInfoEntity.companyIds?.add(companyId)
-
-            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
+        private fun generateDocumentId(
+            document: MultipartFile,
+            correlationId: String,
+        ): String {
+            logger.info("Generate document meta info for document with correlation ID: $correlationId")
+            val documentId = document.bytes.sha256()
+            logger.info("Generated hash/document ID: $documentId for document with correlation ID: $correlationId. ")
+            return documentId
         }
 
         private fun retrieveDocumentById(
