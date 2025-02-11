@@ -28,7 +28,7 @@ import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
-class DataRequestResponseEmailSenderTest {
+class ResourceResponseEmailSenderTest {
     private val reportingPeriod = "2022"
     private val companyId = "59f05156-e1ba-4ea8-9d1e-d4833f6c7afc"
     private val userId = "1234-221-1111elf"

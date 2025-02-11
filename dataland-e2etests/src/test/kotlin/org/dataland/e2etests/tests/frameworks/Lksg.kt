@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentM
 import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -20,7 +21,7 @@ class Lksg {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
-    private val listOfOneLksgDataSet = apiAccessor.testDataProviderForLksgData.getTData(1)
+    private val listOfOneLksgDataset = apiAccessor.testDataProviderForLksgData.getTData(1)
     private val listOfOneCompanyInformation =
         apiAccessor.testDataProviderForLksgData
             .getCompanyInformationWithoutIdentifiers(1)
@@ -31,11 +32,11 @@ class Lksg {
     }
 
     private fun removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(dataset: LksgData): LksgData {
-        val fixedDataSet = dataset.copy()
+        val fixedDataset = dataset.copy()
         // The following block is a workaround to circumvent a bug in the generated clients
         // which do not allow for null entries as map values but retain them at the same time.
         // On upload, however, they are not being serialized.
-        fixedDataSet.general.productionSpecificOwnOperations?.procurementCategories?.forEach {
+        fixedDataset.general.productionSpecificOwnOperations?.procurementCategories?.forEach {
             val keysOfEntriesToDelete = mutableListOf<String>()
             it.value.numberOfSuppliersPerCountryCode?.forEach { numberOfSuppliersPerCountry ->
                 if (numberOfSuppliersPerCountry.value == null) {
@@ -47,7 +48,7 @@ class Lksg {
             }
         }
 
-        val fixedDataSetWithSortedComplaintsRisks = sortComplaintRisksInDataset(fixedDataSet)
+        val fixedDataSetWithSortedComplaintsRisks = sortComplaintRisksInDataset(fixedDataset)
         val fixedDataSetWithAllSortedRiskPositions =
             sortDatasetsInSecondTest(
                 listOf(fixedDataSetWithSortedComplaintsRisks),
@@ -58,7 +59,7 @@ class Lksg {
 
     @Test
     fun `post a company with Lksg data and check if the data can be retrieved correctly`() {
-        val fixedDataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(listOfOneLksgDataSet[0])
+        val fixedDataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(listOfOneLksgDataset[0])
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
@@ -81,8 +82,8 @@ class Lksg {
 
     @Test
     fun `check that reporting period and version history parameters of GET endpoint for companies work correctly`() {
-        val (companyId, uploadedDataSets) = uploadFourDatasetsForACompany()
-        val downLoadedDataSets =
+        val (companyId, uploadedDatasets) = uploadFourDatasetsForACompany()
+        val downloadedDatasets =
             apiAccessor.dataControllerApiForLksgData.getAllCompanyLksgData(
                 companyId = companyId,
                 showOnlyActive = false,
@@ -105,11 +106,11 @@ class Lksg {
                 reportingPeriod = "2023",
             )
         assertDownloadedDatasets(
-            downLoadedDataSets,
+            downloadedDatasets,
             activeDownloadedDatasets,
             downloaded2023Datasets,
             downloadedActive2023Datasets,
-            sortDatasetsInSecondTest(uploadedDataSets),
+            sortDatasetsInSecondTest(uploadedDatasets),
         )
     }
 
@@ -118,13 +119,12 @@ class Lksg {
         val companyId = "1908273127903192839781293898312983"
         val companyName = "TestForBrokenFileReference"
         val companyInformation =
-            apiAccessor.testDataProviderForLksgData
-                .getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
+            FrameworkTestDataProvider.forFrameworkPreparedFixtures(LksgData::class.java).getByCompanyName(companyName)
         val lksgData = companyInformation!!.t
 
-        val dataSet = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
+        val dataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
 
-        val uploadPair = Pair(dataSet, "2022")
+        val uploadPair = Pair(dataset, "2022")
 
         val exception =
             assertThrows<ClientException> {
@@ -144,14 +144,14 @@ class Lksg {
     }
 
     private fun assertDownloadedDatasets(
-        downLoadedDataSets: List<DataAndMetaInformationLksgData>,
+        downLoadedDatasets: List<DataAndMetaInformationLksgData>,
         activeDownloadedDatasets: List<DataAndMetaInformationLksgData>,
         downloaded2023Datasets: List<DataAndMetaInformationLksgData>,
         downloadedActive2023Datasets: List<DataAndMetaInformationLksgData>,
-        uploadedDataSets: List<Any>,
+        uploadedDatasets: List<Any>,
     ) {
         assertTrue(
-            downLoadedDataSets.size == 4 &&
+            downLoadedDatasets.size == 4 &&
                 activeDownloadedDatasets.size == 2 &&
                 downloaded2023Datasets.size == 2 &&
                 downloadedActive2023Datasets.size == 1,
@@ -159,7 +159,7 @@ class Lksg {
         )
         assertEquals(
             sortDatasetsInSecondTest(listOf(downloadedActive2023Datasets[0].data))[0],
-            uploadedDataSets[1],
+            uploadedDatasets[1],
             "Active dataset in 2023 not equal to latest upload.",
         )
     }
@@ -239,9 +239,9 @@ class Lksg {
         return secondSorting
     }
 
-    private fun sortDatasetsInSecondTest(uploadedDataSets: List<LksgData>): List<LksgData> {
+    private fun sortDatasetsInSecondTest(uploadedDatasets: List<LksgData>): List<LksgData> {
         val sortedUploadedDatasets = mutableListOf<LksgData>()
-        uploadedDataSets.forEach { dataset ->
+        uploadedDatasets.forEach { dataset ->
             val sortedDataset = sortComplaintRisksInDataset(dataset)
 
             sortedUploadedDatasets.add(

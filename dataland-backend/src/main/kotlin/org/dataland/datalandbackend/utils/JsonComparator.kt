@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.NullNode
 
 /**
  * Compares two JSON nodes and returns a list of differences.
@@ -16,40 +17,56 @@ object JsonComparator {
     )
 
     /**
+     * Json Comparison Options
+     */
+    data class JsonComparisonOptions(
+        val ignoredKeys: Set<String> = emptySet(),
+        val fullyNullObjectsAreEqualToNull: Boolean = true,
+    )
+
+    /**
      * Compares two JSON nodes and returns a list of differences.
      */
     fun compareJson(
-        expected: JsonNode?,
-        actual: JsonNode?,
-        ignoredKeys: Set<String>,
+        expected: JsonNode,
+        actual: JsonNode,
+        options: JsonComparisonOptions,
     ): List<JsonDiff> {
         val differences = mutableListOf<JsonDiff>()
-        findNodeDifferences(expected, actual, ignoredKeys, differenceList = differences)
+        findNodeDifferences(expected, actual, options, differenceList = differences)
         return differences
     }
 
+    private fun isFullyNullObject(node: JsonNode): Boolean =
+        node.isNull ||
+            node.isObject &&
+            node.fields().asSequence().all {
+                it.value.isNull
+            }
+
     private fun findNodeDifferences(
-        expected: JsonNode?,
-        actual: JsonNode?,
-        ignoredKeys: Set<String>,
+        expected: JsonNode,
+        actual: JsonNode,
+        options: JsonComparisonOptions,
         currentPath: String = "",
         differenceList: MutableList<JsonDiff>,
     ) {
-        if (expected == null && actual == null) {
-            return
-        }
-
-        if (expected == null || actual == null) {
-            differenceList.add(JsonDiff(currentPath, expected, actual))
-            return
-        }
-
         when {
+            expected.isNull && actual.isNull -> {
+                // Both nodes are null
+            }
+            expected.isNull || actual.isNull -> {
+                if (options.fullyNullObjectsAreEqualToNull && isFullyNullObject(expected) && isFullyNullObject(actual)) {
+                    // Both objects are null-ish
+                } else {
+                    differenceList.add(JsonDiff(currentPath, expected, actual))
+                }
+            }
             expected.isObject && actual.isObject -> {
-                compareObjects(expected, ignoredKeys, actual, currentPath, differenceList)
+                compareObjects(expected, options, actual, currentPath, differenceList)
             }
             expected.isArray && actual.isArray -> {
-                compareArrays(expected, actual, currentPath, ignoredKeys, differenceList)
+                compareArrays(expected, actual, currentPath, options, differenceList)
             }
             expected != actual -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
@@ -64,7 +81,7 @@ object JsonComparator {
         expected: JsonNode,
         actual: JsonNode,
         currentPath: String,
-        ignoredKeys: Set<String>,
+        options: JsonComparisonOptions,
         differenceList: MutableList<JsonDiff>,
     ) {
         val expectedSize = expected.size()
@@ -73,9 +90,9 @@ object JsonComparator {
         for (i in 0 until maxSize) {
             val newPath = if (currentPath.isEmpty()) "[$i]" else "$currentPath[$i]"
             findNodeDifferences(
-                expected.get(i),
-                actual.get(i),
-                ignoredKeys,
+                expected.get(i) ?: NullNode.instance,
+                actual.get(i) ?: NullNode.instance,
+                options,
                 newPath,
                 differenceList,
             )
@@ -84,7 +101,7 @@ object JsonComparator {
 
     private fun compareObjects(
         expected: JsonNode,
-        ignoredKeys: Set<String>,
+        options: JsonComparisonOptions,
         actual: JsonNode,
         currentPath: String,
         differenceList: MutableList<JsonDiff>,
@@ -93,24 +110,21 @@ object JsonComparator {
             expected
                 .fieldNames()
                 .asSequence()
-                .filterNot { it in ignoredKeys }
+                .filterNot { it in options.ignoredKeys }
                 .toSet()
         val actualFields =
             actual
                 .fieldNames()
                 .asSequence()
-                .filterNot { it in ignoredKeys }
+                .filterNot { it in options.ignoredKeys }
                 .toSet()
         val allFields = expectedFields + actualFields
         for (field in allFields) {
-            if (field in ignoredKeys) {
-                continue
-            }
             val newPath = if (currentPath.isEmpty()) field else "$currentPath.$field"
             findNodeDifferences(
-                expected[field],
-                actual[field],
-                ignoredKeys,
+                expected[field] ?: NullNode.instance,
+                actual[field] ?: NullNode.instance,
+                options,
                 newPath,
                 differenceList,
             )

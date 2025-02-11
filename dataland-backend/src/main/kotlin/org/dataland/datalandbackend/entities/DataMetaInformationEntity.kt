@@ -61,7 +61,7 @@ data class DataMetaInformationEntity(
     private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
         roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
-    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation =
+    override fun toApiModel(): DataMetaInformation =
         DataMetaInformation(
             dataId = dataId,
             companyId = company.companyId,
@@ -72,4 +72,14 @@ data class DataMetaInformationEntity(
             currentlyActive = currentlyActive == true,
             qaStatus = qaStatus,
         )
+
+    /**
+     * Converts this entity to the DataMetaInformation API model and sets the URL to the proxy primary URL
+     * @param proxyPrimaryUrl the proxy primary URL to set
+     */
+    fun toApiModel(proxyPrimaryUrl: String): DataMetaInformation {
+        val dataMetaInformation = this.toApiModel()
+        dataMetaInformation.ref = "https://$proxyPrimaryUrl/companies/${company.companyId}/frameworks/$dataType/$dataId"
+        return dataMetaInformation
+    }
 }
