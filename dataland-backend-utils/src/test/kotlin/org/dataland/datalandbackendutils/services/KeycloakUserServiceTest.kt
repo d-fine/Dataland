@@ -58,19 +58,20 @@ class KeycloakUserServiceTest {
 
     private val applicationJsonString = "application/json"
 
+    private fun buildRequestToGetFirstUserIdFromUrl(expectedUrl: String): Response =
+        Response
+            .Builder()
+            .request(Request.Builder().url(expectedUrl).build())
+            .protocol(Protocol.HTTP_1_1)
+            .code(200)
+            .message("OK")
+            .body(firstUserJson.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
+            .build()
+
     @Test
     fun `getUser should return valid KeycloakUserInfo on successful parse`() {
         val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
-
-        val response =
-            Response
-                .Builder()
-                .request(Request.Builder().url(expectedUrl).build())
-                .protocol(Protocol.HTTP_1_1)
-                .code(200)
-                .message("OK")
-                .body(firstUserJson.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
-                .build()
+        val response = buildRequestToGetFirstUserIdFromUrl(expectedUrl)
 
         val call = mock<Call>()
         whenever(call.execute()).thenReturn(response)
@@ -81,18 +82,33 @@ class KeycloakUserServiceTest {
     }
 
     @Test
-    fun `isKeycloakUser should return valid true on successful parse`() {
-        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
-
+    fun `getUser should return empty KeycloakUserInfo on unsuccessful parse`() {
+        val nonExistentUserId = "nonExistentUserId"
+        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/$nonExistentUserId"
+        val emptyKeycloakUserInfo =
+            KeycloakUserInfo(email = null, userId = nonExistentUserId, firstName = null, lastName = null)
         val response =
             Response
                 .Builder()
                 .request(Request.Builder().url(expectedUrl).build())
                 .protocol(Protocol.HTTP_1_1)
-                .code(200)
-                .message("OK")
-                .body(firstUserJson.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
+                .code(404)
+                .message("User not found")
+                .body("non-existent-user".toResponseBody(applicationJsonString.toMediaTypeOrNull()))
                 .build()
+
+        val call = mock<Call>()
+        whenever(call.execute()).thenReturn(response)
+        whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl })).thenReturn(call)
+
+        val result = service.getUser(nonExistentUserId)
+        assertEquals(emptyKeycloakUserInfo, result)
+    }
+
+    @Test
+    fun `isKeycloakUser should return valid true on successful parse`() {
+        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
+        val response = buildRequestToGetFirstUserIdFromUrl(expectedUrl)
 
         val call = mock<Call>()
         whenever(call.execute()).thenReturn(response)
