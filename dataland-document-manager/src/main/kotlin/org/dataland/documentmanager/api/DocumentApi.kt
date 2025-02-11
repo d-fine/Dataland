@@ -57,8 +57,8 @@ interface DocumentApi {
     ): ResponseEntity<DocumentUploadResponse>
 
     /**
-     * Patch the metadata information of a document. If patchDocument.companyIds is not null, it
-     * will get appended to the existing list of company ids. Likewise for patchDocument.reportingPeriods.
+     * Patch the metadata information of a document. The field values in documentMetaInfoPatch that
+     * are not null will replace the corresponding field values in the DocumentMetaInfoEntity object.
      * @param documentId the id of the document whose metainfo shall be patched.
      * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to patch.
      */
@@ -68,7 +68,10 @@ interface DocumentApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully patched metadata information.."),
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully patched companyIds field in document metainformation.",
+            ),
             ApiResponse(
                 responseCode = "403",
                 description = "You do not have the right to patch all fields for which a patch was requested.",
@@ -81,10 +84,43 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_UPLOADER') and @UserRolesChecker.areOnlyAllowedFieldsPatched(#documentMetaInfoPatch)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun patchDocumentMetaInfo(
         @PathVariable("documentId") documentId: String,
         @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,
+    ): ResponseEntity<DocumentUploadResponse>
+
+    /**
+     * Patch the company id list in the stored metainformation of a given document by adding
+     * a single new company id.
+     * @param documentId the id of the document whose metainfo shall be patched.
+     * @param companyId the company id to add.
+     */
+    @Operation(
+        summary = "Patch the company id list of a document.",
+        description = "Patch the company id list of a document by adding a single company id.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully patched companyIds field in document metainformation.",
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to patch the companyIds field.",
+            ),
+            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{documentId}/companies/{companyId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun patchDocumentMetaInfoCompanyIds(
+        @PathVariable("documentId") documentId: String,
+        @PathVariable("companyId") companyId: String,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**

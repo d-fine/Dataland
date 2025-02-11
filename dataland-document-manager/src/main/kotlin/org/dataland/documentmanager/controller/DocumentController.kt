@@ -60,4 +60,12 @@ class DocumentController(
         ResponseEntity.ok(
             documentManager.patchDocumentMetaInformation(documentId, documentMetaInfoPatch),
         )
+
+    override fun patchDocumentMetaInfoCompanyIds(
+        documentId: String,
+        companyId: String,
+    ): ResponseEntity<DocumentUploadResponse> =
+        ResponseEntity.ok(
+            documentManager.patchDocumentMetaInformationCompanyIds(documentId, companyId),
+        )
 }

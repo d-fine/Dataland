@@ -33,6 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import java.time.LocalDate
 import java.util.Optional
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
@@ -93,9 +94,9 @@ class DocumentManagerTest(
                         documentType = DocumentType.Pdf,
                         documentName = "sample.pdf",
                         documentCategory = DocumentCategory.AnnualReport,
-                        companyIds = listOf(),
-                        publicationDate = "2023-01-01",
-                        reportingPeriods = listOf("2023"),
+                        companyIds = mutableListOf(),
+                        publicationDate = LocalDate.of(2023, 1, 1),
+                        reportingPeriod = "2023",
                         documentId = uploadResponse.documentId,
                         uploaderId = "",
                         uploadTime = 0,
@@ -151,7 +152,7 @@ class DocumentManagerTest(
                 documentCategory = null,
                 companyIds = null,
                 publicationDate = null,
-                reportingPeriods = null,
+                reportingPeriod = null,
             )
         assertThrows<ResourceNotFoundApiException> {
             documentManager.patchDocumentMetaInformation(unknownDocumentId, patchObject)
@@ -168,15 +169,15 @@ class DocumentManagerTest(
                 documentName = "new name",
                 documentCategory = DocumentCategory.SustainabilityReport,
                 companyIds = null,
-                publicationDate = "2023-01-03",
-                reportingPeriods = null,
+                publicationDate = LocalDate.of(2023, 1, 3),
+                reportingPeriod = null,
             )
         val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
         val expectedSecondDocumentMetaInfoEntity =
             firstDocumentMetaInfoEntity.apply {
                 documentName = "new name"
                 documentCategory = DocumentCategory.SustainabilityReport
-                publicationDate = "2023-01-03"
+                publicationDate = LocalDate.of(2023, 1, 3)
             }
         `when`(mockDocumentMetaInfoRepository.existsById(anyString())).thenReturn(true)
         // Rewrite the stubbed save method so it acts as an identity function rather than a constant function.
@@ -213,9 +214,9 @@ class DocumentManagerTest(
             documentType = DocumentType.Pdf,
             documentName = "sample.pdf",
             documentCategory = DocumentCategory.AnnualReport,
-            companyIds = listOf(),
-            publicationDate = "2023-01-01",
-            reportingPeriods = listOf("2023"),
+            companyIds = mutableListOf(),
+            publicationDate = LocalDate.of(2023, 1, 1),
+            reportingPeriod = "2023",
             documentId = documentId,
             uploaderId = "",
             uploadTime = 0,
@@ -236,7 +237,7 @@ class DocumentManagerTest(
             documentName = "sample.pdf",
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = listOf("someValidId"),
-            publicationDate = "2023-01-01",
-            reportingPeriods = listOf("2023"),
+            publicationDate = LocalDate.of(2023, 1, 1),
+            reportingPeriod = "2023",
         )
 }

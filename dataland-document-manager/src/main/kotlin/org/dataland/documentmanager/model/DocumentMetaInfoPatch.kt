@@ -12,7 +12,7 @@ import java.time.LocalDate
  * @param documentCategory
  * @param companyIds
  * @param publicationDate
- * @param reportingPeriods only for informative purposes
+ * @param reportingPeriod only for informative purposes
  */
 data class DocumentMetaInfoPatch(
     val documentName: String?,
@@ -20,5 +20,5 @@ data class DocumentMetaInfoPatch(
     val companyIds: List<String>?,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     val publicationDate: LocalDate?,
-    val reportingPeriods: List<String>?,
+    val reportingPeriod: String?,
 )
