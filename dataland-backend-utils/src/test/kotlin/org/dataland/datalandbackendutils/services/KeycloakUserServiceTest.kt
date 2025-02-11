@@ -81,6 +81,27 @@ class KeycloakUserServiceTest {
     }
 
     @Test
+    fun `isKeycloakUser should return valid true on successful parse`() {
+        val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users/${firstUser.userId}"
+
+        val response =
+            Response
+                .Builder()
+                .request(Request.Builder().url(expectedUrl).build())
+                .protocol(Protocol.HTTP_1_1)
+                .code(200)
+                .message("OK")
+                .body(firstUserJson.toResponseBody(applicationJsonString.toMediaTypeOrNull()))
+                .build()
+
+        val call = mock<Call>()
+        whenever(call.execute()).thenReturn(response)
+        whenever(authenticatedOkHttpClient.newCall(argThat { this.url.toString() == expectedUrl })).thenReturn(call)
+
+        assertTrue(service.isKeycloakUserId(firstUser.userId))
+    }
+
+    @Test
     fun `searchUsers should return a list of KeycloakUserInfo on successful parse`() {
         val emailSearch = "test"
         val expectedUrl = "$keycloakBaseUrl/admin/realms/datalandsecurity/users?email=$emailSearch"
