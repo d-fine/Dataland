@@ -161,15 +161,15 @@ export default defineComponent({
     this.fetchDataForThisPage();
   },
   watch: {
-    async companyId() {
-      await this.fetchDataForThisPage();
+    companyId() {
+      this.fetchDataForThisPage();
     },
   },
   methods: {
     /**
      * A complete fetch of all data that is relevant for UI elements of this page
      */
-    async fetchDataForThisPage() {
+    fetchDataForThisPage() {
       try {
         void this.getCompanyInformation();
         void this.setCompanyOwnershipStatus();
@@ -276,6 +276,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/variables' as *;
+
 .inline-loading {
   width: 450px;
 }

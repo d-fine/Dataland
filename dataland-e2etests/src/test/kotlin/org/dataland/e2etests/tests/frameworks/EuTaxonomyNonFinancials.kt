@@ -2,8 +2,11 @@ package org.dataland.e2etests.tests.frameworks
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.EutaxonomyNonFinancialsData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -15,7 +18,7 @@ class EuTaxonomyNonFinancials {
     private val apiAccessor = ApiAccessor()
     private val documentManagerAccessor = DocumentManagerAccessor()
 
-    private val listOfOneEuTaxonomyNonFinancialsDataSet =
+    private val listOfOneEuTaxonomyNonFinancialsDataset =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
             .getTData(1)
     private val listOfOneCompanyInformation =
@@ -31,7 +34,7 @@ class EuTaxonomyNonFinancials {
     fun `post a dummy company and a dummy data set for it and check if data Id appears in the companys meta data`() {
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
-                listOfOneCompanyInformation, listOfOneEuTaxonomyNonFinancialsDataSet,
+                listOfOneCompanyInformation, listOfOneEuTaxonomyNonFinancialsDataset,
                 apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
             )
         val expectedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -41,7 +44,17 @@ class EuTaxonomyNonFinancials {
                 expectedDataMetaInformation?.dataType,
             )
         Assertions.assertTrue(
-            listOfDataMetaInfoForTestCompany.contains(expectedDataMetaInformation),
+            listOfDataMetaInfoForTestCompany.any {
+                try {
+                    assertDataMetaInfoMatches(
+                        expectedDataMetaInfo = expectedDataMetaInformation!!,
+                        actualDataMetaInfo = it,
+                    )
+                    true
+                } catch (ignore: AssertionError) {
+                    false
+                }
+            },
             "The all-data-sets-list of the posted company does not contain the posted data set.",
         )
     }
@@ -51,7 +64,7 @@ class EuTaxonomyNonFinancials {
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForOneFramework(
                 listOfOneCompanyInformation,
-                listOfOneEuTaxonomyNonFinancialsDataSet,
+                listOfOneEuTaxonomyNonFinancialsDataset,
                 apiAccessor::euTaxonomyNonFinancialsUploaderFunction,
             )
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
@@ -65,7 +78,7 @@ class EuTaxonomyNonFinancials {
 
         Assertions.assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         Assertions.assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        Assertions.assertEquals(listOfOneEuTaxonomyNonFinancialsDataSet[0], downloadedAssociatedData.data)
+        Assertions.assertEquals(listOfOneEuTaxonomyNonFinancialsDataset[0], downloadedAssociatedData.data)
     }
 
     @Test
@@ -74,12 +87,11 @@ class EuTaxonomyNonFinancials {
         val companyName = "TestForIncompleteReferencedReport"
 
         val companyInformation =
-            apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
-                .getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(companyName)
+            FrameworkTestDataProvider.forFrameworkPreparedFixtures(EutaxonomyNonFinancialsData::class.java).getByCompanyName(companyName)
 
-        val dataSet = companyInformation!!.t
+        val dataset = companyInformation!!.t
 
-        val uploadPair = Pair(dataSet, "2024")
+        val uploadPair = Pair(dataset, "2024")
 
         val exception =
             assertThrows<ClientException> {

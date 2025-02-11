@@ -274,7 +274,7 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string' && dataId !== '') {
       this.editMode = true;
-      this.loadEuTaxonomyFinancialsData(dataId);
+      void this.loadEuTaxonomyFinancialsData(dataId);
     } else {
       this.waitingForData = false;
     }

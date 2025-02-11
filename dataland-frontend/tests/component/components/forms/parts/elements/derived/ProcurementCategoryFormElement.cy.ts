@@ -15,7 +15,7 @@ describe('Component tests for the CreateLksgDataset that test dependent fields',
           },
         },
       },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: { name: 'Products' },
     }).then(() => {

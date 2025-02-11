@@ -270,7 +270,7 @@ export default defineComponent({
       this.updateCurrentDisplayedData();
     },
     companyRoleAssignments() {
-      this.getStoredCompanyRequestDataList();
+      void this.getStoredCompanyRequestDataList();
     },
   },
   methods: {

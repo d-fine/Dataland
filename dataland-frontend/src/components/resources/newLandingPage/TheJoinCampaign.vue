@@ -43,6 +43,8 @@ const getInTouchSection = findSection('Get in touch');
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables' as *;
+
 .joincampaign {
   display: flex;
   flex-direction: column;
