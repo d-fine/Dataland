@@ -155,8 +155,7 @@ class QaReviewManager(
         logger.info("Received message to patch uploaderUserId for dataset with dataId $dataId (correlationId: $correlationId).")
         val qaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampAsc(dataId)
 
-        requireNotNull(qaReviewEntity)
-        require(qaReviewEntity.qaStatus == QaStatus.Pending)
+        requireNotNull(qaReviewEntity, { "QaReviewEntity must not be null." })
 
         logger.info(
             "Updating triggeringUserId for first qa review entry for dataset with dataId $dataId$. " +
