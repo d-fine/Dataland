@@ -1,7 +1,6 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.QaBypass
@@ -18,7 +17,6 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDataMigrationManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
@@ -51,7 +49,6 @@ class QaEventListenerQaService
         private val dataPointQaReviewManager: DataPointQaReviewManager,
         private val qaReportManager: QaReportManager,
         private val metaDataControllerApi: MetaDataControllerApi,
-        private val dataPointControllerApi: DataPointControllerApi,
         private val assembledDataMigrationManager: AssembledDataMigrationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -280,31 +277,10 @@ class QaEventListenerQaService
                         "${dataUploadedPayload.initialQaComment} (correlation Id: $correlationId)",
                 )
 
-                saveQaReviewEntityFromMessage(dataUploadedPayload, correlationId)
+                dataPointQaReviewManager.reviewDataPointFromMessage(
+                    message = dataUploadedPayload,
+                    correlationId = correlationId,
+                )
             }
-        }
-
-        /**
-         * Method to save a DataPointQaReviewEntity from a QaPayload
-         * @param dataUploadedPayload the payload containing the dataId and bypassQa
-         * @param correlationId the correlation ID of the current user process
-         * @return the saved DataPointQaReviewEntity
-         */
-        fun saveQaReviewEntityFromMessage(
-            dataUploadedPayload: DataPointUploadedPayload,
-            correlationId: String,
-        ): DataPointQaReviewEntity {
-            val dataPointId = dataUploadedPayload.dataPointId
-            val triggeringUserId = requireNotNull(dataPointControllerApi.getDataPointMetaInfo(dataPointId).uploaderUserId)
-
-            val qaStatus = QaStatus.valueOf(dataUploadedPayload.initialQaStatus)
-
-            return dataPointQaReviewManager.reviewDataPoint(
-                dataPointId = dataPointId,
-                qaStatus = qaStatus,
-                triggeringUserId = triggeringUserId,
-                comment = dataUploadedPayload.initialQaComment,
-                correlationId = correlationId,
-            )
         }
     }

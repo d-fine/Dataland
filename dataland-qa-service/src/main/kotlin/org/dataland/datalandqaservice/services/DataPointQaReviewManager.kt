@@ -12,6 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
@@ -55,6 +56,37 @@ class DataPointQaReviewManager
             val reviewEntity = saveDataPointQaReviewEntity(dataPointId, qaStatus, triggeringUserId, comment, correlationId)
             sendDataPointQaStatusChangeMessage(reviewEntity, correlationId)
             return reviewEntity
+        }
+
+        /**
+         * Review a data point and change its QA status using the information provided in the datapoint uploaded message
+         * @param message the message containing the information to review
+         * @param correlationId the ID for the process triggering the change
+         */
+        @Transactional
+        fun reviewDataPointFromMessage(
+            message: DataPointUploadedPayload,
+            correlationId: String,
+        ): DataPointQaReviewEntity {
+            logger.info(
+                "Assigning quality status ${message.initialQaStatus} to data point with ID " +
+                    "${message.dataPointId} (correlationID: $correlationId)",
+            )
+
+            val dataPointQaReviewEntity =
+                DataPointQaReviewEntity(
+                    dataPointId = message.dataPointId,
+                    companyId = message.companyId,
+                    companyName = message.companyName,
+                    dataPointType = message.dataPointType,
+                    reportingPeriod = message.reportingPeriod,
+                    timestamp = message.uploadTime,
+                    qaStatus = QaStatus.valueOf(message.initialQaStatus),
+                    triggeringUserId = message.uploaderUserId,
+                    comment = message.initialQaComment,
+                )
+            sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
+            return dataPointQaReviewRepository.save(dataPointQaReviewEntity)
         }
 
         /**

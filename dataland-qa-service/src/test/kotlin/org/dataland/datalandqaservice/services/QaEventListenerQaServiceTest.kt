@@ -87,7 +87,6 @@ class QaEventListenerQaServiceTest(
                 mockDataPointQaReviewManager,
                 mockQaReportManager,
                 mockMetaDataControllerApi,
-                mockDataPointControllerApi,
                 mockAssembledDataMigrationManager,
             )
     }
