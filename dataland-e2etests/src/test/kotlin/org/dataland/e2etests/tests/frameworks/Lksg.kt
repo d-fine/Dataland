@@ -8,6 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.LksgGrievanceAssessmentM
 import org.dataland.datalandbackend.openApiClient.model.LksgProcurementCategory
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeAll
@@ -118,8 +119,7 @@ class Lksg {
         val companyId = "1908273127903192839781293898312983"
         val companyName = "TestForBrokenFileReference"
         val companyInformation =
-            apiAccessor.testDataProviderForLksgData
-                .getSpecificCompanyByNameFromLksgPreparedFixtures(companyName)
+            FrameworkTestDataProvider.forFrameworkPreparedFixtures(LksgData::class.java).getByCompanyName(companyName)
         val lksgData = companyInformation!!.t
 
         val dataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
