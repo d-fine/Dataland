@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
-    @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
+    @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     /**
@@ -25,7 +25,7 @@ class DataMetaInformationManager(
      */
     @Transactional
     fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
-        dataMetaInformationRepositoryInterface.save(dataMetaInformation)
+        dataMetaInformationRepository.save(dataMetaInformation)
 
     /**
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
@@ -52,10 +52,10 @@ class DataMetaInformationManager(
         reportingPeriod: String,
     ) {
         val metaInfoOfCurrentlyActiveDataset =
-            dataMetaInformationRepositoryInterface.getActiveDataset(company, dataType, reportingPeriod)
+            dataMetaInformationRepository.getActiveDataset(company, dataType, reportingPeriod)
         if (metaInfoOfCurrentlyActiveDataset != null) {
             metaInfoOfCurrentlyActiveDataset.currentlyActive = null
-            dataMetaInformationRepositoryInterface.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
+            dataMetaInformationRepository.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
         }
     }
 
@@ -65,7 +65,7 @@ class DataMetaInformationManager(
      * @return meta info about data behind the dataId
      */
     fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity =
-        dataMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
+        dataMetaInformationRepository.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
                 "Dataset not found",
                 "No dataset with the id: $dataId could be found in the data store.",
@@ -77,7 +77,7 @@ class DataMetaInformationManager(
      * @param dataDimensions the data dimensions for which to retrieve the active dataset ID
      */
     fun getActiveDatasetIdByDataDimensions(dataDimensions: BasicDataDimensions): String? =
-        dataMetaInformationRepositoryInterface
+        dataMetaInformationRepository
             .findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
                 reportingPeriod = dataDimensions.reportingPeriod,
                 companyId = dataDimensions.companyId,
@@ -91,7 +91,7 @@ class DataMetaInformationManager(
      */
     fun searchDataMetaInfo(searchFilter: DataMetaInformationSearchFilter): List<DataMetaInformationEntity> {
         searchFilter.companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
-        return dataMetaInformationRepositoryInterface.searchDataMetaInformation(searchFilter)
+        return dataMetaInformationRepository.searchDataMetaInformation(searchFilter)
     }
 
     /**
@@ -101,7 +101,7 @@ class DataMetaInformationManager(
     @Transactional
     fun deleteDataMetaInfo(dataId: String) {
         val dataMetaInformation = getDataMetaInformationByDataId(dataId)
-        dataMetaInformationRepositoryInterface.delete(dataMetaInformation)
+        dataMetaInformationRepository.delete(dataMetaInformation)
     }
 
     /**
@@ -110,7 +110,7 @@ class DataMetaInformationManager(
      * @returns the data meta information uploaded by the specified user
      */
     fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? =
-        dataMetaInformationRepositoryInterface
+        dataMetaInformationRepository
             .getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
 }
