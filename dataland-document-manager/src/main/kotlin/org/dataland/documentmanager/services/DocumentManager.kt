@@ -54,7 +54,7 @@ class DocumentManager
         @Transactional(propagation = Propagation.NEVER)
         fun temporarilyStoreDocumentAndTriggerStorage(
             document: MultipartFile,
-            documentMetaInfo: DocumentMetaInfo,
+            documentMetaInfo: DocumentMetaInfo?,
         ): DocumentUploadResponse {
             val correlationId = randomUUID().toString()
             logger.info("Started temporary storage process for document with correlation ID: $correlationId")
@@ -71,13 +71,13 @@ class DocumentManager
                 DocumentMetaInfoEntity(
                     documentId = documentId,
                     documentType = getDocumentType(document),
-                    documentName = documentMetaInfo.documentName,
-                    documentCategory = documentMetaInfo.documentCategory,
-                    companyIds = documentMetaInfo.companyIds.toMutableList(),
+                    documentName = documentMetaInfo?.documentName,
+                    documentCategory = documentMetaInfo?.documentCategory,
+                    companyIds = documentMetaInfo?.companyIds?.toMutableList(),
                     uploaderId = DatalandAuthentication.fromContext().userId,
                     uploadTime = Instant.now().toEpochMilli(),
-                    publicationDate = documentMetaInfo.publicationDate,
-                    reportingPeriod = documentMetaInfo.reportingPeriod,
+                    publicationDate = documentMetaInfo?.publicationDate,
+                    reportingPeriod = documentMetaInfo?.reportingPeriod,
                     qaStatus = QaStatus.Pending,
                 )
 
@@ -215,7 +215,8 @@ class DocumentManager
             documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
             documentMetaInfoPatch.documentCategory?.let { documentMetaInfoEntity.documentCategory = it }
             documentMetaInfoPatch.companyIds?.let {
-                documentMetaInfoEntity.companyIds.addAll(documentMetaInfoPatch.companyIds)
+                documentMetaInfoEntity.companyIds =
+                    documentMetaInfoEntity.companyIds?.apply { addAll(it) } ?: it.toMutableList()
             }
             documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
             documentMetaInfoPatch.reportingPeriod?.let { documentMetaInfoEntity.reportingPeriod = it }
@@ -239,7 +240,7 @@ class DocumentManager
 
             logger.info("Updating company ids for document with ID $documentId. CorrelationID: $correlationId.")
 
-            documentMetaInfoEntity.companyIds.add(companyId)
+            documentMetaInfoEntity.companyIds?.add(companyId)
 
             return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
         }

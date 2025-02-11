@@ -8,6 +8,7 @@ import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.springframework.http.HttpStatus
 import java.io.File
+import java.time.LocalDate
 
 class DocumentManagerAccessor {
     companion object {
@@ -37,9 +38,9 @@ class DocumentManagerAccessor {
             DocumentMetaInfo(
                 documentName = "sample document",
                 documentCategory = DocumentCategory.AnnualReport,
-                companyIds = listOf(),
-                publicationDate = "2023-01-01",
-                reportingPeriods = listOf("2023"),
+                companyIds = mutableListOf(),
+                publicationDate = LocalDate.parse("2023-01-01"),
+                reportingPeriod = "2023",
             )
         testFiles.forEach { file ->
             documentIds.add(documentControllerApi.postDocument(file, documentMetaInfo).documentId)

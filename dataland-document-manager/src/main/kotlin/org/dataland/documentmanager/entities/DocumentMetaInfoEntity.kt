@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.entities
 
+import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -7,6 +8,7 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import org.dataland.datalandbackendutils.converter.DocumentCategoryConverter
 import org.dataland.datalandbackendutils.model.DocumentCategory
@@ -27,9 +29,11 @@ data class DocumentMetaInfoEntity(
     val documentType: DocumentType,
     var documentName: String?,
     @Convert(converter = DocumentCategoryConverter::class)
-    var documentCategory: DocumentCategory,
+    var documentCategory: DocumentCategory?,
     @ElementCollection(fetch = FetchType.EAGER)
-    val companyIds: MutableList<String> = mutableListOf(),
+    @Column(name = "company_ids")
+    @OrderBy("asc")
+    var companyIds: MutableList<String>?,
     val uploaderId: String,
     val uploadTime: Long,
     var publicationDate: LocalDate?,

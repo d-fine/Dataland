@@ -130,6 +130,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
     )
     configOptions.set(
         mapOf(
+            "serializationLibrary" to "jackson",
             "withInterfaces" to "true",
             "withSeparateModelsAndApi" to "true",
         ),

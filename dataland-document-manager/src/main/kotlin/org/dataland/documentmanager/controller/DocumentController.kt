@@ -28,9 +28,9 @@ class DocumentController(
 ) : DocumentApi {
     override fun postDocument(
         document: MultipartFile,
-        documentMetaInfo: DocumentMetaInfo,
+        documentMetaInfo: DocumentMetaInfo?,
     ): ResponseEntity<DocumentUploadResponse> {
-        documentMetaInfo.companyIds.forEach { isCompanyIdValid(it) }
+        documentMetaInfo?.companyIds?.forEach { isCompanyIdValid(it) }
         return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document, documentMetaInfo))
     }
 
@@ -62,18 +62,22 @@ class DocumentController(
     override fun patchDocumentMetaInfo(
         documentId: String,
         documentMetaInfoPatch: DocumentMetaInfoPatch,
-    ): ResponseEntity<DocumentUploadResponse> =
-        ResponseEntity.ok(
+    ): ResponseEntity<DocumentUploadResponse> {
+        documentMetaInfoPatch.companyIds?.forEach { isCompanyIdValid(it) }
+        return ResponseEntity.ok(
             documentManager.patchDocumentMetaInformation(documentId, documentMetaInfoPatch),
         )
+    }
 
     override fun patchDocumentMetaInfoCompanyIds(
         documentId: String,
         companyId: String,
-    ): ResponseEntity<DocumentUploadResponse> =
-        ResponseEntity.ok(
+    ): ResponseEntity<DocumentUploadResponse> {
+        isCompanyIdValid(companyId)
+        return ResponseEntity.ok(
             documentManager.patchDocumentMetaInformationCompanyIds(documentId, companyId),
         )
+    }
 
     /**
      * Checks if passed companyId is valid by calling respective HEAD endpoint in backend companyDataController

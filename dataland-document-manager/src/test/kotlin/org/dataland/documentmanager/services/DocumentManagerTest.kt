@@ -177,14 +177,12 @@ class DocumentManagerTest(
             )
         val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
         val expectedSecondDocumentMetaInfoEntity =
-            firstDocumentMetaInfoEntity.apply {
-                documentName = "new name"
-                documentCategory = DocumentCategory.SustainabilityReport
-                companyIds.clear()
-                companyIds.add("company-id-2")
-                companyIds.add("company-id-3")
-                publicationDate = LocalDate.of(2023, 1, 3)
-            }
+            firstDocumentMetaInfoEntity.copy(
+                documentName = "new name",
+                documentCategory = DocumentCategory.SustainabilityReport,
+                companyIds = mutableListOf("company-id-2", "company-id-3"),
+                publicationDate = LocalDate.parse("2023-01-03"),
+            )
         `when`(mockDocumentMetaInfoRepository.existsById(anyString())).thenReturn(true)
         // Rewrite the stubbed save method so it acts as an identity function rather than a constant function.
         // It is unclear to me how I can refer to the value of the any() parameter inside thenReturn().
@@ -211,9 +209,7 @@ class DocumentManagerTest(
         val newCompanyId = "company-id-2"
         val firstDocumentMetaInfoEntity = sampleDocumentMetaInfoEntity(uploadResponse.documentId)
         val expectedSecondDocumentMetaInfoEntity =
-            firstDocumentMetaInfoEntity.apply {
-                companyIds.add(newCompanyId)
-            }
+            firstDocumentMetaInfoEntity.copy(companyIds = mutableListOf(newCompanyId))
         `when`(mockDocumentMetaInfoRepository.existsById(anyString())).thenReturn(true)
         // Rewrite the stubbed save method so it acts as an identity function rather than a constant function.
         // It is unclear to me how I can refer to the value of the any() parameter inside thenReturn().

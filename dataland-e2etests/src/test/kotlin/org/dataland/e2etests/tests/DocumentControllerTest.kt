@@ -22,6 +22,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import java.io.File
+import java.time.LocalDate
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +41,7 @@ class DocumentControllerTest {
             documentName = "sample document",
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = listOf(),
-            publicationDate = "2023-01-01",
+            publicationDate = LocalDate.parse("2023-01-01"),
             reportingPeriod = "2023",
         )
 
@@ -118,7 +119,7 @@ class DocumentControllerTest {
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertThrows<ClientException> { uploadDocument(pdfDocument, documentMetaInfo, TechnicalUser.Reader) }
-        for (role in CompanyRole.values()) {
+        for (role in CompanyRole.entries) {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             apiAccessor.companyRolesControllerApi.assignCompanyRole(role, testCompanyId, dataReaderId)
 

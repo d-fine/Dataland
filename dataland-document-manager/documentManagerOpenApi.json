@@ -26,15 +26,14 @@
           "document-controller"
         ],
         "summary": "Upload a document and metadata.",
-        "description": "Upload a document and meta information",
+        "description": "Upload a document and meta information.",
         "operationId": "postDocument",
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "required": [
-                  "document",
-                  "documentMetaInfo"
+                  "document"
                 ],
                 "type": "object",
                 "properties": {
@@ -255,8 +254,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Patch the metadata info of a document.",
-        "description": "Patch the metadata info of a document.",
+        "summary": "Update the metadata info of a document.",
+        "description": "Update the metadata info of a document.",
         "operationId": "patchDocumentMetaInfo",
         "parameters": [
           {
@@ -279,16 +278,6 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Successfully patched companyIds field in document metainformation.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Document Id does not match any stored document.",
             "content": {
@@ -300,7 +289,17 @@
             }
           },
           "403": {
-            "description": "You do not have the right to patch all fields for which a patch was requested.",
+            "description": "You do not have the right to update the document\u0027s meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully updated the document\u0027s meta information.",
             "content": {
               "application/json": {
                 "schema": {
@@ -345,8 +344,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Patch the company id list of a document.",
-        "description": "Patch the company id list of a document by adding a single company id.",
+        "summary": "Extend the list of companyIds related to a document.",
+        "description": "Extend the list of companyIds related to a document by a single company id.",
         "operationId": "patchDocumentMetaInfoCompanyIds",
         "parameters": [
           {
@@ -367,16 +366,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successfully patched companyIds field in document metainformation.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Document Id does not match any stored document.",
             "content": {
@@ -387,8 +376,18 @@
               }
             }
           },
+          "200": {
+            "description": "Successfully updated the companyIds field in the document\u0027s meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
           "403": {
-            "description": "You do not have the right to patch the companyIds field.",
+            "description": "You do not have the right to update the companyIds field.",
             "content": {
               "application/json": {
                 "schema": {

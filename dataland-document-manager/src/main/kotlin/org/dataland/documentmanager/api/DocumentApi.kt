@@ -38,7 +38,8 @@ interface DocumentApi {
      */
     @Operation(
         summary = "Upload a document and metadata.",
-        description = "Upload a document and meta information",
+        description =
+            "Upload a document and meta information.",
     )
     @ApiResponses(
         value = [
@@ -53,28 +54,28 @@ interface DocumentApi {
     @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
     fun postDocument(
         @RequestPart("document") document: MultipartFile,
-        @RequestPart("documentMetaInfo") documentMetaInfo: DocumentMetaInfo,
+        @RequestPart("documentMetaInfo", required = false) documentMetaInfo: DocumentMetaInfo?,
     ): ResponseEntity<DocumentUploadResponse>
 
     /**
      * Patch the metadata information of a document. The field values in documentMetaInfoPatch that
      * are not null will replace the corresponding field values in the DocumentMetaInfoEntity object.
-     * @param documentId the id of the document whose metainfo shall be patched.
+     * @param documentId the id of the document whose meta info shall be patched.
      * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to patch.
      */
     @Operation(
-        summary = "Patch the metadata info of a document.",
-        description = "Patch the metadata info of a document.",
+        summary = "Update the metadata info of a document.",
+        description = "Update the metadata info of a document.",
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successfully patched companyIds field in document metainformation.",
+                description = "Successfully updated the document's meta information.",
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "You do not have the right to patch all fields for which a patch was requested.",
+                description = "You do not have the right to update the document's meta information.",
             ),
             ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
         ],
@@ -97,18 +98,18 @@ interface DocumentApi {
      * @param companyId the company id to add.
      */
     @Operation(
-        summary = "Patch the company id list of a document.",
-        description = "Patch the company id list of a document by adding a single company id.",
+        summary = "Extend the list of companyIds related to a document.",
+        description = "Extend the list of companyIds related to a document by a single company id.",
     )
     @ApiResponses(
         value = [
             ApiResponse(
                 responseCode = "200",
-                description = "Successfully patched companyIds field in document metainformation.",
+                description = "Successfully updated the companyIds field in the document's meta information.",
             ),
             ApiResponse(
                 responseCode = "403",
-                description = "You do not have the right to patch the companyIds field.",
+                description = "You do not have the right to update the companyIds field.",
             ),
             ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
         ],
