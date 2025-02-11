@@ -4,6 +4,7 @@ import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandqaservice.openApiClient.infrastructure.ClientException
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
+import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
@@ -56,7 +57,10 @@ class DataDeletionControllerTest {
     private fun performAndVerifyDeletion(dataId: String) {
         assertDoesNotThrow { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
         assertResourceNotFoundWrapper { apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId) }
-        awaitUntilAsserted { assertNoQaReviewFound(dataId) }
+
+        GlobalAuth.withTechnicalUser(TechnicalUser.Admin) {
+            awaitUntilAsserted { assertNoQaReviewFound(dataId) }
+        }
     }
 
     private fun tryDeletionAndVerifyDenial(dataId: String) {
