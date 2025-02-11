@@ -137,7 +137,7 @@ class DataDeletionControllerTest {
                 testDataEuTaxonomyNonFinancials,
                 ensureQaPassed = false,
             )
-        val dataIdFirstUpload = firstUploadInfo.get("dataId")!!
+        val dataIdFirstUpload = assertDoesNotThrow { firstUploadInfo["dataId"]!! }
 
         awaitUntilAsserted { apiAccessor.qaServiceControllerApi.changeQaStatus(dataIdFirstUpload, QaStatus.Accepted) }
         assert(isDataSetActive(dataIdFirstUpload))
@@ -145,7 +145,10 @@ class DataDeletionControllerTest {
         val dataIdSecondUpload =
             apiAccessor
                 .euTaxonomyNonFinancialsUploaderFunction(
-                    firstUploadInfo.get("companyId")!!, testDataEuTaxonomyNonFinancials, "", false,
+                    assertDoesNotThrow { firstUploadInfo["companyId"]!! },
+                    testDataEuTaxonomyNonFinancials,
+                    "",
+                    false,
                 ).dataId
         awaitUntilAsserted { apiAccessor.qaServiceControllerApi.changeQaStatus(dataIdSecondUpload, QaStatus.Accepted) }
         awaitUntil { isDataSetActive(dataIdSecondUpload) }
