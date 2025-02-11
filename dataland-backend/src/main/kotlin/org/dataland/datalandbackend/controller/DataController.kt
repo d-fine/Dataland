@@ -138,7 +138,7 @@ open class DataController<T>(
             val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null)
             listOfFrameworkDataAndMetaInfo.add(
                 DataAndMetaInformation(
-                    it.toApiModel(DatalandAuthentication.fromContext()), getData(it.dataId, correlationId),
+                    it.toApiModel(), getData(it.dataId, correlationId),
                 ),
             )
         }

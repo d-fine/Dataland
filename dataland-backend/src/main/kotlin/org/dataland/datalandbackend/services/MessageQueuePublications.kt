@@ -84,8 +84,7 @@ class MessageQueuePublications(
                         reportingPeriod = dataPointMetaInformation.reportingPeriod,
                         uploadTime = dataPointMetaInformation.uploadTime,
                         uploaderUserId =
-                            dataPointMetaInformation.uploaderUserId
-                                ?: throw IllegalArgumentException("Uploader user ID must not be null."),
+                            dataPointMetaInformation.uploaderUserId,
                         initialQaStatus = initialQaStatus.toString(),
                         initialQaComment = initialQaComment,
                     ),

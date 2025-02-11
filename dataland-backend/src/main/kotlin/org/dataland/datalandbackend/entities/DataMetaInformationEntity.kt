@@ -61,7 +61,7 @@ data class DataMetaInformationEntity(
     private fun isDatasetViewableByUserViaRole(roles: Set<DatalandRealmRole>): Boolean =
         roles.contains(DatalandRealmRole.ROLE_ADMIN) || roles.contains(DatalandRealmRole.ROLE_REVIEWER)
 
-    override fun toApiModel(viewingUser: DatalandAuthentication?): DataMetaInformation =
+    override fun toApiModel(): DataMetaInformation =
         DataMetaInformation(
             dataId = dataId,
             companyId = company.companyId,

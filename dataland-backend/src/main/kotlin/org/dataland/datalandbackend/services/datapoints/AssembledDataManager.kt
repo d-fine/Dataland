@@ -189,7 +189,7 @@ class AssembledDataManager
             initialQaComment: String?,
         ) {
             logger.info("Processing dataset with id $datasetId (correlation ID: $correlationId).")
-            val companyInformation = companyManager.getCompanyById(uploadedDataset.companyId).toApiModel(null)
+            val companyInformation = companyManager.getCompanyById(uploadedDataset.companyId).toApiModel()
 
             val createdDataIds = mutableMapOf<String, String>()
             dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->

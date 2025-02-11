@@ -51,7 +51,7 @@ class MetaDataController(
                     uploaderUserIds,
                     qaStatus,
                 ).filter { it.isDatasetViewableByUser(currentUser) }
-                .map { it.toApiModel(currentUser) },
+                .map { it.toApiModel() },
         )
     }
 
@@ -65,7 +65,7 @@ class MetaDataController(
                 ),
             )
         }
-        return ResponseEntity.ok(metaInfo.toApiModel(currentUser))
+        return ResponseEntity.ok(metaInfo.toApiModel())
     }
 
     override fun getInfoOnNonSourceabilityOfDatasets(
