@@ -64,10 +64,10 @@ class DataDeletionControllerTest {
     }
 
     private fun tryDeletionAndVerifyDenial(dataId: String) {
-        val dataMetaInfoBeforeDeletion = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
+        val dataMetaInfoBeforeDeletionAttempt = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
         assertAccessDeniedWrapper { apiAccessor.dataDeletionControllerApi.deleteCompanyAssociatedData(dataId) }
-        val dataMetaInfoAfterDeletion = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
-        assert(dataMetaInfoAfterDeletion == dataMetaInfoBeforeDeletion)
+        val dataMetaInfoAfterDeletionAttempt = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId)
+        assert(dataMetaInfoAfterDeletionAttempt == dataMetaInfoBeforeDeletionAttempt)
     }
 
     private fun isDataSetActive(dataId: String): Boolean = apiAccessor.metaDataControllerApi.getDataMetaInfo(dataId).currentlyActive
