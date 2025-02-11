@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.documentmanager.model.DocumentUploadResponse
+import java.time.LocalDate
 
 /**
  * The entity storing the document meta info
@@ -31,11 +32,11 @@ data class DocumentMetaInfoEntity(
     val companyIds: MutableList<String> = mutableListOf(),
     val uploaderId: String,
     val uploadTime: Long,
-    var publicationDate: String?,
+    var publicationDate: LocalDate?,
     @ElementCollection(fetch = FetchType.EAGER)
     val reportingPeriods: MutableList<String> = mutableListOf(),
     @Enumerated(EnumType.STRING)
-    val qaStatus: QaStatus,
+    var qaStatus: QaStatus,
 ) {
     /**
      * convert Entity to Response API Model

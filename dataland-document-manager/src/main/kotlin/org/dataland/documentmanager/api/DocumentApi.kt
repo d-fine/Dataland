@@ -31,12 +31,13 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-oauth")
 interface DocumentApi {
     /**
-     * Upload a document
+     * Upload a document and corresponding meta data
      * @param document a document
      * @param documentMetaInfo document meta info
+     * @return returns a documentUploadResponse containing documentId and metadata
      */
     @Operation(
-        summary = "Upload a document.",
+        summary = "Upload a document and metadata.",
         description = "Upload a document and meta information",
     )
     @ApiResponses(
