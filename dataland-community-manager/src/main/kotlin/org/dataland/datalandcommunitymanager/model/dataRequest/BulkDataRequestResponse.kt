@@ -5,15 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty
 /**
  * --- API model ---
  * Contains all relevant info that a user should receive as response when posting a bulk data request to Dataland.
- * @param message contains a text about the result of Dataland processing the bulk data request
+ * @param acceptedDataRequests contains information about all accepted data requests
+ * @param alreadyExistingNonFinalRequests contains information about all already existing non-final data requests
+ * @param alreadyExistingDatasets contains information about all already existing data sets
  * @param rejectedCompanyIdentifiers contains all company identifiers that were rejected by Dataland
- * @param acceptedCompanyIdentifiers contains all company identifiers that were accepted by Dataland
  */
 data class BulkDataRequestResponse(
     @field:JsonProperty(required = true)
-    val message: String,
+    val acceptedDataRequests: List<ResourceResponse>,
     @field:JsonProperty(required = true)
-    val acceptedCompanyIdentifiers: List<String>,
+    val alreadyExistingNonFinalRequests: List<ResourceResponse>,
+    @field:JsonProperty(required = true)
+    val alreadyExistingDatasets: List<ResourceResponse>,
     @field:JsonProperty(required = true)
     val rejectedCompanyIdentifiers: List<String>,
 )

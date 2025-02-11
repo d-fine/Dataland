@@ -414,6 +414,72 @@
         ]
       }
     },
+    "/metadata/filters": {
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Search in Dataland for meta info about data using multiple filters.",
+        "description": "Meta info about datasets registered by Dataland can be retrieved.",
+        "operationId": "postListOfDataMetaInfoFilters",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DataMetaInformationSearchFilter"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/vsme": {
       "post": {
         "tags": [
@@ -6748,6 +6814,10 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "ref": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -6805,6 +6875,50 @@
           },
           "reason": {
             "type": "string"
+          }
+        }
+      },
+      "DataMetaInformationSearchFilter": {
+        "required": [
+          "onlyActive"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataType": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataTypeEnum"
+              }
+            ]
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "nullable": true
+          },
+          "onlyActive": {
+            "type": "boolean"
+          },
+          "uploaderUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "qaStatus": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QaStatus"
+              }
+            ]
           }
         }
       },
@@ -20525,8 +20639,7 @@
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime",
-          "uploaderUserId"
+          "uploadTime"
         ],
         "type": "object",
         "properties": {
@@ -20543,7 +20656,8 @@
             "type": "string"
           },
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "uploadTime": {
             "type": "integer",
@@ -20921,25 +21035,25 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
+          "lei": {
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
+            "type": "string"
+          },
+          "companyId": {
             "type": "string"
           },
           "headquarters": {
             "type": "string"
           },
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "countryCode": {
             "type": "string"
-          },
-          "lei": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -20962,10 +21076,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

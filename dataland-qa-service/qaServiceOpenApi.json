@@ -6198,6 +6198,9 @@
           },
           "uploaderUserId": {
             "type": "string"
+          },
+          "ref": {
+            "type": "string"
           }
         }
       },

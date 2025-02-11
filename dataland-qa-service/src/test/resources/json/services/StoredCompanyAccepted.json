@@ -27,6 +27,7 @@
       "reportingPeriod": "2023-Q4",
       "currentlyActive": true,
       "qaStatus": "Accepted",
+      "ref": "dummyUrl",
       "uploaderUserId": "user_123"
     }
   ]

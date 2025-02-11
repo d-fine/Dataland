@@ -33,7 +33,7 @@ class CompanyQueryManager(
     }
 
     /**
-     * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeeding
+     * Method to split the return type of method searchCompaniesAndGetApiModel into a list of lists each not exceeding
      * the given size
      * @param chunkSize the package size of the records
      * @param chunkIndex the index of the chunk which is requested
