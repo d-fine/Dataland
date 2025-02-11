@@ -20525,7 +20525,8 @@
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime"
+          "uploadTime",
+          "uploaderUserId"
         ],
         "type": "object",
         "properties": {
@@ -20542,8 +20543,7 @@
             "type": "string"
           },
           "uploaderUserId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "uploadTime": {
             "type": "integer",
