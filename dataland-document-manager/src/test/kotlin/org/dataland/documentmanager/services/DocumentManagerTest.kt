@@ -12,6 +12,7 @@ import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
+import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -35,6 +36,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 import java.util.Optional
 
@@ -102,7 +104,14 @@ class DocumentManagerTest(
         )
     }
 
-    private fun buildDocumentMetaInfoEntity(
+    private fun storeDocumentAndMetaInfo(
+        document: MultipartFile,
+        metaInfo: DocumentMetaInfo,
+    ): DocumentUploadResponse =
+        documentManager
+            .temporarilyStoreDocumentAndTriggerStorage(document, metaInfo)
+
+    private fun buildDocumentMetaInfoEntityWithDocumentId(
         documentId: String,
         qaStatus: QaStatus = QaStatus.Pending,
     ): DocumentMetaInfoEntity =
@@ -127,9 +136,9 @@ class DocumentManagerTest(
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
-        val pendingDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val pendingDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
+
         doReturn(Optional.of(pendingDocumentMetaInfoEntity))
             .whenever(mockDocumentMetaInfoRepository)
             .findById(uploadResponse.documentId)
@@ -148,9 +157,9 @@ class DocumentManagerTest(
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
-        val acceptedDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId, QaStatus.Accepted)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val acceptedDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId, QaStatus.Accepted)
+
         doReturn(Optional.of(acceptedDocumentMetaInfoEntity))
             .whenever(mockDocumentMetaInfoRepository)
             .findById(uploadResponse.documentId)
@@ -189,10 +198,9 @@ class DocumentManagerTest(
     @Test
     fun `check that patching meta data for an existing documentId results in the desired changes`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
 
-        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId)
         val documentMetaInfoPatch =
             DocumentMetaInfoPatch(
                 documentName = "new name",
@@ -225,9 +233,9 @@ class DocumentManagerTest(
     @Test
     fun `check that patching companyIds for an existing documentId results in the desired change`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
-        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
+
         val newCompanyId = "newlyAddedCompanyId"
 
         doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(any())

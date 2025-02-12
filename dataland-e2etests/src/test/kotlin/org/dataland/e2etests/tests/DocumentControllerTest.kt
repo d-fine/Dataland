@@ -107,7 +107,7 @@ class DocumentControllerTest {
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         assertThrows<ClientException> { uploadDocument(pdfDocument, TechnicalUser.Reader) }
-        for (role in CompanyRole.values()) {
+        for (role in CompanyRole.entries) {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             apiAccessor.companyRolesControllerApi.assignCompanyRole(role, testCompanyId, dataReaderId)
 
