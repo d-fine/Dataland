@@ -73,7 +73,7 @@ class DocumentManager
                     documentType = getDocumentType(document),
                     documentName = documentMetaInfo?.documentName,
                     documentCategory = documentMetaInfo?.documentCategory,
-                    companyIds = documentMetaInfo?.companyIds?.toMutableList(),
+                    companyIds = documentMetaInfo?.companyIds?.toMutableSet(),
                     uploaderId = DatalandAuthentication.fromContext().userId,
                     uploadTime = Instant.now().toEpochMilli(),
                     publicationDate = documentMetaInfo?.publicationDate,
@@ -167,7 +167,7 @@ class DocumentManager
             documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
             documentMetaInfoPatch.documentCategory?.let { documentMetaInfoEntity.documentCategory = it }
             documentMetaInfoPatch.companyIds?.let {
-                documentMetaInfoEntity.companyIds = it.toMutableList()
+                documentMetaInfoEntity.companyIds = it.toMutableSet()
             }
             documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
             documentMetaInfoPatch.reportingPeriod?.let { documentMetaInfoEntity.reportingPeriod = it }

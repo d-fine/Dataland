@@ -17,7 +17,7 @@ import java.time.LocalDate
 data class DocumentMetaInfoPatch(
     val documentName: String?,
     val documentCategory: DocumentCategory?,
-    val companyIds: List<String>?,
+    val companyIds: Set<String>?,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     val publicationDate: LocalDate?,
     val reportingPeriod: String?,
