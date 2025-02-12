@@ -130,26 +130,24 @@ open class DataController<T>(
     ): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
         logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
-        val metaInfos =
-            dataMetaInformationManager.searchDataMetaInfo(
+        val test =
+            datasetStorageService.getAllDatasetsAndMetaInformation(
                 DataMetaInformationSearchFilter(
                     companyId = companyId,
                     dataType = dataType,
                     onlyActive = showOnlyActive,
                     reportingPeriod = reportingPeriod,
                 ),
+                correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null),
             )
-        val authentication = DatalandAuthentication.fromContextOrNull()
-        val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
-        metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-            val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null)
-            listOfFrameworkDataAndMetaInfo.add(
+        return ResponseEntity.ok(
+            test.map {
                 DataAndMetaInformation(
-                    it.toApiModel(), getData(it.dataId, correlationId),
-                ),
-            )
-        }
-        return ResponseEntity.ok(listOfFrameworkDataAndMetaInfo)
+                    it.metaInfo,
+                    objectMapper.readValue(it.data, clazz),
+                )
+            },
+        )
     }
 
     override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> {

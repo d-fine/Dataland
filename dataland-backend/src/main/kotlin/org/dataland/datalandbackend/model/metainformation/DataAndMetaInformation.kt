@@ -14,3 +14,10 @@ data class DataAndMetaInformation<T>(
     @field:JsonProperty(required = true)
     val data: T,
 )
+
+data class PlainDataAndMetaInformation(
+    @field:JsonProperty(required = true)
+    val metaInfo: DataMetaInformation,
+    @field:JsonProperty(required = true)
+    val data: String,
+)

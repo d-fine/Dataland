@@ -7,7 +7,10 @@ import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -30,6 +33,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
@@ -49,6 +53,7 @@ class AssembledDataManager
         private val datasetDatapointRepository: DatasetDatapointRepository,
         private val dataPointManager: DataPointManager,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
+        private val metaDataManager: DataPointMetaInformationManager,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -391,5 +396,38 @@ class AssembledDataManager
                 )
             }
             return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
+        }
+
+        override fun getAllDatasetsAndMetaInformation(
+            searchFilter: DataMetaInformationSearchFilter,
+            correlationId: String,
+        ): List<PlainDataAndMetaInformation> {
+            requireNotNull(searchFilter.dataType) { "Framework must be specified." }
+            requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
+            val companyId = searchFilter.companyId
+            val framework = searchFilter.dataType.toString()
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            val relevantDataPointTypes = JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            val reportingPeriods =
+                metaDataManager
+                    .getReportingPeriodsWithActiveDataPoints(relevantDataPointTypes, searchFilter.companyId)
+            require(reportingPeriods.isNotEmpty()) { "No data found for company $companyId and framework $framework." }
+
+            return reportingPeriods.map {
+                PlainDataAndMetaInformation(
+                    metaInfo =
+                        DataMetaInformation(
+                            dataId = "dummy",
+                            companyId = companyId,
+                            dataType = searchFilter.dataType,
+                            reportingPeriod = it,
+                            currentlyActive = true,
+                            uploadTime = Instant.now().toEpochMilli(),
+                            qaStatus = QaStatus.Accepted,
+                        ),
+                    data = getDatasetData(BasicDataDimensions(companyId, framework, it), correlationId) ?: "",
+                )
+            }
         }
     }
