@@ -12,7 +12,7 @@ class DocumentCategoryConverter : AttributeConverter<DocumentCategory?, String> 
     override fun convertToDatabaseColumn(documentCategory: DocumentCategory?): String = documentCategory.toString()
 
     override fun convertToEntityAttribute(documentCategoryAsString: String?): DocumentCategory? =
-        if (documentCategoryAsString.isNullOrEmpty()) {
+        if (documentCategoryAsString.isNullOrEmpty() || documentCategoryAsString == null.toString()) {
             null
         } else {
             DocumentCategory

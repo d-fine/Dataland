@@ -84,7 +84,7 @@ class MessageQueueListenerTest(
                         documentType = DocumentType.Pdf,
                         documentName = "sample.pdf",
                         documentCategory = DocumentCategory.AnnualReport,
-                        companyIds = mutableListOf(),
+                        companyIds = mutableSetOf(),
                         publicationDate = LocalDate.of(2023, 1, 1),
                         reportingPeriod = "2023",
                         documentId = documentId,

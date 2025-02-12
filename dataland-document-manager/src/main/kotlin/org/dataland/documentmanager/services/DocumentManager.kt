@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.services
 
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -57,15 +58,17 @@ class DocumentManager
             documentMetaInfo: DocumentMetaInfo?,
         ): DocumentUploadResponse {
             val correlationId = randomUUID().toString()
-            logger.info("Started temporary storage process for document with correlation ID: $correlationId")
+            logger.info("Started temporary storage process for document. Correlation ID: $correlationId")
 
             val documentId = generateDocumentId(document, correlationId)
+
             if (this.checkIfDocumentExistsWithId(documentId)) {
-                return documentMetaInfoRepository.getByDocumentId(documentId)?.toDocumentUploadResponse()
-                    ?: throw ResourceNotFoundApiException(
-                        summary = "Document with documentId $documentId could not be retrieved.",
-                        message = "Document with documentId $documentId exists but could not be retrieved. CorrelationId: $correlationId",
-                    )
+                throw ConflictApiException(
+                    summary = "This document already exists. Document ID: $documentId",
+                    message =
+                        "Document with documentID $documentId already exists. If you wish to extend the list of " +
+                            "companies related to this document, please use the designated PATCH endpoint.",
+                )
             }
             val documentMetaInfoEntity =
                 DocumentMetaInfoEntity(
@@ -73,7 +76,7 @@ class DocumentManager
                     documentType = getDocumentType(document),
                     documentName = documentMetaInfo?.documentName,
                     documentCategory = documentMetaInfo?.documentCategory,
-                    companyIds = documentMetaInfo?.companyIds?.toMutableList(),
+                    companyIds = documentMetaInfo?.companyIds?.toMutableSet(),
                     uploaderId = DatalandAuthentication.fromContext().userId,
                     uploadTime = Instant.now().toEpochMilli(),
                     publicationDate = documentMetaInfo?.publicationDate,
@@ -167,7 +170,7 @@ class DocumentManager
             documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
             documentMetaInfoPatch.documentCategory?.let { documentMetaInfoEntity.documentCategory = it }
             documentMetaInfoPatch.companyIds?.let {
-                documentMetaInfoEntity.companyIds = it.toMutableList()
+                documentMetaInfoEntity.companyIds = it.toMutableSet()
             }
             documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
             documentMetaInfoPatch.reportingPeriod?.let { documentMetaInfoEntity.reportingPeriod = it }
@@ -187,7 +190,7 @@ class DocumentManager
             companyId: String,
         ): DocumentUploadResponse {
             val correlationId = randomUUID().toString()
-            val documentMetaInfoEntity = retrieveDocumentById(documentId, correlationId)
+            val documentMetaInfoEntity = retrieveDocumentMetaDataById(documentId, correlationId)
 
             logger.info("Updating company ids for document with ID $documentId. CorrelationID: $correlationId.")
 
@@ -244,11 +247,17 @@ class DocumentManager
             return documentId
         }
 
-        private fun retrieveDocumentById(
+        /**
+         * Retrieve Document meta information by documentId
+         * @param documentId identifier of document
+         * @param correlationId
+         * @return document meta information
+         */
+        fun retrieveDocumentMetaDataById(
             documentId: String,
             correlationId: String,
         ): DocumentMetaInfoEntity {
-            logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
+            logger.info("Retrieve meta data for document with documentId $documentId. Correlation ID: $correlationId.")
             if (!checkIfDocumentExistsWithId(documentId)) {
                 throw ResourceNotFoundApiException(
                     summary = "Document with ID $documentId does not exist.",
@@ -257,8 +266,10 @@ class DocumentManager
             }
             return documentMetaInfoRepository.getByDocumentId(documentId)
                 ?: throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId could not be retrieved.",
-                    message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
+                    summary = "Document meta data could not be retrieved.",
+                    message =
+                        "Document meta data for document with documentId $documentId could not be retrieved. " +
+                            "Correlation ID: $correlationId.",
                 )
         }
     }

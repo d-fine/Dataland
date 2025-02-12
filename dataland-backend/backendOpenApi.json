@@ -1607,6 +1607,134 @@
         ]
       }
     },
+    "/metadata/{dataId}": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Look up meta info about a specific dataset.",
+        "description": "Meta info about a specific dataset registered by Dataland and identified by its data ID is retrieved.",
+        "operationId": "getDataMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved specific meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Update meta data of dataset selectively",
+        "description": "Provided fields of the meta data with the given dataId are updated.",
+        "operationId": "patchDataMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataMetaInformationPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}": {
       "head": {
         "tags": [
@@ -1999,66 +2127,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DataMetaInformation"
                   }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/metadata/{dataId}": {
-      "get": {
-        "tags": [
-          "meta-data-controller"
-        ],
-        "summary": "Look up meta info about a specific dataset.",
-        "description": "Meta info about a specific dataset registered by Dataland and identified by its data ID is retrieved.",
-        "operationId": "getDataMetaInfo",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved specific meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
                 }
               }
             }
@@ -20708,6 +20776,17 @@
       "JsonNode": {
         "type": "object"
       },
+      "DataMetaInformationPatch": {
+        "required": [
+          "uploaderUserId"
+        ],
+        "type": "object",
+        "properties": {
+          "uploaderUserId": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -21035,6 +21114,18 @@
         ],
         "type": "object",
         "properties": {
+          "companyId": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "headquarters": {
+            "type": "string"
+          },
           "sector": {
             "type": "string",
             "nullable": true
@@ -21042,18 +21133,6 @@
           "lei": {
             "type": "string",
             "nullable": true
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "string"
-          },
-          "headquarters": {
-            "type": "string"
-          },
-          "countryCode": {
-            "type": "string"
           }
         }
       },
@@ -21076,10 +21155,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
-          "companyId": {
+          "companyName": {
             "type": "string"
           }
         }

@@ -85,7 +85,7 @@ interface DocumentApi {
         produces = ["application/json"],
         consumes = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or @UserRolesChecker.isCurrentUserDocumentUploader(#documentId)")
     fun patchDocumentMetaInfo(
         @PathVariable("documentId") documentId: String,
         @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,

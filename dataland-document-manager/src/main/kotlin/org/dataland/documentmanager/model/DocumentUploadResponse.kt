@@ -22,7 +22,7 @@ data class DocumentUploadResponse(
     @field:JsonProperty(required = false)
     val documentCategory: DocumentCategory?,
     @field:JsonProperty(required = false)
-    val companyIds: List<String>?,
+    val companyIds: Set<String>?,
     @field:JsonProperty(required = false)
     val publicationDate: LocalDate?,
     @field:JsonProperty(required = false)

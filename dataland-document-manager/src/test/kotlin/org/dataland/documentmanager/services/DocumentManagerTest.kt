@@ -1,6 +1,7 @@
 package org.dataland.documentmanager.services
 
 import org.apache.pdfbox.io.IOUtils
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -12,6 +13,7 @@ import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
+import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -35,6 +37,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDate
 import java.util.Optional
 
@@ -58,7 +61,7 @@ class DocumentManagerTest(
         DocumentMetaInfo(
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
-            companyIds = mutableListOf(knownCompanyIdOne),
+            companyIds = mutableSetOf(knownCompanyIdOne),
             publicationDate = LocalDate.parse("2023-01-01"),
             reportingPeriod = "2023",
         )
@@ -102,7 +105,14 @@ class DocumentManagerTest(
         )
     }
 
-    private fun buildDocumentMetaInfoEntity(
+    private fun storeDocumentAndMetaInfo(
+        document: MultipartFile,
+        metaInfo: DocumentMetaInfo,
+    ): DocumentUploadResponse =
+        documentManager
+            .temporarilyStoreDocumentAndTriggerStorage(document, metaInfo)
+
+    private fun buildDocumentMetaInfoEntityWithDocumentId(
         documentId: String,
         qaStatus: QaStatus = QaStatus.Pending,
     ): DocumentMetaInfoEntity =
@@ -111,7 +121,7 @@ class DocumentManagerTest(
             documentType = DocumentType.Pdf,
             documentName = dummyDocumentMetaInfo.documentName,
             documentCategory = dummyDocumentMetaInfo.documentCategory,
-            companyIds = dummyDocumentMetaInfo.companyIds.toMutableList(),
+            companyIds = dummyDocumentMetaInfo.companyIds.toMutableSet(),
             publicationDate = dummyDocumentMetaInfo.publicationDate,
             reportingPeriod = dummyDocumentMetaInfo.reportingPeriod,
             uploaderId = "",
@@ -127,9 +137,9 @@ class DocumentManagerTest(
     @Test
     fun `check that document upload works and that document retrieval is not possible on non QAed documents`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
-        val pendingDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val pendingDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
+
         doReturn(Optional.of(pendingDocumentMetaInfoEntity))
             .whenever(mockDocumentMetaInfoRepository)
             .findById(uploadResponse.documentId)
@@ -148,9 +158,9 @@ class DocumentManagerTest(
     @Test
     fun `check that document retrieval is possible on QAed documents`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
-        val acceptedDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId, QaStatus.Accepted)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val acceptedDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId, QaStatus.Accepted)
+
         doReturn(Optional.of(acceptedDocumentMetaInfoEntity))
             .whenever(mockDocumentMetaInfoRepository)
             .findById(uploadResponse.documentId)
@@ -173,6 +183,15 @@ class DocumentManagerTest(
     }
 
     @Test
+    fun `check that uploading a document twice throws a conflict exception`() {
+        val mockDocument = setupMockDocument()
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(uploadResponse.documentId)
+        assertThrows<ConflictApiException> { storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo) }
+    }
+
+    @Test
     fun `check that a patching metadata for a non existing documentId throws the appropriate exception`() {
         assertThrows<ResourceNotFoundApiException> {
             documentManager.patchDocumentMetaInformation(unknownDocumentId, mock<DocumentMetaInfoPatch>())
@@ -189,15 +208,14 @@ class DocumentManagerTest(
     @Test
     fun `check that patching meta data for an existing documentId results in the desired changes`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
 
-        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId)
         val documentMetaInfoPatch =
             DocumentMetaInfoPatch(
                 documentName = "new name",
                 documentCategory = DocumentCategory.SustainabilityReport,
-                companyIds = listOf("company-id-2", "company-id-3"),
+                companyIds = setOf("company-id-2", "company-id-3"),
                 publicationDate = LocalDate.parse("2023-01-03"),
                 reportingPeriod = null,
             )
@@ -225,9 +243,9 @@ class DocumentManagerTest(
     @Test
     fun `check that patching companyIds for an existing documentId results in the desired change`() {
         val mockDocument = setupMockDocument()
-        val uploadResponse =
-            documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
-        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntity(uploadResponse.documentId)
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val dummyDocumentMetaInfoEntity = buildDocumentMetaInfoEntityWithDocumentId(uploadResponse.documentId)
+
         val newCompanyId = "newlyAddedCompanyId"
 
         doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(any())

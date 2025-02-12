@@ -15,6 +15,7 @@ import java.util.UUID
 @Service("UserRolesChecker")
 class UserRolesChecker(
     @Autowired private val companyRolesControllerApi: CompanyRolesControllerApi,
+    @Autowired private val documentManager: DocumentManager,
 ) {
     /**
      * Method to check whether the currently authenticated user is company owner or company uploader of any company and
@@ -32,5 +33,20 @@ class UserRolesChecker(
                     UUID.fromString(userId),
                 ).map { it.companyRole }
         return roles.contains(CompanyRole.CompanyOwner) || roles.contains(CompanyRole.DataUploader)
+    }
+
+    /**
+     * Method to check whether the currently authenticated user is uploader of the document. If so, patching the meta
+     * info of the document shall be permitted.
+     * @return a Boolean indicating whether the user is uploader of the document
+     */
+    @Transactional(readOnly = true)
+    fun isCurrentUserDocumentUploader(documentId: String): Boolean {
+        val userId = DatalandAuthentication.fromContext().userId
+        return documentManager
+            .retrieveDocumentMetaDataById(
+                documentId,
+                correlationId = UUID.randomUUID().toString(),
+            ).uploaderId == userId
     }
 }

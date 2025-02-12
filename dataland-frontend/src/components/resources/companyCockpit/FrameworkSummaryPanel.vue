@@ -118,14 +118,14 @@ function onCursorLeaveProvideButton(): void {
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables' as *;
-@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/newVariables';
+@use '@/assets/scss/variables';
 
 .summary-panel {
   width: 100%;
   background-color: var(--surface-card);
-  padding: $spacing-md;
-  border-radius: $radius-xxs;
+  padding: variables.$spacing-md;
+  border-radius: variables.$radius-xxs;
   text-align: left;
   box-shadow: 0 0 12px var(--gray-300);
   display: flex;
@@ -145,7 +145,7 @@ function onCursorLeaveProvideButton(): void {
     }
   }
 
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: newVariables.$small) {
     &--interactive {
       width: 339px;
       height: 282px;

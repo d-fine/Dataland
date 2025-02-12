@@ -658,8 +658,7 @@
         "required": [
           "companyIds",
           "documentCategory",
-          "documentName",
-          "publicationDate"
+          "documentName"
         ],
         "type": "object",
         "properties": {
@@ -676,6 +675,7 @@
             ]
           },
           "companyIds": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
@@ -712,6 +712,7 @@
             ]
           },
           "companyIds": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
@@ -742,6 +743,7 @@
             ]
           },
           "companyIds": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"

@@ -20,9 +20,8 @@ data class DocumentMetaInfo(
     @field:JsonProperty(required = true)
     val documentCategory: DocumentCategory,
     @field:JsonProperty(required = true)
-    val companyIds: List<String>,
+    val companyIds: Set<String>,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
-    @field:JsonProperty(required = true)
-    val publicationDate: LocalDate,
+    val publicationDate: LocalDate?,
     val reportingPeriod: String?,
 )

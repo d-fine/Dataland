@@ -239,7 +239,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .card-wrapper {
   width: 100%;
@@ -247,7 +247,7 @@ export default defineComponent({
   justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: newVariables.$small) {
     padding: 24px 17px;
   }
 }
@@ -259,10 +259,10 @@ export default defineComponent({
   gap: 40px;
   flex-wrap: wrap;
   justify-content: space-between;
-  @media only screen and (max-width: $medium) {
+  @media only screen and (max-width: newVariables.$medium) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: newVariables.$small) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
   }
