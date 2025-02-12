@@ -38,8 +38,8 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " ) AS has_active_data " +
                 " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
                 " ON leis.company_id = has_active_data.company_id" +
-                " ORDER BY dataset_rank DESC, company_name ASC" +
-                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
+                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}" +
+                " ORDER BY dataset_rank DESC, company_name ASC",
     )
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
