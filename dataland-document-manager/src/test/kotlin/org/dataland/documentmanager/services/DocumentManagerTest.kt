@@ -1,6 +1,7 @@
 package org.dataland.documentmanager.services
 
 import org.apache.pdfbox.io.IOUtils
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -179,6 +180,15 @@ class DocumentManagerTest(
         assertThrows<AmqpException> {
             documentManager.temporarilyStoreDocumentAndTriggerStorage(mockDocument, dummyDocumentMetaInfo)
         }
+    }
+
+    @Test
+    fun `check that uploading a document twice throws a conflict exception`() {
+        val mockDocument = setupMockDocument()
+        val uploadResponse = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(uploadResponse.documentId)
+        assertThrows<ConflictApiException> { storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo) }
     }
 
     @Test

@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.services
 
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -57,15 +58,17 @@ class DocumentManager
             documentMetaInfo: DocumentMetaInfo?,
         ): DocumentUploadResponse {
             val correlationId = randomUUID().toString()
-            logger.info("Started temporary storage process for document with correlation ID: $correlationId")
+            logger.info("Started temporary storage process for document. Correlation ID: $correlationId")
 
             val documentId = generateDocumentId(document, correlationId)
+
             if (this.checkIfDocumentExistsWithId(documentId)) {
-                return documentMetaInfoRepository.getByDocumentId(documentId)?.toDocumentUploadResponse()
-                    ?: throw ResourceNotFoundApiException(
-                        summary = "Document with documentId $documentId could not be retrieved.",
-                        message = "Document with documentId $documentId exists but could not be retrieved. CorrelationId: $correlationId",
-                    )
+                throw ConflictApiException(
+                    summary = "This document already exists. Document ID: $documentId",
+                    message =
+                        "Document with documentID $documentId already exists. If you wish to extend the list of " +
+                            "companies related to this document, please use the designated PATCH endpoint.",
+                )
             }
             val documentMetaInfoEntity =
                 DocumentMetaInfoEntity(
