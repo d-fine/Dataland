@@ -38,13 +38,15 @@ loki.process "extract_container_label" {
         // Mapping the "container" field from your logs
         mapping = {
             "extracted_container" = "container",
+            "extracted_level" = "level",
         }
     }
 
     stage.labels {
         // Use the extracted value as the label
         values = {
-            "container_name" = "extracted_container",
+            "container" = "extracted_container",
+            "level" = "extracted_level",
         }
     }
 
@@ -77,6 +79,11 @@ discovery.relabel "default" {
         regex = "/(.*)"
         replacement = "$1"
         target_label = "container"
+    }
+    rule {
+        action = "replace"
+        target_label = "job"
+        replacement = "docker_containers"
     }
 }
 

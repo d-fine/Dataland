@@ -669,7 +669,6 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-#      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
       - GF_SERVER_ROOT_URL=http://dataland-admin:6789/grafana/
       - SLACK_ALERT_URL=${SLACK_ALERT_URL}
       - SLACK_CRITICAL_ALERT_URL=${SLACK_CRITICAL_ALERT_URL}

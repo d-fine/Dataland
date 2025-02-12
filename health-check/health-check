@@ -1,4 +1,4 @@
-${LOKI_VOLUME}/health-check-log/*/*.log {
+${LOKI_VOLUME}/health-check-log/*.log {
     daily
     rotate 7
     missingok

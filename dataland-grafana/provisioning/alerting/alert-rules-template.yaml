@@ -5,6 +5,9 @@ groups:
     folder: Error Alerts
     interval: 1m
     rules:
+      # -------------------------------------------------------------------------------------------
+      # INTERNAL SEVER ERROR
+      # -------------------------------------------------------------------------------------------
       - uid: internal_server_error
         title: Internal Server Error 500
         condition: C
@@ -89,6 +92,9 @@ groups:
         isPaused: false
         notification_settings:
           receiver: Slack Critical Alerts
+      # -------------------------------------------------------------------------------------------
+      # UNHEALTHY CONTAINER
+      # -------------------------------------------------------------------------------------------
       - uid: unhealthy_container
         title: Unhealthy Container
         condition: C
@@ -104,7 +110,7 @@ groups:
                 type: loki
                 uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: count_over_time({service_name="varlogs"} |= "unhealthy" [1m])
+              expr: count_over_time({job="health_check", level="warn", container=~".+"} [1m])
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range
@@ -173,6 +179,9 @@ groups:
         isPaused: false
         notification_settings:
           receiver: Slack Critical Alerts
+      # -------------------------------------------------------------------------------------------
+      # STACK TRACES
+      # -------------------------------------------------------------------------------------------
       - uid: stack_traces
         title: Stack Trace
         condition: C
@@ -257,6 +266,9 @@ groups:
         isPaused: false
         notification_settings:
           receiver: Slack Alert Bot
+      # -------------------------------------------------------------------------------------------
+      # ERROR MESSAGES
+      # -------------------------------------------------------------------------------------------
       - uid: error_message
         title: Error Message
         condition: C
@@ -272,7 +284,7 @@ groups:
                 type: loki
                 uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: count_over_time({service_name=~".+"} |~ "(?i)error" != "query_hash=" [1m])
+              expr: count_over_time({service_name=~".+", job!="health_check"} |~ "(?i)error" != "query_hash=" [1m])
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range

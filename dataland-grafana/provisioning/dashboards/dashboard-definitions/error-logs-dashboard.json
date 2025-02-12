@@ -187,7 +187,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "{service_name=\"varlogs\"} |= \"unhealthy\"",
+          "expr": "{job=\"health_check\", level=\"warn\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -279,7 +279,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "count_over_time({service_name=\"varlogs\"} |= \"unhealthy\" [1m])",
+          "expr": "count_over_time({job=\"health_check\", level=\"warn\"} [1m])",
           "queryType": "range",
           "refId": "A"
         }
@@ -456,7 +456,7 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "{service_name=~\".+\"} |~ \"(?i)error\" != \"query_hash=\"",
+          "expr": "{service_name=~\".+\", job!=\"health_check\"} |~ \"(?i)error\" != \"query_hash=\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -547,7 +547,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "count_over_time({service_name=~\".+\"} |~ \"(?i)error\" != \"query_hash=\" [1m])",
+          "expr": "count_over_time({service_name=~\".+\", job!=\"health_check\"} |~ \"(?i)error\" != \"query_hash=\" [1m])",
           "queryType": "range",
           "refId": "A"
         }
