@@ -187,7 +187,7 @@ class DocumentManager
             companyId: String,
         ): DocumentUploadResponse {
             val correlationId = randomUUID().toString()
-            val documentMetaInfoEntity = retrieveDocumentById(documentId, correlationId)
+            val documentMetaInfoEntity = retrieveDocumentMetaDataById(documentId, correlationId)
 
             logger.info("Updating company ids for document with ID $documentId. CorrelationID: $correlationId.")
 
@@ -244,11 +244,17 @@ class DocumentManager
             return documentId
         }
 
-        private fun retrieveDocumentById(
+        /**
+         * Retrieve Document meta information by documentId
+         * @param documentId identifier of document
+         * @param correlationId
+         * @return document meta information
+         */
+        fun retrieveDocumentMetaDataById(
             documentId: String,
             correlationId: String,
         ): DocumentMetaInfoEntity {
-            logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
+            logger.info("Retrieve meta data for document with documentId $documentId. Correlation ID: $correlationId.")
             if (!checkIfDocumentExistsWithId(documentId)) {
                 throw ResourceNotFoundApiException(
                     summary = "Document with ID $documentId does not exist.",
@@ -257,8 +263,10 @@ class DocumentManager
             }
             return documentMetaInfoRepository.getByDocumentId(documentId)
                 ?: throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId could not be retrieved.",
-                    message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
+                    summary = "Document meta data could not be retrieved.",
+                    message =
+                        "Document meta data for document with documentId $documentId could not be retrieved. " +
+                            "Correlation ID: $correlationId.",
                 )
         }
     }

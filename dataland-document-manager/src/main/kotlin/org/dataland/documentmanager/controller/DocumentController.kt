@@ -2,6 +2,7 @@ package org.dataland.documentmanager.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.api.DocumentApi
 import org.dataland.documentmanager.model.DocumentMetaInfo
@@ -63,6 +64,12 @@ class DocumentController(
         documentId: String,
         documentMetaInfoPatch: DocumentMetaInfoPatch,
     ): ResponseEntity<DocumentUploadResponse> {
+        if (documentMetaInfoPatch.isNullOrEmpty()) {
+            throw InvalidInputApiException(
+                summary = "DocumentMetaInfoPatch must not be null or empty.",
+                message = "DocumentMetaInfoPatch must not be null or empty. Please provide data.",
+            )
+        }
         documentMetaInfoPatch.companyIds?.forEach { isCompanyIdValid(it) }
         return ResponseEntity.ok(
             documentManager.patchDocumentMetaInformation(documentId, documentMetaInfoPatch),
