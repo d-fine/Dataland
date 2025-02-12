@@ -17,7 +17,7 @@
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
-            <Dropdown
+            <SelectComponent
               v-if="!isReviewableByCurrentUser"
               id="chooseFrameworkDropdown"
               v-model="chosenDataTypeInDropdown"
@@ -33,7 +33,7 @@
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
-              <InputSwitch
+              <ToggleSwitch
                 class="form-field vertical-middle"
                 data-test="hideEmptyDataToggleButton"
                 inputId="hideEmptyDataToggleButton"
@@ -99,13 +99,13 @@
               </PrimeButton>
             </router-link>
           </div>
-          <OverlayPanel ref="reportingPeriodsOverlayPanel">
+          <Popover ref="reportingPeriodsPopover">
             <SelectReportingPeriodDialog
               :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
               :action-on-click="ReportingPeriodTableActions.EditDataset"
               @selected-reporting-period="handleReportingPeriodSelection"
             />
-          </OverlayPanel>
+          </Popover>
         </div>
       </MarginWrapper>
       <MarginWrapper style="margin-right: 0">
@@ -125,7 +125,7 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
+import SelectComponent, { type SelectChangeEvent } from 'primevue/select';
 import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
@@ -135,11 +135,11 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 
 import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
-import OverlayPanel from 'primevue/overlaypanel';
+import Popover from 'primevue/popover';
 import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import type FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
-import InputSwitch from 'primevue/inputswitch';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
 import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
 import { CompanyRole } from '@clients/communitymanager';
@@ -161,13 +161,13 @@ export default defineComponent({
     TheContent,
     TheHeader,
     MarginWrapper,
-    Dropdown,
+    SelectComponent,
     TheFooter,
     PrimeButton,
-    OverlayPanel,
+    Popover,
     SelectReportingPeriodDialog,
     QualityAssuranceButtons,
-    InputSwitch,
+    ToggleSwitch,
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
@@ -272,7 +272,7 @@ export default defineComponent({
       this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
     /**
-     * Opens Overlay Panel for selecting a reporting period to edit data for
+     * Opens Popover for selecting a reporting period to edit data for
      * @param event event
      */
     editDataset(event: Event) {
@@ -283,9 +283,9 @@ export default defineComponent({
           this.singleDataMetaInfoToDisplay.dataId
         );
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
-        const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
+        const panel = this.$refs.reportingPeriodsPopover as typeof Popover;
         if (panel) {
-          panel.toggle(event);
+          panel.toggle(event); //seems to be a common issue? (https://github.com/primefaces/primevue/issues/6791)
         }
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
@@ -328,7 +328,7 @@ export default defineComponent({
      * Visits the framework view page for the framework which was chosen in the dropdown
      * @param dropDownChangeEvent the change event emitted by the dropdown component
      */
-    handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
+    handleChangeFrameworkEvent(dropDownChangeEvent: SelectChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
         void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
