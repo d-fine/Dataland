@@ -40,7 +40,7 @@ class DocumentControllerTest {
         DocumentMetaInfo(
             documentName = "sample document",
             documentCategory = DocumentCategory.AnnualReport,
-            companyIds = listOf(),
+            companyIds = setOf(),
             publicationDate = LocalDate.parse("2023-01-01"),
             reportingPeriod = "2023",
         )

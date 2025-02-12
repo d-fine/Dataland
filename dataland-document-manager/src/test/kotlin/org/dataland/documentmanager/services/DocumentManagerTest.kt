@@ -58,7 +58,7 @@ class DocumentManagerTest(
         DocumentMetaInfo(
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
-            companyIds = mutableListOf(knownCompanyIdOne),
+            companyIds = mutableSetOf(knownCompanyIdOne),
             publicationDate = LocalDate.parse("2023-01-01"),
             reportingPeriod = "2023",
         )
@@ -111,7 +111,7 @@ class DocumentManagerTest(
             documentType = DocumentType.Pdf,
             documentName = dummyDocumentMetaInfo.documentName,
             documentCategory = dummyDocumentMetaInfo.documentCategory,
-            companyIds = dummyDocumentMetaInfo.companyIds.toMutableList(),
+            companyIds = dummyDocumentMetaInfo.companyIds.toMutableSet(),
             publicationDate = dummyDocumentMetaInfo.publicationDate,
             reportingPeriod = dummyDocumentMetaInfo.reportingPeriod,
             uploaderId = "",
@@ -197,7 +197,7 @@ class DocumentManagerTest(
             DocumentMetaInfoPatch(
                 documentName = "new name",
                 documentCategory = DocumentCategory.SustainabilityReport,
-                companyIds = listOf("company-id-2", "company-id-3"),
+                companyIds = setOf("company-id-2", "company-id-3"),
                 publicationDate = LocalDate.parse("2023-01-03"),
                 reportingPeriod = null,
             )

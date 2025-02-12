@@ -675,6 +675,7 @@
             ]
           },
           "companyIds": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
@@ -711,6 +712,7 @@
             ]
           },
           "companyIds": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
@@ -741,6 +743,7 @@
             ]
           },
           "companyIds": {
+            "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
