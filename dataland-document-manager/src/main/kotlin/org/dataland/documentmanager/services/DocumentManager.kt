@@ -138,6 +138,24 @@ class DocumentManager
             return documentExists
         }
 
+        private fun retrieveDocumentMetaInfoFromStorage(
+            documentId: String,
+            correlationId: String,
+        ): DocumentMetaInfoEntity {
+            logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
+            if (!checkIfDocumentExistsWithId(documentId)) {
+                throw ResourceNotFoundApiException(
+                    summary = "Document with ID $documentId does not exist.",
+                    message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
+                )
+            }
+            return documentMetaInfoRepository.getByDocumentId(documentId)
+                ?: throw ResourceNotFoundApiException(
+                    summary = "Document with ID $documentId could not be retrieved.",
+                    message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
+                )
+        }
+
         /**
          * Update the document meta information with [documentId].
          * Fields 'companyIds' and 'reportingPeriods' will be extended instead
@@ -151,20 +169,7 @@ class DocumentManager
             documentMetaInfoPatch: DocumentMetaInfoPatch,
         ): DocumentUploadResponse {
             val correlationId = randomUUID().toString()
-            logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
-            if (!checkIfDocumentExistsWithId(documentId)) {
-                throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId does not exist.",
-                    message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
-                )
-            }
-            val documentMetaInfoEntity =
-                documentMetaInfoRepository.getByDocumentId(documentId)
-                    ?: throw ResourceNotFoundApiException(
-                        summary = "Document with ID $documentId could not be retrieved.",
-                        message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
-                    )
-
+            val documentMetaInfoEntity = retrieveDocumentMetaInfoFromStorage(documentId, correlationId)
             logger.info("Updating meta information for document with ID $documentId. CorrelationID: $correlationId.")
 
             documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
@@ -190,7 +195,7 @@ class DocumentManager
             companyId: String,
         ): DocumentUploadResponse {
             val correlationId = randomUUID().toString()
-            val documentMetaInfoEntity = retrieveDocumentMetaDataById(documentId, correlationId)
+            val documentMetaInfoEntity = retrieveDocumentMetaInfoFromStorage(documentId, correlationId)
 
             logger.info("Updating company ids for document with ID $documentId. CorrelationID: $correlationId.")
 

@@ -55,6 +55,7 @@ class DocumentManagerTest(
 
     private val mockDocumentName = "sample.pdf"
     private val unknownDocumentId = "unknown-document-id"
+    private val existingButNonRetrievableDocumentId = "existing-but-non-retrievable-document-id"
     private val knownCompanyIdOne = "knownCompanyId1"
 
     private val dummyDocumentMetaInfo =
@@ -94,6 +95,9 @@ class DocumentManagerTest(
                 storageApi = mockStorageApi,
                 fileProcessor = fileProcessor,
             )
+
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(existingButNonRetrievableDocumentId)
+        doReturn(null).whenever(mockDocumentMetaInfoRepository).getByDocumentId(existingButNonRetrievableDocumentId)
     }
 
     private fun setupMockDocument(): MockMultipartFile {
@@ -131,7 +135,16 @@ class DocumentManagerTest(
 
     @Test
     fun `check that document retrieval is not possible if document does not exist`() {
-        assertThrows<ResourceNotFoundApiException> { documentManager.retrieveDocumentById(documentId = "123") }
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.retrieveDocumentById(documentId = unknownDocumentId)
+        }
+    }
+
+    @Test
+    fun `check that trying to retrieve an existing but nonretrievable document throws the appropriate exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.retrieveDocumentById(existingButNonRetrievableDocumentId)
+        }
     }
 
     @Test
@@ -192,16 +205,39 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check that a patching metadata for a non existing documentId throws the appropriate exception`() {
+    fun `check that patching metadata for a non existing documentId throws the appropriate exception`() {
         assertThrows<ResourceNotFoundApiException> {
             documentManager.patchDocumentMetaInformation(unknownDocumentId, mock<DocumentMetaInfoPatch>())
         }
     }
 
     @Test
+    fun `check that patching metadata for an existing but nonretrievable document throws the appropriate exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.patchDocumentMetaInformation(
+                existingButNonRetrievableDocumentId,
+                mock<DocumentMetaInfoPatch>(),
+            )
+        }
+    }
+
+    @Test
     fun `check that adding a companyId to an unknown document throws exception`() {
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.patchDocumentMetaInformationCompanyIds(unknownDocumentId, "some-company-id")
+            documentManager.patchDocumentMetaInformationCompanyIds(
+                unknownDocumentId,
+                knownCompanyIdOne,
+            )
+        }
+    }
+
+    @Test
+    fun `check that adding a companyId to an existing but nonretrievable document throws exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.patchDocumentMetaInformationCompanyIds(
+                existingButNonRetrievableDocumentId,
+                knownCompanyIdOne,
+            )
         }
     }
 
