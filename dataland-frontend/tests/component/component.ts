@@ -1,3 +1,4 @@
+//import 'primevue/resources/primevue.min.css'; don't forget to exchange here
 import '@cypress/code-coverage/support';
 import 'primeicons/primeicons.css';
 import 'material-icons/iconfont/material-icons.css';

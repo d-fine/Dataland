@@ -7,11 +7,11 @@
   >
     <div v-show="!isStatusHistoryVisible" style="display: flex; align-items: center">
       <span> Show Request Status History </span>
-      <i class=" pi-chevron-down:before p-icon p-row-toggler-icon ml-2"></i>
+      <span class="material-icons">arrow_down_ios</span>
     </div>
     <div v-show="isStatusHistoryVisible" style="display: flex; align-items: center">
       <span> Hide Request Status History </span>
-      <i class="pi-chevron-up:before p-icon p-row-toggler-icon ml-2"></i>
+      <i class="pi-chevron-up p-icon p-row-toggler-icon ml-2"></i>
     </div>
   </div>
 
