@@ -31,7 +31,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " sector, " +
                 " identifier_value AS lei, " +
                 " CASE " +
-                " WHEN leis_in_list.identifier_value IS NOT NULL THEN 2 " +
+                " WHEN leis.identifier_value IS NOT NULL THEN 2 " +
                 " ELSE 1 " +
                 " END AS dataset_rank " +
                 " FROM ( " +
