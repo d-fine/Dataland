@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { type DynamicDialogInstance } from 'primevue/dynamicdialogoptions';
+import type DynamicDialog  from 'primevue/dynamicdialog'; //
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -65,7 +65,7 @@ export default defineComponent({
   },
   computed: {
     dialogData(): DataPointDataTableRefProps {
-      return assertDefined(this.dialogRef as DynamicDialogInstance).data as DataPointDataTableRefProps;
+      return assertDefined(this.dialogRef as typeof DynamicDialog).data as DataPointDataTableRefProps;
     },
     dataSourceLabel(): string {
       const dataSource = this.dialogData.dataPointDisplay.dataSource;

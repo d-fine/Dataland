@@ -1,167 +1,166 @@
 <template>
   <AuthenticationWrapper>
     <TheHeader />
-    <DatasetsTabMenu :initial-tab-index="3">
-      <TheContent class="min-h-screen paper-section relative">
-        <div v-if="waitingForData || storedDataRequests.length > 0">
-          <div
-            id="searchBarAndFiltersContainer"
-            class="w-full bg-white pt-4 justify-between"
-            ref="searchBarAndFiltersContainer"
-          >
-            <span class="align-content-start flex items-center justify-start">
-              <span class="w-3 p-input-icon-left" style="margin: 15px">
-                <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
-                <InputText
-                  data-test="requested-Datasets-searchbar"
-                  v-model="searchBarInput"
-                  placeholder="Search by company name"
-                  class="w-12 pl-6 pr-6"
-                />
-              </span>
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedFrameworks"
-                ref="frameworkFilter"
-                :available-items="availableFrameworks"
-                filter-name="Framework"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="Search frameworks"
-                class="ml-3"
-                style="margin: 15px"
+    <TheContent class="min-h-screen paper-section relative">
+      <DatasetsTabMenu :initial-tab-index="3"></DatasetsTabMenu>
+      <div v-if="waitingForData || storedDataRequests.length > 0">
+        <div
+          id="searchBarAndFiltersContainer"
+          class="w-full bg-white pt-4 justify-between"
+          ref="searchBarAndFiltersContainer"
+        >
+          <span class="align-content-start flex items-center justify-start">
+            <span class="w-3 p-input-icon-left" style="margin: 15px">
+              <i class="pi pi-search pl-3 pr-3" aria-hidden="true" style="color: #958d7c" />
+              <InputText
+                data-test="requested-Datasets-searchbar"
+                v-model="searchBarInput"
+                placeholder="Search by company name"
+                class="w-12 pl-6 pr-6"
               />
-              <FrameworkDataSearchDropdownFilter
-                v-model="selectedAccessStatus"
-                ref="frameworkFilter"
-                :available-items="availableAccessStatus"
-                filter-name="Access Status"
-                data-test="requested-Datasets-frameworks"
-                filter-id="framework-filter"
-                filter-placeholder="access status"
-                class="ml-3"
-                style="margin: 15px"
-              />
-              <span class="flex align-items-center">
-                <span
-                  data-test="reset-filter"
-                  style="margin: 15px"
-                  class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                  @click="resetFilterAndSearchBar"
-                  >RESET</span
-                >
-              </span>
             </span>
-          </div>
-          <div class="col-12 text-left p-3">
-            <div class="card">
-              <DataTable
-                :value="displayedData"
-                style="cursor: pointer"
-                :rowHover="true"
-                :loading="waitingForData"
-                data-test="requested-Datasets-table"
-                paginator
-                paginator-position="bottom"
-                :rows="datasetsPerPage"
-                lazy
-                :total-records="numberOfFilteredRequests"
-                @page="onPage($event)"
-                @sort="onSort($event)"
-                @row-click="onRowClick($event)"
-                id="my-data-requests-overview-table"
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedFrameworks"
+              ref="frameworkFilter"
+              :available-items="availableFrameworks"
+              filter-name="Framework"
+              data-test="requested-Datasets-frameworks"
+              filter-id="framework-filter"
+              filter-placeholder="Search frameworks"
+              class="ml-3"
+              style="margin: 15px"
+            />
+            <FrameworkDataSearchDropdownFilter
+              v-model="selectedAccessStatus"
+              ref="frameworkFilter"
+              :available-items="availableAccessStatus"
+              filter-name="Access Status"
+              data-test="requested-Datasets-frameworks"
+              filter-id="framework-filter"
+              filter-placeholder="access status"
+              class="ml-3"
+              style="margin: 15px"
+            />
+            <span class="flex align-items-center">
+              <span
+                data-test="reset-filter"
+                style="margin: 15px"
+                class="ml-3 cursor-pointer text-primary font-semibold d-letters"
+                @click="resetFilterAndSearchBar"
+                >RESET</span
               >
-                <Column header="COMPANY" field="companyName" :sortable="true">
-                  <template #body="slotProps">
-                    {{ slotProps.data.companyName }}
-                  </template>
-                </Column>
-                <Column header="FRAMEWORK" :sortable="true" field="dataType">
-                  <template #body="slotProps">
-                    <div>
-                      {{ getFrameworkTitle(slotProps.data.dataType) }}
-                    </div>
-                    <div
-                      data-test="framework-subtitle"
-                      v-if="frameworkHasSubTitle(slotProps.data.dataType)"
-                      style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
-                    >
-                      <br />
-                      {{ getFrameworkSubtitle(slotProps.data.dataType) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
-                  <template #body="slotProps">
-                    {{ slotProps.data.reportingPeriod }}
-                  </template>
-                </Column>
-                <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
-                  <template #body="slotProps">
-                    <div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
-                    </div></template
-                  >
-                </Column>
-                <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
-                  <template #body="slotProps"
-                    ><div>
-                      {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
-                  <template #body="slotProps">
-                    <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
-                      {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
-                    </div>
-                  </template>
-                </Column>
-                <Column header="ACCESS STATUS" :sortable="true" field="accessStatus">
-                  <template #body="slotProps">
-                    <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
-                      {{ slotProps.data.accessStatus }}
-                    </div>
-                  </template>
-                </Column>
-                <Column field="resolve" header="">
-                  <template #body="slotProps">
-                    <div
-                      v-if="slotProps.data.requestStatus == RequestStatus.Answered"
-                      class="text-right text-primary no-underline font-bold"
-                    >
-                      <span
-                        id="resolveButton"
-                        style="cursor: pointer"
-                        data-test="requested-Datasets-Resolve"
-                        @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
-                        >RESOLVE</span
-                      >
-                      <span class="ml-3">></span>
-                    </div>
-                  </template>
-                </Column>
-              </DataTable>
-            </div>
-          </div>
+            </span>
+          </span>
         </div>
-        <div v-if="!waitingForData && storedDataRequests.length == 0">
-          <div class="d-center-div text-center px-7 py-4">
-            <p class="font-medium text-xl">You have not requested data yet.</p>
-            <p class="font-medium text-xl">Request data to see your requests here.</p>
-            <a @click="goToBulkDataRequestPage()" class="no-underline" data-test="bulkDataRequestButton">
-              <button
-                class="p-button p-component uppercase p-button p-button-sm mr-3"
-                type="button"
-                data-pc-name="button"
-                data-pc-section="root"
-              >
-                <i class="material-icons"> add_box </i><span class="d-letters pl-2"> BULK DATA REQUEST </span>
-              </button></a
+        <div class="col-12 text-left p-3">
+          <div class="card">
+            <DataTable
+              :value="displayedData"
+              style="cursor: pointer"
+              :rowHover="true"
+              :loading="waitingForData"
+              data-test="requested-Datasets-table"
+              paginator
+              paginator-position="bottom"
+              :rows="datasetsPerPage"
+              lazy
+              :total-records="numberOfFilteredRequests"
+              @page="onPage($event)"
+              @sort="onSort($event)"
+              @row-click="onRowClick($event)"
+              id="my-data-requests-overview-table"
             >
+              <Column header="COMPANY" field="companyName" :sortable="true">
+                <template #body="slotProps">
+                  {{ slotProps.data.companyName }}
+                </template>
+              </Column>
+              <Column header="FRAMEWORK" :sortable="true" field="dataType">
+                <template #body="slotProps">
+                  <div>
+                    {{ getFrameworkTitle(slotProps.data.dataType) }}
+                  </div>
+                  <div
+                    data-test="framework-subtitle"
+                    v-if="frameworkHasSubTitle(slotProps.data.dataType)"
+                    style="color: gray; font-size: smaller; line-height: 0.5; white-space: nowrap"
+                  >
+                    <br />
+                    {{ getFrameworkSubtitle(slotProps.data.dataType) }}
+                  </div>
+                </template>
+              </Column>
+              <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true">
+                <template #body="slotProps">
+                  {{ slotProps.data.reportingPeriod }}
+                </template>
+              </Column>
+              <Column header="REQUESTED" field="creationTimestamp" :sortable="true">
+                <template #body="slotProps">
+                  <div>
+                    {{ convertUnixTimeInMsToDateString(slotProps.data.creationTimestamp) }}
+                  </div></template
+                >
+              </Column>
+              <Column header="LAST UPDATED" :sortable="true" field="lastModifiedDate">
+                <template #body="slotProps"
+                  ><div>
+                    {{ convertUnixTimeInMsToDateString(slotProps.data.lastModifiedDate) }}
+                  </div>
+                </template>
+              </Column>
+              <Column header="REQUEST STATUS" :sortable="true" field="requestStatus">
+                <template #body="slotProps">
+                  <div :class="badgeClass(slotProps.data.requestStatus)" style="display: inline-flex">
+                    {{ getRequestStatusLabel(slotProps.data.requestStatus) }}
+                  </div>
+                </template>
+              </Column>
+              <Column header="ACCESS STATUS" :sortable="true" field="accessStatus">
+                <template #body="slotProps">
+                  <div :class="accessStatusBadgeClass(slotProps.data.accessStatus)" style="display: inline-flex">
+                    {{ slotProps.data.accessStatus }}
+                  </div>
+                </template>
+              </Column>
+              <Column field="resolve" header="">
+                <template #body="slotProps">
+                  <div
+                    v-if="slotProps.data.requestStatus == RequestStatus.Answered"
+                    class="text-right text-primary no-underline font-bold"
+                  >
+                    <span
+                      id="resolveButton"
+                      style="cursor: pointer"
+                      data-test="requested-Datasets-Resolve"
+                      @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
+                      >RESOLVE</span
+                    >
+                    <span class="ml-3">></span>
+                  </div>
+                </template>
+              </Column>
+            </DataTable>
           </div>
         </div>
-      </TheContent>
-    </DatasetsTabMenu>
+      </div>
+      <div v-if="!waitingForData && storedDataRequests.length == 0">
+        <div class="d-center-div text-center px-7 py-4">
+          <p class="font-medium text-xl">You have not requested data yet.</p>
+          <p class="font-medium text-xl">Request data to see your requests here.</p>
+          <a @click="goToBulkDataRequestPage()" class="no-underline" data-test="bulkDataRequestButton">
+            <button
+              class="p-button p-component uppercase p-button p-button-sm mr-3"
+              type="button"
+              data-pc-name="button"
+              data-pc-section="root"
+            >
+              <i class="material-icons"> add_box </i><span class="d-letters pl-2"> BULK DATA REQUEST </span>
+            </button></a
+          >
+        </div>
+      </div>
+    </TheContent>
     <TheFooter :is-light-version="true" :sections="footerContent" />
   </AuthenticationWrapper>
 </template>
