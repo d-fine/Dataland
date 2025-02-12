@@ -34,7 +34,7 @@ const isActiveAbout = computed(() => route.path === '/about');
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .header {
   display: flex;
@@ -82,7 +82,7 @@ const isActiveAbout = computed(() => route.path === '/about');
     }
   }
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .header {
     padding: 16px;
     margin: 0;
