@@ -418,7 +418,7 @@ class AssembledDataManager
                 PlainDataAndMetaInformation(
                     metaInfo =
                         DataMetaInformation(
-                            dataId = "dummy",
+                            dataId = "not available",
                             companyId = companyId,
                             dataType = searchFilter.dataType,
                             reportingPeriod = it,

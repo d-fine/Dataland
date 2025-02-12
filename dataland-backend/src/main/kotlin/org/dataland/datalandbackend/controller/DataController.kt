@@ -130,7 +130,7 @@ open class DataController<T>(
     ): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
         logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
-        val test =
+        val allRelevantData =
             datasetStorageService.getAllDatasetsAndMetaInformation(
                 DataMetaInformationSearchFilter(
                     companyId = companyId,
@@ -141,7 +141,7 @@ open class DataController<T>(
                 correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null),
             )
         return ResponseEntity.ok(
-            test.map {
+            allRelevantData.map {
                 DataAndMetaInformation(
                     it.metaInfo,
                     objectMapper.readValue(it.data, clazz),
