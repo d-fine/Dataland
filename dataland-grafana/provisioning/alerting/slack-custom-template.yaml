@@ -33,6 +33,9 @@ templates:
     template: |
       {{ define "alert_firing_template" }}
       *Service:* {{ .Labels.service_name }}
+      {{ if .Labels.container_name }}
+        *Container:* {{ .Labels.container_name }}
+      {{ end }}
       *Detected level:* {{ .Labels.detected_level }}
       *Env:* {{ .Labels.env }}
       - {{ .Values.B }} error logs
