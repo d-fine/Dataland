@@ -658,8 +658,7 @@
         "required": [
           "companyIds",
           "documentCategory",
-          "documentName",
-          "publicationDate"
+          "documentName"
         ],
         "type": "object",
         "properties": {
