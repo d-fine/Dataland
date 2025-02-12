@@ -20,26 +20,28 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-            " SELECT has_active_data.company_id AS companyId," +
+            "WITH leis_in_list AS ( " +
+                "   SELECT company_id, identifier_value FROM " + TemporaryTables.TABLE_LEIS +
+                "   WHERE identifier_value IN (:listOfLeis) " +
+                " ) " +
+                " SELECT has_active_data.company_id AS companyId," +
                 " company_name AS companyName," +
                 " headquarters, " +
                 " country_code AS countryCode, " +
                 " sector, " +
                 " identifier_value AS lei, " +
                 " CASE " +
-                " WHEN leis.identifier_value IN (:listOfLeis) THEN 2" +
-                " ELSE 1" +
-                " END AS dataset_rank" +
-                // get required information from stored companies where active dataset exists
-                " FROM (" +
-                " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
-                " WHERE company_id IN " +
-                " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true')  " +
+                " WHEN leis_in_list.identifier_value IS NOT NULL THEN 2 " +
+                " ELSE 1 " +
+                " END AS dataset_rank " +
+                " FROM ( " +
+                "   SELECT company_id, company_name, headquarters, country_code, sector " +
+                "   FROM stored_companies " +
+                "   WHERE company_id IN (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true') " +
                 " ) AS has_active_data " +
-                " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
-                " ON leis.company_id = has_active_data.company_id" +
-                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}" +
-                " ORDER BY dataset_rank DESC, company_name ASC",
+                " LEFT JOIN leis_in_list leis ON leis.company_id = has_active_data.company_id " +
+                " ORDER BY dataset_rank DESC, company_name ASC " +
+                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
