@@ -2,22 +2,50 @@
   <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <div class="card-wrapper">
-      <div class="card-grid">
-        <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
-
-        <FrameworkSummaryPanel
-          v-for="framework of FRAMEWORKS_WITH_VIEW_PAGE"
-          :key="framework"
-          :is-user-allowed-to-view="authenticated === true"
-          :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
-          :company-id="companyId"
-          :framework="framework"
-          :number-of-provided-reporting-periods="
-            aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
-          "
-          :data-test="`${framework}-summary-panel`"
-        />
+    <div class="grid">
+      <div class="card-wrapper">
+        <div class="paper-section col-5">
+          <div class="card">
+            <div class="card__title">Latest Documents</div>
+            <div class="card__separator" />
+            <div v-for="(documents, documentType) in latestDocuments">
+              <div class="card__subtitle">{{ documentType }}</div>
+              <div v-for="document in documents" :key="document.documentName">
+                <span @click="downloadDocument()" class="text-primary cursor-pointer" style="flex: 0 0 auto">
+                  <span class="underline pl-1">{{ truncatedDocumentName(document.documentName) }}</span> ({{
+                    document.publicationDate
+                  }})
+                  <i class="pi pi-download pl-1" data-test="download-icon" aria-hidden="true" style="font-size: 12px" />
+                </span>
+              </div>
+            </div>
+            <div class="document-button cursor-pointer flex flex-row align-items-center" @click="goToDocumentOverview">
+              <span class="text-primary font-semibold d-letters"> VIEW ALL DOCUMENTS</span>
+              <span class="material-icons text-primary">arrow_forward_ios</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-7">
+          <div class="card-grid">
+            <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
+            <FrameworkSummaryPanel
+              v-for="framework of frameworksToDisplay"
+              :key="framework"
+              :is-user-allowed-to-view="authenticated === true"
+              :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
+              :company-id="companyId"
+              :framework="framework"
+              :number-of-provided-reporting-periods="
+                aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
+              "
+              :data-test="`${framework}-summary-panel`"
+            />
+          </div>
+          <div class="p-col-12 text-right">
+            <button label="Show All" v-if="!showAllFrameworks" @click="toggleShowAll" />
+            <button label="Show Less" v-if="showAllFrameworks" @click="toggleShowAll" />
+          </div>
+        </div>
       </div>
     </div>
   </TheContent>
@@ -36,7 +64,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_MAIN, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
@@ -45,6 +73,18 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+
+//todo: replace when backend ready
+type DocumentData = {
+  documentName: string;
+  publicationDate: string;
+  url: string;
+};
+
+type LatestDocuments = {
+  [documentType: string]: DocumentData[];
+};
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -79,11 +119,15 @@ export default defineComponent({
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       FRAMEWORKS_WITH_VIEW_PAGE,
+      FRAMEWORKS_MAIN,
+      DocumentMetaInfoDocumentCategoryEnum,
       isUserCompanyOwnerOrUploader: false,
       isUserKeycloakUploader: false,
       isAnyCompanyOwnerExisting: false,
       hasUserAnyRoleInCompany: false,
       footerContent,
+      showAllFrameworks: false,
+      latestDocuments: {} as LatestDocuments,
     };
   },
   computed: {
@@ -92,6 +136,9 @@ export default defineComponent({
     },
     isClaimPanelVisible() {
       return !this.isAnyCompanyOwnerExisting && isCompanyIdValid(this.companyId);
+    },
+    frameworksToDisplay() {
+      return this.showAllFrameworks ? this.FRAMEWORKS_WITH_VIEW_PAGE : this.FRAMEWORKS_MAIN;
     },
   },
   watch: {
@@ -116,6 +163,7 @@ export default defineComponent({
 
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
+    void this.getLatestDocuments();
   },
   methods: {
     /**
@@ -127,6 +175,28 @@ export default defineComponent({
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
+    },
+
+    /**
+     * Retrieves the latest documents metadata
+     */
+    async getLatestDocuments(): Promise<void> {
+      //to do: use data from backend
+      this.latestDocuments = {
+        annualreport: [
+          { documentName: 'AnnualReport_20240512_revised.pdf', publicationDate: '2024-06-01', url: '' },
+          { documentName: 'AnnualReport_2024/2025_updated_20241218.pdf', publicationDate: '2025-01-01', url: '' },
+        ],
+        sustainabiityreport: [],
+        policy: [{ documentName: 'policy_12345678_20250202_revised.pdf', publicationDate: '2025-02-01', url: '' }],
+      };
+    },
+
+    /**
+     * Method to download report
+     */
+    async downloadDocument() {
+      //todo
     },
 
     /**
@@ -155,6 +225,15 @@ export default defineComponent({
       }
       this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
+    toggleShowAll() {
+      this.showAllFrameworks = !this.showAllFrameworks;
+    },
+    goToDocumentOverview() {
+      //todo
+    },
+    truncatedDocumentName(name: string) {
+      return name.length > 25 ? name.slice(0, 25) + '...' : name;
+    },
   },
 });
 </script>
@@ -176,7 +255,7 @@ export default defineComponent({
 .card-grid {
   width: 80%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 40px;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -186,6 +265,48 @@ export default defineComponent({
   @media only screen and (max-width: $small) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
+  }
+}
+.card {
+  width: 90%;
+  background-color: var(--surface-card);
+  padding: 40px;
+  margin: 0 20px 1rem 40px;
+  box-shadow: 0 0 12px var(--gray-300);
+  border-radius: 0.5rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__title {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 27px;
+  }
+
+  &__separator {
+    width: 100%;
+    border-bottom: #e0dfde solid 1px;
+    margin-top: 8px;
+    margin-bottom: 24px;
+  }
+
+  &__subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+
+    margin-top: 8px;
+  }
+}
+
+.document-button {
+  width: fit-content;
+  margin-top: 20px;
+  @media only screen and (min-width: $small) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 }
 </style>
