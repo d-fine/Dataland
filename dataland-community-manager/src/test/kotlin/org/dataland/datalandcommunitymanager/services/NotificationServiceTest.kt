@@ -45,7 +45,7 @@ class NotificationServiceTest {
             testReportingPeriod,
             false,
             QaStatus.Pending,
-            null,
+            "test",
         )
 
     private val testCompanyInformation =

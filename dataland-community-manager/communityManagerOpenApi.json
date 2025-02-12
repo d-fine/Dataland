@@ -1574,19 +1574,29 @@
       },
       "BulkDataRequestResponse": {
         "required": [
-          "acceptedCompanyIdentifiers",
-          "message",
+          "acceptedDataRequests",
+          "alreadyExistingDatasets",
+          "alreadyExistingNonFinalRequests",
           "rejectedCompanyIdentifiers"
         ],
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
-          },
-          "acceptedCompanyIdentifiers": {
+          "acceptedDataRequests": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/ResourceResponse"
+            }
+          },
+          "alreadyExistingNonFinalRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceResponse"
+            }
+          },
+          "alreadyExistingDatasets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceResponse"
             }
           },
           "rejectedCompanyIdentifiers": {
@@ -1594,6 +1604,36 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "ResourceResponse": {
+        "required": [
+          "companyName",
+          "framework",
+          "reportingPeriod",
+          "resourceId",
+          "userProvidedIdentifier"
+        ],
+        "type": "object",
+        "properties": {
+          "userProvidedIdentifier": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "resourceId": {
+            "type": "string"
+          },
+          "resourceUrl": {
+            "type": "string"
           }
         }
       },

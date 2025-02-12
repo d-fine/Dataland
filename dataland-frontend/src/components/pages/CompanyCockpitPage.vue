@@ -36,13 +36,15 @@ import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import { FRAMEWORKS_WITH_VIEW_PAGE, PRIVATE_FRAMEWORKS } from '@/utils/Constants';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
-import { checkIfUserHasRole, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakUtils';
+import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
 import { isCompanyIdValid } from '@/utils/ValidationUtils';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
+import { isFrameworkPublic } from '@/utils/Frameworks';
+import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -133,16 +135,7 @@ export default defineComponent({
      * @returns a boolean as result of this check
      */
     isUserAllowedToUploadForFramework(framework: DataTypeEnum): boolean {
-      return this.isUserCompanyOwnerOrUploader || (this.isFrameworkPublic(framework) && this.isUserKeycloakUploader);
-    },
-
-    /**
-     * Checks if the framework is a public framework
-     * @param framework to check for
-     * @returns a boolean as result of this check
-     */
-    isFrameworkPublic(framework: DataTypeEnum): boolean {
-      return !PRIVATE_FRAMEWORKS.includes(framework);
+      return this.isUserCompanyOwnerOrUploader || (isFrameworkPublic(framework) && this.isUserKeycloakUploader);
     },
 
     /**
@@ -167,13 +160,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/scss/newVariables';
+
 .card-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: newVariables.$small) {
     padding: 24px 17px;
   }
 }
@@ -185,10 +180,10 @@ export default defineComponent({
   gap: 40px;
   flex-wrap: wrap;
   justify-content: space-between;
-  @media only screen and (max-width: $medium) {
+  @media only screen and (max-width: newVariables.$medium) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media only screen and (max-width: $small) {
+  @media only screen and (max-width: newVariables.$small) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
   }

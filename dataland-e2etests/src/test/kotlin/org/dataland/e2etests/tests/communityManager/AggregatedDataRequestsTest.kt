@@ -7,7 +7,7 @@ import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.checkThatAllIdentifiersWereAccepted
+import org.dataland.e2etests.utils.communityManager.checkThatNumberOfRejectedIdentifiersIsAsExpected
 import org.dataland.e2etests.utils.communityManager.findAggregatedDataRequestDataTypeForFramework
 import org.dataland.e2etests.utils.communityManager.findRequestControllerApiDataTypeForFramework
 import org.dataland.e2etests.utils.communityManager.generateCompaniesWithOneRandomValueForEachIdentifierType
@@ -43,7 +43,7 @@ class AggregatedDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifiers, frameworks, reportingPeriods),
             )
-        checkThatAllIdentifiersWereAccepted(responseForReader, identifiers.size, 0)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(responseForReader, 0)
     }
 
     @Test
@@ -99,7 +99,7 @@ class AggregatedDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
             )
-        checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         checkAggregationForNonTrivialFrameworkFilter(frameworks, reportingPeriods, identifierMap.values.toSet())
         val aggregatedDataRequestsWithoutFilter = requestControllerApi.getAggregatedOpenDataRequests(dataTypes = null)
         iterateThroughAllThreeSpecificationsAndCheckAggregationWithCount(
@@ -121,7 +121,7 @@ class AggregatedDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
             )
-        checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         val randomReportingPeriod = reportingPeriods.random()
         val aggregatedDataRequests =
             requestControllerApi.getAggregatedOpenDataRequests(
@@ -158,7 +158,7 @@ class AggregatedDataRequestsTest {
             requestControllerApi.postBulkDataRequest(
                 BulkDataRequest(identifierMap.values.toSet(), frameworks, reportingPeriods),
             )
-        checkThatAllIdentifiersWereAccepted(response, identifierMap.size, 0)
+        checkThatNumberOfRejectedIdentifiersIsAsExpected(response, 0)
         val aggregatedDataRequests = requestControllerApi.getAggregatedOpenDataRequests()
         assertNumberOfMatchesOnExclusivelyOpenRequestsEquals(
             aggregatedDataRequests, datalandCompanyIDForLei,

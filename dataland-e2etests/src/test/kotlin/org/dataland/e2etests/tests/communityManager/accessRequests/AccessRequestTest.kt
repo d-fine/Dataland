@@ -34,7 +34,7 @@ class AccessRequestTest {
     private val requestControllerApi = RequestControllerApi(BASE_PATH_TO_COMMUNITY_MANAGER)
     val jwtHelper = JwtAuthenticationHelper()
 
-    private val testVsmeData = FrameworkTestDataProvider(VsmeData::class.java).getTData(1).first()
+    private val testVsmeData = FrameworkTestDataProvider.forFrameworkFixtures(VsmeData::class.java).getTData(1).first()
     private lateinit var dummyFileAlpha: File
     private val fileNameAlpha = "Report-Alpha"
     private lateinit var hashAlpha: String
@@ -126,7 +126,7 @@ class AccessRequestTest {
         createVSMEDataAndPostAsAdminCompanyOwner(companyId)
 
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
-        Thread.sleep(500)
+        Thread.sleep(1000)
         val newlyStoredRequestsSecond =
             requestControllerApi.getDataRequestsForRequestingUser().filter { storedDataRequest ->
                 storedDataRequest.lastModifiedDate > timestampBeforeSingleRequestSecond

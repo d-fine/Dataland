@@ -2,8 +2,10 @@ package org.dataland.e2etests.tests
 
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -24,8 +26,9 @@ class InvalidSfdrRequestTests {
 
     fun getErrorFromApi(companyName: String): ClientException {
         val oneInvalidSfdrDataset =
-            apiAccessor.testDataProviderForSfdrData
-                .getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName)
+            FrameworkTestDataProvider
+                .forFrameworkPreparedFixtures(SfdrData::class.java)
+                .getByCompanyName(companyName)
         Assertions.assertNotNull(oneInvalidSfdrDataset)
         val companyInformation = apiAccessor.uploadOneCompanyWithRandomIdentifier()
         val errorForInvalidInput =

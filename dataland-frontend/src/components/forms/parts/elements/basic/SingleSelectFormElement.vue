@@ -176,9 +176,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@use '@/assets/scss/variables';
+
 .bottom-line {
   border-style: solid;
   border-width: 0 0 1px 0;
-  border-color: $brown-lighter;
+  border-color: variables.$brown-lighter;
 }
 </style>

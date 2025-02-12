@@ -58,6 +58,8 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+@use '@/assets/scss/newVariables';
+
 .howitworks {
   padding: 200px 0;
   background-color: var(--primary-orange);
@@ -218,7 +220,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: $extra-large) {
+@media only screen and (max-width: newVariables.$extra-large) {
   .howitworks {
     padding: 120px 0 64px;
 
@@ -258,7 +260,7 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .howitworks {
     &__title {
       font-size: 40px;
@@ -266,7 +268,7 @@ onUnmounted(() => {
     }
   }
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .howitworks {
     padding: 80px 0;
     &__wrapper {

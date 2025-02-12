@@ -8,6 +8,7 @@ import org.dataland.e2etests.auth.GlobalAuth.jwtHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.MetaDataUtils
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -26,9 +27,9 @@ class MetaDataControllerTest {
     private val documentManagerAccessor = DocumentManagerAccessor()
 
     private val numberOfCompaniesToPostPerFramework = 4
-    private val numberOfDataSetsToPostPerCompany = 5
-    private val totalNumberOfDataSetsPerFramework =
-        numberOfCompaniesToPostPerFramework * numberOfDataSetsToPostPerCompany
+    private val numberOfDatasetsToPostPerCompany = 5
+    private val totalNumberOfDatasetsPerFramework =
+        numberOfCompaniesToPostPerFramework * numberOfDatasetsToPostPerCompany
 
     private val listOfTestCompanyInformation =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
@@ -44,17 +45,6 @@ class MetaDataControllerTest {
         private const val SLEEP_DURATION_MS: Long = 1000
     }
 
-    fun buildAcceptedAndActiveDataMetaInformation(
-        dataId: String,
-        companyId: String,
-        testDataType: DataTypeEnum,
-        uploadTime: Long,
-        user: TechnicalUser,
-    ) = DataMetaInformation(
-        dataId = dataId, companyId = companyId, dataType = testDataType, uploadTime = uploadTime, reportingPeriod = "",
-        currentlyActive = true, qaStatus = QaStatus.Accepted, uploaderUserId = user.technicalUserId,
-    )
-
     @Test
     fun `post dummy company and taxonomy data for it and check if meta info about that data can be retrieved`() {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
@@ -67,14 +57,11 @@ class MetaDataControllerTest {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
         val actualDataMetaInfo = apiAccessor.metaDataControllerApi.getDataMetaInfo(uploadedMetaInfo.dataId)
         val expectedDataMetaInfo =
-            buildAcceptedAndActiveDataMetaInformation(
+            MetaDataUtils.buildAcceptedAndActiveDataMetaInformation(
                 dataId = uploadedMetaInfo.dataId, companyId = uploadedMetaInfo.companyId,
-                testDataType = testDataType, uploadTime = Instant.now().toEpochMilli(), TechnicalUser.Admin,
+                testDataType = testDataType, TechnicalUser.Admin,
             )
-        assertEquals(
-            expectedDataMetaInfo, actualDataMetaInfo.copy(uploadTime = expectedDataMetaInfo.uploadTime),
-            "The meta info of the posted eu taxonomy data does not match the retrieved meta info.",
-        )
+        MetaDataUtils.assertDataMetaInfoMatches(expectedDataMetaInfo = expectedDataMetaInfo, actualDataMetaInfo = actualDataMetaInfo)
         val timeDiffFromUploadToNow = actualDataMetaInfo.uploadTime - Instant.now().toEpochMilli()
         assertTrue(
             abs(timeDiffFromUploadToNow) < 60000, "The server-upload-time and the local upload time differ too much.",
@@ -92,18 +79,27 @@ class MetaDataControllerTest {
     }
 
     @Test
-    fun `post companies and eu taxonomy data and check meta info search with empty filters`() {
-        val initialSizeOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = false)
+    fun `post companies and eu taxonomy data and check meta info search with only active as filter`() {
+        val usedDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
+        val initialSizeOfDataMetaInfo =
+            apiAccessor.getNumberOfDataMetaInfo(
+                showOnlyActive = false,
+                dataType = usedDataType,
+            )
         apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-            mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
-            numberOfDataSetsToPostPerCompany,
+            mapOf(usedDataType to listOfTestCompanyInformation),
+            numberOfDatasetsToPostPerCompany,
         )
         Thread.sleep(SLEEP_DURATION_MS)
-        val sizeOfListOfDataMetaInfo = apiAccessor.getNumberOfDataMetaInfo(showOnlyActive = false)
-        val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDataSetsPerFramework
+        val sizeOfListOfDataMetaInfo =
+            apiAccessor.getNumberOfDataMetaInfo(
+                showOnlyActive = false,
+                dataType = usedDataType,
+            )
+        val expectedSizeOfDataMetaInfo = initialSizeOfDataMetaInfo + totalNumberOfDatasetsPerFramework
         assertEquals(
             expectedSizeOfDataMetaInfo, sizeOfListOfDataMetaInfo,
-            "The list with all data meta info is expected to increase by $totalNumberOfDataSetsPerFramework to " +
+            "The list with all data meta info is expected to increase by $totalNumberOfDatasetsPerFramework to " +
                 "$expectedSizeOfDataMetaInfo, but has the size $sizeOfListOfDataMetaInfo.",
         )
     }
@@ -113,7 +109,7 @@ class MetaDataControllerTest {
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
                 mapOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation),
-                numberOfDataSetsToPostPerCompany,
+                numberOfDatasetsToPostPerCompany,
             )
         val companyIdOfFirstUploadedCompany = listOfUploadInfo[0].actualStoredCompany.companyId
         val listOfDataMetaInfoForFirstCompanyId =
@@ -121,8 +117,8 @@ class MetaDataControllerTest {
                 companyIdOfFirstUploadedCompany, showOnlyActive = false,
             )
         assertEquals(
-            numberOfDataSetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
-            "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
+            numberOfDatasetsToPostPerCompany, listOfDataMetaInfoForFirstCompanyId.size,
+            "The first posted company is expected to have meta info about $numberOfDatasetsToPostPerCompany " +
                 "data sets, but has meta info about ${listOfDataMetaInfoForFirstCompanyId.size} data sets.",
         )
     }
@@ -137,14 +133,14 @@ class MetaDataControllerTest {
                 testDataType to listOfTestCompanyInformation,
                 DataTypeEnum.eutaxonomyMinusNonMinusFinancials to listOfTestCompanyInformation,
             ),
-            numberOfDataSetsToPostPerCompany,
+            numberOfDatasetsToPostPerCompany,
         )
         val listSizeAfterUploads = apiAccessor.getNumberOfDataMetaInfo(dataType = testDataType, showOnlyActive = false)
-        val expectedListSize = initListSizeDataMetaInfoForEuTaxoFinancials + totalNumberOfDataSetsPerFramework
+        val expectedListSize = initListSizeDataMetaInfoForEuTaxoFinancials + totalNumberOfDatasetsPerFramework
         assertEquals(
             expectedListSize, listSizeAfterUploads,
             "The meta info list for all EU Taxonomy Data for Non-Financials is expected to increase by " +
-                "$totalNumberOfDataSetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
+                "$totalNumberOfDatasetsPerFramework to $expectedListSize, but has the size $listSizeAfterUploads.",
         )
     }
 
@@ -153,7 +149,7 @@ class MetaDataControllerTest {
         val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
         val listOfUploadInfo =
             apiAccessor.uploadCompanyAndFrameworkDataForMultipleFrameworks(
-                mapOf(testDataType to listOfTestCompanyInformation), numberOfDataSetsToPostPerCompany,
+                mapOf(testDataType to listOfTestCompanyInformation), numberOfDatasetsToPostPerCompany,
             )
         Thread.sleep(SLEEP_DURATION_MS)
         val sizeOfListOfDataMetaInfoPerCompanyIdAndDataType =
@@ -163,15 +159,15 @@ class MetaDataControllerTest {
                 false,
             )
         assertEquals(
-            numberOfDataSetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
-            "The first posted company is expected to have meta info about $numberOfDataSetsToPostPerCompany " +
+            numberOfDatasetsToPostPerCompany, sizeOfListOfDataMetaInfoPerCompanyIdAndDataType,
+            "The first posted company is expected to have meta info about $numberOfDatasetsToPostPerCompany " +
                 "data sets, but has meta info about $sizeOfListOfDataMetaInfoPerCompanyIdAndDataType data sets.",
         )
     }
 
     @Test
     fun `ensure that version history field in metadata endpoint of meta data controller works`() {
-        val (companyId, reportingPeriod, newNumberOfEmployees) = uploadTwoDataSetsForACompany()
+        val (companyId, reportingPeriod, newNumberOfEmployees) = uploadTwoDatasetsForACompany()
         ensureThatSecondDatasetIsActive(companyId, reportingPeriod, newNumberOfEmployees)
     }
 
@@ -211,7 +207,7 @@ class MetaDataControllerTest {
         )
     }
 
-    private fun uploadTwoDataSetsForACompany(): Triple<String, String, BigDecimal> {
+    private fun uploadTwoDatasetsForACompany(): Triple<String, String, BigDecimal> {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         val frameworkDataAlpha =
@@ -237,7 +233,7 @@ class MetaDataControllerTest {
                             ),
                     ),
             )
-        apiAccessor.uploadSingleFrameworkDataSet(
+        apiAccessor.uploadSingleFrameworkDataset(
             companyId = companyId,
             frameworkData = frameworkDataBeta,
             reportingPeriod = reportingPeriod,

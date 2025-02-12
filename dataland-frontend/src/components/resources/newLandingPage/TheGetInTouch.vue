@@ -41,6 +41,8 @@ const getInTouchSection = computed(() => {
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables';
+
 .getintouch {
   padding: 140px 0 200px;
   align-items: center;
@@ -99,7 +101,7 @@ const getInTouchSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: $large) {
+@media only screen and (max-width: newVariables.$large) {
   .getintouch {
     &__wrapper {
       grid-template-columns: repeat(12, 1fr);
@@ -120,7 +122,7 @@ const getInTouchSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .getintouch {
     padding: 80px 0;
     &__image {
@@ -132,7 +134,7 @@ const getInTouchSection = computed(() => {
     }
   }
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .getintouch {
     &__wrapper {
       gap: 24px 16px;

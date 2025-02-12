@@ -18,24 +18,59 @@ import java.util.UUID
 
 class FrameworkTestDataProvider<T>(
     private val clazz: Class<T>,
+    private val dataFile: File,
 ) {
-    private val jsonFilesForTesting =
-        mapOf(
-            EutaxonomyNonFinancialsData::class.java to
-                File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsData.json"),
-            EutaxonomyFinancialsData::class.java to
-                File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsData.json"),
-            LksgData::class.java to
-                File("./build/resources/test/CompanyInformationWithLksgData.json"),
-            SfdrData::class.java to
-                File("./build/resources/test/CompanyInformationWithSfdrData.json"),
-            VsmeData::class.java to
-                File("./build/resources/test/CompanyInformationWithVsmeData.json"),
-            PathwaysToParisData::class.java to
-                File("./build/resources/test/CompanyInformationWithP2pData.json"),
-            AdditionalCompanyInformationData::class.java to
-                File("./build/resources/test/CompanyInformationWithAdditionalCompanyInformationData.json"),
-        )
+    data class FrameworkTestDataConfiguration(
+        val fakeFixtureFile: File,
+        val preparedFixtureFile: File,
+    )
+
+    companion object {
+        private val jsonFilesForTesting =
+            mapOf(
+                EutaxonomyNonFinancialsData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsData.json"),
+                        File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json"),
+                    ),
+                EutaxonomyFinancialsData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsData.json"),
+                        File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsPreparedFixtures.json"),
+                    ),
+                LksgData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithLksgData.json"),
+                        File("./build/resources/test/CompanyInformationWithLksgPreparedFixtures.json"),
+                    ),
+                SfdrData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithSfdrData.json"),
+                        File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"),
+                    ),
+                VsmeData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithVsmeData.json"),
+                        File("./build/resources/test/CompanyInformationWithVsmePreparedFixtures.json"),
+                    ),
+                PathwaysToParisData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithP2pData.json"),
+                        File("./build/resources/test/CompanyInformationWithP2pPreparedFixtures.json"),
+                    ),
+                AdditionalCompanyInformationData::class.java to
+                    FrameworkTestDataConfiguration(
+                        File("./build/resources/test/CompanyInformationWithAdditionalCompanyInformationData.json"),
+                        File("./build/resources/test/CompanyInformationWithAdditionalCompanyInformationPreparedFixtures.json"),
+                    ),
+            )
+
+        fun <T> forFrameworkFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
+            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.fakeFixtureFile)
+
+        fun <T> forFrameworkPreparedFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
+            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.preparedFixtureFile)
+    }
 
     private val moshi: Moshi =
         Moshi
@@ -44,8 +79,6 @@ class FrameworkTestDataProvider<T>(
             .add(BigDecimalAdapter)
             .add(LocalDateAdapter)
             .build()
-
-    private fun getJsonFileForTesting(): File = jsonFilesForTesting[clazz]!!
 
     private fun convertJsonToList(jsonFile: File): List<CompanyInformationWithT<T>> {
         val jsonFileAsString = jsonFile.inputStream().bufferedReader().readText()
@@ -60,7 +93,7 @@ class FrameworkTestDataProvider<T>(
         return jsonAdapter.fromJson(jsonFileAsString)!!
     }
 
-    private val testCompanyInformationWithTData = convertJsonToList(getJsonFileForTesting())
+    private val testCompanyInformationWithTData = convertJsonToList(dataFile)
 
     fun getCompanyInformationWithoutIdentifiers(requiredQuantity: Int): List<CompanyInformation> =
         testCompanyInformationWithTData
@@ -71,42 +104,6 @@ class FrameworkTestDataProvider<T>(
                     companyContactDetails = emptyList(),
                 )
             }
-
-    private fun companyListForTestingLksgSpecificValidation(): List<CompanyInformationWithT<T>> =
-        convertJsonToList(File("./build/resources/test/CompanyInformationWithLksgPreparedFixtures.json"))
-
-    private fun companyListForTestingSfdrSpecificValidation(): List<CompanyInformationWithT<T>> =
-        convertJsonToList(File("./build/resources/test/CompanyInformationWithSfdrPreparedFixtures.json"))
-
-    private fun companyListForTestingEuTaxonomyNonFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> =
-        convertJsonToList(
-            File("./build/resources/test/CompanyInformationWithEutaxonomyNonFinancialsPreparedFixtures.json"),
-        )
-
-    private fun companyListForTestingEuTaxonomyFinancialsSpecificValidation(): List<CompanyInformationWithT<T>> =
-        convertJsonToList(
-            File("./build/resources/test/CompanyInformationWithEutaxonomyFinancialsPreparedFixtures.json"),
-        )
-
-    fun getSpecificCompanyByNameFromLksgPreparedFixtures(companyName: String): CompanyInformationWithT<T>? =
-        companyListForTestingLksgSpecificValidation().find {
-            it.companyInformation.companyName == companyName
-        }
-
-    fun getSpecificCompanyByNameFromSfdrPreparedFixtures(companyName: String): CompanyInformationWithT<T>? =
-        companyListForTestingSfdrSpecificValidation().find {
-            it.companyInformation.companyName == companyName
-        }
-
-    fun getSpecificCompanyByNameFromEuTaxonomyNonFinancialsPreparedFixtures(companyName: String): CompanyInformationWithT<T>? =
-        companyListForTestingEuTaxonomyNonFinancialsSpecificValidation().find {
-            it.companyInformation.companyName == companyName
-        }
-
-    fun getSpecificCompanyByNameFromEuTaxonomyFinancialsPreparedFixtures(companyName: String): CompanyInformationWithT<T>? =
-        companyListForTestingEuTaxonomyFinancialsSpecificValidation().find {
-            it.companyInformation.companyName == companyName
-        }
 
     fun getCompanyInformationWithRandomIdentifiers(requiredQuantity: Int): List<CompanyInformation> =
         testCompanyInformationWithTData
@@ -119,6 +116,10 @@ class FrameworkTestDataProvider<T>(
                         ),
                 )
             }
+
+    fun getByCompanyName(companyName: String): CompanyInformationWithT<T> =
+        testCompanyInformationWithTData
+            .first { it.companyInformation.companyName == companyName }
 
     fun getTData(numberOfDataSets: Int): List<T> =
         testCompanyInformationWithTData

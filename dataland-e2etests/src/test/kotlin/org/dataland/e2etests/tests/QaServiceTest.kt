@@ -390,11 +390,11 @@ class QaServiceTest {
 
     private fun getReviewInfoById(dataId: UUID): QaReviewResponse = qaServiceController.getQaReviewResponseByDataId(dataId)
 
-    private fun postEuTaxoData(dataSet: CompanyAssociatedDataEutaxonomyNonFinancialsData): DataMetaInformation =
+    private fun postEuTaxoData(dataset: CompanyAssociatedDataEutaxonomyNonFinancialsData): DataMetaInformation =
         apiAccessor.dataControllerApiForEuTaxonomyNonFinancials
-            .postCompanyAssociatedEutaxonomyNonFinancialsData(dataSet)
+            .postCompanyAssociatedEutaxonomyNonFinancialsData(dataset)
 
-    private fun postSfdrData(dataSet: CompanyAssociatedDataSfdrData): DataMetaInformation =
+    private fun postSfdrData(dataset: CompanyAssociatedDataSfdrData): DataMetaInformation =
         apiAccessor.dataControllerApiForSfdrData
-            .postCompanyAssociatedSfdrData(dataSet)
+            .postCompanyAssociatedSfdrData(dataset)
 }

@@ -38,6 +38,8 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
+@use '@/assets/scss/variables';
+
 .progress-spinner-container {
   position: absolute;
   top: 50%;
@@ -59,7 +61,7 @@ export default defineComponent({
 
 .progress-spinner-spinner {
   font-size: 1.5rem;
-  color: $orange-prime;
+  color: variables.$orange-prime;
 }
 
 .progress-completed-checkmark {
@@ -68,7 +70,7 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 1.2rem;
-  color: $orange-prime;
+  color: variables.$orange-prime;
 }
 
 .spinner-transition-enter-active {

@@ -947,7 +947,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 formatYesNoValueForDatatable(
                   dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIec27001?.value
                 ),
-                'ISO/IEC 27001',
+                'ISO\/IEC 27001',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIec27001
               ),
           },
@@ -962,7 +962,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 formatYesNoValueForDatatable(
                   dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecTs33061?.value
                 ),
-                'ISO/IEC TS 33061',
+                'ISO\/IEC TS 33061',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecTs33061
               ),
           },
@@ -976,7 +976,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
                 formatYesNoValueForDatatable(
                   dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecIeee15288?.value
                 ),
-                'ISO/IEC/IEEE 15288',
+                'ISO\/IEC\/IEEE 15288',
                 dataset.governance?.certificationsPoliciesAndResponsibilities?.isoIecIeee15288
               ),
           },
@@ -1407,7 +1407,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: 'cell',
             label: 'Forced Labor and Slavery Prevention - Employment Contracts',
             explanation:
-              "Do you have a formal hiring process, including employment contracts in the employee's local language, with appropriate wage and termination clauses?",
+              "Do you have a formal hiring process, including employment contracts in the employee\'s local language, with appropriate wage and termination clauses?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
@@ -1430,7 +1430,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: 'cell',
             label: 'Forced Labor and Slavery Prevention - Free Movement',
             explanation:
-              "Do you ensure that doors and windows can be opened to allow the free movement of employees, as well as the ability to leave the company's premises at any time?",
+              "Do you ensure that doors and windows can be opened to allow the free movement of employees, as well as the ability to leave the company\'s premises at any time?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.social?.forcedLaborSlavery?.forcedLaborAndSlaveryPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
@@ -1870,7 +1870,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: 'cell',
             label: 'Diversity and Inclusion Role',
             explanation:
-              "Is a member of your company's management responsible for promoting diversity in the workforce and among business partners?",
+              "Is a member of your company\'s management responsible for promoting diversity in the workforce and among business partners?",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
@@ -1880,7 +1880,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: 'cell',
             label: 'Prevention of Mistreatments',
             explanation:
-              "Does your company's management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
+              "Does your company\'s management promote a work environment free from physical, sexual, mental abuse, threats or other forms of mistreatment? (e.g. diversity program)",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.social?.unequalTreatmentOfEmployment?.unequalTreatmentOfEmploymentPreventionMeasures == 'Yes',
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
@@ -2351,7 +2351,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: 'cell',
             label: 'Contamination Prevention Measures',
             explanation:
-              "Have other measures been taken to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person's access to sanitary facilities; Harms the health of any person",
+              "Have other measures been taken to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person\'s access to sanitary facilities; Harms the health of any person",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -2368,7 +2368,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: 'cell',
             label: 'Contamination Prevention Measures Description',
             explanation:
-              "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person's access to sanitary facilities; Harms the health of any person",
+              "Please list any other measures (if available) you are taking to prevent the risk of harmful soil change, water pollution, air pollution, harmful noise emission or excessive water consumption that: Significantly affects the natural basis for food production; Denies a person access to safe drinking water; Impedes or destroys a person\'s access to sanitary facilities; Harms the health of any person",
             shouldDisplay: (dataset: LksgData): boolean =>
               dataset.social?.contaminationOfSoilWaterAirNoiseEmissionsExcessiveWaterConsumption
                 ?.contaminationPreventionMeasures?.value == 'Yes',
@@ -2390,7 +2390,7 @@ export const lksgViewConfiguration: MLDTConfig<LksgData> = [
             type: 'cell',
             label: 'Unlawful Eviction and Taking of Land',
             explanation:
-              "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person's livelihood, at risk of carrying out: Unlawful evictions; Unlawful claims of land, forests, or water?",
+              "Is your company, as a result of the acquisition, development, or other use of land, forests, or bodies of water, which secures a person\'s livelihood, at risk of carrying out: Unlawful evictions; Unlawful claims of land, forests, or water?",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: LksgData): AvailableMLDTDisplayObjectTypes =>
               formatYesNoValueForDatatable(

@@ -75,7 +75,7 @@
                       >
                         <component
                           v-if="field.showIf(companyAssociatedVsmeData.data)"
-                          :is="field.component"
+                          :is="getComponentByName(field.component)"
                           :label="field.label"
                           :placeholder="field.placeholder"
                           :description="field.description"
@@ -126,202 +126,143 @@
     </template>
   </Card>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import { FormKit } from '@formkit/vue';
-import { computed, defineComponent, inject } from 'vue';
+import { computed, inject, provide, ref } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
-import UploadReports from '@/components/forms/parts/UploadReports.vue';
+
 import { smoothScroll } from '@/utils/SmoothScroll';
 import { createSubcategoryVisibilityMap } from '@/utils/UploadFormUtils';
 import { ApiClientProvider } from '@/services/ApiClients';
 import Card from 'primevue/card';
 import Calendar from 'primevue/calendar';
 import type Keycloak from 'keycloak-js';
-import PrimeButton from 'primevue/button';
-import { type Category, type Subcategory } from '@/utils/GenericFrameworkTypes';
+import { type Category } from '@/utils/GenericFrameworkTypes';
 import { AxiosError } from 'axios';
 import { type CompanyAssociatedDataVsmeData, DataTypeEnum, type VsmeData } from '@clients/backend';
 import { vsmeDataModel } from '@/frameworks/vsme/UploadConfig';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
-import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
-import NumberFormField from '@/components/forms/parts/fields/NumberFormField.vue';
-import MultiSelectFormField from '@/components/forms/parts/fields/MultiSelectFormField.vue';
+
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
 import SubmitSideBar from '@/components/forms/parts/SubmitSideBar.vue';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
-import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
-import SingleSelectFormField from '@/components/forms/parts/fields/SingleSelectFormField.vue';
-import BigDecimalExtendedDataPointFormField from '@/components/forms/parts/fields/BigDecimalExtendedDataPointFormField.vue';
-import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
+
 import { type DocumentToUpload, getAvailableFileNames } from '@/utils/FileUploadUtils';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { formatAxiosErrorMessage } from '@/utils/AxiosErrorMessageFormatter';
 import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
 import { type PrivateFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
-import PollutionEmissionFormField from '@/components/forms/parts/fields/PollutionEmissionFormField.vue';
-import SubsidiaryFormField from '@/components/forms/parts/fields/SubsidiaryFormField.vue';
-import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
-import FreeTextFormField from '@/components/forms/parts/fields/FreeTextFormField.vue';
-import RadioButtonsFormField from '@/components/forms/parts/fields/RadioButtonsFormField.vue';
-import WasteClassificationFormField from '@/components/forms/parts/fields/WasteClassificationFormField.vue';
-import SiteAndAreaFormField from '@/components/forms/parts/fields/SiteAndAreaFormField.vue';
-import EmployeesPerCountryFormField from '@/components/forms/parts/fields/EmployeesPerCountryFormField.vue';
-import ListOfBaseDataPointsFormField from '@/components/forms/parts/fields/ListOfBaseDataPointsFormField.vue';
+
+import { getComponentByName } from '@/components/forms/UploadPageComponentDictionary.ts';
 const referenceableReportsFieldId = 'referenceableReports';
-export default defineComponent({
-  setup() {
-    return {
-      getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
-    };
-  },
-  name: 'CreateVsmeDataset',
-  components: {
-    FormKit,
-    UploadFormHeader,
-    MultiSelectFormField,
-    NumberFormField,
-    Card,
-    PrimeButton,
-    Calendar,
-    SuccessMessage,
-    FailMessage,
-    SubmitButton,
-    SubmitSideBar,
-    DateFormField,
-    SingleSelectFormField,
-    BigDecimalExtendedDataPointFormField,
-    YesNoFormField,
-    NaceCodeFormField,
-    UploadReports,
-    PollutionEmissionFormField,
-    SubsidiaryFormField,
-    FreeTextFormField,
-    YesNoBaseDataPointFormField,
-    RadioButtonsFormField,
-    WasteClassificationFormField,
-    SiteAndAreaFormField,
-    EmployeesPerCountryFormField,
-    ListOfBaseDataPointsFormField,
-  },
-  emits: ['datasetCreated'],
-  data() {
-    return {
-      formId: 'createVsmeForm',
-      companyAssociatedVsmeData: {} as CompanyAssociatedDataVsmeData,
-      vsmeUploadConfig: vsmeDataModel,
-      message: '',
-      smoothScroll: smoothScroll,
-      uploadSucceded: false,
-      postVsmeDataProcessed: false,
-      messageCounter: 0,
-      checkCustomInputs,
-      namesAndReferencesOfAllCompanyReportsForTheDataset: {},
-      reportingPeriod: undefined as undefined | Date,
-      fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
-    };
-  },
-  computed: {
-    reportingPeriodYear(): string | undefined {
-      if (this.reportingPeriod) {
-        return this.reportingPeriod.getFullYear().toString();
-      }
-      return undefined;
-    },
-    visibleCategories(): Category[] {
-      return this.vsmeUploadConfig.filter((category: Category) => category.showIf(this.companyAssociatedVsmeData.data));
-    },
-    subcategoryVisibilityMap(): Map<Subcategory, boolean> {
-      return createSubcategoryVisibilityMap(this.vsmeUploadConfig, this.companyAssociatedVsmeData.data);
-    },
-    namesOfAllCompanyReportsForTheDataset(): string[] {
-      return getAvailableFileNames(this.namesAndReferencesOfAllCompanyReportsForTheDataset);
-    },
-  },
-  props: {
-    companyID: {
-      type: String,
-      required: true,
-    },
-  },
-  methods: {
-    /**
-     * Builds an api to upload Vsme data
-     * @returns the api
-     */
-    buildVsmeDataApi(): PrivateFrameworkDataApi<VsmeData> | undefined {
-      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-      const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Vsme);
-      if (frameworkDefinition) {
-        return frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
-      } else return undefined;
-    },
 
-    /**
-     * Sends data to add VSME data
-     */
-    async postVsmeData(): Promise<void> {
-      this.messageCounter++;
-      try {
-        if (this.fieldSpecificDocuments.get(referenceableReportsFieldId)?.length) {
-          checkIfAllUploadedReportsAreReferencedInDataModel(
-            this.companyAssociatedVsmeData.data as ObjectType,
-            this.namesOfAllCompanyReportsForTheDataset
-          );
-        }
-        const documentsToUpload = Array.from(this.fieldSpecificDocuments.values()).flat();
-        const files: File[] = documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
-        const vsmeDataControllerApi = this.buildVsmeDataApi();
-        await vsmeDataControllerApi!.postFrameworkData(this.companyAssociatedVsmeData, files);
-        this.$emit('datasetCreated');
-        this.message = 'Upload successfully executed.';
-        this.uploadSucceded = true;
-      } catch (error) {
-        console.error(error);
-        if (error instanceof AxiosError) {
-          this.message = 'An error occurred: ' + error.message;
-        } else if ((error as Error).message) {
-          this.message = formatAxiosErrorMessage(error as Error);
-        }
-        this.uploadSucceded = false;
-      } finally {
-        this.postVsmeDataProcessed = true;
-      }
-    },
+const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const emit = defineEmits(['datasetCreated']);
+defineProps<{
+  companyID: string;
+}>();
 
-    /**
-     * updates the list of documents that were uploaded
-     * @param reportsNamesAndReferences reports names and references
-     * @param reportsToUpload reports to upload
-     */
-    updateDocumentsList(reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]) {
-      this.namesAndReferencesOfAllCompanyReportsForTheDataset = reportsNamesAndReferences;
-      if (reportsToUpload.length) {
-        this.fieldSpecificDocuments.set(referenceableReportsFieldId, reportsToUpload);
-      } else {
-        this.fieldSpecificDocuments.delete(referenceableReportsFieldId);
-      }
-    },
-    /**
-     * Updates the referenced document for a specific field
-     * @param fieldId an identifier for the field
-     * @param referencedDocument the document that is referenced
-     */
-    updateDocumentsOnField(fieldId: string, referencedDocument: DocumentToUpload | undefined) {
-      if (referencedDocument) {
-        this.fieldSpecificDocuments.set(fieldId, [referencedDocument]);
-      } else {
-        this.fieldSpecificDocuments.delete(fieldId);
-      }
-    },
-  },
-  provide() {
-    return {
-      namesAndReferencesOfAllCompanyReportsForTheDataset: computed(() => {
-        return this.namesAndReferencesOfAllCompanyReportsForTheDataset;
-      }),
-    };
-  },
+const formId = 'createVsmeForm';
+const companyAssociatedVsmeData = ref({} as CompanyAssociatedDataVsmeData);
+const message = ref('');
+const uploadSucceded = ref(false);
+const postVsmeDataProcessed = ref(false);
+const messageCounter = ref(0);
+const namesAndReferencesOfAllCompanyReportsForTheDataset = ref({});
+const reportingPeriod = ref<Date | undefined>(undefined);
+const fieldSpecificDocuments = ref(new Map<string, DocumentToUpload[]>());
+
+const reportingPeriodYear = computed(() => {
+  if (reportingPeriod.value) {
+    return reportingPeriod.value.getFullYear().toString();
+  }
+  return undefined;
 });
+
+const visibleCategories = computed(() => {
+  return vsmeDataModel.filter((category: Category) => category.showIf(companyAssociatedVsmeData.value.data));
+});
+
+const subcategoryVisibilityMap = computed(() => {
+  return createSubcategoryVisibilityMap(vsmeDataModel, companyAssociatedVsmeData.value.data);
+});
+
+const namesOfAllCompanyReportsForTheDataset = computed(() => {
+  return getAvailableFileNames(namesAndReferencesOfAllCompanyReportsForTheDataset.value);
+});
+
+provide('namesAndReferencesOfAllCompanyReportsForTheDataset', namesAndReferencesOfAllCompanyReportsForTheDataset);
+
+/**
+ * Builds an api to upload Vsme data
+ * @returns the api
+ */
+const buildVsmeDataApi = (): PrivateFrameworkDataApi<VsmeData> | undefined => {
+  const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
+  const frameworkDefinition = getBasePrivateFrameworkDefinition(DataTypeEnum.Vsme);
+  if (frameworkDefinition) {
+    return frameworkDefinition.getPrivateFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
+  } else return undefined;
+};
+
+/**
+ * Sends data to add VSME data
+ */
+const postVsmeData = async (): Promise<void> => {
+  messageCounter.value++;
+  try {
+    if (fieldSpecificDocuments.value.get(referenceableReportsFieldId)?.length) {
+      checkIfAllUploadedReportsAreReferencedInDataModel(
+        companyAssociatedVsmeData.value.data as ObjectType,
+        namesOfAllCompanyReportsForTheDataset.value
+      );
+    }
+    const documentsToUpload = Array.from(fieldSpecificDocuments.value.values()).flat();
+    const files: File[] = documentsToUpload.map((documentsToUpload) => documentsToUpload.file);
+    const vsmeDataControllerApi = buildVsmeDataApi();
+    await vsmeDataControllerApi!.postFrameworkData(companyAssociatedVsmeData.value, files);
+    emit('datasetCreated');
+    message.value = 'Upload successfully executed.';
+    uploadSucceded.value = true;
+  } catch (error) {
+    console.error(error);
+    if (error instanceof AxiosError) {
+      message.value = 'An error occurred: ' + error.message;
+    } else if ((error as Error).message) {
+      message.value = formatAxiosErrorMessage(error as Error);
+    }
+    uploadSucceded.value = false;
+  } finally {
+    postVsmeDataProcessed.value = true;
+  }
+};
+
+/**
+ * updates the list of documents that were uploaded
+ * @param reportsNamesAndReferences reports names and references
+ * @param reportsToUpload reports to upload
+ */
+const updateDocumentsList = (reportsNamesAndReferences: object, reportsToUpload: DocumentToUpload[]): void => {
+  namesAndReferencesOfAllCompanyReportsForTheDataset.value = reportsNamesAndReferences;
+  if (reportsToUpload.length) {
+    fieldSpecificDocuments.value.set(referenceableReportsFieldId, reportsToUpload);
+  } else {
+    fieldSpecificDocuments.value.delete(referenceableReportsFieldId);
+  }
+};
+
+/**
+ * Updates the referenced document for a specific field
+ * @param fieldId an identifier for the field
+ * @param referencedDocument the document that is referenced
+ */
+const updateDocumentsOnField = (fieldId: string, referencedDocument: DocumentToUpload | undefined): void => {
+  if (referencedDocument) {
+    fieldSpecificDocuments.value.set(fieldId, [referencedDocument]);
+  } else {
+    fieldSpecificDocuments.value.delete(fieldId);
+  }
+};
 </script>

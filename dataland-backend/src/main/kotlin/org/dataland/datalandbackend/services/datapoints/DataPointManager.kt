@@ -95,7 +95,7 @@ class DataPointManager
             metaDataManager.storeDataPointMetaInformation(dataPointMetaInformationEntity)
             dataManager.storeDataInTemporaryStorage(dataPointId, objectMapper.writeValueAsString(uploadedDataPoint), correlationId)
 
-            return dataPointMetaInformationEntity.toApiModel(DatalandAuthentication.fromContextOrNull())
+            return dataPointMetaInformationEntity.toApiModel()
         }
 
         /**
