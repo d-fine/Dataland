@@ -50,14 +50,11 @@ class CompanyQueryManager(
         val offset = chunkIndex * (chunkSize ?: 0)
         return if (filter.searchStringLength == 0) {
             if (areAllDropdownFiltersDeactivated(filter)) {
-                val listOfAllCompanies =
-                    companyRepository
-                        .getAllCompaniesWithDataset(
-                            chunkSize, offset,
-                        )
                 val listOfLeis = LEIList.leis.values
-                val (filteredCompanies, remainingCompanies) = listOfAllCompanies.partition { it.lei in listOfLeis }
-                filteredCompanies + remainingCompanies
+                companyRepository
+                    .getAllCompaniesWithDataset(
+                        chunkSize, offset, listOfLeis,
+                    )
             } else {
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }

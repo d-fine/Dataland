@@ -25,20 +25,26 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " headquarters, " +
                 " country_code AS countryCode, " +
                 " sector, " +
-                " identifier_value AS lei " +
+                " identifier_value AS lei, " +
+                " CASE " +
+                " WHEN leis.identifier_value IN (:listOfLeis) THEN 2" +
+                " ELSE 1" +
+                " END AS dataset_rank" +
                 // get required information from stored companies where active dataset exists
                 " FROM (" +
                 " SELECT company_id, company_name, headquarters, country_code, sector FROM stored_companies " +
                 " WHERE company_id IN " +
-                " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true') " +
-                " ORDER BY company_name ASC LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
+                " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true')  " +
+                " ) AS has_active_data " +
                 " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
-                " ON leis.company_id = has_active_data.company_Id" +
-                " ORDER BY company_name ASC",
+                " ON leis.company_id = has_active_data.company_id" +
+                " ORDER BY dataset_rank DESC, company_name ASC" +
+                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
     )
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
+        @Param("listOfLeis") listOfLeis: Collection<String>,
     ): List<BasicCompanyInformation>
 
     /**
