@@ -692,6 +692,7 @@ services:
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
       SLACK_ALERT_URL: ${SLACK_ALERT_URL}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
     volumes:
       - ${LOKI_VOLUME}:/loki
     networks:
