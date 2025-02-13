@@ -53,7 +53,6 @@ const props = defineProps<{
 const euTaxonomyFrameworks = new Set<DataTypeEnum>([
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.EutaxonomyNonFinancials,
-  DataTypeEnum.NuclearAndGas,
 ]);
 const title = computed(() => {
   if (!euTaxonomyFrameworks.has(props.framework)) {
@@ -67,8 +66,6 @@ const subtitle = computed(() => {
     return '';
   } else if (props.framework == DataTypeEnum.EutaxonomyFinancials) {
     return 'for financial companies';
-  } else if (props.framework == DataTypeEnum.NuclearAndGas) {
-    return 'Nuclear and Gas';
   } else {
     return 'for non-financial companies';
   }
