@@ -35,7 +35,7 @@ ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_
 # Health check for docker container
 health_check_location=$location/health-check/
 rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:$health_check_location
-ssh ubuntu@"$target_server_url" << 'EOF'
+ssh ubuntu@"$target_server_url" << EOF
   sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
   sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
   sudo mv "$health_check_location/health-check" /etc/logrotate.d/health-check &&
