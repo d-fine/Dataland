@@ -32,13 +32,14 @@ scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$locatio
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
-# Health check for docker container (preparation)
+echo "Configure health check for docker containers"
 health_check_location=$location/health-check/
 rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:$health_check_location
 ssh ubuntu@"$target_server_url" << EOF
   sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
   sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
   sudo mv "$health_check_location/health-check" /etc/logrotate.d/health-check &&
+  sudo sed -i '/\[Service\]/a Environment="LOKI_VOLUME=$loki_volume"' /etc/systemd/system/health-check.service &&
   sudo chmod +x /usr/local/bin/healthCheck.sh &&
   sudo systemctl daemon-reload &&
   sudo systemctl enable health-check.service
@@ -81,9 +82,9 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
 fi
 
 ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
-    echo "Creating '$loki_volume' dir as volume for Loki container"
-    sudo mkdir -p $loki_volume
-    sudo chmod a+w $loki_volume
+    echo 'Creating $loki_volume dir as volume for Loki container'
+    sudo mkdir -p '$loki_volume'
+    sudo chmod a+w '$loki_volume'
 fi"
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
@@ -116,5 +117,5 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
 
-# Start Health check for docker container
+echo "Start Health check for docker containers"
 ssh ubuntu@"$target_server_url" "sudo systemctl start health-check.service"
