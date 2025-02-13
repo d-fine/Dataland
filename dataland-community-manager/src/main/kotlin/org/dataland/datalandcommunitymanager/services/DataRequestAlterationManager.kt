@@ -138,7 +138,7 @@ class DataRequestAlterationManager
                         dataType = setOf(metaData.dataType),
                         userId = null,
                         emailAddress = null,
-                        datalandCompanyId = metaData.companyId,
+                        datalandCompanyIds = setOf(metaData.companyId),
                         reportingPeriod = metaData.reportingPeriod,
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                         accessStatus = null,

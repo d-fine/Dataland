@@ -130,7 +130,7 @@ class DataRequestAlterationManagerTest {
             mockDataRequestRepository.searchDataRequestEntity(
                 searchFilter =
                     DataRequestsFilter(
-                        setOf(metaData.dataType), null, null, metaData.companyId, metaData.reportingPeriod,
+                        setOf(metaData.dataType), null, null, setOf(metaData.companyId), metaData.reportingPeriod,
                         setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
                     ),
             ),
