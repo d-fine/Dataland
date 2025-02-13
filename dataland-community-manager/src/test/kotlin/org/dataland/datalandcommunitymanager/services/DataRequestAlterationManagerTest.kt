@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
@@ -46,33 +47,11 @@ class DataRequestAlterationManagerTest {
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockRequestEmailManager: RequestEmailManager
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
+    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
 
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
-    private val dummyDataRequestEntities: List<DataRequestEntity> =
-        listOf(
-            DataRequestEntity(
-                userId = "",
-                dataType = "p2p",
-                reportingPeriod = "",
-                creationTimestamp = 0,
-                datalandCompanyId = "",
-            ),
-            DataRequestEntity(
-                userId = "dummyId",
-                dataType = "dummyDataType",
-                reportingPeriod = "dummyPeriod",
-                creationTimestamp = 123456,
-                datalandCompanyId = "dummyCompanyId",
-            ),
-            DataRequestEntity(
-                userId = "1234",
-                dataType = "p2p",
-                reportingPeriod = "dummyPeriod",
-                creationTimestamp = 0,
-                datalandCompanyId = "dummyCompanyId",
-            ),
-        )
+    private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
 
     private val dummyRequestChangeReason = "dummy reason"
 
@@ -94,7 +73,7 @@ class DataRequestAlterationManagerTest {
             reason = dummyRequestChangeReason,
         )
 
-    private val dummyDataRequestEntity: DataRequestEntity = dummyDataRequestEntities[0]
+    private lateinit var dummyDataRequestEntity: DataRequestEntity
 
     private val metaData =
         DataMetaInformation(
@@ -155,16 +134,15 @@ class DataRequestAlterationManagerTest {
         )
     }
 
-    @BeforeEach
-    fun setupDataRequestAlterationManager() {
-        mockRepos()
-
+    private fun setupDataRequestAlterationManager() {
         mockRequestEmailManager = mock(RequestEmailManager::class.java)
         mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
 
         mockMetaControllerApi = mock(MetaDataControllerApi::class.java)
         `when`(mockMetaControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
+
+        mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
 
         dataRequestAlterationManager =
             DataRequestAlterationManager(
@@ -174,11 +152,11 @@ class DataRequestAlterationManagerTest {
                 requestEmailManager = mockRequestEmailManager,
                 companyRolesManager = mockCompanyRolesManager,
                 utils = mockDataRequestProcessingUtils,
+                companyDataControllerApi = mockCompanyDataControllerApi,
             )
     }
 
-    @BeforeEach
-    fun setupSecurityMock() {
+    private fun setupSecurityMock() {
         val mockSecurityContext = mock(SecurityContext::class.java)
         mockAuthentication =
             AuthenticationMock.mockJwtAuthentication(
@@ -189,6 +167,42 @@ class DataRequestAlterationManagerTest {
         `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
         `when`(mockAuthentication.credentials).thenReturn("")
         SecurityContextHolder.setContext(mockSecurityContext)
+    }
+
+    private fun setupDummyDataRequestEntities() {
+        dummyDataRequestEntities =
+            listOf(
+                DataRequestEntity(
+                    userId = "",
+                    dataType = "p2p",
+                    reportingPeriod = "",
+                    creationTimestamp = 0,
+                    datalandCompanyId = "",
+                ),
+                DataRequestEntity(
+                    userId = "dummyId",
+                    dataType = "dummyDataType",
+                    reportingPeriod = "dummyPeriod",
+                    creationTimestamp = 123456,
+                    datalandCompanyId = "dummyCompanyId",
+                ),
+                DataRequestEntity(
+                    userId = "1234",
+                    dataType = "p2p",
+                    reportingPeriod = "dummyPeriod",
+                    creationTimestamp = 0,
+                    datalandCompanyId = "dummyCompanyId",
+                ),
+            )
+        dummyDataRequestEntity = dummyDataRequestEntities[0]
+    }
+
+    @BeforeEach
+    fun setupMocksAndDummyRequests() {
+        setupSecurityMock()
+        setupDummyDataRequestEntities()
+        mockRepos()
+        setupDataRequestAlterationManager()
     }
 
     @Test
