@@ -667,11 +667,11 @@ services:
     profiles: [ "production", "testing", "development" ]
     image: ${GRAFANA_IMAGE:-ghcr.io/d-fine/dataland/dataland_grafana:${DATALAND_GRAFANA_VERSION}}
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-      - GF_SERVER_ROOT_URL=http://dataland-admin:6789/grafana/
-      - SLACK_ALERT_URL=${SLACK_ALERT_URL}
-      - SLACK_CRITICAL_ALERT_URL=${SLACK_CRITICAL_ALERT_URL}
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+      GF_SERVER_ROOT_URL: http://dataland-admin:6789/grafana/
+      SLACK_ALERT_URL: ${SLACK_ALERT_URL}
+      SLACK_CRITICAL_ALERT_URL: ${SLACK_CRITICAL_ALERT_URL}
     expose:
       - "3000"
     volumes:
@@ -691,6 +691,7 @@ services:
       - "3100"
     environment:
       INTERNAL_LOKI_URL: ${INTERNAL_LOKI_URL:-http://loki:3100}
+      SLACK_ALERT_URL: ${SLACK_ALERT_URL}
     volumes:
       - ${LOKI_VOLUME}:/loki
     networks:
