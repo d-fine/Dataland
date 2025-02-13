@@ -304,7 +304,7 @@ export default defineComponent({
 .document-button {
   width: fit-content;
   margin-top: 20px;
-  @media only screen and (min-width: $small) {
+  @media only screen  {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
