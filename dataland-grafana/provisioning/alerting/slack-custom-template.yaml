@@ -51,6 +51,13 @@ templates:
     name: alert_resolved_template
     template: |
       {{ define "alert_resolved_template" }}
+      {{- if .Labels.job }}
+      *Job:* {{ .Labels.job }}
+      {{- end }}
       *Service:* {{ .Labels.service_name }}
-      *Resolved Time:* {{ .Annotations.resolved_time }}
+      {{- if .Labels.container }}
+      *Container:* {{ .Labels.container }}
+      {{- end }}
+      *Detected level:* {{ .Labels.detected_level }}
+      *Env:* {{ .Labels.env }}
       {{ end }}
