@@ -138,6 +138,7 @@ tasks.register("generateCommunityManagerClient", org.openapitools.generator.grad
 }
 
 tasks.register("generateClients") {
+    group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateCommunityManagerClient")
 }
