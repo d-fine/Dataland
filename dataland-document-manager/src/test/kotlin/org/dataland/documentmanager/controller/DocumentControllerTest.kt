@@ -88,7 +88,7 @@ class DocumentControllerTest(
     }
 
     @Test
-    fun `test that patch endpoints are not accessible for reader, nor reviewers`() {
+    fun `test that patch endpoints are not accessible for reader nor reviewers`() {
         val dummyDocumentID = UUID.randomUUID().toString()
         val mockDocumentMetaInfoPatch = mock<DocumentMetaInfoPatch>()
 
