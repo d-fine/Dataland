@@ -37,7 +37,7 @@ health_check_location=$location/health-check/
 rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:$health_check_location
 ssh ubuntu@"$target_server_url" << EOF
   if ! grep -q LOKI_VOLUME /etc/environment; then
-      echo 'LOKI_VOLUME=$loki_volume' | sudo tee -a /etc/environment
+      echo "LOKI_VOLUME=$loki_volume" | sudo tee -a /etc/environment
   fi
   sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
   sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
