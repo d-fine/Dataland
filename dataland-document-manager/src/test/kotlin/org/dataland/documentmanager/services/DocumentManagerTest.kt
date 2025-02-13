@@ -30,6 +30,7 @@ import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
@@ -55,10 +56,21 @@ class DocumentManagerTest(
     private val mockDocumentName = "sample.pdf"
     private val unknownDocumentId = "unknownDocumentId"
     private val knownCompanyId = "knownCompanyId"
+    private val knownDocumentId = "known-document-id"
     private val knownButNonRetrievableDocumentId = "knownButNonRetrievableDocumentId"
 
     private val dummyDocumentMetaInfo =
         DocumentMetaInfo(
+            documentName = mockDocumentName,
+            documentCategory = DocumentCategory.AnnualReport,
+            companyIds = mutableSetOf(knownCompanyId),
+            publicationDate = LocalDate.parse("2023-01-01"),
+            reportingPeriod = "2023",
+        )
+
+    private val dummyDocumentUploadResponse =
+        DocumentMetaInfoResponse(
+            documentId = knownDocumentId,
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(knownCompanyId),
@@ -155,6 +167,13 @@ class DocumentManagerTest(
 
     @Test
     fun `check that retrieving meta info of an existing but nonretrievable document throws the appropriate exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
+        }
+    }
+
+    @Test
+    fun `check that trying to retrieve the metainfo of an existing but nonretrievable document throws exception`() {
         assertThrows<ResourceNotFoundApiException> {
             documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
         }
@@ -318,5 +337,78 @@ class DocumentManagerTest(
         assertEquals(expectedListOfCompanyIds, dummyDocumentMetaInfoEntity.companyIds)
         assertEquals(dummyDocumentMetaInfo.publicationDate, dummyDocumentMetaInfoEntity.publicationDate)
         assertEquals(dummyDocumentMetaInfo.reportingPeriod, dummyDocumentMetaInfoEntity.reportingPeriod)
+    }
+
+    private fun setUpDocumentIdToBeFound(documentId: String) {
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(documentId)
+        doReturn(buildDocumentMetaInfoEntityWithDocumentId(documentId))
+            .whenever(
+                mockDocumentMetaInfoRepository,
+            ).getByDocumentId(documentId)
+    }
+
+    @Test
+    fun `check that retrieval of document metainfo works for an existing document id`() {
+        val response1 = dummyDocumentUploadResponse
+        setUpDocumentIdToBeFound(response1.documentId)
+        val response2 = documentManager.retrieveDocumentMetaInfo(response1.documentId)
+        assertEquals(response1, response2)
+    }
+
+    @Test
+    fun `check that the search filter is built correctly in a search request with no specified chunkSize`() {
+        // Empty list, since the database response itself is irrelevant, only that the correct query is made.
+        val emptyList: List<DocumentMetaInfoEntity> = listOf()
+        doReturn(emptyList)
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = any(),
+                documentCategory = any(),
+                reportingPeriod = any(),
+                limit = any(),
+                offset = any(),
+            )
+        val searchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId = knownCompanyId,
+                documentCategory = null,
+                reportingPeriod = "2023",
+            )
+        documentManager.searchForDocumentMetaInformation(searchFilter)
+        verify(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = knownCompanyId,
+                documentCategory = null,
+                reportingPeriod = "2023",
+            )
+    }
+
+    @Test
+    fun `check that search filter, limit and offset are built correctly in a search request`() {
+        val emptyList: List<DocumentMetaInfoEntity> = listOf()
+        doReturn(emptyList)
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = any(),
+                documentCategory = any(),
+                reportingPeriod = any(),
+                limit = any(),
+                offset = any(),
+            )
+        val searchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId = knownCompanyId,
+                documentCategory = null,
+                reportingPeriod = "2023",
+            )
+        documentManager.searchForDocumentMetaInformation(searchFilter, chunkSize = 50, chunkIndex = 3)
+        verify(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = knownCompanyId,
+                documentCategory = null,
+                reportingPeriod = "2023",
+                limit = 50,
+                offset = 150,
+            )
     }
 }
