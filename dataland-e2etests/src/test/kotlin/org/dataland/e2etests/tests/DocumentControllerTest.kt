@@ -4,19 +4,17 @@ import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.utils.sha256
-import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
 import org.dataland.documentmanager.openApiClient.model.DocumentUploadResponse
-import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -26,8 +24,8 @@ import java.util.concurrent.TimeUnit
 
 class DocumentControllerTest {
     private val apiAccessor = ApiAccessor()
-    private val documentControllerClient = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
-    private val logger = LoggerFactory.getLogger(DocumentControllerTest::class.java)
+    private val documentControllerApiAccessor = DocumentControllerApiAccessor()
+    private val documentControllerClient = documentControllerApiAccessor.documentControllerApi
 
     private val pdfDocument = File("./public/test-report.pdf")
     private val xlsxDocument = File("./public/sample.xlsx")
@@ -38,7 +36,7 @@ class DocumentControllerTest {
     @Test
     fun `test that a dummy docx document can be uploaded and retrieved as pdf after successful QA`() {
         assertFalse(isByteArrayRepresentationOfPdf(docxDocument.readBytes()))
-        val uploadResponse = uploadDocument(docxDocument)
+        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(docxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         val byteArrayOfDownload = downloadedFile.readBytes()
         validateResponseHeaders(uploadResponse, DocumentType.Pdf.mediaType, byteArrayOfDownload.size.toString())
@@ -52,7 +50,7 @@ class DocumentControllerTest {
 
     @Test
     fun `test that a dummy ods document can be uploaded and retrieved after successful QA`() {
-        val uploadResponse = uploadDocument(odsDocument)
+        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(odsDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         val byteArrayOfOds = odsDocument.readBytes()
         validateResponseHeaders(uploadResponse, DocumentType.Ods.mediaType, byteArrayOfOds.size.toString())
@@ -61,7 +59,7 @@ class DocumentControllerTest {
 
     @Test
     fun `test that a dummy xlsx document can be uploaded and retrieved after successful QA`() {
-        val uploadResponse = uploadDocument(xlsxDocument)
+        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(xlsxDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         val byteArrayOfXlsx = xlsxDocument.readBytes()
         validateResponseHeaders(uploadResponse, DocumentType.Xlsx.mediaType, byteArrayOfXlsx.size.toString())
@@ -70,7 +68,7 @@ class DocumentControllerTest {
 
     @Test
     fun `test that a dummy xls document can be uploaded and retrieved after successful QA`() {
-        val uploadResponse = uploadDocument(xlsDocument)
+        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(xlsDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         val byteArrayOfXls = xlsDocument.readBytes()
         validateResponseHeaders(uploadResponse, DocumentType.Xls.mediaType, byteArrayOfXls.size.toString())
@@ -80,7 +78,7 @@ class DocumentControllerTest {
     @Test
     fun `test that a dummy pdf document can be uploaded and retrieved after successful QA`() {
         val byteArrayOfPdf = pdfDocument.readBytes()
-        val uploadResponse = uploadDocument(pdfDocument)
+        val uploadResponse = documentControllerApiAccessor.uploadDocumentAsUser(pdfDocument)
         val downloadedFile = ensureQaCompleted(uploadResponse)
         validateResponseHeaders(uploadResponse, DocumentType.Pdf.mediaType, byteArrayOfPdf.size.toString())
         assertEquals(byteArrayOfPdf.sha256(), downloadedFile.readBytes().sha256())
@@ -108,16 +106,31 @@ class DocumentControllerTest {
         removeAllRolesFromUser(dataReaderId)
 
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
-        assertThrows<ClientException> { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+        assertThrows<ClientException> {
+            documentControllerApiAccessor.uploadDocumentAsUser(
+                pdfDocument,
+                TechnicalUser.Reader,
+            )
+        }
         for (role in CompanyRole.entries) {
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
             apiAccessor.companyRolesControllerApi.assignCompanyRole(role, testCompanyId, dataReaderId)
 
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Reader)
             if (role in companyRolesAllowedToPostDocument) {
-                assertDoesNotThrow { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+                assertDoesNotThrow {
+                    documentControllerApiAccessor.uploadDocumentAsUser(
+                        pdfDocument,
+                        TechnicalUser.Reader,
+                    )
+                }
             } else {
-                assertThrows<ClientException> { uploadDocument(pdfDocument, TechnicalUser.Reader) }
+                assertThrows<ClientException> {
+                    documentControllerApiAccessor.uploadDocumentAsUser(
+                        pdfDocument,
+                        TechnicalUser.Reader,
+                    )
+                }
             }
 
             apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
@@ -139,33 +152,6 @@ class DocumentControllerTest {
                 userId,
             )
         }
-    }
-
-    /**
-     * uploads a document
-     * @param document document to upload
-     * @returns the upload response
-     */
-    private fun uploadDocument(
-        document: File,
-        technicalUser: TechnicalUser = TechnicalUser.Uploader,
-    ): DocumentUploadResponse {
-        apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
-        val expectedHash = document.readBytes().sha256()
-        var uploadResponse: DocumentUploadResponse
-        try {
-            uploadResponse = documentControllerClient.postDocument(document)
-            assertEquals(expectedHash, uploadResponse.documentId)
-            documentControllerClient.checkDocument(uploadResponse.documentId)
-        } catch (clientException: ClientException) {
-            if (clientException.statusCode == HttpStatus.CONFLICT.value()) {
-                logger.info("Document already exists.")
-                uploadResponse = DocumentUploadResponse(documentId = expectedHash)
-            } else {
-                throw clientException
-            }
-        }
-        return uploadResponse
     }
 
     /**

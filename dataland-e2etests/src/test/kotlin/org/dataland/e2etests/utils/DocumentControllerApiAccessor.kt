@@ -11,15 +11,18 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import java.io.File
 
-class DocumentManagerAccessor {
+class DocumentControllerApiAccessor {
     companion object {
         const val WAIT_TIME_IN_MS = 500L
         const val MAX_ATTEMPTS_TO_CHECK_DOCUMENT = 20
     }
 
-    private val logger = LoggerFactory.getLogger(DocumentManagerAccessor::class.java)
+    val documentControllerApi = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
 
-    private val documentControllerApi = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
+    private val logger = LoggerFactory.getLogger(DocumentControllerApiAccessor::class.java)
+
+    private val jwtHelper = JwtAuthenticationHelper()
+
     private val testFiles =
         listOf(
             File("./build/resources/test/documents/some-document.pdf"),
@@ -32,13 +35,10 @@ class DocumentManagerAccessor {
             File("./build/resources/test/documents/more-pdfs-in-seperate-directory/some-document.pdf"),
         )
 
-    val jwtHelper = JwtAuthenticationHelper()
-
     fun uploadAllTestDocumentsAndAssurePersistence() {
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val documentIds = mutableListOf<String>()
         testFiles.forEach { file ->
-            documentIds.add(uploadDocument(file).documentId)
+            documentIds.add(uploadDocumentAsUser(file).documentId)
         }
         documentIds.forEach { documentId -> executeDocumentExistenceCheckWithRetries(documentId) }
     }
@@ -57,7 +57,11 @@ class DocumentManagerAccessor {
         }
     }
 
-    private fun uploadDocument(document: File): DocumentUploadResponse {
+    fun uploadDocumentAsUser(
+        document: File,
+        technicalUser: TechnicalUser = TechnicalUser.Uploader,
+    ): DocumentUploadResponse {
+        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val expectedHash = document.readBytes().sha256()
         var uploadResponse: DocumentUploadResponse
         try {

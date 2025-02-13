@@ -3,7 +3,7 @@ package org.dataland.e2etests.tests
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -14,7 +14,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataDeletionControllerTest {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
 
     private val testDataEuTaxonomyNonFinancials =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials
