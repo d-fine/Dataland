@@ -84,6 +84,8 @@ ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
     echo 'Creating $loki_volume dir as volume for Loki container'
     sudo mkdir -p '$loki_volume'
     sudo chmod a+w '$loki_volume'
+    sudo mkdir -p '$loki_volume/health-check-log'
+    sudo chmod a+w '$loki_volume/health-check-log'
 fi"
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
