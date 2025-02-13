@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.UUID
 
+private const val RESULTS_PER_PAGE = 100
+
 /**
  * Service class for managing and updating the priorities of data requests in the Dataland community manager.
  */
@@ -37,12 +39,19 @@ class RequestPriorityUpdater
                     keycloakUserService.getUsersByRole(roleName).map { it.userId },
                 )
             }
+            require(premiumUserIds.isNotEmpty()) {
+                "No premium users or administrators found. Scheduled update of request priorities failed."
+            }
 
+            logger.info("Found ${premiumUserIds.size} premium users and administrators.")
+
+            logger.info("Upgrading request priorities from Low to High for premium users.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.Low,
                 newPriority = RequestPriority.High,
             ) { request -> request.userId in premiumUserIds }
 
+            logger.info("Downgrading request priorities from High to Low for regular users.")
             updateRequestPriorities(
                 currentPriority = RequestPriority.High,
                 newPriority = RequestPriority.Low,
@@ -62,11 +71,7 @@ class RequestPriorityUpdater
             newPriority: RequestPriority,
             filterCondition: (ExtendedStoredDataRequest) -> Boolean,
         ) {
-            val requests =
-                requestControllerApi.getDataRequests(
-                    requestStatus = setOf(RequestStatus.Open),
-                    requestPriority = setOf(currentPriority),
-                )
+            val requests = getAllRequests(currentPriority)
             requests
                 .filter(filterCondition)
                 .forEach { (dataRequestId) ->
@@ -84,5 +89,34 @@ class RequestPriorityUpdater
                         logger.warn("Failed to update request priority of request $dataRequestId: ${e.message}")
                     }
                 }
+        }
+
+        private fun getAllRequests(priority: RequestPriority): List<ExtendedStoredDataRequest> {
+            val expectedRequests =
+                requestControllerApi.getNumberOfRequests(
+                    requestStatus = setOf(RequestStatus.Open),
+                    requestPriority = setOf(priority),
+                )
+            logger.info("Found $expectedRequests requests with priority $priority to be considered for updating.")
+            val allRequests = mutableListOf<ExtendedStoredDataRequest>()
+            var page = 0
+
+            while (true) {
+                val requests =
+                    requestControllerApi.getDataRequests(
+                        requestStatus = setOf(RequestStatus.Open),
+                        requestPriority = setOf(priority),
+                        chunkSize = RESULTS_PER_PAGE,
+                        chunkIndex = page,
+                    )
+                allRequests.addAll(requests)
+
+                if (requests.size < RESULTS_PER_PAGE || allRequests.size >= expectedRequests) {
+                    break
+                }
+                page++
+            }
+
+            return allRequests
         }
     }

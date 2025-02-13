@@ -2,26 +2,40 @@
 	{
 		"companyInformation": {
 			"companyName": "sfdr-qa-report-with-one-correction",
-			"headquarters": "D'Amoreworth",
-			"headquartersPostalCode": "44380",
+			"headquarters": "Marianneside",
+			"headquartersPostalCode": "30690",
 			"sector": "initiatives",
 			"identifiers": {
-				"Lei": [],
+				"Lei": [
+					"9KT68Clm7WCWnsbkazW0"
+				],
 				"Isin": [
-					"0mD4x6MKUdFi",
-					"My2jlcOrf81j"
+					"ZhVQNcBY1QBY",
+					"PzwkpMXsHJZE"
 				],
 				"PermId": [],
-				"Ticker": [],
+				"Ticker": [
+					"E5pYc9N"
+				],
 				"Duns": [],
-				"VatNumber": [],
-				"CompanyRegistrationNumber": []
+				"VatNumber": [
+					"vWlZBIggy"
+				],
+				"CompanyRegistrationNumber": [
+					"RtEoAguHlxzs1Uh"
+				]
 			},
-			"countryCode": "GL",
-			"companyContactDetails": [],
-			"companyAlternativeNames": [],
-			"companyLegalForm": "Limited Liability Partnership (LLP)",
-			"website": "https://definitive-state.name/",
+			"countryCode": "BY",
+			"companyContactDetails": [
+				"Donny.Hoppe24@example.com"
+			],
+			"companyAlternativeNames": [
+				"Abernathy - Gulgowski",
+				"Fisher - Gulgowski",
+				"Hills and Sons"
+			],
+			"companyLegalForm": "Sole Trader",
+			"website": "https://primary-pear.com",
 			"isTeaserCompany": false
 		},
 		"t": {
@@ -38,6 +52,6 @@
 				}
 			}
 		},
-		"reportingPeriod": "2021"
+		"reportingPeriod": "2020"
 	}
 ]

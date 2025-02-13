@@ -121,6 +121,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "overwriteDataPointQaStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -873,17 +881,17 @@
         ]
       }
     },
-    "/data-points/{dataId}": {
+    "/data-points/{dataPointId}": {
       "get": {
         "tags": [
           "qa-controller"
         ],
-        "summary": "Get the QA review information of an uploaded dataset for a given id.",
-        "description": "Get the QA review information of uploaded dataset for a given id.Users can get the review information of their own datasets.Admins and reviewer can get the review information for all datasets.",
+        "summary": "Get the QA review information of an uploaded data point for a given id.",
+        "description": "Get the QA review information of uploaded data point for a given id.Users can get the review information of their own data points.Admins and reviewer can get the review information for all data points.",
         "operationId": "getDataPointQaReviewInformationByDataId",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -957,7 +965,7 @@
         "operationId": "changeDataPointQaStatus",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1016,17 +1024,17 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports": {
+    "/data-points/{dataPointId}/reports": {
       "get": {
         "tags": [
           "data-point-qa-report-controller"
         ],
         "summary": "Retrieve all QA reports.",
-        "description": "Retrieve all QA reports associated to given dataset.",
-        "operationId": "getAllQaReportsForDataset",
+        "description": "Retrieve all QA reports associated to given data point.",
+        "operationId": "getAllQaReportsForDataPoint",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1103,7 +1111,7 @@
         "operationId": "postQaReport",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -1128,6 +1136,76 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataPointQaReport"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/assembled-dataset-migration/stored-qa-report/{dataId}": {
+      "post": {
+        "tags": [
+          "assembled-data-migration-controller"
+        ],
+        "summary": "Triggers a forced upload of a QA Report as a stored QA Report for testing.",
+        "description": "The data is stored.",
+        "operationId": "forceUploadStoredQaReport",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Data stored.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/QaReportMetaInformation"
                 }
               }
             }
@@ -1508,7 +1586,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports/{qaReportId}/status": {
+    "/data-points/{dataPointId}/reports/{qaReportId}/status": {
       "patch": {
         "tags": [
           "data-point-qa-report-controller"
@@ -1518,7 +1596,7 @@
         "operationId": "setQaReportStatus",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2358,7 +2436,7 @@
         ]
       }
     },
-    "/data-points/{dataId}/reports/{qaReportId}": {
+    "/data-points/{dataPointId}/reports/{qaReportId}": {
       "get": {
         "tags": [
           "data-point-qa-report-controller"
@@ -2368,7 +2446,7 @@
         "operationId": "getQaReport",
         "parameters": [
           {
-            "name": "dataId",
+            "name": "dataPointId",
             "in": "path",
             "required": true,
             "schema": {
@@ -2800,6 +2878,10 @@
           },
           "fileName": {
             "type": "string"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
@@ -5885,9 +5967,6 @@
           },
           "fiscalYearEnd": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointLocalDate"
-          },
-          "referencedReports": {
-            "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
           }
         }
       },
@@ -5998,6 +6077,9 @@
             "type": "string"
           }
         }
+      },
+      "JsonNode": {
+        "type": "object"
       },
       "QaReportStatusPatch": {
         "required": [
@@ -6135,6 +6217,9 @@
           },
           "uploaderUserId": {
             "type": "string"
+          },
+          "ref": {
+            "type": "string"
           }
         }
       },
@@ -6202,7 +6287,7 @@
         "required": [
           "companyId",
           "companyName",
-          "dataId",
+          "dataPointId",
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
@@ -6210,7 +6295,7 @@
         ],
         "type": "object",
         "properties": {
-          "dataId": {
+          "dataPointId": {
             "type": "string"
           },
           "companyId": {

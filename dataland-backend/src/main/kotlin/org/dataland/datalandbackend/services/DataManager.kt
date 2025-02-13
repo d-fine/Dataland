@@ -3,9 +3,10 @@ package org.dataland.datalandbackend.services
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.model.DataType
-import org.dataland.datalandbackend.model.StorableDataSet
+import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.slf4j.LoggerFactory
@@ -24,19 +25,21 @@ import java.util.concurrent.ConcurrentHashMap
  * @param dataManagerUtils holds util methods for handling of data
  * @param companyRoleChecker service for checking company roles
  * @param messageQueuePublications service for publishing messages to the message queue
-*/
+ */
 @Service("DataManager")
+@Suppress("TooManyFunctions")
 class DataManager
     @Suppress("LongParameterList")
+    @Autowired
     constructor(
-        @Autowired private val objectMapper: ObjectMapper,
-        @Autowired private val companyQueryManager: CompanyQueryManager,
-        @Autowired private val metaDataManager: DataMetaInformationManager,
-        @Autowired private val storageClient: StorageControllerApi,
-        @Autowired private val dataManagerUtils: DataManagerUtils,
-        @Autowired private val companyRoleChecker: CompanyRoleChecker,
-        @Autowired private val messageQueuePublications: MessageQueuePublications,
-    ) {
+        private val objectMapper: ObjectMapper,
+        private val companyQueryManager: CompanyQueryManager,
+        private val metaDataManager: DataMetaInformationManager,
+        private val storageClient: StorageControllerApi,
+        private val dataManagerUtils: DataManagerUtils,
+        private val companyRoleChecker: CompanyRoleChecker,
+        private val messageQueuePublications: MessageQueuePublications,
+    ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
         private val publicDataInMemoryStorage = ConcurrentHashMap<String, String>()
@@ -44,22 +47,22 @@ class DataManager
         /**
          * Method to make the data manager add data to a data store, store metadata in Dataland and sending messages to the
          * relevant message queues
-         * @param storableDataSet contains all the inputs needed by Dataland
+         * @param uploadedDataset contains all the inputs needed by Dataland
          * @param bypassQa whether the data should be sent to QA or not
          * @param correlationId the correlationId of the request
          * @return ID of the newly stored data in the data store
          */
-        fun processDataStorageRequest(
-            storableDataSet: StorableDataSet,
+        override fun storeDataset(
+            uploadedDataset: StorableDataset,
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            if (bypassQa && !companyRoleChecker.canUserBypassQa(storableDataSet.companyId)) {
+            if (bypassQa && !companyRoleChecker.canUserBypassQa(uploadedDataset.companyId)) {
                 throw AccessDeniedException(logMessageBuilder.bypassQaDeniedExceptionMessage)
             }
             val dataId = IdUtils.generateUUID()
-            storeMetaDataFrom(dataId, storableDataSet, correlationId)
-            storeDataSetInTemporaryStoreAndSendMessage(dataId, storableDataSet, bypassQa, correlationId)
+            storeMetaDataFrom(dataId, uploadedDataset, correlationId)
+            storeDatasetInTemporaryStoreAndSendUploadMessage(dataId, uploadedDataset, bypassQa, correlationId)
             return dataId
         }
 
@@ -68,18 +71,18 @@ class DataManager
          * in the database if necessary ensuring that the database transaction ends directly after this
          * function returns so that a MQ-Message might be sent out after this function completes
          * @param dataId The dataId of the dataset to store
-         * @param storableDataSet the dataset to store
+         * @param storableDataset the dataset to store
          * @param correlationId the correlation id of the insertion process
          */
         fun storeMetaDataFrom(
             dataId: String,
-            storableDataSet: StorableDataSet,
+            storableDataset: StorableDataset,
             correlationId: String,
         ) {
-            val company = dataManagerUtils.getCompanyByCompanyId(storableDataSet.companyId)
+            val company = dataManagerUtils.getCompanyByCompanyId(storableDataset.companyId)
             logger.info(
-                "Sending StorableDataSet of type ${storableDataSet.dataType} for company ID " +
-                    "'${storableDataSet.companyId}', Company Name ${company.companyName} to storage Interface. " +
+                "Sending StorableDataset of type ${storableDataset.dataType} for company ID " +
+                    "'${storableDataset.companyId}', Company Name ${company.companyName} to storage Interface. " +
                     "Correlation ID: $correlationId",
             )
 
@@ -87,10 +90,10 @@ class DataManager
                 DataMetaInformationEntity(
                     dataId,
                     company,
-                    storableDataSet.dataType.toString(),
-                    storableDataSet.uploaderUserId,
-                    storableDataSet.uploadTime,
-                    storableDataSet.reportingPeriod,
+                    storableDataset.dataType.toString(),
+                    storableDataset.uploaderUserId,
+                    storableDataset.uploadTime,
+                    storableDataset.reportingPeriod,
                     null,
                     QaStatus.Pending,
                 )
@@ -102,7 +105,7 @@ class DataManager
          * @param dataId is the identifier for which all stored data entries in the temporary storage are filtered
          * @return stringified data entry from the temporary store
          */
-        fun selectPublicDataSetFromTemporaryStorage(dataId: String): String {
+        fun selectPublicDatasetFromTemporaryStorage(dataId: String): String {
             val rawValue =
                 publicDataInMemoryStorage.getOrElse(dataId) {
                     throw ResourceNotFoundApiException(
@@ -128,25 +131,46 @@ class DataManager
         }
 
         /**
-         * Method to temporarily store a data set in a hash map and send a message to the storage_queue
-         * @param dataId The id of the inserted data set
-         * @param storableDataSet The data set to store
-         * @param bypassQa Whether the data set should be sent to QA or not
+         * Method to temporarily store a dataset in a hash map and send a message to the storage_queue
+         * @param dataId The id of the inserted dataset
+         * @param storableDataset The dataset to store
+         * @param bypassQa Whether the dataset should be sent to QA or not
          * @param correlationId The correlation id of the request initiating the storing of data
-         * @return ID of the stored data set
+         * @return ID of the stored dataset
          */
-        fun storeDataSetInTemporaryStoreAndSendMessage(
+        fun storeDatasetInTemporaryStoreAndSendUploadMessage(
             dataId: String,
-            storableDataSet: StorableDataSet,
+            storableDataset: StorableDataset,
             bypassQa: Boolean,
             correlationId: String,
         ) {
             logger.info(
-                "Storing data of type '${storableDataSet.dataType}' for company ID '${storableDataSet.companyId}'" +
+                "Storing data of type '${storableDataset.dataType}' for company ID '${storableDataset.companyId}'" +
                     " in temporary storage. Data ID '$dataId'. Correlation ID: '$correlationId'.",
             )
-            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataSet), correlationId)
-            messageQueuePublications.publishDataSetUploadedMessage(dataId, bypassQa, correlationId)
+            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataset), correlationId)
+            messageQueuePublications.publishDatasetUploadedMessage(dataId, bypassQa, correlationId)
+        }
+
+        /**
+         * Method to temporarily store a data set in a hash map and send a message to the storage_queue
+         * @param dataId The id of the inserted data set
+         * @param storableDataset The data set to store
+         * @param correlationId The correlation id of the request initiating the storing of data
+         * for a dataset upload, but it can be used to specify when a dataset is merely updated.
+         * @return ID of the stored data set
+         */
+        fun storeDatasetInTemporaryStoreAndSendPatchMessage(
+            dataId: String,
+            storableDataset: StorableDataset,
+            correlationId: String,
+        ) {
+            logger.info(
+                "Storing updated data of type '${storableDataset.dataType}' for company ID '${storableDataset.companyId}'" +
+                    " in temporary storage. Data ID '$dataId'. Correlation ID: '$correlationId'.",
+            )
+            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataset), correlationId)
+            messageQueuePublications.publishDatasetMetaInfoPatchMessage(dataId, storableDataset.uploaderUserId, correlationId)
         }
 
         /**
@@ -154,17 +178,34 @@ class DataManager
          * @param dataId to identify the stored data
          * @param dataType to check the correctness of the type of the retrieved data
          * @param correlationId to use in combination with dataId to retrieve data and assert type
-         * @return data set associated with the data ID provided in the input
+         * @return dataset associated with the data ID provided in the input
          */
-        fun getPublicDataSet(
+        fun getPublicDataset(
             dataId: String,
             dataType: DataType,
             correlationId: String,
-        ): StorableDataSet =
+        ): StorableDataset =
             dataManagerUtils.getStorableDataset(
                 dataId, dataType, correlationId,
                 ::getJsonStringFromCacheOrInternalStorage,
             )
+
+        override fun getDatasetData(
+            datasetId: String,
+            dataType: String,
+            correlationId: String,
+        ): String =
+            getPublicDataset(
+                datasetId,
+                DataType
+                    .valueOf(dataType),
+                correlationId,
+            ).data
+
+        /**
+         * Method to get data from the cache or the internal storage
+         */
+        fun getDataFromCache(dataId: String): String? = publicDataInMemoryStorage[dataId]
 
         private fun getJsonStringFromCacheOrInternalStorage(
             dataId: String,
@@ -184,12 +225,12 @@ class DataManager
                 .selectDataById(dataId, correlationId)
 
         /**
-         * Method to check if a data set belongs to a teaser company and hence is publicly available
-         * @param dataId the ID of the data set to be checked
+         * Method to check if a dataset belongs to a teaser company and hence is publicly available
+         * @param dataId the ID of the dataset to be checked
          * @return a boolean signalling if the data is public or not
          */
         @Transactional(readOnly = true)
-        fun isDataSetPublic(dataId: String): Boolean {
+        fun isDatasetPublic(dataId: String): Boolean {
             val associatedCompanyId = metaDataManager.getDataMetaInformationByDataId(dataId).company.companyId
             return companyQueryManager.isCompanyPublic(associatedCompanyId)
         }
@@ -210,14 +251,27 @@ class DataManager
                     "and of the reporting period ${metaInformation.reportingPeriod}.Correlation Id: $correlationId",
             )
             metaDataManager.deleteDataMetaInfo(dataId)
-            messageQueuePublications.publishDataSetDeletionMessage(dataId, correlationId)
+            messageQueuePublications.publishDatasetDeletionMessage(dataId, correlationId)
         }
 
         /**
          * This method removes a dataset from the in memory storage
          * @param dataId the dataId of the dataset to be removed from the in-memory store
          */
-        fun removeDataSetFromInMemoryStore(dataId: String) {
+        fun removeDatasetFromInMemoryStore(dataId: String) {
             publicDataInMemoryStorage.remove(dataId)
+        }
+
+        override fun getDatasetData(
+            dataDimensions: BasicDataDimensions,
+            correlationId: String,
+        ): String? {
+            val dataId =
+                metaDataManager.getActiveDatasetIdByDataDimensions(dataDimensions)
+                    ?: throw ResourceNotFoundApiException(
+                        summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                        message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+                    )
+            return getPublicDataset(dataId, DataType.valueOf(dataDimensions.dataType), correlationId).data
         }
     }

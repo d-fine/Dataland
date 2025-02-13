@@ -29,7 +29,7 @@ class DataPointController(
     @Autowired private val dataPointValidator: DataPointValidator,
     @Autowired private val logMessageBuilder: LogMessageBuilder,
 ) : DataPointApi {
-    override fun validateDataPoint(dataPoint: DataPointToValidate): ResponseEntity<Unit> {
+    override fun validateDataPoint(dataPoint: DataPointToValidate): ResponseEntity<Void> {
         val correlationId = IdUtils.generateCorrelationId(null, null)
         dataPointValidator.validateDataPoint(dataPoint.dataPointType, dataPoint.dataPoint, correlationId)
         return ResponseEntity.noContent().build()
@@ -47,18 +47,18 @@ class DataPointController(
 
     override fun getDataPoint(dataPointId: String): ResponseEntity<UploadedDataPoint> {
         val correlationId = IdUtils.generateCorrelationId(null, dataPointId)
-        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataPointId)
+        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
         return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataPointId, correlationId))
     }
 
-    override fun getDataPointMetaInfo(dataId: String): ResponseEntity<DataPointMetaInformation> {
-        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationByDataId(dataId)
+    override fun getDataPointMetaInfo(dataPointId: String): ResponseEntity<DataPointMetaInformation> {
+        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
         if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
             throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
         }
-        return ResponseEntity.ok(metaInfo.toApiModel(DatalandAuthentication.fromContextOrNull()))
+        return ResponseEntity.ok(metaInfo.toApiModel())
     }
 }

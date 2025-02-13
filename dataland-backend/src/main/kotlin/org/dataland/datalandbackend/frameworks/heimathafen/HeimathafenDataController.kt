@@ -40,6 +40,12 @@ class HeimathafenDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<HeimathafenData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedHeimathafenDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<HeimathafenData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedHeimathafenData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<HeimathafenData>,

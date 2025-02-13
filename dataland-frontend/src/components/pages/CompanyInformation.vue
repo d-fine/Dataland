@@ -161,15 +161,15 @@ export default defineComponent({
     this.fetchDataForThisPage();
   },
   watch: {
-    async companyId() {
-      await this.fetchDataForThisPage();
+    companyId() {
+      this.fetchDataForThisPage();
     },
   },
   methods: {
     /**
      * A complete fetch of all data that is relevant for UI elements of this page
      */
-    async fetchDataForThisPage() {
+    fetchDataForThisPage() {
       try {
         void this.getCompanyInformation();
         void this.setCompanyOwnershipStatus();
@@ -276,6 +276,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/newVariables';
+@use '@/assets/scss/variables';
+
 .inline-loading {
   width: 450px;
 }
@@ -297,7 +300,7 @@ export default defineComponent({
   }
 
   &__separator {
-    @media only screen and (max-width: $small) {
+    @media only screen and (max-width: newVariables.$small) {
       width: 100%;
       border-bottom: #e0dfde 1px solid;
       margin-bottom: 0.5rem;
@@ -307,14 +310,14 @@ export default defineComponent({
   &__info-holder {
     display: flex;
     flex-direction: row;
-    @media only screen and (max-width: $small) {
+    @media only screen and (max-width: newVariables.$small) {
       flex-direction: column;
     }
   }
 
   &__info {
     padding-top: 0.3rem;
-    @media only screen and (min-width: $small) {
+    @media only screen and (min-width: newVariables.$small) {
       padding-right: 40px;
     }
   }
@@ -327,7 +330,7 @@ export default defineComponent({
 }
 
 .fs-sm {
-  font-size: $fs-sm;
+  font-size: variables.$fs-sm;
   margin-right: 0.25rem;
 }
 </style>

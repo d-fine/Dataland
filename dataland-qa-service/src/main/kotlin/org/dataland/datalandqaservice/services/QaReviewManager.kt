@@ -1,14 +1,15 @@
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.transaction.Transactional
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -24,6 +25,7 @@ import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
 import java.util.UUID
 
@@ -42,6 +44,38 @@ class QaReviewManager(
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
+     * Add a new qa review entry corresponding to a data set event (upload, qa status change, etc) to the qa review
+     * history
+     * @param dataId identifier of the dataset
+     * @param bypassQa whether to bypass the qa process or not; if true, qa status of dataset is automatically set to
+     * Accepted
+     * @param correlationId
+     */
+    @Transactional
+    fun addDatasetToQaReviewRepository(
+        dataId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+    ) {
+        logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
+        val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
+        val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
+
+        val qaReviewEntity =
+            saveQaReviewEntity(
+                dataId = dataId,
+                qaStatus = qaStatus,
+                triggeringUserId = triggeringUserId,
+                comment = comment,
+                correlationId = correlationId,
+            )
+
+        this.sendQaStatusUpdateMessage(
+            qaReviewEntity = qaReviewEntity, correlationId = correlationId,
+        )
+    }
+
+    /**
      * The method returns a list of unreviewed datasets with corresponding information for the specified input params
      * @param dataTypes the datatype of the dataset
      * @param reportingPeriods the reportingPeriod of the dataset
@@ -49,7 +83,7 @@ class QaReviewManager(
      * @param chunkIndex the chunkIndex of the request
      * @param chunkSize the chunkSize of the request
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun getInfoOnPendingDatasets(
         dataTypes: Set<DataTypeEnum>?,
         reportingPeriods: Set<String>?,
@@ -96,12 +130,40 @@ class QaReviewManager(
      * Retrieves from database a QaReviewEntity by its dataId
      * @param dataId: dataID
      */
-    @Transactional
+    @Transactional(readOnly = true)
     fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
         val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
         return qaReviewRepository
             .findFirstByDataIdOrderByTimestampDesc(dataId.toString())
             ?.toQaReviewResponse(userIsAdmin)
+    }
+
+    /**
+     * Method called to update triggeringUserId for first Pending entry of a dataset.
+     * This effectively updates the uploaderUserId of the dataset. Method is only triggered via messageQueue.
+     * Due to Spring JPA, the object is saved when the transaction is committed without explicitly calling save().
+     * @param dataId identifier of dataset
+     * @param uploaderUserId the new uploaderUserId aka the triggeringUserId of the upload event
+     * @param correlationId
+     */
+    @Transactional
+    fun patchUploaderUserIdInQaReviewEntry(
+        dataId: String,
+        uploaderUserId: String,
+        correlationId: String,
+    ) {
+        logger.info("Received message to patch uploaderUserId for dataset with dataId $dataId (correlationId: $correlationId).")
+        val qaReviewEntity = qaReviewRepository.findFirstByDataIdOrderByTimestampAsc(dataId)
+
+        requireNotNull(qaReviewEntity, { "QaReviewEntity must not be null." })
+
+        logger.info(
+            "Updating triggeringUserId for first qa review entry for dataset with dataId $dataId$. " +
+                "Old triggeringUserId was ${qaReviewEntity.triggeringUserId}, new triggeringUserId is $uploaderUserId " +
+                "(correlationId: $correlationId).",
+        )
+
+        qaReviewEntity.triggeringUserId = uploaderUserId
     }
 
     /**
@@ -140,11 +202,29 @@ class QaReviewManager(
     }
 
     /**
+     * Checks if the QA service knows the dataId
+     */
+    @Transactional
+    fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId) != null
+
+    /**
+     * Asserts that the QA service knows the dataId
+     */
+    @Transactional
+    fun assertQaServiceKnowsDataId(dataId: String) {
+        if (!checkIfQaServiceKnowsDataId(dataId)) {
+            throw ResourceNotFoundApiException(
+                "Data ID not known to QA service",
+                "Dataland does not know the data id $dataId",
+            )
+        }
+    }
+
+    /**
      * Send the information that the QA status was updated to the message queue
      * @param qaReviewEntity qaReviewEntity for which to send the QaStatusChangeMessage
      * @param correlationId the ID for the process triggering the change
      */
-    @Transactional
     fun sendQaStatusUpdateMessage(
         qaReviewEntity: QaReviewEntity,
         correlationId: String,
@@ -153,7 +233,11 @@ class QaReviewManager(
             if (qaReviewEntity.qaStatus == QaStatus.Accepted) {
                 qaReviewEntity.dataId
             } else {
-                getDataIdOfCurrentlyActiveDataset(qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod)
+                getDataIdOfCurrentlyActiveDataset(
+                    qaReviewEntity.companyId,
+                    qaReviewEntity.framework,
+                    qaReviewEntity.reportingPeriod,
+                )
             }
 
         val qaStatusChangeMessage =
@@ -217,6 +301,9 @@ class QaReviewManager(
             ?.dataId
     }
 
+    /**
+     * Calls backend to return companyIds for companyName
+     */
     private fun getCompanyIdsForCompanyName(companyName: String?): Set<String> {
         var companyIds = emptySet<String>()
         if (!companyName.isNullOrBlank()) {

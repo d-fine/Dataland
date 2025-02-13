@@ -120,11 +120,13 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/variables';
+
 .claim-panel {
   grid-column: 1 / -1;
   background-color: var(--surface-card);
-  padding-left: $spacing-md;
-  border-radius: $radius-xxs;
+  padding-left: variables.$spacing-md;
+  border-radius: variables.$radius-xxs;
   text-align: left;
   box-shadow: 0 0 12px var(--gray-300);
 }

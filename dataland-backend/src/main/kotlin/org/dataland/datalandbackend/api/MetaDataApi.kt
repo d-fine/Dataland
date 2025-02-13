@@ -7,12 +7,15 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -30,7 +33,7 @@ import java.util.UUID
 @SecurityRequirement(name = "default-oauth")
 interface MetaDataApi {
     /**
-     * A method to search for meta info about data sets registered by Dataland
+     * A method to search for meta info about datasets registered by Dataland
      * @param companyId if set, filters the requested meta info to a specific company.
      * @param dataType if set, filters the requested meta info to a specific data type.
      * @param showOnlyActive if set to true or empty, only metadata of QA reports are returned that are active.
@@ -42,7 +45,7 @@ interface MetaDataApi {
      */
     @Operation(
         summary = "Search in Dataland for meta info about data.",
-        description = "Meta info about data sets registered by Dataland can be retrieved.",
+        description = "Meta info about datasets registered by Dataland can be retrieved.",
     )
     @ApiResponses(
         value = [
@@ -63,14 +66,38 @@ interface MetaDataApi {
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
-     * A method to retrieve meta info about a specific data set
-     * @param dataId as unique identifier for a specific data set
-     * @return the DataMetaInformation for the specified data set
+     * A method to post multiple filters at once to search for meta information about datasets registered by Dataland
+     * @param dataMetaInformationSearchFilters A list of data meta information request filters
+     * @return a list of matching DataMetaInformation
      */
     @Operation(
-        summary = "Look up meta info about a specific data set.",
+        summary = "Search in Dataland for meta info about data using multiple filters.",
+        description = "Meta info about datasets registered by Dataland can be retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info."),
+        ],
+    )
+    @PostMapping(
+        value = ["/filters"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postListOfDataMetaInfoFilters(
+        @RequestBody dataMetaInformationSearchFilters: List<DataMetaInformationSearchFilter>,
+    ): ResponseEntity<List<DataMetaInformation>>
+
+    /**
+     * A method to retrieve meta info about a specific dataset
+     * @param dataId as unique identifier for a specific dataset
+     * @return the DataMetaInformation for the specified dataset
+     */
+    @Operation(
+        summary = "Look up meta info about a specific dataset.",
         description =
-            "Meta info about a specific data set registered by Dataland " +
+            "Meta info about a specific dataset registered by Dataland " +
                 "and identified by its data ID is retrieved.",
     )
     @ApiResponses(
@@ -82,13 +109,63 @@ interface MetaDataApi {
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getDataMetaInfo(
         @PathVariable dataId: String,
     ): ResponseEntity<DataMetaInformation>
 
     /**
-     * A method to retrieve information about the sourceability of data sets.
+     * A method to update meta info for a specific dataset
+     * @param dataId unique identifier of the dataset to be patched
+     * @param dataMetaInformationPatch request body containing the meta information to be patched
+     * @return updated information about the dataset
+     */
+    @Operation(
+        summary = "Update meta data of dataset selectively",
+        description = "Provided fields of the meta data with the given dataId are updated.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated dataset."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{dataId}"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun patchDataMetaInfo(
+        @PathVariable("dataId") dataId: String,
+        @Valid @RequestBody(required = true)
+        dataMetaInformationPatch: DataMetaInformationPatch,
+    ): ResponseEntity<DataMetaInformation>
+
+    /**
+     * A method to retrieve a list of all data IDs of the data-points contained in the dataset
+     * @param dataId identifier used to uniquely specify the dataset in question
+     * @return a list of data point IDs contained in the dataset
+     */
+    @Operation(
+        summary = "Retrieve a map of data point IDs the dataset is composed of to their corresponding technical ID.",
+        description = "The IDs of the data points contained in the dataset specified are returned as a map of strings to string.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved list of data point IDs."),
+        ],
+    )
+    @GetMapping(
+        value = ["/{dataId}/data-points"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
+    fun getContainedDataPoints(
+        @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<Map<String, String>>
+
+    /**
+     * A method to retrieve information about the sourceability of datasets.
      * @param companyId if set, filters the requested info by companyId
      * @param dataType if set, filters the requested info by data type.
      * @param reportingPeriod if set, the method only returns meta info with this reporting period
@@ -97,13 +174,13 @@ interface MetaDataApi {
      * @return A list of NonSourceableInfo matching the filters, or an empty list if none found.
      */
     @Operation(
-        summary = "Retrieve information about the sourceability of data sets",
+        summary = "Retrieve information about the sourceability of datasets",
         description =
-            "Retrieve information about the sourceability of data sets by the filters.",
+            "Retrieve information about the sourceability of datasets by the filters.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data sets."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved datasets."),
         ],
     )
     @GetMapping(
@@ -111,7 +188,7 @@ interface MetaDataApi {
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getInfoOnNonSourceabilityOfDataSets(
+    fun getInfoOnNonSourceabilityOfDatasets(
         @RequestParam companyId: String? = null,
         @RequestParam dataType: DataType? = null,
         @RequestParam reportingPeriod: String? = null,
@@ -119,12 +196,12 @@ interface MetaDataApi {
     ): ResponseEntity<List<NonSourceableInfoResponse>>
 
     /**
-     * Adds a data set with information on sourceability.
-     * @param nonSourceableInfo includes the information on the sourceability of a specific data set.
+     * Adds a dataset with information on sourceability.
+     * @param nonSourceableInfo includes the information on the sourceability of a specific dataset.
      */
     @Operation(
-        summary = "Adds a data set with information on sourceability.",
-        description = "A data set is added with information on its sourceability.",
+        summary = "Adds a dataset with information on sourceability.",
+        description = "A dataset is added with information on its sourceability.",
     )
     @ApiResponses(
         value = [
@@ -154,13 +231,13 @@ interface MetaDataApi {
      * @param reportingPeriod the reporting period
      */
     @Operation(
-        summary = "Checks if a data set is non-sourceable.",
-        description = "Checks if a specific data set is non-sourceable.",
+        summary = "Checks if a dataset is non-sourceable.",
+        description = "Checks if a specific dataset is non-sourceable.",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully checked that data set is non-sourceable."),
-            ApiResponse(responseCode = "404", description = "Successfully checked that data set is sourceable."),
+            ApiResponse(responseCode = "200", description = "Successfully checked that dataset is non-sourceable."),
+            ApiResponse(responseCode = "404", description = "Successfully checked that dataset is sourceable."),
         ],
     )
     @RequestMapping(

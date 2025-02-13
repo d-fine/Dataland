@@ -33,7 +33,7 @@ data class QaReviewEntity(
     @Column(name = "qa_status", nullable = false)
     var qaStatus: QaStatus,
     @Column(name = "triggering_user_id", nullable = false)
-    val triggeringUserId: String,
+    var triggeringUserId: String,
     @Column(name = "comment", columnDefinition = "TEXT", nullable = true)
     val comment: String?,
 )

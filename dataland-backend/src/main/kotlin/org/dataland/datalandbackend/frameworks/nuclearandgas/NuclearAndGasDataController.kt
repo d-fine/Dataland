@@ -40,6 +40,12 @@ class NuclearAndGasDataController(
     override fun getCompanyAssociatedData(dataId: String): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> =
         super.getCompanyAssociatedData(dataId)
 
+    @Operation(operationId = "getCompanyAssociatedNuclearAndGasDataByDimensions")
+    override fun getCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+    ): ResponseEntity<CompanyAssociatedData<NuclearAndGasData>> = super.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId)
+
     @Operation(operationId = "postCompanyAssociatedNuclearAndGasData")
     override fun postCompanyAssociatedData(
         companyAssociatedData: CompanyAssociatedData<NuclearAndGasData>,

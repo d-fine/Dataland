@@ -34,7 +34,7 @@ interface VsmeDataApi {
      * A method to store private vsme data via Dataland into a data store
      */
     @Operation(
-        summary = "Upload a new private vsme data set.",
+        summary = "Upload a new private vsme dataset.",
         description =
             "The uploaded private vsme data is added to the private data store, the generated data id is " +
                 "returned.",
@@ -73,7 +73,7 @@ interface VsmeDataApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(

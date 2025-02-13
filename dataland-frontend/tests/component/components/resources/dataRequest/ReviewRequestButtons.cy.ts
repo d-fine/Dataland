@@ -155,7 +155,7 @@ describe('Component tests for the data request review buttons', function (): voi
   ): void {
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       props: {
         companyId: companyId,

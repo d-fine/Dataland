@@ -30,7 +30,7 @@ interface DataApi<T> {
      * @return meta info about the stored data including the ID of the created entry in the data store
      */
     @Operation(
-        summary = "Upload new data set.",
+        summary = "Upload new dataset.",
         description = "The uploaded data is added to the data store, the generated data id is returned.",
     )
     @ApiResponses(
@@ -60,16 +60,41 @@ interface DataApi<T> {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved data set."),
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
         ],
     )
     @GetMapping(
         value = ["/{dataId}"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getCompanyAssociatedData(
         @PathVariable("dataId") dataId: String,
+    ): ResponseEntity<CompanyAssociatedData<T>>
+
+    /**
+     * A method to retrieve specific data identified by its [reportingPeriod], [companyId] and data type [T]
+     * @param reportingPeriod specifies the reporting period
+     * @param companyId specifies the company
+     * @return the dataset stored or an error if no dataset can be found
+     */
+    @Operation(
+        summary = "Retrieve data for the company ID and reporting period provided.",
+        description = "Data identified by the company ID and reporting Period is retrieved, if available.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved dataset."),
+        ],
+    )
+    @GetMapping(
+        value = ["/"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getCompanyAssociatedDataByDimensions(
+        @RequestParam reportingPeriod: String,
+        @RequestParam companyId: String,
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
@@ -90,7 +115,7 @@ interface DataApi<T> {
         value = ["/{dataId}/csv"],
         produces = ["text/csv"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun exportCompanyAssociatedDataToCsv(
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<InputStreamResource>
@@ -113,7 +138,7 @@ interface DataApi<T> {
         value = ["/{dataId}/excel"],
         produces = ["text/csv"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun exportCompanyAssociatedDataToExcel(
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<InputStreamResource>
@@ -136,7 +161,7 @@ interface DataApi<T> {
         value = ["/{dataId}/json"],
         produces = ["application/json"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDataSetPublic(#dataId)")
+    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun exportCompanyAssociatedDataToJson(
         @PathVariable("dataId") dataId: String,
     ): ResponseEntity<InputStreamResource>

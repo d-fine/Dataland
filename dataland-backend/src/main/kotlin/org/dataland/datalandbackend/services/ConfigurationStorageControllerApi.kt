@@ -1,6 +1,7 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandexternalstorage.openApiClient.api.ExternalStorageControllerApi
+import org.dataland.datalandinternalstorage.openApiClient.api.ActuatorApi
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -22,6 +23,12 @@ class ConfigurationStorageControllerApi(
      */
     @Bean
     fun getApiInternalClient(): StorageControllerApi = StorageControllerApi(basePath = internalStorageBaseUrl)
+
+    /**
+     * The bean to configure the internal storage ActuatorApi
+     */
+    @Bean
+    fun getInternalStorageHealth(): ActuatorApi = ActuatorApi(basePath = internalStorageBaseUrl)
 
     /**
      * The bean to configure the external client StorageControllerApi

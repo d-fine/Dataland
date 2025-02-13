@@ -32,6 +32,7 @@ dependencies {
     implementation(Spring.boot.security)
     implementation(Spring.boot.web)
     testImplementation(Spring.boot.test)
+    testImplementation(libs.mockito.kotlin)
 }
 
 tasks.test {

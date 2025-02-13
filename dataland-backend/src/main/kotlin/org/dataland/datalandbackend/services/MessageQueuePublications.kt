@@ -1,11 +1,15 @@
 package org.dataland.datalandbackend.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,18 +30,47 @@ class MessageQueuePublications(
 
     /**
      * Method to publish a message that a data point has been uploaded
-     * @param dataId The ID of the uploaded data point
-     * @param bypassQa Whether the data point has been uploaded without QA
+     * @param dataPointId The ID of the uploaded data point
+     * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
-    fun publishDataPointUploadedMessage(
-        dataId: String,
+    fun publishDataPointUploadedMessageWithBypassQa(
+        dataPointId: String,
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        logger.info("Publish message that data point with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
+        val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
+
+        publishDataPointUploadedMessage(
+            dataPointId = dataPointId,
+            initialQaStatus = qaStatus,
+            initialQaComment = comment,
+            correlationId = correlationId,
+        )
+    }
+
+    /**
+     * Method to publish a message that a data point has been uploaded
+     * @param dataPointId The ID of the uploaded data point
+     * @param initialQaStatus The initial QA status of the data point
+     * @param initialQaComment The initial QA status message of the data point
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDataPointUploadedMessage(
+        dataPointId: String,
+        initialQaStatus: QaStatus,
+        initialQaComment: String?,
+        correlationId: String,
+    ) {
+        logger.info("Publish message that data point with ID '$dataPointId' has been uploaded. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
+            body =
+                objectMapper.writeValueAsString(
+                    DataPointUploadedPayload(
+                        dataPointId = dataPointId,
+                        initialQaStatus = initialQaStatus.toString(), initialQaComment = initialQaComment,
+                    ),
+                ),
             type = MessageType.PUBLIC_DATA_RECEIVED,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATA_POINT_EVENTS,
@@ -46,42 +79,127 @@ class MessageQueuePublications(
     }
 
     /**
-     * Method to publish a message that a data set has been uploaded
-     * @param dataId The ID of the uploaded data set
+     * Method to publish a message that a dataset has been uploaded
+     * @param dataId The ID of the uploaded dataset
      * @param bypassQa Whether the QA process should be bypassed
      * @param correlationId The correlation ID of the request initiating the event
      */
-    fun publishDataSetUploadedMessage(
+    fun publishDatasetUploadedMessage(
         dataId: String,
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        logger.info("Publish message that data set with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
-            type = MessageType.PUBLIC_DATA_RECEIVED,
+        publishDatasetUploadMessage(
+            dataId = dataId,
+            bypassQa = bypassQa,
             correlationId = correlationId,
-            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_UPLOAD,
         )
     }
 
     /**
-     * Method to publish a message that a data set has to be deleted
-     * @param dataId The ID of the data set to be deleted
+     * Method to publish a message that the meta info of a data set has been updated
+     * @param dataId The ID of the uploaded data set
+     * @param uploaderUserId new uploaderUserId of storable dataset
      * @param correlationId The correlation ID of the request initiating the event
      */
-    fun publishDataSetDeletionMessage(
+    fun publishDatasetMetaInfoPatchMessage(
+        dataId: String,
+        uploaderUserId: String,
+        correlationId: String,
+    ) {
+        logger.info(
+            "Publish message that metaInfo for data set with ID '$dataId' has been updated. " +
+                "Correlation ID: '$correlationId'.",
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId = dataId, uploaderUserId = uploaderUserId)),
+            type = MessageType.METAINFO_UPDATED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = RoutingKeyNames.METAINFORMATION_PATCH,
+        )
+    }
+
+    /**
+     * Method to publish a message that a dataset requires QA
+     * @param dataId The ID of the dataset
+     * @param bypassQa Whether the QA process should be bypassed
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDatasetQaRequiredMessage(
+        dataId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+    ) {
+        logger.info("Publish message that dataset with ID '$dataId' needs to undergo QA. Correlation ID: '$correlationId'.")
+        publishDatasetUploadMessage(
+            dataId = dataId,
+            bypassQa = bypassQa,
+            correlationId = correlationId,
+            routingKey = RoutingKeyNames.DATASET_QA,
+        )
+    }
+
+    /**
+     * Method to publish a message that a dataset has to be deleted
+     * @param dataId The ID of the dataset to be deleted
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDatasetDeletionMessage(
         dataId: String,
         correlationId: String,
     ) {
-        logger.info("Publish message that data set with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
+        logger.info("Publish message that dataset with ID '$dataId' has to be deleted. Correlation ID: '$correlationId'.")
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
             type = MessageType.DELETE_DATA,
             correlationId = correlationId,
             exchange = ExchangeName.BACKEND_DATASET_EVENTS,
             routingKey = RoutingKeyNames.DATASET_DELETION,
+        )
+    }
+
+    /**
+     * Method to publish a message that a dataset has been migrated to an assembled dataset
+     */
+    fun publishDatasetMigratedMessage(
+        dataId: String,
+        correlationId: String,
+    ) {
+        logger.info(
+            "Publish message that dataset with ID '$dataId' was migrated to an assembled dataset. " +
+                "Correlation ID: '$correlationId'.",
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataIdPayload(dataId = dataId)),
+            type = MessageType.DATA_MIGRATED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = RoutingKeyNames.DATASET_STORED_TO_ASSEMBLED_MIGRATION,
+        )
+    }
+
+    /**
+     * Method to publish a message that a dataset has been uploaded and either needs to be stored or just undergo QA
+     * @param dataId The ID of the uploaded dataset
+     * @param bypassQa Whether the QA process should be bypassed
+     * @param correlationId The correlation ID of the request initiating the event
+     * @param routingKey The routing key to steer which consumers pick up on the event
+     */
+    private fun publishDatasetUploadMessage(
+        dataId: String,
+        bypassQa: Boolean,
+        correlationId: String,
+        routingKey: String,
+    ) {
+        logger.info("Publish message that dataset with ID '$dataId' has been uploaded. Correlation ID: '$correlationId'.")
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataUploadedPayload(dataId = dataId, bypassQa = bypassQa)),
+            type = MessageType.PUBLIC_DATA_RECEIVED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = routingKey,
         )
     }
 }

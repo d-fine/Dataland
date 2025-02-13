@@ -3,22 +3,20 @@ package org.dataland.datalandbackend.services
 import org.dataland.datalandbackend.entities.DataMetaInformationEntity
 import org.dataland.datalandbackend.entities.DataMetaInformationForMyDatasets
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
-import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
 
 /**
  * A service class for managing data meta-information
  */
 @Component("DataMetaInformationManager")
 class DataMetaInformationManager(
-    @Autowired private val dataMetaInformationRepositoryInterface: DataMetaInformationRepository,
+    @Autowired private val dataMetaInformationRepository: DataMetaInformationRepository,
     @Autowired private val companyQueryManager: CompanyQueryManager,
 ) {
     /**
@@ -27,7 +25,7 @@ class DataMetaInformationManager(
      */
     @Transactional
     fun storeDataMetaInformation(dataMetaInformation: DataMetaInformationEntity): DataMetaInformationEntity =
-        dataMetaInformationRepositoryInterface.save(dataMetaInformation)
+        dataMetaInformationRepository.save(dataMetaInformation)
 
     /**
      * Marks the given dataset as the latest dataset for the combination of dataType, company and reporting period
@@ -54,20 +52,20 @@ class DataMetaInformationManager(
         reportingPeriod: String,
     ) {
         val metaInfoOfCurrentlyActiveDataset =
-            dataMetaInformationRepositoryInterface.getActiveDataset(company, dataType, reportingPeriod)
+            dataMetaInformationRepository.getActiveDataset(company, dataType, reportingPeriod)
         if (metaInfoOfCurrentlyActiveDataset != null) {
             metaInfoOfCurrentlyActiveDataset.currentlyActive = null
-            dataMetaInformationRepositoryInterface.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
+            dataMetaInformationRepository.saveAndFlush(metaInfoOfCurrentlyActiveDataset)
         }
     }
 
     /**
-     * Method to make the data manager get meta info about one specific data set
+     * Method to make the data manager get meta info about one specific dataset
      * @param dataId filters the requested meta info to one specific data ID
      * @return meta info about data behind the dataId
      */
     fun getDataMetaInformationByDataId(dataId: String): DataMetaInformationEntity =
-        dataMetaInformationRepositoryInterface.findById(dataId).orElseThrow {
+        dataMetaInformationRepository.findById(dataId).orElseThrow {
             ResourceNotFoundApiException(
                 "Dataset not found",
                 "No dataset with the id: $dataId could be found in the data store.",
@@ -75,34 +73,25 @@ class DataMetaInformationManager(
         }
 
     /**
+     * Method to retrieve the dataset ID of the active dataset for a given set of [dataDimensions]
+     * @param dataDimensions the data dimensions for which to retrieve the active dataset ID
+     */
+    fun getActiveDatasetIdByDataDimensions(dataDimensions: BasicDataDimensions): String? =
+        dataMetaInformationRepository
+            .findActiveDatasetByReportingPeriodAndCompanyIdAndDataType(
+                reportingPeriod = dataDimensions.reportingPeriod,
+                companyId = dataDimensions.companyId,
+                dataType = dataDimensions.dataType,
+            )?.dataId
+
+    /**
      * Method to make the data manager search for meta info
-     * @param companyId if not empty, it filters the requested meta info to a specific company
-     * @param dataType if not empty, it filters the requested meta info to a specific data type
-     * @param reportingPeriod if not empty, it filters the requested meta info to a specific reporting period
-     * @param showOnlyActive if true, it will only return datasets marked "active"
+     * @param searchFilter contains the filters to be applied for the search
      * @return a list of meta info about data depending on the filters
      */
-    fun searchDataMetaInfo(
-        companyId: String?,
-        dataType: DataType?,
-        showOnlyActive: Boolean,
-        reportingPeriod: String?,
-        uploaderUserIds: Set<UUID>?,
-        qaStatus: QaStatus?,
-    ): List<DataMetaInformationEntity> {
-        companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
-
-        val filter =
-            DataMetaInformationSearchFilter(
-                companyId = companyId,
-                dataType = dataType,
-                reportingPeriod = reportingPeriod,
-                onlyActive = showOnlyActive,
-                uploaderUserIds = uploaderUserIds,
-                qaStatus = qaStatus,
-            )
-
-        return dataMetaInformationRepositoryInterface.searchDataMetaInformation(filter)
+    fun searchDataMetaInfo(searchFilter: DataMetaInformationSearchFilter): List<DataMetaInformationEntity> {
+        searchFilter.companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
+        return dataMetaInformationRepository.searchDataMetaInformation(searchFilter)
     }
 
     /**
@@ -112,7 +101,7 @@ class DataMetaInformationManager(
     @Transactional
     fun deleteDataMetaInfo(dataId: String) {
         val dataMetaInformation = getDataMetaInformationByDataId(dataId)
-        dataMetaInformationRepositoryInterface.delete(dataMetaInformation)
+        dataMetaInformationRepository.delete(dataMetaInformation)
     }
 
     /**
@@ -121,7 +110,7 @@ class DataMetaInformationManager(
      * @returns the data meta information uploaded by the specified user
      */
     fun getUserDataMetaInformation(userId: String): List<DataMetaInformationForMyDatasets>? =
-        dataMetaInformationRepositoryInterface
+        dataMetaInformationRepository
             .getUserUploadsDataMetaInfos(userId)
             .map { DataMetaInformationForMyDatasets.fromDatasetMetaInfoEntityForMyDatasets(it) }
 }

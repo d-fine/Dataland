@@ -283,7 +283,7 @@ export default defineComponent({
     const dataId = this.route.query.templateDataId;
     if (dataId && typeof dataId === 'string' && dataId !== '') {
       this.editMode = true;
-      this.loadEutaxonomyNonFinancialsData(dataId);
+      void this.loadEutaxonomyNonFinancialsData(dataId);
     } else {
       this.waitingForData = false;
     }

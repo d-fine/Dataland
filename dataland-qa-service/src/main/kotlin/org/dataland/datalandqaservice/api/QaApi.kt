@@ -102,6 +102,7 @@ interface QaApi {
         @PathVariable("dataId") dataId: String,
         @RequestParam qaStatus: QaStatus,
         @RequestParam comment: String? = null,
+        @RequestParam overwriteDataPointQaStatus: Boolean = true,
     )
 
     /** A method to count open reviews based on specific filters.
@@ -166,15 +167,15 @@ interface QaApi {
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
-     * A method to get the QA review status of an uploaded dataset for a given identifier
-     * @param dataId the dataId
+     * A method to get the QA review status of an uploaded data point for a given identifier
+     * @param dataPointId the dataId
      */
     @Operation(
-        summary = "Get the QA review information of an uploaded dataset for a given id.",
+        summary = "Get the QA review information of an uploaded data point for a given id.",
         description =
-            "Get the QA review information of uploaded dataset for a given id." +
-                "Users can get the review information of their own datasets." +
-                "Admins and reviewer can get the review information for all datasets.",
+            "Get the QA review information of uploaded data point for a given id." +
+                "Users can get the review information of their own data points." +
+                "Admins and reviewer can get the review information for all data points.",
     )
     @ApiResponses(
         value = [
@@ -183,21 +184,21 @@ interface QaApi {
         ],
     )
     @GetMapping(
-        value = ["/data-points/{dataId}"],
+        value = ["/data-points/{dataPointId}"],
         produces = ["application/json"],
     )
     @PreAuthorize(
         "hasRole('ROLE_REVIEWER') " +
             "or hasRole('ROLE_ADMIN') " +
-            "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataId)",
+            "or @SecurityUtilsService.userAskingQaReviewStatusOfOwnDataset(#dataPointId)",
     )
     fun getDataPointQaReviewInformationByDataId(
-        @PathVariable("dataId") dataId: String,
+        @PathVariable("dataPointId") dataPointId: String,
     ): ResponseEntity<List<DataPointQaReviewInformation>>
 
     /**
      * Changes the QA review status of a dataset
-     * @param dataId the ID of the dataset of which to change the QA review status
+     * @param dataPointId the ID of the dataset of which to change the QA review status
      * @param qaStatus the QA review status to be assigned to a dataset
      * @param comment (optional) comment to explain the QA review status change
      */
@@ -212,11 +213,11 @@ interface QaApi {
         ],
     )
     @PostMapping(
-        value = ["/data-points/{dataId}"],
+        value = ["/data-points/{dataPointId}"],
     )
     @PreAuthorize("hasRole('ROLE_REVIEWER')")
     fun changeDataPointQaStatus(
-        @PathVariable("dataId") dataId: String,
+        @PathVariable("dataPointId") dataPointId: String,
         @RequestParam qaStatus: QaStatus,
         @RequestParam comment: String? = null,
     )

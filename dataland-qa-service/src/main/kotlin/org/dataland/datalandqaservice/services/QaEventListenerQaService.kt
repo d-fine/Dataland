@@ -2,7 +2,6 @@ package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -13,13 +12,18 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDataMigrationManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -39,22 +43,25 @@ import org.springframework.stereotype.Component
 @Component
 class QaEventListenerQaService
     @Suppress("LongParameterList")
+    @Autowired
     constructor(
-        @Autowired var cloudEventMessageHandler: CloudEventMessageHandler,
-        @Autowired var objectMapper: ObjectMapper,
-        @Autowired val qaReviewManager: QaReviewManager,
-        @Autowired val dataPointQaReviewManager: DataPointQaReviewManager,
-        @Autowired val qaReportManager: QaReportManager,
-        @Autowired val metaDataControllerApi: MetaDataControllerApi,
-        @Autowired val dataPointControllerApi: DataPointControllerApi,
+        private val cloudEventMessageHandler: CloudEventMessageHandler,
+        private val objectMapper: ObjectMapper,
+        private val qaReviewManager: QaReviewManager,
+        private val dataPointQaReviewManager: DataPointQaReviewManager,
+        private val qaReportManager: QaReportManager,
+        private val dataPointControllerApi: DataPointControllerApi,
+        private val assembledDataMigrationManager: AssembledDataMigrationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
+         * In case of DATASET_UPLOAD OR DATASET_QA events, we generate a new QaReviewEntity entry in the database.
+         * In case of METAINFORMATION_PATCH, the corresponding entry is patched.
          * @param payload the message body as a json string
          * @param correlationId the correlation ID of the current user process
-         * @param type the type of the message
+         * @param messageType the type of the message
          */
         @RabbitListener(
             bindings = [
@@ -69,47 +76,52 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
-                    key = [RoutingKeyNames.DATASET_UPLOAD],
+                    key = [RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.METAINFORMATION_PATCH, RoutingKeyNames.DATASET_QA],
                 ),
             ],
         )
-        fun addDatasetToQaReviewRepository(
+        fun processBackendDatasetEvents(
+            message: Message,
             @Payload payload: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-            @Header(MessageHeaderKey.TYPE) type: String,
+            @Header(MessageHeaderKey.TYPE) messageType: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+            val receivedRoutingKey = message.messageProperties.receivedRoutingKey
 
             MessageQueueUtils.rejectMessageOnException {
-                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
-                val dataId = dataUploadedPayload.dataId
-                MessageQueueUtils.validateDataId(dataId)
-                val bypassQa: Boolean = dataUploadedPayload.bypassQa
-                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
-                val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
-                val qaStatus: QaStatus
-                var comment: String? = null
+                when (receivedRoutingKey) {
+                    RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.DATASET_QA -> {
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.PUBLIC_DATA_RECEIVED)
+                        val messagePayload =
+                            MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
+                        MessageQueueUtils.validateDataId(messagePayload.dataId)
 
-                when (bypassQa) {
-                    true -> {
-                        qaStatus = QaStatus.Accepted
-                        comment = "Automatically QA approved."
+                        qaReviewManager.addDatasetToQaReviewRepository(
+                            messagePayload.dataId,
+                            messagePayload.bypassQa,
+                            correlationId,
+                        )
                     }
-                    false -> qaStatus = QaStatus.Pending
-                }
 
-                val qaReviewEntity =
-                    qaReviewManager.saveQaReviewEntity(
-                        dataId = dataId,
-                        qaStatus = qaStatus,
-                        triggeringUserId = triggeringUserId,
-                        comment = comment,
-                        correlationId = correlationId,
+                    RoutingKeyNames.METAINFORMATION_PATCH -> {
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
+                        val messagePayload =
+                            MessageQueueUtils.readMessagePayload<DataMetaInfoPatchPayload>(payload, objectMapper)
+                        MessageQueueUtils.validateDataId(messagePayload.dataId)
+
+                        messagePayload.uploaderUserId?.let {
+                            qaReviewManager.patchUploaderUserIdInQaReviewEntry(messagePayload.dataId, it, correlationId)
+                        } ?: throw MessageQueueRejectException(
+                            "Received message to update uploaderUserId in QA database but " +
+                                "transmitted uploaderUserId was null.",
+                        )
+                    }
+
+                    else -> throw MessageQueueRejectException(
+                        "Routing Key '$receivedRoutingKey' unknown. " +
+                            "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
                     )
-
-                qaReviewManager.sendQaStatusUpdateMessage(
-                    qaReviewEntity = qaReviewEntity, correlationId = correlationId,
-                )
+                }
             }
         }
 
@@ -161,7 +173,10 @@ class QaEventListenerQaService
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    messageToSend, MessageType.QA_STATUS_UPDATED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                    messageToSend,
+                    MessageType.QA_STATUS_UPDATED,
+                    correlationId,
+                    ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
                     RoutingKeyNames.DOCUMENT,
                 )
             }
@@ -206,6 +221,42 @@ class QaEventListenerQaService
         }
 
         /**
+         * Method that listens to the BACKEND_DATASET_EVENTS Exchange for migration messages
+         * and carries the migration to the QA reports
+         * @param payload the content of the message
+         * @param correlationId the correlation ID of the current user process
+         * @param type the type of the message
+         */
+        @RabbitListener(
+            bindings = [
+                QueueBinding(
+                    value =
+                        Queue(
+                            QueueNames.QA_SERVICE_DATASET_MIGRATION,
+                            arguments = [
+                                Argument(name = "x-dead-letter-exchange", value = ExchangeName.DEAD_LETTER),
+                                Argument(name = "x-dead-letter-routing-key", value = "deadLetterKey"),
+                                Argument(name = "defaultRequeueRejected", value = "false"),
+                            ],
+                        ),
+                    exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
+                    key = [RoutingKeyNames.DATASET_STORED_TO_ASSEMBLED_MIGRATION],
+                ),
+            ],
+        )
+        fun migrateStoredDatasetToAssembledDataset(
+            @Payload payload: String,
+            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
+            @Header(MessageHeaderKey.TYPE) type: String,
+        ) {
+            MessageQueueUtils.validateMessageType(type, MessageType.DATA_MIGRATED)
+            MessageQueueUtils.rejectMessageOnException {
+                val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
+                assembledDataMigrationManager.migrateStoredDatasetToAssembledDataset(dataId, correlationId)
+            }
+        }
+
+        /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
          * @param payload the message body as a json string
          * @param correlationId the correlation ID of the current user process
@@ -236,11 +287,12 @@ class QaEventListenerQaService
             MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
 
             MessageQueueUtils.rejectMessageOnException {
-                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
-                MessageQueueUtils.validateDataId(dataUploadedPayload.dataId)
+                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper)
+                MessageQueueUtils.validateDataId(dataUploadedPayload.dataPointId)
                 logger.info(
-                    "Received QA required for dataId ${dataUploadedPayload.dataId} with " +
-                        "bypassQA ${dataUploadedPayload.bypassQa} (correlation Id: $correlationId)",
+                    "Received QA required for datapoint dataId ${dataUploadedPayload.dataPointId} with " +
+                        "initial QA status ${dataUploadedPayload.initialQaStatus} and message " +
+                        "${dataUploadedPayload.initialQaComment} (correlation Id: $correlationId)",
                 )
 
                 saveQaReviewEntityFromMessage(dataUploadedPayload, correlationId)
@@ -254,23 +306,19 @@ class QaEventListenerQaService
          * @return the saved DataPointQaReviewEntity
          */
         fun saveQaReviewEntityFromMessage(
-            dataUploadedPayload: DataUploadedPayload,
+            dataUploadedPayload: DataPointUploadedPayload,
             correlationId: String,
         ): DataPointQaReviewEntity {
-            val dataId = dataUploadedPayload.dataId
-            val bypassQa = dataUploadedPayload.bypassQa
-            val triggeringUserId = requireNotNull(dataPointControllerApi.getDataPointMetaInfo(dataId).uploaderUserId)
+            val dataPointId = dataUploadedPayload.dataPointId
+            val triggeringUserId = requireNotNull(dataPointControllerApi.getDataPointMetaInfo(dataPointId).uploaderUserId)
 
-            val (qaStatus, comment) =
-                when (bypassQa) {
-                    true -> Pair(QaStatus.Accepted, "Automatically QA approved.")
-                    false -> Pair(QaStatus.Pending, null)
-                }
+            val qaStatus = QaStatus.valueOf(dataUploadedPayload.initialQaStatus)
+
             return dataPointQaReviewManager.reviewDataPoint(
-                dataId = dataId,
+                dataPointId = dataPointId,
                 qaStatus = qaStatus,
                 triggeringUserId = triggeringUserId,
-                comment = comment,
+                comment = dataUploadedPayload.initialQaComment,
                 correlationId = correlationId,
             )
         }
