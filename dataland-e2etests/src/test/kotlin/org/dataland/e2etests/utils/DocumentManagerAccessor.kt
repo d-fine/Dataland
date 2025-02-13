@@ -1,9 +1,13 @@
 package org.dataland.e2etests.utils
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+
+import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
+import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
+import org.dataland.documentmanager.openApiClient.model.DocumentUploadResponse
 import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import java.io.File
 
@@ -13,8 +17,10 @@ class DocumentManagerAccessor {
         const val MAX_ATTEMPTS_TO_CHECK_DOCUMENT = 20
     }
 
-    val documentControllerApi = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
-    val testFiles =
+    private val logger = LoggerFactory.getLogger(DocumentManagerAccessor::class.java)
+
+    private val documentControllerApi = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
+    private val testFiles =
         listOf(
             File("./build/resources/test/documents/some-document.pdf"),
             File("./build/resources/test/documents/some-document2.pdf"),
@@ -32,7 +38,7 @@ class DocumentManagerAccessor {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         val documentIds = mutableListOf<String>()
         testFiles.forEach { file ->
-            documentIds.add(documentControllerApi.postDocument(file).documentId)
+            documentIds.add(uploadDocument(file).documentId)
         }
         documentIds.forEach { documentId -> executeDocumentExistenceCheckWithRetries(documentId) }
     }
@@ -49,5 +55,21 @@ class DocumentManagerAccessor {
                 }
             }
         }
+    }
+
+    private fun uploadDocument(document: File): DocumentUploadResponse {
+        val expectedHash = document.readBytes().sha256()
+        var uploadResponse: DocumentUploadResponse
+        try {
+            uploadResponse = documentControllerApi.postDocument(document)
+        } catch (clientException: ClientException) {
+            if (clientException.statusCode == HttpStatus.CONFLICT.value()) {
+                logger.info("Document already exists.")
+                uploadResponse = DocumentUploadResponse(documentId = expectedHash)
+            } else {
+                throw clientException
+            }
+        }
+        return uploadResponse
     }
 }

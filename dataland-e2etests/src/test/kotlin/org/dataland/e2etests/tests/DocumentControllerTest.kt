@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit
 class DocumentControllerTest {
     private val apiAccessor = ApiAccessor()
     private val documentControllerClient = DocumentControllerApi(BASE_PATH_TO_DOCUMENT_MANAGER)
+    private val logger = LoggerFactory.getLogger(DocumentControllerTest::class.java)
 
     private val pdfDocument = File("./public/test-report.pdf")
     private val xlsxDocument = File("./public/sample.xlsx")
@@ -150,9 +152,19 @@ class DocumentControllerTest {
     ): DocumentUploadResponse {
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val expectedHash = document.readBytes().sha256()
-        val uploadResponse = documentControllerClient.postDocument(document)
-        assertEquals(expectedHash, uploadResponse.documentId)
-        documentControllerClient.checkDocument(uploadResponse.documentId)
+        var uploadResponse: DocumentUploadResponse
+        try {
+            uploadResponse = documentControllerClient.postDocument(document)
+            assertEquals(expectedHash, uploadResponse.documentId)
+            documentControllerClient.checkDocument(uploadResponse.documentId)
+        } catch (clientException: ClientException) {
+            if (clientException.statusCode == HttpStatus.CONFLICT.value()) {
+                logger.info("Document already exists.")
+                uploadResponse = DocumentUploadResponse(documentId = expectedHash)
+            } else {
+                throw clientException
+            }
+        }
         return uploadResponse
     }
 
