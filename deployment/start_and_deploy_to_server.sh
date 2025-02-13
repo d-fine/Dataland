@@ -32,9 +32,9 @@ scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$locatio
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
-# Container health check
+# Health check for docker container
 health_check_location=$location/health-check/
-scp -r ./health-check/ ubuntu@"$target_server_url":"$health_check_location"
+rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:/home/ubuntu/dataland/health-check/
 ssh ubuntu@"$target_server_url" << 'EOF'
   sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
   sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
