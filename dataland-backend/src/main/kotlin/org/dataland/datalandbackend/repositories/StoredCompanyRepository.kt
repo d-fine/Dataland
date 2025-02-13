@@ -177,4 +177,32 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
      * Retrieves all the teaser companies
      */
     fun getAllByIsTeaserCompanyIsTrue(): List<StoredCompanyEntity>
+
+    /**
+     * A method to retrieve a list of subsidiaries of an unltimate parent company.
+     * @param companyId identifier of the ultimate parent company in dataland
+     * @return list of subsidiaries
+     */
+    @Query(
+        nativeQuery = true,
+        value =
+            "SELECT " +
+                "CHILD_COMPANIES.company_id AS companyId, " +
+                "CHILD_COMPANIES.company_name AS companyName, " +
+                "CHILD_COMPANIES.headquarters, " +
+                "CHILD_COMPANIES.country_code AS countryCode, " +
+                "CHILD_COMPANIES.sector, " +
+                "CHILD_IDENTIFIERS.identifier_value AS lei " +
+                "FROM stored_companies CHILD_COMPANIES " +
+                "INNER JOIN company_identifiers PARENT_IDENTIFIERS " +
+                "ON PARENT_IDENTIFIERS.identifier_value = CHILD_COMPANIES.parent_company_lei " +
+                "LEFT JOIN company_identifiers CHILD_IDENTIFIERS " +
+                "ON CHILD_IDENTIFIERS.company_id = CHILD_COMPANIES.company_id " +
+                "WHERE PARENT_IDENTIFIERS.identifier_type = 'Lei' " +
+                "AND PARENT_IDENTIFIERS.company_id = :#{#companyId} " +
+                "AND CHILD_IDENTIFIERS.identifier_type = 'Lei';",
+    )
+    fun getCompanySubsidiariesByParentId(
+        @Param("companyId") companyId: String,
+    ): List<BasicCompanyInformation>
 }

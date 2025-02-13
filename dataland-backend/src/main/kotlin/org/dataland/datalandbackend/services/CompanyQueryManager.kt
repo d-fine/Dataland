@@ -143,4 +143,15 @@ class CompanyQueryManager(
             dataType.name,
             true,
         )
+
+    /**
+     * A method to retrieve a list of subsidiaries of an ultimate parent company.
+     * @param companyId identifier of the ultimate parent company in dataland
+     * @return list of subsidiaries
+     */
+    @Transactional
+    fun getCompanySubsidiariesByParentId(companyId: String): List<BasicCompanyInformation> {
+        verifyCompanyIdExists(companyId)
+        return companyRepository.getCompanySubsidiariesByParentId(companyId)
+    }
 }
