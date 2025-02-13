@@ -187,7 +187,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "{job=\"health_check\", level=\"warn\"}",
+          "expr": "{job=\"health_check\", level=\"error\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -279,7 +279,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "count_over_time({job=\"health_check\", level=\"warn\"} [1m])",
+          "expr": "count_over_time({job=\"health_check\", level=\"error\"} [1m])",
           "queryType": "range",
           "refId": "A"
         }

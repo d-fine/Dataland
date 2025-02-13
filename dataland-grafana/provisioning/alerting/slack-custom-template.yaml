@@ -18,26 +18,26 @@ templates:
     name: alert_message_template
     template: |
       {{ define "alert_message_template" }}
-        {{ if gt (len .Alerts.Firing) 0 }}
+        {{- if gt (len .Alerts.Firing) 0 -}}
           *Firing Alerts:*
           {{ range .Alerts.Firing }} {{ template "alert_firing_template" . }} {{ end }}
-        {{ end }}
-        {{ if gt (len .Alerts.Resolved) 0 }}
+        {{- end }}
+        {{- if gt (len .Alerts.Resolved) 0 -}}
           *Resolved Alerts:*
           {{ range .Alerts.Resolved }} {{ template "alert_resolved_template" . }} {{ end }}
-        {{ end }}
+        {{- end }}
       {{ end }}
 
   - orgId: 1
     name: alert_firing_template
     template: |
       {{ define "alert_firing_template" }}
-      {{- if .Labels.job -}}
-        *Job:* {{ .Labels.job }}
+      {{- if .Labels.job }}
+      *Job:* {{ .Labels.job }}
       {{- end }}
       *Service:* {{ .Labels.service_name }}
-      {{- if .Labels.container -}}
-        *Container:* {{ .Labels.container }}
+      {{- if .Labels.container }}
+      *Container:* {{ .Labels.container }}
       {{- end }}
       *Detected level:* {{ .Labels.detected_level }}
       *Env:* {{ .Labels.env }}

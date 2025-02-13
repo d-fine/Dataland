@@ -97,7 +97,7 @@ groups:
       # -------------------------------------------------------------------------------------------
       - uid: unhealthy_container
         title: Unhealthy Container
-        condition: C
+        condition: D
         data:
           - refId: A
             queryType: range
@@ -110,7 +110,7 @@ groups:
                 type: loki
                 uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: count_over_time({job="health_check", level="warn", container=~".+"} [1m])
+              expr: sum by (container) (count_over_time({job="health_check", level="error", container=~".+"} [1m]) unless count_over_time({job="health_check", level="info", container=~".+"} [1m]))
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range
@@ -126,12 +126,14 @@ groups:
                     type: and
                   query:
                     params:
-                      - B
+                      - 0
+                      - 0
                   reducer:
                     params: [ ]
-                    type: last
+                    type: avg
                   type: query
               datasource:
+                name: Expression
                 type: __expr__
                 uid: __expr__
               expression: A
@@ -140,30 +142,31 @@ groups:
               reducer: max
               refId: B
               type: reduce
-          - refId: C
+          - refId: D
             datasourceUid: __expr__
             model:
               conditions:
                 - evaluator:
                     params:
                       - 0
+                      - 0
                     type: gt
                   operator:
                     type: and
                   query:
-                    params:
-                      - C
+                    params: []
                   reducer:
-                    params: [ ]
-                    type: last
+                    params: []
+                    type: avg
                   type: query
               datasource:
+                name: Expression
                 type: __expr__
                 uid: __expr__
               expression: B
               intervalMs: 1000
               maxDataPoints: 43200
-              refId: C
+              refId: D
               type: threshold
         dashboardUid: beb8ybzf6qupsc
         panelId: 5
