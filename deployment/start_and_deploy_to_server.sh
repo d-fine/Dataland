@@ -32,7 +32,7 @@ scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$locatio
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
-# Health check for docker container
+# Health check for docker container (preparation)
 health_check_location=$location/health-check/
 rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:$health_check_location
 ssh ubuntu@"$target_server_url" << EOF
@@ -41,8 +41,7 @@ ssh ubuntu@"$target_server_url" << EOF
   sudo mv "$health_check_location/health-check" /etc/logrotate.d/health-check &&
   sudo chmod +x /usr/local/bin/healthCheck.sh &&
   sudo systemctl daemon-reload &&
-  sudo systemctl enable health-check.service &&
-  sudo systemctl start health-check.service
+  sudo systemctl enable health-check.service
 EOF
 
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
@@ -116,3 +115,6 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
+
+# Start Health check for docker container
+ssh ubuntu@"$target_server_url" "sudo systemctl start health-check.service"
