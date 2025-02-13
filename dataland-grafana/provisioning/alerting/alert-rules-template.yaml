@@ -97,37 +97,35 @@ groups:
       # -------------------------------------------------------------------------------------------
       - uid: unhealthy_container
         title: Unhealthy Container
-        condition: D
+        condition: C
         data:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 21600
+              from: 60
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
-              datasource:
-                type: loki
-                uid: P8E80F9AEF21F6940
               editorMode: code
-              expr: sum by (container) (count_over_time({job="health_check", level="error", container=~".+"} [1m]) unless count_over_time({job="health_check", level="info", container=~".+"} [1m]))
+              expr: sum by (container) (count_over_time({job="health_check", level="error", container=~".+"} [1m]))
               intervalMs: 1000
               maxDataPoints: 43200
               queryType: range
               refId: A
+              step: ""
           - refId: B
             datasourceUid: __expr__
             model:
               conditions:
                 - evaluator:
-                    params: [ ]
+                    params:
+                      - 0
+                      - 0
                     type: gt
                   operator:
                     type: and
                   query:
-                    params:
-                      - 0
-                      - 0
+                    params: [ ]
                   reducer:
                     params: [ ]
                     type: avg
@@ -139,10 +137,10 @@ groups:
               expression: A
               intervalMs: 1000
               maxDataPoints: 43200
-              reducer: max
+              reducer: last
               refId: B
               type: reduce
-          - refId: D
+          - refId: C
             datasourceUid: __expr__
             model:
               conditions:
@@ -154,9 +152,9 @@ groups:
                   operator:
                     type: and
                   query:
-                    params: []
+                    params: [ ]
                   reducer:
-                    params: []
+                    params: [ ]
                     type: avg
                   type: query
               datasource:
@@ -166,7 +164,7 @@ groups:
               expression: B
               intervalMs: 1000
               maxDataPoints: 43200
-              refId: D
+              refId: C
               type: threshold
         dashboardUid: beb8ybzf6qupsc
         panelId: 5
