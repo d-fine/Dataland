@@ -15,44 +15,41 @@
       style="margin: 15px"
     />
     <span class="flex align-items-center">
-                <span
-                    data-test="reset-filter"
-                    style="margin: 15px"
-                    class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-                    @click="resetFilter"
-                >RESET</span
-                >
-              </span>
+      <span
+        data-test="reset-filter"
+        style="margin: 15px"
+        class="ml-3 cursor-pointer text-primary font-semibold d-letters"
+        @click="resetFilter"
+        >RESET</span
+      >
+    </span>
 
     <div class="col-12 text-left p-3">
       <div class="card">
-        <DataTable
-            v-if="documentsFiltered && documentsFiltered.length > 0"
-            v-show="!waitingForData"
-            ref="dataTable"
-            data-test="requests-datatable"
-            :value="documentsFiltered"
-            :paginator="true"
-            :lazy="true"
-            :total-records="totalRecords"
-            :rows="rowsPerPage"
-            :first="firstRowIndex"
-            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport"
-            :alwaysShowPaginator="false"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-            @page="onPage($event)"
-            class="table-cursor"
-            id="admin-request-overview-data"
-            :rowHover="true"
-            style="cursor: pointer"
+        <DataTable v-if="documentsFiltered && documentsFiltered.length > 0"
+          :value="documentsFiltered"
         >
-          <Column header="DOCUMENT NAME" field="documentName" :sortable="true">
-            <template #body="slotProps">
-              {{ slotProps.data.documentName }}
+          <Column header="DOCUMENT NAME" field="documentName" :sortable="true" > </Column>
+          <Column header="DOCUMENT TYPE" field="documentType" :sortable="true" />
+          <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" />
+          <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+            <template #body>
+              <span class="text-primary no-underline font-bold"><span> VIEW DETAILS</span> <span class="ml-3">></span> </span>
+            </template>
+          </Column>
+          <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+            <template #body>
+              <span class="text-primary no-underline font-bold"><span> DOWNLOAD </span> <i class="pi pi-download pl-1" data-test="download-icon" aria-hidden="true" style="font-size: 12px" /> </span>
             </template>
           </Column>
         </DataTable>
-
+        <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
+          <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
+          <p class="font-medium text-xl">Please double-check the spelling and filter settings!</p>
+          <p class="font-medium text-xl">
+            It might be possible that the company you searched for does not have any documents on Dataland yet.
+          </p>
+        </div>
       </div>
     </div>
   </TheContent>
@@ -62,14 +59,14 @@
 <script setup lang="ts">
 import { Content, Page } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
-import { inject, onMounted, reactive, ref } from 'vue';
-import { DocumentMetaInfo } from '@clients/documentmanager';
+import { inject, onMounted, ref } from 'vue';
 import { SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
-import { DataTablePageEvent } from 'primevue/datatable';
-import TheHeader from "@/components/generics/TheHeader.vue";
-import TheContent from "@/components/generics/TheContent.vue";
-import CompanyInfoSheet from "@/components/general/CompanyInfoSheet.vue";
-import TheFooter from "@/components/generics/TheFooter.vue";
+import DataTable, { DataTablePageEvent } from 'primevue/datatable';
+import Column from 'primevue/column';
+import TheHeader from '@/components/generics/TheHeader.vue';
+import TheContent from '@/components/generics/TheContent.vue';
+import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
+import TheFooter from '@/components/generics/TheFooter.vue';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 
 const props = defineProps<{
@@ -81,7 +78,7 @@ const footerPage: Page | undefined = content.pages.find((page) => page.url === '
 const footerContent = footerPage?.sections;
 const waitingForData = ref(true);
 const useMobileView = inject<boolean>('useMobileView', false);
-const documentsFiltered = reactive([]) as Array<DocumentMetaInfo>;
+const documentsFiltered = ref<{ documentName: string; documentType: string; publicationDate: string }[]>([]);
 const selectedDocumentType = [] as Array<SelectableItem>;
 const availableDocumentTypes = [
   { displayName: 'Annual report', disabled: false },
@@ -98,6 +95,10 @@ const currentChunkIndex = ref(0);
 async function getAllDocumentsForFilters() {
   waitingForData.value = true;
   //todo set documentsFiltered
+  documentsFiltered.value = [
+    { documentName: 'policy123', documentType: 'policy', publicationDate: '202-01-01' },
+    { documentName: 'annual_report_2024_edited_20250101', documentType: 'annualreport', publicationDate: '202-01-01' },
+  ];
   waitingForData.value = false;
 }
 
@@ -122,6 +123,7 @@ function onPage(event: DataTablePageEvent) {
 
 onMounted(() => {
   getAllDocumentsForFilters();
+  console.log(documentsFiltered.value)
 });
 </script>
 
