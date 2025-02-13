@@ -41,7 +41,7 @@ class UserRolesChecker(
      * @return a Boolean indicating whether the user is uploader of the document
      */
     @Transactional(readOnly = true)
-    fun isCurrentUserDocumentUploader(documentId: String): Boolean {
+    fun isCurrentUserUploaderOfDocumentWithId(documentId: String): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         return documentManager
             .retrieveDocumentMetaDataById(
