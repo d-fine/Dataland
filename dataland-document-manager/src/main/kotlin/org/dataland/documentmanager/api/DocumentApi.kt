@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
+import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentUploadResponse
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 
@@ -186,4 +188,78 @@ interface DocumentApi {
     fun getDocument(
         @PathVariable("documentId") documentId: String,
     ): ResponseEntity<InputStreamResource>
+
+    /**
+     * Retrieve document meta information by document ID
+     * @param documentId the ID for which to retrieve meta information
+     */
+    @Operation(
+        summary = "Receive meta information for a document.",
+        description = "Receive meta information for a document by its ID from internal storage.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully received document meta information.",
+            ),
+            ApiResponse(
+                responseCode = "404",
+                description = "Document meta information could not be retrieved.",
+            ),
+        ],
+    )
+    @GetMapping(
+        value = ["/{documentId}/meta"],
+        produces = [
+            "application/json",
+        ],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getDocumentMetaInformation(
+        @PathVariable("documentId") documentId: String,
+    ): ResponseEntity<DocumentUploadResponse>
+
+    /**
+     * Search for document meta information by document ID. Only results with QA status "Accepted" are returned.
+     * @param
+     */
+    @Operation(
+        summary = "Search for document meta information.",
+        description =
+            "Search for document meta information by company ID, document category and reporting period. " +
+                "If numberOfResults is not null, it limits the number of returned results. " +
+                "Results are returned sorted by publication date in reverse chronological order. " +
+                "Only results with QA Status 'Accepted' are returned.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully searched for document meta information.",
+            ),
+            ApiResponse(
+                responseCode = "400",
+                description =
+                    "Bad request; make sure that at least one search parameter is non-null and" +
+                        "that the chunk index is within bounds (when in doubt, use chunk index 0).",
+            ),
+        ],
+    )
+    @GetMapping(
+        value = [
+            "/",
+        ],
+        produces = [
+            "application/json",
+        ],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun getDocumentMetaInformationBySearch(
+        @RequestParam companyId: String? = null,
+        @RequestParam documentCategory: DocumentCategory? = null,
+        @RequestParam reportingPeriod: String? = null,
+        @RequestParam chunkSize: Int? = null,
+        @RequestParam chunkIndex: Int = 0,
+    ): ResponseEntity<List<DocumentUploadResponse>>
 }

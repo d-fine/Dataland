@@ -4,11 +4,13 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.documentmanager.api.DocumentApi
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentUploadResponse
 import org.dataland.documentmanager.services.DocumentManager
+import org.dataland.documentmanager.services.DocumentMetaInformationSearchFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -60,6 +62,9 @@ class DocumentController(
             .body(documentContent)
     }
 
+    override fun getDocumentMetaInformation(documentId: String): ResponseEntity<DocumentUploadResponse> =
+        ResponseEntity.ok(documentManager.retrieveDocumentMetaInfoById(documentId))
+
     override fun patchDocumentMetaInfo(
         documentId: String,
         documentMetaInfoPatch: DocumentMetaInfoPatch,
@@ -105,5 +110,50 @@ class DocumentController(
                 throw exception
             }
         }
+    }
+
+    /**
+     * Searches in storage for document meta information matching the non-null search
+     * parameter values and optionally only returns a chunk of the search results.
+     * Only document meta information with QaStatus "Accepted" is returned, and results
+     * are ordered by publication date in reverse chronological order.
+     * @param companyId The company ID to filter by, ignored if null.
+     * @param documentCategory The document category to filter by, ignored if null.
+     * @param reportingPeriod The reporting period to filter by, ignored if null.
+     * @param chunkSize The maximum size of the chunk of search results returned. If
+     * null, all search results are returned.
+     * @param chunkIndex The index, counting started at 0, of the chunk that shall be
+     * returned. If chunkSize is null, there is only a single chunk, so chunkIndex
+     * must be 0 then.
+     * @return A ResponseEntity wrapping a list of DocumentUploadResponse objects. In
+     * addition to the values of the three potential search parameter fields, these
+     * contain the document ids and names as well as publication dates.
+     */
+    override fun getDocumentMetaInformationBySearch(
+        companyId: String?,
+        documentCategory: DocumentCategory?,
+        reportingPeriod: String?,
+        chunkSize: Int?,
+        chunkIndex: Int,
+    ): ResponseEntity<List<DocumentUploadResponse>> {
+        val documentMetaInformationSearchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId,
+                documentCategory,
+                reportingPeriod,
+            )
+        if (documentMetaInformationSearchFilter.isEmpty()) {
+            throw InvalidInputApiException(
+                summary = "At least one search parameter must be non-null.",
+                message = "At least one search parameter must be non-null.",
+            )
+        }
+        return ResponseEntity.ok(
+            documentManager.searchForDocumentMetaInformation(
+                documentMetaInformationSearchFilter,
+                chunkSize,
+                chunkIndex,
+            ),
+        )
     }
 }

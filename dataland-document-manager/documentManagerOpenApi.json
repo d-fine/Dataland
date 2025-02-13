@@ -21,6 +21,120 @@
   ],
   "paths": {
     "/": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Search for document meta information.",
+        "description": "Search for document meta information by company ID, document category and reporting period. If numberOfResults is not null, it limits the number of returned results. Results are returned sorted by publication date in reverse chronological order. Only results with QA Status \u0027Accepted\u0027 are returned.",
+        "operationId": "getDocumentMetaInformationBySearch",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "documentCategory",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "AnnualReport",
+                "SustainabilityReport",
+                "Policy",
+                "Other"
+              ]
+            }
+          },
+          {
+            "name": "reportingPeriod",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chunkSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "chunkIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully searched for document meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentUploadResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request; make sure that at least one search parameter is non-null andthat the chunk index is within bounds (when in doubt, use chunk index 0).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DocumentUploadResponse"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "document-controller"
@@ -388,6 +502,76 @@
           },
           "403": {
             "description": "You do not have the right to update the companyIds field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{documentId}/meta": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Receive meta information for a document.",
+        "description": "Receive meta information for a document by its ID from internal storage.",
+        "operationId": "getDocumentMetaInformation",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Document meta information could not be retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully received document meta information.",
             "content": {
               "application/json": {
                 "schema": {

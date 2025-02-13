@@ -1,6 +1,7 @@
 package org.dataland.documentmanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -138,6 +139,38 @@ class DocumentManager
             return documentExists
         }
 
+        /**
+         * This method retrieves the meta information of a document from storage.
+         * @param documentId the documentId of the document whose meta information shall be retrieved.
+         */
+        fun retrieveDocumentMetaInfoById(documentId: String): DocumentUploadResponse {
+            val correlationId = randomUUID().toString()
+            val documentMetaInfoEntity =
+                retrieveDocumentMetaInfoFromStorage(documentId, correlationId)
+            return documentMetaInfoEntity.toDocumentUploadResponse()
+        }
+
+        private fun retrieveDocumentMetaInfoFromStorageWithQaStatusAccepted(
+            documentId: String,
+            correlationId: String,
+        ): DocumentMetaInfoEntity {
+            val documentMetaInfoEntity =
+                documentMetaInfoRepository.findById(documentId).orElseThrow {
+                    ResourceNotFoundApiException(
+                        "No document found",
+                        "No document with ID: $documentId could be found. Correlation ID: $correlationId",
+                    )
+                }
+            if (documentMetaInfoEntity.qaStatus != QaStatus.Accepted) {
+                throw ResourceNotFoundApiException(
+                    "No accepted document found",
+                    "A non-quality-assured document with ID: $documentId was found. " +
+                        "Only quality-assured documents can be retrieved. Correlation ID: $correlationId",
+                )
+            }
+            return documentMetaInfoEntity
+        }
+
         private fun retrieveDocumentMetaInfoFromStorage(
             documentId: String,
             correlationId: String,
@@ -210,22 +243,10 @@ class DocumentManager
          */
         fun retrieveDocumentById(documentId: String): DocumentStream {
             val correlationId = randomUUID().toString()
-            val metaDataInfoEntity =
-                documentMetaInfoRepository.findById(documentId).orElseThrow {
-                    ResourceNotFoundApiException(
-                        "No document found",
-                        "No document with ID: $documentId could be found. Correlation ID: $correlationId",
-                    )
-                }
-            if (metaDataInfoEntity.qaStatus != QaStatus.Accepted) {
-                throw ResourceNotFoundApiException(
-                    "No accepted document found",
-                    "A non-quality-assured document with ID: $documentId was found. " +
-                        "Only quality-assured documents can be retrieved. Correlation ID: $correlationId",
-                )
-            }
+            val documentMetaInfoEntity =
+                retrieveDocumentMetaInfoFromStorageWithQaStatusAccepted(documentId, correlationId)
             val documentDataStream = retrieveDocumentDataStream(documentId, correlationId)
-            return DocumentStream(documentId, metaDataInfoEntity.documentType, documentDataStream)
+            return DocumentStream(documentId, documentMetaInfoEntity.documentType, documentDataStream)
         }
 
         private fun retrieveDocumentDataStream(
@@ -276,5 +297,50 @@ class DocumentManager
                         "Document meta data for document with documentId $documentId could not be retrieved. " +
                             "Correlation ID: $correlationId.",
                 )
+        }
+
+        /**
+         * Search for document meta information by companyId, documentCategory and reportingPeriod. There is the
+         * option to only return a chunk of the search results, controlled by the parameters chunkSize and chunkIndex.
+         */
+        fun searchForDocumentMetaInformation(
+            documentMetaInformationSearchFilter: DocumentMetaInformationSearchFilter,
+            chunkSize: Int? = null,
+            chunkIndex: Int = 0,
+        ): List<DocumentUploadResponse> {
+            val searchResults =
+                documentMetaInfoRepository
+                    .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                        documentMetaInformationSearchFilter.companyId,
+                        documentMetaInformationSearchFilter.documentCategory,
+                        documentMetaInformationSearchFilter.reportingPeriod,
+                    ).map { it.toDocumentUploadResponse() }
+
+            if (chunkSize == null) {
+                return searchResults
+            } else if (chunkSize <= 0) {
+                throw InvalidInputApiException(
+                    summary = "chunkSize must be positive.",
+                    message = "chunkSize must be positive.",
+                )
+            } else {
+                val numberSearchResults = searchResults.size
+                val integerQuotient = numberSearchResults / chunkSize
+                val numberOfChunks =
+                    if (numberSearchResults % chunkSize == 0) integerQuotient else integerQuotient + 1
+                val chunkIndexNonNegativeAndOutOfBounds =
+                    (numberOfChunks == 0 && chunkIndex > 0) || (numberOfChunks > 0 && chunkIndex >= numberOfChunks)
+                if (chunkIndex < 0 || chunkIndexNonNegativeAndOutOfBounds) {
+                    throw InvalidInputApiException(
+                        summary = "Bad chunkIndex.",
+                        message =
+                            "Bad chunkIndex: must be between 0 inclusive and number of chunks exclusive " +
+                                "(0 is allowed, and is the only allowed value, for chunkIndex if the number" +
+                                "of chunks is 0 due to an empty list of search results).",
+                    )
+                }
+                val startIndex = chunkIndex * chunkSize
+                return searchResults.subList(startIndex, startIndex + chunkSize)
+            }
         }
     }
