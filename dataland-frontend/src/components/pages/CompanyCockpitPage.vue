@@ -74,6 +74,7 @@ import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanag
 import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+import router from '@/router';
 
 //todo: replace when backend ready
 type DocumentData = {
@@ -229,7 +230,7 @@ export default defineComponent({
       this.showAllFrameworks = !this.showAllFrameworks;
     },
     goToDocumentOverview() {
-      //todo
+      void router.push(`/companies/${this.companyId}/documents`);
     },
     truncatedDocumentName(name: string) {
       return name.length > 25 ? name.slice(0, 25) + '...' : name;
@@ -304,7 +305,7 @@ export default defineComponent({
 .document-button {
   width: fit-content;
   margin-top: 20px;
-  @media only screen  {
+  @media only screen {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
