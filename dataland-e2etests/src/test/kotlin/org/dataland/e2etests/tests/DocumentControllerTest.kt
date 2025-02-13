@@ -5,7 +5,7 @@ import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
-import org.dataland.documentmanager.openApiClient.model.DocumentUploadResponse
+import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfoResponse
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
@@ -157,11 +157,11 @@ class DocumentControllerTest {
     /**
      * Wait until QaStatus is accepted for uploaded document.
      *
-     * @param uploadResponse the DocumentUploadResponse document's id for which an update of the QaStatus should be
+     * @param uploadResponse the DocumentMetaInfoResponse document's id for which an update of the QaStatus should be
      * checked and awaited
      * @returns the received file
      */
-    private fun ensureQaCompleted(uploadResponse: DocumentUploadResponse): File {
+    private fun ensureQaCompleted(uploadResponse: DocumentMetaInfoResponse): File {
         lateinit var downloadedFile: File
         Awaitility
             .await()
@@ -184,7 +184,7 @@ class DocumentControllerTest {
      * @param size expected size of the document
      */
     private fun validateResponseHeaders(
-        uploadResponse: DocumentUploadResponse,
+        uploadResponse: DocumentMetaInfoResponse,
         mimeType: MediaType,
         size: String,
     ) {

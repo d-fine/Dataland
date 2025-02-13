@@ -1,5 +1,5 @@
 import { Configuration } from '@clients/backend';
-import { DocumentControllerApi, type DocumentUploadResponse } from '@clients/documentmanager';
+import { DocumentControllerApi, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { createHash } from 'crypto';
 import { type AxiosError } from 'axios';
 
@@ -40,7 +40,7 @@ export async function uploadDocumentViaApi(
   token: string,
   buffer: ArrayBuffer,
   name: string
-): Promise<DocumentUploadResponse> {
+): Promise<DocumentMetaInfoResponse> {
   const arr = new Uint8Array(buffer);
   const file = new File([arr], name, { type: 'application/pdf' });
   const documentControllerApi = new DocumentControllerApi(
@@ -57,7 +57,7 @@ export async function uploadDocumentViaApi(
     .catch((error: AxiosError) => {
       if (error.status == 409) {
         console.log('Document already exists.');
-        return { documentId: documentHash } as DocumentUploadResponse;
+        return { documentId: documentHash } as DocumentMetaInfoResponse;
       } else {
         throw error;
       }

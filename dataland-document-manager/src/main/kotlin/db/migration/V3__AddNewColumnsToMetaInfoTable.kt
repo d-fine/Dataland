@@ -7,7 +7,7 @@ import org.flywaydb.core.api.migration.Context
  * This migration script handles the creation of the initial databases
  */
 @Suppress("ClassName")
-class V3__IntroduceNewColumns : BaseJavaMigration() {
+class V3__AddNewColumnsToMetaInfoTable : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         addDocumentName(context!!)
         addDocumentCategory(context)
@@ -20,7 +20,7 @@ class V3__IntroduceNewColumns : BaseJavaMigration() {
         context.connection.createStatement().execute(
             """
             ALTER TABLE document_meta_info
-            ADD COLUMN document_name varchar(255) DEFAULT NULL
+            ADD COLUMN document_name VARCHAR(255) DEFAULT NULL
             """.trimIndent(),
         )
     }
@@ -29,7 +29,7 @@ class V3__IntroduceNewColumns : BaseJavaMigration() {
         context.connection.createStatement().execute(
             """
             ALTER TABLE document_meta_info
-            ADD COLUMN document_category varchar(255) DEFAULT NULL
+            ADD COLUMN document_category VARCHAR(255) DEFAULT NULL
             """.trimIndent(),
         )
     }
@@ -38,7 +38,7 @@ class V3__IntroduceNewColumns : BaseJavaMigration() {
         context.connection.createStatement().execute(
             """
             ALTER TABLE document_meta_info
-            ADD COLUMN company_ids JSONB DEFAULT NULL
+            ADD COLUMN company_ids TEXT DEFAULT NULL
             """.trimIndent(),
         )
     }
@@ -56,7 +56,7 @@ class V3__IntroduceNewColumns : BaseJavaMigration() {
         context.connection.createStatement().execute(
             """
             ALTER TABLE document_meta_info
-            ADD COLUMN reporting_period varchar(255) DEFAULT NULL
+            ADD COLUMN reporting_period VARCHAR(255) DEFAULT NULL
             """.trimIndent(),
         )
     }

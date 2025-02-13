@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
-import org.dataland.documentmanager.model.DocumentUploadResponse
+import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
@@ -34,7 +34,7 @@ interface DocumentApi {
      * Upload a document and corresponding meta data
      * @param document a document
      * @param documentMetaInfo document meta info
-     * @return returns a documentUploadResponse containing documentId and metadata
+     * @return returns a documentMetaInfoResponse containing documentId and metadata
      */
     @Operation(
         summary = "Upload a document and metadata.",
@@ -55,7 +55,7 @@ interface DocumentApi {
     fun postDocument(
         @RequestPart("document") document: MultipartFile,
         @RequestPart("documentMetaInfo", required = false) documentMetaInfo: DocumentMetaInfo?,
-    ): ResponseEntity<DocumentUploadResponse>
+    ): ResponseEntity<DocumentMetaInfoResponse>
 
     /**
      * Patch the metadata information of a document. The field values in documentMetaInfoPatch that
@@ -92,7 +92,7 @@ interface DocumentApi {
     fun patchDocumentMetaInfo(
         @PathVariable("documentId") documentId: String,
         @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,
-    ): ResponseEntity<DocumentUploadResponse>
+    ): ResponseEntity<DocumentMetaInfoResponse>
 
     /**
      * Patch the company id list in the stored metainformation of a given document by adding
@@ -125,7 +125,7 @@ interface DocumentApi {
     fun patchDocumentMetaInfoCompanyIds(
         @PathVariable("documentId") documentId: String,
         @PathVariable("companyId") companyId: String,
-    ): ResponseEntity<DocumentUploadResponse>
+    ): ResponseEntity<DocumentMetaInfoResponse>
 
     /**
      * Checks if a document with a given ID exists

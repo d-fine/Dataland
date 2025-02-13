@@ -12,7 +12,7 @@ import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
-import org.dataland.documentmanager.model.DocumentUploadResponse
+import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.documentmanager.services.conversion.lowercaseExtension
@@ -56,7 +56,7 @@ class DocumentManager
         fun temporarilyStoreDocumentAndTriggerStorage(
             document: MultipartFile,
             documentMetaInfo: DocumentMetaInfo?,
-        ): DocumentUploadResponse {
+        ): DocumentMetaInfoResponse {
             val correlationId = randomUUID().toString()
             logger.info("Started temporary storage process for document. Correlation ID: $correlationId")
 
@@ -90,7 +90,7 @@ class DocumentManager
             cloudEventMessageHandler.buildCEMessageAndSendToQueue(
                 documentId, MessageType.DOCUMENT_RECEIVED, correlationId, ExchangeName.DOCUMENT_RECEIVED,
             )
-            return DocumentUploadResponse(
+            return DocumentMetaInfoResponse(
                 documentId,
                 documentName = documentMetaInfoEntity.documentName,
                 documentCategory = documentMetaInfoEntity.documentCategory,
@@ -113,6 +113,7 @@ class DocumentManager
         /**
          * A wrapper for storing document meta information to the database immediately
          * @param documentMetaInfoEntity the document meta information to store
+         * @param correlationId
          */
         fun saveMetaInfoToDatabase(
             documentMetaInfoEntity: DocumentMetaInfoEntity,
@@ -162,12 +163,12 @@ class DocumentManager
          * of overwritten.
          * @param documentId identifier of document to be patched
          * @param documentMetaInfoPatch meta data patch object
-         * @return DocumentUploadResponse object to be sent to patching user
+         * @return DocumentMetaInfoResponse object to be sent to patching user
          */
         fun patchDocumentMetaInformation(
             documentId: String,
             documentMetaInfoPatch: DocumentMetaInfoPatch,
-        ): DocumentUploadResponse {
+        ): DocumentMetaInfoResponse {
             val correlationId = randomUUID().toString()
             val documentMetaInfoEntity = retrieveDocumentMetaInfoFromStorage(documentId, correlationId)
             logger.info("Updating meta information for document with ID $documentId. CorrelationID: $correlationId.")
@@ -180,7 +181,7 @@ class DocumentManager
             documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
             documentMetaInfoPatch.reportingPeriod?.let { documentMetaInfoEntity.reportingPeriod = it }
 
-            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
+            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentMetaInfoResponse()
         }
 
         /**
@@ -188,12 +189,12 @@ class DocumentManager
          * This version only adds a single companyId to the companyIds list.
          * @param documentId identifier of document to be patched
          * @param companyId the company id to add
-         * @return DocumentUploadResponse object to be sent to patching user
+         * @return DocumentMetaInfoResponse object to be sent to patching user
          */
         fun patchDocumentMetaInformationCompanyIds(
             documentId: String,
             companyId: String,
-        ): DocumentUploadResponse {
+        ): DocumentMetaInfoResponse {
             val correlationId = randomUUID().toString()
             val documentMetaInfoEntity = retrieveDocumentMetaInfoFromStorage(documentId, correlationId)
 
@@ -201,7 +202,7 @@ class DocumentManager
 
             documentMetaInfoEntity.companyIds?.add(companyId)
 
-            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentUploadResponse()
+            return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentMetaInfoResponse()
         }
 
         /**
@@ -211,12 +212,11 @@ class DocumentManager
         fun retrieveDocumentById(documentId: String): DocumentStream {
             val correlationId = randomUUID().toString()
             val metaDataInfoEntity =
-                documentMetaInfoRepository.findById(documentId).orElseThrow {
-                    ResourceNotFoundApiException(
-                        "No document found",
-                        "No document with ID: $documentId could be found. Correlation ID: $correlationId",
-                    )
-                }
+                documentMetaInfoRepository.getByDocumentId(documentId) ?: throw ResourceNotFoundApiException(
+                    "No document found",
+                    "No document with ID: $documentId could be found. Correlation ID: $correlationId",
+                )
+
             if (metaDataInfoEntity.qaStatus != QaStatus.Accepted) {
                 throw ResourceNotFoundApiException(
                     "No accepted document found",
@@ -255,13 +255,10 @@ class DocumentManager
         /**
          * Retrieve Document meta information by documentId
          * @param documentId identifier of document
-         * @param correlationId
          * @return document meta information
          */
-        fun retrieveDocumentMetaDataById(
-            documentId: String,
-            correlationId: String,
-        ): DocumentMetaInfoEntity {
+        fun retrieveDocumentMetaInfoById(documentId: String): DocumentMetaInfoEntity {
+            val correlationId = randomUUID().toString()
             logger.info("Retrieve meta data for document with documentId $documentId. Correlation ID: $correlationId.")
             if (!checkIfDocumentExistsWithId(documentId)) {
                 throw ResourceNotFoundApiException(

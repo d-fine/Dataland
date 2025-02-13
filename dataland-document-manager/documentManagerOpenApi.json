@@ -55,7 +55,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -283,7 +283,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -293,7 +293,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -303,7 +303,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -371,7 +371,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -381,7 +381,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -391,7 +391,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -690,7 +690,7 @@
           }
         }
       },
-      "DocumentUploadResponse": {
+      "DocumentMetaInfoResponse": {
         "required": [
           "documentId"
         ],

@@ -14,7 +14,7 @@ import java.time.LocalDate
  * @param publicationDate
  * @param reportingPeriod
  */
-data class DocumentUploadResponse(
+data class DocumentMetaInfoResponse(
     @field:JsonProperty(required = true)
     val documentId: String,
     @field:JsonProperty(required = false)

@@ -3,7 +3,7 @@ package org.dataland.e2etests.utils
 import org.dataland.datalandbackendutils.utils.sha256
 import org.dataland.documentmanager.openApiClient.api.DocumentControllerApi
 import org.dataland.documentmanager.openApiClient.infrastructure.ClientException
-import org.dataland.documentmanager.openApiClient.model.DocumentUploadResponse
+import org.dataland.documentmanager.openApiClient.model.DocumentMetaInfoResponse
 import org.dataland.e2etests.BASE_PATH_TO_DOCUMENT_MANAGER
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
@@ -60,16 +60,16 @@ class DocumentControllerApiAccessor {
     fun uploadDocumentAsUser(
         document: File,
         technicalUser: TechnicalUser = TechnicalUser.Uploader,
-    ): DocumentUploadResponse {
+    ): DocumentMetaInfoResponse {
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(technicalUser)
         val expectedHash = document.readBytes().sha256()
-        var uploadResponse: DocumentUploadResponse
+        var uploadResponse: DocumentMetaInfoResponse
         try {
             uploadResponse = documentControllerApi.postDocument(document)
         } catch (clientException: ClientException) {
             if (clientException.statusCode == HttpStatus.CONFLICT.value()) {
                 logger.info("Document already exists.")
-                uploadResponse = DocumentUploadResponse(documentId = expectedHash)
+                uploadResponse = DocumentMetaInfoResponse(documentId = expectedHash)
             } else {
                 throw clientException
             }

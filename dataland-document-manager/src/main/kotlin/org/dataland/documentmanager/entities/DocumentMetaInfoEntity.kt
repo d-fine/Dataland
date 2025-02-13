@@ -14,7 +14,7 @@ import org.dataland.datalandbackendutils.converter.DocumentCategoryConverter
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.documentmanager.model.DocumentUploadResponse
+import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import java.time.LocalDate
 
 /**
@@ -44,8 +44,8 @@ data class DocumentMetaInfoEntity(
     /**
      * convert Entity to Response API Model
      */
-    fun toDocumentUploadResponse() =
-        DocumentUploadResponse(
+    fun toDocumentMetaInfoResponse() =
+        DocumentMetaInfoResponse(
             documentId = documentId,
             documentName = documentName,
             documentCategory = documentCategory,

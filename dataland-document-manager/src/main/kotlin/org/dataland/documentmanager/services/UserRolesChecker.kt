@@ -38,15 +38,15 @@ class UserRolesChecker(
     /**
      * Method to check whether the currently authenticated user is uploader of the document. If so, patching the meta
      * info of the document shall be permitted.
+     * @param documentId identifier of document
      * @return a Boolean indicating whether the user is uploader of the document
      */
     @Transactional(readOnly = true)
     fun isCurrentUserUploaderOfDocumentWithId(documentId: String): Boolean {
         val userId = DatalandAuthentication.fromContext().userId
         return documentManager
-            .retrieveDocumentMetaDataById(
+            .retrieveDocumentMetaInfoById(
                 documentId,
-                correlationId = UUID.randomUUID().toString(),
             ).uploaderId == userId
     }
 }

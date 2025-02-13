@@ -7,7 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.documentmanager.api.DocumentApi
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
-import org.dataland.documentmanager.model.DocumentUploadResponse
+import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.dataland.documentmanager.services.DocumentManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -30,7 +30,7 @@ class DocumentController(
     override fun postDocument(
         document: MultipartFile,
         documentMetaInfo: DocumentMetaInfo?,
-    ): ResponseEntity<DocumentUploadResponse> {
+    ): ResponseEntity<DocumentMetaInfoResponse> {
         documentMetaInfo?.companyIds?.forEach { isCompanyIdValid(it) }
         return ResponseEntity.ok(documentManager.temporarilyStoreDocumentAndTriggerStorage(document, documentMetaInfo))
     }
@@ -63,7 +63,7 @@ class DocumentController(
     override fun patchDocumentMetaInfo(
         documentId: String,
         documentMetaInfoPatch: DocumentMetaInfoPatch,
-    ): ResponseEntity<DocumentUploadResponse> {
+    ): ResponseEntity<DocumentMetaInfoResponse> {
         if (documentMetaInfoPatch.isNullOrEmpty()) {
             throw InvalidInputApiException(
                 summary = "DocumentMetaInfoPatch must not be null or empty.",
@@ -79,7 +79,7 @@ class DocumentController(
     override fun patchDocumentMetaInfoCompanyIds(
         documentId: String,
         companyId: String,
-    ): ResponseEntity<DocumentUploadResponse> {
+    ): ResponseEntity<DocumentMetaInfoResponse> {
         isCompanyIdValid(companyId)
         return ResponseEntity.ok(
             documentManager.patchDocumentMetaInformationCompanyIds(documentId, companyId),
