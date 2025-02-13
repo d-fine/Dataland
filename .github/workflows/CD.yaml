@@ -198,7 +198,7 @@ jobs:
           GRAFANA_ADMIN: ${{ vars.GRAFANA_ADMIN }}
           GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
           LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
-          SLACK_ALERT_URL: ${{ secrets.SLACK_ALERT_URL }}
+          SLACK_ALERT_URL: ${{ secrets.GRAFANA_PASSWORD }}
           SLACK_CRITICAL_ALERT_URL: ${{ secrets.SLACK_CRITICAL_ALERT_URL }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
