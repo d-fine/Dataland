@@ -5,7 +5,6 @@ Requires=docker.service
 
 [Service]
 ExecStart=/usr/local/bin/healthCheck.sh
-EnvironmentFile=/etc/health-check.env
 Restart=always
 RestartSec=30
 

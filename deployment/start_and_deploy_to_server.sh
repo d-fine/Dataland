@@ -39,7 +39,6 @@ ssh ubuntu@"$target_server_url" << EOF
   sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
   sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
   sudo mv "$health_check_location/health-check" /etc/logrotate.d/health-check &&
-  sudo sed -i '/\[Service\]/a Environment="LOKI_VOLUME=$loki_volume"' /etc/systemd/system/health-check.service &&
   sudo chmod +x /usr/local/bin/healthCheck.sh &&
   sudo systemctl daemon-reload &&
   sudo systemctl enable health-check.service
