@@ -246,9 +246,9 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadSfdrData(dataId);
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string') {
+      void this.loadSfdrData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -269,12 +269,13 @@ export default defineComponent({
     /**
      * Loads the SFDR-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadSfdrData(dataId: string): Promise<void> {
+    async loadSfdrData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = this.buildSfdrDataApi();
-      const dataResponse = await sfdrDataControllerApi.getFrameworkData(dataId);
+      const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
       const sfdrResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};

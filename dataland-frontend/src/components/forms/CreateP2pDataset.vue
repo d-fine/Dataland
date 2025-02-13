@@ -217,9 +217,9 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadP2pData(dataId);
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string') {
+      void this.loadP2pData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -228,15 +228,16 @@ export default defineComponent({
     /**
      * Loads the P2p-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadP2pData(dataId: string): Promise<void> {
+    async loadP2pData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const p2pDataControllerApi = new ApiClientProvider(
         assertDefined(this.getKeycloakPromise)()
       ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
 
-      const p2pDataset = (await p2pDataControllerApi.getFrameworkData(dataId)).data;
+      const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod)).data;
       this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
       const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
       if (dataDateFromDataset) {

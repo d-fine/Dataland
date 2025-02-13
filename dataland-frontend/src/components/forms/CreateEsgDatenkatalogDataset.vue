@@ -250,9 +250,9 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadEsgDatenkatalogData(dataId);
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string') {
+      void this.loadEsgDatenkatalogData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -276,12 +276,13 @@ export default defineComponent({
     /**
      * Loads the EsgDatenkatalog-Dataset identified by the provided dataId and pre-configures the form to contain
      * the data from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadEsgDatenkatalogData(dataId: string): Promise<void> {
+    async loadEsgDatenkatalogData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const esgDatenkatalogDataControllerApi = this.buildEsgDatenkatalogDataApi();
-      const dataResponse = await assertDefined(esgDatenkatalogDataControllerApi).getFrameworkData(dataId);
+      const dataResponse = await assertDefined(esgDatenkatalogDataControllerApi).getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
       const esgDatenkatalogResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(esgDatenkatalogResponseData.data);
       this.companyAssociatedEsgDatenkatalogData = objectDropNull(esgDatenkatalogResponseData);

@@ -239,9 +239,9 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadAdditionalCompanyInformationData(dataId);
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string') {
+      void this.loadAdditionalCompanyInformationData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -263,13 +263,14 @@ export default defineComponent({
     /**
      * Loads the AdditionalCompanyInformation-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadAdditionalCompanyInformationData(dataId: string): Promise<void> {
+    async loadAdditionalCompanyInformationData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const additionalCompanyInformationDataControllerApi = this.buildAdditionalCompanyInformationDataApi();
       if (additionalCompanyInformationDataControllerApi) {
-        const dataResponse = await additionalCompanyInformationDataControllerApi.getFrameworkData(dataId);
+        const dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
         const additionalCompanyInformationResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(additionalCompanyInformationResponseData.data);
         this.referencedReportsForPrefill =

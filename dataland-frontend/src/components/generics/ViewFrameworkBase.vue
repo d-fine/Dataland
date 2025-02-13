@@ -291,7 +291,7 @@ export default defineComponent({
         this.gotoUpdateForm(
           assertDefined(this.companyID),
           this.dataType,
-          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].dataId
+          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].reportingPeriod
         );
       }
     },
@@ -299,11 +299,11 @@ export default defineComponent({
      * Navigates to the data update form
      * @param companyID company ID
      * @param dataType data type
-     * @param dataId data Id
+     * @param reportingPeriod reporting period
      */
-    gotoUpdateForm(companyID: string, dataType: DataTypeEnum, dataId: string) {
+    gotoUpdateForm(companyID: string, dataType: DataTypeEnum, reportingPeriod: string) {
       void router.push(
-        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?templateDataId=${dataId}`
+        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?reportingPeriod=${reportingPeriod}`
       );
     },
     /**

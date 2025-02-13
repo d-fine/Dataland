@@ -234,9 +234,9 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadNuclearAndGasData(dataId);
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string') {
+      void this.loadNuclearAndGasData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -261,13 +261,14 @@ export default defineComponent({
     /**
      * Loads the Nuclear-and-Gas-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadNuclearAndGasData(dataId: string): Promise<void> {
+    async loadNuclearAndGasData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
       if (nuclearAndGasDataControllerApi) {
-        const dataResponse = await nuclearAndGasDataControllerApi.getFrameworkData(dataId);
+        const dataResponse = await nuclearAndGasDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
         const nuclearAndGasResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);
         this.referencedReportsForPrefill = nuclearAndGasResponseData.data?.general?.general?.referencedReports ?? {};

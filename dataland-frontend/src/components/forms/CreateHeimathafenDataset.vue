@@ -242,9 +242,9 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadHeimathafenData(dataId);
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string') {
+      void this.loadHeimathafenData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -266,12 +266,13 @@ export default defineComponent({
     /**
      * Loads the Heimathafen-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadHeimathafenData(dataId: string): Promise<void> {
+    async loadHeimathafenData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
-      const dataResponse = await heimathafenDataControllerApi.getFrameworkData(dataId);
+      const dataResponse = await heimathafenDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
       const heimathafenResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
       this.companyAssociatedHeimathafenData = objectDropNull(heimathafenResponseData);

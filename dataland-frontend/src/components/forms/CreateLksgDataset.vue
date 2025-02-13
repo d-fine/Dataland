@@ -186,12 +186,13 @@ const buildLksgDataApi = (): PublicFrameworkDataApi<LksgData> | undefined => {
 /**
  * Loads the LkSG-Dataset identified by the provided dataId and pre-configures the form to contain the data
  * from the dataset
- * @param dataId the id of the dataset to load
+ * @param reportingPeriod the relevant reporting period
+ * @param companyId the company id
  */
-const loadLKSGData = async (dataId: string): Promise<void> => {
+const loadLKSGData = async (reportingPeriod: string, companyId: string): Promise<void> => {
   waitingForData.value = true;
   const lksgDataControllerApi = buildLksgDataApi();
-  const dataResponse = await lksgDataControllerApi!.getFrameworkData(dataId);
+  const dataResponse = await lksgDataControllerApi!.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
   const lksgResponseData = dataResponse.data;
   listOfFilledKpis.value = getFilledKpis(lksgResponseData.data);
   companyAssociatedLksgData.value = objectDropNull(lksgResponseData);
@@ -248,9 +249,9 @@ const postLkSGData = async (): Promise<void> => {
 };
 
 onMounted(() => {
-  const dataId = route.query.templateDataId;
-  if (dataId && typeof dataId === 'string') {
-    void loadLKSGData(dataId);
+  const reportingPeriod = route.query.reportingPeriod;
+  if (reportingPeriod && typeof reportingPeriod === 'string') {
+    void loadLKSGData(reportingPeriod, this.companyID);
   } else {
     waitingForData.value = false;
   }

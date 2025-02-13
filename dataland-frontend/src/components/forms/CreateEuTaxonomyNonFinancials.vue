@@ -280,10 +280,10 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string' && dataId !== '') {
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string') {
       this.editMode = true;
-      void this.loadEutaxonomyNonFinancialsData(dataId);
+      void this.loadEutaxonomyNonFinancialsData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -306,13 +306,14 @@ export default defineComponent({
     /**
      * Loads the EutaxonomyNonFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadEutaxonomyNonFinancialsData(dataId: string): Promise<void> {
+    async loadEutaxonomyNonFinancialsData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
 
-      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi!.getFrameworkData(dataId);
+      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
       const euTaxonomyNonFinancialsResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
       if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {

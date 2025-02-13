@@ -271,10 +271,10 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string' && dataId !== '') {
+    const reportingPeriod = this.route.query.reportingPeriod;
+    if (reportingPeriod && typeof reportingPeriod === 'string' && reportingPeriod !== '') {
       this.editMode = true;
-      void this.loadEuTaxonomyFinancialsData(dataId);
+      void this.loadEuTaxonomyFinancialsData(reportingPeriod, this.companyID);
     } else {
       this.waitingForData = false;
     }
@@ -297,13 +297,14 @@ export default defineComponent({
     /**
      * Loads the EuTaxonomyFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
+     * @param reportingPeriod the relevant reporting period
+     * @param companyId the company id
      */
-    async loadEuTaxonomyFinancialsData(dataId: string): Promise<void> {
+    async loadEuTaxonomyFinancialsData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
 
-      const dataResponse = await euTaxonomyFinancialsDataControllerApi!.getFrameworkData(dataId);
+      const dataResponse = await euTaxonomyFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
       const euTaxonomyFinancialsResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);
       if (euTaxonomyFinancialsResponseData?.reportingPeriod) {
