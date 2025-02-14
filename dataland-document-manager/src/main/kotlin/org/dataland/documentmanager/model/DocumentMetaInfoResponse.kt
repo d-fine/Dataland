@@ -1,5 +1,6 @@
 package org.dataland.documentmanager.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import java.time.LocalDate
@@ -17,14 +18,10 @@ import java.time.LocalDate
 data class DocumentMetaInfoResponse(
     @field:JsonProperty(required = true)
     val documentId: String,
-    @field:JsonProperty(required = false)
-    val documentName: String?,
-    @field:JsonProperty(required = false)
-    val documentCategory: DocumentCategory?,
-    @field:JsonProperty(required = false)
-    val companyIds: Set<String>?,
-    @field:JsonProperty(required = false)
-    val publicationDate: LocalDate?,
-    @field:JsonProperty(required = false)
-    val reportingPeriod: String?,
-)
+    override val documentName: String?,
+    override val documentCategory: DocumentCategory?,
+    override val companyIds: Set<String>?,
+    @field:JsonFormat(pattern = "yyyy-MM-dd")
+    override val publicationDate: LocalDate?,
+    override val reportingPeriod: String?,
+) : BasicDocumentMetaInfo

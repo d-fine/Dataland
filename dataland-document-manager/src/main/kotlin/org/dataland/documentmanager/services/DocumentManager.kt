@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandl
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.exceptions.DocumentNotFoundException
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
@@ -62,7 +63,7 @@ class DocumentManager
 
             val documentId = generateDocumentId(document, correlationId)
 
-            if (this.checkIfDocumentExistsWithId(documentId)) {
+            if (this.checkIfDocumentExists(documentId)) {
                 throw ConflictApiException(
                     summary = "This document already exists. Document ID: $documentId",
                     message =
@@ -128,7 +129,8 @@ class DocumentManager
          * @param documentId the documentId of the document to be checked
          * @returns true if the document exists, false otherwise
          */
-        fun checkIfDocumentExistsWithId(documentId: String): Boolean {
+        @Transactional(readOnly = true)
+        fun checkIfDocumentExists(documentId: String): Boolean {
             logger.info("Check if document exists with ID: $documentId")
             val documentExists = documentMetaInfoRepository.existsById(documentId)
             if (documentExists) {
@@ -144,17 +146,8 @@ class DocumentManager
             correlationId: String,
         ): DocumentMetaInfoEntity {
             logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
-            if (!checkIfDocumentExistsWithId(documentId)) {
-                throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId does not exist.",
-                    message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
-                )
-            }
             return documentMetaInfoRepository.getByDocumentId(documentId)
-                ?: throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId could not be retrieved.",
-                    message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
-                )
+                ?: throw DocumentNotFoundException(documentId, correlationId)
         }
 
         /**
@@ -165,6 +158,7 @@ class DocumentManager
          * @param documentMetaInfoPatch meta data patch object
          * @return DocumentMetaInfoResponse object to be sent to patching user
          */
+        @Transactional
         fun patchDocumentMetaInformation(
             documentId: String,
             documentMetaInfoPatch: DocumentMetaInfoPatch,
@@ -191,6 +185,7 @@ class DocumentManager
          * @param companyId the company id to add
          * @return DocumentMetaInfoResponse object to be sent to patching user
          */
+        @Transactional
         fun patchDocumentMetaInformationCompanyIds(
             documentId: String,
             companyId: String,
@@ -209,13 +204,10 @@ class DocumentManager
          * This method retrieves a document from the storage
          * @param documentId the documentId of the document to be retrieved
          */
-        fun retrieveDocumentById(documentId: String): DocumentStream {
+        fun retrieveDocument(documentId: String): DocumentStream {
             val correlationId = randomUUID().toString()
             val metaDataInfoEntity =
-                documentMetaInfoRepository.getByDocumentId(documentId) ?: throw ResourceNotFoundApiException(
-                    "No document found",
-                    "No document with ID: $documentId could be found. Correlation ID: $correlationId",
-                )
+                documentMetaInfoRepository.getByDocumentId(documentId) ?: throw DocumentNotFoundException(documentId, correlationId)
 
             if (metaDataInfoEntity.qaStatus != QaStatus.Accepted) {
                 throw ResourceNotFoundApiException(
@@ -257,21 +249,10 @@ class DocumentManager
          * @param documentId identifier of document
          * @return document meta information
          */
-        fun retrieveDocumentMetaInfoById(documentId: String): DocumentMetaInfoEntity {
+        fun retrieveDocumentMetaInfo(documentId: String): DocumentMetaInfoEntity {
             val correlationId = randomUUID().toString()
             logger.info("Retrieve meta data for document with documentId $documentId. Correlation ID: $correlationId.")
-            if (!checkIfDocumentExistsWithId(documentId)) {
-                throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId does not exist.",
-                    message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
-                )
-            }
             return documentMetaInfoRepository.getByDocumentId(documentId)
-                ?: throw ResourceNotFoundApiException(
-                    summary = "Document meta data could not be retrieved.",
-                    message =
-                        "Document meta data for document with documentId $documentId could not be retrieved. " +
-                            "Correlation ID: $correlationId.",
-                )
+                ?: throw DocumentNotFoundException(documentId, correlationId)
         }
     }

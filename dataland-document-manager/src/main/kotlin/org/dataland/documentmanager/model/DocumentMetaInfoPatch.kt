@@ -15,13 +15,13 @@ import java.time.LocalDate
  * @param reportingPeriod only for informative purposes
  */
 data class DocumentMetaInfoPatch(
-    val documentName: String?,
-    val documentCategory: DocumentCategory?,
-    val companyIds: Set<String>?,
+    override val documentName: String?,
+    override val documentCategory: DocumentCategory?,
+    override val companyIds: Set<String>?,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
-    val publicationDate: LocalDate?,
-    val reportingPeriod: String?,
-) {
+    override val publicationDate: LocalDate?,
+    override val reportingPeriod: String?,
+) : BasicDocumentMetaInfo {
     /**
      * Returns true if all fields are null or empty; false otherwise
      */

@@ -38,8 +38,7 @@ interface DocumentApi {
      */
     @Operation(
         summary = "Upload a document and metadata.",
-        description =
-            "Upload a document and meta information.",
+        description = "Upload a document and meta information.",
     )
     @ApiResponses(
         value = [
@@ -87,7 +86,7 @@ interface DocumentApi {
     )
     @PreAuthorize(
         "hasRole('ROLE_ADMIN') " +
-            "or (hasRole('ROLE_UPLOADER') and @UserRolesChecker.isCurrentUserUploaderOfDocumentWithId(#documentId))",
+            "or (hasRole('ROLE_UPLOADER') and @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId))",
     )
     fun patchDocumentMetaInfo(
         @PathVariable("documentId") documentId: String,

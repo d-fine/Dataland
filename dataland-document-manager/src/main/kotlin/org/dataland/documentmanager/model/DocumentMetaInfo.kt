@@ -16,12 +16,12 @@ import java.time.LocalDate
  */
 data class DocumentMetaInfo(
     @field:JsonProperty(required = true)
-    val documentName: String,
+    override val documentName: String,
     @field:JsonProperty(required = true)
-    val documentCategory: DocumentCategory,
+    override val documentCategory: DocumentCategory,
     @field:JsonProperty(required = true)
-    val companyIds: Set<String>,
+    override val companyIds: Set<String>,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
-    val publicationDate: LocalDate?,
-    val reportingPeriod: String?,
-)
+    override val publicationDate: LocalDate?,
+    override val reportingPeriod: String?,
+) : BasicDocumentMetaInfo

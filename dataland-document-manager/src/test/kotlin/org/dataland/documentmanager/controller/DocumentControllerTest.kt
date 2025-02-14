@@ -113,7 +113,7 @@ class DocumentControllerTest(
 
     @Test
     fun `test that full patch endpoint is accessible for initial uploader of document`() {
-        doReturn(true).whenever(mockUserRolesChecker).isCurrentUserUploaderOfDocumentWithId(dummyDocumentId)
+        doReturn(true).whenever(mockUserRolesChecker).isCurrentUserUploaderOfDocument(dummyDocumentId)
         setMockSecurityContext(
             userName = dummyUserName,
             userId = initialUploaderUserId,
@@ -126,7 +126,7 @@ class DocumentControllerTest(
 
     @Test
     fun `test that full patch endpoint is not accessible for uploaders which are not initial uploader of document`() {
-        doReturn(false).whenever(mockUserRolesChecker).isCurrentUserUploaderOfDocumentWithId(dummyDocumentId)
+        doReturn(false).whenever(mockUserRolesChecker).isCurrentUserUploaderOfDocument(dummyDocumentId)
         setMockSecurityContext(
             userName = dummyUserName,
             userId = otherUploaderUserId,

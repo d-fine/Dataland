@@ -135,28 +135,28 @@ class DocumentManagerTest(
     @Test
     fun `check that document retrieval is not possible if document does not exist`() {
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentById(unknownDocumentId)
+            documentManager.retrieveDocument(unknownDocumentId)
         }
     }
 
     @Test
     fun `check that retrieving an existing but nonretrievable document throws the appropriate exception`() {
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentById(knownButNonRetrievableDocumentId)
+            documentManager.retrieveDocument(knownButNonRetrievableDocumentId)
         }
     }
 
     @Test
     fun `check that document meta info retrieval is not possible if document does not exist`() {
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfoById(unknownDocumentId)
+            documentManager.retrieveDocumentMetaInfo(unknownDocumentId)
         }
     }
 
     @Test
     fun `check that retrieving meta info of an existing but nonretrievable document throws the appropriate exception`() {
         assertThrows<ResourceNotFoundApiException> {
-            documentManager.retrieveDocumentMetaInfoById(knownButNonRetrievableDocumentId)
+            documentManager.retrieveDocumentMetaInfo(knownButNonRetrievableDocumentId)
         }
     }
 
@@ -172,7 +172,7 @@ class DocumentManagerTest(
 
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
-                documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
+                documentManager.retrieveDocument(documentId = uploadResponse.documentId)
             }
         assertEquals(
             "A non-quality-assured document with ID: ${uploadResponse.documentId} was found. " +
@@ -191,7 +191,7 @@ class DocumentManagerTest(
         doReturn(acceptedDocumentMetaInfoEntity)
             .whenever(mockDocumentMetaInfoRepository)
             .getByDocumentId(uploadResponse.documentId)
-        val downloadedDocument = documentManager.retrieveDocumentById(documentId = uploadResponse.documentId)
+        val downloadedDocument = documentManager.retrieveDocument(documentId = uploadResponse.documentId)
         assertTrue(downloadedDocument.content.contentAsByteArray.contentEquals(mockDocument.bytes))
     }
 

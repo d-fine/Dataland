@@ -36,7 +36,7 @@ class DocumentController(
     }
 
     override fun checkDocument(documentId: String) {
-        if (!documentManager.checkIfDocumentExistsWithId(documentId)) {
+        if (!documentManager.checkIfDocumentExists(documentId)) {
             throw ResourceNotFoundApiException(
                 "Document with ID $documentId does not exist.",
                 "Document with ID $documentId does not exist.",
@@ -45,7 +45,7 @@ class DocumentController(
     }
 
     override fun getDocument(documentId: String): ResponseEntity<InputStreamResource> {
-        val document = documentManager.retrieveDocumentById(documentId)
+        val document = documentManager.retrieveDocument(documentId)
         val documentBytes = document.content.inputStream.use { it.readBytes() }
         val contentLength = documentBytes.size
         val documentContent = InputStreamResource(ByteArrayInputStream(documentBytes))
