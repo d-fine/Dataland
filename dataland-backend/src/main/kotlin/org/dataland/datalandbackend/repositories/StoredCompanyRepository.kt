@@ -28,9 +28,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " identifier_value AS lei, " +
                 "has_active_data.dataset_rank" +
                 " FROM (" +
-                " SELECT company_id, company_name, headquarters, country_code, sector " +
+                " SELECT company_id, company_name, headquarters, country_code, sector, " +
                 "CASE " +
-                " WHEN has_active_data.company_id IN (:listOfCompanyIds) THEN 2" +
+                " WHEN company_id IN (:listOfCompanyIds) THEN 2" +
                 " ELSE 1" +
                 " END AS dataset_rank" +
                 "FROM stored_companies " +
