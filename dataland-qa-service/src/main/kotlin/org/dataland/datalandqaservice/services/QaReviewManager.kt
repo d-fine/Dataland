@@ -33,6 +33,7 @@ import java.util.UUID
  * A service class for managing QA report meta-information
  */
 @Service
+@Suppress("TooManyFunctions")
 class QaReviewManager(
     @Autowired val qaReviewRepository: QaReviewRepository,
     @Autowired val companyDataControllerApi: CompanyDataControllerApi,

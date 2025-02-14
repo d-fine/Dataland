@@ -213,28 +213,29 @@ class QaEventListenerQaService
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
             MessageQueueUtils.rejectMessageOnException {
-                val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
-                MessageQueueUtils.validateDataId(dataId)
+                val deletedDataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
+                MessageQueueUtils.validateDataId(deletedDataId)
 
-                val qaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(dataId)!!
-                val activeDataId =
+                val qaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(deletedDataId)!!
+                val formerlyActiveDataId =
                     qaReviewManager.getDataIdOfCurrentlyActiveDataset(
                         qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
                     )
-                val deletedDataIdWasActive = (dataId == activeDataId)
 
-                qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
-                qaReviewManager.deleteAllByDataId(dataId, correlationId)
-                if (deletedDataIdWasActive) {
+                qaReportManager.deleteAllQaReportsForDataId(deletedDataId, correlationId)
+                qaReviewManager.deleteAllByDataId(deletedDataId, correlationId)
+                if (deletedDataId == formerlyActiveDataId) {
                     val newActiveDataId =
                         qaReviewManager
                             .getDataIdOfCurrentlyActiveDataset(
                                 qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
-                            ).toString()
-                    val newQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(newActiveDataId)!!
-                    qaReviewManager.sendQaStatusUpdateMessage(
-                        qaReviewEntity = newQaReviewEntity, correlationId = newQaReviewEntity.eventId.toString(),
-                    )
+                            )
+                    if (newActiveDataId != null) {
+                        val newQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(newActiveDataId)
+                        qaReviewManager.sendQaStatusUpdateMessage(
+                            qaReviewEntity = requireNotNull(newQaReviewEntity), correlationId = correlationId,
+                        )
+                    }
                 }
             }
         }
