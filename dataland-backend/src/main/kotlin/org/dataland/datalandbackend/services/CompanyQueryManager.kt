@@ -1,6 +1,6 @@
 package org.dataland.datalandbackend.services
 
-import org.dataland.datalandbackend.LEIList
+import org.dataland.datalandbackend.ListOfLeis.leis
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -10,7 +10,6 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -26,7 +25,6 @@ class CompanyQueryManager(
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
 ) {
     private val leisToCompanyIdMappingInMemoryStorage = ConcurrentHashMap<String, String>()
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Method to verify that a given company exists in the company store
@@ -56,7 +54,12 @@ class CompanyQueryManager(
 
         return if (filter.searchStringLength == 0) {
             if (areAllDropdownFiltersDeactivated(filter)) {
-                handleAllDropdownFiltersDeactivated(chunkSize, offset)
+                initializeLeiToCompanyIdMapping()
+                return companyRepository.getAllCompaniesWithDataset(
+                    chunkSize,
+                    offset,
+                    leisToCompanyIdMappingInMemoryStorage.values.toList(),
+                )
             } else {
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
@@ -65,44 +68,27 @@ class CompanyQueryManager(
         }
     }
 
-    private fun handleAllDropdownFiltersDeactivated(
-        chunkSize: Int?,
-        offset: Int,
-    ): List<BasicCompanyInformation> {
-        if (leisToCompanyIdMappingInMemoryStorage.isEmpty()) {
-            val listOfLeis = LEIList.leis.values
-            listOfLeis.forEach { lei ->
-                leisToCompanyIdMappingInMemoryStorage.putIfAbsent(lei, "")
-            }
-        }
+    /**
+     * Initializes the in-memory mapping of LEIs to company IDs.
+     */
+    private fun initializeLeiToCompanyIdMapping() {
+        leis.values.forEach { lei -> leisToCompanyIdMappingInMemoryStorage.putIfAbsent(lei, "") }
 
         leisToCompanyIdMappingInMemoryStorage.keys.forEach { lei ->
             if (leisToCompanyIdMappingInMemoryStorage[lei].isNullOrEmpty()) {
-                updateCompanyMappingForLei(lei)
+                companyRepository
+                    .searchCompanies(
+                        StoredCompanySearchFilter(
+                            countryCodeFilter = emptyList(),
+                            dataTypeFilter = emptyList(),
+                            sectorFilter = emptyList(),
+                            searchString = lei,
+                        ),
+                    ).firstOrNull()
+                    ?.let { company ->
+                        leisToCompanyIdMappingInMemoryStorage[lei] = company.companyId
+                    }
             }
-        }
-
-        logger.info("Current content $leisToCompanyIdMappingInMemoryStorage")
-
-        return companyRepository.getAllCompaniesWithDataset(
-            chunkSize,
-            offset,
-            leisToCompanyIdMappingInMemoryStorage.values.toList(),
-        )
-    }
-
-    private fun updateCompanyMappingForLei(lei: String) {
-        val companyInformation =
-            companyRepository.searchCompanies(
-                StoredCompanySearchFilter(
-                    countryCodeFilter = emptyList(),
-                    dataTypeFilter = emptyList(),
-                    sectorFilter = emptyList(),
-                    searchString = lei,
-                ),
-            )
-        if (companyInformation.isNotEmpty()) {
-            leisToCompanyIdMappingInMemoryStorage[lei] = companyInformation.first().companyId
         }
     }
 

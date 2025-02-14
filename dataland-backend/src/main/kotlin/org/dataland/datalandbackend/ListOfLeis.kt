@@ -1,7 +1,10 @@
 package org.dataland.datalandbackend
 
-object LEIList {
-    val leis =
+object ListOfLeis {
+    /**
+     * A map of company names to leis.
+     */
+    val leis: Map<String, String> =
         mapOf(
             "SAP SE O.N." to "529900D6BF99LW9R2E68",
             "DEUTSCHE BANK AG NA O.N." to "7LTWFZYICNSX8D621K86",
