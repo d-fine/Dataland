@@ -33,7 +33,7 @@ data class DocumentMetaInfoEntity(
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "company_ids")
     @OrderBy("asc")
-    var companyIds: MutableSet<String>?,
+    val companyIds: MutableSet<String> = mutableSetOf(),
     val uploaderId: String,
     val uploadTime: Long,
     var publicationDate: LocalDate?,

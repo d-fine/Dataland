@@ -77,7 +77,7 @@ class DocumentManager
                     documentType = getDocumentType(document),
                     documentName = documentMetaInfo?.documentName,
                     documentCategory = documentMetaInfo?.documentCategory,
-                    companyIds = documentMetaInfo?.companyIds?.toMutableSet(),
+                    companyIds = documentMetaInfo?.companyIds?.toMutableSet() ?: mutableSetOf(),
                     uploaderId = DatalandAuthentication.fromContext().userId,
                     uploadTime = Instant.now().toEpochMilli(),
                     publicationDate = documentMetaInfo?.publicationDate,
@@ -170,7 +170,8 @@ class DocumentManager
             documentMetaInfoPatch.documentName?.let { documentMetaInfoEntity.documentName = it }
             documentMetaInfoPatch.documentCategory?.let { documentMetaInfoEntity.documentCategory = it }
             documentMetaInfoPatch.companyIds?.let {
-                documentMetaInfoEntity.companyIds = it.toMutableSet()
+                documentMetaInfoEntity.companyIds.clear()
+                documentMetaInfoEntity.companyIds.addAll(it)
             }
             documentMetaInfoPatch.publicationDate?.let { documentMetaInfoEntity.publicationDate = it }
             documentMetaInfoPatch.reportingPeriod?.let { documentMetaInfoEntity.reportingPeriod = it }
@@ -195,7 +196,7 @@ class DocumentManager
 
             logger.info("Updating company ids for document with ID $documentId. CorrelationID: $correlationId.")
 
-            documentMetaInfoEntity.companyIds?.add(companyId)
+            documentMetaInfoEntity.companyIds.add(companyId)
 
             return documentMetaInfoRepository.save(documentMetaInfoEntity).toDocumentMetaInfoResponse()
         }

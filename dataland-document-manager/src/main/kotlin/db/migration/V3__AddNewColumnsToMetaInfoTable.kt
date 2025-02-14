@@ -38,7 +38,7 @@ class V3__AddNewColumnsToMetaInfoTable : BaseJavaMigration() {
         context.connection.createStatement().execute(
             """
             ALTER TABLE document_meta_info
-            ADD COLUMN company_ids TEXT DEFAULT NULL
+            ADD COLUMN company_ids TEXT NOT NULL
             """.trimIndent(),
         )
     }
