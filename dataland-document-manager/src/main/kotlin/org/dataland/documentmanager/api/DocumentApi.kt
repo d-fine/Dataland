@@ -210,7 +210,7 @@ interface DocumentApi {
         ],
     )
     @GetMapping(
-        value = ["/{documentId}/meta"],
+        value = ["/{documentId}/metadata"],
         produces = [
             "application/json",
         ],
