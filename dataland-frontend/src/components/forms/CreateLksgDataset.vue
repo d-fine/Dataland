@@ -17,7 +17,7 @@
             @submit="postLkSGData"
             @submit-invalid="checkCustomInputs"
           >
-            <FormKit type="hidden" name="companyId" :model-value="companyID" />
+            <FormKit type="hidden" name="companyId" :model-value="props.companyID" />
             <FormKit type="hidden" name="reportingPeriod" v-model="yearOfDataDate" />
 
             <FormKit type="group" name="data" label="data">
@@ -136,7 +136,7 @@ import { getComponentByName } from '@/components/forms/UploadPageComponentDictio
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const route = useRoute();
 const emit = defineEmits(['datasetCreated']);
-defineProps<{
+const props = defineProps<{
   companyID: string;
 }>();
 
@@ -251,7 +251,7 @@ const postLkSGData = async (): Promise<void> => {
 onMounted(() => {
   const reportingPeriod = route.query.reportingPeriod;
   if (reportingPeriod && typeof reportingPeriod === 'string') {
-    void loadLKSGData(reportingPeriod, this.companyID);
+    void loadLKSGData(reportingPeriod, props.companyID);
   } else {
     waitingForData.value = false;
   }
