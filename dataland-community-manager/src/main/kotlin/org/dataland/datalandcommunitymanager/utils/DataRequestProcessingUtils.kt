@@ -167,10 +167,11 @@ class DataRequestProcessingUtils
             accessStatus: AccessStatus,
             requestStatusChangeReason: String?,
             modificationTime: Long,
+            answeringDataId: String? = null,
         ) {
             val requestStatusObject =
                 StoredDataRequestStatusObject(requestStatus, modificationTime, accessStatus, requestStatusChangeReason)
-            val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity)
+            val requestStatusEntity = RequestStatusEntity(requestStatusObject, dataRequestEntity, answeringDataId)
 
             requestStatusRepository.save(requestStatusEntity)
             dataRequestEntity.addToDataRequestStatusHistory(requestStatusEntity)

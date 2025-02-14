@@ -50,6 +50,7 @@ class DataRequestAlterationManager
             dataRequestPatch: DataRequestPatch,
             dataRequestEntity: DataRequestEntity,
             modificationTime: Long,
+            answeringDataId: String?,
         ): Boolean {
             val newRequestStatus = dataRequestPatch.requestStatus ?: dataRequestEntity.requestStatus
             val newAccessStatus = dataRequestPatch.accessStatus ?: dataRequestEntity.accessStatus
@@ -59,7 +60,12 @@ class DataRequestAlterationManager
                 newRequestStatus == RequestStatus.NonSourceable
             ) {
                 utils.addNewRequestStatusToHistory(
-                    dataRequestEntity, newRequestStatus, newAccessStatus, dataRequestPatch.requestStatusChangeReason, modificationTime,
+                    dataRequestEntity,
+                    newRequestStatus,
+                    newAccessStatus,
+                    dataRequestPatch.requestStatusChangeReason,
+                    modificationTime,
+                    answeringDataId,
                 )
                 dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
                     dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
@@ -107,7 +113,10 @@ class DataRequestAlterationManager
         ): Boolean {
             if (dataRequestPatch.adminComment != null && dataRequestPatch.adminComment != dataRequestEntity.adminComment) {
                 dataRequestEntity.adminComment = dataRequestPatch.adminComment
-                dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, dataRequestPatch.adminComment)
+                dataRequestLogger.logMessageForPatchingAdminComment(
+                    dataRequestEntity.dataRequestId,
+                    dataRequestPatch.adminComment,
+                )
             }
 
             val newRequestPriority = dataRequestPatch.requestPriority ?: dataRequestEntity.requestPriority
@@ -132,6 +141,7 @@ class DataRequestAlterationManager
             dataRequestId: String,
             dataRequestPatch: DataRequestPatch,
             correlationId: String? = null,
+            answeringDataId: String? = null,
         ): StoredDataRequest {
             val dataRequestEntity =
                 dataRequestRepository.findById(dataRequestId).getOrElse {
@@ -140,7 +150,9 @@ class DataRequestAlterationManager
             val modificationTime = Instant.now().toEpochMilli()
             val anyChanges =
                 listOf(
-                    updateRequestStatusHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
+                    updateRequestStatusHistoryIfRequired(
+                        dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId,
+                    ),
                     updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
                     checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
                 ).any { it }
@@ -161,6 +173,7 @@ class DataRequestAlterationManager
          */
         private fun patchRequestStatusByDataRequestEntity(
             dataRequestEntity: DataRequestEntity,
+            answeringDataId: String,
             correlationId: String?,
             requestStatusChangeReason: String? = null,
         ) {
@@ -174,6 +187,7 @@ class DataRequestAlterationManager
                             requestStatusChangeReason = requestStatusChangeReason,
                         ),
                     correlationId = correlationId,
+                    answeringDataId = answeringDataId,
                 )
             } else {
                 patchDataRequest(
@@ -184,6 +198,7 @@ class DataRequestAlterationManager
                             requestStatusChangeReason = requestStatusChangeReason,
                         ),
                     correlationId = correlationId,
+                    answeringDataId = answeringDataId,
                 )
             }
         }
@@ -200,6 +215,7 @@ class DataRequestAlterationManager
             reportingPeriod: String,
             dataType: DataTypeEnum,
             correlationId: String,
+            answeringDataId: String,
         ) {
             logger.info(
                 "Changing request status for company Id $companyId, " +
@@ -220,7 +236,9 @@ class DataRequestAlterationManager
                         requestPriority = null,
                     ),
                 )
-            dataRequestEntities.forEach { patchRequestStatusByDataRequestEntity(it, correlationId) }
+            dataRequestEntities.forEach {
+                patchRequestStatusByDataRequestEntity(it, answeringDataId, correlationId)
+            }
         }
 
         /**
@@ -235,6 +253,7 @@ class DataRequestAlterationManager
             reportingPeriod: String,
             dataType: DataTypeEnum,
             correlationId: String,
+            answeringDataId: String,
         ) {
             logger.info(
                 "Changing request status for all subsidiaries of company with Id $companyId, " +
@@ -259,7 +278,10 @@ class DataRequestAlterationManager
                 )
             dataRequestEntities.forEach {
                 patchRequestStatusByDataRequestEntity(
-                    it, correlationId, "This data request was answered by a data upload to the parent company.",
+                    it,
+                    answeringDataId,
+                    correlationId,
+                    "This data request was answered by a data upload to the parent company.",
                 )
             }
         }
@@ -276,10 +298,10 @@ class DataRequestAlterationManager
         ) {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
             patchRequestStatusOfSingleCompany(
-                metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId,
+                metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId, dataId,
             )
             patchRequestStatusOfSubsidiaries(
-                metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId,
+                metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId, dataId,
             )
         }
     }
