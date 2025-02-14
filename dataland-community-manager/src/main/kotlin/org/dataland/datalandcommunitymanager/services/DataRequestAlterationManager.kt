@@ -7,7 +7,7 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
-import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -40,81 +40,116 @@ class DataRequestAlterationManager
         private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
         /**
-         * Method to patch a data request
-         * @param dataRequestId the id of the data request to patch
-         * @param requestStatus the request status to patch
-         * @param accessStatus the access status to patch
-         * @param contacts the contacts to patch
-         * @param message the message to patch
-         * @param requestPriority the priority of the data request
-         * @param adminComment the admin comment of the data request
-         *
-         * @return the updated data request object
+         * Updates the request status history if the request status changed
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @param modificationTime the modification time in unix epoch milliseconds
+         * @return true if the request status history was updated, false otherwise
          */
-        @Transactional
-        @Suppress("kotlin:S107")
-        fun patchDataRequest(
-            dataRequestId: String,
-            requestStatus: RequestStatus? = null,
-            accessStatus: AccessStatus? = null,
-            contacts: Set<String>? = null,
-            message: String? = null,
-            correlationId: String? = null,
-            requestPriority: RequestPriority? = null,
-            adminComment: String? = null,
-            requestStatusChangeReason: String? = null,
-        ): StoredDataRequest {
-            val dataRequestEntity =
-                dataRequestRepository.findById(dataRequestId).getOrElse {
-                    throw DataRequestNotFoundApiException(dataRequestId)
-                }
-            val filteredContacts = contacts.takeIf { !it.isNullOrEmpty() }
-            val filteredMessage = message.takeIf { !it.isNullOrEmpty() }
-            filteredContacts?.forEach {
-                MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
-            }
-            val modificationTime = Instant.now().toEpochMilli()
-            var anyChanges = false
-
-            val newRequestStatus = requestStatus ?: dataRequestEntity.requestStatus
-            val newAccessStatus = accessStatus ?: dataRequestEntity.accessStatus
+        private fun updateRequestStatusHistoryIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+            modificationTime: Long,
+        ): Boolean {
+            val newRequestStatus = dataRequestPatch.requestStatus ?: dataRequestEntity.requestStatus
+            val newAccessStatus = dataRequestPatch.accessStatus ?: dataRequestEntity.accessStatus
 
             if (newRequestStatus != dataRequestEntity.requestStatus ||
                 newAccessStatus != dataRequestEntity.accessStatus ||
                 newRequestStatus == RequestStatus.NonSourceable
             ) {
-                anyChanges = true
                 utils.addNewRequestStatusToHistory(
-                    dataRequestEntity, newRequestStatus, newAccessStatus, requestStatusChangeReason, modificationTime,
+                    dataRequestEntity, newRequestStatus, newAccessStatus, dataRequestPatch.requestStatusChangeReason, modificationTime,
                 )
                 dataRequestLogger.logMessageForPatchingRequestStatusOrAccessStatus(
                     dataRequestEntity.dataRequestId, newRequestStatus, newAccessStatus,
                 )
+                return true
             }
+            return false
+        }
 
+        /**
+         * Updates the message history if valid contacts are passed in the patch object.
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @param modificationTime the modification time in unix epoch milliseconds
+         * @return true if message history was updated, false otherwise
+         */
+        private fun updateMessageHistoryIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+            modificationTime: Long,
+        ): Boolean {
+            val filteredContacts = dataRequestPatch.contacts.takeIf { !it.isNullOrEmpty() }
+            val filteredMessage = dataRequestPatch.message.takeIf { !it.isNullOrEmpty() }
+            filteredContacts?.forEach {
+                MessageEntity.validateContact(it, companyRolesManager, dataRequestEntity.datalandCompanyId)
+            }
             if (filteredContacts != null) {
-                anyChanges = true
                 utils.addMessageToMessageHistory(dataRequestEntity, filteredContacts, filteredMessage, modificationTime)
                 this.requestEmailManager.sendSingleDataRequestEmail(dataRequestEntity, filteredContacts, filteredMessage)
                 dataRequestLogger.logMessageForPatchingRequestMessage(dataRequestEntity.dataRequestId)
+                return true
+            }
+            return false
+        }
+
+        /**
+         * Creates log messages if required and returns whether the request priority changed
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @return whether the request priority changed
+         */
+        private fun checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+        ): Boolean {
+            if (dataRequestPatch.adminComment != null && dataRequestPatch.adminComment != dataRequestEntity.adminComment) {
+                dataRequestEntity.adminComment = dataRequestPatch.adminComment
+                dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, dataRequestPatch.adminComment)
             }
 
-            val newRequestPriority = requestPriority ?: dataRequestEntity.requestPriority
+            val newRequestPriority = dataRequestPatch.requestPriority ?: dataRequestEntity.requestPriority
             if (newRequestPriority != dataRequestEntity.requestPriority) {
-                anyChanges = true
                 dataRequestEntity.requestPriority = newRequestPriority
                 dataRequestLogger.logMessageForPatchingRequestPriority(dataRequestEntity.dataRequestId, newRequestPriority)
+                return true
             }
+            return false
+        }
 
-            if (adminComment != null && adminComment != dataRequestEntity.adminComment) {
-                dataRequestEntity.adminComment = adminComment
-                dataRequestLogger.logMessageForPatchingAdminComment(dataRequestEntity.dataRequestId, adminComment)
-            }
+        /**
+         * Method to patch a data request
+         * @param dataRequestId the id of the data request to patch
+         * @param dataRequestPatch the patch object containing information about the required changes
+         * @param adminComment the admin comment of the data request
+         *
+         * @return the updated data request object
+         */
+        @Transactional
+        fun patchDataRequest(
+            dataRequestId: String,
+            dataRequestPatch: DataRequestPatch,
+            correlationId: String? = null,
+        ): StoredDataRequest {
+            val dataRequestEntity =
+                dataRequestRepository.findById(dataRequestId).getOrElse {
+                    throw DataRequestNotFoundApiException(dataRequestId)
+                }
+            val modificationTime = Instant.now().toEpochMilli()
+            var anyChanges =
+                listOf(
+                    updateRequestStatusHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
+                    updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
+                    checkPriorityAndAdminCommentChangesAndLogPatchMessagesIfRequired(dataRequestPatch, dataRequestEntity),
+                ).any { it }
 
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-            requestEmailManager
-                .sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, accessStatus, correlationId)
+            requestEmailManager.sendEmailsWhenStatusChanged(
+                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.accessStatus, correlationId,
+            )
 
             return dataRequestEntity.toStoredDataRequest()
         }
@@ -132,17 +167,23 @@ class DataRequestAlterationManager
             if (dataRequestEntity.dataType == DataTypeEnum.vsme.name && dataRequestEntity.accessStatus != AccessStatus.Granted) {
                 patchDataRequest(
                     dataRequestId = dataRequestEntity.dataRequestId,
-                    requestStatus = RequestStatus.Answered,
-                    accessStatus = AccessStatus.Pending,
+                    dataRequestPatch =
+                        DataRequestPatch(
+                            requestStatus = RequestStatus.Answered,
+                            accessStatus = AccessStatus.Pending,
+                            requestStatusChangeReason = requestStatusChangeReason,
+                        ),
                     correlationId = correlationId,
-                    requestStatusChangeReason = requestStatusChangeReason,
                 )
             } else {
                 patchDataRequest(
                     dataRequestId = dataRequestEntity.dataRequestId,
-                    requestStatus = RequestStatus.Answered,
+                    dataRequestPatch =
+                        DataRequestPatch(
+                            requestStatus = RequestStatus.Answered,
+                            requestStatusChangeReason = requestStatusChangeReason,
+                        ),
                     correlationId = correlationId,
-                    requestStatusChangeReason = requestStatusChangeReason,
                 )
             }
         }

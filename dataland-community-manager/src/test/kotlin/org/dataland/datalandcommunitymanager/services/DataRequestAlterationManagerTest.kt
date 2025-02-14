@@ -9,6 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequestMessageObject
@@ -241,7 +242,7 @@ class DataRequestAlterationManagerTest {
     fun `validate that a request response email is sent when a request status is patched to answered or closed`() {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
-            requestStatus = RequestStatus.Answered,
+            dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Answered),
             null,
         )
         verify(mockRequestEmailManager, times(1))
@@ -250,7 +251,7 @@ class DataRequestAlterationManagerTest {
             )
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
-            requestStatus = RequestStatus.Closed,
+            dataRequestPatch = DataRequestPatch(requestStatus = RequestStatus.Closed),
             null,
         )
         verify(mockRequestEmailManager, times(1))
@@ -273,8 +274,7 @@ class DataRequestAlterationManagerTest {
     fun `validate that no email is sent and the history is updated when an access status is patched`() {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
-            requestStatus = null,
-            accessStatus = AccessStatus.Pending,
+            dataRequestPatch = DataRequestPatch(accessStatus = AccessStatus.Pending),
         )
 
         verify(mockDataRequestProcessingUtils, times(1))
@@ -326,10 +326,11 @@ class DataRequestAlterationManagerTest {
     fun `validate that the sending of a request email is triggered when a request message is added`() {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
-            requestStatus = null,
-            accessStatus = null,
-            dummyMessage.contacts,
-            dummyMessage.message,
+            dataRequestPatch =
+                DataRequestPatch(
+                    contacts = dummyMessage.contacts,
+                    message = dummyMessage.message,
+                ),
         )
 
         verify(mockRequestEmailManager, times(1))
@@ -354,12 +355,11 @@ class DataRequestAlterationManagerTest {
     fun `validate that no email is sent when both request priority and admin comment are patched`() {
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
-            requestStatus = null,
-            accessStatus = null,
-            message = null,
-            contacts = null,
-            requestPriority = RequestPriority.Low,
-            adminComment = "test",
+            dataRequestPatch =
+                DataRequestPatch(
+                    requestPriority = RequestPriority.Low,
+                    adminComment = "test",
+                ),
         )
 
         verify(mockRequestEmailManager, times(0))
@@ -374,7 +374,7 @@ class DataRequestAlterationManagerTest {
 
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
-            adminComment = dummyAdminComment,
+            dataRequestPatch = DataRequestPatch(adminComment = dummyAdminComment),
         )
 
         assertEquals(originalModificationTime, dummyDataRequestEntity.lastModifiedDate)
@@ -387,7 +387,7 @@ class DataRequestAlterationManagerTest {
 
         dataRequestAlterationManager.patchDataRequest(
             dataRequestId = dataRequestId,
-            requestPriority = RequestPriority.High,
+            dataRequestPatch = DataRequestPatch(requestPriority = RequestPriority.High),
         )
 
         assertFalse(originalModificationTime == dummyDataRequestEntity.lastModifiedDate)

@@ -162,14 +162,8 @@ class RequestController(
         ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
-                dataRequestPatch.requestStatus,
-                dataRequestPatch.accessStatus,
-                dataRequestPatch.contacts,
-                dataRequestPatch.message,
+                dataRequestPatch,
                 correlationId = null,
-                dataRequestPatch.requestPriority,
-                dataRequestPatch.adminComment,
-                dataRequestPatch.requestStatusChangeReason,
             ),
         )
 }
