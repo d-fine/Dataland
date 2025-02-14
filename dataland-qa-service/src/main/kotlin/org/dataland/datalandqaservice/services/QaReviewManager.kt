@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -33,7 +35,6 @@ import java.util.UUID
  * A service class for managing QA report meta-information
  */
 @Service
-@Suppress("TooManyFunctions")
 class QaReviewManager(
     @Autowired val qaReviewRepository: QaReviewRepository,
     @Autowired val companyDataControllerApi: CompanyDataControllerApi,
