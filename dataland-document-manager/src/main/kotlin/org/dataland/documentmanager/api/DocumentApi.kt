@@ -255,7 +255,7 @@ interface DocumentApi {
         ],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    fun getDocumentMetaInformationBySearch(
+    fun searchForDocumentMetaInformation(
         @RequestParam companyId: String? = null,
         @RequestParam documentCategory: DocumentCategory? = null,
         @RequestParam reportingPeriod: String? = null,

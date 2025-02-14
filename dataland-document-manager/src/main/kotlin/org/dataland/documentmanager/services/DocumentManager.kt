@@ -1,7 +1,6 @@
 package org.dataland.documentmanager.services
 
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentStream
 import org.dataland.datalandbackendutils.model.DocumentType
@@ -290,42 +289,24 @@ class DocumentManager
             chunkSize: Int? = null,
             chunkIndex: Int? = null,
         ): List<DocumentUploadResponse> {
-            val searchResults =
-                documentMetaInfoRepository
-                    .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+            if (chunkSize == null) {
+                return documentMetaInfoRepository
+                    .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(
                         documentMetaInformationSearchFilter.companyId,
                         documentMetaInformationSearchFilter.documentCategory,
                         documentMetaInformationSearchFilter.reportingPeriod,
                     ).map { it.toDocumentUploadResponse() }
-
-            if (chunkSize == null) {
-                return searchResults
-            } else if (chunkSize <= 0) {
-                throw InvalidInputApiException(
-                    summary = "chunkSize must be positive.",
-                    message = "chunkSize must be positive.",
-                )
             } else {
-                val numericChunkIndex = chunkIndex ?: 0
-                val numberSearchResults = searchResults.size
-                val integerQuotient = numberSearchResults / chunkSize
-                val numberOfChunks =
-                    if (numberSearchResults % chunkSize == 0) integerQuotient else integerQuotient + 1
-                val chunkIndexNonNegativeAndOutOfBounds = (
-                    (numberOfChunks == 0 && numericChunkIndex > 0) ||
-                        (numberOfChunks > 0 && numericChunkIndex >= numberOfChunks)
-                )
-                if (numericChunkIndex < 0 || chunkIndexNonNegativeAndOutOfBounds) {
-                    throw InvalidInputApiException(
-                        summary = "Bad chunkIndex.",
-                        message =
-                            "Bad chunkIndex: must be between 0 inclusive and number of chunks exclusive " +
-                                "(0 is allowed, and is the only allowed value, for chunkIndex if the number" +
-                                "of chunks is 0 due to an empty list of search results).",
-                    )
-                }
-                val startIndex = numericChunkIndex * chunkSize
-                return searchResults.subList(startIndex, startIndex + chunkSize)
+                val limit = chunkSize
+                val offset: Int = if (chunkIndex == null) 0 else limit * chunkIndex
+                return documentMetaInfoRepository
+                    .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(
+                        documentMetaInformationSearchFilter.companyId,
+                        documentMetaInformationSearchFilter.documentCategory,
+                        documentMetaInformationSearchFilter.reportingPeriod,
+                        limit,
+                        offset,
+                    ).map { it.toDocumentUploadResponse() }
             }
         }
     }

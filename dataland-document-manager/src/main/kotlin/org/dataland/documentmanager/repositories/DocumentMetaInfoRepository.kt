@@ -22,11 +22,31 @@ interface DocumentMetaInfoRepository : JpaRepository<DocumentMetaInfoEntity, Str
         "SELECT d FROM DocumentMetaInfoEntity d WHERE (:companyId is null or :companyId MEMBER OF d.companyIds) and " +
             "(:documentCategory is null or d.documentCategory = :documentCategory) and " +
             "(:reportingPeriod is null or d.reportingPeriod = :reportingPeriod) and " +
-            "d.qaStatus = 'Accepted' ORDER BY d.publicationDate DESC",
+            "d.qaStatus = 'Accepted' ORDER BY d.publicationDate DESC ",
     )
-    fun findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+    fun findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(
         @Param("companyId") companyId: String? = null,
         @Param("documentCategory") documentCategory: DocumentCategory? = null,
         @Param("reportingPeriod") reportingPeriod: String? = null,
+    ): List<DocumentMetaInfoEntity>
+
+    /**
+     * Retrieve database entries based on companyId, documentCategory and reportingPeriod.
+     * This variant allows the specification of a limit and offset for improved efficiency
+     * when only a part of the search results is needed.
+     */
+    @Query(
+        "SELECT d FROM DocumentMetaInfoEntity d WHERE (:companyId is null or :companyId MEMBER OF d.companyIds) and " +
+            "(:documentCategory is null or d.documentCategory = :documentCategory) and " +
+            "(:reportingPeriod is null or d.reportingPeriod = :reportingPeriod) and " +
+            "d.qaStatus = 'Accepted' ORDER BY d.publicationDate DESC " +
+            "LIMIT :limit OFFSET :offset",
+    )
+    fun findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(
+        @Param("companyId") companyId: String? = null,
+        @Param("documentCategory") documentCategory: DocumentCategory? = null,
+        @Param("reportingPeriod") reportingPeriod: String? = null,
+        @Param("limit") limit: Int,
+        @Param("offset") offset: Int,
     ): List<DocumentMetaInfoEntity>
 }

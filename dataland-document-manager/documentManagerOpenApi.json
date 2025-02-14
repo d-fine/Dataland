@@ -27,7 +27,7 @@
         ],
         "summary": "Search for document meta information.",
         "description": "Search for document meta information by company ID, document category and reporting period. If numberOfResults is not null, it limits the number of returned results. Results are returned sorted by publication date in reverse chronological order. Only results with QA Status \u0027Accepted\u0027 are returned.",
-        "operationId": "getDocumentMetaInformationBySearch",
+        "operationId": "searchForDocumentMetaInformation",
         "parameters": [
           {
             "name": "companyId",

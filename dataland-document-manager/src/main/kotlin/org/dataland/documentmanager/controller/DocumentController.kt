@@ -129,13 +129,19 @@ class DocumentController(
      * addition to the values of the three potential search parameter fields, these
      * contain the document ids and names as well as publication dates.
      */
-    override fun getDocumentMetaInformationBySearch(
+    override fun searchForDocumentMetaInformation(
         companyId: String?,
         documentCategory: DocumentCategory?,
         reportingPeriod: String?,
         chunkSize: Int?,
         chunkIndex: Int?,
     ): ResponseEntity<List<DocumentUploadResponse>> {
+        if (chunkSize != null && chunkSize <= 0) {
+            throw InvalidInputApiException(
+                summary = "Invalid chunk size.",
+                message = "Chunk size must be positive or null.",
+            )
+        }
         val documentMetaInformationSearchFilter =
             DocumentMetaInformationSearchFilter(
                 companyId,

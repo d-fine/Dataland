@@ -30,6 +30,7 @@ import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.amqp.AmqpException
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,10 +57,21 @@ class DocumentManagerTest(
     private val mockDocumentName = "sample.pdf"
     private val unknownDocumentId = "unknown-document-id"
     private val existingButNonRetrievableDocumentId = "existing-but-non-retrievable-document-id"
+    private val knownDocumentId = "known-document-id"
     private val knownCompanyIdOne = "knownCompanyId1"
 
     private val dummyDocumentMetaInfo =
         DocumentMetaInfo(
+            documentName = mockDocumentName,
+            documentCategory = DocumentCategory.AnnualReport,
+            companyIds = mutableSetOf(knownCompanyIdOne),
+            publicationDate = LocalDate.parse("2023-01-01"),
+            reportingPeriod = "2023",
+        )
+
+    private val dummyDocumentUploadResponse =
+        DocumentUploadResponse(
+            documentId = knownDocumentId,
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(knownCompanyIdOne),
@@ -330,10 +342,60 @@ class DocumentManagerTest(
 
     @Test
     fun `check that retrieval of document metainfo works for an existing document id`() {
-        val mockDocument = setupMockDocument()
-        val response1 = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        val response1 = dummyDocumentUploadResponse
         setUpDocumentIdToBeFound(response1.documentId)
         val response2 = documentManager.retrieveDocumentMetaInfoById(response1.documentId)
         assertEquals(response1, response2)
+    }
+
+    @Test
+    fun `check that the search filter is built correctly in a search request with null chunkSize`() {
+        // Empty list, since the database response itself is irrelevant, only that the correct query is made.
+        val emptyList: List<DocumentMetaInfoEntity> = listOf()
+        doReturn(emptyList)
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(any(), any(), any())
+        doReturn(emptyList)
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(any(), any(), any(), any(), any())
+        val searchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId = knownCompanyIdOne,
+                documentCategory = null,
+                reportingPeriod = "2023",
+            )
+        documentManager.searchForDocumentMetaInformation(searchFilter, chunkSize = null, chunkIndex = null)
+        verify(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(
+                companyId = knownCompanyIdOne,
+                documentCategory = null,
+                reportingPeriod = "2023",
+            )
+    }
+
+    @Test
+    fun `check that search filter, limit and offset are built correctly in a search request`() {
+        val emptyList: List<DocumentMetaInfoEntity> = listOf()
+        doReturn(emptyList)
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(any(), any(), any())
+        doReturn(emptyList)
+            .whenever(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(any(), any(), any(), any(), any())
+        val searchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId = knownCompanyIdOne,
+                documentCategory = null,
+                reportingPeriod = "2023",
+            )
+        documentManager.searchForDocumentMetaInformation(searchFilter, chunkSize = 50, chunkIndex = 3)
+        verify(mockDocumentMetaInfoRepository)
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(
+                companyId = knownCompanyIdOne,
+                documentCategory = null,
+                reportingPeriod = "2023",
+                limit = 50,
+                offset = 150,
+            )
     }
 }
