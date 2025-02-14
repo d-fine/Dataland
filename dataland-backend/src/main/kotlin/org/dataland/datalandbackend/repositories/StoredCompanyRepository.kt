@@ -20,49 +20,31 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-            " WITH leis_in_list AS ( " +
-                "     SELECT company_id, identifier_value FROM ( " +
-                "         SELECT identifier_value, company_id " +
-                "         FROM company_identifiers " +
-                "         WHERE identifier_type = 'Lei' " +
-                "     ) AS leis " +
-                "     WHERE identifier_value IN (:listOfLeis) " +
-                " ), " +
-                " all_leis AS ( " +
-                "     SELECT company_id, identifier_value FROM ( " +
-                "         SELECT identifier_value, company_id " +
-                "         FROM company_identifiers " +
-                "         WHERE identifier_type = 'Lei' " +
-                "     ) AS leis " +
-                " ) " +
-                " SELECT has_active_data.company_id AS companyId, " +
-                "        company_name AS companyName, " +
-                "        headquarters, " +
-                "        country_code AS countryCode, " +
-                "        sector, " +
-                "        all_leis.identifier_value AS lei, " +
-                "        CASE " +
-                "            WHEN leis_in_list.identifier_value IS NOT NULL THEN 2 " +
-                "            ELSE 1 " +
-                "        END AS dataset_rank " +
-                " FROM ( " +
-                "     SELECT company_id, company_name, headquarters, country_code, sector " +
-                "     FROM stored_companies " +
-                "     WHERE company_id IN ( " +
-                "         SELECT DISTINCT company_id " +
-                "         FROM data_meta_information " +
-                "         WHERE currently_active = 'true' " +
-                "     ) " +
-                " ) AS has_active_data " +
-                " LEFT JOIN all_leis ON all_leis.company_id = has_active_data.company_id " +
-                " LEFT JOIN leis_in_list ON leis_in_list.company_id = has_active_data.company_id " +
+            " SELECT has_active_data.company_id AS companyId," +
+                " company_name AS companyName," +
+                " headquarters, " +
+                " country_code AS countryCode, " +
+                " sector, " +
+                " identifier_value AS lei, " +
+                "has_active_data.dataset_rank" +
+                " FROM (" +
+                " SELECT company_id, company_name, headquarters, country_code, sector " +
+                "CASE " +
+                " WHEN has_active_data.company_id IN (:listOfCompanyIds) THEN 2" +
+                " ELSE 1" +
+                " END AS dataset_rank" +
+                "FROM stored_companies " +
+                " WHERE company_id IN " +
+                " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true') " +
                 " ORDER BY dataset_rank DESC, company_name ASC " +
-                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}",
+                "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
+                " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
+                " ON leis.company_id = has_active_data.company_id",
     )
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
-        @Param("listOfLeis") listOfLeis: Collection<String>,
+        @Param("listOfCompanyIds") listOfCompanyIds: Collection<String>,
     ): List<BasicCompanyInformation>
 
     /**

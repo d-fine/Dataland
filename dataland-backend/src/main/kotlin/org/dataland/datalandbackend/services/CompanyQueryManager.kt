@@ -13,6 +13,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of common read-only queries against company data
@@ -23,6 +24,8 @@ class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
 ) {
+    private val leisToCompanyIdMappingInMemoryStorage = ConcurrentHashMap<String, String>()
+
     /**
      * Method to verify that a given company exists in the company store
      * @param companyId the ID of the to be verified company
@@ -48,18 +51,54 @@ class CompanyQueryManager(
         chunkSize: Int?,
     ): List<BasicCompanyInformation> {
         val offset = chunkIndex * (chunkSize ?: 0)
+
         return if (filter.searchStringLength == 0) {
             if (areAllDropdownFiltersDeactivated(filter)) {
-                val listOfLeis = LEIList.leis.values
-                companyRepository
-                    .getAllCompaniesWithDataset(
-                        chunkSize, offset, listOfLeis,
-                    )
+                handleAllDropdownFiltersDeactivated(chunkSize, offset)
             } else {
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
         } else {
             companyRepository.searchCompanies(filter, chunkSize, offset)
+        }
+    }
+
+    private fun handleAllDropdownFiltersDeactivated(
+        chunkSize: Int?,
+        offset: Int,
+    ): List<BasicCompanyInformation> {
+        if (leisToCompanyIdMappingInMemoryStorage.isEmpty()) {
+            val listOfLeis = LEIList.leis.values
+            listOfLeis.forEach { lei ->
+                leisToCompanyIdMappingInMemoryStorage.putIfAbsent(lei, "")
+            }
+        }
+
+        leisToCompanyIdMappingInMemoryStorage.keys.forEach { lei ->
+            if (leisToCompanyIdMappingInMemoryStorage[lei].isNullOrEmpty()) {
+                updateCompanyMappingForLei(lei)
+            }
+        }
+
+        return companyRepository.getAllCompaniesWithDataset(
+            chunkSize,
+            offset,
+            leisToCompanyIdMappingInMemoryStorage.values,
+        )
+    }
+
+    private fun updateCompanyMappingForLei(lei: String) {
+        val result =
+            companyRepository.searchCompanies(
+                StoredCompanySearchFilter(
+                    countryCodeFilter = emptyList(),
+                    dataTypeFilter = emptyList(),
+                    sectorFilter = emptyList(),
+                    searchString = lei,
+                ),
+            )
+        if (result.isNotEmpty()) {
+            leisToCompanyIdMappingInMemoryStorage[lei] = result.first().companyId
         }
     }
 
