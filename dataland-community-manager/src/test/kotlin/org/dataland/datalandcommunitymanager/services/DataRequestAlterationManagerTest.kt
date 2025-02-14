@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.model.BasicCompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.NonSourceableInfo
@@ -31,7 +32,9 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.whenever
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
@@ -47,13 +50,14 @@ class DataRequestAlterationManagerTest {
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockRequestEmailManager: RequestEmailManager
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
-    private lateinit var mockCompanyDataControllerApi: CompanyDataControllerApi
+    private val mockCompanyDataControllerApi = mock<CompanyDataControllerApi>()
 
     private val dataRequestId = UUID.randomUUID().toString()
     private val correlationId = UUID.randomUUID().toString()
     private lateinit var dummyDataRequestEntities: List<DataRequestEntity>
 
     private val dummyRequestChangeReason = "dummy reason"
+    private val dummyCompanyId = "dummyCompanyId"
 
     private val dummyNonSourceableInfo =
         NonSourceableInfo(
@@ -74,6 +78,7 @@ class DataRequestAlterationManagerTest {
         )
 
     private lateinit var dummyDataRequestEntity: DataRequestEntity
+    private lateinit var dummyChildCompanyDataRequestEntity: DataRequestEntity
 
     private val metaData =
         DataMetaInformation(
@@ -105,6 +110,9 @@ class DataRequestAlterationManagerTest {
                 mockDataRequestRepository.findById(it.dataRequestId),
             ).thenReturn(Optional.of(it))
         }
+        doReturn(Optional.of(dummyChildCompanyDataRequestEntity))
+            .whenever(mockDataRequestRepository)
+            .findById(dummyChildCompanyDataRequestEntity.dataRequestId)
         `when`(
             mockDataRequestRepository.searchDataRequestEntity(
                 searchFilter =
@@ -114,6 +122,15 @@ class DataRequestAlterationManagerTest {
                     ),
             ),
         ).thenReturn(dummyDataRequestEntities)
+        doReturn(listOf(dummyChildCompanyDataRequestEntity))
+            .whenever(mockDataRequestRepository)
+            .searchDataRequestEntity(
+                searchFilter =
+                    DataRequestsFilter(
+                        setOf(metaData.dataType), null, null, setOf("dummyChildCompanyId"), metaData.reportingPeriod,
+                        setOf(RequestStatus.Open, RequestStatus.NonSourceable), null, null, null,
+                    ),
+            )
 
         `when`(
             mockDataRequestRepository.findAllByDatalandCompanyIdAndDataTypeAndReportingPeriod(
@@ -142,7 +159,12 @@ class DataRequestAlterationManagerTest {
         `when`(mockMetaControllerApi.getDataMetaInfo(metaData.dataId))
             .thenReturn(metaData)
 
-        mockCompanyDataControllerApi = mock(CompanyDataControllerApi::class.java)
+        doReturn(listOf<BasicCompanyInformation>())
+            .whenever(mockCompanyDataControllerApi)
+            .getCompanySubsidiariesByParentId(any())
+        doReturn(listOf(BasicCompanyInformation("", "dummyChildCompanyId", "", "")))
+            .whenever(mockCompanyDataControllerApi)
+            .getCompanySubsidiariesByParentId(metaData.companyId)
 
         dataRequestAlterationManager =
             DataRequestAlterationManager(
@@ -184,17 +206,27 @@ class DataRequestAlterationManagerTest {
                     dataType = "dummyDataType",
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 123456,
-                    datalandCompanyId = "dummyCompanyId",
+                    datalandCompanyId = dummyCompanyId,
                 ),
                 DataRequestEntity(
                     userId = "1234",
                     dataType = "p2p",
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 0,
-                    datalandCompanyId = "dummyCompanyId",
+                    datalandCompanyId = dummyCompanyId,
                 ),
             )
         dummyDataRequestEntity = dummyDataRequestEntities[0]
+        dummyChildCompanyDataRequestEntity =
+            DataRequestEntity(
+                userId = "1234",
+                dataType = "p2p",
+                reportingPeriod =
+                    "dummyPeri" +
+                        "od",
+                creationTimestamp = 0,
+                datalandCompanyId = "dummyChildCompanyId",
+            )
     }
 
     @BeforeEach
@@ -265,10 +297,23 @@ class DataRequestAlterationManagerTest {
             verify(mockRequestEmailManager)
                 .sendEmailsWhenStatusChanged(eq(it), eq(RequestStatus.Answered), eq(null), anyString())
         }
+        verify(mockRequestEmailManager)
+            .sendEmailsWhenStatusChanged(
+                eq(dummyChildCompanyDataRequestEntity),
+                eq(RequestStatus.Answered),
+                eq(null),
+                anyString(),
+            )
         verify(mockDataRequestProcessingUtils, times(dummyDataRequestEntities.size))
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), eq(null),
+                any(),
+            )
+        verify(mockDataRequestProcessingUtils, times(1))
+            .addNewRequestStatusToHistory(
+                eq(dummyChildCompanyDataRequestEntity), any(),
+                any(), anyString(),
                 any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))

@@ -1,7 +1,9 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -33,6 +35,7 @@ class DataRequestAlterationManager
         private val metaDataControllerApi: MetaDataControllerApi,
         private val utils: DataRequestProcessingUtils,
         private val companyRolesManager: CompanyRolesManager,
+        private val companyDataControllerApi: CompanyDataControllerApi,
     ) {
         private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
@@ -117,6 +120,109 @@ class DataRequestAlterationManager
         }
 
         /**
+         * Change the request status of a given data request to 'Answered'
+         * @param dataRequestEntity the entity specifying the data request
+         * @param correlationId the correlation ID of the QA event
+         */
+        private fun patchRequestStatusByDataRequestEntity(
+            dataRequestEntity: DataRequestEntity,
+            correlationId: String?,
+            requestStatusChangeReason: String? = null,
+        ) {
+            if (dataRequestEntity.dataType == DataTypeEnum.vsme.name && dataRequestEntity.accessStatus != AccessStatus.Granted) {
+                patchDataRequest(
+                    dataRequestId = dataRequestEntity.dataRequestId,
+                    requestStatus = RequestStatus.Answered,
+                    accessStatus = AccessStatus.Pending,
+                    correlationId = correlationId,
+                    requestStatusChangeReason = requestStatusChangeReason,
+                )
+            } else {
+                patchDataRequest(
+                    dataRequestId = dataRequestEntity.dataRequestId,
+                    requestStatus = RequestStatus.Answered,
+                    correlationId = correlationId,
+                    requestStatusChangeReason = requestStatusChangeReason,
+                )
+            }
+        }
+
+        /**
+         * Change the request status of all data requests for a given company, reporting period and framework
+         * @param companyId the ID of the company for which data requests shall be patched
+         * @param reportingPeriod the reporting period for which data requests shall be patched
+         * @param dataType the framework for which data requests shall be patched
+         * @param correlationId the correlation ID of the QA event
+         */
+        private fun patchRequestStatusOfSingleCompany(
+            companyId: String,
+            reportingPeriod: String,
+            dataType: DataTypeEnum,
+            correlationId: String,
+        ) {
+            logger.info(
+                "Changing request status for company Id $companyId, " +
+                    "reporting period $reportingPeriod and framework ${dataType.name} to answered. " +
+                    "Correlation ID: $correlationId",
+            )
+            val dataRequestEntities =
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(dataType),
+                        userId = null,
+                        emailAddress = null,
+                        datalandCompanyIds = setOf(companyId),
+                        reportingPeriod = reportingPeriod,
+                        requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
+                        accessStatus = null,
+                        adminComment = null,
+                        requestPriority = null,
+                    ),
+                )
+            dataRequestEntities.forEach { patchRequestStatusByDataRequestEntity(it, correlationId) }
+        }
+
+        /**
+         * Change the request status of all data requests of all subsidiaries of a given company, reporting period and framework
+         * @param companyId the ID of the company whose subsidiaris shall be processed
+         * @param reportingPeriod the reporting period for which data requests shall be patched
+         * @param dataType the framework for which data requests shall be patched
+         * @param correlationId the correlation ID of the QA event
+         */
+        private fun patchRequestStatusOfSubsidiaries(
+            companyId: String,
+            reportingPeriod: String,
+            dataType: DataTypeEnum,
+            correlationId: String,
+        ) {
+            logger.info(
+                "Changing request status for all subsidiaries of company with Id $companyId, " +
+                    "reporting period $reportingPeriod and framework ${dataType.name} to answered. " +
+                    "Correlation ID: $correlationId",
+            )
+            val subsidiariesIds = companyDataControllerApi.getCompanySubsidiariesByParentId(companyId)
+            val dataRequestEntities =
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(dataType),
+                        userId = null,
+                        emailAddress = null,
+                        datalandCompanyIds = subsidiariesIds.map { it.companyId }.toSet(),
+                        reportingPeriod = reportingPeriod,
+                        requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
+                        accessStatus = null,
+                        adminComment = null,
+                        requestPriority = null,
+                    ),
+                )
+            dataRequestEntities.forEach {
+                patchRequestStatusByDataRequestEntity(
+                    it, correlationId, "This data request was answered by a data upload to the parent company.",
+                )
+            }
+        }
+
+        /**
          * Method to patch open or non-sourceable data request to answered after a dataset is uploaded
          * @param dataId the id of the uploaded dataset
          * @param correlationId correlationId
@@ -127,38 +233,11 @@ class DataRequestAlterationManager
             correlationId: String,
         ) {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            logger.info(
-                "Changing request status for company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name} to answered. " +
-                    "Correlation ID: $correlationId",
+            patchRequestStatusOfSingleCompany(
+                metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId,
             )
-            val dataRequestEntities =
-                dataRequestRepository.searchDataRequestEntity(
-                    DataRequestsFilter(
-                        dataType = setOf(metaData.dataType),
-                        userId = null,
-                        emailAddress = null,
-                        datalandCompanyIds = setOf(metaData.companyId),
-                        reportingPeriod = metaData.reportingPeriod,
-                        requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                        accessStatus = null,
-                        adminComment = null,
-                        requestPriority = null,
-                    ),
-                )
-            dataRequestEntities.forEach {
-                if (it.dataType == DataTypeEnum.vsme.name && it.accessStatus != AccessStatus.Granted) {
-                    patchDataRequest(
-                        dataRequestId = it.dataRequestId, requestStatus = RequestStatus.Answered,
-                        accessStatus = AccessStatus.Pending,
-                        correlationId = correlationId,
-                    )
-                } else {
-                    patchDataRequest(
-                        dataRequestId = it.dataRequestId, requestStatus = RequestStatus.Answered,
-                        correlationId = correlationId,
-                    )
-                }
-            }
+            patchRequestStatusOfSubsidiaries(
+                metaData.companyId, metaData.reportingPeriod, metaData.dataType, correlationId,
+            )
         }
     }
