@@ -138,7 +138,7 @@ class DataRequestAlterationManager
                     throw DataRequestNotFoundApiException(dataRequestId)
                 }
             val modificationTime = Instant.now().toEpochMilli()
-            var anyChanges =
+            val anyChanges =
                 listOf(
                     updateRequestStatusHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
                     updateMessageHistoryIfRequired(dataRequestPatch, dataRequestEntity, modificationTime),
@@ -242,6 +242,7 @@ class DataRequestAlterationManager
                     "Correlation ID: $correlationId",
             )
             val subsidiariesIds = companyDataControllerApi.getCompanySubsidiariesByParentId(companyId)
+            if (subsidiariesIds.isEmpty()) return
             val dataRequestEntities =
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
