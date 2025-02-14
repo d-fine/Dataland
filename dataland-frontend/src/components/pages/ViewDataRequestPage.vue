@@ -562,13 +562,13 @@ export default defineComponent({
 });
 </script>
 <style lang="scss" scoped>
-@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/variables';
 
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
-  padding: $spacing-md;
-  border-radius: $radius-xxs;
+  padding: variables.$spacing-md;
+  border-radius: variables.$radius-xxs;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -581,8 +581,8 @@ export default defineComponent({
   .card {
     width: 100%;
     background-color: var(--surface-card);
-    padding: $spacing-md;
-    border-radius: $radius-xxs;
+    padding: variables.$spacing-md;
+    border-radius: variables.$radius-xxs;
     text-align: left;
     display: flex;
     flex-direction: column;
