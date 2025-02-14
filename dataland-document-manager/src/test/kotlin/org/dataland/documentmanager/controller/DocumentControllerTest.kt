@@ -47,8 +47,6 @@ class DocumentControllerTest(
 
     private final val dummyUserName = "dummyUserName"
     private final val dummyUserId = "dummyUserId"
-    private final val initialUploaderUserId = "initialUploaderUserId"
-    private final val otherUploaderUserId = "otherUploaderUserId"
     private final val dummyCompanyId = "dummyCompanyId"
     private final val dummyDocumentId = "dummyDocumentId"
     private final val mockDocumentMetaInfoPatch = mock<DocumentMetaInfoPatch>()
@@ -69,8 +67,8 @@ class DocumentControllerTest(
     }
 
     private fun setMockSecurityContext(
-        userName: String,
-        userId: String,
+        userName: String = dummyUserName,
+        userId: String = dummyUserId,
         roles: Set<DatalandRealmRole>,
     ) {
         val mockAuthentication = AuthenticationMock.mockJwtAuthentication(userName, userId, roles)
@@ -81,7 +79,7 @@ class DocumentControllerTest(
 
     @Test
     fun `test that patch endpoints are accessible for admins`() {
-        setMockSecurityContext(userName = dummyUserName, userId = dummyUserId, roles = cumulatedRolesForAdmin)
+        setMockSecurityContext(roles = cumulatedRolesForAdmin)
         assertDoesNotThrow {
             documentController.patchDocumentMetaInfo(dummyDocumentId, mockDocumentMetaInfoPatch)
         }
@@ -93,7 +91,7 @@ class DocumentControllerTest(
     @Test
     fun `test that patch endpoints are not accessible for reader nor reviewers`() {
         for (setOfRoles in listOf(cumulatedRolesForReader, cumulatedRolesForReviewer)) {
-            setMockSecurityContext(userName = dummyUserName, userId = dummyUserId, roles = setOfRoles)
+            setMockSecurityContext(roles = setOfRoles)
             assertThrows<AccessDeniedException> {
                 documentController.patchDocumentMetaInfo(dummyDocumentId, mockDocumentMetaInfoPatch)
             }
@@ -105,7 +103,7 @@ class DocumentControllerTest(
 
     @Test
     fun `test that companyIds patch endpoint is accessible for uploaders`() {
-        setMockSecurityContext(userName = dummyUserName, userId = dummyUserId, roles = cumulatedRolesForUploader)
+        setMockSecurityContext(roles = cumulatedRolesForUploader)
         assertDoesNotThrow {
             documentController.patchDocumentMetaInfoCompanyIds(dummyDocumentId, dummyCompanyId)
         }
@@ -114,11 +112,8 @@ class DocumentControllerTest(
     @Test
     fun `test that full patch endpoint is accessible for initial uploader of document`() {
         doReturn(true).whenever(mockUserRolesChecker).isCurrentUserUploaderOfDocument(dummyDocumentId)
-        setMockSecurityContext(
-            userName = dummyUserName,
-            userId = initialUploaderUserId,
-            roles = cumulatedRolesForUploader,
-        )
+
+        setMockSecurityContext(roles = cumulatedRolesForUploader)
         assertDoesNotThrow {
             documentController.patchDocumentMetaInfo(dummyDocumentId, mockDocumentMetaInfoPatch)
         }
@@ -127,11 +122,8 @@ class DocumentControllerTest(
     @Test
     fun `test that full patch endpoint is not accessible for uploaders which are not initial uploader of document`() {
         doReturn(false).whenever(mockUserRolesChecker).isCurrentUserUploaderOfDocument(dummyDocumentId)
-        setMockSecurityContext(
-            userName = dummyUserName,
-            userId = otherUploaderUserId,
-            roles = cumulatedRolesForUploader,
-        )
+
+        setMockSecurityContext(roles = cumulatedRolesForUploader)
         assertThrows<AccessDeniedException> {
             documentController.patchDocumentMetaInfo(dummyDocumentId, mockDocumentMetaInfoPatch)
         }
@@ -141,11 +133,7 @@ class DocumentControllerTest(
     fun `test that patching meta info throws error if document does not exist`() {
         mockDocumentMetaInfoPatch.apply { doReturn(true).whenever(this).isNullOrEmpty() }
 
-        setMockSecurityContext(
-            userName = dummyUserName,
-            userId = dummyUserName,
-            roles = cumulatedRolesForAdmin,
-        )
+        setMockSecurityContext(roles = cumulatedRolesForAdmin)
         assertThrows<InvalidInputApiException> {
             documentController.patchDocumentMetaInfo(dummyDocumentId, mockDocumentMetaInfoPatch)
         }
@@ -156,13 +144,27 @@ class DocumentControllerTest(
         val mockClientException = mock<ClientException> { on { statusCode } doReturn HttpStatus.NOT_FOUND.value() }
         mockCompanyDataControllerApi.apply { doThrow(mockClientException).whenever(this).isCompanyIdValid(any()) }
 
-        setMockSecurityContext(
-            userName = dummyUserName,
-            userId = dummyUserName,
-            roles = cumulatedRolesForUploader,
-        )
+        setMockSecurityContext(roles = cumulatedRolesForUploader)
         assertThrows<ResourceNotFoundApiException> {
             documentController.patchDocumentMetaInfoCompanyIds(dummyDocumentId, dummyCompanyId)
+        }
+    }
+
+    @Test
+    fun `test that invalid api exception is thrown if patch is empty`() {
+        val emptyDocumentMetaInfoPatch =
+            DocumentMetaInfoPatch(
+                documentName = "",
+                documentCategory = null,
+                companyIds = emptySet(),
+                publicationDate = null,
+                reportingPeriod = "",
+            )
+
+        setMockSecurityContext(roles = cumulatedRolesForAdmin)
+
+        assertThrows<InvalidInputApiException> {
+            documentController.patchDocumentMetaInfo(dummyDocumentId, emptyDocumentMetaInfoPatch)
         }
     }
 }
