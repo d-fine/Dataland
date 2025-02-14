@@ -10,7 +10,9 @@ import org.flywaydb.core.api.migration.Context
 class V5__GenerateParentCompanyLeiIndex : BaseJavaMigration() {
     override fun migrate(context: Context?) {
         context!!.connection.createStatement().execute(
-            "CREATE INDEX idx_parent_company_lei " +
+            "ALTER TABLE stored_companies " +
+                "ADD COLUMN IF NOT EXISTS parent_company_lei VARCHAR(255); " +
+                "CREATE INDEX idx_parent_company_lei " +
                 "ON stored_companies (parent_company_lei);",
         )
     }

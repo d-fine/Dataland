@@ -187,7 +187,6 @@ internal class CompanyDataControllerTest(
         mockSecurityContext()
 
         postCompany(companyWithTestLei)
-        // postCompany(companyWithParent)
 
         assertThrows<ResourceNotFoundApiException> {
             companyController.getCompanySubsidiariesByParentId("invalid company id")
