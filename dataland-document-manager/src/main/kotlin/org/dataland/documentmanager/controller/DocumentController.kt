@@ -134,7 +134,7 @@ class DocumentController(
         documentCategory: DocumentCategory?,
         reportingPeriod: String?,
         chunkSize: Int?,
-        chunkIndex: Int,
+        chunkIndex: Int?,
     ): ResponseEntity<List<DocumentUploadResponse>> {
         val documentMetaInformationSearchFilter =
             DocumentMetaInformationSearchFilter(

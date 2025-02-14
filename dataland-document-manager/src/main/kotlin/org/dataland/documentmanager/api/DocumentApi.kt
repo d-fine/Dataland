@@ -260,6 +260,6 @@ interface DocumentApi {
         @RequestParam documentCategory: DocumentCategory? = null,
         @RequestParam reportingPeriod: String? = null,
         @RequestParam chunkSize: Int? = null,
-        @RequestParam chunkIndex: Int = 0,
+        @RequestParam chunkIndex: Int? = null,
     ): ResponseEntity<List<DocumentUploadResponse>>
 }

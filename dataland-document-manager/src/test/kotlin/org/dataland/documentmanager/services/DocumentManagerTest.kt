@@ -141,9 +141,23 @@ class DocumentManagerTest(
     }
 
     @Test
+    fun `check that document meta info retrieval is not possible if document does not exist`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.retrieveDocumentMetaInfoById(documentId = unknownDocumentId)
+        }
+    }
+
+    @Test
     fun `check that trying to retrieve an existing but nonretrievable document throws the appropriate exception`() {
         assertThrows<ResourceNotFoundApiException> {
             documentManager.retrieveDocumentById(existingButNonRetrievableDocumentId)
+        }
+    }
+
+    @Test
+    fun `check that trying to retrieve the metainfo of an existing but nonretrievable document throws exception`() {
+        assertThrows<ResourceNotFoundApiException> {
+            documentManager.retrieveDocumentMetaInfoById(existingButNonRetrievableDocumentId)
         }
     }
 
@@ -304,5 +318,22 @@ class DocumentManagerTest(
         assertEquals(expectedListOfCompanyIds, dummyDocumentMetaInfoEntity.companyIds)
         assertEquals(dummyDocumentMetaInfo.publicationDate, dummyDocumentMetaInfoEntity.publicationDate)
         assertEquals(dummyDocumentMetaInfo.reportingPeriod, dummyDocumentMetaInfoEntity.reportingPeriod)
+    }
+
+    private fun setUpDocumentIdToBeFound(documentId: String) {
+        doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(documentId)
+        doReturn(buildDocumentMetaInfoEntityWithDocumentId(documentId))
+            .whenever(
+                mockDocumentMetaInfoRepository,
+            ).getByDocumentId(documentId)
+    }
+
+    @Test
+    fun `check that retrieval of document metainfo works for an existing document id`() {
+        val mockDocument = setupMockDocument()
+        val response1 = storeDocumentAndMetaInfo(mockDocument, dummyDocumentMetaInfo)
+        setUpDocumentIdToBeFound(response1.documentId)
+        val response2 = documentManager.retrieveDocumentMetaInfoById(response1.documentId)
+        assertEquals(response1, response2)
     }
 }

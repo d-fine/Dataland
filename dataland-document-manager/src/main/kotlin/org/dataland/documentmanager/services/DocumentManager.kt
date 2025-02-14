@@ -171,11 +171,17 @@ class DocumentManager
             return documentMetaInfoEntity
         }
 
-        private fun retrieveDocumentMetaInfoFromStorage(
+        /**
+         * Retrieve Document meta information by documentId
+         * @param documentId identifier of document
+         * @param correlationId
+         * @return document meta information
+         */
+        fun retrieveDocumentMetaInfoFromStorage(
             documentId: String,
             correlationId: String,
         ): DocumentMetaInfoEntity {
-            logger.info("Retrieve document with document ID $documentId from storage. Correlation ID: $correlationId.")
+            logger.info("Retrieve meta data for document with documentId $documentId. Correlation ID: $correlationId.")
             if (!checkIfDocumentExistsWithId(documentId)) {
                 throw ResourceNotFoundApiException(
                     summary = "Document with ID $documentId does not exist.",
@@ -184,8 +190,10 @@ class DocumentManager
             }
             return documentMetaInfoRepository.getByDocumentId(documentId)
                 ?: throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId could not be retrieved.",
-                    message = "Document with ID $documentId could not be retrieved. Correlation ID: $correlationId.",
+                    summary = "Document meta data could not be retrieved.",
+                    message =
+                        "Document meta data for document with documentId $documentId could not be retrieved. " +
+                            "Correlation ID: $correlationId.",
                 )
         }
 
@@ -274,39 +282,13 @@ class DocumentManager
         }
 
         /**
-         * Retrieve Document meta information by documentId
-         * @param documentId identifier of document
-         * @param correlationId
-         * @return document meta information
-         */
-        fun retrieveDocumentMetaDataById(
-            documentId: String,
-            correlationId: String,
-        ): DocumentMetaInfoEntity {
-            logger.info("Retrieve meta data for document with documentId $documentId. Correlation ID: $correlationId.")
-            if (!checkIfDocumentExistsWithId(documentId)) {
-                throw ResourceNotFoundApiException(
-                    summary = "Document with ID $documentId does not exist.",
-                    message = "Document with ID $documentId does not exist. Correlation ID: $correlationId.",
-                )
-            }
-            return documentMetaInfoRepository.getByDocumentId(documentId)
-                ?: throw ResourceNotFoundApiException(
-                    summary = "Document meta data could not be retrieved.",
-                    message =
-                        "Document meta data for document with documentId $documentId could not be retrieved. " +
-                            "Correlation ID: $correlationId.",
-                )
-        }
-
-        /**
          * Search for document meta information by companyId, documentCategory and reportingPeriod. There is the
          * option to only return a chunk of the search results, controlled by the parameters chunkSize and chunkIndex.
          */
         fun searchForDocumentMetaInformation(
             documentMetaInformationSearchFilter: DocumentMetaInformationSearchFilter,
             chunkSize: Int? = null,
-            chunkIndex: Int = 0,
+            chunkIndex: Int? = null,
         ): List<DocumentUploadResponse> {
             val searchResults =
                 documentMetaInfoRepository
@@ -324,13 +306,16 @@ class DocumentManager
                     message = "chunkSize must be positive.",
                 )
             } else {
+                val numericChunkIndex = chunkIndex ?: 0
                 val numberSearchResults = searchResults.size
                 val integerQuotient = numberSearchResults / chunkSize
                 val numberOfChunks =
                     if (numberSearchResults % chunkSize == 0) integerQuotient else integerQuotient + 1
-                val chunkIndexNonNegativeAndOutOfBounds =
-                    (numberOfChunks == 0 && chunkIndex > 0) || (numberOfChunks > 0 && chunkIndex >= numberOfChunks)
-                if (chunkIndex < 0 || chunkIndexNonNegativeAndOutOfBounds) {
+                val chunkIndexNonNegativeAndOutOfBounds = (
+                    (numberOfChunks == 0 && numericChunkIndex > 0) ||
+                        (numberOfChunks > 0 && numericChunkIndex >= numberOfChunks)
+                )
+                if (numericChunkIndex < 0 || chunkIndexNonNegativeAndOutOfBounds) {
                     throw InvalidInputApiException(
                         summary = "Bad chunkIndex.",
                         message =
@@ -339,7 +324,7 @@ class DocumentManager
                                 "of chunks is 0 due to an empty list of search results).",
                     )
                 }
-                val startIndex = chunkIndex * chunkSize
+                val startIndex = numericChunkIndex * chunkSize
                 return searchResults.subList(startIndex, startIndex + chunkSize)
             }
         }
