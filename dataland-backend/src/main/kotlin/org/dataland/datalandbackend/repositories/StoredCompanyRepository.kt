@@ -20,31 +20,30 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     @Query(
         nativeQuery = true,
         value =
-            " SELECT has_active_data.company_id AS companyId," +
-                " company_name AS companyName," +
+            " SELECT has_active_data.company_id AS companyId, " +
+                " company_name AS companyName, " +
                 " headquarters, " +
                 " country_code AS countryCode, " +
                 " sector, " +
-                " identifier_value AS lei, " +
-                "has_active_data.dataset_rank" +
-                " FROM (" +
+                " identifier_value AS lei " +
+                " FROM ( " +
                 " SELECT company_id, company_name, headquarters, country_code, sector, " +
-                "CASE " +
-                " WHEN company_id IN (:listOfCompanyIds) THEN 2" +
-                " ELSE 1" +
-                " END AS dataset_rank" +
-                "FROM stored_companies " +
+                " CASE " +
+                " WHEN company_id IN :#{#companyIds} THEN 2 " +
+                " ELSE 1 " +
+                " END AS dataset_rank " +
+                " FROM stored_companies " +
                 " WHERE company_id IN " +
                 " (SELECT DISTINCT company_id FROM data_meta_information WHERE currently_active = 'true') " +
                 " ORDER BY dataset_rank DESC, company_name ASC " +
-                "LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
+                " LIMIT :#{#resultLimit} OFFSET :#{#resultOffset}) AS has_active_data " +
                 " LEFT JOIN " + TemporaryTables.TABLE_LEIS +
                 " ON leis.company_id = has_active_data.company_id",
     )
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
-        @Param("listOfCompanyIds") listOfCompanyIds: Collection<String>,
+        @Param("companyIds") companyIds: List<String>,
     ): List<BasicCompanyInformation>
 
     /**

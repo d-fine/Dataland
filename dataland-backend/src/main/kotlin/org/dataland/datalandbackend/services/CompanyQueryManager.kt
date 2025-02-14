@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,6 +26,7 @@ class CompanyQueryManager(
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
 ) {
     private val leisToCompanyIdMappingInMemoryStorage = ConcurrentHashMap<String, String>()
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Method to verify that a given company exists in the company store
@@ -80,15 +82,17 @@ class CompanyQueryManager(
             }
         }
 
+        logger.info("Current content $leisToCompanyIdMappingInMemoryStorage")
+
         return companyRepository.getAllCompaniesWithDataset(
             chunkSize,
             offset,
-            leisToCompanyIdMappingInMemoryStorage.values,
+            leisToCompanyIdMappingInMemoryStorage.values.toList(),
         )
     }
 
     private fun updateCompanyMappingForLei(lei: String) {
-        val result =
+        val companyInformation =
             companyRepository.searchCompanies(
                 StoredCompanySearchFilter(
                     countryCodeFilter = emptyList(),
@@ -97,8 +101,8 @@ class CompanyQueryManager(
                     searchString = lei,
                 ),
             )
-        if (result.isNotEmpty()) {
-            leisToCompanyIdMappingInMemoryStorage[lei] = result.first().companyId
+        if (companyInformation.isNotEmpty()) {
+            leisToCompanyIdMappingInMemoryStorage[lei] = companyInformation.first().companyId
         }
     }
 
