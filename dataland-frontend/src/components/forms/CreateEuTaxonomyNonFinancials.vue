@@ -313,7 +313,10 @@ export default defineComponent({
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
 
-      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
+      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(
+        companyId,
+        reportingPeriod
+      );
       const euTaxonomyNonFinancialsResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
       if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {

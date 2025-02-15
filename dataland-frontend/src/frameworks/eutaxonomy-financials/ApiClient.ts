@@ -71,11 +71,15 @@ export class EutaxonomyFinancialsApiClient implements PublicFrameworkDataApi<Eut
   }
 
   getCompanyAssociatedDataByDimensions(
-      reportingPeriod: string,
-      companyId: string,
-      options?: AxiosRequestConfig
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      AxiosPromise<any> {
-    return this.openApiDataController.getCompanyAssociatedEutaxonomyFinancialsDataByDimensions(reportingPeriod, companyId, options);
+  AxiosPromise<any> {
+    return this.openApiDataController.getCompanyAssociatedEutaxonomyFinancialsDataByDimensions(
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }

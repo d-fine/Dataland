@@ -71,11 +71,15 @@ export class EutaxonomyNonFinancialsApiClient implements PublicFrameworkDataApi<
   }
 
   getCompanyAssociatedDataByDimensions(
-      reportingPeriod: string,
-      companyId: string,
-      options?: AxiosRequestConfig
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      AxiosPromise<any> {
-    return this.openApiDataController.getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(reportingPeriod, companyId, options);
+  AxiosPromise<any> {
+    return this.openApiDataController.getCompanyAssociatedEutaxonomyNonFinancialsDataByDimensions(
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }

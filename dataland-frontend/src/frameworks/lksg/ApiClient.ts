@@ -58,11 +58,11 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
   }
 
   getCompanyAssociatedDataByDimensions(
-      reportingPeriod: string,
-      companyId: string,
-      options?: AxiosRequestConfig
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      AxiosPromise<any> {
+  AxiosPromise<any> {
     return this.openApiDataController.getCompanyAssociatedLksgDataByDimensions(reportingPeriod, companyId, options);
   }
 }

@@ -304,7 +304,10 @@ export default defineComponent({
       this.waitingForData = true;
       const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
 
-      const dataResponse = await euTaxonomyFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
+      const dataResponse = await euTaxonomyFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(
+        companyId,
+        reportingPeriod
+      );
       const euTaxonomyFinancialsResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);
       if (euTaxonomyFinancialsResponseData?.reportingPeriod) {

@@ -237,7 +237,8 @@ export default defineComponent({
         assertDefined(this.getKeycloakPromise)()
       ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
 
-      const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod)).data;
+      const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod))
+        .data;
       this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
       const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
       if (dataDateFromDataset) {

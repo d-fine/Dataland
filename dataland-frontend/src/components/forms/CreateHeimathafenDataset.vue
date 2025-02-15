@@ -272,7 +272,10 @@ export default defineComponent({
     async loadHeimathafenData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
-      const dataResponse = await heimathafenDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
+      const dataResponse = await heimathafenDataControllerApi.getCompanyAssociatedDataByDimensions(
+        companyId,
+        reportingPeriod
+      );
       const heimathafenResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
       this.companyAssociatedHeimathafenData = objectDropNull(heimathafenResponseData);

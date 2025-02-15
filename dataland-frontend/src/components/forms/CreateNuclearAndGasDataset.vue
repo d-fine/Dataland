@@ -268,7 +268,10 @@ export default defineComponent({
       this.waitingForData = true;
       const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
       if (nuclearAndGasDataControllerApi) {
-        const dataResponse = await nuclearAndGasDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
+        const dataResponse = await nuclearAndGasDataControllerApi.getCompanyAssociatedDataByDimensions(
+          companyId,
+          reportingPeriod
+        );
         const nuclearAndGasResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);
         this.referencedReportsForPrefill = nuclearAndGasResponseData.data?.general?.general?.referencedReports ?? {};

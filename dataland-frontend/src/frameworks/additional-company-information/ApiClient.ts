@@ -75,11 +75,15 @@ export class AdditionalCompanyInformationApiClient implements PublicFrameworkDat
   }
 
   getCompanyAssociatedDataByDimensions(
-      reportingPeriod: string,
-      companyId: string,
-      options?: AxiosRequestConfig
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(reportingPeriod, companyId, options);
+    return this.openApiDataController.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }

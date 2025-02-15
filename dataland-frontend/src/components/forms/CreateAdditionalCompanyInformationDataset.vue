@@ -270,7 +270,10 @@ export default defineComponent({
       this.waitingForData = true;
       const additionalCompanyInformationDataControllerApi = this.buildAdditionalCompanyInformationDataApi();
       if (additionalCompanyInformationDataControllerApi) {
-        const dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
+        const dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(
+          companyId,
+          reportingPeriod
+        );
         const additionalCompanyInformationResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(additionalCompanyInformationResponseData.data);
         this.referencedReportsForPrefill =

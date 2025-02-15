@@ -47,7 +47,7 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     reportingPeriod: string,
     companyId: string,
     options?: AxiosRequestConfig
-  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): AxiosPromise<any>;
 }
 
@@ -91,14 +91,14 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
   ) => AxiosPromise<any>;
 } & {
   [K in `exportCompanyAssociated${string & keyof FrameworkNameObject}ToExcel`]: (
-      dataId: string,
-      options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dataId: string,
+    options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 } & {
   [K in `getCompanyAssociated${string & keyof FrameworkNameObject}ByDimensions`]: (
-      reportingPeriod: string,
-      companyId: string,
-      options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 };
 
@@ -176,12 +176,16 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
   }
 
   getCompanyAssociatedDataByDimensions(
-      reportingPeriod: string,
-      companyId: string,
-      options?: AxiosRequestConfig
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController[`getCompanyAssociated${this.apiSuffix}ByDimensions`](reportingPeriod, companyId, options);
+    return this.openApiDataController[`getCompanyAssociated${this.apiSuffix}ByDimensions`](
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }
 
