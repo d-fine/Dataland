@@ -56,4 +56,13 @@ export class LksgApiClient implements PublicFrameworkDataApi<LksgData> {
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedLksgDataToExcel(dataId, options);
   }
+
+  getCompanyAssociatedDataByDimensions(
+      reportingPeriod: string,
+      companyId: string,
+      options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      AxiosPromise<any> {
+    return this.openApiDataController.getCompanyAssociatedLksgDataByDimensions(reportingPeriod, companyId, options);
+  }
 }

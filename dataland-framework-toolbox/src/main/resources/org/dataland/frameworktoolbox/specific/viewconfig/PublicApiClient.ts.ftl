@@ -55,4 +55,13 @@ export class ${frameworkBaseName}ApiClient implements PublicFrameworkDataApi<${f
     AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociated${frameworkBaseName}DataToExcel(dataId, options);
   }
+
+  getCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    AxiosPromise<any> {
+    return this.openApiDataController.getCompanyAssociated${frameworkBaseName}DataByDimensions(reportingPeriod, companyId, options);
+  }
 }

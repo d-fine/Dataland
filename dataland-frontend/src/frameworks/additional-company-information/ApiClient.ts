@@ -73,4 +73,13 @@ export class AdditionalCompanyInformationApiClient implements PublicFrameworkDat
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedAdditionalCompanyInformationDataToExcel(dataId, options);
   }
+
+  getCompanyAssociatedDataByDimensions(
+      reportingPeriod: string,
+      companyId: string,
+      options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(reportingPeriod, companyId, options);
+  }
 }

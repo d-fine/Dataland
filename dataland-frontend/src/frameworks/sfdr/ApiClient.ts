@@ -56,4 +56,13 @@ export class SfdrApiClient implements PublicFrameworkDataApi<SfdrData> {
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedSfdrDataToExcel(dataId, options);
   }
+
+  getCompanyAssociatedDataByDimensions(
+      reportingPeriod: string,
+      companyId: string,
+      options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      AxiosPromise<any> {
+    return this.openApiDataController.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod, companyId, options);
+  }
 }

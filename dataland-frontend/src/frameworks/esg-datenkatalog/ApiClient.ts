@@ -69,4 +69,13 @@ export class EsgDatenkatalogApiClient implements PublicFrameworkDataApi<EsgDaten
   AxiosPromise<any> {
     return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataToExcel(dataId, options);
   }
+
+  getCompanyAssociatedDataByDimensions(
+      reportingPeriod: string,
+      companyId: string,
+      options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController.getCompanyAssociatedEsgDatenkatalogDataByDimensions(reportingPeriod, companyId, options);
+  }
 }

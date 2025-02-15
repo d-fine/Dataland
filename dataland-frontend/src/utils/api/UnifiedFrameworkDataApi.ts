@@ -95,7 +95,7 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
       options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 } & {
-  [K in `getCompanyAssociated${string & keyof FrameworkNameObject}DataByDimensions`]: (
+  [K in `getCompanyAssociated${string & keyof FrameworkNameObject}ByDimensions`]: (
       reportingPeriod: string,
       companyId: string,
       options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -181,7 +181,7 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
       options?: AxiosRequestConfig
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController[`getCompanyAssociated${this.apiSuffix}ByDimension`](reportingPeriod, companyId, options);
+    return this.openApiDataController[`getCompanyAssociated${this.apiSuffix}ByDimensions`](reportingPeriod, companyId, options);
   }
 }
 
