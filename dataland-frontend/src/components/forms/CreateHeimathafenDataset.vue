@@ -273,8 +273,8 @@ export default defineComponent({
       this.waitingForData = true;
       const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
       const dataResponse = await heimathafenDataControllerApi.getCompanyAssociatedDataByDimensions(
-        companyId,
-        reportingPeriod
+        reportingPeriod,
+        companyId
       );
       const heimathafenResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);

@@ -192,7 +192,7 @@ const buildLksgDataApi = (): PublicFrameworkDataApi<LksgData> | undefined => {
 const loadLKSGData = async (reportingPeriod: string, companyId: string): Promise<void> => {
   waitingForData.value = true;
   const lksgDataControllerApi = buildLksgDataApi();
-  const dataResponse = await lksgDataControllerApi!.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
+  const dataResponse = await lksgDataControllerApi!.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId);
   const lksgResponseData = dataResponse.data;
   listOfFilledKpis.value = getFilledKpis(lksgResponseData.data);
   companyAssociatedLksgData.value = objectDropNull(lksgResponseData);

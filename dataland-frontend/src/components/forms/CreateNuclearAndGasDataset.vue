@@ -269,8 +269,8 @@ export default defineComponent({
       const nuclearAndGasDataControllerApi = this.buildNuclearAndGasDataApi();
       if (nuclearAndGasDataControllerApi) {
         const dataResponse = await nuclearAndGasDataControllerApi.getCompanyAssociatedDataByDimensions(
-          companyId,
-          reportingPeriod
+          reportingPeriod,
+          companyId
         );
         const nuclearAndGasResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(nuclearAndGasResponseData.data);

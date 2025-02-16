@@ -305,8 +305,8 @@ export default defineComponent({
       const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
 
       const dataResponse = await euTaxonomyFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(
-        companyId,
-        reportingPeriod
+        reportingPeriod,
+        companyId
       );
       const euTaxonomyFinancialsResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);

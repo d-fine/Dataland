@@ -314,8 +314,8 @@ export default defineComponent({
       const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
 
       const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(
-        companyId,
-        reportingPeriod
+        reportingPeriod,
+        companyId
       );
       const euTaxonomyNonFinancialsResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);

@@ -283,8 +283,8 @@ export default defineComponent({
       this.waitingForData = true;
       const esgDatenkatalogDataControllerApi = this.buildEsgDatenkatalogDataApi();
       const dataResponse = await assertDefined(esgDatenkatalogDataControllerApi).getCompanyAssociatedDataByDimensions(
-        companyId,
-        reportingPeriod
+        reportingPeriod,
+        companyId
       );
       const esgDatenkatalogResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(esgDatenkatalogResponseData.data);

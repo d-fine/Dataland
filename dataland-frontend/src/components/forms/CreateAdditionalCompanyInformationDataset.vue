@@ -271,8 +271,8 @@ export default defineComponent({
       const additionalCompanyInformationDataControllerApi = this.buildAdditionalCompanyInformationDataApi();
       if (additionalCompanyInformationDataControllerApi) {
         const dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(
-          companyId,
-          reportingPeriod
+          reportingPeriod,
+          companyId
         );
         const additionalCompanyInformationResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(additionalCompanyInformationResponseData.data);

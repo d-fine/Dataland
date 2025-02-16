@@ -275,7 +275,7 @@ export default defineComponent({
     async loadSfdrData(reportingPeriod: string, companyId: string): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = this.buildSfdrDataApi();
-      const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedDataByDimensions(companyId, reportingPeriod);
+      const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId);
       const sfdrResponseData = dataResponse.data;
       this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
       this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
