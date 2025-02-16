@@ -8,6 +8,8 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
+import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
+import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -21,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
+    @Autowired private val dataPointMetaInfoRepository: DataPointMetaInformationManager,
+    @Autowired private val assembledDataManager: AssembledDataManager,
 ) {
     /**
      * Method to verify that a given company exists in the company store
@@ -134,13 +138,22 @@ class CompanyQueryManager(
      * @param dataType the data type for which the datasets should be counted
      * @returns the number of active datasets of the specified company and data type
      */
-    fun countActiveDatasets(
+    fun countReportingPeriodsWithActiveData(
         companyId: String,
         dataType: DataType,
-    ): Long =
-        dataMetaInfoRepository.countByCompanyIdAndDataTypeAndCurrentlyActive(
-            companyId,
-            dataType.name,
-            true,
-        )
+    ): Long {
+        val relevantDataPointTypes = assembledDataManager.getRelevantDataPointTypes(dataType.toString())
+        val dataPointReportingPeriods =
+            dataPointMetaInfoRepository.getReportingPeriodsWithActiveDataPoints(
+                dataPointTypes = relevantDataPointTypes,
+                companyId = companyId,
+            )
+        val datasetReportingPeriods =
+            dataMetaInfoRepository.getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
+                companyId,
+                dataType.name,
+                true,
+            )
+        return (dataPointReportingPeriods union datasetReportingPeriods).size.toLong()
+    }
 }

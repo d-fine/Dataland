@@ -193,7 +193,7 @@ class CompanyDataController(
     override fun getAggregatedFrameworkDataSummary(companyId: String): ResponseEntity<Map<DataType, AggregatedFrameworkDataSummary>> =
         ResponseEntity.ok(
             DataType.values.associateWith {
-                AggregatedFrameworkDataSummary(companyQueryManager.countActiveDatasets(companyId, it))
+                AggregatedFrameworkDataSummary(companyQueryManager.countReportingPeriodsWithActiveData(companyId, it))
             },
         )
 

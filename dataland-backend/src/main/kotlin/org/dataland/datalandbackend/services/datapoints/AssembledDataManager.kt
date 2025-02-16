@@ -383,9 +383,7 @@ class AssembledDataManager
             correlationId: String,
         ): String? {
             val framework = dataDimensions.dataType
-            val frameworkSpecification = getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-            val relevantDataPointTypes = JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            val relevantDataPointTypes = getRelevantDataPointTypes(framework)
             val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
             val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
 
@@ -398,6 +396,17 @@ class AssembledDataManager
             return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
         }
 
+        /**
+         * Retrieves the relevant data point types for a specific framework
+         * @param framework the name of the framework
+         * @return a set of all relevant data point types
+         */
+        fun getRelevantDataPointTypes(framework: String): Set<String> {
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+        }
+
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
@@ -406,9 +415,7 @@ class AssembledDataManager
             requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
             val companyId = searchFilter.companyId
             val framework = searchFilter.dataType.toString()
-            val frameworkSpecification = getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-            val relevantDataPointTypes = JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            val relevantDataPointTypes = getRelevantDataPointTypes(framework)
             val reportingPeriods =
                 metaDataManager
                     .getReportingPeriodsWithActiveDataPoints(relevantDataPointTypes, searchFilter.companyId)
