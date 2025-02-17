@@ -106,3 +106,4 @@ wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
 
 echo "Start Health Check for Docker Containers"
 ssh ubuntu@"$target_server_url" "sudo systemctl start health-check.service"
+ssh ubuntu@"$target_server_url" "sudo systemctl start logrotate.timer"

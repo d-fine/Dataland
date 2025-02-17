@@ -672,6 +672,7 @@ services:
       GF_SERVER_ROOT_URL: http://dataland-admin:6789/grafana/
       SLACK_ALERT_URL: ${SLACK_ALERT_URL}
       SLACK_CRITICAL_ALERT_URL: ${SLACK_CRITICAL_ALERT_URL}
+      TARGETSERVER_URL: ${TARGETSERVER_URL}
     expose:
       - "3000"
     volumes:

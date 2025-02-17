@@ -90,12 +90,15 @@ configure_container_health_check () {
   ssh ubuntu@"$target_server_url" << EOF
     sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
     sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
-    sudo mv "$health_check_location/health-check" /etc/logrotate./usr/d/health-check &&
+    sudo mv "$health_check_location/logrotate.service" /etc/systemd/system/logrotate.service &&
+    sudo mv "$health_check_location/logrotate.timer" /etc/systemd/system/logrotate.timer &&
+    sudo mv "$health_check_location/health-check" /etc/logrotate.d/health-check &&
     environment_file="/etc/default/health-check"
     echo "Writing LOKI_VOLUME to environment file"
     echo "LOKI_VOLUME=$2" | sudo tee \$environment_file > /dev/null
     sudo chmod +x /usr/local/bin/healthCheck.sh &&
     sudo systemctl daemon-reload &&
     sudo systemctl enable health-check.service
+    sudo systemctl enable logrotate.timer
 EOF
 }

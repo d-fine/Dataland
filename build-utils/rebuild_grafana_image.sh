@@ -4,11 +4,11 @@ set -euxo pipefail
 # Dependencies required for building the image
 dependencies="./dataland-grafana/ ./environments/.env.uncritical ./versions.properties"
 
-# Set the PROXY_PRIMARY_URL environment variable or default it
-PROXY_PRIMARY_URL=${PROXY_PRIMARY_URL:-"default.dataland.com"}
+# Set the TARGETSERVER_URL environment variable or default it
+TARGETSERVER_URL=${TARGETSERVER_URL:-"default.dataland.com"}
 
 # Extract the environment part from the PROXY_PRIMARY_URL
-env_value=$(echo "$PROXY_PRIMARY_URL" | awk -F. '{print $1}')
+env_value=$(echo "$TARGETSERVER_URL" | awk -F. '{print $1}')
 echo "Extracted environment: $env_value"
 
 # Determine the appropriate env_label
