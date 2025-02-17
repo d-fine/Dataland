@@ -9,6 +9,7 @@ for container in $(docker ps --format '{{.Names}}'); do
 
     # Define your custom log file name
     custom_log_file="$health_check_log_dir/health-check.log"
+    echo "LOKI_VOLUME is set to: $LOKI_VOLUME" >> "$custom_log_file"
 
     # Check health status and log it
     health_status=$(docker inspect --format '{{.State.Health.Status}}' "$container" 2>/dev/null)
