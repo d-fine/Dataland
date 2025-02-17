@@ -15,7 +15,7 @@ RUN env_value=$(echo "${TARGETSERVER_URL}" | awk -F. '{print $1}') && \
     echo "Extracted environment value: ${env_value}" && \
     env_label=$([ "$env_value" = "dataland" ] && echo "prod" || echo "$env_value") && \
     echo "Determined environment label: ${env_label}" && \
-    sed "s|ENV_PLACEHOLDER|${env_label}|g" /etc/grafana/provisioning/alerting/alert-rules-template.yaml > \
+    sed 's|"\$ENV"|'"${env_label}"'|g' /etc/grafana/provisioning/alerting/alert-rules-template.yaml > \
     /etc/grafana/provisioning/alerting/alert-rules.yaml
 
 # Set user to grafana for security best practices

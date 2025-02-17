@@ -88,7 +88,7 @@ groups:
           __panelId__: "4"
           description: 'Internal Server Error 500 detected.'
         labels:
-          env: ENV_PLACEHOLDER
+          env: "$ENV"
         isPaused: false
         notification_settings:
           receiver: Slack Critical Alerts
@@ -176,7 +176,7 @@ groups:
           __panelId__: "5"
           description: 'Unhealthy container detected.'
         labels:
-          env: ENV_PLACEHOLDER
+          env: "$ENV"
         isPaused: false
         notification_settings:
           receiver: Slack Critical Alerts
@@ -263,7 +263,7 @@ groups:
           __panelId__: "7"
           description: 'Stack Trace detected.'
         labels:
-          env: ENV_PLACEHOLDER
+          env: "$ENV"
         isPaused: false
         notification_settings:
           receiver: Slack Alert Bot
@@ -350,7 +350,7 @@ groups:
           __panelId__: "8"
           description: 'Error Log Messages detected.'
         labels:
-          env: ENV_PLACEHOLDER
+          env: "$ENV"
         isPaused: false
         notification_settings:
           receiver: Slack Alert Bot
