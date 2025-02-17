@@ -9,8 +9,8 @@ import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
-import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
@@ -42,9 +42,13 @@ class DocumentManagerServiceTest(
     private val companyId2 = "company-id-2"
     private val companyId3 = "company-id-3"
 
+    private val documentId1 = "document-id-1"
+    private val documentId2 = "document-id-2"
+    private val documentId3 = "document-id-3"
+
     private val documentMetaInfoEntity1 =
         DocumentMetaInfoEntity(
-            documentId = "document-id-1",
+            documentId = documentId1,
             documentType = DocumentType.Pdf,
             documentName = "document-1",
             documentCategory = DocumentCategory.SustainabilityReport,
@@ -58,7 +62,7 @@ class DocumentManagerServiceTest(
 
     private val documentMetaInfoEntity2 =
         DocumentMetaInfoEntity(
-            documentId = "document-id-2",
+            documentId = documentId2,
             documentType = DocumentType.Pdf,
             documentName = "document-2",
             documentCategory = DocumentCategory.AnnualReport,
@@ -72,7 +76,7 @@ class DocumentManagerServiceTest(
 
     private val documentMetaInfoEntity3 =
         DocumentMetaInfoEntity(
-            documentId = "document-id-3",
+            documentId = documentId3,
             documentType = DocumentType.Pdf,
             documentName = "document-3",
             documentCategory = DocumentCategory.AnnualReport,
@@ -88,12 +92,6 @@ class DocumentManagerServiceTest(
         documentMetaInfoRepository.save(documentMetaInfoEntity1)
         documentMetaInfoRepository.save(documentMetaInfoEntity2)
         documentMetaInfoRepository.save(documentMetaInfoEntity3)
-        Thread.sleep(1000)
-        assertDoesNotThrow {
-            documentMetaInfoRepository.getByDocumentId("document-id-1")
-            documentMetaInfoRepository.getByDocumentId("document-id-2")
-            documentMetaInfoRepository.getByDocumentId("document-id-3")
-        }
     }
 
     @BeforeEach
@@ -128,7 +126,41 @@ class DocumentManagerServiceTest(
             )
 
         assertEquals(searchResults.size, 2)
-        // assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentUploadResponse()))
-        // assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentUploadResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentUploadResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentUploadResponse()))
+    }
+
+    @Test
+    fun `check that a search by document category yields the expected results`() {
+        val documentMetaInformationSearchFilter =
+            DocumentMetaInformationSearchFilter(
+                documentCategory = DocumentCategory.AnnualReport,
+            )
+
+        val searchResults =
+            documentManager.searchForDocumentMetaInformation(
+                documentMetaInformationSearchFilter,
+            )
+
+        assertEquals(searchResults.size, 2)
+        assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentUploadResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity3.toDocumentUploadResponse()))
+    }
+
+    @Test
+    fun `check that a search by reporting period yields the expected results`() {
+        val documentMetaInformationSearchFilter =
+            DocumentMetaInformationSearchFilter(
+                reportingPeriod = "2023",
+            )
+
+        val searchResults =
+            documentManager.searchForDocumentMetaInformation(
+                documentMetaInformationSearchFilter,
+            )
+
+        assertEquals(searchResults.size, 2)
+        assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentUploadResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity3.toDocumentUploadResponse()))
     }
 }
