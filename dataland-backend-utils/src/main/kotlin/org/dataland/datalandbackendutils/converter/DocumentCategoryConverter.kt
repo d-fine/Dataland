@@ -9,10 +9,10 @@ import org.dataland.datalandbackendutils.model.DocumentCategory
  */
 @Converter
 class DocumentCategoryConverter : AttributeConverter<DocumentCategory?, String> {
-    override fun convertToDatabaseColumn(documentCategory: DocumentCategory?): String = documentCategory.toString()
+    override fun convertToDatabaseColumn(documentCategory: DocumentCategory?): String? = documentCategory?.toString()
 
     override fun convertToEntityAttribute(documentCategoryAsString: String?): DocumentCategory? =
-        if (documentCategoryAsString.isNullOrEmpty() || documentCategoryAsString == null.toString()) {
+        if (documentCategoryAsString.isNullOrEmpty()) {
             null
         } else {
             DocumentCategory

@@ -27,7 +27,7 @@ class DocumentCategoryConverterTest {
             assertDoesNotThrow {
                 documentCategoryConverter.convertToDatabaseColumn(category)
             }
-        assertEquals(category.toString(), result)
+        assertEquals(category?.toString(), result)
     }
 
     @ParameterizedTest
@@ -36,7 +36,7 @@ class DocumentCategoryConverterTest {
     fun `check that strings are properly converted to document categories`(category: DocumentCategory?) {
         val result =
             assertDoesNotThrow {
-                documentCategoryConverter.convertToEntityAttribute(category.toString())
+                documentCategoryConverter.convertToEntityAttribute(category?.toString())
             }
         assertEquals(category, result)
     }
