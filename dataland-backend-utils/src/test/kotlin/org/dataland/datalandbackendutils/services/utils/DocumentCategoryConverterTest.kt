@@ -35,7 +35,7 @@ class DocumentCategoryConverterTest {
             assertDoesNotThrow {
                 documentCategoryConverter.convertToDatabaseColumn(null)
             }
-        assertEquals("null", result)
+        assertEquals(null, result)
     }
 
     @ParameterizedTest
@@ -52,7 +52,7 @@ class DocumentCategoryConverterTest {
     fun `check null string is properly converted to null category`() {
         val result =
             assertDoesNotThrow {
-                documentCategoryConverter.convertToEntityAttribute("null")
+                documentCategoryConverter.convertToEntityAttribute(null)
             }
         assertEquals(null, result)
     }
