@@ -15,7 +15,7 @@ export const sfdrDataModel = [
           {
             name: 'dataDate',
             label: 'Data Date',
-            description: 'The year for which the data is reported',
+            description: 'The year for which the data is reported.',
 
             component: 'DateFormField',
             required: true,
@@ -45,7 +45,7 @@ export const sfdrDataModel = [
           {
             name: 'fiscalYearEnd',
             label: 'Fiscal Year End',
-            description: 'The date the fiscal year ends',
+            description: 'The date the fiscal year ends.',
 
             component: 'DateFormField',
             required: true,
@@ -79,7 +79,7 @@ export const sfdrDataModel = [
             name: 'scope1GhgEmissionsInTonnes',
             label: 'Scope 1 GHG emissions',
             description:
-              'Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
+              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -90,7 +90,7 @@ export const sfdrDataModel = [
             name: 'scope2GhgEmissionsInTonnes',
             label: 'Scope 2 GHG emissions',
             description:
-              'Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
+              'Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -100,7 +100,8 @@ export const sfdrDataModel = [
           {
             name: 'scope2GhgEmissionsLocationBasedInTonnes',
             label: 'Scope 2 GHG emissions (location-based)',
-            description: 'Scope 2 carbon emissions computed using the location-based method',
+            description:
+              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -110,7 +111,8 @@ export const sfdrDataModel = [
           {
             name: 'scope2GhgEmissionsMarketBasedInTonnes',
             label: 'Scope 2 GHG emissions (market-based)',
-            description: 'Scope 2 carbon emissions computed using the market-based method',
+            description:
+              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -120,7 +122,8 @@ export const sfdrDataModel = [
           {
             name: 'scope1And2GhgEmissionsInTonnes',
             label: 'Scope 1 and 2 GHG emissions',
-            description: 'Sum of scope 1 and 2 carbon emissions',
+            description:
+              'Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -131,7 +134,7 @@ export const sfdrDataModel = [
             name: 'scope1And2GhgEmissionsLocationBasedInTonnes',
             label: 'Scope 1 and 2 GHG emissions (location-based)',
             description:
-              'Sum of scope 1 and 2 carbon emissions, using the location-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1 and 2 greenhouse gas emissions, using the location-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -142,7 +145,7 @@ export const sfdrDataModel = [
             name: 'scope1And2GhgEmissionsMarketBasedInTonnes',
             label: 'Scope 1 and 2 GHG emissions (market-based)',
             description:
-              'Sum of scope 1 and 2 carbon emissions, using the market-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1 and 2 greenhouse gas emissions, using the market-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -153,7 +156,7 @@ export const sfdrDataModel = [
             name: 'scope3GhgEmissionsInTonnes',
             label: 'Scope 3 GHG emissions',
             description:
-              'Scope 3 carbon emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
+              'Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -164,7 +167,7 @@ export const sfdrDataModel = [
             name: 'scope3UpstreamGhgEmissionsInTonnes',
             label: 'Scope 3 upstream GHG emissions',
             description:
-              'Indirect (gross) carbon emissions from activities related to the production and distribution of goods and services purchased by the reporting company.',
+              'Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -175,7 +178,7 @@ export const sfdrDataModel = [
             name: 'scope3DownstreamGhgEmissionsInTonnes',
             label: 'Scope 3 downstream GHG emissions ',
             description:
-              'Indirect (gross) carbon emissions that occur as a result of the use or disposal of the reporting company’s sold products and services.',
+              'Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -185,7 +188,8 @@ export const sfdrDataModel = [
           {
             name: 'scope1And2And3GhgEmissionsInTonnes',
             label: 'Scope 1 and 2 and 3 GHG emissions',
-            description: 'Sum of scope 1, 2 and 3 carbon emissions',
+            description:
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions (computed preferably using the location-based method and equity share).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -196,7 +200,7 @@ export const sfdrDataModel = [
             name: 'scope1And2And3GhgEmissionsLocationBasedInTonnes',
             label: 'Scope 1 and 2 and 3 GHG emissions (location-based)',
             description:
-              'Sum of scope 1, 2 and 3 carbon emissions, using the location-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -207,7 +211,7 @@ export const sfdrDataModel = [
             name: 'scope1And2And3GhgEmissionsMarketBasedInTonnes',
             label: 'Scope 1 and 2 and 3 GHG emissions (market-based)',
             description:
-              'Sum of scope 1, 2 and 3 carbon emissions, using the market-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -229,7 +233,7 @@ export const sfdrDataModel = [
             name: 'enterpriseValue',
             label: 'Enterprise Value',
             description:
-              'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).',
+              'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ',
 
             component: 'CurrencyDataPointFormField',
             required: false,
@@ -239,7 +243,7 @@ export const sfdrDataModel = [
             name: 'totalRevenue',
             label: 'Total Revenue',
             description:
-              "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time (millions)",
+              "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time.",
 
             component: 'CurrencyDataPointFormField',
             required: false,
@@ -249,7 +253,7 @@ export const sfdrDataModel = [
             name: 'carbonFootprintInTonnesPerMillionEURRevenue',
             label: 'Carbon footprint',
             description:
-              'Tonnes of GHG emissions / million of the enterprise value (in the same currency as the enterprise value)',
+              'Tonnes of GHG emissions per million units of the enterprise value (in the same currency as total revenue).',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -259,7 +263,8 @@ export const sfdrDataModel = [
           {
             name: 'ghgIntensityInTonnesPerMillionEURRevenue',
             label: 'GHG intensity',
-            description: 'Tonnes of GHG emissions / million of the revenue (in the same currency as the total revenue)',
+            description:
+              'Tonnes of GHG emissions per million units of revenue (in the same currency as total revenue), preferably calculated using the location-based method and the equity share approach for emissions.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -270,7 +275,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope1InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 1',
             description:
-              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
+              'Tonnes of scope 1 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -281,7 +286,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope2InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 2',
             description:
-              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
+              'Tonnes of scope 2 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -292,7 +297,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope3InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 3',
             description:
-              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 3 carbon emissions, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
+              'Tonnes of scope 3 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -303,7 +308,7 @@ export const sfdrDataModel = [
             name: 'ghgIntensityScope4InTonnesPerMillionEURRevenue',
             label: 'GHG intensity - scope 4',
             description:
-              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
+              'Tonnes of scope 4 GHG emissions per million units of revenue (in the same currency as total revenue). As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
 
             unit: 'Tonnes / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -314,7 +319,7 @@ export const sfdrDataModel = [
             name: 'fossilFuelSectorExposure',
             label: 'Fossil Fuel Sector Exposure',
             description:
-              'Do you derive any revenues from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).',
+              '(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -323,7 +328,7 @@ export const sfdrDataModel = [
           {
             name: 'financedScope1AndScope2Emissions',
             label: 'Financed scope 1 and scope 2 emissions',
-            description: 'The sum of scope 1 and scope 2 emissions of financed companies',
+            description: 'The sum of scope 1 and scope 2 emissions of financed companies.',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -333,7 +338,7 @@ export const sfdrDataModel = [
           {
             name: 'financedScope3Emissions',
             label: 'Financed scope 3 emissions',
-            description: 'The scope 3 emissions of financed companies',
+            description: 'The scope 3 emissions of financed companies.',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -350,7 +355,7 @@ export const sfdrDataModel = [
             name: 'renewableEnergyProductionInGWh',
             label: 'Renewable Energy Production',
             description:
-              'Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).',
+              'Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -362,7 +367,7 @@ export const sfdrDataModel = [
             name: 'renewableEnergyConsumptionInGWh',
             label: 'Renewable Energy Consumption',
             description:
-              'Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).',
+              'Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -374,7 +379,7 @@ export const sfdrDataModel = [
             name: 'nonRenewableEnergyProductionInGWh',
             label: 'Non-Renewable Energy Production',
             description:
-              'Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation, Annex I, top (7).',
+              'Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -398,7 +403,7 @@ export const sfdrDataModel = [
             name: 'nonRenewableEnergyConsumptionInGWh',
             label: 'Non-Renewable Energy Consumption',
             description:
-              'Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources.',
+              'Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -410,7 +415,7 @@ export const sfdrDataModel = [
             name: 'relativeNonRenewableEnergyConsumptionInPercent',
             label: 'Relative Non-Renewable Energy Consumption',
             description:
-              'Share of non-renewal energy consumption from total energy consumption (i.e. renewable plus non-renewable).',
+              'Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable).',
 
             unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -421,7 +426,7 @@ export const sfdrDataModel = [
           {
             name: 'applicableHighImpactClimateSectors',
             label: 'Applicable High Impact Climate Sectors',
-            description: 'Please select any sector(s) applicable activities (NACE Codes A-H, L)',
+            description: 'Sector applicable activities.',
 
             component: 'HighImpactClimateSectorsFormField',
             required: false,
@@ -431,7 +436,7 @@ export const sfdrDataModel = [
             name: 'totalHighImpactClimateSectorEnergyConsumptionInGWh',
             label: 'Total High Impact Climate Sector Energy Consumption',
             description:
-              'High impact climate sectors’ means the sectors listed in Sections A to H and Section L of Annex I to Regulation (EC) No 1893/2006 of the European Parliament and of the Council (Regulation (EC) No 1893/2006 of the European Parliament and of the Council of 20 December 2006 establishing the statistical classification of economic activities NACE Revision 2 and amending Council Regulation (EEC) No 3037/90 as well as certain EC Regulations on specific statistical domains (OJ L 393, 30.12.2006, p. 1)).',
+              '"High impact climate sectors" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1).',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -443,7 +448,7 @@ export const sfdrDataModel = [
             name: 'nonRenewableEnergyConsumptionFossilFuelsInGWh',
             label: 'Non-Renewable Energy Consumption Fossil Fuels',
             description:
-              'Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source)',
+              'Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -455,7 +460,7 @@ export const sfdrDataModel = [
             name: 'nonRenewableEnergyConsumptionCrudeOilInGWh',
             label: 'Non-Renewable Energy Consumption Crude Oil',
             description:
-              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source)',
+              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -466,7 +471,8 @@ export const sfdrDataModel = [
           {
             name: 'nonRenewableEnergyConsumptionNaturalGasInGWh',
             label: 'Non-Renewable Energy Consumption Natural Gas',
-            description: 'Energy consumption from natural gas (non-renewable energy source)',
+            description:
+              'Energy consumption from natural gas (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -477,7 +483,8 @@ export const sfdrDataModel = [
           {
             name: 'nonRenewableEnergyConsumptionLigniteInGWh',
             label: 'Non-Renewable Energy Consumption Lignite',
-            description: 'Energy consumption from lignite (non-renewable energy source)',
+            description:
+              'Energy consumption from lignite (non-renewable energy source) Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -488,7 +495,8 @@ export const sfdrDataModel = [
           {
             name: 'nonRenewableEnergyConsumptionCoalInGWh',
             label: 'Non-Renewable Energy Consumption Coal',
-            description: 'Energy consumption from coal (non-renewable energy source)',
+            description:
+              'Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -499,7 +507,8 @@ export const sfdrDataModel = [
           {
             name: 'nonRenewableEnergyConsumptionNuclearEnergyInGWh',
             label: 'Non-Renewable Energy Consumption Nuclear Energy',
-            description: 'Energy consumption from nuclear energy (Uranium) (non-renewable energy source)',
+            description:
+              'Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -510,7 +519,8 @@ export const sfdrDataModel = [
           {
             name: 'nonRenewableEnergyConsumptionOtherInGWh',
             label: 'Non-Renewable Energy Consumption Other',
-            description: 'Energy consumption from any other available (used) non-renewable source of energy',
+            description:
+              'Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
 
             unit: 'GWh',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -528,7 +538,7 @@ export const sfdrDataModel = [
             name: 'primaryForestAndWoodedLandOfNativeSpeciesExposure',
             label: 'Primary Forest And Wooded Land Of Native Species Exposure',
             description:
-              'Do you have sites/operations located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).',
+              'Sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments. Refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7 for more details.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -538,7 +548,7 @@ export const sfdrDataModel = [
             name: 'protectedAreasExposure',
             label: 'Protected Areas Exposure',
             description:
-              'Do you have sites/operations located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).',
+              'Sites or operations that are partially or fully located in or near protected areas, where their activities adversely impact these regions. For further details, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -548,7 +558,7 @@ export const sfdrDataModel = [
             name: 'rareOrEndangeredEcosystemsExposure',
             label: 'Rare Or Endangered Ecosystems Exposure',
             description:
-              'Do you have sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).',
+              'Sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated. For more information, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7, and Annex I, item 18(a).',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -558,7 +568,7 @@ export const sfdrDataModel = [
             name: 'highlyBiodiverseGrasslandExposure',
             label: 'Highly Biodiverse Grassland Exposure',
             description:
-              'Do you have sites/operations located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?',
+              'Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -568,7 +578,7 @@ export const sfdrDataModel = [
             name: 'manufactureOfAgrochemicalPesticidesProducts',
             label: 'Manufacture Of Agrochemical Pesticides Products',
             description:
-              'Are you involved in the manufacturing of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)',
+              'Involvement in manufacture of pesticides and other agrochemical products. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -578,7 +588,7 @@ export const sfdrDataModel = [
             name: 'landDegradationDesertificationSoilSealingExposure',
             label: 'Land Degradation Desertification Soil Sealing Exposure',
             description:
-              'Is the company involved in activities which cause land degradation, desertification or soil sealing? See also Regulation, Annex I, Table 2, indicator 10.',
+              'Involvement in activities, which cause land degradation, desertification or soil sealing. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 10.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -588,7 +598,7 @@ export const sfdrDataModel = [
             name: 'sustainableAgriculturePolicy',
             label: 'Sustainable Agriculture Policy',
             description:
-              'Do you have sustainable land/agriculture practices or policies? If yes, please share the relevant documents with us.',
+              'Existence of sustainable land or agriculture practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -598,7 +608,7 @@ export const sfdrDataModel = [
             name: 'sustainableOceansAndSeasPolicy',
             label: 'Sustainable Oceans And Seas Policy',
             description:
-              'Do you have sustainable oceans/seas practices or policies? If yes, please share the relevant documents with us.',
+              'Existence of sustainable oceans or seas practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 12.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -607,7 +617,8 @@ export const sfdrDataModel = [
           {
             name: 'threatenedSpeciesExposure',
             label: 'Threatened Species Exposure',
-            description: 'Do you have operations which affect threatened species?',
+            description:
+              'Operations, which affect threatened species. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.1 .',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -617,7 +628,7 @@ export const sfdrDataModel = [
             name: 'biodiversityProtectionPolicy',
             label: 'Biodiversity Protection Policy',
             description:
-              'Do you have a biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.',
+              'Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.2 .',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -627,7 +638,7 @@ export const sfdrDataModel = [
             name: 'deforestationPolicy',
             label: 'Deforestation Policy',
             description:
-              'Do you have a policy to address deforestation? If yes, please share the policy with us. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.',
+              'Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 15.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -643,7 +654,7 @@ export const sfdrDataModel = [
             name: 'emissionsToWaterInTonnes',
             label: 'Emissions To Water',
             description:
-              'Emissions to water (direct nitrates, direct phosphate emissions, direct pesticides) to water (tonnes)',
+              'Emissions to water in tonnes (direct emissions of priority substances as defined in Article 2(30) of Directive 2000/60/EC of the European Parliament and of the Council and direct emissions of nitrates, phosphates and pesticides). See  Regulation (EU) 2022/1288, Annex I, top (12).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -654,7 +665,8 @@ export const sfdrDataModel = [
           {
             name: 'waterConsumptionInCubicMeters',
             label: 'Water Consumption',
-            description: 'Amount of water consumed by the company',
+            description:
+              'Amount of water consumed by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .',
 
             unit: 'Cubic Meters',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -666,7 +678,7 @@ export const sfdrDataModel = [
             name: 'waterReusedInCubicMeters',
             label: 'Water Reused',
             description:
-              'Amount of water recycled and reused by the company. Linked to Regulation, Annex I, Table 2, metric 6.2.',
+              'Amount of water recycled and reused by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.2 .',
 
             unit: 'Cubic Meters',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -677,7 +689,8 @@ export const sfdrDataModel = [
           {
             name: 'relativeWaterUsageInCubicMetersPerMillionEURRevenue',
             label: 'Relative Water Usage',
-            description: 'Average amount in cubic meters of fresh water used per million EUR revenue',
+            description:
+              'Amount in cubic meters of fresh water used per million units of revenue (in the same currency as the total revenue). See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .',
 
             unit: 'Cubic Meters / €M Revenue',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -689,7 +702,7 @@ export const sfdrDataModel = [
             name: 'waterManagementPolicy',
             label: 'Water Management Policy',
             description:
-              'Does the company have policies and procedures for water management? If yes, please share the relevant documents with us.',
+              'Existence of policies and procedures for water management. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -699,7 +712,7 @@ export const sfdrDataModel = [
             name: 'highWaterStressAreaExposure',
             label: 'High Water Stress Area Exposure',
             description:
-              'Do you have sites/operations in or near ‘areas of high water stress’, meaning regions where the percentage of total water withdrawn is high (40-80 %) or extremely high (greater than 80 %) where the activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, definition 13.',
+              'Sites (partly) located in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy. See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -715,7 +728,7 @@ export const sfdrDataModel = [
             name: 'hazardousAndRadioactiveWasteInTonnes',
             label: 'Hazardous and Radioactive Waste',
             description:
-              'Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above (tonnes)',
+              'Tonnes of hazardous waste and radioactive waste generated: Hazardous waste are Explosives, Oxidizing substances, Highly flammable, Flammable, Irritant Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding another substance which possesses any of the characteristics listed above. Radioactice waste means radioactive material in gaseous, liquid or solid form for which no further use is foreseen. See Regulation (EU) 2022/1288, Annex I, top (14)-(16), Directive 2008/98/EC Annex III and Council Directive 2011/70/Euratom, Article 3 (7).',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -727,7 +740,7 @@ export const sfdrDataModel = [
             name: 'nonRecycledWasteInTonnes',
             label: 'Non-Recycled Waste',
             description:
-              'Value of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.',
+              'Tonnes of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC. See Regulation (EU) 2022/1288, Annex I, top (17) and table 2, indicator nr. 13.',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -745,7 +758,7 @@ export const sfdrDataModel = [
             name: 'emissionsOfInorganicPollutantsInTonnes',
             label: 'Emissions of Inorganic Pollutants',
             description:
-              'Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminium, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.',
+              'Tonnes of emissions by inorganic pollutants. Inorganic pollutants include those resulting from radiant energy, noise, heat, or light, as well as substances like arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, fluorides, and water contaminants such as arsenic, fluoride, iron, nitrate, and heavy metals. See Regulation (EU) 2022/1288, Annex I, top (27) and table 2, indicator nr. 1.',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -757,7 +770,7 @@ export const sfdrDataModel = [
             name: 'emissionsOfAirPollutantsInTonnes',
             label: 'Emissions of Air Pollutants',
             description:
-              'Air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)',
+              'Tonnes of emissions by air pollutants. Emissions by air pollutants include direct sulphur oxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions and direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead). See Regulation (EU) 2022/1288, Annex I, top (28) and table 2, indicator nr. 2 and Directive (EU) 2016/2284, Article 3, points (5)-(8) and Annex I, table A.',
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -769,7 +782,7 @@ export const sfdrDataModel = [
             name: 'emissionsOfOzoneDepletionSubstancesInTonnes',
             label: 'Emissions of Ozone Depletion Substances',
             description:
-              "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
+              "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl), hydrofluorocarbons (HFCs). See Regulation (EU) 2022/1288, Annex I, top (29) and table 2, indicator nr. 3 and the Montreal Protocol on Substances that Deplete the Ozone Layer.",
 
             unit: 'Tonnes',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -781,7 +794,7 @@ export const sfdrDataModel = [
             name: 'carbonReductionInitiatives',
             label: 'Carbon Reduction Initiatives',
             description:
-              'Do you have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement?',
+              'Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 4.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -804,7 +817,7 @@ export const sfdrDataModel = [
           {
             name: 'humanRightsLegalProceedings',
             label: 'Human Rights Legal Proceedings',
-            description: 'Have you been involved in Human Rights related legal proceedings?',
+            description: 'Involvement in Human Rights related legal proceedings.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -813,7 +826,7 @@ export const sfdrDataModel = [
           {
             name: 'iloCoreLabourStandards',
             label: 'ILO Core Labour Standards',
-            description: 'Do you abide by the ILO Core Labour Standards?',
+            description: 'Abidance by the ILO Core Labour Standards.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -822,7 +835,7 @@ export const sfdrDataModel = [
           {
             name: 'environmentalPolicy',
             label: 'Environmental Policy',
-            description: 'Do you have an environmental policy? If yes, please share the policy with us.',
+            description: 'Existence of an environmental policy.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -831,7 +844,7 @@ export const sfdrDataModel = [
           {
             name: 'corruptionLegalProceedings',
             label: 'Corruption Legal Proceedings',
-            description: 'Have you been involved in corruption related legal proceedings?',
+            description: 'Involvement in corruption-related legal proceedings.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -890,8 +903,7 @@ export const sfdrDataModel = [
           {
             name: 'iso14001Certificate',
             label: 'ISO 14001 Certificate',
-            description:
-              'Is your company ISO 14001 certified (Environmental Management)? If yes, please share the certificate with us.',
+            description: 'The company is ISO 14001 certified.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -901,7 +913,7 @@ export const sfdrDataModel = [
             name: 'policyAgainstBriberyAndCorruption',
             label: 'Policy against Bribery and Corruption',
             description:
-              'Do you have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? If yes, please share the policy with us.',
+              'Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 15.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -951,7 +963,7 @@ export const sfdrDataModel = [
             name: 'unGlobalCompactPrinciplesCompliancePolicy',
             label: 'UN Global Compact Principles Compliance Policy',
             description:
-              'Do you have a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises? If yes, please share the policy with us.',
+              'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -961,7 +973,7 @@ export const sfdrDataModel = [
             name: 'oecdGuidelinesForMultinationalEnterprisesGrievanceHandling',
             label: 'OECD Guidelines For Multinational Enterprises Grievance Handling',
             description:
-              'Do you have grievance / complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?',
+              'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -990,7 +1002,8 @@ export const sfdrDataModel = [
           {
             name: 'unadjustedGenderPayGapInPercent',
             label: 'Unadjusted gender pay gap',
-            description: 'Average unadjusted gender pay gap (female to male ratio, only considering gender)',
+            description:
+              '(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).',
 
             unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -1042,7 +1055,8 @@ export const sfdrDataModel = [
           {
             name: 'boardGenderDiversitySupervisoryBoardInPercent',
             label: 'Board gender diversity - Supervisory Board',
-            description: 'Percentage of female board members among all supervisory board members',
+            description:
+              'Percentage of female board members among all supervisory board members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.',
 
             unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -1053,7 +1067,8 @@ export const sfdrDataModel = [
           {
             name: 'boardGenderDiversityBoardOfDirectorsInPercent',
             label: 'Board gender diversity - Board of Directors',
-            description: 'Percentage of female board members among all board of directors members',
+            description:
+              'Percentage of female board members among all board of directors members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.',
 
             unit: 'Percent',
             component: 'BigDecimalExtendedDataPointFormField',
@@ -1065,7 +1080,7 @@ export const sfdrDataModel = [
             name: 'controversialWeaponsExposure',
             label: 'Controversial Weapons Exposure',
             description:
-              'Involvement in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons.',
+              'Involvement in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 14.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1074,7 +1089,8 @@ export const sfdrDataModel = [
           {
             name: 'workplaceAccidentPreventionPolicy',
             label: 'Workplace Accident Prevention Policy',
-            description: 'Do you have workplace accident prevention policy? If yes, please share the policy with us.',
+            description:
+              'Existence of a workplace accident prevention policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 1.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1084,7 +1100,7 @@ export const sfdrDataModel = [
             name: 'rateOfAccidents',
             label: 'Rate Of Accidents',
             description:
-              'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000',
+              'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 2.',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -1106,7 +1122,7 @@ export const sfdrDataModel = [
             name: 'supplierCodeOfConduct',
             label: 'Supplier Code Of Conduct',
             description:
-              'Do you have a supplier code of conduct (against unsafe working conditions, precarious work, child labour and forced labour)? If yes, please share the document with us.',
+              'Existence of a supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 4.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1115,7 +1131,8 @@ export const sfdrDataModel = [
           {
             name: 'grievanceHandlingMechanism',
             label: 'Grievance Handling Mechanism',
-            description: 'Do you have any grievance/complaints handling mechanism related to employee matters?',
+            description:
+              'Existence of a grievance/complaints handling mechanism related to employee matters. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 5.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1125,7 +1142,7 @@ export const sfdrDataModel = [
             name: 'whistleblowerProtectionPolicy',
             label: 'Whistleblower Protection Policy',
             description:
-              'Do you have a policy on the protection of whistleblowers? If yes, please share the policy with us.',
+              'Existence of a policy on the protection of whistleblowers. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1134,7 +1151,8 @@ export const sfdrDataModel = [
           {
             name: 'reportedIncidentsOfDiscrimination',
             label: 'Reported Incidents Of Discrimination',
-            description: 'Number of reported discrimination-related incidents',
+            description:
+              'Number of reported discrimination-related incidents. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.1 .',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -1145,7 +1163,7 @@ export const sfdrDataModel = [
             name: 'sanctionedIncidentsOfDiscrimination',
             label: 'Sanctioned Incidents Of Discrimination',
             description:
-              'Number of discrimination related incidents reported that lead to any kind of penalty and/or fine',
+              'Number of discrimination related incidents reported that lead to any kind of penalty and/or fine. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.2 .',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -1156,7 +1174,7 @@ export const sfdrDataModel = [
             name: 'excessiveCeoPayRatio',
             label: 'Excessive CEO pay ratio',
             description:
-              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual)',
+              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual). See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 8.',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -1188,7 +1206,8 @@ export const sfdrDataModel = [
           {
             name: 'humanRightsPolicy',
             label: 'Human Rights Policy',
-            description: 'Do you have a human rights policy? If yes, please share the policy with us.',
+            description:
+              'Existence of a human rights policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 9.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1198,7 +1217,7 @@ export const sfdrDataModel = [
             name: 'humanRightsDueDiligence',
             label: 'Human Rights Due Diligence',
             description:
-              'Do you have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts?',
+              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1208,7 +1227,7 @@ export const sfdrDataModel = [
             name: 'traffickingInHumanBeingsPolicy',
             label: 'Trafficking In Human Beings Policy',
             description:
-              'Do you have a policy against trafficking in human beings? If yes, please share the policy with us.',
+              'Existence of a policy against trafficking in human beings. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 11.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1217,7 +1236,8 @@ export const sfdrDataModel = [
           {
             name: 'reportedChildLabourIncidents',
             label: 'Reported Child Labour Incidents',
-            description: 'Has their been any reported child labour incident (within own operations or supply chain)?',
+            description:
+              'Number of reported incidents of child labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1227,7 +1247,7 @@ export const sfdrDataModel = [
             name: 'reportedForcedOrCompulsoryLabourIncidents',
             label: 'Reported Forced Or Compulsory Labour Incidents',
             description:
-              'Has their been any reported forced or compulsory labour incident (within own operations or supply chain)?',
+              'Number of reported incidents of forced or compulsory labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.',
 
             component: 'YesNoExtendedDataPointFormField',
             required: false,
@@ -1236,7 +1256,8 @@ export const sfdrDataModel = [
           {
             name: 'numberOfReportedIncidentsOfHumanRightsViolations',
             label: 'Number Of Reported Incidents Of Human Rights Violations',
-            description: 'Number of cases of severe human rights issues and incidents connected to the company',
+            description:
+              'Number of cases of severe human rights issues and incidents connected to the company. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 14. ',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -1253,7 +1274,7 @@ export const sfdrDataModel = [
             name: 'casesOfInsufficientActionAgainstBriberyAndCorruption',
             label: 'Cases of Insufficient Action against Bribery and Corruption',
             description:
-              'Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery',
+              'Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 16. ',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -1263,7 +1284,8 @@ export const sfdrDataModel = [
           {
             name: 'reportedConvictionsOfBriberyAndCorruption',
             label: 'Reported Convictions Of Bribery and Corruption',
-            description: 'Number of reported convictions for violations of anti-corruption and anti-bribery laws',
+            description:
+              'Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ',
 
             component: 'BigDecimalExtendedDataPointFormField',
             required: false,
@@ -1273,7 +1295,8 @@ export const sfdrDataModel = [
           {
             name: 'totalAmountOfReportedFinesOfBriberyAndCorruption',
             label: 'Total Amount Of Reported Fines Of Bribery and Corruption',
-            description: 'Amount of fines for violations of anti-corruption and anti-bribery laws',
+            description:
+              'Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ',
 
             component: 'CurrencyDataPointFormField',
             required: false,

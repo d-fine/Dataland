@@ -25,7 +25,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Data Date',
-            explanation: 'The year for which the data is reported',
+            explanation: 'The year for which the data is reported.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.general?.dataDate),
@@ -51,7 +51,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Fiscal Year End',
-            explanation: 'The date the fiscal year ends',
+            explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatStringForDatatable(dataset.general?.general?.fiscalYearEnd),
@@ -77,7 +77,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 GHG emissions',
             explanation:
-              'Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
+              'Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -93,7 +93,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 2 GHG emissions',
             explanation:
-              'Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
+              'Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -108,7 +108,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Scope 2 GHG emissions (location-based)',
-            explanation: 'Scope 2 carbon emissions computed using the location-based method',
+            explanation:
+              'Scope 2 greenhouse gas emissions computed using the location-based method (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -123,7 +124,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Scope 2 GHG emissions (market-based)',
-            explanation: 'Scope 2 carbon emissions computed using the market-based method',
+            explanation:
+              'Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -138,7 +140,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Scope 1 and 2 GHG emissions',
-            explanation: 'Sum of scope 1 and 2 carbon emissions',
+            explanation:
+              'Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -154,7 +157,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 GHG emissions (location-based)',
             explanation:
-              'Sum of scope 1 and 2 carbon emissions, using the location-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1 and 2 greenhouse gas emissions, using the location-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -170,7 +173,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 GHG emissions (market-based)',
             explanation:
-              'Sum of scope 1 and 2 carbon emissions, using the market-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1 and 2 greenhouse gas emissions, using the market-based method to compute the scope 2 greenhouse gas emissions (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -186,7 +189,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 3 GHG emissions',
             explanation:
-              'Scope 3 carbon emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
+              'Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -202,7 +205,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 3 upstream GHG emissions',
             explanation:
-              'Indirect (gross) carbon emissions from activities related to the production and distribution of goods and services purchased by the reporting company.',
+              'Indirect (gross) scope 3 greenhouse gas emissions from activities related to the production and distribution of goods and services purchased by the reporting company (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -218,7 +221,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 3 downstream GHG emissions ',
             explanation:
-              'Indirect (gross) carbon emissions that occur as a result of the use or disposal of the reporting company’s sold products and services.',
+              'Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -233,7 +236,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Scope 1 and 2 and 3 GHG emissions',
-            explanation: 'Sum of scope 1, 2 and 3 carbon emissions',
+            explanation:
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions (computed preferably using the location-based method and equity share).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -249,7 +253,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 and 3 GHG emissions (location-based)',
             explanation:
-              'Sum of scope 1, 2 and 3 carbon emissions, using the location-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the location-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -265,7 +269,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Scope 1 and 2 and 3 GHG emissions (market-based)',
             explanation:
-              'Sum of scope 1, 2 and 3 carbon emissions, using the market-based method to compute scope 2 carbon emissions',
+              'Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -297,7 +301,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Enterprise Value',
             explanation:
-              'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).',
+              'The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
@@ -309,7 +313,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Total Revenue',
             explanation:
-              "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time (millions)",
+              "Total revenue for the financial year. i.e., income arising in the course of an entity\'s ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm\'s total revenues over some period of time.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(dataset.environmental?.greenhouseGasEmissions?.totalRevenue, 'Total Revenue'),
@@ -318,7 +322,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Carbon footprint',
             explanation:
-              'Tonnes of GHG emissions / million of the enterprise value (in the same currency as the enterprise value)',
+              'Tonnes of GHG emissions per million units of the enterprise value (in the same currency as total revenue).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -333,7 +337,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'GHG intensity',
-            explanation: 'Tonnes of GHG emissions / million of the revenue (in the same currency as the total revenue)',
+            explanation:
+              'Tonnes of GHG emissions per million units of revenue (in the same currency as total revenue), preferably calculated using the location-based method and the equity share approach for emissions.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -349,7 +354,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 1',
             explanation:
-              'Tonnes of Scope 1 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 1 carbon emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets',
+              'Tonnes of scope 1 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 1 carbon emissions are emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used for emissions).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -365,7 +370,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 2',
             explanation:
-              'Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets',
+              'Tonnes of scope 2 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -381,7 +386,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 3',
             explanation:
-              'Tonnes of Scope 3 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 3 carbon emissions, i.e. all indirect upstream and downstream emissions that are not included in scope 2',
+              'Tonnes of scope 3 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 3 emissions encompass all indirect upstream and downstream emissions not covered by Scope 2. Preferably, the equity share approach should be used for calculating these emissions.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -397,7 +402,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'GHG intensity - scope 4',
             explanation:
-              'Tonnes of Scope 4 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.',
+              'Tonnes of scope 4 GHG emissions per million units of revenue (in the same currency as total revenue). As per the GHG Protocol, Scope 4 refers to emissions avoided when a product is used as a substitute for other goods or services, providing the same functions with a lower carbon footprint.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -427,7 +432,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Financed scope 1 and scope 2 emissions',
-            explanation: 'The sum of scope 1 and scope 2 emissions of financed companies',
+            explanation: 'The sum of scope 1 and scope 2 emissions of financed companies.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -442,7 +447,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Financed scope 3 emissions',
-            explanation: 'The scope 3 emissions of financed companies',
+            explanation: 'The scope 3 emissions of financed companies.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -466,7 +471,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Renewable Energy Production',
             explanation:
-              'Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).',
+              'Total value of renewable energy produced, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -482,7 +487,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Renewable Energy Consumption',
             explanation:
-              'Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).',
+              'Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -498,7 +503,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Production',
             explanation:
-              'Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation, Annex I, top (7).',
+              'Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -530,7 +535,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption',
             explanation:
-              'Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources.',
+              'Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -546,7 +551,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Relative Non-Renewable Energy Consumption',
             explanation:
-              'Share of non-renewal energy consumption from total energy consumption (i.e. renewable plus non-renewable).',
+              'Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -572,7 +577,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Total High Impact Climate Sector Energy Consumption',
             explanation:
-              'High impact climate sectors’ means the sectors listed in Sections A to H and Section L of Annex I to Regulation (EC) No 1893/2006 of the European Parliament and of the Council (Regulation (EC) No 1893/2006 of the European Parliament and of the Council of 20 December 2006 establishing the statistical classification of economic activities NACE Revision 2 and amending Council Regulation (EEC) No 3037/90 as well as certain EC Regulations on specific statistical domains (OJ L 393, 30.12.2006, p. 1)).',
+              '"High impact climate sectors" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -588,7 +593,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Fossil Fuels',
             explanation:
-              'Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source)',
+              'Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -604,7 +609,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Crude Oil',
             explanation:
-              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source)',
+              'Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -619,7 +624,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Natural Gas',
-            explanation: 'Energy consumption from natural gas (non-renewable energy source)',
+            explanation:
+              'Energy consumption from natural gas (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -634,7 +640,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Lignite',
-            explanation: 'Energy consumption from lignite (non-renewable energy source)',
+            explanation:
+              'Energy consumption from lignite (non-renewable energy source) Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -649,7 +656,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Coal',
-            explanation: 'Energy consumption from coal (non-renewable energy source)',
+            explanation:
+              'Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -664,7 +672,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Nuclear Energy',
-            explanation: 'Energy consumption from nuclear energy (Uranium) (non-renewable energy source)',
+            explanation:
+              'Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -679,7 +688,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Non-Renewable Energy Consumption Other',
-            explanation: 'Energy consumption from any other available (used) non-renewable source of energy',
+            explanation:
+              'Energy consumption from any other available (used) non-renewable source of energy. Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -861,7 +871,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions To Water',
             explanation:
-              'Emissions to water (direct nitrates, direct phosphate emissions, direct pesticides) to water (tonnes)',
+              'Emissions to water in tonnes (direct emissions of priority substances as defined in Article 2(30) of Directive 2000/60/EC of the European Parliament and of the Council and direct emissions of nitrates, phosphates and pesticides). See  Regulation (EU) 2022/1288, Annex I, top (12).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -873,7 +883,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Water Consumption',
-            explanation: 'Amount of water consumed by the company',
+            explanation:
+              'Amount of water consumed by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -889,7 +900,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Water Reused',
             explanation:
-              'Amount of water recycled and reused by the company. Linked to Regulation, Annex I, Table 2, metric 6.2.',
+              'Amount of water recycled and reused by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.2 .',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -901,7 +912,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Relative Water Usage',
-            explanation: 'Average amount in cubic meters of fresh water used per million EUR revenue',
+            explanation:
+              'Amount in cubic meters of fresh water used per million units of revenue (in the same currency as the total revenue). See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.1 .',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -950,7 +962,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Hazardous and Radioactive Waste',
             explanation:
-              'Tonnes of hazardous waste and radioactive waste generated, which are Explosives, Oxidizing substances, Highly flammable, Flammable, Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding substance which possesses any of the characteristics listed above (tonnes)',
+              'Tonnes of hazardous waste and radioactive waste generated: Hazardous waste are Explosives, Oxidizing substances, Highly flammable, Flammable, Irritant Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding another substance which possesses any of the characteristics listed above. Radioactice waste means radioactive material in gaseous, liquid or solid form for which no further use is foreseen. See Regulation (EU) 2022/1288, Annex I, top (14)-(16), Directive 2008/98/EC Annex III and Council Directive 2011/70/Euratom, Article 3 (7).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -966,7 +978,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Non-Recycled Waste',
             explanation:
-              'Value of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC.',
+              'Tonnes of non-recycled waste generated. "Non-recycled waste" means any waste not recycled within the meaning of ‘recycling’ in Article 3(17) of Directive 2008/98/EC. See Regulation (EU) 2022/1288, Annex I, top (17) and table 2, indicator nr. 13.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -987,7 +999,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions of Inorganic Pollutants',
             explanation:
-              'Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminium, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.',
+              'Tonnes of emissions by inorganic pollutants. Inorganic pollutants include those resulting from radiant energy, noise, heat, or light, as well as substances like arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, fluorides, and water contaminants such as arsenic, fluoride, iron, nitrate, and heavy metals. See Regulation (EU) 2022/1288, Annex I, top (27) and table 2, indicator nr. 1.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1003,7 +1015,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions of Air Pollutants',
             explanation:
-              'Air pollutants (Direct Sulphur dioxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions, direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead)',
+              'Tonnes of emissions by air pollutants. Emissions by air pollutants include direct sulphur oxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions and direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead). See Regulation (EU) 2022/1288, Annex I, top (28) and table 2, indicator nr. 2 and Directive (EU) 2016/2284, Article 3, points (5)-(8) and Annex I, table A.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1019,7 +1031,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Emissions of Ozone Depletion Substances',
             explanation:
-              "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
+              "Tonnes of ozone depletion substances, chemicals that destroy the earth\'s protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl), hydrofluorocarbons (HFCs). See Regulation (EU) 2022/1288, Annex I, top (29) and table 2, indicator nr. 3 and the Montreal Protocol on Substances that Deplete the Ozone Layer.",
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1323,7 +1335,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Unadjusted gender pay gap',
-            explanation: 'Average unadjusted gender pay gap (female to male ratio, only considering gender)',
+            explanation:
+              '(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1400,7 +1413,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Board gender diversity - Supervisory Board',
-            explanation: 'Percentage of female board members among all supervisory board members',
+            explanation:
+              'Percentage of female board members among all supervisory board members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1415,7 +1429,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Board gender diversity - Board of Directors',
-            explanation: 'Percentage of female board members among all board of directors members',
+            explanation:
+              'Percentage of female board members among all board of directors members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1431,7 +1446,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Controversial Weapons Exposure',
             explanation:
-              'Involvement in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons.',
+              'Involvement in the manufacture or selling of controversial weapons such as anti-personnel mines, cluster munitions, chemical weapons and biological weapons. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 14.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1460,7 +1475,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Rate Of Accidents',
             explanation:
-              'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000',
+              'Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 2.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1525,7 +1540,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Reported Incidents Of Discrimination',
-            explanation: 'Number of reported discrimination-related incidents',
+            explanation:
+              'Number of reported discrimination-related incidents. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.1 .',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1541,7 +1557,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Sanctioned Incidents Of Discrimination',
             explanation:
-              'Number of discrimination related incidents reported that lead to any kind of penalty and/or fine',
+              'Number of discrimination related incidents reported that lead to any kind of penalty and/or fine. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.2 .',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1557,7 +1573,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Excessive CEO pay ratio',
             explanation:
-              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual)',
+              'Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual). See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 8.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1661,7 +1677,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Number Of Reported Incidents Of Human Rights Violations',
-            explanation: 'Number of cases of severe human rights issues and incidents connected to the company',
+            explanation:
+              'Number of cases of severe human rights issues and incidents connected to the company. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 14. ',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1685,7 +1702,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Cases of Insufficient Action against Bribery and Corruption',
             explanation:
-              'Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery',
+              'Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 16. ',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1701,7 +1718,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Reported Convictions Of Bribery and Corruption',
-            explanation: 'Number of reported convictions for violations of anti-corruption and anti-bribery laws',
+            explanation:
+              'Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1716,7 +1734,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Total Amount Of Reported Fines Of Bribery and Corruption',
-            explanation: 'Amount of fines for violations of anti-corruption and anti-bribery laws',
+            explanation:
+              'Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatCurrencyForDisplay(
