@@ -25,8 +25,8 @@
         "tags": [
           "document-controller"
         ],
-        "summary": "Upload a document.",
-        "description": "Upload a document and receive meta information",
+        "summary": "Upload a document and metadata.",
+        "description": "Upload a document and meta information.",
         "operationId": "postDocument",
         "requestBody": {
           "content": {
@@ -40,6 +40,9 @@
                   "document": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "documentMetaInfo": {
+                    "$ref": "#/components/schemas/DocumentMetaInfo"
                   }
                 }
               }
@@ -52,7 +55,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                 }
               }
             }
@@ -216,6 +219,182 @@
           },
           "200": {
             "description": "Successfully checked document existence."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Update the metadata info of a document.",
+        "description": "Update the metadata info of a document.",
+        "operationId": "patchDocumentMetaInfo",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentMetaInfoPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Document Id does not match any stored document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to update the document\u0027s meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully updated the document\u0027s meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/{documentId}/companies/{companyId}": {
+      "patch": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "Extend the list of companyIds related to a document.",
+        "description": "Extend the list of companyIds related to a document by a single company id.",
+        "operationId": "patchDocumentMetaInfoCompanyIds",
+        "parameters": [
+          {
+            "name": "documentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Document Id does not match any stored document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully updated the companyIds field in the document\u0027s meta information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "You do not have the right to update the companyIds field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
           },
           "default": {
             "description": "An error occurred",
@@ -475,13 +654,106 @@
   },
   "components": {
     "schemas": {
-      "DocumentUploadResponse": {
+      "DocumentMetaInfo": {
+        "required": [
+          "companyIds",
+          "documentCategory",
+          "documentName"
+        ],
+        "type": "object",
+        "properties": {
+          "documentName": {
+            "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
+      "DocumentMetaInfoResponse": {
         "required": [
           "documentId"
         ],
         "type": "object",
         "properties": {
           "documentId": {
+            "type": "string"
+          },
+          "documentName": {
+            "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          }
+        }
+      },
+      "DocumentMetaInfoPatch": {
+        "type": "object",
+        "properties": {
+          "documentName": {
+            "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reportingPeriod": {
             "type": "string"
           }
         }

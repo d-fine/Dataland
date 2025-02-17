@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -127,15 +129,20 @@ class QaReviewManager(
         )
 
     /**
+     * Return the most recent Qa review entity for a particular data ID
+     * @param dataId the data ID for which the information is retrieved
+     */
+    @Transactional
+    fun getMostRecentQaReviewEntity(dataId: String): QaReviewEntity? = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId)
+
+    /**
      * Retrieves from database a QaReviewEntity by its dataId
      * @param dataId: dataID
      */
     @Transactional(readOnly = true)
     fun getQaReviewResponseByDataId(dataId: UUID): QaReviewResponse? {
         val userIsAdmin = DatalandAuthentication.fromContext().roles.contains(DatalandRealmRole.ROLE_ADMIN)
-        return qaReviewRepository
-            .findFirstByDataIdOrderByTimestampDesc(dataId.toString())
-            ?.toQaReviewResponse(userIsAdmin)
+        return getMostRecentQaReviewEntity(dataId.toString())?.toQaReviewResponse(userIsAdmin)
     }
 
     /**
@@ -205,7 +212,7 @@ class QaReviewManager(
      * Checks if the QA service knows the dataId
      */
     @Transactional
-    fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = qaReviewRepository.findFirstByDataIdOrderByTimestampDesc(dataId) != null
+    fun checkIfQaServiceKnowsDataId(dataId: String): Boolean = getMostRecentQaReviewEntity(dataId) != null
 
     /**
      * Asserts that the QA service knows the dataId
@@ -277,7 +284,7 @@ class QaReviewManager(
      * @param reportingPeriod the reportingPeriod of the dataset
      * @return Returns the dataId of the active dataset, or an empty string if no active dataset can be found
      */
-    private fun getDataIdOfCurrentlyActiveDataset(
+    fun getDataIdOfCurrentlyActiveDataset(
         companyId: String,
         dataType: String,
         reportingPeriod: String,

@@ -281,12 +281,14 @@ class ApiAccessor {
     fun uploadOneCompanyAndEuTaxonomyDataForNonFinancials(
         companyInformation: CompanyInformation,
         euTaxonomyDataForNonFinancials: EutaxonomyNonFinancialsData,
+        ensureQaPassed: Boolean = true,
     ): Map<String, String> {
         val listOfUploadInfo =
             uploadCompanyAndFrameworkDataForOneFramework(
                 listOf(companyInformation),
                 listOf(euTaxonomyDataForNonFinancials),
                 this::euTaxonomyNonFinancialsUploaderFunction,
+                ensureQaPassed = ensureQaPassed,
             )
         val companyId = listOfUploadInfo[0].actualStoredCompany.companyId
         val dataId = listOfUploadInfo[0].actualStoredDataMetaInfo!!.dataId

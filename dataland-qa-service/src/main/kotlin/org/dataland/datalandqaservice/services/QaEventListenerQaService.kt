@@ -213,10 +213,30 @@ class QaEventListenerQaService
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
             MessageQueueUtils.rejectMessageOnException {
-                val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
-                MessageQueueUtils.validateDataId(dataId)
-                qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
-                qaReviewManager.deleteAllByDataId(dataId, correlationId)
+                val deletedDataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
+                MessageQueueUtils.validateDataId(deletedDataId)
+
+                val qaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(deletedDataId)!!
+                val formerlyActiveDataId =
+                    qaReviewManager.getDataIdOfCurrentlyActiveDataset(
+                        qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
+                    )
+
+                qaReportManager.deleteAllQaReportsForDataId(deletedDataId, correlationId)
+                qaReviewManager.deleteAllByDataId(deletedDataId, correlationId)
+                if (deletedDataId == formerlyActiveDataId) {
+                    val newActiveDataId =
+                        qaReviewManager
+                            .getDataIdOfCurrentlyActiveDataset(
+                                qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
+                            )
+                    if (newActiveDataId != null) {
+                        val newQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(newActiveDataId)
+                        qaReviewManager.sendQaStatusUpdateMessage(
+                            qaReviewEntity = requireNotNull(newQaReviewEntity), correlationId = correlationId,
+                        )
+                    }
+                }
             }
         }
 
