@@ -410,7 +410,7 @@ class AssembledDataManager
         /**
          * Retrieves all reporting periods with at least on active data point for a specific company and framework
          */
-        fun getAllReportingPeriods(
+        fun getAllReportingPeriodsWithActiveDataPoints(
             companyId: String,
             framework: String,
         ): Set<String> =
@@ -427,7 +427,7 @@ class AssembledDataManager
             requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
             val companyId = searchFilter.companyId
             val framework = searchFilter.dataType.toString()
-            val reportingPeriods = getAllReportingPeriods(companyId = companyId, framework = framework)
+            val reportingPeriods = getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
             require(reportingPeriods.isNotEmpty()) { "No data found for company $companyId and framework $framework." }
 
             return reportingPeriods.map {

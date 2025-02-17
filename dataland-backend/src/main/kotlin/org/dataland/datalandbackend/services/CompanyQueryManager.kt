@@ -8,7 +8,6 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
-import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
-    @Autowired private val assembledDataManager: AssembledDataManager,
 ) {
     /**
      * Method to verify that a given company exists in the company store
@@ -131,22 +129,19 @@ class CompanyQueryManager(
     fun isCompanyPublic(companyId: String): Boolean = getCompanyById(companyId).isTeaserCompany
 
     /**
-     * Counts the active datasets of a company and a specific data type
+     * Get all reporting periods for which at least one active dataset of the specified company and data type exists
      * @param companyId the ID of the company
      * @param dataType the data type for which the datasets should be counted
-     * @returns the number of active datasets of the specified company and data type
+     * @returns the reporting periods of active datasets of the specified company and data type
      */
-    fun countReportingPeriodsWithActiveData(
+    fun getAllReportingPeriodsWithActiveDatasets(
         companyId: String,
         dataType: DataType,
-    ): Long {
-        val dataPointReportingPeriods = assembledDataManager.getAllReportingPeriods(companyId = companyId, framework = dataType.toString())
-        val datasetReportingPeriods =
-            dataMetaInfoRepository.getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
+    ): Set<String> =
+        dataMetaInfoRepository
+            .getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
                 companyId,
                 dataType.name,
                 true,
             )
-        return (dataPointReportingPeriods union datasetReportingPeriods).size.toLong()
-    }
 }
