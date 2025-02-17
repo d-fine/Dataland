@@ -106,15 +106,18 @@ class DataManager
          * @return stringified data entry from the temporary store
          */
         fun selectPublicDatasetFromTemporaryStorage(dataId: String): String {
-            val rawValue =
-                publicDataInMemoryStorage.getOrElse(dataId) {
-                    throw ResourceNotFoundApiException(
-                        "Data ID not found in temporary storage",
-                        "Dataland does not know the data id $dataId",
-                    )
-                }
+            val rawValue = selectRawPublicDatasetFromTemporaryStorage(dataId)
             return objectMapper.writeValueAsString(rawValue)
         }
+
+        /**
+         * Retrieve public data from the temporary storage
+         */
+        fun selectRawPublicDatasetFromTemporaryStorage(dataId: String): String =
+            publicDataInMemoryStorage[dataId] ?: throw ResourceNotFoundApiException(
+                "Data ID not found in temporary storage",
+                "Dataland does not know the data id $dataId",
+            )
 
         /**
          * Store data in the temporary storage

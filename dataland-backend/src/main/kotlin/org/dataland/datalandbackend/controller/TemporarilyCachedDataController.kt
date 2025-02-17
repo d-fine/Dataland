@@ -24,7 +24,7 @@ class TemporarilyCachedDataController(
         ResponseEntity.ok(dataManager.selectPublicDatasetFromTemporaryStorage(dataId))
 
     override fun getBatchReceivedPublicData(dataId: List<String>): ResponseEntity<Map<String, String>> {
-        val responseObject = dataId.associateWith { dataManager.selectPublicDatasetFromTemporaryStorage(it) }
+        val responseObject = dataId.associateWith { dataManager.selectRawPublicDatasetFromTemporaryStorage(it) }
         return ResponseEntity.ok(responseObject)
     }
 
