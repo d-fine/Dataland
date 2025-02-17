@@ -278,8 +278,6 @@ export default defineComponent({
     editDataset(event: Event) {
       if (this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
-          this.singleDataMetaInfoToDisplay.companyId,
-          this.singleDataMetaInfoToDisplay.dataType,
           this.singleDataMetaInfoToDisplay.reportingPeriod
         );
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
@@ -289,21 +287,17 @@ export default defineComponent({
         }
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
         this.gotoUpdateForm(
-          assertDefined(this.companyID),
-          this.dataType,
           Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].reportingPeriod
         );
       }
     },
     /**
      * Navigates to the data update form
-     * @param companyID company ID
-     * @param dataType data type
      * @param reportingPeriod reporting period
      */
-    gotoUpdateForm(companyID: string, dataType: DataTypeEnum, reportingPeriod: string) {
+    gotoUpdateForm(reportingPeriod: string) {
       void router.push(
-        `/companies/${assertDefined(companyID)}/frameworks/${assertDefined(dataType)}/upload?reportingPeriod=${reportingPeriod}`
+        `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
       );
     },
     /**
