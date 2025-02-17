@@ -167,4 +167,22 @@ class DocumentControllerTest(
             documentController.patchDocumentMetaInfo(dummyDocumentId, emptyDocumentMetaInfoPatch)
         }
     }
+
+    @Test
+    fun `test that no exception is thrown if patch is not empty`() {
+        val nonDocumentMetaInfoPatch =
+            DocumentMetaInfoPatch(
+                documentName = "dummyDocumentName",
+                documentCategory = null,
+                companyIds = emptySet(),
+                publicationDate = null,
+                reportingPeriod = "",
+            )
+
+        setMockSecurityContext(roles = cumulatedRolesForAdmin)
+
+        assertDoesNotThrow {
+            documentController.patchDocumentMetaInfo(dummyDocumentId, nonDocumentMetaInfoPatch)
+        }
+    }
 }
