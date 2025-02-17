@@ -18,6 +18,7 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPay
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
 import org.dataland.datalandmessagequeueutils.utils.getCorrelationId
+import org.dataland.datalandmessagequeueutils.utils.getType
 import org.dataland.datalandmessagequeueutils.utils.readMessagePayload
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.AssembledDataMigrationManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
@@ -267,6 +268,7 @@ class QaEventListenerQaService
             MessageQueueUtils.rejectMessageOnException {
                 val allParsedMessages =
                     messages.map {
+                        MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
                         val payload = it.readMessagePayload<DataPointUploadedPayload>(objectMapper)
                         val correlationId = it.getCorrelationId()
                         DataPointQaReviewManager.DataPointUploadedMessageWithCorrelationId(payload, correlationId)

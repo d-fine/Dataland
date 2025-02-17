@@ -18,7 +18,11 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.utils.getCorrelationId
+import org.dataland.datalandmessagequeueutils.utils.getType
+import org.dataland.datalandmessagequeueutils.utils.readMessagePayload
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -147,29 +151,42 @@ class DatabaseStringDataStore(
                 key = [RoutingKeyNames.DATA_POINT_UPLOAD],
             ),
         ],
+        containerFactory = "consumerBatchContainerFactory",
     )
-    fun storeDataPoint(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-    ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+    @Transactional
+    fun storeDataPoint(messages: List<Message>) {
+        logger.info("Processing ${messages.size} Data Point Received Messages.")
+
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper).dataPointId
-            MessageQueueUtils.validateDataId(dataId)
-            val dataPointString = retrieveData(dataId, correlationId)
-            val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
-            logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
-            storeDataPointItemWithoutTransaction(
-                DataPointItem(
-                    dataPointId = dataId,
-                    companyId = storableDataPoint.companyId,
-                    reportingPeriod = storableDataPoint.reportingPeriod,
-                    dataPointType = storableDataPoint.dataPointType,
-                    dataPoint = objectMapper.writeValueAsString(storableDataPoint.dataPoint),
-                ),
-            )
-            publishStorageEvent(dataId, correlationId)
+            val allDataAndCorrelationIds =
+                messages.map {
+                    MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
+                    Pair(it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId, it.getCorrelationId())
+                }
+            val allContents =
+                temporarilyCachedDataClient.getBatchReceivedPublicData(
+                    allDataAndCorrelationIds.map
+                        { it.first },
+                )
+            val allStoredDataPoints = mutableListOf<DataPointItem>()
+
+            for ((dataId, correlationId) in allDataAndCorrelationIds) {
+                MessageQueueUtils.validateDataId(dataId)
+                val dataPointString = allContents[dataId]
+                val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
+                logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
+                allStoredDataPoints.add(
+                    DataPointItem(
+                        dataPointId = dataId,
+                        companyId = storableDataPoint.companyId,
+                        reportingPeriod = storableDataPoint.reportingPeriod,
+                        dataPointType = storableDataPoint.dataPointType,
+                        dataPoint = objectMapper.writeValueAsString(storableDataPoint.dataPoint),
+                    ),
+                )
+                publishStorageEvent(dataId, correlationId)
+            }
+            dataPointItemRepository.saveAll(allStoredDataPoints)
         }
     }
 
@@ -190,17 +207,6 @@ class DatabaseStringDataStore(
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             payload, MessageType.DATA_STORED, correlationId, ExchangeName.ITEM_STORED, RoutingKeyNames.DATA,
         )
-    }
-
-    /**
-     * Stores a Data Point Item while ensuring that there is no active transaction. This will guarantee that the data
-     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
-     * is commited after exit of this method.
-     * @param dataPointItem the DataItem to be stored
-     */
-    @Transactional(propagation = Propagation.NEVER)
-    fun storeDataPointItemWithoutTransaction(dataPointItem: DataPointItem) {
-        dataPointItemRepository.save(dataPointItem)
     }
 
     /**

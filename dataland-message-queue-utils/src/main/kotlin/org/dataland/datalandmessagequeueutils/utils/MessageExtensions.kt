@@ -16,3 +16,8 @@ inline fun <reified T> Message.readMessagePayload(objectMapper: ObjectMapper): T
  * Get message correlation id from headers
  */
 fun Message.getCorrelationId(): String = this.messageProperties.headers[MessageHeaderKey.CORRELATION_ID] as String
+
+/**
+ * Get message type from headers
+ */
+fun Message.getType(): String = this.messageProperties.headers[MessageHeaderKey.TYPE] as String
