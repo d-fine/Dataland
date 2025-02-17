@@ -32,17 +32,8 @@ scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$locatio
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
-echo "Configure health check for docker containers"
-health_check_location=$location/health-check/
-rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:$health_check_location
-ssh ubuntu@"$target_server_url" << EOF
-  sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
-  sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
-  sudo mv "$health_check_location/health-check" /etc/logrotate.d/health-check &&
-  sudo chmod +x /usr/local/bin/healthCheck.sh &&
-  sudo systemctl daemon-reload &&
-  sudo systemctl enable health-check.service
-EOF
+# Create loki_volume dir as volume for Loki container and health check logs if not exist
+configure_container_health_check $target_server_url $location
 
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
 
@@ -80,13 +71,8 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   fi"
 fi
 
-ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
-    echo 'Creating $loki_volume dir as volume for Loki container'
-    sudo mkdir -p '$loki_volume'
-    sudo chmod a+w '$loki_volume'
-    sudo mkdir -p '$loki_volume/health-check-log'
-    sudo chmod a+w '$loki_volume/health-check-log'
-fi"
+# Create loki_volume dir as volume for Loki container and health check logs if not exist
+create_loki_volume $target_server_url $loki_volume
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
@@ -118,5 +104,5 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
 
-echo "Start Health check for docker containers"
+echo "Start Health Check for Docker Containers"
 ssh ubuntu@"$target_server_url" "sudo systemctl start health-check.service"

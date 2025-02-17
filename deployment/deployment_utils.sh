@@ -68,3 +68,34 @@ wait_for_docker_containers_healthy_remote () {
   docker_compose_profile="$3"
   ssh ubuntu@"$target_server_url" "cd \"$location\"; source ./dataland-keycloak/deployment_utils.sh; timeout 600 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
 }
+
+create_loki_volume () {
+  target_server_url="$1"
+  loki_volume="$2"
+  ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
+      echo 'Creating $loki_volume dir as volume for Loki container'
+      sudo mkdir -p '$loki_volume'
+      sudo chmod a+w '$loki_volume'
+      sudo mkdir -p '$loki_volume/health-check-log'
+      sudo chmod a+w '$loki_volume/health-check-log'
+  fi"
+}
+
+configure_container_health_check () {
+  target_server_url="$1"
+  location="$2"
+  echo "Configure health check for docker containers"
+  health_check_location=$location/health-check/
+  rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:$health_check_location
+  ssh ubuntu@"$target_server_url" << EOF
+    sudo mv "$health_check_location/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
+    sudo mv "$health_check_location/health-check.service" /etc/systemd/system/health-check.service &&
+    sudo mv "$health_check_location/health-check" /etc/logrotate./usr/d/health-check &&
+    environment_file="/etc/default/health-check"
+    echo "Writing LOKI_VOLUME to environment file"
+    echo "LOKI_VOLUME=$2" | sudo tee \$environment_file > /dev/null
+    sudo chmod +x /usr/local/bin/healthCheck.sh &&
+    sudo systemctl daemon-reload &&
+    sudo systemctl enable health-check.service
+  EOF
+}
