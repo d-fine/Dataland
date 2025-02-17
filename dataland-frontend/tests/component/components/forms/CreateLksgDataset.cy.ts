@@ -18,8 +18,9 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
   it('Edit and subsequent upload should work properly when removing or changing referenced documents', () => {
     const dummyData = getPreparedFixture('lksg-all-fields', preparedFixtures).t;
     mountEditForm(dummyData).then(() => {
-      cy.get("[data-test^='BaseDataPointFormField'] button[data-test='files-to-upload-remove']")
-        .first()
+      cy.get("[data-test^='BaseDataPointFormField'] button[data-test='files-to-upload-remove']", {
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      }).first()
         .parents('[data-test^="BaseDataPointFormField"]')
         .first()
         .find('input.p-radiobutton')
@@ -85,12 +86,12 @@ function mountEditForm(data: LksgData): Cypress.Chainable {
     reportingPeriod: '2024',
     data: data,
   };
-  cy.intercept('**/api/data/lksg/*', dummyCompanyAssociatedData);
+  cy.intercept('**/api/data/lksg**', dummyCompanyAssociatedData);
   const router = createRouter({
     routes: [{ path: '/', component: CreateLksgDataset }],
     history: createMemoryHistory(),
   });
-  void router.push({ path: '/', query: { templateDataId: 'data-id' } });
+  void router.push({ path: '/', query: { reportingPeriod: '2024' } });
 
   const mountingFunction = getMountingFunction({
     router: router,
