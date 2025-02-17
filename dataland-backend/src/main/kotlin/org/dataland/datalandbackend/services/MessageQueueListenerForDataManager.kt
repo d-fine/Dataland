@@ -12,7 +12,10 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.utils.getCorrelationId
+import org.dataland.datalandmessagequeueutils.utils.readMessagePayload
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -140,18 +143,19 @@ class MessageQueueListenerForDataManager(
                 key = [RoutingKeyNames.DATA],
             ),
         ],
+        containerFactory = "consumerBatchContainerFactory",
     )
-    fun removeStoredItemFromTemporaryStore(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-    ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.DATA_STORED)
+    fun removeStoredItemFromTemporaryStore(messages: List<Message>) {
+        logger.info("Processing ${messages.size} Data Point Received Messages.")
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataIdPayload>(payload, objectMapper).dataId
-            MessageQueueUtils.validateDataId(dataId)
-            logger.info("Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: $correlationId.")
-            dataManager.removeDatasetFromInMemoryStore(dataId)
+            for (message in messages) {
+                val dataId = message.readMessagePayload<DataIdPayload>(objectMapper).dataId
+                val correlationId = message.getCorrelationId()
+                MessageQueueUtils.validateDataId(dataId)
+                logger
+                    .info("Received message that dataset with dataId $dataId has been successfully stored. Correlation ID: $correlationId.")
+                dataManager.removeDatasetFromInMemoryStore(dataId)
+            }
         }
     }
 

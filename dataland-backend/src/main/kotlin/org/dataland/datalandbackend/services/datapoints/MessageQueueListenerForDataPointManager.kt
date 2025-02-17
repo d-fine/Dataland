@@ -2,11 +2,12 @@ package org.dataland.datalandbackend.services.datapoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
-import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
 import org.dataland.datalandmessagequeueutils.constants.QueueNames
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.utils.getCorrelationId
+import org.dataland.datalandmessagequeueutils.utils.readMessagePayload
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -61,10 +62,9 @@ class MessageQueueListenerForDataPointManager
 
             MessageQueueUtils.rejectMessageOnException {
                 for (message in messages) {
-                    val content = String(message.body)
                     val qaStatusChangeMessage =
-                        MessageQueueUtils.readMessagePayload<QaStatusChangeMessage>(content, objectMapper)
-                    val correlationId = message.messageProperties.headers[MessageHeaderKey.CORRELATION_ID] as String
+                        message.readMessagePayload<QaStatusChangeMessage>(objectMapper)
+                    val correlationId = message.getCorrelationId()
                     logger.info("Received QA status change message (correlationId: $correlationId)")
 
                     val updatedDataId = qaStatusChangeMessage.dataId
