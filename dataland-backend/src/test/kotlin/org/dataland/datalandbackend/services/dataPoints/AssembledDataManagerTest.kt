@@ -196,28 +196,32 @@ class AssembledDataManagerTest {
             ),
         )
 
-        `when`(metaDataManager.getDataPointMetaInformationById(any())).thenAnswer { invocation ->
-            val dataPointId = invocation.getArgument<String>(0)
-            DataPointMetaInformationEntity(
-                dataPointId = dataPointId,
-                companyId = companyId,
-                dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
-                reportingPeriod = reportingPeriod,
-                uploaderUserId = uploaderUserId,
-                uploadTime = Instant.now().toEpochMilli(),
-                currentlyActive = true,
-                qaStatus = QaStatus.Accepted,
-            )
+        `when`(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
+            val dataPointId = invocation.getArgument<List<String>>(0)
+            dataPointId.map { dataPointId ->
+                DataPointMetaInformationEntity(
+                    dataPointId = dataPointId,
+                    companyId = companyId,
+                    dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
+                    reportingPeriod = reportingPeriod,
+                    uploaderUserId = uploaderUserId,
+                    uploadTime = Instant.now().toEpochMilli(),
+                    currentlyActive = true,
+                    qaStatus = QaStatus.Accepted,
+                )
+            }
         }
 
-        `when`(storageClient.selectDataPointById(any(), any())).thenAnswer { invocation ->
-            val dataPointId = invocation.getArgument<String>(0)
-            StorableDataPoint(
-                dataPoint = dataContent[dataPointId] ?: "",
-                dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
-                companyId = companyId,
-                reportingPeriod = reportingPeriod,
-            )
+        `when`(storageClient.selectBatchDataPointsByIds(any(), any())).thenAnswer { invocation ->
+            val dataPointId = invocation.getArgument<List<String>>(1)
+            dataPointId.associateWith { dataPointId ->
+                StorableDataPoint(
+                    dataPoint = dataContent[dataPointId] ?: "",
+                    dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
+                    companyId = companyId,
+                    reportingPeriod = reportingPeriod,
+                )
+            }
         }
     }
 }

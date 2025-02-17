@@ -362,11 +362,10 @@ class AssembledDataManager
             val referencedReports = mutableMapOf<String, CompanyReport>()
             val allStoredDatapoints = dataPointManager.retrieveDataPoints(dataIds, correlationId)
             val allDataPoints =
-                allStoredDatapoints.entries.associate {
-                    it.value.dataPointType to objectMapper.readTree(it.value.dataPoint)
-                }.toMutableMap()
-
-
+                allStoredDatapoints.entries
+                    .associate {
+                        it.value.dataPointType to objectMapper.readTree(it.value.dataPoint)
+                    }.toMutableMap()
 
             allStoredDatapoints.values.forEach {
                 val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(it.dataPoint)
