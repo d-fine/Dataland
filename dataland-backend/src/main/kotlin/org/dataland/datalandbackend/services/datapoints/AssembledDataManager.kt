@@ -407,6 +407,18 @@ class AssembledDataManager
             return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
         }
 
+        /**
+         * Retrieves all reporting periods with at least on active data point for a specific company and framework
+         */
+        fun getAllReportingPeriods(
+            companyId: String,
+            framework: String,
+        ): Set<String> =
+            metaDataManager.getReportingPeriodsWithActiveDataPoints(
+                dataPointTypes = getRelevantDataPointTypes(framework),
+                companyId = companyId,
+            )
+
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
@@ -415,10 +427,7 @@ class AssembledDataManager
             requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
             val companyId = searchFilter.companyId
             val framework = searchFilter.dataType.toString()
-            val relevantDataPointTypes = getRelevantDataPointTypes(framework)
-            val reportingPeriods =
-                metaDataManager
-                    .getReportingPeriodsWithActiveDataPoints(relevantDataPointTypes, searchFilter.companyId)
+            val reportingPeriods = getAllReportingPeriods(companyId = companyId, framework = framework)
             require(reportingPeriods.isNotEmpty()) { "No data found for company $companyId and framework $framework." }
 
             return reportingPeriods.map {

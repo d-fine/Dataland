@@ -9,7 +9,6 @@ import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
-import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
-    @Autowired private val dataPointMetaInfoRepository: DataPointMetaInformationManager,
     @Autowired private val assembledDataManager: AssembledDataManager,
 ) {
     /**
@@ -142,12 +140,7 @@ class CompanyQueryManager(
         companyId: String,
         dataType: DataType,
     ): Long {
-        val relevantDataPointTypes = assembledDataManager.getRelevantDataPointTypes(dataType.toString())
-        val dataPointReportingPeriods =
-            dataPointMetaInfoRepository.getReportingPeriodsWithActiveDataPoints(
-                dataPointTypes = relevantDataPointTypes,
-                companyId = companyId,
-            )
+        val dataPointReportingPeriods = assembledDataManager.getAllReportingPeriods(companyId = companyId, framework = dataType.toString())
         val datasetReportingPeriods =
             dataMetaInfoRepository.getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
                 companyId,
