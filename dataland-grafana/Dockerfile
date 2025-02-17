@@ -6,6 +6,7 @@ COPY ./dataland-grafana/provisioning /etc/grafana/provisioning
 
 # Define build argument
 ARG TARGETSERVER_URL
+ENV TARGETSERVER_URL=${TARGETSERVER_URL}
 
 # Switch to root user to make changes
 USER root
