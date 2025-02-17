@@ -20,7 +20,8 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
     mountEditForm(dummyData).then(() => {
       cy.get("[data-test^='BaseDataPointFormField'] button[data-test='files-to-upload-remove']", {
         timeout: Cypress.env('medium_timeout_in_ms') as number,
-      }).first()
+      })
+        .first()
         .parents('[data-test^="BaseDataPointFormField"]')
         .first()
         .find('input.p-radiobutton')

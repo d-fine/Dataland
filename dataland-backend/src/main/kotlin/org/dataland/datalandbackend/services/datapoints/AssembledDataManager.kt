@@ -377,7 +377,7 @@ class AssembledDataManager
                     dataPointTypes = getRelevantDataPointTypes(framework),
                     companyId = companyId,
                 )
-            } catch (exception: InvalidInputApiException) {
+            } catch (ignore: InvalidInputApiException) {
                 emptySet()
             }
 
