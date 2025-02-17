@@ -4,7 +4,7 @@ object HighlightedCompanies {
     /**
      *  A map of names and LEIs of the highlighted companies that appear on the default company search page
      */
-    val highlightedCompaniesMap: Map<String, String> =
+    val highlightedLeis: Map<String, String> =
         mapOf(
             "SAP SE O.N." to "529900D6BF99LW9R2E68",
             "DEUTSCHE BANK AG NA O.N." to "7LTWFZYICNSX8D621K86",

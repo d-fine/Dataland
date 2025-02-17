@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
-import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedCompaniesMap
+import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedLeis
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -72,8 +72,8 @@ class CompanyQueryManager(
      * Initializes the in-memory mapping of highlighted LEIs to highlighted company IDs.
      */
     private fun initializeHighlightedLeisToHighlightedCompanyIdsMapping() {
-        highlightedCompaniesMap.values.forEach { lei ->
-            val company =
+        highlightedLeis.values.forEach { lei ->
+            if (highlightedCompanyIdsInMemoryStorage[lei].isNullOrEmpty()) {
                 companyRepository
                     .searchCompanies(
                         StoredCompanySearchFilter(
@@ -83,8 +83,9 @@ class CompanyQueryManager(
                             searchString = lei,
                         ),
                     ).firstOrNull()
-            company?.let {
-                highlightedCompanyIdsInMemoryStorage[lei] = it.companyId
+                    ?.let { company ->
+                        highlightedCompanyIdsInMemoryStorage[lei] = company.companyId
+                    }
             }
         }
     }
