@@ -16,5 +16,5 @@ data class BaseDocumentReference(
     @field:NotBlank
     @field:DocumentExists
     override val fileReference: String,
-    override val publicationDate: LocalDate? = null,
+    override var publicationDate: LocalDate? = null,
 ) : BaseDocumentReference

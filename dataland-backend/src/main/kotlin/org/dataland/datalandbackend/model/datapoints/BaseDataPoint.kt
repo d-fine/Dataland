@@ -12,4 +12,12 @@ data class BaseDataPoint<T>(
     override val value: T?,
     @field:Valid
     override val dataSource: BaseDocumentReference? = null,
-) : BaseDataPoint<T>
+) : BaseDataPoint<T>,
+    DataPointWithDocumentReference {
+    override fun getAllDocumentReferences(): List<BaseDocumentReference> =
+        if (dataSource != null) {
+            listOf(dataSource)
+        } else {
+            emptyList()
+        }
+}

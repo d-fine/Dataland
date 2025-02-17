@@ -20,15 +20,5 @@ data class ExtendedDocumentReference(
     @field:NotBlank
     @field:DocumentExists
     override val fileReference: String,
-    override val publicationDate: LocalDate? = null,
-) : ExtendedDocumentReference {
-    /**
-     * Converts this reference to a company report
-     */
-    fun toCompanyReport(): CompanyReport =
-        CompanyReport(
-            fileName = fileName,
-            fileReference = fileReference,
-            publicationDate = publicationDate,
-        )
-}
+    override var publicationDate: LocalDate? = null,
+) : ExtendedDocumentReference

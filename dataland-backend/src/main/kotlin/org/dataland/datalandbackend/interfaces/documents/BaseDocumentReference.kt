@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.interfaces.documents
 
+import org.dataland.datalandbackend.model.documents.CompanyReport
 import java.time.LocalDate
 
 /**
@@ -9,5 +10,17 @@ import java.time.LocalDate
 interface BaseDocumentReference {
     val fileName: String?
     val fileReference: String?
-    val publicationDate: LocalDate?
+    var publicationDate: LocalDate?
+
+    /**
+     * Converts this reference to a company report
+     */
+    fun toCompanyReport(): CompanyReport? =
+        fileReference?.let {
+            CompanyReport(
+                fileName = fileName,
+                fileReference = it,
+                publicationDate = publicationDate,
+            )
+        }
 }

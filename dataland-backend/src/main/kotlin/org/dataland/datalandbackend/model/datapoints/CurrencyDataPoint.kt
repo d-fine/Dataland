@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.model.datapoints
 
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.interfaces.datapoints.ExtendedDataPoint
+import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackend.model.enums.data.QualityOptions
 import java.math.BigDecimal
@@ -17,4 +18,12 @@ data class CurrencyDataPoint(
     @field:Valid
     override val dataSource: ExtendedDocumentReference? = null,
     val currency: String? = null,
-) : ExtendedDataPoint<BigDecimal>
+) : ExtendedDataPoint<BigDecimal>,
+    DataPointWithDocumentReference {
+    override fun getAllDocumentReferences(): List<BaseDocumentReference> =
+        if (dataSource != null) {
+            listOf(dataSource)
+        } else {
+            emptyList()
+        }
+}
