@@ -418,7 +418,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Fossil Fuel Sector Exposure',
             explanation:
-              '(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels as defined in Article 2, point (62), of Regulation (EU) 2018/1999 of the European Parliament and of the Council? See also Regulation, Annex I, top (5).',
+              '(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -566,7 +566,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Applicable High Impact Climate Sectors',
-            explanation: 'Sector applicable activities',
+            explanation: 'Sector applicable activities.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               formatHighImpactClimateSectorForDisplay(
@@ -713,7 +713,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Primary Forest And Wooded Land Of Native Species Exposure',
             explanation:
-              'Sites/operations (partly) located in or near to primary forest and other wooded areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).',
+              'Sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments. Refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7 for more details.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -728,7 +728,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Protected Areas Exposure',
             explanation:
-              'Sites/operations (partly) located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).',
+              'Sites or operations that are partially or fully located in or near protected areas, where their activities adversely impact these regions. For further details, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -741,7 +741,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Rare Or Endangered Ecosystems Exposure',
             explanation:
-              'Sites/operations in or near areas designated for the protection of species (including flora and fauna) and where the activities of those sites/operations lead to the deterioration of natural habitats and the habitats of those species and disturb the species for which the protected area has been designated? See also Regulation, Annex I, table 1, indicator nr. 7 and Annex I, definition 18(a).',
+              'Sites or operations located in or near areas designated for the protection of species, including flora and fauna, where their activities lead to the deterioration of natural habitats and disturb the species for which these areas have been designated. For more information, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7, and Annex I, item 18(a).',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -756,7 +756,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Highly Biodiverse Grassland Exposure',
             explanation:
-              'Sites/operations (partly) located in highly biodiverse grassland that is: (i) natural, namely, grassland that would remain grassland in the absence of human intervention and which maintains the natural species composition and ecological characteristics and processes; or (ii) non-natural, namely, grassland that would cease to be grassland in the absence of human intervention and which is species-rich and not degraded, unless evidence is provided that the harvesting of the raw material is necessary to preserve its grassland status?',
+              'Sites or operations that are partially or fully situated in areas of highly biodiverse grassland, which may be categorized as either: (i) natural grassland, meaning areas that would remain grassland without human intervention and preserve natural species composition and ecological characteristics; or (ii) non-natural grassland, meaning areas that would no longer be grassland without human intervention but are species-rich and not degraded, unless it is demonstrated that harvesting the raw material is essential to maintain its grassland status.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -770,7 +770,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Manufacture Of Agrochemical Pesticides Products',
-            explanation: 'Involvement in manufacture of pesticides and other agrochemical products',
+            explanation:
+              'Involvement in manufacture of pesticides and other agrochemical products. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -784,7 +785,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Land Degradation Desertification Soil Sealing Exposure',
-            explanation: 'Involvement in activities, which cause land degradation, desertification or soil sealing',
+            explanation:
+              'Involvement in activities, which cause land degradation, desertification or soil sealing. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 10.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -798,7 +800,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Sustainable Agriculture Policy',
-            explanation: 'Sustainable land/agriculture practices or policies',
+            explanation:
+              'Existence of sustainable land or agriculture practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -810,7 +813,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Sustainable Oceans And Seas Policy',
-            explanation: 'Sustainable oceans/seas practices or policies',
+            explanation:
+              'Existence of sustainable oceans or seas practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 12.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -824,7 +828,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Threatened Species Exposure',
-            explanation: 'Operations, which affect threatened species',
+            explanation:
+              'Operations, which affect threatened species. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.1 .',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -837,7 +842,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Biodiversity Protection Policy',
             explanation:
-              'Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas',
+              'Existence of a biodiversity protection policy that encompasses operational sites owned, leased, managed in, or adjacent to a protected area or an area of high biodiversity value outside protected areas. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.2 .',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -850,7 +855,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Deforestation Policy',
             explanation:
-              'Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council.',
+              'Existence of a policy to address deforestation. "Deforestation" means the human-induced conversion of forested land to non-forested land, which can be permanent, when this change is definitive, or temporary when this change is part of a cycle that includes natural or assisted regeneration, according to the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) as referred to in paragraph 100 of Decision No 1386/2013/EU of the European Parliament and of the Council. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 15.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -928,7 +933,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Water Management Policy',
-            explanation: 'Existence of policies and procedures for water management',
+            explanation:
+              'Existence of policies and procedures for water management. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -941,7 +947,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'High Water Stress Area Exposure',
             explanation:
-              'Sites (partly) located in "areas of high water stress", i.e. regions where the percentage of total water withdrawn is high (60%) or extremely high (80%), without a water management policy',
+              'Sites (partly) located in "areas of high water stress", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy. See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1047,7 +1053,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Carbon Reduction Initiatives',
             explanation:
-              'Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement',
+              'Existence of policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 4.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1076,7 +1082,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Human Rights Legal Proceedings',
-            explanation: 'Involvement in Human Rights related legal proceedings',
+            explanation: 'Involvement in Human Rights related legal proceedings.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1090,7 +1096,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'ILO Core Labour Standards',
-            explanation: 'Abidance by the ILO Core Labour Standards',
+            explanation: 'Abidance by the ILO Core Labour Standards.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1102,7 +1108,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Environmental Policy',
-            explanation: 'Existence of an environmental policy',
+            explanation: 'Existence of an environmental policy.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1114,7 +1120,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Corruption Legal Proceedings',
-            explanation: 'Involvement in corruption-related legal proceedings',
+            explanation: 'Involvement in corruption-related legal proceedings.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1129,7 +1135,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Transparency Disclosure Policy',
             explanation:
-              'Existence of a transparency policy. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
+              'Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1144,7 +1150,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Human Rights Due Diligence Policy',
             explanation:
-              'Policies in place to support/respect human rights and conduct due diligence to ensure that business activities do not have a negative human rights impact.',
+              'Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1158,7 +1164,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Child Labour',
-            explanation: 'Policies in place to abolish all forms of child labour.',
+            explanation:
+              'Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1170,7 +1177,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Forced Labour',
-            explanation: 'Policies in place to abolish all forms of forced labour.',
+            explanation:
+              'Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1184,7 +1192,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Policy against Discrimination in the Workplace',
-            explanation: 'Policies in place to eliminate discrimination in the workplace.',
+            explanation:
+              'Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1198,7 +1207,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'ISO 14001 Certificate',
-            explanation: 'The company is ISO 14001 certified',
+            explanation: 'The company is ISO 14001 certified.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1211,7 +1220,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Policy against Bribery and Corruption',
             explanation:
-              'Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption.',
+              'Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 15.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1226,7 +1235,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Fair Business Marketing Advertising Policy',
             explanation:
-              'Policies and procedures in place to apply fair business, marketing, and advertising practices and ensure the safety and quality of goods and services.',
+              'Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1241,7 +1250,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Technologies Expertise Transfer Policy',
             explanation:
-              'Policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise',
+              'Do you have policies and procedures in place to permit the transfer and rapid dissemination of technologies and expertise? If yes, please share the relevant documents with us.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1255,7 +1264,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Fair Competition Policy',
-            explanation: 'Policies and procedures in place related to fair competition and anti-competitive cartels',
+            explanation:
+              'Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1268,7 +1278,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Violation Of Tax Rules And Regulation',
             explanation:
-              'Involvement in a violation of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
+              'Are you involved in violations of OECD Guidelines for Multinational Enterprises for Taxation: In the field of taxation, multinational enterprises should make their contribution to public finances within the framework of applicable law and regulations, in accordance with the tax rules and regulations of the host countries, and should cooperate with the tax authorities.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1283,7 +1293,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'UN Global Compact Principles Compliance Policy',
             explanation:
-              'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises',
+              'Existence of a policy to monitor compliance with the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1298,7 +1308,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'OECD Guidelines For Multinational Enterprises Grievance Handling',
             explanation:
-              'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises',
+              'Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1460,7 +1470,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Workplace Accident Prevention Policy',
-            explanation: 'Existence of a workplace accident prevention policy',
+            explanation:
+              'Existence of a workplace accident prevention policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 1.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1500,7 +1511,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Supplier Code Of Conduct',
             explanation:
-              'Supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor.',
+              'Existence of a supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 4.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1512,7 +1523,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Grievance Handling Mechanism',
-            explanation: 'Existence of a grievance/complaints handling mechanism related to employee matters',
+            explanation:
+              'Existence of a grievance/complaints handling mechanism related to employee matters. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 5.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1526,7 +1538,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Whistleblower Protection Policy',
-            explanation: 'Existence of a policy on the protection of whistleblowers',
+            explanation:
+              'Existence of a policy on the protection of whistleblowers. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1594,7 +1607,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Securities Not Certified As Green',
             explanation:
-              'Possession of securities in investments that are not certified as green under a future EU legal act establishing an EU Green Bond Standard',
+              'Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1614,7 +1627,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Human Rights Policy',
-            explanation: 'Existence of a human rights policy',
+            explanation:
+              'Existence of a human rights policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 9.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1627,7 +1641,7 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
             type: 'cell',
             label: 'Human Rights Due Diligence',
             explanation:
-              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts',
+              'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1639,7 +1653,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Trafficking In Human Beings Policy',
-            explanation: 'Existence of a policy against trafficking in human beings',
+            explanation:
+              'Existence of a policy against trafficking in human beings. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 11.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1651,7 +1666,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Reported Child Labour Incidents',
-            explanation: 'Reported incidents of child labor within own operations or supply chain',
+            explanation:
+              'Number of reported incidents of child labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
@@ -1663,7 +1679,8 @@ export const sfdrViewConfiguration: MLDTConfig<SfdrData> = [
           {
             type: 'cell',
             label: 'Reported Forced Or Compulsory Labour Incidents',
-            explanation: 'Reported incidents of forced or compulsory labor within own operations or supply chain.',
+            explanation:
+              'Number of reported incidents of forced or compulsory labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: SfdrData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
