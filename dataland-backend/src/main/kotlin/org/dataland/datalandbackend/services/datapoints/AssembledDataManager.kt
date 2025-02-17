@@ -371,11 +371,16 @@ class AssembledDataManager
         fun getAllReportingPeriodsWithActiveDataPoints(
             companyId: String,
             framework: String,
-        ): Set<String> =
-            metaDataManager.getReportingPeriodsWithActiveDataPoints(
-                dataPointTypes = getRelevantDataPointTypes(framework),
-                companyId = companyId,
-            )
+        ): Set<String> {
+            return try {
+                metaDataManager.getReportingPeriodsWithActiveDataPoints(
+                    dataPointTypes = getRelevantDataPointTypes(framework),
+                    companyId = companyId
+                )
+            } catch (exception: InvalidInputApiException) {
+                emptySet()
+            }
+        }
 
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
