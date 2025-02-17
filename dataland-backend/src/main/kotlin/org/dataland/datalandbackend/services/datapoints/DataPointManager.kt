@@ -11,6 +11,7 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -134,9 +135,17 @@ class DataPointManager
             logger.info("Retrieving ${dataPointIds.size} data points: $dataPointIds (correlation ID: $correlationId).")
             val dataPointMap = mutableMapOf<String, UploadedDataPoint>()
             val dataIdsToRequestFromInternalStorage = mutableListOf<String>()
+            val allMetaInfo =
+                metaDataManager
+                    .getDataPointMetaInformationByIds(dataPointIds)
+                    .associateBy { it.dataPointId }
 
             for (dataPointId in dataPointIds) {
-                val metaInfo = metaDataManager.getDataPointMetaInformationById(dataPointId)
+                val metaInfo =
+                    allMetaInfo[dataPointId] ?: throw ResourceNotFoundApiException(
+                        "Data point not found",
+                        "No data point with the id: $dataPointId could be found in the data store.",
+                    )
                 if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
                     throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
                 }

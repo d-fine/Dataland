@@ -10,6 +10,7 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Class for validating data points
@@ -26,6 +27,7 @@ class DataPointValidator
         private val validator: Validator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+        private val validatedExistingDatapointTypes = ConcurrentHashMap<String, Boolean>()
 
         companion object {
             val WHITELSITED_CLASS_NAMES =
@@ -59,8 +61,13 @@ class DataPointValidator
          * @param dataPointType the identifier to validate
          */
         fun validateDataPointTypeExists(dataPointType: String) {
+            if (validatedExistingDatapointTypes.containsKey(dataPointType)) {
+                return
+            }
+
             try {
                 specificationClient.getDataPointTypeSpecification(dataPointType)
+                validatedExistingDatapointTypes[dataPointType] = true
             } catch (clientException: ClientException) {
                 logger.error("Data point identifier $dataPointType not found: ${clientException.message}.")
                 throw InvalidInputApiException(
