@@ -97,5 +97,5 @@ configure_container_health_check () {
     sudo chmod +x /usr/local/bin/healthCheck.sh &&
     sudo systemctl daemon-reload &&
     sudo systemctl enable health-check.service
-  EOF
+EOF
 }
