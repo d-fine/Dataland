@@ -73,7 +73,7 @@ class AssembledDataManager
         ): String {
             val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) =
                 splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
-            validateDataset(dataContent, referencedReports, correlationId)
+            dataPointValidator.validateDataset(dataContent, referencedReports, correlationId)
             return storeSplitDataset(uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
         }
 
@@ -248,48 +248,6 @@ class AssembledDataManager
             )
 
             return datasetId
-        }
-
-        /**
-         * Validates the dataset by checking the data points and referenced reports
-         * @param datasetContent the content of the dataset
-         * @param referencedReports the referenced reports
-         * @param correlationId the correlation id for the operation
-         */
-        private fun validateDataset(
-            datasetContent: Map<String, JsonSpecificationLeaf>,
-            referencedReports: Map<String, CompanyReport>?,
-            correlationId: String,
-        ) {
-            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports ?: emptyMap())
-            val observedDocumentReferences = mutableSetOf<String>()
-
-            datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->
-                val dataPoint = objectMapper.writeValueAsString(dataPointJsonLeaf.content)
-                if (dataPoint.isEmpty()) return@forEach
-                dataPointValidator.validateDataPoint(dataPointType, dataPoint, correlationId)
-
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
-                if (companyReport != null && referencedReports != null) {
-                    observedDocumentReferences.add(companyReport.fileReference)
-                    referencedReportsUtilities.validateReportConsistencyWithGlobalList(
-                        companyReport,
-                        referencedReports,
-                    )
-                }
-            }
-
-            if (referencedReports != null) {
-                val expectedObservedReferences = referencedReports.values.map { it.fileReference }.toSet()
-                val unusedReferences = expectedObservedReferences - observedDocumentReferences
-                if (unusedReferences.isNotEmpty()) {
-                    throw InvalidInputApiException(
-                        "Mismatching document references",
-                        "The following document references were not used " +
-                            "but listed in the referenced report field: $unusedReferences",
-                    )
-                }
-            }
         }
 
         /**
