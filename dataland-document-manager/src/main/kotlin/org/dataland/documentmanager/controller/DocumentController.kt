@@ -67,13 +67,7 @@ class DocumentController(
         if (documentMetaInfoPatch.isNullOrEmpty()) {
             throw InvalidInputApiException(
                 summary = "DocumentMetaInfoPatch must not be empty. At least one parameter should be filled.",
-                message =
-                    "DocumentMetaInfoPatch must not be null or empty. Please provide data. PatchObject reads $documentMetaInfoPatch\n" +
-                        "${documentMetaInfoPatch.documentName.isNullOrEmpty()}\n" +
-                        "${documentMetaInfoPatch.documentCategory == null}\n" +
-                        "${documentMetaInfoPatch.companyIds.isNullOrEmpty()}\n" +
-                        "${documentMetaInfoPatch.publicationDate == null}\n" +
-                        "${documentMetaInfoPatch.reportingPeriod.isNullOrEmpty()}\n",
+                message = "DocumentMetaInfoPatch must not be null or empty. Please provide data.",
             )
         }
         documentMetaInfoPatch.companyIds?.forEach { isCompanyIdValid(it) }
