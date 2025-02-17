@@ -349,24 +349,27 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check that the search filter is built correctly in a search request with null chunkSize`() {
+    fun `check that the search filter is built correctly in a search request with no specified chunkSize`() {
         // Empty list, since the database response itself is irrelevant, only that the correct query is made.
         val emptyList: List<DocumentMetaInfoEntity> = listOf()
         doReturn(emptyList)
             .whenever(mockDocumentMetaInfoRepository)
-            .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(any(), any(), any())
-        doReturn(emptyList)
-            .whenever(mockDocumentMetaInfoRepository)
-            .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(any(), any(), any(), any(), any())
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = any(),
+                documentCategory = any(),
+                reportingPeriod = any(),
+                limit = any(),
+                offset = any(),
+            )
         val searchFilter =
             DocumentMetaInformationSearchFilter(
                 companyId = knownCompanyIdOne,
                 documentCategory = null,
                 reportingPeriod = "2023",
             )
-        documentManager.searchForDocumentMetaInformation(searchFilter, chunkSize = null, chunkIndex = null)
+        documentManager.searchForDocumentMetaInformation(searchFilter)
         verify(mockDocumentMetaInfoRepository)
-            .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = knownCompanyIdOne,
                 documentCategory = null,
                 reportingPeriod = "2023",
@@ -378,10 +381,13 @@ class DocumentManagerTest(
         val emptyList: List<DocumentMetaInfoEntity> = listOf()
         doReturn(emptyList)
             .whenever(mockDocumentMetaInfoRepository)
-            .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(any(), any(), any())
-        doReturn(emptyList)
-            .whenever(mockDocumentMetaInfoRepository)
-            .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(any(), any(), any(), any(), any())
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                companyId = any(),
+                documentCategory = any(),
+                reportingPeriod = any(),
+                limit = any(),
+                offset = any(),
+            )
         val searchFilter =
             DocumentMetaInformationSearchFilter(
                 companyId = knownCompanyIdOne,
@@ -390,7 +396,7 @@ class DocumentManagerTest(
             )
         documentManager.searchForDocumentMetaInformation(searchFilter, chunkSize = 50, chunkIndex = 3)
         verify(mockDocumentMetaInfoRepository)
-            .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(
+            .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = knownCompanyIdOne,
                 documentCategory = null,
                 reportingPeriod = "2023",

@@ -541,7 +541,7 @@
         ]
       }
     },
-    "/{documentId}/meta": {
+    "/{documentId}/metadata": {
       "get": {
         "tags": [
           "document-controller"
