@@ -241,9 +241,6 @@ class QaEventListenerQaService
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
-         * @param payload the message body as a json string
-         * @param correlationId the correlation ID of the current user process
-         * @param type the type of the message
          */
         @RabbitListener(
             bindings = [
