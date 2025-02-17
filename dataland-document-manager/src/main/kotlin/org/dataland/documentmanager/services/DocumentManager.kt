@@ -286,27 +286,18 @@ class DocumentManager
          */
         fun searchForDocumentMetaInformation(
             documentMetaInformationSearchFilter: DocumentMetaInformationSearchFilter,
-            chunkSize: Int? = null,
-            chunkIndex: Int? = null,
+            chunkSize: Int = 100,
+            chunkIndex: Int = 0,
         ): List<DocumentUploadResponse> {
-            if (chunkSize == null) {
-                return documentMetaInfoRepository
-                    .findByCompanyIdAndDocumentCategoryAndReportingPeriodUnlimited(
-                        documentMetaInformationSearchFilter.companyId,
-                        documentMetaInformationSearchFilter.documentCategory,
-                        documentMetaInformationSearchFilter.reportingPeriod,
-                    ).map { it.toDocumentUploadResponse() }
-            } else {
-                val limit = chunkSize
-                val offset: Int = if (chunkIndex == null) 0 else limit * chunkIndex
-                return documentMetaInfoRepository
-                    .findByCompanyIdAndDocumentCategoryAndReportingPeriodLimited(
-                        documentMetaInformationSearchFilter.companyId,
-                        documentMetaInformationSearchFilter.documentCategory,
-                        documentMetaInformationSearchFilter.reportingPeriod,
-                        limit,
-                        offset,
-                    ).map { it.toDocumentUploadResponse() }
-            }
+            val limit = chunkSize
+            val offset = limit * chunkIndex
+            return documentMetaInfoRepository
+                .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                    documentMetaInformationSearchFilter.companyId,
+                    documentMetaInformationSearchFilter.documentCategory,
+                    documentMetaInformationSearchFilter.reportingPeriod,
+                    limit,
+                    offset,
+                ).map { it.toDocumentUploadResponse() }
         }
     }

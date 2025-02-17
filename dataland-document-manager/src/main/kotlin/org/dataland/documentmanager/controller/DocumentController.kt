@@ -133,13 +133,13 @@ class DocumentController(
         companyId: String?,
         documentCategory: DocumentCategory?,
         reportingPeriod: String?,
-        chunkSize: Int?,
-        chunkIndex: Int?,
+        chunkSize: Int,
+        chunkIndex: Int,
     ): ResponseEntity<List<DocumentUploadResponse>> {
-        if (chunkSize != null && chunkSize <= 0) {
+        if (chunkSize <= 0) {
             throw InvalidInputApiException(
                 summary = "Invalid chunk size.",
-                message = "Chunk size must be positive or null.",
+                message = "Chunk size must be positive.",
             )
         }
         val documentMetaInformationSearchFilter =

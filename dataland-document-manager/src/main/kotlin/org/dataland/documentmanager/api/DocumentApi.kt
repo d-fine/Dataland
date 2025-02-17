@@ -259,7 +259,7 @@ interface DocumentApi {
         @RequestParam companyId: String? = null,
         @RequestParam documentCategory: DocumentCategory? = null,
         @RequestParam reportingPeriod: String? = null,
-        @RequestParam chunkSize: Int? = null,
-        @RequestParam chunkIndex: Int? = null,
+        @RequestParam chunkSize: Int = 100,
+        @RequestParam chunkIndex: Int = 0,
     ): ResponseEntity<List<DocumentUploadResponse>>
 }
