@@ -43,7 +43,7 @@ const getInTouchSection = findSection('Get in touch');
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/newVariables' as *;
+@use '@/assets/scss/newVariables';
 
 .joincampaign {
   display: flex;
@@ -120,7 +120,7 @@ const getInTouchSection = findSection('Get in touch');
     border-radius: 16px;
     border: 1px solid rgba(244, 244, 244, 0.33);
     background: var(--basic-white, #fff);
-    box-shadow: 0px 4px 32px 0px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 32px 0 rgba(0, 0, 0, 0.08);
     display: flex;
     gap: 16px;
     flex-direction: column;
@@ -157,7 +157,7 @@ const getInTouchSection = findSection('Get in touch');
   }
 }
 
-@media only screen and (max-width: $medium) {
+@media only screen and (max-width: newVariables.$medium) {
   .joincampaign {
     padding: 80px 0;
     &__wrapper {
@@ -181,7 +181,7 @@ const getInTouchSection = findSection('Get in touch');
     }
   }
 }
-@media only screen and (max-width: $small) {
+@media only screen and (max-width: newVariables.$small) {
   .joincampaign {
     padding: 64px 0;
     &__wrapper {

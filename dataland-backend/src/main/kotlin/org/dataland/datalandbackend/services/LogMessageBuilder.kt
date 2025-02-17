@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
  * Enables a centralized generation of log messages for all Dataland backend operations.
  */
 
+@Suppress("TooManyFunctions")
 @Component("LogMessageBuilder")
 class LogMessageBuilder {
     /**
@@ -153,4 +154,22 @@ class LogMessageBuilder {
     fun getDynamicDatasetNotFoundMessage(dataDimensions: DataDimensions) =
         "No dataset available for data type ${dataDimensions.dataType} " +
             "reporting period ${dataDimensions.reportingPeriod} and company ID ${dataDimensions.companyId}."
+
+    /**
+     * Generates a message to inform that a request was received to return patch the meta info of a dataset
+     * @param dataId The ID of the dataset that shall be returned
+     * @param companyId The ID of the company for which this dataset shall be returned
+     * @returns the message to log
+     */
+    fun patchDataMetaInformationMessage(
+        userId: String?,
+        dataId: String,
+        dataType: String,
+        companyId: String,
+        reportingPeriod: String,
+        correlationId: String,
+    ): String =
+        "Received a request to patchMetaDataInfo by user $userId to patch metadata of dataset with dataId $dataId and " +
+            "data dimensions (companyId $companyId, dataType $dataType, reportingPeriod $reportingPeriod). " +
+            "CorrelationID $correlationId."
 }

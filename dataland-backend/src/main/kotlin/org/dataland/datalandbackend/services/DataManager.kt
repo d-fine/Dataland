@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @param dataManagerUtils holds util methods for handling of data
  * @param companyRoleChecker service for checking company roles
  * @param messageQueuePublications service for publishing messages to the message queue
-*/
+ */
 @Service("DataManager")
 @Suppress("TooManyFunctions")
 class DataManager
@@ -65,7 +65,7 @@ class DataManager
             }
             val dataId = IdUtils.generateUUID()
             storeMetaDataFrom(dataId, uploadedDataset, correlationId)
-            storeDatasetInTemporaryStoreAndSendMessage(dataId, uploadedDataset, bypassQa, correlationId)
+            storeDatasetInTemporaryStoreAndSendUploadMessage(dataId, uploadedDataset, bypassQa, correlationId)
             return dataId
         }
 
@@ -141,7 +141,7 @@ class DataManager
          * @param correlationId The correlation id of the request initiating the storing of data
          * @return ID of the stored dataset
          */
-        fun storeDatasetInTemporaryStoreAndSendMessage(
+        fun storeDatasetInTemporaryStoreAndSendUploadMessage(
             dataId: String,
             storableDataset: StorableDataset,
             bypassQa: Boolean,
@@ -153,6 +153,27 @@ class DataManager
             )
             storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataset), correlationId)
             messageQueuePublications.publishDatasetUploadedMessage(dataId, bypassQa, correlationId)
+        }
+
+        /**
+         * Method to temporarily store a data set in a hash map and send a message to the storage_queue
+         * @param dataId The id of the inserted data set
+         * @param storableDataset The data set to store
+         * @param correlationId The correlation id of the request initiating the storing of data
+         * for a dataset upload, but it can be used to specify when a dataset is merely updated.
+         * @return ID of the stored data set
+         */
+        fun storeDatasetInTemporaryStoreAndSendPatchMessage(
+            dataId: String,
+            storableDataset: StorableDataset,
+            correlationId: String,
+        ) {
+            logger.info(
+                "Storing updated data of type '${storableDataset.dataType}' for company ID '${storableDataset.companyId}'" +
+                    " in temporary storage. Data ID '$dataId'. Correlation ID: '$correlationId'.",
+            )
+            storeDataInTemporaryStorage(dataId, objectMapper.writeValueAsString(storableDataset), correlationId)
+            messageQueuePublications.publishDatasetMetaInfoPatchMessage(dataId, storableDataset.uploaderUserId, correlationId)
         }
 
         /**
