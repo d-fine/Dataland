@@ -280,7 +280,7 @@ export default defineComponent({
         this.gotoUpdateForm(
           this.singleDataMetaInfoToDisplay.companyId,
           this.singleDataMetaInfoToDisplay.dataType,
-          this.singleDataMetaInfoToDisplay.dataId
+          this.singleDataMetaInfoToDisplay.reportingPeriod
         );
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
