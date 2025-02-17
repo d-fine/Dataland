@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
@@ -361,12 +360,14 @@ class AssembledDataManager
                 .insertReferencedReportsIntoFrameworkSchema(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
 
             val referencedReports = mutableMapOf<String, CompanyReport>()
-            val allDataPoints = mutableMapOf<String, JsonNode>()
+            val allStoredDatapoints = dataPointManager.retrieveDataPoints(dataIds, correlationId)
+            val allDataPoints =
+                allStoredDatapoints
+                    .mapValues { objectMapper.readTree(it.value.dataPoint) }
+                    .toMutableMap()
 
-            dataIds.forEach { dataId ->
-                val storedDataPoint = dataPointManager.retrieveDataPoint(dataId, correlationId)
-                allDataPoints[storedDataPoint.dataPointType] = objectMapper.readTree(storedDataPoint.dataPoint)
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(storedDataPoint.dataPoint)
+            allStoredDatapoints.values.forEach {
+                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(it.dataPoint)
                 if (companyReport != null) {
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }

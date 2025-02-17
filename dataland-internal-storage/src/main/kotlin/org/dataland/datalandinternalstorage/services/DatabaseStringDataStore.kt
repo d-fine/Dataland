@@ -220,26 +220,24 @@ class DatabaseStringDataStore(
     }
 
     /**
-     * Reads data point from a database
-     * @param dataId the ID of the data to be retrieved
+     * Reads data points from a database
+     * @param dataIds the IDs of the data to be retrieved
      * @return the data as json string with ID dataId
      */
-    fun selectDataPoint(
-        dataId: String,
+    fun selectDataPoints(
+        dataIds: List<String>,
         correlationId: String,
-    ): StorableDataPoint {
-        val entry =
-            dataPointItemRepository
-                .findById(dataId)
-                .orElseThrow {
-                    logger.info("Data point with data ID: $dataId could not be found. Correlation ID: $correlationId.")
-                    ResourceNotFoundApiException(
-                        "Data point not found",
-                        "No data point with the ID: $dataId could be found in the data store.",
-                    )
-                }
-
-        return entry.toStorableDataPoint(objectMapper)
+    ): Map<String, StorableDataPoint> {
+        val retrievedEntries = dataPointItemRepository.findAllById(dataIds)
+        val missingIdentifiers = dataIds.toSet() - retrievedEntries.map { it.dataPointId }.toSet()
+        if (missingIdentifiers.isNotEmpty()) {
+            logger.info("Data points with data IDs: $missingIdentifiers could not be found. Correlation ID: $correlationId.")
+            throw ResourceNotFoundApiException(
+                "Data points not found",
+                "No data points with the IDs: $missingIdentifiers could be found in the data store.",
+            )
+        }
+        return retrievedEntries.associate { it.dataPointId to it.toStorableDataPoint(objectMapper) }
     }
 
     /**

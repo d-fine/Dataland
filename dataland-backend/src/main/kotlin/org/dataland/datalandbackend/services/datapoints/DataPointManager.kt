@@ -123,6 +123,53 @@ class DataPointManager
         }
 
         /**
+         * Retrieve a batch of data points by their Ids
+         * Data is retrieved from the internal cache or the internal storage
+         */
+        @Transactional(readOnly = true)
+        fun retrieveDataPoints(
+            dataPointIds: List<String>,
+            correlationId: String,
+        ): Map<String, UploadedDataPoint> {
+            logger.info("Retrieving ${dataPointIds.size} data points: $dataPointIds (correlation ID: $correlationId).")
+            val dataPointMap = mutableMapOf<String, UploadedDataPoint>()
+            val dataIdsToRequestFromInternalStorage = mutableListOf<String>()
+
+            for (dataPointId in dataPointIds) {
+                val metaInfo = metaDataManager.getDataPointMetaInformationById(dataPointId)
+                if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+                    throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+                }
+                val dataPointType = metaInfo.dataPointType
+                dataPointValidator.validateDataPointTypeExists(dataPointType)
+
+                val dataFromCache = dataManager.getDataFromCache(dataPointId)
+                if (dataFromCache != null) {
+                    dataPointMap[dataPointId] = objectMapper.readValue(dataFromCache)
+                } else {
+                    dataIdsToRequestFromInternalStorage.add(dataPointId)
+                }
+            }
+
+            if (dataIdsToRequestFromInternalStorage.isNotEmpty()) {
+                val dataPointsFromInternalStorage =
+                    storageClient
+                        .selectBatchDataPointsByIds(correlationId, dataIdsToRequestFromInternalStorage)
+                dataPointsFromInternalStorage.forEach { (dataPointId, storedDataPoint) ->
+                    dataPointMap[dataPointId] =
+                        UploadedDataPoint(
+                            dataPoint = storedDataPoint.dataPoint,
+                            dataPointType = storedDataPoint.dataPointType,
+                            companyId = storedDataPoint.companyId,
+                            reportingPeriod = storedDataPoint.reportingPeriod,
+                        )
+                }
+            }
+
+            return dataPointMap
+        }
+
+        /**
          * Retrieves a single data point from the internal storage
          * @param dataPointId the id of the data point
          * @param correlationId the correlation id for the operation
@@ -132,28 +179,7 @@ class DataPointManager
         fun retrieveDataPoint(
             dataPointId: String,
             correlationId: String,
-        ): UploadedDataPoint {
-            val metaInfo = metaDataManager.getDataPointMetaInformationById(dataPointId)
-            if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-                throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
-            }
-            val dataPointType = metaInfo.dataPointType
-            logger.info("Retrieving $dataPointType data point with id $dataPointId (correlation ID: $correlationId).")
-            dataPointValidator.validateDataPointTypeExists(dataPointType)
-
-            val dataFromCache = dataManager.getDataFromCache(dataPointId)
-            if (dataFromCache != null) {
-                return objectMapper.readValue(dataFromCache)
-            }
-
-            val storedDataPoint = storageClient.selectDataPointById(dataPointId, correlationId)
-            return UploadedDataPoint(
-                dataPoint = storedDataPoint.dataPoint,
-                dataPointType = storedDataPoint.dataPointType,
-                companyId = storedDataPoint.companyId,
-                reportingPeriod = storedDataPoint.reportingPeriod,
-            )
-        }
+        ): UploadedDataPoint = retrieveDataPoints(listOf(dataPointId), correlationId).values.first()
 
         /**
          * Update the currently active data point for specific data point dimensions
