@@ -7,7 +7,7 @@ import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
 import org.dataland.e2etests.utils.ExceptionUtils.assertResourceNotFoundWrapper
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataDeletionControllerTest {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
 
     private val testDataEuTaxonomyNonFinancials =
         apiAccessor.testDataProviderForEuTaxonomyDataForNonFinancials

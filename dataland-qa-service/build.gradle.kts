@@ -138,6 +138,7 @@ tasks.register("generateSpecificationClient", org.openapitools.generator.gradle.
 }
 
 tasks.register("generateClients") {
+    group = "clients"
     dependsOn("generateBackendClient")
     dependsOn("generateSpecificationClient")
 }

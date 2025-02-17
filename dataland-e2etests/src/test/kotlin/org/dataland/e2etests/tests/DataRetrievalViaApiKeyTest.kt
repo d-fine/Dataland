@@ -10,7 +10,7 @@ import org.dataland.e2etests.auth.GlobalAuth
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DatesHandler
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -24,7 +24,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRetrievalViaApiKeyTest {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
 
     private val apiKeyHelper = ApiKeyAuthenticationHelper()
 
