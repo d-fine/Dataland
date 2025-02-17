@@ -22,6 +22,7 @@ import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.Da
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReportManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -260,27 +261,19 @@ class QaEventListenerQaService
                     key = [RoutingKeyNames.DATA_POINT_UPLOAD],
                 ),
             ],
+            containerFactory = "consumerBatchContainerFactory",
         )
-        fun addReviewEntityForUploadedDataPoint(
-            @Payload payload: String,
-            @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-            @Header(MessageHeaderKey.TYPE) type: String,
-        ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
-
+        fun addReviewEntityForUploadedDataPoint(messages: List<Message>) {
+            logger.info("Processing ${messages.size} Data Point Received Messages.")
             MessageQueueUtils.rejectMessageOnException {
-                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper)
-                MessageQueueUtils.validateDataId(dataUploadedPayload.dataPointId)
-                logger.info(
-                    "Received QA required for datapoint dataId ${dataUploadedPayload.dataPointId} with " +
-                        "initial QA status ${dataUploadedPayload.initialQaStatus} and message " +
-                        "${dataUploadedPayload.initialQaComment} (correlation Id: $correlationId)",
-                )
-
-                dataPointQaReviewManager.reviewDataPointFromMessage(
-                    message = dataUploadedPayload,
-                    correlationId = correlationId,
-                )
+                val allParsedMessages =
+                    messages.map {
+                        val content = String(it.body)
+                        val payload = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(content, objectMapper)
+                        val correlationId = it.messageProperties.headers[MessageHeaderKey.CORRELATION_ID] as String
+                        DataPointQaReviewManager.DataPointUploadedMessageWithCorrelationId(payload, correlationId)
+                    }
+                dataPointQaReviewManager.reviewDataPointFromMessages(allParsedMessages)
             }
         }
     }

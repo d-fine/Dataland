@@ -59,34 +59,45 @@ class DataPointQaReviewManager
         }
 
         /**
+         * All data required for the reviewDataPointFromMessages function (i.e., the message and the correlationId)
+         */
+        data class DataPointUploadedMessageWithCorrelationId(
+            val message: DataPointUploadedPayload,
+            val correlationId: String,
+        )
+
+        /**
          * Review a data point and change its QA status using the information provided in the datapoint uploaded message
-         * @param message the message containing the information to review
-         * @param correlationId the ID for the process triggering the change
+         * @param messages the messages containing the information to review
          */
         @Transactional
-        fun reviewDataPointFromMessage(
-            message: DataPointUploadedPayload,
-            correlationId: String,
-        ): DataPointQaReviewEntity {
-            logger.info(
-                "Assigning quality status ${message.initialQaStatus} to data point with ID " +
-                    "${message.dataPointId} (correlationID: $correlationId)",
-            )
-
-            val dataPointQaReviewEntity =
-                DataPointQaReviewEntity(
-                    dataPointId = message.dataPointId,
-                    companyId = message.companyId,
-                    companyName = message.companyName,
-                    dataPointType = message.dataPointType,
-                    reportingPeriod = message.reportingPeriod,
-                    timestamp = message.uploadTime,
-                    qaStatus = QaStatus.valueOf(message.initialQaStatus),
-                    triggeringUserId = message.uploaderUserId,
-                    comment = message.initialQaComment,
+        fun reviewDataPointFromMessages(messages: List<DataPointUploadedMessageWithCorrelationId>): List<DataPointQaReviewEntity> {
+            val reviewEntities = mutableListOf<DataPointQaReviewEntity>()
+            for (messageWithCorrId in messages) {
+                val message = messageWithCorrId.message
+                val correlationId = messageWithCorrId.correlationId
+                logger.info(
+                    "Assigning quality status ${message.initialQaStatus} to data point with ID " +
+                        "${message.dataPointId} (correlationID: $correlationId)",
                 )
-            sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
-            return dataPointQaReviewRepository.save(dataPointQaReviewEntity)
+
+                val dataPointQaReviewEntity =
+                    DataPointQaReviewEntity(
+                        dataPointId = message.dataPointId,
+                        companyId = message.companyId,
+                        companyName = message.companyName,
+                        dataPointType = message.dataPointType,
+                        reportingPeriod = message.reportingPeriod,
+                        timestamp = message.uploadTime,
+                        qaStatus = QaStatus.valueOf(message.initialQaStatus),
+                        triggeringUserId = message.uploaderUserId,
+                        comment = message.initialQaComment,
+                    )
+                reviewEntities.add(dataPointQaReviewEntity)
+                sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
+            }
+
+            return dataPointQaReviewRepository.saveAll(reviewEntities)
         }
 
         /**
