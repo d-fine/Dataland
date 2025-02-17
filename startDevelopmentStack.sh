@@ -93,10 +93,7 @@ else
 fi
 
 # Setup the docker container health status check job
-while true; do
-  ./health-check/healthCheck.sh
-  sleep 60  # check health status every minute
-done
+./health-check/healthCheck.sh
 
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace

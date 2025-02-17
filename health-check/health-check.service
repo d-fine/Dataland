@@ -7,7 +7,6 @@ Requires=docker.service
 EnvironmentFile=/etc/default/health-check
 ExecStart=/bin/bash /usr/local/bin/healthCheck.sh
 Restart=always
-RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
