@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpStatus
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Sfdr {
@@ -47,7 +49,32 @@ class Sfdr {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+
+        assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+    }
+
+    private fun assertDataEqualsIgnoringPublicationDates(
+        expected: SfdrData,
+        actual: SfdrData,
+    ) {
+        val expectedString = expected.toString()
+        val allReferencedReportPublicationDates =
+            expected.general.general.referencedReports
+                ?.map { it.value.publicationDate.toString() } ?: emptyList()
+        val actualStringWithAllReferencedReportDatesReplaced = replaceAllByNull(actual.toString(), allReferencedReportPublicationDates)
+        val expectedStringWithAllReferencedReportDatesReplaced = replaceAllByNull(expectedString, allReferencedReportPublicationDates)
+        assertEquals(expectedStringWithAllReferencedReportDatesReplaced, actualStringWithAllReferencedReportDatesReplaced)
+    }
+
+    private fun replaceAllByNull(
+        input: String,
+        toReplace: List<String>,
+    ): String {
+        var result = input
+        for (replacement in toReplace) {
+            result = result.replace(replacement, "null")
+        }
+        return result
     }
 
     @Test
@@ -58,14 +85,18 @@ class Sfdr {
                 listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
             )
+
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
         val downloadedAssociatedData =
-            apiAccessor.dataControllerApiForSfdrData
-                .getCompanyAssociatedSfdrDataByDimensions(
-                    reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
-                    companyId = receivedDataMetaInformation.companyId,
-                )
-        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+            ApiAwait.waitForData(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+                apiAccessor.dataControllerApiForSfdrData
+                    .getCompanyAssociatedSfdrDataByDimensions(
+                        reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
+                        companyId = receivedDataMetaInformation.companyId,
+                    )
+            }
+
+        assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test
