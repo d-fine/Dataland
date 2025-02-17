@@ -277,18 +277,14 @@ export default defineComponent({
      */
     editDataset(event: Event) {
       if (this.singleDataMetaInfoToDisplay) {
-        this.gotoUpdateForm(
-          this.singleDataMetaInfoToDisplay.reportingPeriod
-        );
+        this.gotoUpdateForm(this.singleDataMetaInfoToDisplay.reportingPeriod);
       } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
         if (panel) {
           panel.toggle(event);
         }
       } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
-        this.gotoUpdateForm(
-          Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].reportingPeriod
-        );
+        this.gotoUpdateForm(Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].reportingPeriod);
       }
     },
     /**
