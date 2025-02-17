@@ -29,7 +29,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 " FROM ( " +
                 " SELECT company_id, company_name, headquarters, country_code, sector, " +
                 " CASE " +
-                " WHEN company_id IN :#{#companyIds} THEN 2 " +
+                " WHEN company_id IN :#{#highlightedCompanyIds} THEN 2 " +
                 " ELSE 1 " +
                 " END AS dataset_rank " +
                 " FROM stored_companies " +
@@ -43,7 +43,7 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
     fun getAllCompaniesWithDataset(
         @Param("resultLimit") resultLimit: Int? = 100,
         @Param("resultOffset") resultOffset: Int? = 0,
-        @Param("companyIds") companyIds: List<String>,
+        @Param("highlightedCompanyIds") highlightedCompanyIds: List<String>,
     ): List<BasicCompanyInformation>
 
     /**
