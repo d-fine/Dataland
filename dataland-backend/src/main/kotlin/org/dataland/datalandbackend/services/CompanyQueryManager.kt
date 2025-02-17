@@ -1,7 +1,5 @@
 package org.dataland.datalandbackend.services
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandbackend.entities.BasicCompanyInformation
 import org.dataland.datalandbackend.entities.StoredCompanyEntity
 import org.dataland.datalandbackend.interfaces.CompanyIdAndName
@@ -10,10 +8,9 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
+import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedCompaniesMap
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.Resource
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.ConcurrentHashMap
@@ -26,24 +23,8 @@ import java.util.concurrent.ConcurrentHashMap
 class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
-    @Value("classpath:org/dataland/datalandbackend/services/HighlightedLeis.json")
-    private val highlightedLeisJsonResource: Resource,
 ) {
     private val highlightedCompanyIdsInMemoryStorage = ConcurrentHashMap<String, String>()
-    private val highlightedLeis: Map<String, String> by lazy {
-        loadHighlightedLeisFromJson()
-    }
-
-    /**
-     * Loads LEI data from a JSON resource file and maps it to a Map.
-     * @return A Map containing company names as keys and their corresponding LEIs as values.
-     */
-    private fun loadHighlightedLeisFromJson(): Map<String, String> {
-        val objectMapper = jacksonObjectMapper()
-        return highlightedLeisJsonResource.inputStream.use { inputStream ->
-            objectMapper.readValue(inputStream)
-        }
-    }
 
     /**
      * Method to verify that a given company exists in the company store
@@ -91,7 +72,7 @@ class CompanyQueryManager(
      * Initializes the in-memory mapping of highlighted LEIs to highlighted company IDs.
      */
     private fun initializeHighlightedLeisToHighlightedCompanyIdsMapping() {
-        highlightedLeis.values.forEach { lei ->
+        highlightedCompaniesMap.values.forEach { lei ->
             val company =
                 companyRepository
                     .searchCompanies(
