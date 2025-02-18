@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.dataland.datalandbackend.model.documents.CompanyReport
-import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 /**
  * Utilities for handling referenced reports in a specification schema.
@@ -22,11 +20,6 @@ class ReferencedReportsUtilities(
 ) {
     companion object {
         private const val JSON_PATH_NOT_FOUND_MESSAGE = "The path %s is not valid in the provided JSON node."
-
-        private const val PUBLICATION_DATE_FIELD = "publicationDate"
-        private const val FILE_REFERENCE_FIELD = "fileReference"
-        private const val DATA_SOURCE_FIELD = "dataSource"
-
         const val REFERENCED_REPORTS_ID = "referencedReports"
     }
 
@@ -97,25 +90,6 @@ class ReferencedReportsUtilities(
     }
 
     /**
-     * Extracts the company report from an extended data source.
-     * @param dataPoint The string representation of the contained data
-     * @return The company report or null if it could not be extracted
-     */
-    fun getCompanyReportFromDataSource(dataPoint: String): CompanyReport? {
-        val dataSource = objectMapper.readTree(dataPoint).get(DATA_SOURCE_FIELD)
-
-        if (dataSource == null || dataSource.isNull) {
-            return null
-        }
-
-        return try {
-            objectMapper.readValue(dataSource.toString(), ExtendedDocumentReference::class.java).toCompanyReport()
-        } catch (ignore: Exception) {
-            null
-        }
-    }
-
-    /**
      * Navigates to a JSON node identified by a JSON path.
      * @param jsonNode The JSON node to navigate
      * @param jsonPath The JSON path to the target node
@@ -136,31 +110,6 @@ class ReferencedReportsUtilities(
         require(!(currentNode.isNull || !currentNode.isObject)) { JSON_PATH_NOT_FOUND_MESSAGE.format(jsonPath) }
 
         return currentNode
-    }
-
-    /**
-     * Updates the publication date in a JSON node.
-     * @param jsonNode The JSON node to update
-     * @param fileReferenceToPublicationDate The mapping of file references to publication dates
-     * @param currentNodeName The name of the current JSON node
-     */
-    fun updatePublicationDateInJsonNode(
-        jsonNode: JsonNode,
-        fileReferenceToPublicationDate: Map<String, LocalDate>,
-        currentNodeName: String,
-    ) {
-        if (jsonNode.isObject && currentNodeName == DATA_SOURCE_FIELD && jsonNode.has(FILE_REFERENCE_FIELD)) {
-            val fileReference = jsonNode.get(FILE_REFERENCE_FIELD).asText()
-            if (fileReferenceToPublicationDate.containsKey(fileReference)) {
-                (jsonNode as ObjectNode).put(PUBLICATION_DATE_FIELD, fileReferenceToPublicationDate[fileReference].toString())
-            }
-        } else {
-            val fields = jsonNode.fields()
-            while (fields.hasNext()) {
-                val jsonField = fields.next()
-                updatePublicationDateInJsonNode(jsonField.value, fileReferenceToPublicationDate, jsonField.key)
-            }
-        }
     }
 
     /**

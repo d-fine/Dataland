@@ -44,7 +44,7 @@ class AssembledDataMigrationManager
         ) {
             logger.info("Migrating data with dataId: ${dataMetaInfo.dataId} to an assembled dataset (correlationId: $correlationId)")
 
-            val splitDataset = assembledDataManager.splitDatasetIntoDataPoints(data, dataMetaInfo.dataType)
+            val splitDataset = assembledDataManager.splitDatasetIntoDataPoints(data, dataMetaInfo.dataType, correlationId)
             assembledDataManager.storeDataPointsForDataset(
                 uploadedDataset =
                     StorableDataset(
@@ -57,8 +57,7 @@ class AssembledDataMigrationManager
                     ),
                 datasetId = dataMetaInfo.dataId,
                 correlationId = correlationId,
-                dataContent = splitDataset.dataContent,
-                fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
+                splitDataset = splitDataset,
                 initialQaStatus = dataMetaInfo.qaStatus,
                 initialQaComment = "Status copied from stored dataset during migration.",
             )

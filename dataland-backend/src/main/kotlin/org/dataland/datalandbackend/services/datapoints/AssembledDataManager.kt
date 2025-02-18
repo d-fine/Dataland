@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.model.datapoints.DataPointWithDocumentReference
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
@@ -21,10 +22,8 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.QaBypass
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.slf4j.LoggerFactory
@@ -46,7 +45,7 @@ class AssembledDataManager
         private val messageQueuePublications: MessageQueuePublications,
         private val dataPointValidator: DataPointValidator,
         private val objectMapper: ObjectMapper,
-        private val specificationClient: SpecificationControllerApi,
+        private val specificationClient: CachingSpecificationServiceClient,
         private val datasetDatapointRepository: DatasetDatapointRepository,
         private val dataPointManager: DataPointManager,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
@@ -68,20 +67,26 @@ class AssembledDataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) =
-                splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
-            validateDataset(dataContent, referencedReports, correlationId)
-            return storeSplitDataset(uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
+            val splitDataset = splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString(), correlationId)
+            validateDataset(splitDataset, correlationId)
+            return storeSplitDataset(uploadedDataset, correlationId, bypassQa, splitDataset)
         }
 
         /**
          * Data class to store a dataset intermediately after it has been split into datapoints
          */
         data class SplitDataset(
-            val dataContent: Map<String, JsonSpecificationLeaf>,
+            val dataContent: Map<String, DataPointValidator.IntermediateDataPoint>,
             val referencedReports: Map<String, CompanyReport>?,
-            val fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
-        )
+        ) {
+            val fileReferenceToPublicationDateMapping: Map<String, LocalDate> by lazy {
+                referencedReports
+                    ?.values
+                    ?.filter { it.publicationDate != null }
+                    ?.associate { it.fileReference to it.publicationDate!! }
+                    ?: emptyMap()
+            }
+        }
 
         /**
          * Splits the dataset into individual data points
@@ -92,6 +97,7 @@ class AssembledDataManager
         fun splitDatasetIntoDataPoints(
             data: String,
             dataType: String,
+            correlationId: String,
         ): SplitDataset {
             val frameworkSpecification = getFrameworkSpecification(dataType)
             val frameworkSchema = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
@@ -117,43 +123,46 @@ class AssembledDataManager
                 }
 
             dataContent.remove(REFERENCED_REPORTS_ID)
-            val fileReferenceToPublicationDateMapping =
-                referencedReports
-                    ?.values
-                    ?.filter { it.publicationDate != null }
-                    ?.associate { it.fileReference to it.publicationDate!! }
-                    ?: emptyMap()
+            val intermediateDataPoints =
+                dataContent.entries
+                    .mapNotNull { (dataPointType, dataPointLeaf) ->
+                        if (dataPointLeaf.content.isNull || (dataPointLeaf.content.isObject && dataPointLeaf.content.isEmpty)) {
+                            null
+                        } else {
+                            dataPointType to
+                                dataPointValidator.getIntermediateDataPointFromJsonNode(dataPointType, dataPointLeaf.content, correlationId)
+                        }
+                    }.toMap()
 
-            return SplitDataset(dataContent, referencedReports, fileReferenceToPublicationDateMapping)
+            return SplitDataset(intermediateDataPoints, referencedReports)
         }
 
         /**
          * Stores an individual data point in the internal storage
-         * @param dataPointJsonLeaf the data point to store
+         * @param intermediateDataPoint the data point to store
          * @param fileReferenceToPublicationDateMapping a mapping of file references to publication dates
-         * @param dataPointType the type of the data point
          * @param correlationId the correlation id for the operation
          * @param uploadedDataset the dataset the data point belongs to
          * @return the id of the stored data point
          */
         private fun storeIndividualDataPoint(
-            dataPointJsonLeaf: JsonSpecificationLeaf,
+            intermediateDataPoint: DataPointValidator.IntermediateDataPoint,
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
-            dataPointType: String,
             correlationId: String,
             uploadedDataset: StorableDataset,
-        ): DataPointMetaInformation? {
-            val dataPoint = dataPointJsonLeaf.content
-            if (dataPoint.isNull || (dataPoint.isObject && dataPoint.isEmpty)) return null
+        ): DataPointMetaInformation {
+            val dataPointJsonValue = intermediateDataPoint.jsonValue
+            val dataPointObjectValue = intermediateDataPoint.objectValue
 
-            referencedReportsUtilities.updatePublicationDateInJsonNode(
-                dataPoint,
-                fileReferenceToPublicationDateMapping,
-                "dataSource",
-            )
+            if (dataPointObjectValue is DataPointWithDocumentReference) {
+                dataPointObjectValue.getAllDocumentReferences().forEach { report ->
+                    val reportPublicationDate = fileReferenceToPublicationDateMapping[report.fileReference]
+                    report.publicationDate = reportPublicationDate
+                }
+            }
+
             logger.info(
-                "Storing value found for $dataPointType " +
-                    "under ${dataPointJsonLeaf.jsonPath} (correlation ID: $correlationId)",
+                "Storing value found for ${intermediateDataPoint.dataPointType} (correlation ID: $correlationId)",
             )
 
             val dataPointId = IdUtils.generateUUID()
@@ -161,8 +170,8 @@ class AssembledDataManager
                 dataPointManager.storeDataPoint(
                     uploadedDataPoint =
                         UploadedDataPoint(
-                            dataPoint = objectMapper.writeValueAsString(dataPoint),
-                            dataPointType = dataPointType,
+                            dataPoint = objectMapper.writeValueAsString(dataPointJsonValue),
+                            dataPointType = intermediateDataPoint.dataPointType,
                             companyId = uploadedDataset.companyId,
                             reportingPeriod = uploadedDataset.reportingPeriod,
                         ),
@@ -180,8 +189,7 @@ class AssembledDataManager
         @Transactional
         fun storeDataPointsForDataset(
             datasetId: String,
-            dataContent: Map<String, JsonSpecificationLeaf>,
-            fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            splitDataset: SplitDataset,
             uploadedDataset: StorableDataset,
             correlationId: String,
             initialQaStatus: QaStatus,
@@ -191,23 +199,22 @@ class AssembledDataManager
             val companyInformation = companyManager.getCompanyById(uploadedDataset.companyId).toApiModel()
 
             val createdDataIds = mutableMapOf<String, String>()
-            dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->
-                storeIndividualDataPoint(
-                    dataPointJsonLeaf = dataPointJsonLeaf,
-                    fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
-                    dataPointType = dataPointType,
-                    correlationId = correlationId,
-                    uploadedDataset = uploadedDataset,
-                )?.let {
-                    messageQueuePublications.publishDataPointUploadedMessage(
-                        dataPointMetaInformation = it,
-                        companyInformation = companyInformation,
-                        initialQaStatus = initialQaStatus,
-                        initialQaComment = initialQaComment,
+            splitDataset.dataContent.forEach { (dataPointType, intermeidateDatapoint) ->
+                val dataPointMetaInformation =
+                    storeIndividualDataPoint(
+                        intermediateDataPoint = intermeidateDatapoint,
+                        fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
                         correlationId = correlationId,
+                        uploadedDataset = uploadedDataset,
                     )
-                    createdDataIds[dataPointType] = it.dataPointId
-                }
+                messageQueuePublications.publishDataPointUploadedMessage(
+                    dataPointMetaInformation = dataPointMetaInformation,
+                    companyInformation = companyInformation,
+                    initialQaStatus = initialQaStatus,
+                    initialQaComment = initialQaComment,
+                    correlationId = correlationId,
+                )
+                createdDataIds[dataPointType] = dataPointMetaInformation.dataPointId
             }
             this.datasetDatapointRepository.save(
                 DatasetDatapointEntity(datasetId = datasetId, dataPoints = createdDataIds),
@@ -220,16 +227,13 @@ class AssembledDataManager
          * @param uploadedDataset the dataset to store
          * @param correlationId the correlation id for the operation
          * @param bypassQa whether to bypass the QA process
-         * @param dataContent the content of the dataset
-         * @param fileReferenceToPublicationDateMapping a mapping of file references to publication dates
          * @return the id of the dataset
          */
         private fun storeSplitDataset(
             uploadedDataset: StorableDataset,
             correlationId: String,
             bypassQa: Boolean,
-            dataContent: Map<String, JsonSpecificationLeaf>,
-            fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            splitDataset: SplitDataset,
         ): String {
             val datasetId = IdUtils.generateUUID()
             dataManager.storeMetaDataFrom(datasetId, uploadedDataset, correlationId)
@@ -239,8 +243,7 @@ class AssembledDataManager
 
             storeDataPointsForDataset(
                 datasetId = datasetId,
-                dataContent = dataContent,
-                fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
+                splitDataset = splitDataset,
                 uploadedDataset = uploadedDataset,
                 correlationId = correlationId,
                 initialQaStatus = qaStatus,
@@ -252,35 +255,36 @@ class AssembledDataManager
 
         /**
          * Validates the dataset by checking the data points and referenced reports
-         * @param datasetContent the content of the dataset
-         * @param referencedReports the referenced reports
+         * @param splitDataset the split dataset to validate
          * @param correlationId the correlation id for the operation
          */
         private fun validateDataset(
-            datasetContent: Map<String, JsonSpecificationLeaf>,
-            referencedReports: Map<String, CompanyReport>?,
+            splitDataset: SplitDataset,
             correlationId: String,
         ) {
-            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports ?: emptyMap())
+            referencedReportsUtilities.validateReferencedReportConsistency(splitDataset.referencedReports ?: emptyMap())
             val observedDocumentReferences = mutableSetOf<String>()
 
-            datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->
-                val dataPoint = objectMapper.writeValueAsString(dataPointJsonLeaf.content)
-                if (dataPoint.isEmpty()) return@forEach
-                dataPointValidator.validateDataPoint(dataPointType, dataPoint, correlationId)
+            splitDataset.dataContent.forEach { (dataPointType, intermediateDataPoint) ->
+                dataPointValidator.validateDataPoint(dataPointType, intermediateDataPoint.jsonValue, correlationId)
 
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
-                if (companyReport != null && referencedReports != null) {
-                    observedDocumentReferences.add(companyReport.fileReference)
-                    referencedReportsUtilities.validateReportConsistencyWithGlobalList(
-                        companyReport,
-                        referencedReports,
-                    )
+                if (intermediateDataPoint.objectValue is DataPointWithDocumentReference && splitDataset.referencedReports != null) {
+                    val companyReports = intermediateDataPoint.objectValue.getAllDocumentReferences().mapNotNull { it.toCompanyReport() }
+                    for (companyReport in companyReports) {
+                        observedDocumentReferences.add(companyReport.fileReference)
+                        referencedReportsUtilities.validateReportConsistencyWithGlobalList(
+                            companyReport,
+                            splitDataset.referencedReports,
+                        )
+                    }
                 }
             }
 
-            if (referencedReports != null) {
-                val expectedObservedReferences = referencedReports.values.map { it.fileReference }.toSet()
+            if (splitDataset.referencedReports != null) {
+                val expectedObservedReferences =
+                    splitDataset.referencedReports.values
+                        .map { it.fileReference }
+                        .toSet()
                 val unusedReferences = expectedObservedReferences - observedDocumentReferences
                 if (unusedReferences.isNotEmpty()) {
                     throw InvalidInputApiException(
@@ -359,7 +363,6 @@ class AssembledDataManager
             referencedReportsUtilities
                 .insertReferencedReportsIntoFrameworkSchema(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
 
-            val referencedReports = mutableMapOf<String, CompanyReport>()
             val allStoredDatapoints = dataPointManager.retrieveDataPoints(dataIds, correlationId)
             val allDataPoints =
                 allStoredDatapoints.entries
@@ -367,12 +370,22 @@ class AssembledDataManager
                         it.value.dataPointType to objectMapper.readTree(it.value.dataPoint)
                     }.toMutableMap()
 
-            allStoredDatapoints.values.forEach {
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(it.dataPoint)
-                if (companyReport != null) {
-                    referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
+            val allReferencedReports =
+                allDataPoints.entries.flatMap {
+                    val intermediate =
+                        dataPointValidator.getIntermediateDataPointFromJsonNode(
+                            it.key,
+                            it.value,
+                            correlationId,
+                        )
+                    if (intermediate.objectValue is DataPointWithDocumentReference) {
+                        intermediate.objectValue.getAllDocumentReferences().mapNotNull { report -> report.toCompanyReport() }
+                    } else {
+                        emptyList()
+                    }
                 }
-            }
+            val referencedReports = allReferencedReports.associateBy { it.fileName ?: it.fileReference }
+
             allDataPoints[REFERENCED_REPORTS_ID] =
                 objectMapper.valueToTree(referencedReports)
 

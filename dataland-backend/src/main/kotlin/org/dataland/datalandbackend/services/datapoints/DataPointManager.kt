@@ -59,7 +59,8 @@ class DataPointManager
             bypassQa: Boolean,
             correlationId: String,
         ): DataPointMetaInformation {
-            dataPointValidator.validateDataPoint(uploadedDataPoint.dataPointType, uploadedDataPoint.dataPoint, correlationId)
+            dataPointValidator
+                .validateDataPoint(uploadedDataPoint.dataPointType, objectMapper.readTree(uploadedDataPoint.dataPoint), correlationId)
             logger.info("Storing '${uploadedDataPoint.dataPointType}' data point with bypassQa set to: $bypassQa.")
             val dataPointId = IdUtils.generateUUID()
 

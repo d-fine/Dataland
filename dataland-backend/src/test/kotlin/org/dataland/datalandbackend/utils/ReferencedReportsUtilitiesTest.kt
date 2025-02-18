@@ -95,7 +95,7 @@ class ReferencedReportsUtilitiesTest {
             """.trimIndent()
         val jsonSpecificationNode =
             JsonSpecificationLeaf(
-                dataPointId = "id",
+                dataPointType = "id",
                 jsonPath = "path",
                 content = testObjectMapper.readTree(duplicateRefReferenceReport),
             )

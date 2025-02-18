@@ -2,15 +2,15 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.validation.Validator
+import org.dataland.datalandbackend.services.datapoints.CachingSpecificationServiceClient
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Class for validating data points
@@ -23,11 +23,10 @@ class DataPointValidator
     @Autowired
     constructor(
         private val objectMapper: ObjectMapper,
-        private val specificationClient: SpecificationControllerApi,
+        private val specificationClient: CachingSpecificationServiceClient,
         private val validator: Validator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
-        private val validatedExistingDatapointTypes = ConcurrentHashMap<String, Boolean>()
 
         companion object {
             val WHITELSITED_CLASS_NAMES =
@@ -39,6 +38,27 @@ class DataPointValidator
         }
 
         /**
+         * An intermediate representation of a datapoint with meta-information used during upload processing
+         */
+        class IntermediateDataPoint(
+            val dataPointType: String,
+            val jsonValue: JsonNode,
+            val objectValue: Any,
+        )
+
+        /**
+         * Obtain an intermediate DataPoint (i.e., one with enriched information) from a JSON node
+         */
+        fun getIntermediateDataPointFromJsonNode(
+            dataPointType: String,
+            jsonNode: JsonNode,
+            correlationId: String,
+        ): IntermediateDataPoint {
+            val dataObject = castDataPointIntoClass(dataPointType, jsonNode, correlationId)
+            return IntermediateDataPoint(dataPointType, jsonNode, dataObject)
+        }
+
+        /**
          * Validates a single data point by casting it to the correct class and running the validations
          * @param dataPointType the type of the data point to validate
          * @param dataPoint the data to validate
@@ -46,7 +66,7 @@ class DataPointValidator
          */
         fun validateDataPoint(
             dataPointType: String,
-            dataPoint: String,
+            dataPoint: JsonNode,
             correlationId: String,
         ) {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
@@ -61,13 +81,8 @@ class DataPointValidator
          * @param dataPointType the identifier to validate
          */
         fun validateDataPointTypeExists(dataPointType: String) {
-            if (validatedExistingDatapointTypes.containsKey(dataPointType)) {
-                return
-            }
-
             try {
                 specificationClient.getDataPointTypeSpecification(dataPointType)
-                validatedExistingDatapointTypes[dataPointType] = true
             } catch (clientException: ClientException) {
                 logger.error("Data point identifier $dataPointType not found: ${clientException.message}.")
                 throw InvalidInputApiException(
@@ -92,6 +107,17 @@ class DataPointValidator
             }
         }
 
+        private fun castDataPointIntoClass(
+            dataPointTypeId: String,
+            jsonNode: JsonNode,
+            correlationId: String,
+        ): Any {
+            val dataPointBaseTypeId = specificationClient.getDataPointTypeSpecification(dataPointTypeId).dataPointBaseType.id
+            val validationClass = specificationClient.getDataPointBaseType(dataPointBaseTypeId).validatedBy
+            assertClassNameIsAuthorized(validationClass, correlationId)
+            return checkCastIntoClass(jsonNode, validationClass, correlationId)
+        }
+
         /**
          * Validates the consistency of a JSON string with a given class.
          * @param jsonData The JSON string to validate
@@ -99,7 +125,7 @@ class DataPointValidator
          * @param correlationId The correlation ID of the operation
          */
         fun validateConsistency(
-            jsonData: String,
+            jsonData: JsonNode,
             className: String,
             correlationId: String,
         ) {
@@ -115,13 +141,13 @@ class DataPointValidator
          * @param correlationId The correlation ID of the operation
          */
         private fun checkCastIntoClass(
-            jsonData: String,
+            jsonData: JsonNode,
             className: String,
             correlationId: String,
         ): Any {
             try {
                 val typeFactory = objectMapper.typeFactory.constructFromCanonical(className)
-                return objectMapper.readValue(jsonData, typeFactory)
+                return objectMapper.treeToValue(jsonData, typeFactory)
             } catch (ex: JsonMappingException) {
                 logger.error("Unable to cast JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
                 throw InvalidInputApiException(
