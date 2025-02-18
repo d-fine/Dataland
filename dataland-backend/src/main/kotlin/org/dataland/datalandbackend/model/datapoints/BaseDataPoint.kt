@@ -13,6 +13,4 @@ data class BaseDataPoint<T>(
     @field:Valid
     override val dataSource: BaseDocumentReference? = null,
 ) : BaseDataPoint<T>,
-    DataPointWithDocumentReference {
-
-}
+    DataPointWithDocumentReference

@@ -2,7 +2,7 @@
   "id" : "plainSfdrHighImpactClimateSectors",
   "name" : "Applicable High Impact Climate Sectors",
   "businessDefinition" : "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
-  "validatedBy" : "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector,org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
+  "validatedBy" : "org.dataland.datalandbackend.model.datapoints.custom.PlainSfdrHighImpactClimateSectorsDataPoint",
   "example" : {
     "NaceCodeA" : {
       "highImpactClimateSectorEnergyConsumptionInGWh" : {

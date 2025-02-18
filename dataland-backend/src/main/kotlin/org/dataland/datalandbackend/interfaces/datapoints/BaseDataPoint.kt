@@ -7,7 +7,7 @@ import org.dataland.datalandbackend.model.datapoints.DataPointWithDocumentRefere
  * --- API model ---
  * Interface of the generic base data point
  */
-interface BaseDataPoint<T>: DataPointWithDocumentReference {
+interface BaseDataPoint<T> : DataPointWithDocumentReference {
     val value: T?
     val dataSource: BaseDocumentReference?
 

@@ -151,7 +151,6 @@ class AssembledDataManager
             correlationId: String,
             uploadedDataset: StorableDataset,
         ): DataPointMetaInformation {
-            val dataPointJsonValue = intermediateDataPoint.jsonValue
             val dataPointObjectValue = intermediateDataPoint.objectValue
 
             if (dataPointObjectValue is DataPointWithDocumentReference) {
@@ -170,7 +169,7 @@ class AssembledDataManager
                 dataPointManager.storeDataPoint(
                     uploadedDataPoint =
                         UploadedDataPoint(
-                            dataPoint = objectMapper.writeValueAsString(dataPointJsonValue),
+                            dataPoint = objectMapper.writeValueAsString(dataPointObjectValue),
                             dataPointType = intermediateDataPoint.dataPointType,
                             companyId = uploadedDataset.companyId,
                             reportingPeriod = uploadedDataset.reportingPeriod,
