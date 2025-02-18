@@ -32,7 +32,6 @@ scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$locatio
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
-# Create loki_volume dir as volume for Loki container and health check logs if not exist
 configure_container_health_check $target_server_url $location
 
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
@@ -73,6 +72,11 @@ fi
 
 # Create loki_volume dir as volume for Loki container and health check logs if not exist
 create_loki_volume $target_server_url $loki_volume
+
+echo "Configure grafana alert rules"
+envsubst < ./dataland-grafana/config/alert-rules-template.yaml > ./dataland-grafana/config/alert-rules.yaml
+scp ./dataland-grafana/config/alert-rules.yaml ubuntu@"$target_server_url":/tmp/alert-rules.yaml
+ssh ubuntu@"$target_server_url" "sudo mv /tmp/alert-rules.yaml /etc/grafana/provisioning/alerting/alert-rules.yaml"
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"

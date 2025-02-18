@@ -1,0 +1,356 @@
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: 1m Evaluation
+    folder: Error Alerts
+    interval: 1m
+    rules:
+      # -------------------------------------------------------------------------------------------
+      # INTERNAL SEVER ERROR
+      # -------------------------------------------------------------------------------------------
+      - uid: internal_server_error
+        title: Internal Server Error 500
+        condition: C
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 21600
+              to: 0
+            datasourceUid: P8E80F9AEF21F6940
+            model:
+              datasource:
+                type: loki
+                uid: P8E80F9AEF21F6940
+              editorMode: code
+              expr: count_over_time({service_name=~".+"} |~ "500 Internal Server Error" != "query_hash=" [1m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: range
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [ ]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: max
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: beb8ybzf6qupsc
+        panelId: 4
+        noDataState: OK
+        execErrState: Error
+        for: 1m
+        annotations:
+          __dashboardUid__: beb8ybzf6qupsc
+          __panelId__: "4"
+          description: 'Internal Server Error 500 detected.'
+        labels:
+          env: "${TARGETSERVER_URL}"
+        isPaused: false
+        notification_settings:
+          receiver: Slack Critical Alerts
+      # -------------------------------------------------------------------------------------------
+      # UNHEALTHY CONTAINER
+      # -------------------------------------------------------------------------------------------
+      - uid: unhealthy_container
+        title: Unhealthy Container
+        condition: C
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 60
+              to: 0
+            datasourceUid: P8E80F9AEF21F6940
+            model:
+              editorMode: code
+              expr: sum by (container) (count_over_time({job="health_check", level="error", container=~".+"} [1m]))
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: range
+              refId: A
+              step: ""
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [ ]
+                  reducer:
+                    params: [ ]
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: [ ]
+                  reducer:
+                    params: [ ]
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: beb8ybzf6qupsc
+        panelId: 5
+        noDataState: OK
+        execErrState: Error
+        for: 1m
+        annotations:
+          __dashboardUid__: beb8ybzf6qupsc
+          __panelId__: "5"
+          description: 'Unhealthy container detected.'
+        labels:
+          env: "${TARGETSERVER_URL}"
+        isPaused: false
+        notification_settings:
+          receiver: Slack Critical Alerts
+      # -------------------------------------------------------------------------------------------
+      # STACK TRACES
+      # -------------------------------------------------------------------------------------------
+      - uid: stack_traces
+        title: Stack Trace
+        condition: C
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 21600
+              to: 0
+            datasourceUid: P8E80F9AEF21F6940
+            model:
+              datasource:
+                type: loki
+                uid: P8E80F9AEF21F6940
+              editorMode: code
+              expr: count_over_time({service_name=~".+"} |~ "(?i)Exception(\\(|:)?" != "query_hash=" [1m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: range
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [ ]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: max
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: beb8ybzf6qupsc
+        panelId: 7
+        noDataState: OK
+        execErrState: Error
+        for: 1m
+        annotations:
+          __dashboardUid__: beb8ybzf6qupsc
+          __panelId__: "7"
+          description: 'Stack Trace detected.'
+        labels:
+          env: "${TARGETSERVER_URL}"
+        isPaused: false
+        notification_settings:
+          receiver: Slack Alert Bot
+      # -------------------------------------------------------------------------------------------
+      # ERROR MESSAGES
+      # -------------------------------------------------------------------------------------------
+      - uid: error_message
+        title: Error Message
+        condition: C
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 21600
+              to: 0
+            datasourceUid: P8E80F9AEF21F6940
+            model:
+              datasource:
+                type: loki
+                uid: P8E80F9AEF21F6940
+              editorMode: code
+              expr: count_over_time({service_name=~".+", job!="health_check"} |~ "(?i)error" != "query_hash=" [1m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: range
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: [ ]
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: max
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: [ ]
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: beb8ybzf6qupsc
+        panelId: 8
+        noDataState: OK
+        execErrState: Error
+        for: 1m
+        annotations:
+          __dashboardUid__: beb8ybzf6qupsc
+          __panelId__: "8"
+          description: 'Error Log Messages detected.'
+        labels:
+          env: "${TARGETSERVER_URL}"
+        isPaused: false
+        notification_settings:
+          receiver: Slack Alert Bot
