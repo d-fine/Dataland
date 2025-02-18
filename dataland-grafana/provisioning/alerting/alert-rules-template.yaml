@@ -86,7 +86,7 @@ groups:
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
           __panelId__: "4"
-          description: 'Internal Server Error 500 detected.'
+          description: "Internal Server Error 500 detected."
         labels:
           env: "$ENV"
         isPaused: false
@@ -174,7 +174,7 @@ groups:
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
           __panelId__: "5"
-          description: 'Unhealthy container detected.'
+          description: "Unhealthy container detected."
         labels:
           env: "$ENV"
           job: "health_check"
@@ -263,7 +263,7 @@ groups:
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
           __panelId__: "7"
-          description: 'Stack Trace detected.'
+          description: "Stack Trace detected."
         labels:
           env: "$ENV"
         isPaused: false
@@ -350,7 +350,7 @@ groups:
         annotations:
           __dashboardUid__: beb8ybzf6qupsc
           __panelId__: "8"
-          description: 'Error Log Messages detected.'
+          description: "Error Log Messages detected."
         labels:
           env: "$ENV"
         isPaused: false
