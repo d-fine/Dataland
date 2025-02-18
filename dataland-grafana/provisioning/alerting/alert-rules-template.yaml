@@ -177,6 +177,8 @@ groups:
           description: 'Unhealthy container detected.'
         labels:
           env: "$ENV"
+          job: "health_check"
+          detected_level: "error"
         isPaused: false
         notification_settings:
           receiver: Slack Critical Alerts
