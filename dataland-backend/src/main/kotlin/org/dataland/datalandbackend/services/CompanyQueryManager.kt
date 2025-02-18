@@ -8,10 +8,12 @@ import org.dataland.datalandbackend.model.StoredCompany
 import org.dataland.datalandbackend.repositories.DataMetaInformationRepository
 import org.dataland.datalandbackend.repositories.StoredCompanyRepository
 import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
+import org.dataland.datalandbackend.utils.identifiers.HighlightedCompanies.highlightedLeis
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Implementation of common read-only queries against company data
@@ -22,6 +24,8 @@ class CompanyQueryManager(
     @Autowired private val companyRepository: StoredCompanyRepository,
     @Autowired private val dataMetaInfoRepository: DataMetaInformationRepository,
 ) {
+    private val highlightedCompanyIdsInMemoryStorage = ConcurrentHashMap<String, String>()
+
     /**
      * Method to verify that a given company exists in the company store
      * @param companyId the ID of the to be verified company
@@ -47,17 +51,42 @@ class CompanyQueryManager(
         chunkSize: Int?,
     ): List<BasicCompanyInformation> {
         val offset = chunkIndex * (chunkSize ?: 0)
+
         return if (filter.searchStringLength == 0) {
             if (areAllDropdownFiltersDeactivated(filter)) {
-                companyRepository
-                    .getAllCompaniesWithDataset(
-                        chunkSize, offset,
-                    )
+                initializeHighlightedLeisToHighlightedCompanyIdsMapping()
+                return companyRepository.getAllCompaniesWithDataset(
+                    chunkSize,
+                    offset,
+                    highlightedCompanyIdsInMemoryStorage.values.toList(),
+                )
             } else {
                 companyRepository.searchCompaniesWithoutSearchString(filter, chunkSize, offset)
             }
         } else {
             companyRepository.searchCompanies(filter, chunkSize, offset)
+        }
+    }
+
+    /**
+     * Initializes the in-memory mapping of highlighted LEIs to highlighted company IDs.
+     */
+    private fun initializeHighlightedLeisToHighlightedCompanyIdsMapping() {
+        highlightedLeis.values.forEach { lei ->
+            if (highlightedCompanyIdsInMemoryStorage[lei].isNullOrEmpty()) {
+                companyRepository
+                    .searchCompanies(
+                        StoredCompanySearchFilter(
+                            countryCodeFilter = emptyList(),
+                            dataTypeFilter = emptyList(),
+                            sectorFilter = emptyList(),
+                            searchString = lei,
+                        ),
+                    ).firstOrNull()
+                    ?.let { company ->
+                        highlightedCompanyIdsInMemoryStorage[lei] = company.companyId
+                    }
+            }
         }
     }
 

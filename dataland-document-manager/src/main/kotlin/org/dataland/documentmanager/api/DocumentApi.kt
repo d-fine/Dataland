@@ -6,14 +6,19 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.documentmanager.model.DocumentUploadResponse
+import jakarta.validation.Valid
+import org.dataland.documentmanager.model.DocumentMetaInfo
+import org.dataland.documentmanager.model.DocumentMetaInfoPatch
+import org.dataland.documentmanager.model.DocumentMetaInfoResponse
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestPart
@@ -26,12 +31,14 @@ import org.springframework.web.multipart.MultipartFile
 @SecurityRequirement(name = "default-oauth")
 interface DocumentApi {
     /**
-     * Upload a document
+     * Upload a document and corresponding meta data
      * @param document a document
+     * @param documentMetaInfo document meta info
+     * @return returns a documentMetaInfoResponse containing documentId and metadata
      */
     @Operation(
-        summary = "Upload a document.",
-        description = "Upload a document and receive meta information",
+        summary = "Upload a document and metadata.",
+        description = "Upload a document and meta information.",
     )
     @ApiResponses(
         value = [
@@ -45,8 +52,79 @@ interface DocumentApi {
     )
     @PreAuthorize("hasRole('ROLE_UPLOADER') or @UserRolesChecker.isCurrentUserCompanyOwnerOrCompanyUploader()")
     fun postDocument(
-        @RequestPart document: MultipartFile,
-    ): ResponseEntity<DocumentUploadResponse>
+        @RequestPart("document") document: MultipartFile,
+        @RequestPart("documentMetaInfo", required = false) documentMetaInfo: DocumentMetaInfo?,
+    ): ResponseEntity<DocumentMetaInfoResponse>
+
+    /**
+     * Patch the metadata information of a document. The field values in documentMetaInfoPatch that
+     * are not null will replace the corresponding field values in the DocumentMetaInfoEntity object.
+     * @param documentId the id of the document whose meta info shall be patched.
+     * @param documentMetaInfoPatch an object of type DocumentMetaInfoPatch which holds all field values to patch.
+     */
+    @Operation(
+        summary = "Update the metadata info of a document.",
+        description = "Update the metadata info of a document.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully updated the document's meta information.",
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to update the document's meta information.",
+            ),
+            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{documentId}"],
+        produces = ["application/json"],
+        consumes = ["application/json"],
+    )
+    @PreAuthorize(
+        "hasRole('ROLE_ADMIN') " +
+            "or (hasRole('ROLE_UPLOADER') and @UserRolesChecker.isCurrentUserUploaderOfDocument(#documentId))",
+    )
+    fun patchDocumentMetaInfo(
+        @PathVariable("documentId") documentId: String,
+        @Valid @RequestBody(required = true) documentMetaInfoPatch: DocumentMetaInfoPatch,
+    ): ResponseEntity<DocumentMetaInfoResponse>
+
+    /**
+     * Patch the company id list in the stored metainformation of a given document by adding
+     * a single new company id.
+     * @param documentId the id of the document whose metainfo shall be patched.
+     * @param companyId the company id to add.
+     */
+    @Operation(
+        summary = "Extend the list of companyIds related to a document.",
+        description = "Extend the list of companyIds related to a document by a single company id.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully updated the companyIds field in the document's meta information.",
+            ),
+            ApiResponse(
+                responseCode = "403",
+                description = "You do not have the right to update the companyIds field.",
+            ),
+            ApiResponse(responseCode = "404", description = "Document Id does not match any stored document."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{documentId}/companies/{companyId}"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_UPLOADER')")
+    fun patchDocumentMetaInfoCompanyIds(
+        @PathVariable("documentId") documentId: String,
+        @PathVariable("companyId") companyId: String,
+    ): ResponseEntity<DocumentMetaInfoResponse>
 
     /**
      * Checks if a document with a given ID exists
