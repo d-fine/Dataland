@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.api.DataPointApi
 import org.dataland.datalandbackend.model.datapoints.DataPointToValidate
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
@@ -23,42 +24,45 @@ import org.springframework.web.bind.annotation.RestController
  */
 
 @RestController
-class DataPointController(
-    @Autowired private val dataPointMetaInformationManager: DataPointMetaInformationManager,
-    @Autowired private val dataPointManager: DataPointManager,
-    @Autowired private val dataPointValidator: DataPointValidator,
-    @Autowired private val logMessageBuilder: LogMessageBuilder,
-) : DataPointApi {
-    override fun validateDataPoint(dataPoint: DataPointToValidate): ResponseEntity<Void> {
-        val correlationId = IdUtils.generateCorrelationId(null, null)
-        dataPointValidator.validateDataPoint(dataPoint.dataPointType, dataPoint.dataPoint, correlationId)
-        return ResponseEntity.noContent().build()
-    }
-
-    override fun postDataPoint(
-        uploadedDataPoint: UploadedDataPoint,
-        bypassQa: Boolean,
-    ): ResponseEntity<DataPointMetaInformation> {
-        val uploaderId = DatalandAuthentication.fromContext().userId
-        val correlationId = IdUtils.generateCorrelationId(uploadedDataPoint.companyId, null)
-        logMessageBuilder.postDataPointMessage(uploaderId, uploadedDataPoint, bypassQa, correlationId)
-        return ResponseEntity.ok(dataPointManager.processDataPoint(uploadedDataPoint, uploaderId, bypassQa, correlationId))
-    }
-
-    override fun getDataPoint(dataPointId: String): ResponseEntity<UploadedDataPoint> {
-        val correlationId = IdUtils.generateCorrelationId(null, dataPointId)
-        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
-        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+class DataPointController
+    @Autowired
+    constructor(
+        private val dataPointMetaInformationManager: DataPointMetaInformationManager,
+        private val dataPointManager: DataPointManager,
+        private val dataPointValidator: DataPointValidator,
+        private val logMessageBuilder: LogMessageBuilder,
+        private val objectMapper: ObjectMapper,
+    ) : DataPointApi {
+        override fun validateDataPoint(dataPoint: DataPointToValidate): ResponseEntity<Void> {
+            val correlationId = IdUtils.generateCorrelationId(null, null)
+            dataPointValidator.validateDataPoint(dataPoint.dataPointType, objectMapper.readTree(dataPoint.dataPoint), correlationId)
+            return ResponseEntity.noContent().build()
         }
-        return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataPointId, correlationId))
-    }
 
-    override fun getDataPointMetaInfo(dataPointId: String): ResponseEntity<DataPointMetaInformation> {
-        val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
-        if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
-            throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+        override fun postDataPoint(
+            uploadedDataPoint: UploadedDataPoint,
+            bypassQa: Boolean,
+        ): ResponseEntity<DataPointMetaInformation> {
+            val uploaderId = DatalandAuthentication.fromContext().userId
+            val correlationId = IdUtils.generateCorrelationId(uploadedDataPoint.companyId, null)
+            logMessageBuilder.postDataPointMessage(uploaderId, uploadedDataPoint, bypassQa, correlationId)
+            return ResponseEntity.ok(dataPointManager.processDataPoint(uploadedDataPoint, uploaderId, bypassQa, correlationId))
         }
-        return ResponseEntity.ok(metaInfo.toApiModel())
+
+        override fun getDataPoint(dataPointId: String): ResponseEntity<UploadedDataPoint> {
+            val correlationId = IdUtils.generateCorrelationId(null, dataPointId)
+            val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
+            if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+                throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+            }
+            return ResponseEntity.ok(dataPointManager.retrieveDataPoint(dataPointId, correlationId))
+        }
+
+        override fun getDataPointMetaInfo(dataPointId: String): ResponseEntity<DataPointMetaInformation> {
+            val metaInfo = dataPointMetaInformationManager.getDataPointMetaInformationById(dataPointId)
+            if (!metaInfo.isDatasetViewableByUser(DatalandAuthentication.fromContextOrNull())) {
+                throw AccessDeniedException(logMessageBuilder.generateAccessDeniedExceptionMessage(metaInfo.qaStatus))
+            }
+            return ResponseEntity.ok(metaInfo.toApiModel())
+        }
     }
-}
