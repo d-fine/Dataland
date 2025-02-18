@@ -7,7 +7,6 @@ if [ -z "$LOKI_VOLUME" ]; then
 fi
 
 health_check_log_dir="${LOKI_VOLUME}/health-check-log"
-mkdir -p "$health_check_log_dir"
 
 # Infinite loop
 while true; do

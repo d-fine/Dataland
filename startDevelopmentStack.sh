@@ -92,7 +92,8 @@ else
   docker compose "${compose_profiles[@]}" up -d --build
 fi
 
-# Setup the docker container health status check job
+health_check_log_dir="${LOKI_VOLUME}/health-check-log"
+mkdir -p "$health_check_log_dir"
 ./health-check/healthCheck.sh
 
 #start the backend

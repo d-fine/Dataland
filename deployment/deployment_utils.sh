@@ -101,6 +101,5 @@ EOF
   ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume/health-check-log' ]; then
     echo 'Creating $loki_volume/health-check-log dir as volume for docker container health check logs'
     sudo mkdir -p '$loki_volume/health-check-log'
-    sudo chmod a+w '$loki_volume/health-check-log'
   fi"
 }
