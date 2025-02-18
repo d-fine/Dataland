@@ -73,12 +73,6 @@ fi
 # Create loki_volume dir as volume for Loki container and health check logs if not exist
 create_loki_volume $target_server_url $loki_volume
 
-echo "Configure grafana alert rules"
-envsubst < ./dataland-grafana/config/alert-rules-template.yaml > ./dataland-grafana/config/alert-rules.yaml
-scp ./dataland-grafana/config/alert-rules.yaml ubuntu@"$target_server_url":/tmp/alert-rules.yaml
-ssh ubuntu@"$target_server_url" "sudo mkdir -p /etc/grafana/provisioning/alerting/"
-ssh ubuntu@"$target_server_url" "sudo mv /tmp/alert-rules.yaml /etc/grafana/provisioning/alerting/alert-rules.yaml"
-
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
   ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_gleif_full_golden_copy_download_flag"

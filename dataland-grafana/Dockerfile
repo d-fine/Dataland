@@ -4,24 +4,21 @@ FROM grafana/grafana:11.5.1@sha256:5781759b3d27734d4d548fcbaf60b1180dbf4290e708f
 # Copy the pre-configured provisioning directory
 COPY ./dataland-grafana/provisioning /etc/grafana/provisioning
 
-# Define build argument
-ARG TARGETSERVER_URL
-ENV TARGETSERVER_URL=${TARGETSERVER_URL}
+# Copy the entrypoint script into the image
+COPY ./dataland-grafana/custom-entrypoint.sh /grafana-entrypoint.sh
 
-# Switch to root user to make changes
+# Use root to update permissions and then switch back
 USER root
 
-# Extract the environment value and set the label for alert rules
-RUN env_value=$(echo "${TARGETSERVER_URL}" | awk -F. '{print $1}') && \
-    env_label=$([ "$env_value" = "dataland" ] && echo "prod" || echo "$env_value") && \
-    sed 's|"\$ENV"|'"${env_label}"'|g' /etc/grafana/provisioning/alerting/alert-rules-template.yaml > \
-    /etc/grafana/provisioning/alerting/alert-rules.yaml
+# Allow grafana user to write to certain directories/files
+RUN chmod +x /grafana-entrypoint.sh
+RUN chown -R grafana /etc/grafana/provisioning
 
-# Set user to grafana for security best practices
+# Switch to the grafana user for running the application
 USER grafana
 
-# Command to start Grafana
-CMD ["/run.sh"]
+# Set the entrypoint to the entrypoint script
+ENTRYPOINT ["/grafana-entrypoint.sh"]
 
 # Healthcheck configuration
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s CMD curl --fail http://localhost:3000/api/health || exit 1

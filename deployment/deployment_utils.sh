@@ -76,9 +76,6 @@ create_loki_volume () {
       echo 'Creating $loki_volume dir as volume for Loki container'
       sudo mkdir -p '$loki_volume'
       sudo chmod a+w '$loki_volume'
-      echo 'Creating $loki_volume/health-check-log dir as volume for docker container health check logs'
-      sudo mkdir -p '$loki_volume/health-check-log'
-      sudo chmod a+w '$loki_volume/health-check-log'
   fi"
 }
 
@@ -101,4 +98,9 @@ configure_container_health_check () {
     sudo systemctl enable health-check.service
     sudo systemctl enable logrotate.timer
 EOF
+  ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume/health-check-log' ]; then
+    echo 'Creating $loki_volume/health-check-log dir as volume for docker container health check logs'
+    sudo mkdir -p '$loki_volume/health-check-log'
+    sudo chmod a+w '$loki_volume/health-check-log'
+  fi"
 }

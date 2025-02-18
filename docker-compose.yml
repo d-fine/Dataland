@@ -677,7 +677,6 @@ services:
       - "3000"
     volumes:
       - grafana_data:/var/lib/grafana/data
-      - ./config/grafana/alert-rules.yaml:/etc/grafana/provisioning/alerting/alert-rules.yaml
     depends_on:
       - loki
     networks:
