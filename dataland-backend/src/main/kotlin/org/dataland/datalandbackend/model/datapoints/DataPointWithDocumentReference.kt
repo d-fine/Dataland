@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.model.datapoints
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.dataland.datalandbackend.interfaces.documents.BaseDocumentReference
 
 /**
@@ -12,5 +13,6 @@ interface DataPointWithDocumentReference {
     /**
      * Returns all document references of the data point.
      */
+    @JsonIgnore
     fun getAllDocumentReferences(): List<BaseDocumentReference>
 }

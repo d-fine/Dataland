@@ -18,12 +18,4 @@ data class CurrencyDataPoint(
     @field:Valid
     override val dataSource: ExtendedDocumentReference? = null,
     val currency: String? = null,
-) : ExtendedDataPoint<BigDecimal>,
-    DataPointWithDocumentReference {
-    override fun getAllDocumentReferences(): List<BaseDocumentReference> =
-        if (dataSource != null) {
-            listOf(dataSource)
-        } else {
-            emptyList()
-        }
-}
+) : ExtendedDataPoint<BigDecimal>

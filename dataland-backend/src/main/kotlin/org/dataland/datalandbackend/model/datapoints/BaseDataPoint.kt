@@ -14,10 +14,5 @@ data class BaseDataPoint<T>(
     override val dataSource: BaseDocumentReference? = null,
 ) : BaseDataPoint<T>,
     DataPointWithDocumentReference {
-    override fun getAllDocumentReferences(): List<BaseDocumentReference> =
-        if (dataSource != null) {
-            listOf(dataSource)
-        } else {
-            emptyList()
-        }
+
 }

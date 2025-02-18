@@ -15,12 +15,4 @@ data class ExtendedDataPoint<T>(
     override val comment: String? = null,
     @field:Valid
     override val dataSource: ExtendedDocumentReference? = null,
-) : ExtendedDataPoint<T>,
-    DataPointWithDocumentReference {
-    override fun getAllDocumentReferences(): List<ExtendedDocumentReference> =
-        if (dataSource != null) {
-            listOf(dataSource)
-        } else {
-            emptyList()
-        }
-}
+) : ExtendedDataPoint<T>
