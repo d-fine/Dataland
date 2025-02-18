@@ -71,7 +71,7 @@ fi
 # Create the loki_volume directory as a volume for the Loki container, if it does not already exist
 create_loki_volume $target_server_url $loki_volume
 
-configure_container_health_check $target_server_url
+configure_container_health_check $target_server_url $loki_volume
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"

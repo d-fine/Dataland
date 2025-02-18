@@ -81,6 +81,7 @@ create_loki_volume () {
 
 configure_container_health_check () {
   target_server_url="$1"
+  loki_volume="$2"
   environment_file="/etc/default/health-check"
   echo "Configure health check for docker containers"
   rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:/tmp/health-check/
@@ -90,8 +91,10 @@ configure_container_health_check () {
     sudo mv "/tmp/health-check/logrotate.service" /etc/systemd/system/logrotate.service &&
     sudo mv "/tmp/health-check/logrotate.timer" /etc/systemd/system/logrotate.timer &&
     sudo mv "/tmp/health-check/health-check" /etc/logrotate.d/health-check &&
-    echo "Writing LOKI_VOLUME to environment file"
-    echo "LOKI_VOLUME=$2" | sudo tee \$environment_file > /dev/null
+    sudo chown root:root /etc/logrotate.d/health-check
+    echo "Writing LOKI_VOLUME to environment file and health check logrotate config"
+    echo "LOKI_VOLUME=$loki_volume" | sudo tee \$environment_file > /dev/null
+    sudo sed -i "s|\${LOKI_VOLUME}|${loki_volume}|g" /etc/logrotate.d/health-check
     sudo chmod +x /usr/local/bin/healthCheck.sh &&
     sudo systemctl daemon-reload &&
     sudo systemctl enable health-check.service
@@ -101,5 +104,6 @@ EOF
   ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume/health-check-log' ]; then
     echo 'Creating $loki_volume/health-check-log dir as volume for docker container health check logs'
     sudo mkdir -p '$loki_volume/health-check-log'
+    sudo chmod a+w '$loki_volume/health-check-log'
   fi"
 }
