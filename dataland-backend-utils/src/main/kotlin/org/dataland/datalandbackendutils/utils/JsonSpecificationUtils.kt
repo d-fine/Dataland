@@ -9,7 +9,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
  * A leaf node in a JSON specification, containing the data point ID, the JSON path, and the content.
  */
 data class JsonSpecificationLeaf(
-    val dataPointId: String,
+    val dataPointType: String,
     val jsonPath: String,
     val content: JsonNode,
 )
