@@ -32,8 +32,6 @@ scp ./deployment/migrate_keycloak_users.sh ubuntu@"$target_server_url":"$locatio
 ssh ubuntu@"$target_server_url" "chmod +x \"$location/dataland-keycloak/migrate_keycloak_users.sh\""
 ssh ubuntu@"$target_server_url" "\"$location/dataland-keycloak/migrate_keycloak_users.sh\" \"$location\" \"$keycloak_user_dir\" \"$keycloak_backup_dir\" \"$persistent_keycloak_backup_dir\""
 
-configure_container_health_check $target_server_url $location
-
 ssh ubuntu@"$target_server_url" "sudo rm -rf \"$location\""
 
 construction_dir=./dataland
@@ -72,6 +70,8 @@ fi
 
 # Create the loki_volume directory as a volume for the Loki container, if it does not already exist
 create_loki_volume $target_server_url $loki_volume
+
+configure_container_health_check $target_server_url
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"

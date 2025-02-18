@@ -81,7 +81,6 @@ create_loki_volume () {
 
 configure_container_health_check () {
   target_server_url="$1"
-  location="$2"
   environment_file="/etc/default/health-check"
   echo "Configure health check for docker containers"
   rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:/tmp/health-check/
