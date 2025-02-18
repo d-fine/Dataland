@@ -26,4 +26,4 @@ else
 fi
 
 echo "Starting eslint hook"
-npx --prefix ./dataland-frontend lint-staged
+cd ./dataland-frontend && npx --prefix ./dataland-frontend lint-staged
