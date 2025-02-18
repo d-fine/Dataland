@@ -76,6 +76,7 @@ create_loki_volume $target_server_url $loki_volume
 echo "Configure grafana alert rules"
 envsubst < ./dataland-grafana/config/alert-rules-template.yaml > ./dataland-grafana/config/alert-rules.yaml
 scp ./dataland-grafana/config/alert-rules.yaml ubuntu@"$target_server_url":/tmp/alert-rules.yaml
+ssh ubuntu@"$target_server_url" "sudo mkdir -p /etc/grafana/provisioning/alerting/"
 ssh ubuntu@"$target_server_url" "sudo mv /tmp/alert-rules.yaml /etc/grafana/provisioning/alerting/alert-rules.yaml"
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
