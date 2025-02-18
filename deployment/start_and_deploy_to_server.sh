@@ -70,7 +70,7 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   fi"
 fi
 
-# Create loki_volume dir as volume for Loki container and health check logs if not exist
+# Create the loki_volume directory as a volume for the Loki container, if it does not already exist
 create_loki_volume $target_server_url $loki_volume
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
@@ -103,6 +103,6 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
 
-echo "Start Health Check for Docker Containers"
-ssh ubuntu@"$target_server_url" "sudo systemctl start health-check.service"
-ssh ubuntu@"$target_server_url" "sudo systemctl start logrotate.timer"
+echo "(Re-)Start Health Check for Docker Containers"
+ssh ubuntu@"$target_server_url" "sudo systemctl restart health-check.service"
+ssh ubuntu@"$target_server_url" "sudo systemctl restart logrotate.timer"

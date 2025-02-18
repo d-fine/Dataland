@@ -98,6 +98,7 @@ configure_container_health_check () {
     sudo systemctl enable health-check.service
     sudo systemctl enable logrotate.timer
 EOF
+  # Ensure the health check log directory exists
   ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume/health-check-log' ]; then
     echo 'Creating $loki_volume/health-check-log dir as volume for docker container health check logs'
     sudo mkdir -p '$loki_volume/health-check-log'
