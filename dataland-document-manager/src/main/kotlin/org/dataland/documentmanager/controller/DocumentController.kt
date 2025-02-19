@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.documentmanager.api.DocumentApi
+import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
@@ -62,8 +63,8 @@ class DocumentController(
             .body(documentContent)
     }
 
-    override fun getDocumentMetaInformation(documentId: String): ResponseEntity<DocumentUploadResponse> =
-        ResponseEntity.ok(documentManager.retrieveDocumentMetaInfoById(documentId))
+    override fun getDocumentMetaInformation(documentId: String): ResponseEntity<DocumentMetaInfoEntity> =
+        ResponseEntity.ok(documentManager.retrieveDocumentMetaInfo(documentId))
 
     override fun patchDocumentMetaInfo(
         documentId: String,
@@ -135,7 +136,7 @@ class DocumentController(
         reportingPeriod: String?,
         chunkSize: Int,
         chunkIndex: Int,
-    ): ResponseEntity<List<DocumentUploadResponse>> {
+    ): ResponseEntity<List<DocumentMetaInfoResponse>> {
         if (chunkSize <= 0) {
             throw InvalidInputApiException(
                 summary = "Invalid chunk size.",

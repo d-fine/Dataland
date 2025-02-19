@@ -86,7 +86,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DocumentUploadResponse"
+                    "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                   }
                 }
               }
@@ -99,7 +99,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DocumentUploadResponse"
+                    "$ref": "#/components/schemas/DocumentMetaInfoResponse"
                   }
                 }
               }
@@ -565,7 +565,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoEntity"
                 }
               }
             }
@@ -575,7 +575,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DocumentUploadResponse"
+                  "$ref": "#/components/schemas/DocumentMetaInfoEntity"
                 }
               }
             }
@@ -941,6 +941,78 @@
             "type": "string"
           }
         }
+      },
+      "DocumentMetaInfoEntity": {
+        "required": [
+          "companyIds",
+          "documentId",
+          "documentType",
+          "qaStatus",
+          "uploadTime",
+          "uploaderId"
+        ],
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string"
+          },
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
+          },
+          "documentName": {
+            "type": "string"
+          },
+          "documentCategory": {
+            "type": "string",
+            "enum": [
+              "AnnualReport",
+              "SustainabilityReport",
+              "Policy",
+              "Other"
+            ]
+          },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "uploaderId": {
+            "type": "string"
+          },
+          "uploadTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "publicationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reportingPeriod": {
+            "type": "string"
+          },
+          "qaStatus": {
+            "$ref": "#/components/schemas/QaStatus"
+          }
+        }
+      },
+      "DocumentType": {
+        "type": "string",
+        "enum": [
+          "Pdf",
+          "Xls",
+          "Xlsx",
+          "Ods"
+        ]
+      },
+      "QaStatus": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "Accepted",
+          "Rejected"
+        ]
       },
       "Link": {
         "type": "object",

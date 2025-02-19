@@ -8,29 +8,34 @@
           <div class="card">
             <div class="card__title">Latest Documents</div>
             <div class="card__separator" />
-            <!--            <div v-for="(documents, documentType) in latestDocuments">
-              <div class="card__subtitle">{{ documentType }}</div>
-              <div v-for="document in documents" :key="document.documentName">
-                <span @click="downloadDocument()" class="text-primary cursor-pointer" style="flex: 0 0 auto">
-                  <span class="underline pl-1">{{ truncatedDocumentName(document.documentName) }}</span> ({{
-                    document.publicationDate
-                  }})
-                  <i class="pi pi-download pl-1" data-test="download-icon" aria-hidden="true" style="font-size: 12px" />
-                </span>
+            <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum">
+              <div class="card__subtitle">{{ label }}</div>
+              <div v-if="getDocumentData(category).length === 0">-</div>
+              <div v-else>
+                <div v-for="document in getDocumentData(category)" :key="document.documentId">
+                  <span @click="downloadDocument()" class="text-primary cursor-pointer" style="flex: 0 0 auto">
+                    <span class="underline pl-1">{{
+                      truncatedDocumentName(document.documentName ? document.documentName : document.documentId)
+                    }}</span>
+                    ({{ document.publicationDate }})
+                    <i
+                      class="pi pi-download pl-1"
+                      data-test="download-icon"
+                      aria-hidden="true"
+                      style="font-size: 12px"
+                    />
+                  </span>
+                </div>
               </div>
-            </div>-->
-            <div v-for="document in latestSustainabilityDocuments" :key="document.documentName">
-              <span @click="downloadDocument()" class="text-primary cursor-pointer" style="flex: 0 0 auto">
-                <span class="underline pl-1">{{
-                  document.documentName ? truncatedDocumentName(document.documentName) : document.documentId
-                }}</span>
-                ({{ document.publicationDate }})
-                <i class="pi pi-download pl-1" data-test="download-icon" aria-hidden="true" style="font-size: 12px" />
-              </span>
             </div>
-            <div class="document-button cursor-pointer flex flex-row align-items-center" @click="goToDocumentOverview">
-              <span class="text-primary font-semibold d-letters"> VIEW ALL DOCUMENTS</span>
-              <span class="material-icons text-primary">arrow_forward_ios</span>
+            <div class="p-col-12 text-right">
+              <div
+                class="document-button cursor-pointer flex flex-row align-items-center"
+                @click="goToDocumentOverview"
+              >
+                <span class="text-primary font-semibold d-letters"> VIEW ALL DOCUMENTS</span>
+                <span class="material-icons text-primary">arrow_forward_ios</span>
+              </div>
             </div>
           </div>
         </div>
@@ -51,8 +56,14 @@
             />
           </div>
           <div class="p-col-12 text-right">
-            <button label="Show All" v-if="!showAllFrameworks" @click="toggleShowAll" />
-            <button label="Show Less" v-if="showAllFrameworks" @click="toggleShowAll" />
+            <div class="document-button cursor-pointer flex flex-row align-items-center" @click="toggleShowAll">
+              <span class="text-primary font-semibold d-letters">
+                {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
+              </span>
+              <span class="material-icons text-primary">
+                {{ showAllFrameworks ? 'expand-less-icon' : 'expand-more-icon' }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -82,7 +93,7 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
-import { DocumentMetaInfoDocumentCategoryEnum, type DocumentUploadResponse } from '@clients/documentmanager';
+import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import router from '@/router';
 
 //todo: replace when backend ready
@@ -90,10 +101,6 @@ type DocumentData = {
   documentName: string;
   publicationDate: string;
   url: string;
-};
-
-type LatestDocuments = {
-  [documentType: string]: DocumentData[];
 };
 
 export default defineComponent({
@@ -124,6 +131,10 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
+    const latestDocuments: Record<string, DocumentMetaInfoResponse[]> = {};
+    Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach((key) => {
+      latestDocuments[`latest${key}`] = [];
+    });
     return {
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
@@ -137,7 +148,8 @@ export default defineComponent({
       hasUserAnyRoleInCompany: false,
       footerContent,
       showAllFrameworks: false,
-      latestSustainabilityDocuments: [] as DocumentUploadResponse[],
+      latestDocuments,
+      chunkSize: 3,
     };
   },
   computed: {
@@ -193,9 +205,43 @@ export default defineComponent({
     async getLatestDocuments(): Promise<void> {
       const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
         .documentController;
-      this.latestSustainabilityDocuments = (
-        await documentControllerApi.searchForDocumentMetaInformation(this.companyId)
+      this.latestDocuments.latestSustainabilityReport = (
+        await documentControllerApi.searchForDocumentMetaInformation(
+          this.companyId,
+          DocumentMetaInfoDocumentCategoryEnum.SustainabilityReport,
+          undefined,
+          this.chunkSize
+        )
       ).data;
+      this.latestDocuments.latestAnnualReport = (
+        await documentControllerApi.searchForDocumentMetaInformation(
+          this.companyId,
+          DocumentMetaInfoDocumentCategoryEnum.AnnualReport,
+          undefined,
+          this.chunkSize
+        )
+      ).data;
+      this.latestDocuments.latestPolicy = (
+        await documentControllerApi.searchForDocumentMetaInformation(
+          this.companyId,
+          DocumentMetaInfoDocumentCategoryEnum.Policy,
+          undefined,
+          this.chunkSize
+        )
+      ).data;
+      this.latestDocuments.latestOther = (
+        await documentControllerApi.searchForDocumentMetaInformation(
+          this.companyId,
+          DocumentMetaInfoDocumentCategoryEnum.Other,
+          undefined,
+          this.chunkSize
+        )
+      ).data;
+    },
+
+    getDocumentData(category: keyof typeof DocumentMetaInfoDocumentCategoryEnum) {
+      const key = `latest${category}`;
+      return this.latestDocuments[key] || [];
     },
 
     /**

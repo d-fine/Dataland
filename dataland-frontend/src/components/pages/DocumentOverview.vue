@@ -82,7 +82,7 @@ import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkD
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { DocumentUploadResponse } from '@clients/documentmanager';
+import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 
 const props = defineProps<{
@@ -94,7 +94,7 @@ const footerPage: Page | undefined = content.pages.find((page) => page.url === '
 const footerContent = footerPage?.sections;
 const waitingForData = ref(true);
 const useMobileView = inject<boolean>('useMobileView', false);
-const documentsFiltered = ref<DocumentUploadResponse[]>([]);
+const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<SelectableItem[]>([]);
 const availableDocumentTypes = [
   { displayName: 'Annual report', disabled: false },

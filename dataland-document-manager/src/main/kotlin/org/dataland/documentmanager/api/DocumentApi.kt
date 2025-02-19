@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackendutils.model.DocumentCategory
+import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
@@ -220,7 +221,7 @@ interface DocumentApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun getDocumentMetaInformation(
         @PathVariable("documentId") documentId: String,
-    ): ResponseEntity<DocumentUploadResponse>
+    ): ResponseEntity<DocumentMetaInfoEntity>
 
     /**
      * Search for document meta information by document ID. Only results with QA status "Accepted" are returned.
@@ -263,5 +264,5 @@ interface DocumentApi {
         @RequestParam reportingPeriod: String? = null,
         @RequestParam chunkSize: Int = 100,
         @RequestParam chunkIndex: Int = 0,
-    ): ResponseEntity<List<DocumentUploadResponse>>
+    ): ResponseEntity<List<DocumentMetaInfoResponse>>
 }
