@@ -326,7 +326,7 @@ export default defineComponent({
       .then(() => {
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
         this.getAnsweringDataId();
-        this.checkForAvailableData(this.storedDataRequest);
+        this.checkForAvailableData();
         this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
         void this.setUserAccessFields();
       })
