@@ -161,4 +161,46 @@ class DataRequestAlterationManager
                 }
             }
         }
+
+        /**
+         * Method to notify users with a closed data request that a new dataset for the same company,
+         * reporting period and framework has been QA-approved.
+         *
+         * @param dataId The id of the dataset in question.
+         * @param correlationId The correlation id of the QA approval event.
+         */
+        @Transactional
+        fun notifyUsersWithClosedRequests(
+            dataId: String,
+            correlationId: String,
+        ) {
+            val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
+            logger.info(
+                "Sending out e-mail notifications to users with a closed request" +
+                    "concerning  company Id ${metaData.companyId}, " +
+                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name} " +
+                    "because there is a new dataset with QA status Accepted. Correlation ID: $correlationId",
+            )
+            val dataRequestEntities =
+                dataRequestRepository.searchDataRequestEntity(
+                    DataRequestsFilter(
+                        dataType = setOf(metaData.dataType),
+                        userId = null,
+                        emailAddress = null,
+                        datalandCompanyId = metaData.companyId,
+                        reportingPeriod = metaData.reportingPeriod,
+                        requestStatus = setOf(RequestStatus.Closed),
+                        accessStatus = null,
+                        adminComment = null,
+                        requestPriority = null,
+                    ),
+                )
+
+            dataRequestEntities.forEach {
+                requestEmailManager.sendEmailToUserWithClosedRequest(
+                    it,
+                    correlationId,
+                )
+            }
+        }
     }

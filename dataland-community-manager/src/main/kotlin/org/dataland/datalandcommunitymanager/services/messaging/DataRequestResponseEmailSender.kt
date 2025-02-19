@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.TimeZone
+import kotlin.String
 
 /**
  * A class that provided utility for generating emails messages for data request responses
@@ -131,6 +133,39 @@ class DataRequestResponseEmailSender(
         val message =
             EmailMessage(
                 dataRequestNonSourceableMail, listOf(EmailRecipient.UserId(dataRequestEntity.userId)), emptyList(), emptyList(),
+            )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            objectMapper.writeValueAsString(message),
+            MessageType.SEND_EMAIL,
+            correlationId,
+            ExchangeName.SEND_EMAIL,
+            RoutingKeyNames.EMAIL,
+        )
+    }
+
+    /**
+     * Function to send an e-mail notification to a user with a closed data request that there
+     * has been a QA approval for a dataset with regard to the same company, reporting period and
+     * framework.
+     */
+    fun sendEmailToUserWithClosedRequest(
+        dataRequestEntity: DataRequestEntity,
+        correlationId: String,
+    ) {
+        val dataRequestUpdatedMail =
+            DataRequestUpdated(
+                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                reportingPeriod = dataRequestEntity.reportingPeriod,
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
+                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+                dataRequestId = dataRequestEntity.dataRequestId,
+            )
+        val message =
+            EmailMessage(
+                dataRequestUpdatedMail,
+                listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
+                emptyList(),
+                emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             objectMapper.writeValueAsString(message),

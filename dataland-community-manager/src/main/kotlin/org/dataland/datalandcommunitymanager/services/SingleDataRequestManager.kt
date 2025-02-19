@@ -63,11 +63,22 @@ class SingleDataRequestManager
          * @return the stored data request object
          */
         @Transactional
-        fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-            val preprocessedRequest = preprocessSingleDataRequest(singleDataRequest)
+        fun processSingleDataRequest(
+            singleDataRequest: SingleDataRequest,
+            userId: String?,
+        ): SingleDataRequestResponse {
+            val userIdToUse: String
+            if (userId == null) {
+                userIdToUse = DatalandAuthentication.fromContext().userId
+            } else {
+                userIdToUse = userId
+            }
+            val preprocessedRequest = preprocessSingleDataRequest(singleDataRequest, userIdToUse)
 
             dataRequestLogger.logMessageForReceivingSingleDataRequest(
-                singleDataRequest.companyIdentifier, preprocessedRequest.userId, preprocessedRequest.correlationId,
+                singleDataRequest.companyIdentifier,
+                preprocessedRequest.userId, // equals userIdToUse
+                preprocessedRequest.correlationId,
             )
 
             val reportingPeriodsMap = mutableMapOf<String, MutableList<String>>()
@@ -104,7 +115,10 @@ class SingleDataRequestManager
          * @param singleDataRequest is the single data process which should be preprocessed
          * @return the processed single request
          */
-        fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest): PreprocessedRequest {
+        fun preprocessSingleDataRequest(
+            singleDataRequest: SingleDataRequest,
+            userIdToUse: String,
+        ): PreprocessedRequest {
             val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
 
             utils.throwExceptionIfNotJwtAuth()
@@ -113,7 +127,7 @@ class SingleDataRequestManager
 
             return PreprocessedRequest(
                 companyId = companyId,
-                userId = DatalandAuthentication.fromContext().userId,
+                userId = userIdToUse,
                 dataType = singleDataRequest.dataType,
                 contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 message = singleDataRequest.message.takeIf { !it.isNullOrBlank() },
