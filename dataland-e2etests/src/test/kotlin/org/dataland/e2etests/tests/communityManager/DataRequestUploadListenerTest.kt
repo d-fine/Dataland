@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.communityManager
 
+import org.awaitility.Awaitility
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientError
 import org.dataland.communitymanager.openApiClient.infrastructure.ClientException
 import org.dataland.communitymanager.openApiClient.model.AccessStatus
@@ -8,6 +9,8 @@ import org.dataland.communitymanager.openApiClient.model.ExtendedStoredDataReque
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEutaxonomyNonFinancialsData
+import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataSfdrData
+import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
@@ -16,6 +19,7 @@ import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
+import org.dataland.e2etests.utils.communityManager.getUsersStoredRequestWithLatestCreationTime
 import org.dataland.e2etests.utils.communityManager.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
@@ -26,6 +30,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestUploadListenerTest {
@@ -81,6 +86,39 @@ class DataRequestUploadListenerTest {
         uploadDataset(mapOfIds)
         val requestsStoredAfterSingleRequest = getNewlyStoredRequestsAfterTimestamp(timestampBeforeSingleRequest)
         requestsStoredAfterSingleRequest.forEach { checkRequestStatusAfterUpload(it) }
+    }
+
+    @Test
+    fun `post single data request and provide data for the parent company and check that status has changed to answered`() {
+        val (testCompanyWithParent, testParentCompany) =
+            listOf(
+                "test company with parent lei and existing parent",
+                "test company with lei and existing child",
+            ).map {
+                apiAccessor.companyDataControllerApi.postCompany(
+                    apiAccessor.testDataProviderForSfdrData.getByCompanyName(it).companyInformation,
+                )
+            }
+        val testSfdrData = apiAccessor.testDataProviderForSfdrData.getTData(1)[0]
+
+        val childCompanyDataRequest =
+            SingleDataRequest(
+                companyIdentifier = testCompanyWithParent.companyId,
+                dataType = SingleDataRequest.DataType.sfdr,
+                reportingPeriods = setOf("2023"),
+                contacts = setOf("someContact@example.com", "valid@example.com"),
+                message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
+            )
+        // jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
+        requestControllerApi.postSingleDataRequest(childCompanyDataRequest)
+        apiAccessor.dataControllerApiForSfdrData.postCompanyAssociatedSfdrData(
+            CompanyAssociatedDataSfdrData(testParentCompany.companyId, "2023", testSfdrData), false,
+        )
+        assertEquals(getUsersStoredRequestWithLatestCreationTime().requestStatus, RequestStatus.Open)
+        apiAccessor.qaServiceControllerApi.changeQaStatus(testParentCompany.companyId, QaStatus.Accepted)
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            getUsersStoredRequestWithLatestCreationTime().requestStatus == RequestStatus.Closed
+        }
     }
 
     private fun uploadDataset(mapOfIds: Map<String, String>) {
