@@ -90,11 +90,10 @@ configure_container_health_check () {
     sudo mv "/tmp/health-check/health-check.service" /etc/systemd/system/health-check.service &&
     sudo mv "/tmp/health-check/logrotate.service" /etc/systemd/system/logrotate.service &&
     sudo mv "/tmp/health-check/logrotate.timer" /etc/systemd/system/logrotate.timer &&
-    sudo mv "/tmp/health-check/health-check" /etc/logrotate.d/health-check &&
-    sudo chown root:root /etc/logrotate.d/health-check
-    echo "Writing LOKI_VOLUME=$loki_volume to environment file and health check logrotate config"
-    echo "LOKI_VOLUME=$loki_volume" | sudo tee \$environment_file > /dev/null
-    sudo sed -i "s|\${LOKI_VOLUME}|${loki_volume}|g" /etc/logrotate.d/health-check
+    echo "Writing LOKI_VOLUME=$loki_volume to environment file and health check logrotate config" &&
+    echo "LOKI_VOLUME=$loki_volume" | sudo tee \$environment_file > /dev/null &&
+    sudo sed "s|\${LOKI_VOLUME}|${loki_volume}|g" /tmp/health-check/health-check > /etc/logrotate.d/health-check &&
+    sudo chown root:root /etc/logrotate.d/health-check &&
     sudo chmod +x /usr/local/bin/healthCheck.sh &&
     sudo systemctl daemon-reload &&
     sudo systemctl enable health-check.service
