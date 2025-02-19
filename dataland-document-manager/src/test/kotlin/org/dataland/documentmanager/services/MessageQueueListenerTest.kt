@@ -2,6 +2,7 @@ package org.dataland.documentmanager.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
+import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import java.time.LocalDate
 import java.util.Optional
 
 @SpringBootTest(classes = [DatalandDocumentManager::class], properties = ["spring.profiles.active=nodb"])
@@ -80,6 +82,11 @@ class MessageQueueListenerTest(
                 Optional.of(
                     DocumentMetaInfoEntity(
                         documentType = DocumentType.Pdf,
+                        documentName = "sample.pdf",
+                        documentCategory = DocumentCategory.AnnualReport,
+                        companyIds = mutableSetOf(),
+                        publicationDate = LocalDate.of(2023, 1, 1),
+                        reportingPeriod = "2023",
                         documentId = documentId,
                         uploaderId = "",
                         uploadTime = 0,

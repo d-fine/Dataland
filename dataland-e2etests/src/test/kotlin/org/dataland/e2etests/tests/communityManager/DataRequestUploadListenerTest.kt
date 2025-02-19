@@ -11,7 +11,7 @@ import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataEut
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.communityManager.assertStatusForDataRequestId
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
 import org.dataland.e2etests.utils.communityManager.getIdForUploadedCompanyWithIdentifiers
@@ -30,7 +30,7 @@ import java.util.UUID
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestUploadListenerTest {
     val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
     val jwtHelper = JwtAuthenticationHelper()
     private val requestControllerApi = apiAccessor.requestControllerApi
     private val dataController = apiAccessor.dataControllerApiForEuTaxonomyNonFinancials

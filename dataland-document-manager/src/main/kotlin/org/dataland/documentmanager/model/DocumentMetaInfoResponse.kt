@@ -7,20 +7,20 @@ import java.time.LocalDate
 
 /**
  * --- API model ---
- * Holds the meta info of a document uploaded with document
+ * Class for giving feedback via a response to a user who tries to upload a new document.
+ * @param documentId the ID of the uploaded document
  * @param documentName
  * @param documentCategory
  * @param companyIds
  * @param publicationDate
- * @param reportingPeriod only for informative purposes
+ * @param reportingPeriod
  */
-data class DocumentMetaInfo(
+data class DocumentMetaInfoResponse(
     @field:JsonProperty(required = true)
-    override val documentName: String,
-    @field:JsonProperty(required = true)
-    override val documentCategory: DocumentCategory,
-    @field:JsonProperty(required = true)
-    override val companyIds: Set<String>,
+    val documentId: String,
+    override val documentName: String?,
+    override val documentCategory: DocumentCategory?,
+    override val companyIds: Set<String>?,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     override val publicationDate: LocalDate?,
     override val reportingPeriod: String?,
