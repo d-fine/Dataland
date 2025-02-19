@@ -85,20 +85,25 @@ configure_container_health_check () {
   environment_file="/etc/default/health-check"
   echo "Configure health check for docker containers"
   rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:/tmp/health-check/
-  ssh ubuntu@"$target_server_url" << EOF
+  ssh -t ubuntu@"$target_server_url" << EOF
     set -e
-    sudo mv "/tmp/health-check/healthCheck.sh" /usr/local/bin/healthCheck.sh &&
-    sudo mv "/tmp/health-check/health-check.service" /etc/systemd/system/health-check.service &&
-    sudo mv "/tmp/health-check/logrotate.service" /etc/systemd/system/logrotate.service &&
-    sudo mv "/tmp/health-check/logrotate.timer" /etc/systemd/system/logrotate.timer &&
-    echo "Writing LOKI_VOLUME=$loki_volume to environment file and health check logrotate config" &&
-    echo "LOKI_VOLUME=$loki_volume" | sudo tee $environment_file > /dev/null &&
-    sudo sed "s|\${LOKI_VOLUME}|$loki_volume|g" /tmp/health-check/health-check | sudo tee /etc/logrotate.d/health-check > /dev/null &&
-    sudo chown root:root /etc/logrotate.d/health-check &&
-    sudo chmod +x /usr/local/bin/healthCheck.sh &&
-    sudo systemctl daemon-reload &&
-    sudo systemctl enable health-check.service &&
-    sudo systemctl enable logrotate.timer
+    echo "Moving healthCheck.sh..."
+    sudo mv "/tmp/health-check/healthCheck.sh" /usr/local/bin/healthCheck.sh || true
+    echo "Moving health-check.service..."
+    sudo mv "/tmp/health-check/health-check.service" /etc/systemd/system/health-check.service || true
+    echo "Moving logrotate.service..."
+    sudo mv "/tmp/health-check/logrotate.service" /etc/systemd/system/logrotate.service || true
+    echo "Moving logrotate.timer..."
+    sudo mv "/tmp/health-check/logrotate.timer" /etc/systemd/system/logrotate.timer || true
+    echo "Writing LOKI_VOLUME to environment file..."
+    echo "LOKI_VOLUME=$loki_volume" | sudo tee $environment_file > /dev/null || true
+    echo "Configuring logrotate..."
+    sudo sed "s|\${LOKI_VOLUME}|$loki_volume|g" /tmp/health-check/health-check | sudo tee /etc/logrotate.d/health-check > /dev/null || true
+    sudo chown root:root /etc/logrotate.d/health-check || true
+    sudo chmod +x /usr/local/bin/healthCheck.sh || true
+    sudo systemctl daemon-reload || true
+    sudo systemctl enable health-check.service || true
+    sudo systemctl enable logrotate.timer || true
 EOF
   # Ensure the health check log directory exists
   ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume/health-check-log' ]; then
