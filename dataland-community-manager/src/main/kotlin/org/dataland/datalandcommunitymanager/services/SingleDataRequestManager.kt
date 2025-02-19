@@ -65,7 +65,7 @@ class SingleDataRequestManager
         @Transactional
         fun processSingleDataRequest(
             singleDataRequest: SingleDataRequest,
-            userId: String?,
+            userId: String? = null,
         ): SingleDataRequestResponse {
             val userIdToUse: String
             if (userId == null) {
