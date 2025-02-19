@@ -32,26 +32,36 @@ describeIf(
         });
     });
 
+    beforeEach(() => {
+      cy.intercept('https://youtube.com/**', []);
+      cy.intercept('https://jnn-pa.googleapis.com/**', []);
+      cy.intercept('https://play.google.com/**', []);
+      cy.intercept('https://googleads.g.doubleclick.net/**', []);
+    });
+
     it('From the landing page visit the company cockpit via the searchbar', () => {
       cy.visitAndCheckAppMount('/');
+      cy.closeCookieBannerIfItExists();
       searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
-      cy.contains('h1', alphaCompanyIdAndName.companyName);
+      cy.get('[data-test="companyNameTitle"]', { timeout: 30000 }).contains(alphaCompanyIdAndName.companyName);
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
       visitCockpitForCompanyAlpha();
+      cy.closeCookieBannerIfItExists();
       cy.intercept('GET', `**/api/companies/${betaCompanyIdAndName.companyId}/aggregated-framework-data-summary`).as(
         'fetchAggregatedFrameworkSummaryForBeta'
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
       cy.url().should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
-      cy.contains('h1', betaCompanyIdAndName.companyName);
+      cy.get('[data-test="companyNameTitle"]', { timeout: 30000 }).contains(betaCompanyIdAndName.companyName);
     });
 
     it('From the company cockpit page visit a view page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
+      cy.closeCookieBannerIfItExists();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
       cy.url().should(
         'contain',
@@ -63,6 +73,7 @@ describeIf(
     it('From the company cockpit page visit an upload page', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
+      cy.closeCookieBannerIfItExists();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-summary-panel'] a`).click();
       cy.url().should(
         'contain',
@@ -73,6 +84,7 @@ describeIf(
     it('From the company cockpit page claim company ownership via the panel and context menu', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       visitCockpitForCompanyAlpha();
+      cy.closeCookieBannerIfItExists();
       cy.get("[data-test='claimOwnershipPanelLink']").click();
       submitOwnershipClaimForCompanyAlpha('This is a test message for claiming ownership via panel.');
       cy.get("[data-test='contextMenuButton']").click();
@@ -102,7 +114,7 @@ describeIf(
      */
     function visitCockpitForCompanyAlpha(): void {
       cy.visit(`/companies/${alphaCompanyIdAndName.companyId}`);
-      cy.contains('h1', alphaCompanyIdAndName.companyName).should('exist');
+      cy.contains('[data-test="companyNameTitle"]', alphaCompanyIdAndName.companyName).should('exist');
     }
 
     /**
@@ -110,8 +122,9 @@ describeIf(
      * @param searchTerm the term to search for
      */
     function searchCompanyAndChooseFirstSuggestion(searchTerm: string): void {
+      cy.get('input#company_search_bar_standard').scrollIntoView();
       cy.get('input#company_search_bar_standard').type(searchTerm);
-      cy.get('.p-autocomplete-item').first().click();
+      cy.get('[data-pc-section="panel"]').contains(searchTerm).click();
     }
   }
 );
