@@ -34,12 +34,15 @@
     <div class="col-12 text-left p-3">
       <div class="card">
         <DataTable v-if="documentsFiltered && documentsFiltered.length > 0" :value="documentsFiltered">
-          <Column header="DOCUMENT NAME" field="documentName" :sortable="true"> </Column>
-          <Column header="DOCUMENT TYPE" field="documentType" :sortable="true" />
+          <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
+          <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true" />
           <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" />
+          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
           <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-            <template #body>
-              <span class="text-primary no-underline font-bold cursor-pointer" @click="isMetaInfoDialogOpen = true"
+            <template #body="documentProps">
+              <span
+                class="text-primary no-underline font-bold cursor-pointer"
+                @click="openMetaInfoDialog(documentProps.data.documentId)"
                 ><span> VIEW DETAILS</span> <span class="ml-3">></span>
               </span>
             </template>
@@ -63,7 +66,7 @@
       </div>
     </div>
   </TheContent>
-  <DocumentMetaDataDialog :dialog-visible.sync="isMetaInfoDialogOpen" />
+  <DocumentMetaDataDialog :dialog-visible.sync="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
   <TheFooter :is-light-version="true" :sections="footerContent" />
 </template>
 
@@ -82,7 +85,11 @@ import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkD
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import type { DocumentMetaInfoResponse } from '@clients/documentmanager';
+import {
+  DocumentMetaInfoDocumentCategoryEnum,
+  DocumentMetaInfoResponse,
+  SearchForDocumentMetaInformationDocumentCategoryEnum,
+} from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 
 const props = defineProps<{
@@ -95,19 +102,22 @@ const footerContent = footerPage?.sections;
 const waitingForData = ref(true);
 const useMobileView = inject<boolean>('useMobileView', false);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
-const selectedDocumentType = ref<SelectableItem[]>([]);
-const availableDocumentTypes = [
-  { displayName: 'Annual report', disabled: false },
-  { displayName: 'sustainability report', disabled: false },
-] as Array<SelectableItem>;
+const selectedDocumentType = ref<SearchForDocumentMetaInformationDocumentCategoryEnum>();
+const availableDocumentTypes: Array<SelectableItem> = Object.entries(DocumentMetaInfoDocumentCategoryEnum).map(
+  ([, value]) => ({
+    displayName: value,
+    disabled: false,
+  })
+);
 const totalRecords = ref(0);
 const rowsPerPage = 100;
 const firstRowIndex = ref(0);
 const currentChunkIndex = ref(0);
 const isMetaInfoDialogOpen = ref(false);
+const selectedDocumentId = ref<string>('');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-watch(selectedDocumentType, (newSelected, oldSelected) => {
+watch(selectedDocumentType, (newSelected) => {
   firstRowIndex.value = 0;
   currentChunkIndex.value = 0;
   console.log('Neu:', newSelected);
@@ -121,7 +131,9 @@ async function getAllDocumentsForFilters(): Promise<void> {
     if (getKeycloakPromise) {
       const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
         .documentController;
-      documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
+      documentsFiltered.value = (
+        await documentControllerApi.searchForDocumentMetaInformation(props.companyId, selectedDocumentType.value)
+      ).data;
     }
   } catch (error) {
     console.error(error);
@@ -133,7 +145,7 @@ async function getAllDocumentsForFilters(): Promise<void> {
  * Resets filter
  */
 function resetFilter(): void {
-  selectedDocumentType.value = [];
+  selectedDocumentType.value = undefined;
 }
 
 /**
@@ -148,9 +160,13 @@ function onPage(event: DataTablePageEvent) {
   }
 }
 
+function openMetaInfoDialog(documentId: string) {
+  selectedDocumentId.value = documentId;
+  isMetaInfoDialogOpen.value = true;
+}
+
 onMounted(() => {
   getAllDocumentsForFilters();
-  console.log(documentsFiltered.value);
 });
 </script>
 

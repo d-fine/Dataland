@@ -13,7 +13,12 @@
               <div v-if="getDocumentData(category).length === 0">-</div>
               <div v-else>
                 <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                  <span @click="downloadDocument()" class="text-primary cursor-pointer" style="flex: 0 0 auto">
+                  <span
+                    @click="downloadDocument(document.documentId)"
+                    class="text-primary cursor-pointer"
+                    style="flex: 0 0 auto"
+                  >
+                    <DownloadProgressSpinner :percent-completed="percentCompleted" />
                     <span class="underline pl-1">{{
                       truncatedDocumentName(document.documentName ? document.documentName : document.documentId)
                     }}</span>
@@ -60,9 +65,9 @@
               <span class="text-primary font-semibold d-letters">
                 {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
               </span>
-              <span class="material-icons text-primary">
-                {{ showAllFrameworks ? 'expand-less-icon' : 'expand-more-icon' }}
-              </span>
+              <i class="material-icons text-primary">
+                {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
+              </i>
             </div>
           </div>
         </div>
@@ -95,17 +100,12 @@ import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import router from '@/router';
-
-//todo: replace when backend ready
-type DocumentData = {
-  documentName: string;
-  publicationDate: string;
-  url: string;
-};
+import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
   components: {
+    DownloadProgressSpinner,
     ClaimOwnershipPanel,
     CompanyInfoSheet,
     FrameworkSummaryPanel,
@@ -150,6 +150,7 @@ export default defineComponent({
       showAllFrameworks: false,
       latestDocuments,
       chunkSize: 3,
+      percentCompleted: undefined as number | undefined,
     };
   },
   computed: {
@@ -203,40 +204,21 @@ export default defineComponent({
      * Retrieves the latest documents metadata
      */
     async getLatestDocuments(): Promise<void> {
+      const docuemntCategories = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
       const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
         .documentController;
-      this.latestDocuments.latestSustainabilityReport = (
-        await documentControllerApi.searchForDocumentMetaInformation(
-          this.companyId,
-          DocumentMetaInfoDocumentCategoryEnum.SustainabilityReport,
-          undefined,
-          this.chunkSize
-        )
-      ).data;
-      this.latestDocuments.latestAnnualReport = (
-        await documentControllerApi.searchForDocumentMetaInformation(
-          this.companyId,
-          DocumentMetaInfoDocumentCategoryEnum.AnnualReport,
-          undefined,
-          this.chunkSize
-        )
-      ).data;
-      this.latestDocuments.latestPolicy = (
-        await documentControllerApi.searchForDocumentMetaInformation(
-          this.companyId,
-          DocumentMetaInfoDocumentCategoryEnum.Policy,
-          undefined,
-          this.chunkSize
-        )
-      ).data;
-      this.latestDocuments.latestOther = (
-        await documentControllerApi.searchForDocumentMetaInformation(
-          this.companyId,
-          DocumentMetaInfoDocumentCategoryEnum.Other,
-          undefined,
-          this.chunkSize
-        )
-      ).data;
+      for (const categoryKey of docuemntCategories) {
+        const category =
+          DocumentMetaInfoDocumentCategoryEnum[categoryKey as keyof typeof DocumentMetaInfoDocumentCategoryEnum];
+        this.latestDocuments[`latest${category}`] = (
+          await documentControllerApi.searchForDocumentMetaInformation(
+            this.companyId,
+            category,
+            undefined,
+            this.chunkSize
+          )
+        ).data;
+      }
     },
 
     getDocumentData(category: keyof typeof DocumentMetaInfoDocumentCategoryEnum) {
@@ -247,8 +229,15 @@ export default defineComponent({
     /**
      * Method to download report
      */
-    async downloadDocument() {
-      //todo
+    async downloadDocument(Id: string) {
+      const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+        .documentController;
+      try {
+        await documentControllerApi.getDocument(Id);
+      } catch (error) {
+        console.error(error);
+      }
+      this.percentCompleted = undefined;
     },
 
     /**
