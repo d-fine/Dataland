@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus
 import java.io.File
 import java.math.BigDecimal
 import java.util.UUID
+import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Vsme {
@@ -92,14 +93,15 @@ class Vsme {
             executeDataRetrievalWithRetries(
                 apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
             )
-        assertEquals(persistedDataMetaInfo, dataMetaInfoInResponse)
+        requireNotNull(persistedDataMetaInfo)
+        assertDataMetaInfoMatches(actualDataMetaInfo = persistedDataMetaInfo, expectedDataMetaInfo = dataMetaInfoInResponse)
 
-        val dataId = persistedDataMetaInfo!!.dataId
+        val dataId = persistedDataMetaInfo.dataId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assertAccessDeniedWrapper { vsmeDataControllerApi.getCompanyAssociatedVsmeData(dataId) }
         assertAccessDeniedWrapper { vsmeDataControllerApi.getPrivateDocument(dataId, hashAlpha) }
 
-        for (role in CompanyRole.values()) {
+        for (role in CompanyRole.entries) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 role,
                 companyId = UUID.fromString(companyId),
@@ -120,7 +122,7 @@ class Vsme {
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2021", testVsmeData)
         val rolesThatShouldBeAllowedToPost = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
-        for (role in CompanyRole.values()) {
+        for (role in CompanyRole.entries) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 role, companyId = UUID.fromString(companyId), userId = dataAdminUserId,
             )
