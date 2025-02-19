@@ -11,4 +11,5 @@ data class StoredDataRequestStatusObject(
     val creationTimestamp: Long,
     val accessStatus: AccessStatus,
     val requestStatusChangeReason: String?,
+    val answeringDataId: String?,
 )

@@ -36,7 +36,6 @@ data class RequestStatusEntity(
     constructor(
         statusObject: StoredDataRequestStatusObject,
         dataRequest: DataRequestEntity,
-        answeringDataId: String? = null,
     ) : this(
         statusHistoryId = UUID.randomUUID().toString(),
         requestStatus = statusObject.status,
@@ -44,7 +43,7 @@ data class RequestStatusEntity(
         creationTimestamp = statusObject.creationTimestamp,
         requestStatusChangeReason = statusObject.requestStatusChangeReason,
         dataRequest = dataRequest,
-        answeringDataId = answeringDataId,
+        answeringDataId = statusObject.answeringDataId,
     )
 
     /**
@@ -57,5 +56,6 @@ data class RequestStatusEntity(
             accessStatus = accessStatus,
             creationTimestamp = creationTimestamp,
             requestStatusChangeReason = requestStatusChangeReason,
+            answeringDataId = answeringDataId,
         )
 }
