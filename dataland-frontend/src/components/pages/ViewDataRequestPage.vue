@@ -270,7 +270,6 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
-import { type DataTypeEnum, QaStatus } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
@@ -318,6 +317,7 @@ export default defineComponent({
       emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
       reopenMessageError: false,
+      answeringDataId: '',
     };
   },
   mounted() {
@@ -325,7 +325,8 @@ export default defineComponent({
       .catch((error) => console.error(error))
       .then(() => {
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
-        this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
+        this.getAnsweringDataId();
+        this.checkForAvailableData(this.storedDataRequest);
         this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
         void this.setUserAccessFields();
       })
@@ -354,26 +355,14 @@ export default defineComponent({
      * Method to check if there exist an approved dataset for a dataRequest
      * @param storedDataRequest dataRequest
      */
-    async checkForAvailableData(storedDataRequest: StoredDataRequest) {
-      try {
-        if (this.getKeycloakPromise) {
-          const dataset = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).backendClients.metaDataController.getListOfDataMetaInfo(
-            storedDataRequest.datalandCompanyId,
-            storedDataRequest.dataType as DataTypeEnum,
-            undefined,
-            storedDataRequest.reportingPeriod
-          );
-          for (const dataMetaInfo of dataset.data) {
-            if (dataMetaInfo.qaStatus == QaStatus.Accepted) {
-              this.isDatasetAvailable = true;
-              return;
-            }
-          }
-        }
-      } catch (error) {
-        console.error(error);
+    checkForAvailableData() {
+      if (this.answeringDataId.length > 0) this.isDatasetAvailable = true;
+      else {
+        const answeredStatuses: Array<RequestStatus> = [RequestStatus.Answered, RequestStatus.Resolved];
+        this.isDatasetAvailable =
+          this.storedDataRequest.dataRequestStatusHistory.filter((requestStatusRecord) =>
+            answeredStatuses.includes(requestStatusRecord.status)
+          ).length > 0;
       }
     },
     /**
@@ -525,9 +514,13 @@ export default defineComponent({
      * Navigates to the company view page
      * @returns the promise of the router push action
      */
-    goToResolveDataRequestPage() {
-      const url = `/companies/${this.storedDataRequest.datalandCompanyId}/frameworks/${this.storedDataRequest.dataType}`;
-      return router.push(url);
+    async goToResolveDataRequestPage() {
+      const companyId =
+        this.answeringDataId.length > 0
+          ? await this.getCompanyOfDataId(this.answeringDataId)
+          : this.storedDataRequest.datalandCompanyId;
+      const url = `/companies/${companyId}/frameworks/${this.storedDataRequest.dataType}`;
+      if (companyId) return router.push(url);
     },
     /**
      * Method to check if request status is answered
@@ -557,6 +550,35 @@ export default defineComponent({
      */
     isNewMessageAllowed() {
       return this.storedDataRequest.requestStatus == RequestStatus.Open;
+    },
+    /**
+     * Of all RequestStatusHistory records with a dataId, find the most recent one and return its dataId.
+     */
+    getAnsweringDataId() {
+      this.answeringDataId =
+        this.storedDataRequest.dataRequestStatusHistory
+          .filter((status) => status.answeringDataId !== undefined)
+          .reduce(function (mostRecentSoFar, current) {
+            return mostRecentSoFar && mostRecentSoFar.creationTimestamp > current.creationTimestamp
+              ? mostRecentSoFar
+              : current;
+          })?.answeringDataId ?? '';
+    },
+    /**
+     * Find the companyId of a given dataId by querying the metaDataController.
+     * @param dataId the dataId to poll for
+     */
+    async getCompanyOfDataId(dataId: string) {
+      try {
+        if (this.getKeycloakPromise) {
+          const dataset = await new ApiClientProvider(
+            this.getKeycloakPromise()
+          ).backendClients.metaDataController.getDataMetaInfo(dataId);
+          return dataset.data.companyId;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 });
