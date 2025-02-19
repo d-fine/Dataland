@@ -14,6 +14,7 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
+import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
 import org.dataland.e2etests.utils.VsmeTestUtils
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.AfterAll
@@ -28,7 +29,6 @@ import org.springframework.http.HttpStatus
 import java.io.File
 import java.math.BigDecimal
 import java.util.UUID
-import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Vsme {
