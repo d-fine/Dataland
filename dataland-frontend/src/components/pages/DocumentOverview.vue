@@ -106,7 +106,6 @@ const useMobileView = inject<boolean>('useMobileView', false);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
 const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>((retrieveAvailableDocumentCategories()));
-const totalRecords = ref(0);
 const rowsPerPage = 100;
 const firstRowIndex = ref(0);
 const currentChunkIndex = ref(0);
@@ -129,12 +128,13 @@ async function getAllDocumentsForFilters(): Promise<void> {
       const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
         .documentController;
       if (selectedDocumentType.value) {
-      documentsFiltered.value = await Promise.all(
+        const responses: DocumentMetaInfoResponse[][] = await Promise.all(
           selectedDocumentType.value.map(async (item) => {
-            return await documentControllerApi.searchForDocumentMetaInformation(props.companyId, item.documentCategoryDataType);
+            return (await documentControllerApi.searchForDocumentMetaInformation(props.companyId, item.documentCategoryDataType)).data;
           }))
+        documentsFiltered.value= responses.flat();
       } else{
-        documentsFiltered.value = await documentControllerApi.searchForDocumentMetaInformation(props.companyId);
+        documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
       }
     }
   } catch (error) {

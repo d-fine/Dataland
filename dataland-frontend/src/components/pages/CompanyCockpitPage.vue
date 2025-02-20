@@ -195,10 +195,10 @@ export default defineComponent({
      * Retrieves the latest documents metadata
      */
     async getLatestDocuments(): Promise<void> {
-      const docuemntCategories = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
+      const documentCategories = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
       const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
         .documentController;
-      for (const categoryKey of docuemntCategories) {
+      for (const categoryKey of documentCategories) {
         const category =
           DocumentMetaInfoDocumentCategoryEnum[categoryKey as keyof typeof DocumentMetaInfoDocumentCategoryEnum];
         this.latestDocuments[`latest${category}`] = (
