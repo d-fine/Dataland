@@ -105,6 +105,11 @@ echo "Configure and (re-)start health check for docker containers"
 # Sync health check files to the remote server
 rsync -av --mkpath ./health-check/ ubuntu@"$target_server_url":/tmp/health-check/
 # Process health check files and (re-)start services
-ssh ubuntu@"$target_server_url" "set -o allexport; source \"$location\"/.env; set +o allexport;
-                                 \"$location\"/health-check/configure_container_health_check.sh $loki_volume" || exit 1
+ssh ubuntu@"$target_server_url" "
+  chmod +x $location/health-check/configure_container_health_check.sh &&
+  set -o allexport &&
+  source \"$location\"/.env &&
+  set +o allexport &&
+  \"$location\"/health-check/configure_container_health_check.sh $loki_volume
+" || exit 1
 
