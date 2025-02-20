@@ -75,7 +75,7 @@
 import { Content, Page } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
 import { inject, onMounted, ref, watch } from 'vue';
-import { SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
+import {DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -89,10 +89,10 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   DocumentMetaInfoResponse,
-  SearchForDocumentMetaInformationDocumentCategoryEnum,
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import {humanizeStringOrNumber} from "@/utils/StringFormatter.ts";
 
 const props = defineProps<{
   companyId: string;
@@ -104,13 +104,8 @@ const footerContent = footerPage?.sections;
 const waitingForData = ref(true);
 const useMobileView = inject<boolean>('useMobileView', false);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
-const selectedDocumentType = ref<SearchForDocumentMetaInformationDocumentCategoryEnum>();
-const availableDocumentTypes: Array<SelectableItem> = Object.entries(DocumentMetaInfoDocumentCategoryEnum).map(
-  ([, value]) => ({
-    displayName: value,
-    disabled: false,
-  })
-);
+const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
+const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>((retrieveAvailableDocumentCategories()));
 const totalRecords = ref(0);
 const rowsPerPage = 100;
 const firstRowIndex = ref(0);
@@ -133,9 +128,14 @@ async function getAllDocumentsForFilters(): Promise<void> {
     if (getKeycloakPromise) {
       const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
         .documentController;
-      documentsFiltered.value = (
-        await documentControllerApi.searchForDocumentMetaInformation(props.companyId, selectedDocumentType.value)
-      ).data;
+      if (selectedDocumentType.value) {
+      documentsFiltered.value = await Promise.all(
+          selectedDocumentType.value.map(async (item) => {
+            return await documentControllerApi.searchForDocumentMetaInformation(props.companyId, item.documentCategoryDataType);
+          }))
+      } else{
+        documentsFiltered.value = await documentControllerApi.searchForDocumentMetaInformation(props.companyId);
+      }
     }
   } catch (error) {
     console.error(error);
@@ -165,6 +165,20 @@ function onPage(event: DataTablePageEvent) {
 function openMetaInfoDialog(documentId: string) {
   selectedDocumentId.value = documentId;
   isMetaInfoDialogOpen.value = true;
+}
+
+/**
+ * Gets list with all available document categories
+ * @returns array of availableDocumentTypes
+ */
+export function retrieveAvailableDocumentCategories(): Array<DocumentCategorySelectableItem> {
+  return  Object.entries(DocumentMetaInfoDocumentCategoryEnum).map(
+      ([, value]) => ({
+        displayName: humanizeStringOrNumber(value),
+        disabled: false,
+        documentCategoryDataType:value
+      })
+  );
 }
 
 onMounted(() => {

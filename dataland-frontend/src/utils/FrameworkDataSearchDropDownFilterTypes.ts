@@ -1,4 +1,5 @@
 import { type DataTypeEnum } from '@clients/backend';
+import {DocumentMetaInfoDocumentCategoryEnum} from "@clients/documentmanager";
 
 export interface SelectableItem {
   displayName: string;
@@ -11,4 +12,8 @@ export interface CountryCodeSelectableItem extends SelectableItem {
 
 export interface FrameworkSelectableItem extends SelectableItem {
   frameworkDataType: DataTypeEnum;
+}
+
+export interface DocumentCategorySelectableItem extends SelectableItem {
+  documentCategoryDataType:  typeof DocumentMetaInfoDocumentCategoryEnum[keyof typeof DocumentMetaInfoDocumentCategoryEnum];
 }
