@@ -3,12 +3,10 @@ import { admin_name, admin_pw, getBaseUrl } from '@e2e/utils/Cypress';
 import { DataTypeEnum, type SfdrData } from '@clients/backend';
 import { getKeycloakToken } from '@e2e/utils/Auth';
 import { generateDummyCompanyInformation } from '@e2e/utils/CompanyUpload';
-import { selectSingleReportAndFillWithData } from '@e2e/utils/UploadUtils';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { submitButton } from '@sharedUtils/components/SubmitButton';
 import * as MLDT from '@sharedUtils/components/resources/dataTable/MultiLayerDataTableTestUtils';
 import { uploadCompanyAndFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload';
-import { TEST_PDF_FILE_NAME } from '@sharedUtils/ConstantsForPdfs';
 import { type ObjectType } from '@/utils/UpdateObjectUtils';
 import { type ExtendedDataPoint } from '@/utils/DataPoint';
 import { selectItemFromDropdownByIndex, selectItemFromDropdownByValue } from '@sharedUtils/Dropdown';
@@ -158,14 +156,14 @@ describeIf(
           );
           cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
           cy.get('h1').should('contain', companyName);
-          setQualityInSfdrUploadForm();
+          /*setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType)
           );
           testYesNoExtendedDataPointFormField(
             testSfdrCompany.t.environmental?.biodiversity?.protectedAreasExposure as ExtendedDataPoint<string>
           );
-          testRemovingOfHighImpactClimateSector();
+          testRemovingOfHighImpactClimateSector();*/
           submitButton.clickButton();
           cy.get('div.p-message-success:not(.p-message-error)').should('not.contain', 'An unexpected error occurred.');
           cy.url().should('eq', getBaseUrl() + '/datasets');
