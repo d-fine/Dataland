@@ -71,8 +71,6 @@ fi
 # Create the loki_volume directory as a volume for the Loki container, if it does not already exist
 create_loki_volume $target_server_url $loki_volume
 
-configure_container_health_check $target_server_url $loki_volume
-
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
   ssh ubuntu@"$target_server_url" "mkdir -p $location/dataland-batch-manager/config; touch $location/dataland-batch-manager/config/perform_gleif_full_golden_copy_download_flag"
@@ -103,6 +101,10 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
 
-echo "(Re-)Start Health Check for Docker Containers"
-ssh ubuntu@"$target_server_url" "sudo systemctl restart health-check.service"
-ssh ubuntu@"$target_server_url" "sudo systemctl restart logrotate.timer"
+echo "Configure and (re-)start health check for docker containers"
+# Sync health check files to the remote server
+rsync -av --mkpath ./health-check/ ubuntu@"$target_server_url":/tmp/health-check/
+# Process health check files and (re-)start services
+ssh ubuntu@"$target_server_url" "set -o allexport; source \"$location\"/.env; set +o allexport;
+                                 \"$location\"/health-check/configure_container_health_check.sh $loki_volume" || exit 1
+
