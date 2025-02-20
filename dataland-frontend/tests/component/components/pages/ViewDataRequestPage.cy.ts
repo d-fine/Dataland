@@ -51,7 +51,9 @@ describe('Component tests for the view data request page', function (): void {
       reportingPeriod: dummyReportingYear,
       datalandCompanyId: dummyCompanyId,
       messageHistory: messageHistory,
-      dataRequestStatusHistory: [],
+      dataRequestStatusHistory: [
+        { status: requestStatus, creationTimestamp: dummyCreationTime, accessStatus: AccessStatus.Public },
+      ],
       lastModifiedDate: dummyLastModifiedDate,
       requestStatus: requestStatus,
       accessStatus: AccessStatus.Public,

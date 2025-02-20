@@ -558,11 +558,13 @@ export default defineComponent({
       this.answeringDataId =
         this.storedDataRequest.dataRequestStatusHistory
           .filter((status) => status.answeringDataId !== undefined)
-          .reduce(function (mostRecentSoFar, current) {
-            return mostRecentSoFar && mostRecentSoFar.creationTimestamp > current.creationTimestamp
-              ? mostRecentSoFar
-              : current;
-          })?.answeringDataId ?? '';
+          .reduce(
+            (mostRecentSoFar, current) =>
+              mostRecentSoFar && mostRecentSoFar.creationTimestamp > current.creationTimestamp
+                ? mostRecentSoFar
+                : current,
+            undefined
+          )?.answeringDataId ?? '';
     },
     /**
      * Find the companyId of a given dataId by querying the metaDataController.
