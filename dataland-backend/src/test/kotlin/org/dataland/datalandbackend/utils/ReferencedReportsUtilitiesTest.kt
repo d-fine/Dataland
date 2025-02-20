@@ -26,6 +26,7 @@ class ReferencedReportsUtilitiesTest {
     private val expectedFrameworkWithDataSource = "./json/frameworkTemplate/expectedFrameworkWithDataSources.json"
     private val templateWithReferencedReports = "./json/frameworkTemplate/templateWithReferencedReports.json"
     private val frameworkSpecification = "./json/frameworkTemplate/frameworkSpecification.json"
+    private val dataPointWithMultipleSources = "./json/frameworkTemplate/dataPointWithMultipleSources.json"
 
     private val testDate = "2023-11-04"
     private val anotherTestDate = "2023-05-03"
@@ -201,5 +202,29 @@ class ReferencedReportsUtilitiesTest {
         val testNode = TestResourceFileReader.getJsonNode(frameworkTemplate)
         referencedReportsUtilities.insertReferencedReportsIntoFrameworkSchema(testNode, null)
         assertEquals(testNode, TestResourceFileReader.getJsonNode(frameworkTemplate))
+    }
+
+    @Test
+    fun `check that parsing a nested object returns the expected reports`() {
+        val testContent = TestResourceFileReader.getJsonString(dataPointWithMultipleSources)
+        val expectedReports = listOf(
+            CompanyReport(
+                fileName = "SubBranch1",
+                fileReference = "1",
+            ),
+            CompanyReport(
+                fileName = "SubBranch2",
+                fileReference = "2",
+                publicationDate = LocalDate.parse(testDate),
+            ),
+            CompanyReport(
+                fileName = "Branch2",
+                fileReference = "3",
+                publicationDate = LocalDate.parse(anotherTestDate),
+            ),
+        )
+        val actualReports = mutableListOf<CompanyReport>()
+        referencedReportsUtilities.getAllCompanyReportsFromDataSource(testContent, actualReports)
+        assertEquals(expectedReports, actualReports)
     }
 }

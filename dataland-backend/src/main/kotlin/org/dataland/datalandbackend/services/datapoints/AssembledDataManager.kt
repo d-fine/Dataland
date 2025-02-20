@@ -269,13 +269,16 @@ class AssembledDataManager
                 if (dataPoint.isEmpty()) return@forEach
                 dataPointValidator.validateDataPoint(dataPointType, dataPoint, correlationId)
 
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
-                if (companyReport != null && referencedReports != null) {
-                    observedDocumentReferences.add(companyReport.fileReference)
-                    referencedReportsUtilities.validateReportConsistencyWithGlobalList(
-                        companyReport,
-                        referencedReports,
-                    )
+                val companyReports = mutableListOf<CompanyReport>()
+                referencedReportsUtilities.getAllCompanyReportsFromDataSource(dataPoint, companyReports)
+                companyReports.forEach { companyReport ->
+                    if (referencedReports != null) {
+                        observedDocumentReferences.add(companyReport.fileReference)
+                        referencedReportsUtilities.validateReportConsistencyWithGlobalList(
+                            companyReport,
+                            referencedReports,
+                        )
+                    }
                 }
             }
 
@@ -368,8 +371,9 @@ class AssembledDataManager
                     }.toMutableMap()
 
             allStoredDatapoints.values.forEach {
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(it.dataPoint)
-                if (companyReport != null) {
+                val companyReports = mutableListOf<CompanyReport>()
+                referencedReportsUtilities.getAllCompanyReportsFromDataSource(it.dataPoint, companyReports)
+                companyReports.forEach { companyReport ->
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }
             }

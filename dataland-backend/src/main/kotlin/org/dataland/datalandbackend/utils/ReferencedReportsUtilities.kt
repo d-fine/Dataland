@@ -3,6 +3,7 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.module.kotlin.contains
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
@@ -93,6 +94,27 @@ class ReferencedReportsUtilities(
             }
         if (exception != null) {
             throw exception
+        }
+    }
+
+    /**
+     * Extracts all company reports recursively from a string representation of a JSON node.
+     * @param content The string representation of the JSON node to extract the reports from
+     * @param allCompanyReports The list to store the extracted reports in
+     */
+    fun getAllCompanyReportsFromDataSource(content: String, allCompanyReports: MutableList<CompanyReport>) {
+        val contentNode = objectMapper.readTree(content)
+        if (contentNode.contains(DATA_SOURCE_FIELD)) {
+            val foundReport = getCompanyReportFromDataSource(content)
+            if (foundReport != null) {
+                allCompanyReports.add(foundReport)
+            }
+        } else {
+            val fields = contentNode.fields()
+            while (fields.hasNext()) {
+                val jsonField = fields.next()
+                getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(jsonField.value), allCompanyReports)
+            }
         }
     }
 
