@@ -87,7 +87,7 @@ const dialog = useDialog();
 type ViewPanelStates = 'LoadingDatasets' | 'DisplayingDatasets' | 'Error' | 'InsufficientRights';
 
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const injecHideEmptyFields = inject<{ value: boolean }>('hideEmptyFields');
+const injectHideEmptyFields = inject<{ value: boolean }>('hideEmptyFields');
 
 const apiClientProvider = new ApiClientProvider(assertDefined(getKeycloakPromise)());
 
@@ -99,7 +99,7 @@ const props = defineProps<{
   inReviewMode: boolean;
 }>();
 
-const hideEmptyFields = computed<boolean | undefined>(() => injecHideEmptyFields?.value);
+const hideEmptyFields = computed<boolean | undefined>(() => injectHideEmptyFields?.value);
 const frameworkDisplayName = computed(() => humanizeStringOrNumber(props.frameworkIdentifier));
 const sortedDataAndMetaInfo = computed(() => {
   return sortDatasetsByReportingPeriod(rawDataAndMetaInfoForDisplay.value);

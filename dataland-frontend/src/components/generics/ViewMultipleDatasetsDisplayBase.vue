@@ -1,6 +1,6 @@
 <template>
   <ViewFrameworkBase
-    :companyID="companyId"
+    :companyId="companyId"
     :dataType="dataType"
     :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
     @updateActiveDataMetaInfoForChosenFramework="handleUpdateActiveDataMetaInfo"

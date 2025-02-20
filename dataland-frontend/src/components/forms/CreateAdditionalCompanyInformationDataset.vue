@@ -261,8 +261,8 @@ export default defineComponent({
     },
 
     /**
-     * Loads the AdditionalCompanyInformation-Dataset identified by the provided dataId and pre-configures the form to contain the data
-     * from the dataset
+     * Loads the AdditionalCompanyInformation-Dataset identified by the provided reportingPeriod and companyId,
+     * and pre-configures the form to contain the data from the dataset
      * @param reportingPeriod the relevant reporting period
      * @param companyId the company id
      */

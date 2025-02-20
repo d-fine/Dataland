@@ -2,13 +2,12 @@
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
     <CompanyInfoSheet
-      :company-id="companyID"
+      :company-id="companyId"
       @fetched-company-information="handleFetchedCompanyInformation"
       :show-single-data-request-button="true"
       :framework="dataType"
       :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
     />
-
     <div v-if="isDataProcessedSuccessfully">
       <MarginWrapper
         class="text-left surface-0 dataland-toolbar"
@@ -65,13 +64,11 @@
             <DownloadDatasetModal
               v-if="!getAllPrivateFrameworkIdentifiers().includes(dataType)"
               :isDownloadModalOpen="isDownloadModalOpen"
-              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
-              :singleDataMetaInfoToDisplay="singleDataMetaInfoToDisplay"
+              :reportingPeriods="availableReportingPeriods"
               @close-download-modal="onCloseDownloadModal"
               @download-dataset="handleDatasetDownload"
               data-test="downloadModal"
-            >
-            </DownloadDatasetModal>
+            />
 
             <PrimeButton
               v-if="isEditableByCurrentUser"
@@ -82,7 +79,7 @@
             >
               <span class="px-2 py-1">EDIT DATA</span>
               <span
-                v-if="mapOfReportingPeriodToActiveDataset.size > 1 && !singleDataMetaInfoToDisplay"
+                v-if="availableReportingPeriods.length > 1 && !singleDataMetaInfoToDisplay"
                 class="material-icons-outlined"
                 >arrow_drop_down</span
               >
@@ -100,10 +97,9 @@
             </router-link>
           </div>
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
-            <SelectReportingPeriodDialog
-              :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
-              :action-on-click="ReportingPeriodTableActions.EditDataset"
-              @selected-reporting-period="handleReportingPeriodSelection"
+            <SimpleReportingPeriodSelectorDialog
+              :reporting-periods="availableReportingPeriods"
+              @selected-reporting-period="goToUpdateForm"
             />
           </OverlayPanel>
         </div>
@@ -134,14 +130,14 @@ import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 
-import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
+import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
 import QualityAssuranceButtons from '@/components/resources/frameworkDataSearch/QualityAssuranceButtons.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
 import type FrameworkDataSearchBar from '@/components/resources/frameworkDataSearch/FrameworkDataSearchBar.vue';
 import InputSwitch from 'primevue/inputswitch';
 import { hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
-import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
@@ -152,6 +148,8 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+
+type DropDownOption = { label: string; value: string };
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -165,13 +163,13 @@ export default defineComponent({
     TheFooter,
     PrimeButton,
     OverlayPanel,
-    SelectReportingPeriodDialog,
+    SimpleReportingPeriodSelectorDialog,
     QualityAssuranceButtons,
     InputSwitch,
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
-    companyID: {
+    companyId: {
       type: String,
       required: true,
     },
@@ -201,7 +199,6 @@ export default defineComponent({
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
       chosenDataTypeInDropdown: '',
-      dataTypesInDropdown: [] as { label: string; value: string }[],
       humanizeStringOrNumber,
       windowScrollHandler: (): void => {
         this.handleScroll();
@@ -209,11 +206,7 @@ export default defineComponent({
       pageScrolled: false,
       scrollEmittedByToolbar: false,
       latestScrollPosition: 0,
-      /**
-       * This object is filled if ViewFrameworkBase displays multiple datasets.
-       * If ViewFrameworkBase is used to display a single dataset, singleDataMetaInfoToDisplay is populated instead.
-       */
-      mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
+      activeDataForCurrentCompanyAndFramework: [] as Array<DataAndMetaInformation<FrameworkData>>,
       isDataProcessedSuccessfully: true,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
@@ -223,15 +216,11 @@ export default defineComponent({
   },
   provide() {
     return {
-      hideEmptyFields: computed(() => {
-        return this.hideEmptyFields;
-      }),
+      hideEmptyFields: computed(() => this.hideEmptyFields),
+      mapOfReportingPeriodToActiveDataset: computed(() => this.mapOfReportingPeriodToActiveDataset),
     };
   },
   computed: {
-    ReportingPeriodTableActions() {
-      return ReportingPeriodTableActions;
-    },
     isReviewableByCurrentUser() {
       return this.hasUserReviewerRights && this.singleDataMetaInfoToDisplay?.qaStatus === 'Pending';
     },
@@ -245,12 +234,46 @@ export default defineComponent({
       );
     },
     targetLinkForAddingNewDataset() {
-      return `/companies/${this.companyID ?? ''}/frameworks/upload`;
+      return `/companies/${this.companyId ?? ''}/frameworks/upload`;
+    },
+
+    dataTypesInDropdown(): DropDownOption[] {
+      const dataTypesDropDownOption = new Set<DropDownOption>();
+      this.activeDataForCurrentCompanyAndFramework.forEach((dataAndMetaInformation) => {
+        const dataType = dataAndMetaInformation.metaInfo.dataType;
+        if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
+          dataTypesDropDownOption.add({
+            label: humanizeStringOrNumber(dataType),
+            value: dataType,
+          });
+        }
+      });
+      return Array.from(dataTypesDropDownOption).sort((a, b) => a.value.localeCompare(b.value));
+    },
+
+    availableReportingPeriods(): string[] {
+      const reportingPeriods: string[] = [];
+      this.activeDataForCurrentCompanyAndFramework.forEach((dataAndMetaInformation) => {
+        reportingPeriods.push(dataAndMetaInformation.metaInfo.reportingPeriod);
+      });
+      return reportingPeriods.sort();
+    },
+
+    /**
+     * This object is filled if ViewFrameworkBase displays multiple datasets.
+     * If ViewFrameworkBase is used to display a single dataset, singleDataMetaInfoToDisplay is populated instead.
+     */
+    mapOfReportingPeriodToActiveDataset(): Map<string, DataMetaInformation> {
+      const map: Map<string, DataMetaInformation> = new Map();
+      this.activeDataForCurrentCompanyAndFramework.forEach((dataAndMetaInformation) => {
+        map.set(dataAndMetaInformation.metaInfo.reportingPeriod, dataAndMetaInformation.metaInfo);
+      });
+      return map;
     },
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? '';
-    void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
+    void this.getAllActiveDataForCurrentCompanyAndFramework();
 
     void this.setViewPageAttributesForUser();
 
@@ -266,7 +289,7 @@ export default defineComponent({
     },
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
-     * @param fetchedCompanyInformation the company information for the current company Id
+     * @param fetchedCompanyInformation the company information for the current companyId
      */
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
@@ -277,23 +300,26 @@ export default defineComponent({
      */
     editDataset(event: Event) {
       if (this.singleDataMetaInfoToDisplay) {
-        this.gotoUpdateForm(this.singleDataMetaInfoToDisplay.reportingPeriod);
-      } else if (this.mapOfReportingPeriodToActiveDataset.size > 1 && !this.singleDataMetaInfoToDisplay) {
+        console.log('SingleDataMetaInfoToDisplay event');
+        this.goToUpdateForm(this.singleDataMetaInfoToDisplay.reportingPeriod);
+      } else if (this.availableReportingPeriods.length > 1 && !this.singleDataMetaInfoToDisplay) {
+        console.log('MultiDataMetaInfoToDisplay event');
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
         if (panel) {
           panel.toggle(event);
         }
-      } else if (this.mapOfReportingPeriodToActiveDataset.size == 1 && !this.singleDataMetaInfoToDisplay) {
-        this.gotoUpdateForm(Array.from(this.mapOfReportingPeriodToActiveDataset.values())[0].reportingPeriod);
+      } else if (this.availableReportingPeriods.length == 1 && !this.singleDataMetaInfoToDisplay) {
+        console.log('MultiDataMetaInfoToDisplay length 1 event');
+        this.goToUpdateForm(this.availableReportingPeriods[0]);
       }
     },
     /**
      * Navigates to the data update form
      * @param reportingPeriod reporting period
      */
-    gotoUpdateForm(reportingPeriod: string) {
+    goToUpdateForm(reportingPeriod: string) {
       void router.push(
-        `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
+        `/companies/${assertDefined(this.companyId)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
       );
     },
     /**
@@ -320,52 +346,8 @@ export default defineComponent({
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
-        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
+        void router.push(`/companies/${this.companyId}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
-    },
-
-    /**
-     * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
-     * frameworks are also included in the frontend constant which contains all frameworks that have view-pages
-     * implemented, the distinct frameworks are set as options for the framework-dropdown element.
-     * @param listOfDataMetaInfo a list of data meta info
-     */
-    getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
-      this.dataTypesInDropdown = [];
-      const setOfAvailableFrameworksForCompany = [
-        ...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataType)),
-      ];
-      const listOfDistinctAvailableAndViewableFrameworksForCompany: string[] = [];
-      setOfAvailableFrameworksForCompany.forEach((dataType) => {
-        if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
-          listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
-        }
-      });
-      listOfDistinctAvailableAndViewableFrameworksForCompany.sort((a, b) => a.localeCompare(b));
-      listOfDistinctAvailableAndViewableFrameworksForCompany.forEach((dataType) => {
-        this.dataTypesInDropdown.push({ label: humanizeStringOrNumber(dataType), value: dataType });
-      });
-    },
-
-    /**
-     * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
-     * active data meta info as value.
-     * It only takes into account data meta info whose dataType equals the current dataType prop value.
-     * @param listOfActiveDataMetaInfo The list to be used as input for the map.
-     */
-    setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-      listOfActiveDataMetaInfo: DataMetaInformation[]
-    ) {
-      this.mapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>();
-      listOfActiveDataMetaInfo.forEach((dataMetaInfo: DataMetaInformation) => {
-        if (dataMetaInfo.dataType === this.dataType) {
-          if (dataMetaInfo.currentlyActive) {
-            this.mapOfReportingPeriodToActiveDataset.set(dataMetaInfo.reportingPeriod, dataMetaInfo);
-          } else {
-            throw TypeError('Received inactive dataset meta info from Dataland Backend');
-          }
-        }
-      });
     },
 
     /**
@@ -374,25 +356,22 @@ export default defineComponent({
      * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
      * info of the currently active dataset.
      */
-    async getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit() {
+    async getAllActiveDataForCurrentCompanyAndFramework() {
       try {
-        const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
-        const metaDataControllerApi = backendClients.metaDataController;
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
-        this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
-        );
-        this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
-        );
-        this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const frameworkDataApi: PublicFrameworkDataApi<FrameworkData> | null = getFrameworkDataApiForIdentifier(
+          this.dataType,
+          apiClientProvider
+        ) as PublicFrameworkDataApi<FrameworkData>;
+        const apiResponse = await frameworkDataApi.getAllCompanyData(this.companyId, true);
+        this.activeDataForCurrentCompanyAndFramework = apiResponse.data;
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         this.isDataProcessedSuccessfully = false;
         console.error(error);
       }
     },
+
     /**
      * Set if the user is allowed to upload data for the current company
      * @returns a promise that resolves to void, so the successful execution of the function can be awaited
@@ -409,21 +388,13 @@ export default defineComponent({
         })
         .then(() => {
           if (!this.hasUserUploaderRights) {
-            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyID, this.getKeycloakPromise).then(
+            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
               (hasUserUploaderRights) => {
                 this.hasUserUploaderRights = hasUserUploaderRights;
               }
             );
           }
         });
-    },
-    /**
-     * Handles the selection of the reporting period in th dropdown panel
-     * @param reportingPeriodTableEntry object, which was chosen
-     * @returns a router push to the edit url of the chosen dataset
-     */
-    handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
-      return router.push(reportingPeriodTableEntry.editUrl);
     },
 
     /**
@@ -512,15 +483,18 @@ export default defineComponent({
     },
   },
   watch: {
-    companyID() {
-      void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
+    companyId() {
+      void this.getAllActiveDataForCurrentCompanyAndFramework();
     },
     isReviewableByCurrentUser() {
       this.hideEmptyFields = !this.hasUserReviewerRights;
     },
     dataType(newDataType: string) {
       this.chosenDataTypeInDropdown = newDataType;
-      void this.getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit();
+      void this.getAllActiveDataForCurrentCompanyAndFramework();
+    },
+    mapOfReportingPeriodToActiveDataset() {
+      this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
     },
   },
 });

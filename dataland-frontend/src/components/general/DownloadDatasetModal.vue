@@ -59,7 +59,6 @@
 import { defineComponent, type PropType } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
-import type { DataMetaInformation } from '@clients/backend';
 import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
 
 export default defineComponent({
@@ -71,22 +70,14 @@ export default defineComponent({
       required: false,
       default: false,
     },
-    /**
-     * mapOfReportingPeriodToActiveDataset is filled if the ViewFrameworkBase component displays multiple datasets.
-     * If ViewFrameworkBase is used to display a single dataset, singleDataMetaInfoToDisplay is populated instead.
-     */
-    mapOfReportingPeriodToActiveDataset: {
-      type: Map as PropType<Map<string, DataMetaInformation>>,
+    reportingPeriods: {
+      type: Array as PropType<Array<string>>,
       required: true,
-    },
-    singleDataMetaInfoToDisplay: {
-      type: Object as PropType<DataMetaInformation>,
     },
   },
   emits: ['closeDownloadModal', 'downloadDataset'],
   data() {
     return {
-      reportingPeriods: [] as Array<string>,
       exportFileTypes: [ExportFileTypes.CsvFile, ExportFileTypes.ExcelFile, ExportFileTypes.JsonFile],
       selectedReportingPeriod: '',
       selectedFileFormat: '',
@@ -109,12 +100,6 @@ export default defineComponent({
     isDownloadModalOpen(newValue: boolean): void {
       this.isModalVisible = newValue;
     },
-    mapOfReportingPeriodToActiveDataset() {
-      this.updateReportingPeriods();
-    },
-    singleDataMetaInfoToDisplay() {
-      this.updateReportingPeriods();
-    },
     selectedReportingPeriod() {
       this.showReportingPeriodError = false;
     },
@@ -124,18 +109,6 @@ export default defineComponent({
   },
 
   methods: {
-    /**
-     * Update the reportingPeriods whenever the DataMetaInformation has finished loading and the passed prop
-     * 'mapOfReportingPeriodToActiveDataset' is filled
-     */
-    updateReportingPeriods() {
-      if (this.singleDataMetaInfoToDisplay) {
-        this.reportingPeriods = [this.singleDataMetaInfoToDisplay.reportingPeriod];
-      } else {
-        this.reportingPeriods = Array.from(this.mapOfReportingPeriodToActiveDataset.keys()).sort();
-      }
-    },
-
     /**
      * Handle the clickEvent of the Download Button
      */
