@@ -89,14 +89,12 @@ import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import router from '@/router';
-import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
   components: {
-    DownloadProgressSpinner,
     DocumentLink,
     ClaimOwnershipPanel,
     CompanyInfoSheet,
