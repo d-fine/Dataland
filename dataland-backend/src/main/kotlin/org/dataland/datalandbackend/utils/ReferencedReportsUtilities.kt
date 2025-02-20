@@ -102,7 +102,10 @@ class ReferencedReportsUtilities(
      * @param content The string representation of the JSON node to extract the reports from
      * @param allCompanyReports The list to store the extracted reports in
      */
-    fun getAllCompanyReportsFromDataSource(content: String, allCompanyReports: MutableList<CompanyReport>) {
+    fun getAllCompanyReportsFromDataSource(
+        content: String,
+        allCompanyReports: MutableList<CompanyReport>,
+    ) {
         val contentNode = objectMapper.readTree(content)
         if (contentNode.contains(DATA_SOURCE_FIELD)) {
             val foundReport = getCompanyReportFromDataSource(content)

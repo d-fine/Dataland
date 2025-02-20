@@ -207,22 +207,23 @@ class ReferencedReportsUtilitiesTest {
     @Test
     fun `check that parsing a nested object returns the expected reports`() {
         val testContent = TestResourceFileReader.getJsonString(dataPointWithMultipleSources)
-        val expectedReports = listOf(
-            CompanyReport(
-                fileName = "SubBranch1",
-                fileReference = "1",
-            ),
-            CompanyReport(
-                fileName = "SubBranch2",
-                fileReference = "2",
-                publicationDate = LocalDate.parse(testDate),
-            ),
-            CompanyReport(
-                fileName = "Branch2",
-                fileReference = "3",
-                publicationDate = LocalDate.parse(anotherTestDate),
-            ),
-        )
+        val expectedReports =
+            listOf(
+                CompanyReport(
+                    fileName = "SubBranch1",
+                    fileReference = "1",
+                ),
+                CompanyReport(
+                    fileName = "SubBranch2",
+                    fileReference = "2",
+                    publicationDate = LocalDate.parse(testDate),
+                ),
+                CompanyReport(
+                    fileName = "Branch2",
+                    fileReference = "3",
+                    publicationDate = LocalDate.parse(anotherTestDate),
+                ),
+            )
         val actualReports = mutableListOf<CompanyReport>()
         referencedReportsUtilities.getAllCompanyReportsFromDataSource(testContent, actualReports)
         assertEquals(expectedReports, actualReports)
