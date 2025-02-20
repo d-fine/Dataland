@@ -92,8 +92,7 @@ else
   docker compose "${compose_profiles[@]}" up -d --build
 fi
 
-health_check_log_dir="${LOKI_VOLUME}/health-check-log"
-mkdir -p "$health_check_log_dir"
+mkdir -p "${LOKI_VOLUME}/health-check-log"
 ./health-check/healthCheck.sh
 
 #start the backend

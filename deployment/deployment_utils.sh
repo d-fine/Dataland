@@ -87,7 +87,7 @@ configure_container_health_check () {
   echo "Configure health check for docker containers"
 
   # Sync health check files to the remote server
-  rsync -av --mkpath ./health-check/ ubuntu@dev2.dataland.com:/tmp/health-check/
+  rsync -av --mkpath ./health-check/ ubuntu@"$target_server_url":/tmp/health-check/
 
   # Move health check scripts and services to their destinations
   ssh ubuntu@"$target_server_url" "
