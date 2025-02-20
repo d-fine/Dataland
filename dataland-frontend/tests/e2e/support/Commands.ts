@@ -24,7 +24,7 @@ export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuer
 }
 
 /**
- * Closes the cookie banner if it exists and does nothing if it doesn't exist
+ * Close the cookie banner if it exists and do nothing if it doesn't exist.
  */
 export function closeCookieBannerIfItExists(): void {
   cy.get('body').then(($body) => {

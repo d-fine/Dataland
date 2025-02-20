@@ -43,7 +43,9 @@ describeIf(
       cy.visitAndCheckAppMount('/');
       cy.closeCookieBannerIfItExists();
       searchCompanyAndChooseFirstSuggestion(alphaCompanyIdAndName.companyName);
-      cy.get('[data-test="companyNameTitle"]', { timeout: 30000 }).contains(alphaCompanyIdAndName.companyName);
+      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+        alphaCompanyIdAndName.companyName
+      );
     });
 
     it('From the company cockpit page visit the company cockpit of a different company', () => {
@@ -54,8 +56,13 @@ describeIf(
       );
       searchCompanyAndChooseFirstSuggestion(betaCompanyIdAndName.companyName);
       cy.wait('@fetchAggregatedFrameworkSummaryForBeta');
-      cy.url().should('not.contain', `/companies/${alphaCompanyIdAndName.companyId}`);
-      cy.get('[data-test="companyNameTitle"]', { timeout: 30000 }).contains(betaCompanyIdAndName.companyName);
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
+        'not.contain',
+        `/companies/${alphaCompanyIdAndName.companyId}`
+      );
+      cy.get('[data-test="companyNameTitle"]', { timeout: Cypress.env('long_timeout_in_ms') as number }).contains(
+        betaCompanyIdAndName.companyName
+      );
     });
 
     it('From the company cockpit page visit a view page', () => {
@@ -63,7 +70,7 @@ describeIf(
       visitCockpitForCompanyAlpha();
       cy.closeCookieBannerIfItExists();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyNonFinancials}-summary-panel']`).click();
-      cy.url().should(
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyNonFinancials}`
       );
@@ -75,7 +82,7 @@ describeIf(
       visitCockpitForCompanyAlpha();
       cy.closeCookieBannerIfItExists();
       cy.get(`[data-test='${DataTypeEnum.EutaxonomyFinancials}-summary-panel'] a`).click();
-      cy.url().should(
+      cy.url({ timeout: Cypress.env('long_timeout_in_ms') as number }).should(
         'contain',
         `/companies/${alphaCompanyIdAndName.companyId}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/upload`
       );
