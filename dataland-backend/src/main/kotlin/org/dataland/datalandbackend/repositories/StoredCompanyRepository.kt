@@ -198,9 +198,9 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
                 "ON PARENT_IDENTIFIERS.identifier_value = CHILD_COMPANIES.parent_company_lei " +
                 "LEFT JOIN company_identifiers CHILD_IDENTIFIERS " +
                 "ON CHILD_IDENTIFIERS.company_id = CHILD_COMPANIES.company_id " +
+                "AND CHILD_IDENTIFIERS.identifier_type = 'Lei'" +
                 "WHERE PARENT_IDENTIFIERS.identifier_type = 'Lei' " +
-                "AND PARENT_IDENTIFIERS.company_id = :#{#companyId} " +
-                "AND CHILD_IDENTIFIERS.identifier_type = 'Lei';",
+                "AND PARENT_IDENTIFIERS.company_id = :#{#companyId};",
     )
     fun getCompanySubsidiariesByParentId(
         @Param("companyId") companyId: String,
