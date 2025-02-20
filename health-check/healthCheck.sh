@@ -1,12 +1,12 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 # Check if LOKI_VOLUME is set
-if [ -z "$LOKI_VOLUME" ]; then
+if [[ -z "$LOKI_VOLUME" ]]; then
     echo "LOKI_VOLUME environment variable is not set."
     exit 1
 fi
-
-health_check_log_dir="${LOKI_VOLUME}/health-check-log"
 
 # Infinite loop
 while true; do
@@ -14,7 +14,7 @@ while true; do
   for container in $(docker ps --format '{{.Names}}'); do
 
       # Define your custom log file name
-      custom_log_file="$health_check_log_dir/health-check.log"
+      custom_log_file="${LOKI_VOLUME}/health-check-log/health-check.log"
 
       # Check health status and log it
       health_status=$(docker inspect --format '{{.State.Health.Status}}' "$container" 2>/dev/null)

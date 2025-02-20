@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euxo pipefail
 
 # Compute the environment label from TARGETSERVER_URL
 env_value=$(echo "${TARGETSERVER_URL}" | awk -F. '{print $1}')
