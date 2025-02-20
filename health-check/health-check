@@ -1,6 +1,6 @@
 ${LOKI_VOLUME}/health-check-log/*.log {
-    hourly
-    rotate 2
+    daily
+    rotate 7
     missingok
     notifempty
     compress
