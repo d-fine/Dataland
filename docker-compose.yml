@@ -101,6 +101,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
+    #This update requires data migration on deployed servers
     image: postgres:17.2@sha256:3267c505060a0052e5aa6e5175a7b41ab6b04da2f8c4540fc6e98a37210aa2d3
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
