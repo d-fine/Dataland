@@ -45,7 +45,7 @@
     "@faker-js/faker": "9.4.0",
     "@tsconfig/node20": "20.1.4",
     "@types/markdown-it": "14.1.2",
-    "@types/node": "22.13.1",
+    "@types/node": "22.13.4",
     "@vitejs/plugin-vue": "5.2.1",
     "@vue/eslint-config-prettier": "10.2.0",
     "@vue/eslint-config-typescript": "14.3.0",
