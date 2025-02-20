@@ -158,7 +158,6 @@ describeIf(
           );
           cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
           cy.get('h1').should('contain', companyName);
-          selectSingleReportAndFillWithData();
           setQualityInSfdrUploadForm();
           setReferenceToAllUploadedReports(
             Object.keys(testSfdrCompany.t.general.general.referencedReports as ObjectType)
