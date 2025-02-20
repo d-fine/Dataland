@@ -9,27 +9,16 @@
             <div class="card__title">Latest Documents</div>
             <div class="card__separator" />
             <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum">
-              <div class="card__subtitle">{{ label }}</div>
+              <div class="card__subtitle">{{ humanizeStringOrNumber(label.toString()) }}</div>
               <div v-if="getDocumentData(category).length === 0">-</div>
               <div v-else>
                 <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                  <span
-                    @click="downloadDocument(document.documentId)"
-                    class="text-primary cursor-pointer"
-                    style="flex: 0 0 auto"
-                  >
-                    <DownloadProgressSpinner :percent-completed="percentCompleted" />
-                    <span class="underline pl-1">{{
-                      truncatedDocumentName(document.documentName ? document.documentName : document.documentId)
-                    }}</span>
-                    ({{ document.publicationDate }})
-                    <i
-                      class="pi pi-download pl-1"
-                      data-test="download-icon"
-                      aria-hidden="true"
-                      style="font-size: 12px"
+                    <DocumentLink
+                        :download-name="truncatedDocumentName(document.documentName ? document.documentName : document.documentId) +
+                    ' ('+ document.publicationDate +')' "
+                        :file-reference="document.documentId"
+                        show-icon
                     />
-                  </span>
                 </div>
               </div>
             </div>
@@ -61,7 +50,7 @@
             />
           </div>
           <div class="p-col-12 text-right">
-            <div class="document-button cursor-pointer flex flex-row align-items-center" @click="toggleShowAll">
+            <div class="document-button cursor-pointer flex flex-row align-items-center justify-content-end" @click="toggleShowAll">
               <span class="text-primary font-semibold d-letters">
                 {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
               </span>
@@ -101,11 +90,14 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import router from '@/router';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
   components: {
     DownloadProgressSpinner,
+    DocumentLink,
     ClaimOwnershipPanel,
     CompanyInfoSheet,
     FrameworkSummaryPanel,
@@ -189,6 +181,7 @@ export default defineComponent({
     void this.getLatestDocuments();
   },
   methods: {
+    humanizeStringOrNumber,
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -224,20 +217,6 @@ export default defineComponent({
     getDocumentData(category: keyof typeof DocumentMetaInfoDocumentCategoryEnum) {
       const key = `latest${category}`;
       return this.latestDocuments[key] || [];
-    },
-
-    /**
-     * Method to download report
-     */
-    async downloadDocument(Id: string) {
-      const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-        .documentController;
-      try {
-        await documentControllerApi.getDocument(Id);
-      } catch (error) {
-        console.error(error);
-      }
-      this.percentCompleted = undefined;
     },
 
     /**
