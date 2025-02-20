@@ -243,12 +243,21 @@ export default defineComponent({
       }
       this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
+    /**
+     * Expands or collapses the framework tiles
+     */
     toggleShowAll() {
       this.showAllFrameworks = !this.showAllFrameworks;
     },
+    /**
+     * routing to DocumentOverview page
+     */
     goToDocumentOverview() {
       void router.push(`/companies/${this.companyId}/documents`);
     },
+    /**
+     * Shorten docuemnt names
+     */
     truncatedDocumentName(name: string) {
       return name.length > 25 ? name.slice(0, 25) + '...' : name;
     },

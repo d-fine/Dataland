@@ -2,10 +2,10 @@
  * Module to convert string to a human-readable text
  */
 
-import { HumanizedYesNoNa } from '@/utils/YesNoNa';
-import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
-import { DataTypeEnum } from '@clients/backend';
-import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
+import {HumanizedYesNoNa} from '@/utils/YesNoNa';
+import {getBasePublicFrameworkDefinition} from '@/frameworks/BasePublicFrameworkRegistry';
+import {DataTypeEnum} from '@clients/backend';
+import {getBasePrivateFrameworkDefinition} from '@/frameworks/BasePrivateFrameworkRegistry';
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -14,8 +14,7 @@ import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrame
  */
 export function convertKebabCaseToPascalCase(rawText: string): string {
   const camelCase = rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
-  const pascalCase = camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
-  return pascalCase;
+  return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 }
 
 /**
@@ -81,6 +80,8 @@ function humanizeViaMapping(rawText: string): string {
     productionanduseofpersistentorganicpollutants:
       'Production and use of persistent organic pollutants (POPs Convention)',
     exportimportofhazardouswaste: 'Export/import of hazardous waste (Basel Convention)',
+    policy: 'Policy',
+    other: 'Other Document'
   };
 
   const lowerCaseText = rawText.toLowerCase();

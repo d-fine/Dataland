@@ -48,11 +48,12 @@
             </template>
           </Column>
           <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-            <template #body>
-              <span class="text-primary no-underline font-bold cursor-pointer"
-                ><span> DOWNLOAD </span>
-                <i class="pi pi-download pl-1" data-test="download-icon" aria-hidden="true" style="font-size: 12px" />
-              </span>
+            <template #body="document">
+              <DocumentLink
+                  :download-name=" 'DOWNLOAD'"
+                  :file-reference="document.data.documentId"
+                  show-icon
+              />
             </template>
           </Column>
         </DataTable>
@@ -91,6 +92,7 @@ import {
   SearchForDocumentMetaInformationDocumentCategoryEnum,
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
+import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
 
 const props = defineProps<{
   companyId: string;
