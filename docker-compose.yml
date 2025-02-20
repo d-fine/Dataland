@@ -141,7 +141,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: ghcr.io/d-fine/dataland/postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/postgres:15.10
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -180,7 +180,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: ghcr.io/d-fine/dataland/postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/postgres:15.10
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -284,7 +284,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: ghcr.io/d-fine/dataland/postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/postgres:15.10
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -303,7 +303,7 @@ services:
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: ghcr.io/d-fine/dataland/postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/postgres:15.10
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -461,7 +461,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: ghcr.io/d-fine/dataland/postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/postgres:15.10
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -521,7 +521,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: ghcr.io/d-fine/dataland/postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/postgres:15.10
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -573,7 +573,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - email-service-db
-    image: ghcr.io/d-fine/dataland/postgres:17.0@sha256:f176fef320ed02c347e9f85352620945547a9a23038f02b57cf7939a198182ae
+    image: ghcr.io/d-fine/dataland/postgres:17.0
     volumes:
       - email_service_data:/var/lib/postgresql/data
     environment:
