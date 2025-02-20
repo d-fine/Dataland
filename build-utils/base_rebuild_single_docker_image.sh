@@ -64,6 +64,7 @@ docker_build_args=(     --build-arg PROXY_ENVIRONMENT="${PROXY_ENVIRONMENT:-}" \
                         --build-arg DATALAND_LOKI_VERSION="${DATALAND_LOKI_VERSION:-}" \
                         --build-arg DATALAND_ALLOY_VERSION="${DATALAND_ALLOY_VERSION:-}" \
                         --build-arg DATALAND_GRAFANA_VERSION="${DATALAND_GRAFANA_VERSION:-}" \
+                        --build-arg DATALAND_POSTGRES_VERSION="${DATALAND_POSTGRES_VERSION:-}" \
                         --build-arg DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DOCUMENT_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
                         --build-arg DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES="${DATA_REQUEST_UPLOAD_MAX_FILE_SIZE_IN_MEGABYTES:-}" \
                         --build-arg MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER="${MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER:-}" \
