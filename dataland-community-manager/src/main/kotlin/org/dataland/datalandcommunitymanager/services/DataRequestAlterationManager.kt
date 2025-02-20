@@ -136,14 +136,9 @@ class DataRequestAlterationManager
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
                         dataType = setOf(metaData.dataType),
-                        userId = null,
-                        emailAddress = null,
                         datalandCompanyId = metaData.companyId,
                         reportingPeriod = metaData.reportingPeriod,
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
-                        accessStatus = null,
-                        adminComment = null,
-                        requestPriority = null,
                     ),
                 )
             dataRequestEntities.forEach {
@@ -185,14 +180,9 @@ class DataRequestAlterationManager
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
                         dataType = setOf(metaData.dataType),
-                        userId = null,
-                        emailAddress = null,
                         datalandCompanyId = metaData.companyId,
                         reportingPeriod = metaData.reportingPeriod,
                         requestStatus = setOf(RequestStatus.Closed),
-                        accessStatus = null,
-                        adminComment = null,
-                        requestPriority = null,
                     ),
                 )
 

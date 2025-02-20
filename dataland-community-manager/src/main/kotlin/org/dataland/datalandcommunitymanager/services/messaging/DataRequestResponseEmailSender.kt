@@ -162,17 +162,17 @@ class DataRequestResponseEmailSender(
             )
         val message =
             EmailMessage(
-                dataRequestUpdatedMail,
-                listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
-                emptyList(),
-                emptyList(),
+                typedEmailContent = dataRequestUpdatedMail,
+                receiver = listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
+                cc = emptyList(),
+                bcc = emptyList(),
             )
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            objectMapper.writeValueAsString(message),
-            MessageType.SEND_EMAIL,
-            correlationId,
-            ExchangeName.SEND_EMAIL,
-            RoutingKeyNames.EMAIL,
+            body = objectMapper.writeValueAsString(message),
+            type = MessageType.SEND_EMAIL,
+            correlationId = correlationId,
+            exchange = ExchangeName.SEND_EMAIL,
+            routingKey = RoutingKeyNames.EMAIL,
         )
     }
 }

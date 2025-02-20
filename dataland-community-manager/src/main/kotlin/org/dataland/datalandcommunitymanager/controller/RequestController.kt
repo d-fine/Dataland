@@ -72,6 +72,7 @@ class RequestController(
         singleDataRequest: SingleDataRequest,
         userId: String?,
     ): ResponseEntity<SingleDataRequestResponse> {
+        // Maybe put the next few lines of code into a suitably named function.
         if (
             userId != null &&
             !DatalandAuthentication.fromContext().roles.contains(

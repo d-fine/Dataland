@@ -16,6 +16,7 @@ import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -33,6 +34,8 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.spy
 import org.mockito.kotlin.verifyNoInteractions
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -294,5 +297,33 @@ class SingleDataRequestManagerTest {
 
         verify(mockDataRequestProcessingUtils, times(0))
             .storeDataRequestEntityAsOpen(any(), any(), any(), any(), any())
+    }
+
+    @Test
+    fun `check that requests are preprocessed with regard to the correct userIdToUse when no impersonation is used`() {
+        val spySingleDataRequestManager = spy(singleDataRequestManager)
+        val mockSingleDataRequest = mock(SingleDataRequest::class.java)
+        val expectedUserIdToUse = DatalandAuthentication.fromContext().userId
+
+        assertThrows<NullPointerException> {
+            spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
+        }
+
+        verify(spySingleDataRequestManager, times(1))
+            .preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
+    }
+
+    @Test
+    fun `check that requests are preprocessed with regard to the correct userIdToUse when impersonation is used`() {
+        val spySingleDataRequestManager = spy(singleDataRequestManager)
+        val mockSingleDataRequest = mock(SingleDataRequest::class.java)
+        val expectedUserIdToUse = "impersonated-user-id"
+
+        assertThrows<NullPointerException> {
+            spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest, expectedUserIdToUse)
+        }
+
+        verify(spySingleDataRequestManager, times(1))
+            .preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
     }
 }

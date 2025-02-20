@@ -67,12 +67,7 @@ class SingleDataRequestManager
             singleDataRequest: SingleDataRequest,
             userId: String? = null,
         ): SingleDataRequestResponse {
-            val userIdToUse: String
-            if (userId == null) {
-                userIdToUse = DatalandAuthentication.fromContext().userId
-            } else {
-                userIdToUse = userId
-            }
+            val userIdToUse = userId ?: DatalandAuthentication.fromContext().userId
             val preprocessedRequest = preprocessSingleDataRequest(singleDataRequest, userIdToUse)
 
             dataRequestLogger.logMessageForReceivingSingleDataRequest(
