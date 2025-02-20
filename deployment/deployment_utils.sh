@@ -44,6 +44,7 @@ build_directories () {
 
   mkdir -p $target_dir/dataland-keycloak/users
   mkdir -p $target_dir/environments
+  mkdir -p $target_dir/health-check
 
   echo "Copying env variable files."
   cat ./*github_env.log > "$target_dir"/.env
@@ -60,6 +61,9 @@ build_directories () {
   cp -r ./dataland-keycloak/realms "$target_dir"/dataland-keycloak
 
   cp ./deployment/{initialize_keycloak,migrate_keycloak_users,deployment_utils,docker_utils}.sh "$target_dir"/dataland-keycloak
+
+  echo "Copying health check configuration file."
+  cp ./deployment/configure_container_health_check.sh "$target_dir"/health-check
 }
 
 wait_for_docker_containers_healthy_remote () {
@@ -79,44 +83,3 @@ create_loki_volume () {
   fi"
 }
 
-configure_container_health_check () {
-  target_server_url="$1"
-  loki_volume="$2"
-  environment_file="/etc/default/health-check"
-
-  echo "Configure health check for docker containers"
-
-  # Sync health check files to the remote server
-  rsync -av --mkpath ./health-check/ ubuntu@"$target_server_url":/tmp/health-check/
-
-  # Move health check scripts and services to their destinations
-  ssh ubuntu@"$target_server_url" "
-      set -e
-      sudo mv /tmp/health-check/healthCheck.sh /usr/local/bin/healthCheck.sh
-      sudo mv /tmp/health-check/health-check.service /etc/systemd/system/health-check.service
-      sudo mv /tmp/health-check/logrotate.service /etc/systemd/system/logrotate.service
-      sudo mv /tmp/health-check/logrotate.timer /etc/systemd/system/logrotate.timer
-    "
-
-  # Configure environment file and logrotate settings
-  ssh ubuntu@"$target_server_url" "
-      echo 'LOKI_VOLUME=$loki_volume' | sudo tee $environment_file > /dev/null
-      sudo sed 's|\${LOKI_VOLUME}|$loki_volume|g' /tmp/health-check/health-check | sudo tee /etc/logrotate.d/health-check > /dev/null
-      sudo chown root:root /etc/logrotate.d/health-check
-      sudo chmod +x /usr/local/bin/healthCheck.sh
-    "
-
-  # Reload systemd manager configuration and enable services
-  ssh ubuntu@"$target_server_url" "
-      sudo systemctl daemon-reload
-      sudo systemctl enable health-check.service
-      sudo systemctl enable logrotate.timer
-    "
-
-  # Ensure the health check log directory exists
-  ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume/health-check-log' ]; then
-    echo 'Creating $loki_volume/health-check-log dir as volume for docker container health check logs'
-    sudo mkdir -p '$loki_volume/health-check-log'
-    sudo chmod a+w '$loki_volume/health-check-log'
-  fi"
-}
