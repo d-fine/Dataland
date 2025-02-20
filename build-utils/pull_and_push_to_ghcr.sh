@@ -6,7 +6,7 @@ for DOCKER_HUB_IMAGE in "$@"; do
   docker pull "$DOCKER_HUB_IMAGE"
 
   # Extract image name for tagging
-  IMAGE_NAME=$(echo "$DOCKER_HUB_IMAGE")
+  IMAGE_NAME=$(echo "$DOCKER_HUB_IMAGE" | cut -d'@' -f1)
   GHCR_IMAGE="ghcr.io/d-fine/dataland/$IMAGE_NAME"
 
   # Tag the image for GHCR
