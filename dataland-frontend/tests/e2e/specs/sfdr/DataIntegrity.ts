@@ -62,10 +62,8 @@ describeIf(
      * @param referencedReports all reports already uploaded
      */
     function setReferenceToAllUploadedReports(referencedReports: string[]): void {
-      referencedReports.push(TEST_PDF_FILE_NAME);
-      selectHighImpactClimateSectorAndReport(0, TEST_PDF_FILE_NAME);
       referencedReports.forEach((it, index) => {
-        selectHighImpactClimateSectorAndReport(index + 1, it);
+        selectHighImpactClimateSectorAndReport(index, it);
       });
     }
 
