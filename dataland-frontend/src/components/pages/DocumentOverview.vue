@@ -175,7 +175,7 @@ function openMetaInfoDialog(documentId: string) {
  * Gets list with all available document categories
  * @returns array of availableDocumentTypes
  */
-export function retrieveAvailableDocumentCategories(): Array<DocumentCategorySelectableItem> {
+function retrieveAvailableDocumentCategories(): Array<DocumentCategorySelectableItem> {
   return Object.entries(DocumentMetaInfoDocumentCategoryEnum).map(([, value]) => ({
     displayName: humanizeStringOrNumber(value),
     disabled: false,
