@@ -55,6 +55,7 @@ class DataRequestUploadListenerTest {
     private val message = "test message"
     private val contacts = setOf("test@example.com", "test2@example.com")
     private val errorMessageForRequestStatusHistory = "The status history was not patched correctly."
+    private val dummyContacts = setOf("someContact@example.com", "valid@example.com")
 
     @BeforeAll
     fun postTestDocuments() {
@@ -73,7 +74,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = mapOfIds["companyId"].toString(),
                 dataType = SingleDataRequest.DataType.eutaxonomyMinusNonMinusFinancials,
                 reportingPeriods = setOf("2022", "2023"),
-                contacts = setOf("someContact@example.com", "valid@example.com"),
+                contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             )
         jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.PremiumUser)
@@ -113,7 +114,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = testCompanyWithParent.companyId,
                 dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = setOf("2023"),
-                contacts = setOf("someContact@example.com", "valid@example.com"),
+                contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             ),
         )
@@ -122,7 +123,7 @@ class DataRequestUploadListenerTest {
                 companyIdentifier = testParentCompany.companyId,
                 dataType = SingleDataRequest.DataType.sfdr,
                 reportingPeriods = setOf("2023"),
-                contacts = setOf("someContact@example.com", "valid@example.com"),
+                contacts = dummyContacts,
                 message = "This is a test. The current timestamp is ${System.currentTimeMillis()}",
             ),
         )
