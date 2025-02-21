@@ -1,0 +1,7 @@
+[Unit]
+Description=Logrotate Service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/health-check
+ExecStart=/usr/sbin/logrotate /etc/logrotate.conf

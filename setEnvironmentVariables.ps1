@@ -47,7 +47,7 @@
 # If needed, set to your sonar token [Environment]::SetEnvironmentVariable("SONAR_TOKEN", "", [System.EnvironmentVariableTarget]::User)
 # Only needed in CD.yaml - no need to set locally [Environment]::SetEnvironmentVariable("SSH_PRIVATE_KEY", "", [System.EnvironmentVariableTarget]::User)
 # Only needed in CD.yaml - no need to set locally [Environment]::SetEnvironmentVariable("TARGETSERVER_HOST_KEYS", "", [System.EnvironmentVariableTarget]::User)
-# Only needed in CD.yaml - no need to set locally [Environment]::SetEnvironmentVariable("TARGETSERVER_URL", "", [System.EnvironmentVariableTarget]::User)
+[Environment]::SetEnvironmentVariable("TARGETSERVER_URL", "local-dev.dataland.com", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_ID", "", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_GOOGLE_SECRET", "", [System.EnvironmentVariableTarget]::User)
 # If needed (to execute CI Tests locally) - set to Value that can be found in internal wiki [Environment]::SetEnvironmentVariable("KEYCLOAK_LINKEDIN_ID", "", [System.EnvironmentVariableTarget]::User)
