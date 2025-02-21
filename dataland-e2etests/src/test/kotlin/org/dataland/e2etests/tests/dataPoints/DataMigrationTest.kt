@@ -9,7 +9,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.tests.dataPoints.AssembledDatasetTest.LinkedQaReportTestData
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
@@ -34,7 +34,7 @@ class DataMigrationTest {
 
     @BeforeAll
     fun postTestDocuments() {
-        DocumentManagerAccessor().uploadAllTestDocumentsAndAssurePersistence()
+        DocumentControllerApiAccessor().uploadAllTestDocumentsAndAssurePersistence()
     }
 
     @BeforeAll

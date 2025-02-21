@@ -31,7 +31,7 @@ class StorageController(
         correlationId: String,
     ): ResponseEntity<String> {
         logger.info("Selecting data from database with data ID: $dataId. Correlation ID: $correlationId.")
-        return ResponseEntity.ok(stringDataStore.selectDataSet(dataId, correlationId))
+        return ResponseEntity.ok(stringDataStore.selectDataset(dataId, correlationId))
     }
 
     override fun selectBlobById(

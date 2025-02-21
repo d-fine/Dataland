@@ -4,7 +4,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -18,7 +18,7 @@ import org.springframework.http.HttpStatus
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Sfdr {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
 
     private val listOfOneSfdrDataset = apiAccessor.testDataProviderForSfdrData.getTData(1)
     private val listOfOneCompanyInformation =

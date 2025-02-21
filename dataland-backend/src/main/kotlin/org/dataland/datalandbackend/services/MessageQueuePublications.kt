@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.slf4j.LoggerFactory
@@ -107,11 +108,35 @@ class MessageQueuePublications(
         bypassQa: Boolean,
         correlationId: String,
     ) {
-        publishDatasetMessage(
+        publishDatasetUploadMessage(
             dataId = dataId,
             bypassQa = bypassQa,
             correlationId = correlationId,
             routingKey = RoutingKeyNames.DATASET_UPLOAD,
+        )
+    }
+
+    /**
+     * Method to publish a message that the meta info of a data set has been updated
+     * @param dataId The ID of the uploaded data set
+     * @param uploaderUserId new uploaderUserId of storable dataset
+     * @param correlationId The correlation ID of the request initiating the event
+     */
+    fun publishDatasetMetaInfoPatchMessage(
+        dataId: String,
+        uploaderUserId: String,
+        correlationId: String,
+    ) {
+        logger.info(
+            "Publish message that metaInfo for data set with ID '$dataId' has been updated. " +
+                "Correlation ID: '$correlationId'.",
+        )
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(DataMetaInfoPatchPayload(dataId = dataId, uploaderUserId = uploaderUserId)),
+            type = MessageType.METAINFO_UPDATED,
+            correlationId = correlationId,
+            exchange = ExchangeName.BACKEND_DATASET_EVENTS,
+            routingKey = RoutingKeyNames.METAINFORMATION_PATCH,
         )
     }
 
@@ -127,7 +152,7 @@ class MessageQueuePublications(
         correlationId: String,
     ) {
         logger.info("Publish message that dataset with ID '$dataId' needs to undergo QA. Correlation ID: '$correlationId'.")
-        publishDatasetMessage(
+        publishDatasetUploadMessage(
             dataId = dataId,
             bypassQa = bypassQa,
             correlationId = correlationId,
@@ -181,7 +206,7 @@ class MessageQueuePublications(
      * @param correlationId The correlation ID of the request initiating the event
      * @param routingKey The routing key to steer which consumers pick up on the event
      */
-    private fun publishDatasetMessage(
+    private fun publishDatasetUploadMessage(
         dataId: String,
         bypassQa: Boolean,
         correlationId: String,

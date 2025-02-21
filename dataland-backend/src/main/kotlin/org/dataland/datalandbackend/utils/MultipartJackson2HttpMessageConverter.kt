@@ -10,7 +10,7 @@ import java.lang.reflect.Type
 
 /**
  * A HttpMessage converter that accepts application/octet-stream Multipart chunks and converts them using Jackson.
- * The implementation is restricted to only work for the SmeData parameter in the SmeDataController.
+ * The implementation is restricted to only work for the VsmeData parameter in the VsmeDataController.
  * This workaround is required to make the Swagger-UI work as it does not send the correct Content-Type for the Json.
  * The issue in the Swagger-Ui GitHub repo is still open. There is a Dataland-backlog item to follow up on this.
  */

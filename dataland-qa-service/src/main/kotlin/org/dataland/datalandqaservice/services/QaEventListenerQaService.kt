@@ -1,9 +1,9 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandbackendutils.utils.QaBypass
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -14,6 +14,7 @@ import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectExcep
 import org.dataland.datalandmessagequeueutils.messages.ManualQaRequestedMessage
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
 import org.dataland.datalandmessagequeueutils.messages.data.DataIdPayload
+import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
@@ -53,15 +54,18 @@ class QaEventListenerQaService
         private val dataPointQaReviewManager: DataPointQaReviewManager,
         private val qaReportManager: QaReportManager,
         private val metaDataControllerApi: MetaDataControllerApi,
+        private val dataPointControllerApi: DataPointControllerApi,
         private val assembledDataMigrationManager: AssembledDataMigrationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
         /**
          * Method to retrieve message from dataStored exchange and constructing new one for qualityAssured exchange
+         * In case of DATASET_UPLOAD OR DATASET_QA events, we generate a new QaReviewEntity entry in the database.
+         * In case of METAINFORMATION_PATCH, the corresponding entry is patched.
          * @param payload the message body as a json string
          * @param correlationId the correlation ID of the current user process
-         * @param type the type of the message
+         * @param messageType the type of the message
          */
         @RabbitListener(
             bindings = [
@@ -76,41 +80,52 @@ class QaEventListenerQaService
                             ],
                         ),
                     exchange = Exchange(ExchangeName.BACKEND_DATASET_EVENTS, declare = "false"),
-                    key = [RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.DATASET_QA],
+                    key = [RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.METAINFORMATION_PATCH, RoutingKeyNames.DATASET_QA],
                 ),
             ],
         )
-        fun addDatasetToQaReviewRepository(
+        fun processBackendDatasetEvents(
+            message: Message,
             @Payload payload: String,
             @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-            @Header(MessageHeaderKey.TYPE) type: String,
+            @Header(MessageHeaderKey.TYPE) messageType: String,
         ) {
-            MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+            val receivedRoutingKey = message.messageProperties.receivedRoutingKey
 
             MessageQueueUtils.rejectMessageOnException {
-                val dataUploadedPayload = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
-                val dataId = dataUploadedPayload.dataId
-                MessageQueueUtils.validateDataId(dataId)
-                val bypassQa: Boolean = dataUploadedPayload.bypassQa
+                when (receivedRoutingKey) {
+                    RoutingKeyNames.DATASET_UPLOAD, RoutingKeyNames.DATASET_QA -> {
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.PUBLIC_DATA_RECEIVED)
+                        val messagePayload =
+                            MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper)
+                        MessageQueueUtils.validateDataId(messagePayload.dataId)
 
-                logger.info("Received data with dataId $dataId and bypassQA $bypassQa on QA message queue (correlation Id: $correlationId)")
+                        qaReviewManager.addDatasetToQaReviewRepository(
+                            messagePayload.dataId,
+                            messagePayload.bypassQa,
+                            correlationId,
+                        )
+                    }
 
-                val triggeringUserId = requireNotNull(metaDataControllerApi.getDataMetaInfo(dataId).uploaderUserId)
+                    RoutingKeyNames.METAINFORMATION_PATCH -> {
+                        MessageQueueUtils.validateMessageType(messageType, MessageType.METAINFO_UPDATED)
+                        val messagePayload =
+                            MessageQueueUtils.readMessagePayload<DataMetaInfoPatchPayload>(payload, objectMapper)
+                        MessageQueueUtils.validateDataId(messagePayload.dataId)
 
-                val (qaStatus, comment) = QaBypass.getCommentAndStatusForBypass(bypassQa)
+                        messagePayload.uploaderUserId?.let {
+                            qaReviewManager.patchUploaderUserIdInQaReviewEntry(messagePayload.dataId, it, correlationId)
+                        } ?: throw MessageQueueRejectException(
+                            "Received message to update uploaderUserId in QA database but " +
+                                "transmitted uploaderUserId was null.",
+                        )
+                    }
 
-                val qaReviewEntity =
-                    qaReviewManager.saveQaReviewEntity(
-                        dataId = dataId,
-                        qaStatus = qaStatus,
-                        triggeringUserId = triggeringUserId,
-                        comment = comment,
-                        correlationId = correlationId,
+                    else -> throw MessageQueueRejectException(
+                        "Routing Key '$receivedRoutingKey' unknown. " +
+                            "Expected Routing Key ${RoutingKeyNames.DATASET_UPLOAD} or ${RoutingKeyNames.METAINFORMATION_PATCH}",
                     )
-
-                qaReviewManager.sendQaStatusUpdateMessage(
-                    qaReviewEntity = qaReviewEntity, correlationId = correlationId,
-                )
+                }
             }
         }
 
@@ -162,7 +177,10 @@ class QaEventListenerQaService
                         ),
                     )
                 cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                    messageToSend, MessageType.QA_STATUS_UPDATED, correlationId, ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                    messageToSend,
+                    MessageType.QA_STATUS_UPDATED,
+                    correlationId,
+                    ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
                     RoutingKeyNames.DOCUMENT,
                 )
             }
@@ -199,10 +217,30 @@ class QaEventListenerQaService
         ) {
             MessageQueueUtils.validateMessageType(type, MessageType.DELETE_DATA)
             MessageQueueUtils.rejectMessageOnException {
-                val dataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
-                MessageQueueUtils.validateDataId(dataId)
-                qaReportManager.deleteAllQaReportsForDataId(dataId, correlationId)
-                qaReviewManager.deleteAllByDataId(dataId, correlationId)
+                val deletedDataId = MessageQueueUtils.readMessagePayload<DataUploadedPayload>(payload, objectMapper).dataId
+                MessageQueueUtils.validateDataId(deletedDataId)
+
+                val qaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(deletedDataId)!!
+                val formerlyActiveDataId =
+                    qaReviewManager.getDataIdOfCurrentlyActiveDataset(
+                        qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
+                    )
+
+                qaReportManager.deleteAllQaReportsForDataId(deletedDataId, correlationId)
+                qaReviewManager.deleteAllByDataId(deletedDataId, correlationId)
+                if (deletedDataId == formerlyActiveDataId) {
+                    val newActiveDataId =
+                        qaReviewManager
+                            .getDataIdOfCurrentlyActiveDataset(
+                                qaReviewEntity.companyId, qaReviewEntity.framework, qaReviewEntity.reportingPeriod,
+                            )
+                    if (newActiveDataId != null) {
+                        val newQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(newActiveDataId)
+                        qaReviewManager.sendQaStatusUpdateMessage(
+                            qaReviewEntity = requireNotNull(newQaReviewEntity), correlationId = correlationId,
+                        )
+                    }
+                }
             }
         }
 

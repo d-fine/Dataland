@@ -7,7 +7,7 @@ import org.dataland.datalandqaservice.openApiClient.model.QaReportMetaInformatio
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DocumentManagerAccessor
+import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.dataland.e2etests.utils.UploadConfiguration
 import org.dataland.e2etests.utils.UploadInfo
@@ -26,7 +26,7 @@ import org.dataland.datalandqaservice.openApiClient.model.SfdrData as SfdrQaRepo
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class QaReportControllerTest {
     private val apiAccessor = ApiAccessor()
-    private val documentManagerAccessor = DocumentManagerAccessor()
+    private val documentManagerAccessor = DocumentControllerApiAccessor()
     private val qaApiAccessor = QaApiAccessor()
 
     private val testSfdrDataset =

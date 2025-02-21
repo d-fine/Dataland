@@ -28,9 +28,15 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.anyBoolean
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.reset
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.core.Message
@@ -58,8 +64,8 @@ class DataManagerTest(
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
     @Autowired val cloudEventsMessageHandler: CloudEventMessageHandler,
 ) {
-    val mockStorageClient: StorageControllerApi = mock(StorageControllerApi::class.java)
-    val messageQueuePublications: MessageQueuePublications = mock(MessageQueuePublications::class.java)
+    val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
+    val mockMessageQueuePublications: MessageQueuePublications = mock<MessageQueuePublications>()
     val testDataProvider = TestDataProvider(objectMapper)
     lateinit var dataManager: DataManager
     lateinit var spyDataManager: DataManager
@@ -68,11 +74,12 @@ class DataManagerTest(
     val dataUUID = "JustSomeUUID"
 
     @BeforeEach
-    fun reset() {
+    fun setup() {
+        reset(mockStorageClient, mockMessageQueuePublications)
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, dataMetaInformationManager,
-                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, mockMessageQueuePublications,
             )
         spyDataManager = spy(dataManager)
         messageQueueListenerForDataManager =
@@ -105,12 +112,8 @@ class DataManagerTest(
 
     @Test
     fun `check that an exception is thrown when non matching dataId to dataType pair is requested from data storage`() {
-        val storableEuTaxonomyDatasetForNonFinancials: StorableDataset =
-            addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
-        val dataId =
-            dataManager.storeDataset(
-                storableEuTaxonomyDatasetForNonFinancials, false, correlationId,
-            )
+        val euTaxonomyNonFinancialDataset = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+        val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
         val thrown =
             assertThrows<InvalidInputApiException> {
                 dataManager.getPublicDataset(dataId, DataType("eutaxonomy-financials"), correlationId)
@@ -124,12 +127,8 @@ class DataManagerTest(
 
     @Test
     fun `check that an exception is thrown if the received data from the data storage is empty`() {
-        val storableEuTaxonomyDatasetForNonFinancials: StorableDataset =
-            addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
-        val dataId =
-            dataManager.storeDataset(
-                storableEuTaxonomyDatasetForNonFinancials, false, correlationId,
-            )
+        val euTaxonomyNonFinancialDataset = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+        val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
@@ -144,16 +143,12 @@ class DataManagerTest(
 
     @Test
     fun `check that an exception is thrown if the received data from the data storage has an unexpected type`() {
-        val storableEuTaxonomyDatasetForNonFinancials: StorableDataset =
-            addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
-        val dataId =
-            dataManager.storeDataset(
-                storableEuTaxonomyDatasetForNonFinancials, false, correlationId,
-            )
-        val expectedDataTypeName =
-            getExpectedDataTypeName(
-                storableEuTaxonomyDatasetForNonFinancials, dataId, "eutaxonomy-financials",
-            )
+        val euTaxonomyNonFinancialDataset = addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+        val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
+        val expectedDataTypeName = euTaxonomyNonFinancialDataset.dataType.name
+        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
+            objectMapper.writeValueAsString(euTaxonomyNonFinancialDataset.copy(dataType = DataType("eutaxonomy-financials"))),
+        )
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
             getSingleDataStoredMessage(dataId),
         )
@@ -164,18 +159,6 @@ class DataManagerTest(
         assertEquals(
             "The meta-data of dataset $dataId differs between the data store and the database", thrown.message,
         )
-    }
-
-    private fun getExpectedDataTypeName(
-        storableDataset: StorableDataset,
-        dataId: String,
-        unexpectedDataTypeName: String,
-    ): String {
-        val expectedDataTypeName = storableDataset.dataType.name
-        `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
-            objectMapper.writeValueAsString(storableDataset.copy(dataType = DataType(unexpectedDataTypeName))),
-        )
-        return expectedDataTypeName
     }
 
     @Test
@@ -228,15 +211,36 @@ class DataManagerTest(
             addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
 
         `when`(
-            messageQueuePublications.publishDatasetUploadedMessage(
+            mockMessageQueuePublications.publishDatasetUploadedMessage(
                 anyString(), anyBoolean(), anyString(),
             ),
         ).thenThrow(AmqpException::class.java)
         assertThrows<AmqpException> {
-            spyDataManager.storeDatasetInTemporaryStoreAndSendMessage(
+            spyDataManager.storeDatasetInTemporaryStoreAndSendUploadMessage(
                 dataUUID, storableEuTaxonomyDatasetForNonFinancials, false, correlationId,
             )
         }
+    }
+
+    @Test
+    fun `check that processing a patch event works as expected`() {
+        val storableEuTaxonomyDatasetForNonFinancials =
+            addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt()
+
+        doNothing().whenever(mockMessageQueuePublications).publishDatasetMetaInfoPatchMessage(any(), any(), anyString())
+
+        assertDoesNotThrow {
+            spyDataManager.storeDatasetInTemporaryStoreAndSendPatchMessage(
+                dataUUID, storableEuTaxonomyDatasetForNonFinancials, correlationId,
+            )
+        }
+
+        verify(mockMessageQueuePublications, times(1))
+            .publishDatasetMetaInfoPatchMessage(
+                dataUUID,
+                storableEuTaxonomyDatasetForNonFinancials.uploaderUserId,
+                correlationId,
+            )
     }
 
     @Test
@@ -247,7 +251,7 @@ class DataManagerTest(
                 qaStatus = QaStatus.Pending, company = testDataProvider.getEmptyStoredCompanyEntity(),
                 reportingPeriod = "2023", currentlyActive = true,
             )
-        val mockDataMetaInformationManager = mock(DataMetaInformationManager::class.java)
+        val mockDataMetaInformationManager = mock<DataMetaInformationManager>()
         `when`(mockDataMetaInformationManager.getDataMetaInformationByDataId(anyString())).thenReturn(mockMetaInfo)
         `when`(mockStorageClient.selectDataById(anyString(), anyString())).thenThrow(
             ClientException(statusCode = HttpStatus.NOT_FOUND.value()),
@@ -255,13 +259,10 @@ class DataManagerTest(
         dataManager =
             DataManager(
                 objectMapper, companyQueryManager, mockDataMetaInformationManager,
-                mockStorageClient, dataManagerUtils, companyRoleChecker, messageQueuePublications,
+                mockStorageClient, dataManagerUtils, companyRoleChecker, mockMessageQueuePublications,
             )
         assertThrows<ResourceNotFoundApiException> {
-            dataManager.getPublicDataset(
-                mockMetaInfo.dataId,
-                DataType("lksg"), "",
-            )
+            dataManager.getPublicDataset(mockMetaInfo.dataId, DataType("lksg"), "")
         }
         assertThrows<ResourceNotFoundApiException> {
             dataManager.getPublicDataset("i-exist-by-no-means", DataType("lksg"), "")
@@ -376,11 +377,7 @@ class DataManagerTest(
 
         val messageWithChangedQAStatus =
             objectMapper.writeValueAsString(
-                QaStatusChangeMessage(
-                    dataId,
-                    newQaStatus,
-                    dataId,
-                ),
+                QaStatusChangeMessage(dataId, newQaStatus, dataId),
             )
         assertDoesNotThrow {
             messageQueueListenerForDataManager.changeQaStatus(
@@ -407,11 +404,7 @@ class DataManagerTest(
 
         val messageWithChangedQAStatus =
             objectMapper.writeValueAsString(
-                QaStatusChangeMessage(
-                    oldDataId,
-                    QaStatus.Rejected,
-                    newDataId,
-                ),
+                QaStatusChangeMessage(oldDataId, QaStatus.Rejected, newDataId),
             )
         assertDoesNotThrow {
             messageQueueListenerForDataManager.changeQaStatus(
