@@ -30,8 +30,8 @@ class ReferencedReportsUtilities(
         private const val DATA_SOURCE_FIELD = "dataSource"
 
         const val REFERENCED_REPORTS_ID = "referencedReports"
-        private val logger = LoggerFactory.getLogger(javaClass)
     }
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Parses the referenced reports from a JSON leaf.
@@ -85,7 +85,8 @@ class ReferencedReportsUtilities(
                     "and inconsistent with the publication date listed in the referenced reports '${matchingReport.publicationDate}'. " +
                     "The publication date of the report will be overwritten to '${matchingReport.publicationDate}'.",
             )
-        } else if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
+        }
+        if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
             throw InvalidInputApiException(
                 "Inconsistent file name",
                 "The file name of the report '${report.fileName}' is not consistent " +
