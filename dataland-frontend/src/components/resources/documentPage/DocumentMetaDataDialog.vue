@@ -3,52 +3,60 @@
     id="documentMetaDataDialog"
     :dismissable-mask="true"
     :modal="true"
-    header="Header"
+    header="Document Details"
     class="col-6"
     v-model:visible="internalDialogVisible"
     @hide="closeDialog"
   >
-    <template #header>
-      <div v-if="metaData" class="p-datatable p-component">
-        <h2 class="m-0">Document Details</h2>
-        <div class="p-datatable-wrapper overflow-auto">
-          <table class="p-datatable-table" aria-label="Data point content">
-            <tbody class="p-datatable-body">
-              <tr>
-                <th class="headers-bg">Name</th>
-                <td class="nowrap">
-                  <DocumentLink
-                    :download-name="metaData.documentName ? metaData.documentName : metaData.documentId"
-                    :file-reference="metaData.documentId"
-                    show-icon
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th class="headers-bg">Publication date</th>
-                <td>{{ metaData.publicationDate }}</td>
-              </tr>
-              <tr>
-                <th class="headers-bg">Document type</th>
-                <td>{{ metaData?.documentCategory }}</td>
-              </tr>
-              <tr v-if="metaData.reportingPeriod">
-                <th class="headers-bg">Reporting period</th>
-                <td class="nowrap">{{ metaData.reportingPeriod }}</td>
-              </tr>
-              <tr>
-                <th class="headers-bg">Upload time</th>
-                <td>{{ metaData.uploadTime }}</td>
-              </tr>
-              <tr>
-                <th class="headers-bg">Linked companies</th>
-                <td>{{ metaData.companyIds }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <div v-if="metaData" class="p-datatable p-component">
+      <div class="p-datatable-wrapper overflow-auto">
+        <table class="p-datatable-table" aria-label="Data point content">
+          <tbody class="p-datatable-body">
+            <tr>
+              <th class="headers-bg">Name</th>
+              <td class="nowrap">
+                <DocumentLink
+                  :download-name="metaData.documentName ? metaData.documentName : metaData.documentId"
+                  :file-reference="metaData.documentId"
+                  show-icon
+                />
+              </td>
+            </tr>
+            <tr>
+              <th class="headers-bg">Publication date</th>
+              <td>{{ metaData.publicationDate }}</td>
+            </tr>
+            <tr>
+              <th class="headers-bg">Document type</th>
+              <td>{{ metaData?.documentCategory }}</td>
+            </tr>
+            <tr v-if="metaData.reportingPeriod">
+              <th class="headers-bg">Reporting period</th>
+              <td class="nowrap">{{ metaData.reportingPeriod }}</td>
+            </tr>
+            <tr>
+              <th class="headers-bg">Upload time</th>
+              <td>{{ metaData.uploadTime }}</td>
+            </tr>
+            <tr>
+              <th class="headers-bg">Linked companies</th>
+              <td>
+                <span v-for="(name, index) in metaData.companyIds" :key="index">
+                  <a
+                    :href="`${baseURL}/companies/${name}`"
+                    target="_blank"
+                    style="border: 0 none; text-decoration: none; color: #ff6813"
+                  >
+                   company: {{ name }}<br />
+                    <br />
+                  </a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </template>
+    </div>
   </PrimeDialog>
 </template>
 
@@ -70,6 +78,7 @@ const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise')
 const internalDialogVisible = ref(props.dialogVisible);
 const emit = defineEmits(['update:dialogVisible']);
 const metaData = ref<DocumentMetaInfoEntity | null>(null);
+const baseURL = ref(window.location.origin);
 
 /**
  * Get metadata of document
@@ -95,6 +104,9 @@ watch(
   (newValue) => {
     if (internalDialogVisible.value !== newValue) {
       internalDialogVisible.value = newValue;
+    }
+    if (newValue && props.documentId) {
+      getDocumentMetaInformation();
     }
   }
 );
