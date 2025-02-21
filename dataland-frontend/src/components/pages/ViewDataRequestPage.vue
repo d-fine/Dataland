@@ -580,7 +580,7 @@ export default defineComponent({
      */
     goToResolveDataRequestPage() {
       if (this.answeringDataSet && this.answeringDataSet.ref)
-        return router.push(this.answeringDataSet.ref.split(this.answeringDataSet.dataId)[0]);
+        return router.push(this.answeringDataSet.ref.split('/' + this.answeringDataSet.dataId)[0]);
     },
     /**
      * Method to check if request status is answered
