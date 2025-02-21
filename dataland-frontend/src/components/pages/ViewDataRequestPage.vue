@@ -150,7 +150,7 @@
               <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
             </div>
             <div
-              v-show="isDatasetAvailable"
+              v-show="answeringDataSet"
               class="link claim-panel-text"
               style="font-weight: bold"
               data-test="viewDataset"
@@ -270,6 +270,7 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
+import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
@@ -304,7 +305,6 @@ export default defineComponent({
     return {
       toggleEmailDetailsError: false,
       successModalIsVisible: false,
-      isDatasetAvailable: false,
       reopenModalIsVisible: false,
       reopenMessage: '',
       reopenedModalIsVisible: false,
@@ -317,7 +317,7 @@ export default defineComponent({
       emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
       reopenMessageError: false,
-      answeringDataId: '',
+      answeringDataSet: undefined as DataMetaInformation | undefined,
     };
   },
   mounted() {
@@ -325,8 +325,7 @@ export default defineComponent({
       .catch((error) => console.error(error))
       .then(() => {
         this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
-        this.getAnsweringDataId();
-        this.checkForAvailableData();
+        this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
         this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
         void this.setUserAccessFields();
       })
@@ -355,15 +354,52 @@ export default defineComponent({
      * Method to check if there exist an approved dataset for a dataRequest
      * @param storedDataRequest dataRequest
      */
-    checkForAvailableData() {
-      if (this.answeringDataId.length > 0) this.isDatasetAvailable = true;
-      else {
-        const answeredStatuses: Array<RequestStatus> = [RequestStatus.Answered, RequestStatus.Resolved];
-        this.isDatasetAvailable =
-          this.storedDataRequest.dataRequestStatusHistory.filter((requestStatusRecord) =>
-            answeredStatuses.includes(requestStatusRecord.status)
-          ).length > 0;
+    async checkForAvailableData(storedDataRequest: StoredDataRequest) {
+      try {
+        if (this.getKeycloakPromise) {
+          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
+          this.answeringDataSet = await this.getDataMetaInfo(
+            storedDataRequest.datalandCompanyId,
+            storedDataRequest.dataType,
+            storedDataRequest.reportingPeriod,
+            apiClientProvider
+          );
+          if (!this.answeringDataSet) {
+            const parentCompanyId = await this.getParentCompanyId(storedDataRequest.datalandCompanyId);
+            if (!parentCompanyId) return;
+            this.answeringDataSet = await this.getDataMetaInfo(
+              parentCompanyId,
+              storedDataRequest.dataType,
+              storedDataRequest.reportingPeriod,
+              apiClientProvider
+            );
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
+    },
+    /**
+     * Retrieve the meta data object of the active data set identified by the given parameters.
+     * @param companyId the company to which the dataset belongs
+     * @param dataType the framework to search for
+     * @param reportingPeriod the reporting period to search for
+     * @param apiClientProvider an api client provider to use when polling the backend
+     * @return the meta data object if found, else "undefined"
+     */
+    async getDataMetaInfo(
+      companyId: string,
+      dataType: string,
+      reportingPeriod: string,
+      apiClientProvider: ApiClientProvider
+    ): Promise<DataMetaInformation | undefined> {
+      const datasets = await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
+        companyId,
+        dataType as DataTypeEnum,
+        true,
+        reportingPeriod
+      );
+      return datasets.data.length > 0 ? datasets.data[0] : undefined;
     },
     /**
      * Method to get the request from the api
@@ -382,17 +418,45 @@ export default defineComponent({
       }
     },
     /**
-     * Method to get the company Name from the backend
+     * Method to get the company information from the backend
+     * @param companyId companyId
+     */
+    async getCompanyInformation(companyId: string) {
+      try {
+        if (this.getKeycloakPromise) {
+          const companyDataController = new ApiClientProvider(this.getKeycloakPromise()).backendClients
+            .companyDataController;
+          return (await companyDataController.getCompanyInfo(companyId)).data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
+     * Method to get the company name from the backend
      * @param companyId companyId
      */
     async getCompanyName(companyId: string) {
+      const companyInformation = await this.getCompanyInformation(companyId);
+      if (companyInformation) this.companyName = companyInformation.companyName;
+    },
+    /**
+     * Get the id of the parent company.
+     * @param companyId the company whose parent shall be found
+     */
+    async getParentCompanyId(companyId: string) {
+      const companyInformation = await this.getCompanyInformation(companyId);
+      if (!companyInformation?.parentCompanyLei) return undefined;
       try {
         if (this.getKeycloakPromise) {
-          this.companyName = (
-            await new ApiClientProvider(this.getKeycloakPromise()).backendClients.companyDataController.getCompanyInfo(
-              companyId
+          const companyDataController = new ApiClientProvider(this.getKeycloakPromise()).backendClients
+            .companyDataController;
+          return (
+            await companyDataController.getCompanyIdByIdentifier(
+              IdentifierType.Lei,
+              companyInformation.parentCompanyLei
             )
-          ).data.companyName;
+          ).data.companyId;
         }
       } catch (error) {
         console.error(error);
@@ -514,13 +578,9 @@ export default defineComponent({
      * Navigates to the company view page
      * @returns the promise of the router push action
      */
-    async goToResolveDataRequestPage() {
-      const companyId =
-        this.answeringDataId.length > 0
-          ? await this.getCompanyOfDataId(this.answeringDataId)
-          : this.storedDataRequest.datalandCompanyId;
-      const url = `/companies/${companyId}/frameworks/${this.storedDataRequest.dataType}`;
-      if (companyId) return router.push(url);
+    goToResolveDataRequestPage() {
+      if (this.answeringDataSet && this.answeringDataSet.ref)
+        return router.push(this.answeringDataSet.ref.split(this.answeringDataSet.dataId)[0]);
     },
     /**
      * Method to check if request status is answered
@@ -550,37 +610,6 @@ export default defineComponent({
      */
     isNewMessageAllowed() {
       return this.storedDataRequest.requestStatus == RequestStatus.Open;
-    },
-    /**
-     * Of all RequestStatusHistory records with a dataId, find the most recent one and return its dataId.
-     */
-    getAnsweringDataId() {
-      this.answeringDataId =
-        this.storedDataRequest.dataRequestStatusHistory
-          .filter((status) => status.answeringDataId !== undefined)
-          .reduce(
-            (mostRecentSoFar, current) =>
-              mostRecentSoFar && mostRecentSoFar.creationTimestamp > current.creationTimestamp
-                ? mostRecentSoFar
-                : current,
-            undefined
-          )?.answeringDataId ?? '';
-    },
-    /**
-     * Find the companyId of a given dataId by querying the metaDataController.
-     * @param dataId the dataId to poll for
-     */
-    async getCompanyOfDataId(dataId: string) {
-      try {
-        if (this.getKeycloakPromise) {
-          const dataset = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).backendClients.metaDataController.getDataMetaInfo(dataId);
-          return dataset.data.companyId;
-        }
-      } catch (error) {
-        console.error(error);
-      }
     },
   },
 });
