@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalExcessiveCeoPayRatio",
+  "name" : "Excessive CEO pay ratio",
+  "businessDefinition" : "Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoCarbonReductionInitiatives",
+  "name" : "Carbon Reduction Initiatives",
+  "businessDefinition" : "Do you have any policies or procedures for carbon emission reduction aimed at aligning with the Paris Agreement?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalTotalHighImpactClimateSectorEnergyConsumptionInGWh",
+  "name" : "Total High Impact Climate Sector Energy Consumption",
+  "businessDefinition" : "High impact climate sectors’ means the sectors listed in Sections A to H and Section L of Annex I to Regulation (EC) No 1893/2006 of the European Parliament and of the Council (Regulation (EC) No 1893/2006 of the European Parliament and of the Council of 20 December 2006 establishing the statistical classification of economic activities NACE Revision 2 and amending Council Regulation (EEC) No 3037/90 as well as certain EC Regulations on specific statistical domains (OJ L 393, 30.12.2006, p. 1)).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedIntegerSanctionedIncidentsOfDiscrimination",
+  "name" : "Sanctioned Incidents Of Discrimination",
+  "businessDefinition" : "Number of discrimination related incidents reported that lead to any kind of penalty and/or fine",
+  "dataPointBaseTypeId" : "extendedInteger",
+  "frameworkOwnership" : "sfdr"
+}

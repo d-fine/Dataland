@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoPolicyAgainstBriberyAndCorruption",
+  "name" : "Policy against Bribery and Corruption",
+  "businessDefinition" : "Do you have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

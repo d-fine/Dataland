@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoSupplierCodeOfConduct",
+  "name" : "Supplier Code Of Conduct",
+  "businessDefinition" : "Do you have a supplier code of conduct (against unsafe working conditions, precarious work, child labour and forced labour)? If yes, please share the document with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoWorkplaceAccidentPreventionPolicy",
+  "name" : "Workplace Accident Prevention Policy",
+  "businessDefinition" : "Do you have workplace accident prevention policy? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

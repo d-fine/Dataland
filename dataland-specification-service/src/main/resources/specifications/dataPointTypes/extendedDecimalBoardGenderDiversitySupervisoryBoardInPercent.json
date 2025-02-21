@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalBoardGenderDiversitySupervisoryBoardInPercent",
+  "name" : "Board gender diversity - Supervisory Board",
+  "businessDefinition" : "Percentage of female board members among all supervisory board members",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import jakarta.validation.Validation
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
@@ -15,10 +16,11 @@ import java.text.SimpleDateFormat
 class DataPointValidatorTest {
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
     private val specificationClient = mock(SpecificationControllerApi::class.java)
-    private val dataPointValidator = DataPointValidator(objectMapper, specificationClient)
+    private val dataPointValidator =
+        DataPointValidator(objectMapper, specificationClient, Validation.buildDefaultValidatorFactory().validator)
 
     private val correlationId = "correlationId"
-    private val validationClass = "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint"
+    private val validationClass = "org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint"
 
     private val currencyDataPoint = "./dataPointValidation/currencyDataPoint.json"
     private val invalidCurrencyDataPoint = "./dataPointValidation/invalidCurrencyDataPoint.json"
@@ -56,7 +58,7 @@ class DataPointValidatorTest {
     @Test
     fun `check that invalid classes are rejected`() {
         val className = "org.dataland.datalandbackend.model.datapoints.standard.DummyDataPoint"
-        assertThrows<ClassNotFoundException> { dataPointValidator.validateConsistency("{}", className, correlationId) }
+        assertThrows<IllegalArgumentException> { dataPointValidator.validateConsistency("{}", className, correlationId) }
     }
 
     @Test

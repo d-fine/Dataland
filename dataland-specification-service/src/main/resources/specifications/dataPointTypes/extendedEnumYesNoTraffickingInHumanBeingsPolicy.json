@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoTraffickingInHumanBeingsPolicy",
+  "name" : "Trafficking In Human Beings Policy",
+  "businessDefinition" : "Do you have a policy against trafficking in human beings? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

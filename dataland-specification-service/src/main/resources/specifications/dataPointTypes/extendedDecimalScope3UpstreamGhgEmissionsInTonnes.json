@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalScope3UpstreamGhgEmissionsInTonnes",
+  "name" : "Scope 3 upstream GHG emissions",
+  "businessDefinition" : "Indirect (gross) carbon emissions from activities related to the production and distribution of goods and services purchased by the reporting company.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

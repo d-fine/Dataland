@@ -3,12 +3,14 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.module.kotlin.contains
 import com.fasterxml.jackson.module.kotlin.convertValue
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -29,6 +31,8 @@ class ReferencedReportsUtilities(
 
         const val REFERENCED_REPORTS_ID = "referencedReports"
     }
+
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
      * Parses the referenced reports from a JSON leaf.
@@ -75,24 +79,44 @@ class ReferencedReportsUtilities(
                 "Data point report not listed in referenced reports",
                 "The report '${report.fileReference}' is not contained in the referenced reports field.",
             )
-        val exception =
-            if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
-                InvalidInputApiException(
-                    "Inconsistent publication date",
-                    "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
-                        "but the publication date listed in the referenced reports is '${matchingReport.publicationDate}'.",
-                )
-            } else if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
-                InvalidInputApiException(
-                    "Inconsistent file name",
-                    "The file name of the report '${report.fileName}' is not consistent " +
-                        "with the file name listed in the referenced reports which is '${matchingReport.fileName}'.",
-                )
-            } else {
-                null
+
+        if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
+            logger.warn(
+                "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
+                    "and inconsistent with the publication date listed in the referenced reports '${matchingReport.publicationDate}'. " +
+                    "The publication date of the report will be overwritten to '${matchingReport.publicationDate}'.",
+            )
+        }
+        if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
+            throw InvalidInputApiException(
+                "Inconsistent file name",
+                "The file name of the report '${report.fileName}' is not consistent " +
+                    "with the file name listed in the referenced reports which is '${matchingReport.fileName}'.",
+            )
+        }
+    }
+
+    /**
+     * Extracts all company reports recursively from a string representation of a JSON node.
+     * @param content The string representation of the JSON node to extract the reports from
+     * @param allCompanyReports The list to store the extracted reports in
+     */
+    fun getAllCompanyReportsFromDataSource(
+        content: String,
+        allCompanyReports: MutableList<CompanyReport>,
+    ) {
+        val contentNode = objectMapper.readTree(content)
+        if (contentNode.contains(DATA_SOURCE_FIELD)) {
+            val foundReport = getCompanyReportFromDataSource(content)
+            if (foundReport != null) {
+                allCompanyReports.add(foundReport)
             }
-        if (exception != null) {
-            throw exception
+        } else {
+            val fields = contentNode.fields()
+            while (fields.hasNext()) {
+                val jsonField = fields.next()
+                getAllCompanyReportsFromDataSource(objectMapper.writeValueAsString(jsonField.value), allCompanyReports)
+            }
         }
     }
 

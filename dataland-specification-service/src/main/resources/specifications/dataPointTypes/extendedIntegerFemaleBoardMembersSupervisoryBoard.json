@@ -1,0 +1,7 @@
+{
+  "id" : "extendedIntegerFemaleBoardMembersSupervisoryBoard",
+  "name" : "Female Board Members - Supervisory Board",
+  "businessDefinition" : "Number of females on the supervisory board, i.e. means the administrative, management or supervisory body of a company",
+  "dataPointBaseTypeId" : "extendedInteger",
+  "frameworkOwnership" : "sfdr"
+}

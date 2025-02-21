@@ -3,13 +3,14 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.validation.Validation
+import jakarta.validation.Validator
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Class for validating data points
@@ -23,8 +24,19 @@ class DataPointValidator
     constructor(
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
+        private val validator: Validator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+        private val validatedExistingDatapointTypes = ConcurrentHashMap<String, Boolean>()
+
+        companion object {
+            val WHITELSITED_CLASS_NAMES =
+                setOf(
+                    "java.time.LocalDate",
+                    "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector," +
+                        "org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
+                )
+        }
 
         /**
          * Validates a single data point by casting it to the correct class and running the validations
@@ -49,13 +61,33 @@ class DataPointValidator
          * @param dataPointType the identifier to validate
          */
         fun validateDataPointTypeExists(dataPointType: String) {
+            if (validatedExistingDatapointTypes.containsKey(dataPointType)) {
+                return
+            }
+
             try {
                 specificationClient.getDataPointTypeSpecification(dataPointType)
+                validatedExistingDatapointTypes[dataPointType] = true
             } catch (clientException: ClientException) {
                 logger.error("Data point identifier $dataPointType not found: ${clientException.message}.")
                 throw InvalidInputApiException(
                     "Specified data point identifier $dataPointType is not valid.",
                     "The specified data point identifier $dataPointType is not known to the specification service.",
+                )
+            }
+        }
+
+        private fun assertClassNameIsAuthorized(
+            className: String,
+            correlationId: String,
+        ) {
+            if (!className.startsWith("org.dataland.datalandbackend.model.") &&
+                !WHITELSITED_CLASS_NAMES.contains(className)
+            ) {
+                logger.error("Invalid class name $className (correlation ID: $correlationId).")
+                throw InvalidInputApiException(
+                    "Invalid class name.",
+                    "The class name $className is not valid.",
                 )
             }
         }
@@ -71,33 +103,25 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ) {
-            if (!className.startsWith("org.dataland.datalandbackend.model.datapoints.")) {
-                logger.error("Invalid class name $className (correlation ID: $correlationId).")
-                throw InvalidInputApiException(
-                    "Invalid class name.",
-                    "The class name $className is not valid.",
-                )
-            }
-            val classForValidation = Class.forName(className).kotlin.java
-            val dataPointObject = checkCastIntoClass(jsonData, classForValidation, className, correlationId)
+            assertClassNameIsAuthorized(className, correlationId)
+            val dataPointObject = checkCastIntoClass(jsonData, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
         }
 
         /**
          * Checks if the JSON data can be cast into a given class
          * @param jsonData The JSON data to check
-         * @param classForValidation The class to check against
          * @param className The name of the class to check against
          * @param correlationId The correlation ID of the operation
          */
         private fun checkCastIntoClass(
             jsonData: String,
-            classForValidation: Class<out Any>,
             className: String,
             correlationId: String,
         ): Any {
             try {
-                return objectMapper.readValue(jsonData, classForValidation)
+                val typeFactory = objectMapper.typeFactory.constructFromCanonical(className)
+                return objectMapper.readValue(jsonData, typeFactory)
             } catch (ex: JsonMappingException) {
                 logger.error("Unable to cast JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
                 throw InvalidInputApiException(
@@ -126,7 +150,6 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ) {
-            val validator = Validation.buildDefaultValidatorFactory().validator
             val violations = validator.validate(dataPointObject)
             if (violations.isNotEmpty()) {
                 logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): $violations")

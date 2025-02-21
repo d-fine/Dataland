@@ -1,0 +1,7 @@
+{
+  "id" : "plainSfdrHighImpactClimateSectorsApplicableHighImpactClimateSectors",
+  "name" : "Applicable High Impact Climate Sectors",
+  "businessDefinition" : "Please select any sector(s) applicable activities (NACE Codes A-H, L)",
+  "dataPointBaseTypeId" : "plainSfdrHighImpactClimateSectors",
+  "frameworkOwnership" : "sfdr"
+}

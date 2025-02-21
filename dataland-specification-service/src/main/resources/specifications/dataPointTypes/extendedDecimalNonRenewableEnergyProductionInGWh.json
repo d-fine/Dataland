@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyProductionInGWh",
+  "name" : "Non-Renewable Energy Production",
+  "businessDefinition" : "Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation, Annex I, top (7).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

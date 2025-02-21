@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoControversialWeaponsExposure",
+  "name" : "Controversial Weapons Exposure",
+  "businessDefinition" : "Involvement in the manufacture or selling of controversial weapons such as anti- personnel mines, cluster munitions, chemical weapons and biological weapons.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

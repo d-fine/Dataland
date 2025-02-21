@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoManufactureOfAgrochemicalPesticidesProducts",
+  "name" : "Manufacture Of Agrochemical Pesticides Products",
+  "businessDefinition" : "Are you involved in the manufacturing of pesticides and other agrochemical products? (see activities which fall under Division 20.2 of Annex I to Regulation (EC) No 1893/2006)",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

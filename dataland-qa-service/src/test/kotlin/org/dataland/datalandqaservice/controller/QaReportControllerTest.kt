@@ -9,9 +9,9 @@ import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiExcepti
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandqaservice.DatalandQaService
-import org.dataland.datalandqaservice.frameworks.sfdr.model.SfdrData
+import org.dataland.datalandqaservice.frameworks.nuclearandgas.model.NuclearAndGasData
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.QaReportEntity
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks.sfdr.SfdrDataQaReportController
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.frameworks.nuclearandgas.NuclearAndGasDataQaReportController
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportMetaInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.QaReportStatusPatch
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.QaReportRepository
@@ -39,19 +39,19 @@ import java.util.UUID
     properties = ["spring.profiles.active=nodb"],
 )
 class QaReportControllerTest(
-    @Autowired private val qaReportController: SfdrDataQaReportController,
+    @Autowired private val qaReportController: NuclearAndGasDataQaReportController,
     @Autowired private val qaReportRepository: QaReportRepository,
 ) {
     @MockitoBean
     private lateinit var metaDataControllerApi: MetaDataControllerApi
 
-    private fun createMockDataIdForAnSfdrDataset(): String {
+    private fun createMockDataIdForANuclearAndGasDataset(): String {
         val dataId = UUID.randomUUID().toString()
         Mockito.`when`(metaDataControllerApi.getDataMetaInfo(dataId)).thenReturn(
             DataMetaInformation(
                 dataId = dataId,
                 companyId = UUID.randomUUID().toString(),
-                dataType = DataTypeEnum.sfdr,
+                dataType = DataTypeEnum.nuclearMinusAndMinusGas,
                 reportingPeriod = "period",
                 qaStatus = QaStatus.Accepted,
                 currentlyActive = true,
@@ -63,8 +63,8 @@ class QaReportControllerTest(
     }
 
     private fun createEmptyQaReport(existingDataId: String? = null): QaReportMetaInformation {
-        val dataId = existingDataId ?: createMockDataIdForAnSfdrDataset()
-        return qaReportController.postQaReport(dataId, SfdrData()).body!!
+        val dataId = existingDataId ?: createMockDataIdForANuclearAndGasDataset()
+        return qaReportController.postQaReport(dataId, NuclearAndGasData()).body!!
     }
 
     @Test
@@ -162,7 +162,7 @@ class QaReportControllerTest(
 
     @Test
     fun `check that the reviewer user id filter works`() {
-        val dataId = createMockDataIdForAnSfdrDataset()
+        val dataId = createMockDataIdForANuclearAndGasDataset()
         UtilityFunctions.withReviewerAuthentication("reviewer-1") {
             createEmptyQaReport(dataId)
             assertEquals(
@@ -202,11 +202,11 @@ class QaReportControllerTest(
             )
             val ex =
                 assertThrows<InvalidInputApiException> {
-                    qaReportController.postQaReport(dataId, SfdrData())
+                    qaReportController.postQaReport(dataId, NuclearAndGasData())
                 }
             assertTrue(
                 ex.message.contains(
-                    "is of type '${DataTypeEnum.eutaxonomyMinusFinancials}', but the expected type is 'sfdr'",
+                    "is of type '${DataTypeEnum.eutaxonomyMinusFinancials}', but the expected type is 'nuclear-and-gas'",
                 ),
                 "The exception message should indicate the framework mismatch",
             )
@@ -236,7 +236,7 @@ class QaReportControllerTest(
                 }
             assertTrue(
                 ex.message.contains(
-                    "is not associated with data type 'sfdr'," +
+                    "is not associated with data type 'nuclear-and-gas'," +
                         " but with data type 'some-data-type'",
                 ),
                 "Error message should indicate the framework data-type mismatch",

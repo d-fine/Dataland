@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalWaterReusedInCubicMeters",
+  "name" : "Water Reused",
+  "businessDefinition" : "Amount of water recycled and reused by the company. Linked to Regulation, Annex I, Table 2, metric 6.2.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

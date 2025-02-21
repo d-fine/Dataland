@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalBoardGenderDiversityBoardOfDirectorsInPercent",
+  "name" : "Board gender diversity - Board of Directors",
+  "businessDefinition" : "Percentage of female board members among all board of directors members",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

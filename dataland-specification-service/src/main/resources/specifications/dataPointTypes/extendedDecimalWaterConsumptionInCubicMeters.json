@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalWaterConsumptionInCubicMeters",
+  "name" : "Water Consumption",
+  "businessDefinition" : "Amount of water consumed by the company",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

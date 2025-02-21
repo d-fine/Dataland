@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoHumanRightsDueDiligence",
+  "name" : "Human Rights Due Diligence",
+  "businessDefinition" : "Do you have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

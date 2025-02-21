@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionNuclearEnergyInGWh",
+  "name" : "Non-Renewable Energy Consumption Nuclear Energy",
+  "businessDefinition" : "Energy consumption from nuclear energy (Uranium) (non-renewable energy source)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

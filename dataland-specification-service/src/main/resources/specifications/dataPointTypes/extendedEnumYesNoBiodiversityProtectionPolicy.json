@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoBiodiversityProtectionPolicy",
+  "name" : "Biodiversity Protection Policy",
+  "businessDefinition" : "Do you have a biodiversity protection policy covering operational sites owned, leased, managed in, or adjacent to, a protected area or an area of high biodiversity value outside protected areas? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

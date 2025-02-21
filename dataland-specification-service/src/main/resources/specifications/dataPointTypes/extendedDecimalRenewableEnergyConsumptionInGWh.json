@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalRenewableEnergyConsumptionInGWh",
+  "name" : "Renewable Energy Consumption",
+  "businessDefinition" : "Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation, Annex I, top (6).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

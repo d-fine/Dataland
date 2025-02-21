@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionCrudeOilInGWh",
+  "name" : "Non-Renewable Energy Consumption Crude Oil",
+  "businessDefinition" : "Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

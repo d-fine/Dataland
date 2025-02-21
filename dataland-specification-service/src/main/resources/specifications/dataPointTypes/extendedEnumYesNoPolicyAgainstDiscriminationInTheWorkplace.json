@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoPolicyAgainstDiscriminationInTheWorkplace",
+  "name" : "Policy against Discrimination in the Workplace",
+  "businessDefinition" : "Do you have policies in place to eliminate discrimination in the workplace? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

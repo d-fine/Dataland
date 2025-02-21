@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoGrievanceHandlingMechanism",
+  "name" : "Grievance Handling Mechanism",
+  "businessDefinition" : "Do you have any grievance/complaints handling mechanism related to employee matters?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

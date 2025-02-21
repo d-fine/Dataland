@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalEmissionsOfInorganicPollutantsInTonnes",
+  "name" : "Emissions of Inorganic Pollutants",
+  "businessDefinition" : "Inorganic pollutants such as those arising due to radiant energy and noise, heat, or light, including arsenic, cadmium, lead, mercury, chromium, aluminium, nitrates, nitrites, and fluorides or contaminants of water such as arsenic, fluoride, iron, nitrate, heavy metals, etc.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

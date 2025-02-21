@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoHumanRightsPolicy",
+  "name" : "Human Rights Policy",
+  "businessDefinition" : "Do you have a human rights policy? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

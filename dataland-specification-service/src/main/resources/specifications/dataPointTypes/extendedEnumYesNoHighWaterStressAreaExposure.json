@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoHighWaterStressAreaExposure",
+  "name" : "High Water Stress Area Exposure",
+  "businessDefinition" : "Do you have sites/operations in or near ‘areas of high water stress’, meaning regions where the percentage of total water withdrawn is high (40-80 %) or extremely high (greater than 80 %) where the activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, definition 13.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionOtherInGWh",
+  "name" : "Non-Renewable Energy Consumption Other",
+  "businessDefinition" : "Energy consumption from any other available (used) non-renewable source of energy",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

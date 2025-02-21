@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionLigniteInGWh",
+  "name" : "Non-Renewable Energy Consumption Lignite",
+  "businessDefinition" : "Energy consumption from lignite (non-renewable energy source)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoSustainableOceansAndSeasPolicy",
+  "name" : "Sustainable Oceans And Seas Policy",
+  "businessDefinition" : "Do you have sustainable oceans/seas practices or policies? If yes, please share the relevant documents with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

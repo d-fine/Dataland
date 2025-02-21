@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalScope1And2And3GhgEmissionsInTonnes",
+  "name" : "Scope 1 and 2 and 3 GHG emissions",
+  "businessDefinition" : "Sum of scope 1, 2 and 3 carbon emissions",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

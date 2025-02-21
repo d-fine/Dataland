@@ -1,0 +1,7 @@
+{
+  "id" : "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption",
+  "name" : "Cases of Insufficient Action against Bribery and Corruption",
+  "businessDefinition" : "Identified insufficiencies in actions taken to address breaches in procedures and standards of anti-corruption and anti-bribery",
+  "dataPointBaseTypeId" : "extendedInteger",
+  "frameworkOwnership" : "sfdr"
+}

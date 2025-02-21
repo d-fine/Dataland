@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoSustainableAgriculturePolicy",
+  "name" : "Sustainable Agriculture Policy",
+  "businessDefinition" : "Do you have sustainable land/agriculture practices or policies? If yes, please share the relevant documents with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

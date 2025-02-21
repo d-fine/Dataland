@@ -1,0 +1,7 @@
+{
+  "id" : "extendedEnumYesNoProtectedAreasExposure",
+  "name" : "Protected Areas Exposure",
+  "businessDefinition" : "Do you have sites/operations located in or near protected areas where activities of those sites/operations negatively affect those areas? See also Regulation, Annex I, table 1, indicator nr. 7).",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr"
+}

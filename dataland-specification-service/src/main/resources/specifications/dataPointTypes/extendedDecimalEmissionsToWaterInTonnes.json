@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalEmissionsToWaterInTonnes",
+  "name" : "Emissions To Water",
+  "businessDefinition" : "Emissions to water (direct nitrates, direct phosphate emissions, direct pesticides) to water (tonnes)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}

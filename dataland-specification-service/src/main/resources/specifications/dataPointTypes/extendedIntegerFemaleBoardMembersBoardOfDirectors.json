@@ -1,0 +1,7 @@
+{
+  "id" : "extendedIntegerFemaleBoardMembersBoardOfDirectors",
+  "name" : "Female Board Members - Board of Directors",
+  "businessDefinition" : "Number of females on the board of directors of the company",
+  "dataPointBaseTypeId" : "extendedInteger",
+  "frameworkOwnership" : "sfdr"
+}
