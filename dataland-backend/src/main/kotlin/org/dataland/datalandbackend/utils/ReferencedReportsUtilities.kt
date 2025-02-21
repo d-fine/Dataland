@@ -31,6 +31,7 @@ class ReferencedReportsUtilities(
 
         const val REFERENCED_REPORTS_ID = "referencedReports"
     }
+
     private val logger = LoggerFactory.getLogger(javaClass)
 
     /**
