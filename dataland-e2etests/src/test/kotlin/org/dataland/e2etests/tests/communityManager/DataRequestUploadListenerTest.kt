@@ -139,8 +139,8 @@ class DataRequestUploadListenerTest {
                 apiAccessor.qaServiceControllerApi.changeQaStatus(dataMetaInformation.dataId, QaStatus.Accepted)
             }
         }
-        Awaitility.await().atMost(15, TimeUnit.SECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
-            getUsersStoredRequestWithLatestCreationTime().requestStatus == RequestStatus.Closed
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).pollDelay(500, TimeUnit.MILLISECONDS).until {
+            getUsersStoredRequestWithLatestCreationTime().requestStatus == RequestStatus.Answered
         }
     }
 
