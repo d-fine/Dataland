@@ -33,6 +33,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
@@ -145,7 +146,7 @@ class DataRequestAlterationManagerTest {
         doNothing().`when`(mockDataRequestProcessingUtils).addNewRequestStatusToHistory(
             any(), any(),
             any(), anyString(),
-            any(),
+            any(), any(),
         )
         doNothing().`when`(mockDataRequestProcessingUtils).addMessageToMessageHistory(
             any(), anySet(), anyString(), any(),
@@ -262,7 +263,7 @@ class DataRequestAlterationManagerTest {
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), eq(null),
-                any(),
+                any(), anyOrNull(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
@@ -281,7 +282,7 @@ class DataRequestAlterationManagerTest {
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), eq(null),
-                any(),
+                any(), anyOrNull(),
             )
 
         verify(mockDataRequestProcessingUtils, times(0))
@@ -308,13 +309,13 @@ class DataRequestAlterationManagerTest {
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), eq(null),
-                any(),
+                any(), any(),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addNewRequestStatusToHistory(
                 eq(dummyChildCompanyDataRequestEntity), any(),
                 any(), anyString(),
-                any(),
+                any(), any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
@@ -347,7 +348,7 @@ class DataRequestAlterationManagerTest {
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), anyString(),
-                any(),
+                any(), any(),
             )
     }
 
@@ -407,7 +408,7 @@ class DataRequestAlterationManagerTest {
             .addNewRequestStatusToHistory(
                 any(), any(),
                 any(), anyString(),
-                any(),
+                any(), anyOrNull(),
             )
     }
 
