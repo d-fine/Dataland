@@ -1,5 +1,6 @@
 package org.dataland.datalandbackend.utils
 
+import ch.qos.logback.classic.Level
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
@@ -12,6 +13,7 @@ import org.dataland.specificationservice.openApiClient.model.FrameworkSpecificat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 
@@ -120,7 +122,8 @@ class ReferencedReportsUtilitiesTest {
     }
 
     @Test
-    fun `check that inconsistent publication Dates references cause an error`() {
+    fun `check that inconsistent publication Date references cause a warning`() {
+        val appender = InMemoryLogAppender().getAppender()
         val referencedReports =
             mapOf(
                 "fileName" to CompanyReport(fileReference = "fileReference", publicationDate = LocalDate.parse(testDate)),
@@ -130,9 +133,13 @@ class ReferencedReportsUtilitiesTest {
                 fileReference = "fileReference",
                 publicationDate = LocalDate.parse(anotherTestDate),
             )
-        assertThrows<InvalidInputApiException> {
+        val expectedWarning =
+            "The publication date of the report 'null' is '$anotherTestDate' and inconsistent with the publication date" +
+                " listed in the referenced reports '$testDate'. The publication date of the report will be overwritten to '$testDate'."
+        assertDoesNotThrow {
             referencedReportsUtilities.validateReportConsistencyWithGlobalList(reportFromDatapoint, referencedReports)
         }
+        assertTrue(appender.contains(expectedWarning, Level.WARN))
     }
 
     @Test
