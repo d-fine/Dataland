@@ -10,6 +10,7 @@ import org.dataland.datalandbackend.model.documents.ExtendedDocumentReference
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.model.IdWithRef
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
@@ -29,6 +30,7 @@ class ReferencedReportsUtilities(
         private const val DATA_SOURCE_FIELD = "dataSource"
 
         const val REFERENCED_REPORTS_ID = "referencedReports"
+        private val logger = LoggerFactory.getLogger(javaClass)
     }
 
     /**
@@ -76,24 +78,19 @@ class ReferencedReportsUtilities(
                 "Data point report not listed in referenced reports",
                 "The report '${report.fileReference}' is not contained in the referenced reports field.",
             )
-        val exception =
-            if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
-                InvalidInputApiException(
-                    "Inconsistent publication date",
-                    "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
-                        "but the publication date listed in the referenced reports is '${matchingReport.publicationDate}'.",
-                )
-            } else if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
-                InvalidInputApiException(
-                    "Inconsistent file name",
-                    "The file name of the report '${report.fileName}' is not consistent " +
-                        "with the file name listed in the referenced reports which is '${matchingReport.fileName}'.",
-                )
-            } else {
-                null
-            }
-        if (exception != null) {
-            throw exception
+
+        if (report.publicationDate != null && report.publicationDate != matchingReport.publicationDate) {
+            logger.warn(
+                "The publication date of the report '${report.fileName}' is '${report.publicationDate}' " +
+                    "and inconsistent with the publication date listed in the referenced reports '${matchingReport.publicationDate}'. " +
+                    "The publication date of the report will be overwritten to '${matchingReport.publicationDate}'.",
+            )
+        } else if (report.fileName != null && matchingReport.fileName != null && report.fileName != matchingReport.fileName) {
+            throw InvalidInputApiException(
+                "Inconsistent file name",
+                "The file name of the report '${report.fileName}' is not consistent " +
+                    "with the file name listed in the referenced reports which is '${matchingReport.fileName}'.",
+            )
         }
     }
 
