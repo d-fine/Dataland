@@ -1,8 +1,6 @@
 package org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
-import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -53,8 +51,6 @@ class QaEventListenerQaService
         private val qaReviewManager: QaReviewManager,
         private val dataPointQaReviewManager: DataPointQaReviewManager,
         private val qaReportManager: QaReportManager,
-        private val metaDataControllerApi: MetaDataControllerApi,
-        private val dataPointControllerApi: DataPointControllerApi,
         private val assembledDataMigrationManager: AssembledDataMigrationManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
