@@ -2,70 +2,65 @@
   <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <div class="grid">
-      <div class="card-wrapper">
-        <div class="paper-section col-5">
-          <div class="card">
-            <div class="card__title">Latest Documents</div>
-            <div class="card__separator" />
-            <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum">
-              <div class="card__subtitle">{{ humanizeStringOrNumber(label.toString()) }}</div>
-              <div v-if="getDocumentData(category).length === 0">-</div>
-              <div v-else>
-                <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                  <DocumentLink
-                    :download-name="
-                      truncatedDocumentName(document.documentName ? document.documentName : document.documentId) +
-                      ' (' +
-                      document.publicationDate +
-                      ')'
-                    "
-                    :file-reference="document.documentId"
-                    show-icon
-                  />
-                </div>
+    <div class="grid-container">
+      <div class="paper-section">
+        <div class="card">
+          <div class="card__title">Latest Documents</div>
+          <div class="card__separator" />
+          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum">
+            <div class="card__subtitle">{{ humanizeStringOrNumber(label.toString()) }}</div>
+            <div v-if="getDocumentData(category).length === 0">-</div>
+            <div v-else>
+              <div v-for="document in getDocumentData(category)" :key="document.documentId">
+                <DocumentLink
+                  :download-name="
+                    truncatedDocumentName(document.documentName ? document.documentName : document.documentId) +
+                    ' (' +
+                    document.publicationDate +
+                    ')'
+                  "
+                  :file-reference="document.documentId"
+                  show-icon
+                />
               </div>
             </div>
-            <div class="p-col-12 text-right">
-              <div
-                class="document-button cursor-pointer flex flex-row align-items-center"
-                @click="goToDocumentOverview"
-              >
-                <span class="text-primary font-semibold d-letters"> VIEW ALL DOCUMENTS</span>
-                <span class="material-icons text-primary">arrow_forward_ios</span>
-              </div>
+          </div>
+          <div class="p-col-12 text-right">
+            <div class="document-button cursor-pointer flex flex-row align-items-center" @click="goToDocumentOverview">
+              <span class="text-primary font-semibold d-letters"> VIEW ALL DOCUMENTS</span>
+              <span class="material-icons text-primary">arrow_forward_ios</span>
             </div>
           </div>
         </div>
-        <div class="col-7">
-          <div class="card-grid">
-            <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
-            <FrameworkSummaryPanel
-              v-for="framework of frameworksToDisplay"
-              :key="framework"
-              :is-user-allowed-to-view="authenticated === true"
-              :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
-              :company-id="companyId"
-              :framework="framework"
-              :number-of-provided-reporting-periods="
-                aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
-              "
-              :data-test="`${framework}-summary-panel`"
-            />
-          </div>
-          <div class="p-col-12 text-right">
-            <div
-              class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
-              @click="toggleShowAll"
-            >
-              <span class="text-primary font-semibold d-letters">
-                {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
-              </span>
-              <i class="material-icons text-primary">
-                {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
-              </i>
-            </div>
-          </div>
+      </div>
+      <div>
+        <div class="card-grid">
+          <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
+          <FrameworkSummaryPanel
+            v-for="framework of frameworksToDisplay"
+            :key="framework"
+            :is-user-allowed-to-view="authenticated === true"
+            :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
+            :company-id="companyId"
+            :framework="framework"
+            :number-of-provided-reporting-periods="
+              aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
+            "
+            :data-test="`${framework}-summary-panel`"
+          />
+        </div>
+
+        <div
+          class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
+          @click="toggleShowAll"
+          style="margin-left: auto"
+        >
+          <span class="text-primary font-semibold d-letters">
+            {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
+          </span>
+          <i class="material-icons text-primary">
+            {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
+          </i>
         </div>
       </div>
     </div>
@@ -292,9 +287,19 @@ export default defineComponent({
     padding: 24px 17px;
   }
 }
+.grid-container {
+  display: grid;
+  grid-template-columns: 5fr 6fr 30px;
+  padding: 40px;
+  gap: 40px;
+  @media only screen and (max-width: newVariables.$small) {
+    width: 100%;
+    grid-template-columns: repeat(1, 1fr );
+  }
+}
 
 .card-grid {
-  width: 80%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
