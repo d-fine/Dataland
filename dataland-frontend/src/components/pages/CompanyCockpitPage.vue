@@ -13,12 +13,16 @@
               <div v-if="getDocumentData(category).length === 0">-</div>
               <div v-else>
                 <div v-for="document in getDocumentData(category)" :key="document.documentId">
-                    <DocumentLink
-                        :download-name="truncatedDocumentName(document.documentName ? document.documentName : document.documentId) +
-                    ' ('+ document.publicationDate +')' "
-                        :file-reference="document.documentId"
-                        show-icon
-                    />
+                  <DocumentLink
+                    :download-name="
+                      truncatedDocumentName(document.documentName ? document.documentName : document.documentId) +
+                      ' (' +
+                      document.publicationDate +
+                      ')'
+                    "
+                    :file-reference="document.documentId"
+                    show-icon
+                  />
                 </div>
               </div>
             </div>
@@ -50,7 +54,10 @@
             />
           </div>
           <div class="p-col-12 text-right">
-            <div class="document-button cursor-pointer flex flex-row align-items-center justify-content-end" @click="toggleShowAll">
+            <div
+              class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
+              @click="toggleShowAll"
+            >
               <span class="text-primary font-semibold d-letters">
                 {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
               </span>
@@ -196,22 +203,29 @@ export default defineComponent({
      */
     async getLatestDocuments(): Promise<void> {
       const documentCategories = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
-      const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
-        .documentController;
-      for (const categoryKey of documentCategories) {
-        const category =
-          DocumentMetaInfoDocumentCategoryEnum[categoryKey as keyof typeof DocumentMetaInfoDocumentCategoryEnum];
-        this.latestDocuments[`latest${category}`] = (
-          await documentControllerApi.searchForDocumentMetaInformation(
-            this.companyId,
-            category,
-            undefined,
-            this.chunkSize
-          )
-        ).data;
+      try {
+        const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .documentController;
+        for (const categoryKey of documentCategories) {
+          const category =
+            DocumentMetaInfoDocumentCategoryEnum[categoryKey as keyof typeof DocumentMetaInfoDocumentCategoryEnum];
+          this.latestDocuments[`latest${category}`] = (
+            await documentControllerApi.searchForDocumentMetaInformation(
+              this.companyId,
+              category,
+              undefined,
+              this.chunkSize
+            )
+          ).data;
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
 
+    /**
+     * get document categories
+     */
     getDocumentData(category: keyof typeof DocumentMetaInfoDocumentCategoryEnum) {
       const key = `latest${category}`;
       return this.latestDocuments[key] || [];

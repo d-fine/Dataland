@@ -49,11 +49,7 @@
           </Column>
           <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
             <template #body="document">
-              <DocumentLink
-                  :download-name=" 'DOWNLOAD'"
-                  :file-reference="document.data.documentId"
-                  show-icon
-              />
+              <DocumentLink :download-name="'DOWNLOAD'" :file-reference="document.data.documentId" show-icon />
             </template>
           </Column>
         </DataTable>
@@ -75,7 +71,7 @@
 import { Content, Page } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
 import { inject, onMounted, ref, watch } from 'vue';
-import {DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
+import { DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
 import DataTable, { DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import TheHeader from '@/components/generics/TheHeader.vue';
@@ -86,13 +82,10 @@ import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkD
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import {
-  DocumentMetaInfoDocumentCategoryEnum,
-  DocumentMetaInfoResponse,
-} from '@clients/documentmanager';
+import { DocumentMetaInfoDocumentCategoryEnum, DocumentMetaInfoResponse } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
-import {humanizeStringOrNumber} from "@/utils/StringFormatter.ts";
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 const props = defineProps<{
   companyId: string;
@@ -105,7 +98,7 @@ const waitingForData = ref(true);
 const useMobileView = inject<boolean>('useMobileView', false);
 const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
-const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>((retrieveAvailableDocumentCategories()));
+const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>(retrieveAvailableDocumentCategories());
 const rowsPerPage = 100;
 const firstRowIndex = ref(0);
 const currentChunkIndex = ref(0);
@@ -118,8 +111,9 @@ watch(selectedDocumentType, (newSelected) => {
   currentChunkIndex.value = 0;
   console.log('Neu:', newSelected);
 });
+
 /**
- * Get list of documents
+ * Get list of documents using the filter for document category
  */
 async function getAllDocumentsForFilters(): Promise<void> {
   waitingForData.value = true;
@@ -130,10 +124,16 @@ async function getAllDocumentsForFilters(): Promise<void> {
       if (selectedDocumentType.value) {
         const responses: DocumentMetaInfoResponse[][] = await Promise.all(
           selectedDocumentType.value.map(async (item) => {
-            return (await documentControllerApi.searchForDocumentMetaInformation(props.companyId, item.documentCategoryDataType)).data;
-          }))
-        documentsFiltered.value= responses.flat();
-      } else{
+            return (
+              await documentControllerApi.searchForDocumentMetaInformation(
+                props.companyId,
+                item.documentCategoryDataType
+              )
+            ).data;
+          })
+        );
+        documentsFiltered.value = responses.flat();
+      } else {
         documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
       }
     }
@@ -162,6 +162,10 @@ function onPage(event: DataTablePageEvent) {
   }
 }
 
+/**
+ * Opens the Dialog box with the meta information
+ * @param documentId Id of selected document
+ */
 function openMetaInfoDialog(documentId: string) {
   selectedDocumentId.value = documentId;
   isMetaInfoDialogOpen.value = true;
@@ -172,13 +176,11 @@ function openMetaInfoDialog(documentId: string) {
  * @returns array of availableDocumentTypes
  */
 export function retrieveAvailableDocumentCategories(): Array<DocumentCategorySelectableItem> {
-  return  Object.entries(DocumentMetaInfoDocumentCategoryEnum).map(
-      ([, value]) => ({
-        displayName: humanizeStringOrNumber(value),
-        disabled: false,
-        documentCategoryDataType:value
-      })
-  );
+  return Object.entries(DocumentMetaInfoDocumentCategoryEnum).map(([, value]) => ({
+    displayName: humanizeStringOrNumber(value),
+    disabled: false,
+    documentCategoryDataType: value,
+  }));
 }
 
 onMounted(() => {

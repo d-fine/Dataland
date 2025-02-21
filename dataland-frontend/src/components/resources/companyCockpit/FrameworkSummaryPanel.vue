@@ -53,7 +53,7 @@ const props = defineProps<{
 const euTaxonomyFrameworks = new Set<DataTypeEnum>([
   DataTypeEnum.EutaxonomyFinancials,
   DataTypeEnum.EutaxonomyNonFinancials,
-    DataTypeEnum.NuclearAndGas
+  DataTypeEnum.NuclearAndGas,
 ]);
 const title = computed(() => {
   if (!euTaxonomyFrameworks.has(props.framework)) {

@@ -10,44 +10,43 @@
   >
     <template #header>
       <div v-if="metaData" class="p-datatable p-component">
-      <h2 class="m-0">Document Details</h2>
-      <div class="p-datatable-wrapper overflow-auto">
-        <table class="p-datatable-table" aria-label="Data point content">
-          <tbody class="p-datatable-body">
-          <tr>
-            <th class="headers-bg">Name</th>
-            <td class="nowrap">
-              <DocumentLink
-                  :download-name="(metaData.documentName ? metaData.documentName : metaData.documentId)"
-                  :file-reference="metaData.documentId"
-                  show-icon
-              />
-            </td>
-          </tr>
-          <tr>
-            <th class="headers-bg">Publication date</th>
-            <td>{{ metaData.publicationDate }}</td>
-          </tr>
-          <tr>
-            <th class="headers-bg">Document type</th>
-            <td>{{ metaData?.documentCategory }}</td>
-          </tr>
-          <tr v-if="metaData.reportingPeriod">
-            <th class="headers-bg">Reporting period</th>
-            <td class="nowrap">{{metaData.reportingPeriod}}
-            </td>
-          </tr>
-          <tr>
-            <th class="headers-bg">Upload time</th>
-            <td>{{ metaData.uploadTime }}</td>
-          </tr>
-          <tr>
-            <th class="headers-bg">Linked companies</th>
-            <td>{{ metaData.companyIds }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+        <h2 class="m-0">Document Details</h2>
+        <div class="p-datatable-wrapper overflow-auto">
+          <table class="p-datatable-table" aria-label="Data point content">
+            <tbody class="p-datatable-body">
+              <tr>
+                <th class="headers-bg">Name</th>
+                <td class="nowrap">
+                  <DocumentLink
+                    :download-name="metaData.documentName ? metaData.documentName : metaData.documentId"
+                    :file-reference="metaData.documentId"
+                    show-icon
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th class="headers-bg">Publication date</th>
+                <td>{{ metaData.publicationDate }}</td>
+              </tr>
+              <tr>
+                <th class="headers-bg">Document type</th>
+                <td>{{ metaData?.documentCategory }}</td>
+              </tr>
+              <tr v-if="metaData.reportingPeriod">
+                <th class="headers-bg">Reporting period</th>
+                <td class="nowrap">{{ metaData.reportingPeriod }}</td>
+              </tr>
+              <tr>
+                <th class="headers-bg">Upload time</th>
+                <td>{{ metaData.uploadTime }}</td>
+              </tr>
+              <tr>
+                <th class="headers-bg">Linked companies</th>
+                <td>{{ metaData.companyIds }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </template>
   </PrimeDialog>
@@ -60,7 +59,7 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import type { DocumentMetaInfoEntity } from '@clients/documentmanager';
-import DocumentLink from "@/components/resources/frameworkDataSearch/DocumentLink.vue";
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 
 const props = defineProps<{
   dialogVisible: boolean;
