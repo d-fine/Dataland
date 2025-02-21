@@ -86,7 +86,7 @@ describe('Component test for the view multiple dataset display base component', 
 
       cy.get('@routerPush').should(
         'have.been.calledWith',
-        `/companies/mock-company-id/frameworks/lksg/upload?templateDataId=${mockedData2023.metaInfo.dataId}`
+        `/companies/mock-company-id/frameworks/lksg/upload?reportingPeriod=${mockedData2023.metaInfo.reportingPeriod}`
       );
     });
   });

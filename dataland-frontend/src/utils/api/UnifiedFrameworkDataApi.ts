@@ -42,6 +42,13 @@ export interface PublicFrameworkDataApi<FrameworkDataType> extends BaseFramework
     options?: AxiosRequestConfig
     //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): AxiosPromise<any>;
+
+  getCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ): AxiosPromise<any>;
 }
 
 export interface PrivateFrameworkDataApi<FrameworkDataType> extends BaseFrameworkDataApi<FrameworkDataType> {
@@ -85,6 +92,12 @@ type OpenApiDataControllerApi<FrameworkNameObject, FrameworkDataType> = {
 } & {
   [K in `exportCompanyAssociated${string & keyof FrameworkNameObject}ToExcel`]: (
     dataId: string,
+    options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ) => AxiosPromise<any>;
+} & {
+  [K in `getCompanyAssociated${string & keyof FrameworkNameObject}ByDimensions`]: (
+    reportingPeriod: string,
+    companyId: string,
     options?: AxiosRequestConfig //eslint-disable-next-line @typescript-eslint/no-explicit-any
   ) => AxiosPromise<any>;
 };
@@ -160,6 +173,19 @@ class OpenApiUnificationAdapter<K extends keyof FrameworkDataTypes>
   ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
     return this.openApiDataController[`exportCompanyAssociated${this.apiSuffix}ToExcel`](dataId, options);
+  }
+
+  getCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    options?: AxiosRequestConfig
+  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  AxiosPromise<any> {
+    return this.openApiDataController[`getCompanyAssociated${this.apiSuffix}ByDimensions`](
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }
 

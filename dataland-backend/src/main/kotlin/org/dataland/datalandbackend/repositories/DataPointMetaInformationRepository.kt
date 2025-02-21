@@ -23,4 +23,12 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
     fun getActiveDataPointId(
         @Param("searchFilter") searchFilter: BasicDataPointDimensions,
     ): String?
+
+    /**
+     * Retrieves all data meta information of active data points matching one of the data point types and the company
+     */
+    fun findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
+        dataPointTypes: Set<String>,
+        companyId: String,
+    ): List<DataPointMetaInformationEntity>
 }
