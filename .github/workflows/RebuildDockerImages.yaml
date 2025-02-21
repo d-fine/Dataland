@@ -52,13 +52,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull and Push Images to GHCR
-        run: |
-          chmod +x ./build-utils/pull_and_push_to_ghcr.sh
-          ./build-utils/pull_and_push_to_ghcr.sh \
-            "postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea" \
-            "postgres:17.0@sha256:f176fef320ed02c347e9f85352620945547a9a23038f02b57cf7939a198182ae"
-
       - name: Build Docker Images
         id: build-dockerimages
         env:
