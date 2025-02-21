@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.text.SimpleDateFormat
 import java.util.TimeZone
-import kotlin.String
 
 /**
  * A class that provided utility for generating emails messages for data request responses
@@ -152,6 +151,21 @@ class DataRequestResponseEmailSender(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
+        val message = buildEmailMessageForUserWithClosedRequest(dataRequestEntity)
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(message),
+            type = MessageType.SEND_EMAIL,
+            correlationId = correlationId,
+            exchange = ExchangeName.SEND_EMAIL,
+            routingKey = RoutingKeyNames.EMAIL,
+        )
+    }
+
+    /**
+     * Function to build the EmailMessage object corresponding to the e-mail sent to
+     * a user with a closed request after a relevant QA status update event happened.
+     */
+    fun buildEmailMessageForUserWithClosedRequest(dataRequestEntity: DataRequestEntity): EmailMessage {
         val dataRequestUpdatedMail =
             DataRequestUpdated(
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
@@ -160,19 +174,11 @@ class DataRequestResponseEmailSender(
                 creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
                 dataRequestId = dataRequestEntity.dataRequestId,
             )
-        val message =
-            EmailMessage(
-                typedEmailContent = dataRequestUpdatedMail,
-                receiver = listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
-                cc = emptyList(),
-                bcc = emptyList(),
-            )
-        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-            body = objectMapper.writeValueAsString(message),
-            type = MessageType.SEND_EMAIL,
-            correlationId = correlationId,
-            exchange = ExchangeName.SEND_EMAIL,
-            routingKey = RoutingKeyNames.EMAIL,
+        return EmailMessage(
+            typedEmailContent = dataRequestUpdatedMail,
+            receiver = listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
+            cc = emptyList(),
+            bcc = emptyList(),
         )
     }
 }
