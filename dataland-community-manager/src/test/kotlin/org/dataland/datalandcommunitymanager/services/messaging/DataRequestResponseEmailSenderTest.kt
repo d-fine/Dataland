@@ -38,7 +38,7 @@ class DataRequestResponseEmailSenderTest {
     }
 
     @Test
-    fun `check that the correct e-mail is sent to a user with a closed data request upon a new QA event`() {
+    fun `check that the correct email is sent to a user with a closed data request upon a new QA event`() {
         val dummyDatalandCompanyId = "dataland-company-id"
         val sampleReportingPeriod = "2023"
         val sampleDataTypeLabel = "EU Taxonomy for financial companies"

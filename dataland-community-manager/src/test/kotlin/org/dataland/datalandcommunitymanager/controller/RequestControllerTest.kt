@@ -54,7 +54,7 @@ class RequestControllerTest {
     }
 
     @Test
-    fun `check that a non-admin user cannot impersonate another user when posting a single data request`() {
+    fun `check that a non admin user cannot impersonate another user when posting a single data request`() {
         val impersonatedUserId = UUID.randomUUID().toString()
         val nonAdminUserRoles = DatalandRealmRole.entries.toMutableSet()
         nonAdminUserRoles.remove(DatalandRealmRole.ROLE_ADMIN)
