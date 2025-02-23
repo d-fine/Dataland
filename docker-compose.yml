@@ -237,7 +237,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:23.6.1@sha256:3b73c4b366d490f76908dda253bb4516bbb3398948fd880d8682c5ef16427eca
+    image: node:23.8.0@sha256:a182b9b37154a3e11e5c1d15145470ceb22069646d0b7390de226da2548aa2a7
     networks:
       internal:
         aliases:
