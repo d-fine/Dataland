@@ -70,7 +70,7 @@ jobs:
           mkdir -p ./dataland-frontend/ 
           docker run --rm --entrypoint cp -v $(pwd):/hostdir ghcr.io/d-fine/dataland/dataland_e2etests:${{ needs.rebuild-docker-images.outputs.dataland_e2tests_version }} -r /app/dataland-frontend/build/ /hostdir/dataland-frontend
       - name: Store generated frontend API clients for use by cypress
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/
@@ -80,19 +80,19 @@ jobs:
       - e2e-tests
     steps:
       - name: Merge Docker Image Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: dockerImageVersions
           pattern: dockerImageVersions-*
           delete-merged: true
       - name: Merge Parameter Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: parameters
           pattern: parameters-*
           delete-merged: true
       - name: Merge Cypress Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: cypress
           pattern: cypress-*
@@ -289,7 +289,7 @@ jobs:
           mkdir -p ./dataland-frontend/cypressresult ./dataland-frontend/cypressresult/${{ matrix.testGroup }} ./dataland-frontend/cypress && 7z a -t7z -mhe=on -p"${{ secrets.SENSITIVE_ARTIFACT_ENCRYPTION_KEY }}" ./dataland-frontend/cypressresult/${{ matrix.testGroup }}/out.7z ./dataland-frontend/cypress/
       - name: Upload FE E2E Cypress Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: cypress-${{ matrix.testGroup }}
           path: ./dataland-frontend/cypressresult/
