@@ -7,7 +7,9 @@ export const PRIVATE_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => f
 export const PUBLIC_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED.filter((framework) => framework != DataTypeEnum.Vsme);
 export const FRONTEND_SUPPORTED_FRAMEWORKS = ALL_FRAMEWORKS_ORDERED;
 export const FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
+const main = ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas', 'sfdr'];
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
+export const FRAMEWORKS_MAIN = ALL_FRAMEWORKS_ORDERED.filter((framework) => main.includes(framework));
 export const FRAMEWORKS_WITH_EDIT_FUNCTIONALITY = FRAMEWORKS_WITH_UPLOAD_FORM.filter(
   (framework) => framework != DataTypeEnum.Vsme
 );

@@ -2,22 +2,66 @@
   <TheHeader v-if="!useMobileView" />
   <TheContent class="paper-section flex">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
-    <div class="card-wrapper">
-      <div class="card-grid">
-        <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
+    <div class="grid-container">
+      <div class="paper-section">
+        <div class="card">
+          <div class="card__title">Latest Documents</div>
+          <div class="card__separator" />
+          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum">
+            <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
+            <div v-if="getDocumentData(category).length === 0">-</div>
+            <div v-else>
+              <div v-for="document in getDocumentData(category)" :key="document.documentId">
+                <DocumentLink
+                  :download-name="
+                    truncatedDocumentName(document.documentName ? document.documentName : document.documentId) +
+                    ' (' +
+                    document.publicationDate +
+                    ')'
+                  "
+                  :file-reference="document.documentId"
+                  show-icon
+                />
+              </div>
+            </div>
+          </div>
+          <div class="p-col-12 text-right">
+            <div class="document-button cursor-pointer flex flex-row align-items-center" @click="goToDocumentOverview">
+              <span class="text-primary font-semibold d-letters"> VIEW ALL DOCUMENTS</span>
+              <span class="material-icons text-primary">arrow_forward_ios</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card-grid">
+          <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
+          <FrameworkSummaryPanel
+            v-for="framework of frameworksToDisplay"
+            :key="framework"
+            :is-user-allowed-to-view="authenticated === true"
+            :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
+            :company-id="companyId"
+            :framework="framework"
+            :number-of-provided-reporting-periods="
+              aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
+            "
+            :data-test="`${framework}-summary-panel`"
+          />
+        </div>
 
-        <FrameworkSummaryPanel
-          v-for="framework of FRAMEWORKS_WITH_VIEW_PAGE"
-          :key="framework"
-          :is-user-allowed-to-view="authenticated === true"
-          :is-user-allowed-to-upload="isUserAllowedToUploadForFramework(framework)"
-          :company-id="companyId"
-          :framework="framework"
-          :number-of-provided-reporting-periods="
-            aggregatedFrameworkDataSummary?.[framework]?.numberOfProvidedReportingPeriods
-          "
-          :data-test="`${framework}-summary-panel`"
-        />
+        <div
+          class="document-button cursor-pointer flex flex-row align-items-center justify-content-end"
+          @click="toggleShowAll"
+          style="margin-left: auto"
+        >
+          <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">
+            {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
+          </span>
+          <i class="material-icons text-primary">
+            {{ showAllFrameworks ? 'expand_less' : 'expand_more' }}
+          </i>
+        </div>
       </div>
     </div>
   </TheContent>
@@ -36,7 +80,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import { FRAMEWORKS_MAIN, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
@@ -45,10 +89,15 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
+import router from '@/router';
+import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import {getPluralCategory, humanizeStringOrNumber} from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
   components: {
+    DocumentLink,
     ClaimOwnershipPanel,
     CompanyInfoSheet,
     FrameworkSummaryPanel,
@@ -74,16 +123,26 @@ export default defineComponent({
     const content: Content = contentData;
     const footerPage: Page | undefined = content.pages.find((page) => page.url === '/');
     const footerContent = footerPage?.sections;
+    const latestDocuments: Record<string, DocumentMetaInfoResponse[]> = {};
+    Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach((key) => {
+      latestDocuments[`latest${key}`] = [];
+    });
     return {
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
       FRAMEWORKS_WITH_VIEW_PAGE,
+      FRAMEWORKS_MAIN,
+      DocumentMetaInfoDocumentCategoryEnum,
       isUserCompanyOwnerOrUploader: false,
       isUserKeycloakUploader: false,
       isAnyCompanyOwnerExisting: false,
       hasUserAnyRoleInCompany: false,
       footerContent,
+      showAllFrameworks: false,
+      latestDocuments,
+      chunkSize: 3,
+      percentCompleted: undefined as number | undefined,
     };
   },
   computed: {
@@ -92,6 +151,9 @@ export default defineComponent({
     },
     isClaimPanelVisible() {
       return !this.isAnyCompanyOwnerExisting && isCompanyIdValid(this.companyId);
+    },
+    frameworksToDisplay() {
+      return this.showAllFrameworks ? this.FRAMEWORKS_WITH_VIEW_PAGE : this.FRAMEWORKS_MAIN;
     },
   },
   watch: {
@@ -116,8 +178,11 @@ export default defineComponent({
 
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
+    void this.getLatestDocuments();
   },
   methods: {
+    getPluralCategory,
+    humanizeStringOrNumber,
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -127,6 +192,39 @@ export default defineComponent({
       this.aggregatedFrameworkDataSummary = (
         await companyDataControllerApi.getAggregatedFrameworkDataSummary(this.companyId)
       ).data as { [key in DataTypeEnum]: AggregatedFrameworkDataSummary } | undefined;
+    },
+
+    /**
+     * Retrieves the latest documents metadata
+     */
+    async getLatestDocuments(): Promise<void> {
+      const documentCategories = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
+      try {
+        const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
+          .documentController;
+        for (const categoryKey of documentCategories) {
+          const category =
+            DocumentMetaInfoDocumentCategoryEnum[categoryKey as keyof typeof DocumentMetaInfoDocumentCategoryEnum];
+          this.latestDocuments[`latest${category}`] = (
+            await documentControllerApi.searchForDocumentMetaInformation(
+              this.companyId,
+              category,
+              undefined,
+              this.chunkSize
+            )
+          ).data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    /**
+     * get document categories
+     */
+    getDocumentData(category: keyof typeof DocumentMetaInfoDocumentCategoryEnum) {
+      const key = `latest${category}`;
+      return this.latestDocuments[key] || [];
     },
 
     /**
@@ -155,6 +253,24 @@ export default defineComponent({
       }
       this.isUserKeycloakUploader = await checkIfUserHasRole(KEYCLOAK_ROLE_UPLOADER, this.getKeycloakPromise);
     },
+    /**
+     * Expands or collapses the framework tiles
+     */
+    toggleShowAll() {
+      this.showAllFrameworks = !this.showAllFrameworks;
+    },
+    /**
+     * routing to DocumentOverview page
+     */
+    goToDocumentOverview() {
+      void router.push(`/companies/${this.companyId}/documents`);
+    },
+    /**
+     * Shorten docuemnt names
+     */
+    truncatedDocumentName(name: string) {
+      return name.length > 25 ? name.slice(0, 25) + '...' : name;
+    },
   },
 });
 </script>
@@ -172,11 +288,21 @@ export default defineComponent({
     padding: 24px 17px;
   }
 }
+.grid-container {
+  display: grid;
+  grid-template-columns: 5fr 6fr 30px;
+  padding: 40px;
+  gap: 40px;
+  @media only screen and (max-width: newVariables.$small) {
+    width: 100%;
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
 
 .card-grid {
-  width: 80%;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 40px;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -186,6 +312,48 @@ export default defineComponent({
   @media only screen and (max-width: newVariables.$small) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
+  }
+}
+.card {
+  width: 90%;
+  background-color: var(--surface-card);
+  padding: 40px;
+  margin: 0 20px 1rem 40px;
+  box-shadow: 0 0 12px var(--gray-300);
+  border-radius: 0.5rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__title {
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 27px;
+  }
+
+  &__separator {
+    width: 100%;
+    border-bottom: #e0dfde solid 1px;
+    margin-top: 8px;
+    margin-bottom: 24px;
+  }
+
+  &__subtitle {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+
+    margin-top: 8px;
+  }
+}
+
+.document-button {
+  width: fit-content;
+  margin-top: 20px;
+  @media only screen {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 }
 </style>
