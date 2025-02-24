@@ -68,8 +68,8 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   fi"
 fi
 
-# Create the loki_volume directory as a volume for the Loki container, if it does not already exist
-create_loki_volume $target_server_url $loki_volume
+# Create the loki_volume directory as volume for the Loki container, if it does not already exist
+create_loki_dir $target_server_url $loki_volume
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"

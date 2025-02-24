@@ -73,7 +73,7 @@ wait_for_docker_containers_healthy_remote () {
   ssh ubuntu@"$target_server_url" "cd \"$location\"; source ./dataland-keycloak/deployment_utils.sh; timeout 600 bash -c \"wait_for_services_healthy_in_compose_profile $docker_compose_profile\""
 }
 
-create_loki_volume () {
+create_loki_dir () {
   target_server_url="$1"
   loki_volume="$2"
   ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
