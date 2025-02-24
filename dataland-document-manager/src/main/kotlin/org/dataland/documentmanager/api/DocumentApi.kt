@@ -225,15 +225,16 @@ interface DocumentApi {
 
     /**
      * Search for document meta information by document ID. Only results with QA status "Accepted" are returned.
-     * @param
      */
     @Operation(
         summary = "Search for document meta information.",
         description =
-            "Search for document meta information by company ID, document category and reporting period. " +
-                "If numberOfResults is not null, it limits the number of returned results. " +
-                "Results are returned sorted by publication date in reverse chronological order. " +
-                "Only results with QA Status 'Accepted' are returned.",
+            "Search for document meta information by company ID, document categories and reporting period. " +
+                "Search results must match the specified company ID and reporting period (if specified)" +
+                "as well as at least one of the specified document categories. If numberOfResults" +
+                "is not null, it limits the number of returned results. Results are returned sorted" +
+                "by publication date in reverse chronological order. Only results with QA status" +
+                "'Accepted' are returned.",
     )
     @ApiResponses(
         value = [
@@ -260,7 +261,7 @@ interface DocumentApi {
     @PreAuthorize("hasRole('ROLE_USER')")
     fun searchForDocumentMetaInformation(
         @RequestParam companyId: String? = null,
-        @RequestParam documentCategory: DocumentCategory? = null,
+        @RequestParam documentCategories: Set<DocumentCategory>? = null,
         @RequestParam reportingPeriod: String? = null,
         @RequestParam chunkSize: Int = 100,
         @RequestParam chunkIndex: Int = 0,

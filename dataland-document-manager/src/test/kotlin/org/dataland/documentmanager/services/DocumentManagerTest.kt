@@ -363,7 +363,7 @@ class DocumentManagerTest(
             .whenever(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = any(),
-                documentCategory = any(),
+                documentCategories = any(),
                 reportingPeriod = any(),
                 limit = any(),
                 offset = any(),
@@ -371,14 +371,14 @@ class DocumentManagerTest(
         val searchFilter =
             DocumentMetaInformationSearchFilter(
                 companyId = knownCompanyId,
-                documentCategory = null,
+                documentCategories = null,
                 reportingPeriod = "2023",
             )
         documentManager.searchForDocumentMetaInformation(searchFilter)
         verify(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = knownCompanyId,
-                documentCategory = null,
+                documentCategories = null,
                 reportingPeriod = "2023",
             )
     }
@@ -390,7 +390,7 @@ class DocumentManagerTest(
             .whenever(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = any(),
-                documentCategory = any(),
+                documentCategories = any(),
                 reportingPeriod = any(),
                 limit = any(),
                 offset = any(),
@@ -398,14 +398,14 @@ class DocumentManagerTest(
         val searchFilter =
             DocumentMetaInformationSearchFilter(
                 companyId = knownCompanyId,
-                documentCategory = null,
+                documentCategories = null,
                 reportingPeriod = "2023",
             )
         documentManager.searchForDocumentMetaInformation(searchFilter, chunkSize = 50, chunkIndex = 3)
         verify(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = knownCompanyId,
-                documentCategory = null,
+                documentCategories = null,
                 reportingPeriod = "2023",
                 limit = 50,
                 offset = 150,

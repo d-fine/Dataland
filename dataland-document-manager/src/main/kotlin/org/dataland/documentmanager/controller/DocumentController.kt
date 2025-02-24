@@ -119,7 +119,7 @@ class DocumentController(
      * Only document meta information with QaStatus "Accepted" is returned, and results
      * are ordered by publication date in reverse chronological order.
      * @param companyId The company ID to filter by, ignored if null.
-     * @param documentCategory The document category to filter by, ignored if null.
+     * @param documentCategories The document categories to filter by, ignored if null.
      * @param reportingPeriod The reporting period to filter by, ignored if null.
      * @param chunkSize The maximum size of the chunk of search results returned. If
      * null, all search results are returned.
@@ -132,7 +132,7 @@ class DocumentController(
      */
     override fun searchForDocumentMetaInformation(
         companyId: String?,
-        documentCategory: DocumentCategory?,
+        documentCategories: Set<DocumentCategory>?,
         reportingPeriod: String?,
         chunkSize: Int,
         chunkIndex: Int,
@@ -146,7 +146,7 @@ class DocumentController(
         val documentMetaInformationSearchFilter =
             DocumentMetaInformationSearchFilter(
                 companyId,
-                documentCategory,
+                documentCategories,
                 reportingPeriod,
             )
         if (documentMetaInformationSearchFilter.isEmpty()) {

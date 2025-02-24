@@ -22,14 +22,14 @@ interface DocumentMetaInfoRepository : JpaRepository<DocumentMetaInfoEntity, Str
      */
     @Query(
         "SELECT d FROM DocumentMetaInfoEntity d WHERE (:companyId is null or :companyId MEMBER OF d.companyIds) and " +
-            "(:documentCategory is null or d.documentCategory = :documentCategory) and " +
+            "(:documentCategories is null or d.documentCategory IN :documentCategories) and " +
             "(:reportingPeriod is null or d.reportingPeriod = :reportingPeriod) and " +
             "d.qaStatus = 'Accepted' ORDER BY d.publicationDate DESC " +
             "LIMIT :limit OFFSET :offset",
     )
     fun findByCompanyIdAndDocumentCategoryAndReportingPeriod(
         @Param("companyId") companyId: String? = null,
-        @Param("documentCategory") documentCategory: DocumentCategory? = null,
+        @Param("documentCategories") documentCategories: Set<DocumentCategory>? = null,
         @Param("reportingPeriod") reportingPeriod: String? = null,
         @Param("limit") limit: Int = 100,
         @Param("offset") offset: Int = 0,
