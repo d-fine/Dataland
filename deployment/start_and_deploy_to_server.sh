@@ -4,6 +4,7 @@ set -euxo pipefail
 environment=$1
 source ./deployment/deployment_utils.sh
 
+
 profile=production
 
 echo "Setting $environment server as deployment target"
@@ -18,6 +19,8 @@ keycloak_backup_dir=/home/ubuntu/keycloak_backup
 persistent_keycloak_backup_dir=/home/ubuntu/persistent_keycloak_backup
 keycloak_user_dir=$location/dataland-keycloak/users
 loki_volume="$LOKI_VOLUME"
+# Set the HOSTNAME variable to the server's hostname
+export HOSTNAME=$(hostname)
 
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose --profile production down && sudo docker compose --profile init down && sudo docker compose down --remove-orphans) || true"
