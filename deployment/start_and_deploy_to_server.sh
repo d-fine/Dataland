@@ -22,15 +22,7 @@ loki_volume="$LOKI_VOLUME"
 # shut down currently running dataland application and purge files on server
 ssh ubuntu@"$target_server_url" "(cd \"$location\" && sudo docker compose --profile production down && sudo docker compose --profile init down && sudo docker compose down --remove-orphans) || true"
 # make sure no remnants remain when docker-compose file changes
-ssh ubuntu@"$target_server_url" "
-    echo 'Stopping and removing unused containers...';
-    docker container prune --force;
-    echo 'Removing dangling images...';
-    docker image prune --force;
-    echo 'Cleaning up unused volumes...';
-    docker volume prune --force;
-    echo 'System cleanup done.'"
-
+ssh ubuntu@"$target_server_url" "sudo docker kill $(docker ps -q -a); docker rm $(docker ps -q -a); docker system prune --force; docker info"
 # delete pgadmin_config volume
 delete_docker_volume_if_existent_remotely "pgadmin_config" "$target_server_url" "$location"
 
