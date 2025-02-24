@@ -1,22 +1,20 @@
-export type FileType = {
-  identifier: string;
+import { type ExportFileType } from '@clients/backend';
+
+export type FileTypeInformation = {
   fileExtension: string;
   description: string;
 };
 
-export const ExportFileTypes: Record<'CsvFile' | 'ExcelFile' | 'JsonFile', FileType> = {
-  CsvFile: {
-    identifier: 'csv',
+export const ExportFileTypeInformation: Record<ExportFileType, FileTypeInformation> = {
+  CSV: {
     fileExtension: 'csv',
     description: 'Comma-separated Values',
   },
-  ExcelFile: {
-    identifier: 'excel',
+  EXCEL: {
     fileExtension: 'csv',
     description: 'Excel-compatible CSV File',
   },
-  JsonFile: {
-    identifier: 'json',
+  JSON: {
     fileExtension: 'json',
     description: 'JavaScript Object Notation',
   },

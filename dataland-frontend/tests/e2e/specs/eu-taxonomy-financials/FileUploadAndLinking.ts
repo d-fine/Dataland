@@ -79,8 +79,8 @@ describeIf(
                 storedCompanyId +
                 '/frameworks/' +
                 DataTypeEnum.EutaxonomyFinancials +
-                '/upload?templateDataId=' +
-                dataMetaInformation.dataId
+                '/upload?reportingPeriod=' +
+                dataMetaInformation.reportingPeriod
             );
             cy.wait('@fetchDataForPrefill', {
               timeout: Cypress.env('medium_timeout_in_ms') as number,
