@@ -17,9 +17,9 @@ while true; do
       custom_log_file="${LOKI_VOLUME}/health-check-log/health-check.log"
 
       # Check health status and log it
-      health_status=$(docker inspect --format '{{.State.Health.Status}}' "$container" 2>/dev/null)
+      health_status=$(docker inspect --format '{{.State.Health.Status}}' "$container" 2>/dev/null || echo "not_available")
 
-      if [ -z "$health_status" ]; then
+      if [ "$health_status" == "not_available" ]; then
           echo "$(date) level=warn container=$container Health status is not available" >> "$custom_log_file"
       elif [ "$health_status" == "unhealthy" ]; then
           echo "$(date) level=error container=$container Container is unhealthy" >> "$custom_log_file"
