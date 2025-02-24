@@ -60,7 +60,7 @@ schema_config:
 
 # Retention period configuration
 limits_config:
-  retention_period: 26340h  # 3 years in hours (365 days * 3 years * 24 hours)
+  retention_period: 8760h  # 1 year in hours (365 days * 24 hours)
 
 # Enabling better organization and retrieval of log information. (depends on module ring)
 pattern_ingester:
