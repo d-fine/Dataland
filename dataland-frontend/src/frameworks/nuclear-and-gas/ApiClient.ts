@@ -2,10 +2,11 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from 'axios';
 import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData';
 import {
+  NuclearAndGasDataControllerApi,
+  type NuclearAndGasData,
   type Configuration,
   type DataMetaInformation,
-  type NuclearAndGasData,
-  NuclearAndGasDataControllerApi,
+  type ExportFileType,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -46,36 +47,26 @@ export class NuclearAndGasApiClient implements PublicFrameworkDataApi<NuclearAnd
     return this.openApiDataController.postCompanyAssociatedNuclearAndGasData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataToJson(
-    dataId: string,
+  exportCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    fileFormat: ExportFileType,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataToJson(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToCsv(
-    dataId: string,
-    options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataToCsv(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToExcel(
-    dataId: string,
-    options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataToExcel(dataId, options);
+    return this.openApiDataController.exportCompanyAssociatedNuclearAndGasDataByDimensions(
+      reportingPeriod,
+      companyId,
+      fileFormat,
+      options
+    );
   }
 
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,
     options?: AxiosRequestConfig
-  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
+  ): AxiosPromise<CompanyAssociatedData<NuclearAndGasData>> {
     return this.openApiDataController.getCompanyAssociatedNuclearAndGasDataByDimensions(
       reportingPeriod,
       companyId,

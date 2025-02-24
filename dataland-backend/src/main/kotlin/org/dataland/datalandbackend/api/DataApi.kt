@@ -8,6 +8,7 @@ import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -88,6 +89,7 @@ interface DataApi<T> {
         ],
     )
     @GetMapping(
+        value = ["/"],
         produces = ["application/json"],
     )
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -97,72 +99,32 @@ interface DataApi<T> {
     ): ResponseEntity<CompanyAssociatedData<T>>
 
     /**
-     * A method to export the CompanyAssociatedData for a dataId to CSV
-     * @param dataId identifier used to uniquely identify a dataset
-     * @return CSV of companyAssociatedData in form of InputStreamResource
-     */
-    @Operation(
-        summary = "Export data identified by dataId to plain CSV.",
-        description = "Export data identified by dataId to plain CSV.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset as plain CSV file."),
-        ],
-    )
-    @GetMapping(
-        value = ["/{dataId}/csv"],
-        produces = ["text/csv"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
-    fun exportCompanyAssociatedDataToCsv(
-        @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<InputStreamResource>
-
-    /**
-     * A method to export the CompanyAssociatedData for a dataId to Excel
-     * @param dataId identifier used to uniquely identify a dataset
-     * @return Excel of companyAssociatedData in form of InputStreamResource
-     */
-    @Operation(
-        summary = "Export data identified by dataId to Excel-compatible CSV.",
-        description = "Export data identified by dataId to an Excel-compatible CSV file.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset as Excel-compatible CSV file."),
-        ],
-    )
-    @GetMapping(
-        value = ["/{dataId}/excel"],
-        produces = ["text/csv"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
-    fun exportCompanyAssociatedDataToExcel(
-        @PathVariable("dataId") dataId: String,
-    ): ResponseEntity<InputStreamResource>
-
-    /**
-     * A method to export the CompanyAssociatedData for a dataId to JSON
-     * @param dataId identifier used to uniquely identify a dataset
+     * A method to export the CompanyAssociatedData by its [reportingPeriod], [companyId] as a [fileFormat] file.
+     * @param reportingPeriod specifies the reporting period
+     * @param companyId specifies the company
+     * @param exportFileType specifies the file type to export to
      * @return JSON of companyAssociatedData in form of InputStreamResource
      */
     @Operation(
-        summary = "Export data identified by dataId to JSON.",
-        description = "Export data identified by dataId to JSON.",
+        summary = "Export data for the reportingPeriod and companyId provided.",
+        description =
+            "Export data for the reportingPeriod and companyId provided into a file of the specified format" +
+                "(CSV, Excel-compatible CSV, JSON).",
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully exported dataset as JSON file."),
+            ApiResponse(responseCode = "200", description = "Successfully exported dataset."),
         ],
     )
     @GetMapping(
-        value = ["/{dataId}/json"],
-        produces = ["application/json"],
+        value = ["/export"],
+        produces = ["application/octet-stream"],
     )
-    @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
-    fun exportCompanyAssociatedDataToJson(
-        @PathVariable("dataId") dataId: String,
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun exportCompanyAssociatedDataByDimensions(
+        @RequestParam("reportingPeriod") reportingPeriod: String,
+        @RequestParam("companyId") companyId: String,
+        @RequestParam("fileFormat") exportFileType: ExportFileType,
     ): ResponseEntity<InputStreamResource>
 
     /**

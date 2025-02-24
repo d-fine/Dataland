@@ -2,10 +2,11 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from 'axios';
 import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData';
 import {
+  EsgDatenkatalogDataControllerApi,
+  type EsgDatenkatalogData,
   type Configuration,
   type DataMetaInformation,
-  type EsgDatenkatalogData,
-  EsgDatenkatalogDataControllerApi,
+  type ExportFileType,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -46,36 +47,26 @@ export class EsgDatenkatalogApiClient implements PublicFrameworkDataApi<EsgDaten
     return this.openApiDataController.postCompanyAssociatedEsgDatenkatalogData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataToJson(
-    dataId: string,
+  exportCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    fileFormat: ExportFileType,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataToJson(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToCsv(
-    dataId: string,
-    options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataToCsv(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToExcel(
-    dataId: string,
-    options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataToExcel(dataId, options);
+    return this.openApiDataController.exportCompanyAssociatedEsgDatenkatalogDataByDimensions(
+      reportingPeriod,
+      companyId,
+      fileFormat,
+      options
+    );
   }
 
   getCompanyAssociatedDataByDimensions(
     reportingPeriod: string,
     companyId: string,
     options?: AxiosRequestConfig
-  ): // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
+  ): AxiosPromise<CompanyAssociatedData<EsgDatenkatalogData>> {
     return this.openApiDataController.getCompanyAssociatedEsgDatenkatalogDataByDimensions(
       reportingPeriod,
       companyId,

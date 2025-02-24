@@ -128,7 +128,7 @@ import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum, ExportFileType } from '@clients/backend';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -143,7 +143,7 @@ import router from '@/router';
 import DownloadDatasetModal from '@/components/general/DownloadDatasetModal.vue';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi.ts';
 import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
+import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils.ts';
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
@@ -300,16 +300,13 @@ export default defineComponent({
      */
     editDataset(event: Event) {
       if (this.singleDataMetaInfoToDisplay) {
-        console.log('SingleDataMetaInfoToDisplay event');
         this.goToUpdateForm(this.singleDataMetaInfoToDisplay.reportingPeriod);
       } else if (this.availableReportingPeriods.length > 1 && !this.singleDataMetaInfoToDisplay) {
-        console.log('MultiDataMetaInfoToDisplay event');
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
         if (panel) {
           panel.toggle(event);
         }
       } else if (this.availableReportingPeriods.length == 1 && !this.singleDataMetaInfoToDisplay) {
-        console.log('MultiDataMetaInfoToDisplay length 1 event');
         this.goToUpdateForm(this.availableReportingPeriods[0]);
       }
     },
@@ -402,18 +399,7 @@ export default defineComponent({
      * @param selectedYear selected reporting year
      * @param selectedFileTypeIdentifier selected export file type
      */
-    async handleDatasetDownload(selectedYear: string, selectedFileTypeIdentifier: string) {
-      let dataId;
-      if (this.singleDataMetaInfoToDisplay) {
-        dataId = this.singleDataMetaInfoToDisplay.dataId;
-      } else {
-        dataId = this.mapOfReportingPeriodToActiveDataset.get(selectedYear)?.dataId;
-      }
-
-      if (!dataId) {
-        throw new ReferenceError(`DataId does not exist.`);
-      }
-
+    async handleDatasetDownload(selectedYear: string, selectedFileType: string) {
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         // DataExport Button does not exist for private frameworks, so cast is safe
@@ -426,37 +412,28 @@ export default defineComponent({
           throw new ReferenceError('Retrieving dataApi for framework failed.');
         }
 
-        let dataResponse;
-        let dataContent;
-
-        const exportFileType = Object.values(ExportFileTypes).find(
-          (fileType) => fileType.identifier === selectedFileTypeIdentifier
+        const exportFileType = Object.values(ExportFileType).find(
+          (fileType) => fileType.toString() == selectedFileType
         );
 
         if (!exportFileType) {
           throw new ReferenceError('ExportFileType undefined.');
         }
 
-        const fileExtension = exportFileType.fileExtension;
-        const filename = `${dataId}.${fileExtension}`;
+        const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
+        const filename = `${selectedYear}-${this.dataType}-${this.companyId}.${fileExtension}`;
 
-        switch (exportFileType.identifier) {
-          case 'csv':
-            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToCsv(dataId);
-            dataContent = dataResponse.data;
-            break;
-          case 'excel':
-            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToExcel(dataId);
-            dataContent = dataResponse.data;
-            break;
-          case 'json':
-            dataResponse = await frameworkDataApi.exportCompanyAssociatedDataToJson(dataId);
-            dataContent = JSON.stringify(dataResponse.data);
-            break;
-        }
+        const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
+          selectedYear,
+          this.companyId,
+          exportFileType
+        );
+        const dataContent =
+          exportFileType == ExportFileType.Json ? JSON.stringify(dataResponse.data) : dataResponse.data;
 
         if (!dataResponse) {
-          throw new Error(`Retrieving frameworkData for dataId ${dataId} failed.`);
+          throw new Error(`Retrieving ${this.dataType} data for company with companyId ${this.companyId}
+           and reporting period ${selectedFileType} failed.`);
         }
 
         this.forceFileDownload(dataContent, filename);

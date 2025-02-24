@@ -26,20 +26,18 @@
       <p v-show="showReportingPeriodError" class="text-danger text-xs" data-test="reportingYearError">
         Please select a reporting period.
       </p>
-      <label for="formatSelector">
-        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File format</b>
+      <label for="fileTypeSelector">
+        <b style="margin-bottom: 8px; margin-top: 5px; font-weight: normal">File Type</b>
       </label>
       <FormKit
-        v-model="selectedFileFormat"
+        v-model="selectedFileType"
         type="select"
-        name="formatSelector"
-        data-test="formatSelector"
+        name="fileTypeSelector"
+        data-test="fileTypeSelector"
         :options="fileTypeSelectionOptions"
-        placeholder="Select a file format"
+        placeholder="Select a file type"
       />
-      <p v-show="showFileFormatError" class="text-danger text-xs" data-test="fileFormatError">
-        Please select a file format.
-      </p>
+      <p v-show="showFileTypeError" class="text-danger text-xs" data-test="fileTypeError">Please select a file type.</p>
     </FormKit>
 
     <div>
@@ -59,7 +57,7 @@
 import { defineComponent, type PropType } from 'vue';
 import PrimeDialog from 'primevue/dialog';
 import PrimeButton from 'primevue/button';
-import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
+import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 
 export default defineComponent({
   components: { PrimeDialog, PrimeButton },
@@ -78,20 +76,18 @@ export default defineComponent({
   emits: ['closeDownloadModal', 'downloadDataset'],
   data() {
     return {
-      exportFileTypes: [ExportFileTypes.CsvFile, ExportFileTypes.ExcelFile, ExportFileTypes.JsonFile],
       selectedReportingPeriod: '',
-      selectedFileFormat: '',
+      selectedFileType: '',
       isModalVisible: false,
       showReportingPeriodError: false,
-      showFileFormatError: false,
+      showFileTypeError: false,
     };
   },
-
   computed: {
     fileTypeSelectionOptions() {
-      return Object.values(this.exportFileTypes).map((fileType) => ({
-        value: fileType.identifier,
-        label: `${fileType.description} (.${fileType.fileExtension})`,
+      return Object.entries(ExportFileTypeInformation).map(([type, information]) => ({
+        value: type.toString(),
+        label: `${information.description} (.${information.fileExtension})`,
       }));
     },
   },
@@ -103,8 +99,8 @@ export default defineComponent({
     selectedReportingPeriod() {
       this.showReportingPeriodError = false;
     },
-    selectedFileFormat() {
-      this.showFileFormatError = false;
+    selectedFileType() {
+      this.showFileTypeError = false;
     },
   },
 
@@ -115,11 +111,11 @@ export default defineComponent({
     onDownloadButtonClick() {
       this.checkIfShowErrors();
 
-      if (this.showReportingPeriodError || this.showFileFormatError) {
+      if (this.showReportingPeriodError || this.showFileTypeError) {
         return;
       }
 
-      this.$emit('downloadDataset', this.selectedReportingPeriod, this.selectedFileFormat);
+      this.$emit('downloadDataset', this.selectedReportingPeriod, this.selectedFileType);
       this.closeDialog();
     },
 
@@ -128,7 +124,7 @@ export default defineComponent({
      */
     checkIfShowErrors() {
       this.showReportingPeriodError = this.selectedReportingPeriod.length === 0;
-      this.showFileFormatError = this.selectedFileFormat.length === 0;
+      this.showFileTypeError = this.selectedFileType.length === 0;
     },
 
     /**
@@ -145,9 +141,9 @@ export default defineComponent({
      */
     resetProps() {
       this.selectedReportingPeriod = '';
-      this.selectedFileFormat = '';
+      this.selectedFileType = '';
       this.showReportingPeriodError = false;
-      this.showFileFormatError = false;
+      this.showFileTypeError = false;
     },
   },
 });
