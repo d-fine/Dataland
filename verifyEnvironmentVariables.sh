@@ -61,6 +61,7 @@ expected_vars=( \
   LOKI_VOLUME \
   SLACK_ALERT_URL \
   SLACK_CRITICAL_ALERT_URL \
+  TARGETSERVER_URL \
 )
 
 for var in "${expected_vars[@]}"
