@@ -1,6 +1,6 @@
 <template>
   <TheHeader v-if="!useMobileView" />
-  <TheContent class="paper-section flex">
+
     <div ref="sheet">
       <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
 
@@ -31,11 +31,16 @@
         >
       </span>
     </div>
+  <TheContent class="paper-section flex">
     <div class="col-12 text-left p-3">
       <div class="card">
         <DataTable v-if="documentsFiltered && documentsFiltered.length > 0" :value="documentsFiltered">
           <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
-          <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true" />
+          <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
+            <template #body="slotProps">
+              {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
+            </template>
+          </Column>
           <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" />
           <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
           <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
@@ -54,10 +59,8 @@
           </Column>
         </DataTable>
         <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
-          <p class="font-medium text-xl">We're sorry, but your search did not return any results.</p>
-          <p class="font-medium text-xl">Please double-check the spelling and filter settings!</p>
           <p class="font-medium text-xl">
-            It might be possible that the company you searched for does not have any documents on Dataland yet.
+            The company you searched for does not have any documents on Dataland yet.
           </p>
         </div>
       </div>

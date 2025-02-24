@@ -80,7 +80,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import { FRAMEWORKS_MAIN, FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
+import {FRAMEWORKS_ALL, FRAMEWORKS_MAIN} from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
@@ -131,7 +131,7 @@ export default defineComponent({
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
-      FRAMEWORKS_WITH_VIEW_PAGE,
+      FRAMEWORKS_ALL,
       FRAMEWORKS_MAIN,
       DocumentMetaInfoDocumentCategoryEnum,
       isUserCompanyOwnerOrUploader: false,
@@ -153,7 +153,7 @@ export default defineComponent({
       return !this.isAnyCompanyOwnerExisting && isCompanyIdValid(this.companyId);
     },
     frameworksToDisplay() {
-      return this.showAllFrameworks ? this.FRAMEWORKS_WITH_VIEW_PAGE : this.FRAMEWORKS_MAIN;
+      return this.showAllFrameworks ? this.FRAMEWORKS_ALL : this.FRAMEWORKS_MAIN;
     },
   },
   watch: {
