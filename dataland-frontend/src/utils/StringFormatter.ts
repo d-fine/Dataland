@@ -6,6 +6,7 @@ import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum } from '@clients/backend';
 import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
+import {DocumentMetaInfoDocumentCategoryEnum} from "@clients/documentmanager";
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -158,5 +159,25 @@ export function getFrameworkSubtitle(framework: string): string {
       return 'für Corporate Schuldscheindarlehen';
     default:
       return '';
+  }
+}
+
+/**
+ * Return the human readble plural of a report category
+ * @param category document category
+ * @returns title of category
+ */
+export function getPluralCategory(category: string): string {
+  switch (category) {
+    case DocumentMetaInfoDocumentCategoryEnum.Policy:
+      return 'Policies';
+    case DocumentMetaInfoDocumentCategoryEnum.AnnualReport:
+      return 'Annual Reports';
+    case DocumentMetaInfoDocumentCategoryEnum.SustainabilityReport:
+      return 'Sustainability Reports';
+    case DocumentMetaInfoDocumentCategoryEnum.Other:
+      return 'Other Reports';
+    default:
+      return humanizeStringOrNumber(category);
   }
 }

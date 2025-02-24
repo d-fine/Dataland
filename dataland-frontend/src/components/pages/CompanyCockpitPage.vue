@@ -8,7 +8,7 @@
           <div class="card__title">Latest Documents</div>
           <div class="card__separator" />
           <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum">
-            <div class="card__subtitle">{{ humanizeStringOrNumber(label.toString()) }}</div>
+            <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
             <div v-if="getDocumentData(category).length === 0">-</div>
             <div v-else>
               <div v-for="document in getDocumentData(category)" :key="document.documentId">
@@ -92,7 +92,7 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import router from '@/router';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
+import {getPluralCategory, humanizeStringOrNumber} from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -181,6 +181,7 @@ export default defineComponent({
     void this.getLatestDocuments();
   },
   methods: {
+    getPluralCategory,
     humanizeStringOrNumber,
     /**
      * Retrieves the aggregated framework data summary
