@@ -8,14 +8,16 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import java.text.SimpleDateFormat
 
 class DataPointValidatorTest {
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
-    private val specificationClient = mock(SpecificationControllerApi::class.java)
-    private val dataPointValidator = DataPointValidator(objectMapper, specificationClient)
+    private val specificationClient = mock<SpecificationControllerApi>()
+    private val referencedReportsUtilities = mock<ReferencedReportsUtilities>()
+    private val dataPointValidator = DataPointValidator(objectMapper, specificationClient, referencedReportsUtilities)
 
     private val correlationId = "correlationId"
     private val validationClass = "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint"
@@ -64,8 +66,9 @@ class DataPointValidatorTest {
         val dataPoint = "dummy"
         val dataPointType = "non-existent-identifier"
 
-        `when`(specificationClient.getDataPointTypeSpecification(dataPointType))
-            .thenThrow(ClientException("Data point identifier not found."))
+        doThrow(ClientException("Data point identifier not found."))
+            .whenever(specificationClient)
+            .getDataPointTypeSpecification(dataPointType)
 
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateDataPoint(dataPointType, dataPoint, correlationId)

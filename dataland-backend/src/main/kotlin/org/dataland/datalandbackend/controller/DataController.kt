@@ -163,29 +163,6 @@ open class DataController<T>(
             .body(companyAssociatedDataForExport)
     }
 
-    private fun exportCompanyAssociatedData(
-        dataId: String,
-        exportFileType: ExportFileType,
-    ): ResponseEntity<InputStreamResource> {
-        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        this.verifyAccess(metaInfo)
-        val companyId = metaInfo.company.companyId
-        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
-        val companyAssociatedData =
-            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
-
-        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
-        val companyAssociatedDataForExport =
-            dataExportService.buildStreamFromCompanyAssociatedData(companyAssociatedData, exportFileType)
-
-        logger.info("Creation of ${exportFileType.name} for export successful.")
-
-        return ResponseEntity
-            .ok()
-            .headers(buildHttpHeadersForExport(dataId, exportFileType))
-            .body(companyAssociatedDataForExport)
-    }
-
     private fun buildHttpHeadersForExport(
         dataId: String,
         exportFileType: ExportFileType,
@@ -210,7 +187,8 @@ open class DataController<T>(
             ContentDisposition
                 .attachment()
                 .filename(
-                    "${dataDimensions.reportingPeriod}-${dataDimensions.dataType}-${dataDimensions.companyId}.${exportFileType.fileExtension}",
+                    "${dataDimensions.reportingPeriod}-${dataDimensions.dataType}-${dataDimensions.companyId}" +
+                        ".${exportFileType.fileExtension}",
                 ).build()
         return headers
     }
