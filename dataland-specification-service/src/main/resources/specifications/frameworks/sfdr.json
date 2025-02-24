@@ -1,0 +1,148 @@
+{
+  "id" : "sfdr",
+  "name" : "SFDR",
+  "businessDefinition" : "Sustainability Finance Disclosure Regulation",
+  "referencedReportJsonPath" : "general.general.referencedReports",
+  "schema" : {
+    "general" : {
+      "general" : {
+        "dataDate" : "plainDateDataDate",
+        "fiscalYearDeviation" : "plainEnumFiscalYearDeviation",
+        "fiscalYearEnd" : "plainDateFiscalYearEnd"
+      }
+    },
+    "environmental" : {
+      "greenhouseGasEmissions" : {
+        "scope1GhgEmissionsInTonnes" : "extendedDecimalScope1GhgEmissionsInTonnes",
+        "scope2GhgEmissionsInTonnes" : "extendedDecimalScope2GhgEmissionsInTonnes",
+        "scope2GhgEmissionsLocationBasedInTonnes" : "extendedDecimalScope2GhgEmissionsLocationBasedInTonnes",
+        "scope2GhgEmissionsMarketBasedInTonnes" : "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes",
+        "scope1And2GhgEmissionsInTonnes" : "extendedDecimalScope1And2GhgEmissionsInTonnes",
+        "scope1And2GhgEmissionsLocationBasedInTonnes" : "extendedDecimalScope1And2GhgEmissionsLocationBasedInTonnes",
+        "scope1And2GhgEmissionsMarketBasedInTonnes" : "extendedDecimalScope1And2GhgEmissionsMarketBasedInTonnes",
+        "scope3GhgEmissionsInTonnes" : "extendedDecimalScope3GhgEmissionsInTonnes",
+        "scope3UpstreamGhgEmissionsInTonnes" : "extendedDecimalScope3UpstreamGhgEmissionsInTonnes",
+        "scope3DownstreamGhgEmissionsInTonnes" : "extendedDecimalScope3DownstreamGhgEmissionsInTonnes",
+        "scope1And2And3GhgEmissionsInTonnes" : "extendedDecimalScope1And2And3GhgEmissionsInTonnes",
+        "scope1And2And3GhgEmissionsLocationBasedInTonnes" : "extendedDecimalScope1And2And3GhgEmissionsLocationBasedInTonnes",
+        "scope1And2And3GhgEmissionsMarketBasedInTonnes" : "extendedDecimalScope1And2And3GhgEmissionsMarketBasedInTonnes",
+        "scope4GhgEmissionsInTonnes" : "extendedDecimalScope4GhgEmissionsInTonnes",
+        "enterpriseValue" : "extendedCurrencyEnterpriseValue",
+        "totalRevenue" : "extendedCurrencyTotalRevenue",
+        "carbonFootprintInTonnesPerMillionEURRevenue" : "extendedDecimalCarbonFootprintInTonnesPerMillionEURRevenue",
+        "ghgIntensityInTonnesPerMillionEURRevenue" : "extendedDecimalGhgIntensityInTonnesPerMillionEURRevenue",
+        "ghgIntensityScope1InTonnesPerMillionEURRevenue" : "extendedDecimalGhgIntensityScope1InTonnesPerMillionEURRevenue",
+        "ghgIntensityScope2InTonnesPerMillionEURRevenue" : "extendedDecimalGhgIntensityScope2InTonnesPerMillionEURRevenue",
+        "ghgIntensityScope3InTonnesPerMillionEURRevenue" : "extendedDecimalGhgIntensityScope3InTonnesPerMillionEURRevenue",
+        "ghgIntensityScope4InTonnesPerMillionEURRevenue" : "extendedDecimalGhgIntensityScope4InTonnesPerMillionEURRevenue",
+        "fossilFuelSectorExposure" : "extendedEnumYesNoFossilFuelSectorExposure",
+        "financedScope1AndScope2Emissions" : "extendedDecimalFinancedScope1AndScope2Emissions",
+        "financedScope3Emissions" : "extendedDecimalFinancedScope3Emissions"
+      },
+      "energyPerformance" : {
+        "renewableEnergyProductionInGWh" : "extendedDecimalRenewableEnergyProductionInGWh",
+        "renewableEnergyConsumptionInGWh" : "extendedDecimalRenewableEnergyConsumptionInGWh",
+        "nonRenewableEnergyProductionInGWh" : "extendedDecimalNonRenewableEnergyProductionInGWh",
+        "relativeNonRenewableEnergyProductionInPercent" : "extendedDecimalRelativeNonRenewableEnergyProductionInPercent",
+        "nonRenewableEnergyConsumptionInGWh" : "extendedDecimalNonRenewableEnergyConsumptionInGWh",
+        "relativeNonRenewableEnergyConsumptionInPercent" : "extendedDecimalRelativeNonRenewableEnergyConsumptionInPercent",
+        "applicableHighImpactClimateSectors" : "plainSfdrHighImpactClimateSectorsApplicableHighImpactClimateSectors",
+        "totalHighImpactClimateSectorEnergyConsumptionInGWh" : "extendedDecimalTotalHighImpactClimateSectorEnergyConsumptionInGWh",
+        "nonRenewableEnergyConsumptionFossilFuelsInGWh" : "extendedDecimalNonRenewableEnergyConsumptionFossilFuelsInGWh",
+        "nonRenewableEnergyConsumptionCrudeOilInGWh" : "extendedDecimalNonRenewableEnergyConsumptionCrudeOilInGWh",
+        "nonRenewableEnergyConsumptionNaturalGasInGWh" : "extendedDecimalNonRenewableEnergyConsumptionNaturalGasInGWh",
+        "nonRenewableEnergyConsumptionLigniteInGWh" : "extendedDecimalNonRenewableEnergyConsumptionLigniteInGWh",
+        "nonRenewableEnergyConsumptionCoalInGWh" : "extendedDecimalNonRenewableEnergyConsumptionCoalInGWh",
+        "nonRenewableEnergyConsumptionNuclearEnergyInGWh" : "extendedDecimalNonRenewableEnergyConsumptionNuclearEnergyInGWh",
+        "nonRenewableEnergyConsumptionOtherInGWh" : "extendedDecimalNonRenewableEnergyConsumptionOtherInGWh"
+      },
+      "biodiversity" : {
+        "primaryForestAndWoodedLandOfNativeSpeciesExposure" : "extendedEnumYesNoPrimaryForestAndWoodedLandOfNativeSpeciesExposure",
+        "protectedAreasExposure" : "extendedEnumYesNoProtectedAreasExposure",
+        "rareOrEndangeredEcosystemsExposure" : "extendedEnumYesNoRareOrEndangeredEcosystemsExposure",
+        "highlyBiodiverseGrasslandExposure" : "extendedEnumYesNoHighlyBiodiverseGrasslandExposure",
+        "manufactureOfAgrochemicalPesticidesProducts" : "extendedEnumYesNoManufactureOfAgrochemicalPesticidesProducts",
+        "landDegradationDesertificationSoilSealingExposure" : "extendedEnumYesNoLandDegradationDesertificationSoilSealingExposure",
+        "sustainableAgriculturePolicy" : "extendedEnumYesNoSustainableAgriculturePolicy",
+        "sustainableOceansAndSeasPolicy" : "extendedEnumYesNoSustainableOceansAndSeasPolicy",
+        "threatenedSpeciesExposure" : "extendedEnumYesNoThreatenedSpeciesExposure",
+        "biodiversityProtectionPolicy" : "extendedEnumYesNoBiodiversityProtectionPolicy",
+        "deforestationPolicy" : "extendedEnumYesNoDeforestationPolicy"
+      },
+      "water" : {
+        "emissionsToWaterInTonnes" : "extendedDecimalEmissionsToWaterInTonnes",
+        "waterConsumptionInCubicMeters" : "extendedDecimalWaterConsumptionInCubicMeters",
+        "waterReusedInCubicMeters" : "extendedDecimalWaterReusedInCubicMeters",
+        "relativeWaterUsageInCubicMetersPerMillionEURRevenue" : "extendedDecimalRelativeWaterUsageInCubicMetersPerMillionEURRevenue",
+        "waterManagementPolicy" : "extendedEnumYesNoWaterManagementPolicy",
+        "highWaterStressAreaExposure" : "extendedEnumYesNoHighWaterStressAreaExposure"
+      },
+      "waste" : {
+        "hazardousAndRadioactiveWasteInTonnes" : "extendedDecimalHazardousAndRadioactiveWasteInTonnes",
+        "nonRecycledWasteInTonnes" : "extendedDecimalNonRecycledWasteInTonnes"
+      },
+      "emissions" : {
+        "emissionsOfInorganicPollutantsInTonnes" : "extendedDecimalEmissionsOfInorganicPollutantsInTonnes",
+        "emissionsOfAirPollutantsInTonnes" : "extendedDecimalEmissionsOfAirPollutantsInTonnes",
+        "emissionsOfOzoneDepletionSubstancesInTonnes" : "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes",
+        "carbonReductionInitiatives" : "extendedEnumYesNoCarbonReductionInitiatives"
+      }
+    },
+    "social" : {
+      "socialAndEmployeeMatters" : {
+        "humanRightsLegalProceedings" : "extendedEnumYesNoHumanRightsLegalProceedings",
+        "iloCoreLabourStandards" : "extendedEnumYesNoIloCoreLabourStandards",
+        "environmentalPolicy" : "extendedEnumYesNoEnvironmentalPolicy",
+        "corruptionLegalProceedings" : "extendedEnumYesNoCorruptionLegalProceedings",
+        "transparencyDisclosurePolicy" : "extendedEnumYesNoTransparencyDisclosurePolicy",
+        "humanRightsDueDiligencePolicy" : "extendedEnumYesNoHumanRightsDueDiligencePolicy",
+        "policyAgainstChildLabour" : "extendedEnumYesNoPolicyAgainstChildLabour",
+        "policyAgainstForcedLabour" : "extendedEnumYesNoPolicyAgainstForcedLabour",
+        "policyAgainstDiscriminationInTheWorkplace" : "extendedEnumYesNoPolicyAgainstDiscriminationInTheWorkplace",
+        "iso14001Certificate" : "extendedEnumYesNoIso14001Certificate",
+        "policyAgainstBriberyAndCorruption" : "extendedEnumYesNoPolicyAgainstBriberyAndCorruption",
+        "fairBusinessMarketingAdvertisingPolicy" : "extendedEnumYesNoFairBusinessMarketingAdvertisingPolicy",
+        "technologiesExpertiseTransferPolicy" : "extendedEnumYesNoTechnologiesExpertiseTransferPolicy",
+        "fairCompetitionPolicy" : "extendedEnumYesNoFairCompetitionPolicy",
+        "violationOfTaxRulesAndRegulation" : "extendedEnumYesNoViolationOfTaxRulesAndRegulation",
+        "unGlobalCompactPrinciplesCompliancePolicy" : "extendedEnumYesNoUnGlobalCompactPrinciplesCompliancePolicy",
+        "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling" : "extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesGrievanceHandling",
+        "averageGrossHourlyEarningsMaleEmployees" : "extendedCurrencyAverageGrossHourlyEarningsMaleEmployees",
+        "averageGrossHourlyEarningsFemaleEmployees" : "extendedCurrencyAverageGrossHourlyEarningsFemaleEmployees",
+        "unadjustedGenderPayGapInPercent" : "extendedDecimalUnadjustedGenderPayGapInPercent",
+        "femaleBoardMembersSupervisoryBoard" : "extendedIntegerFemaleBoardMembersSupervisoryBoard",
+        "femaleBoardMembersBoardOfDirectors" : "extendedIntegerFemaleBoardMembersBoardOfDirectors",
+        "maleBoardMembersSupervisoryBoard" : "extendedIntegerMaleBoardMembersSupervisoryBoard",
+        "maleBoardMembersBoardOfDirectors" : "extendedIntegerMaleBoardMembersBoardOfDirectors",
+        "boardGenderDiversitySupervisoryBoardInPercent" : "extendedDecimalBoardGenderDiversitySupervisoryBoardInPercent",
+        "boardGenderDiversityBoardOfDirectorsInPercent" : "extendedDecimalBoardGenderDiversityBoardOfDirectorsInPercent",
+        "controversialWeaponsExposure" : "extendedEnumYesNoControversialWeaponsExposure",
+        "workplaceAccidentPreventionPolicy" : "extendedEnumYesNoWorkplaceAccidentPreventionPolicy",
+        "rateOfAccidents" : "extendedDecimalRateOfAccidents",
+        "workdaysLostInDays" : "extendedDecimalWorkdaysLostInDays",
+        "supplierCodeOfConduct" : "extendedEnumYesNoSupplierCodeOfConduct",
+        "grievanceHandlingMechanism" : "extendedEnumYesNoGrievanceHandlingMechanism",
+        "whistleblowerProtectionPolicy" : "extendedEnumYesNoWhistleblowerProtectionPolicy",
+        "reportedIncidentsOfDiscrimination" : "extendedIntegerReportedIncidentsOfDiscrimination",
+        "sanctionedIncidentsOfDiscrimination" : "extendedIntegerSanctionedIncidentsOfDiscrimination",
+        "excessiveCeoPayRatio" : "extendedDecimalExcessiveCeoPayRatio"
+      },
+      "greenSecurities" : {
+        "securitiesNotCertifiedAsGreen" : "extendedEnumYesNoSecuritiesNotCertifiedAsGreen"
+      },
+      "humanRights" : {
+        "humanRightsPolicy" : "extendedEnumYesNoHumanRightsPolicy",
+        "humanRightsDueDiligence" : "extendedEnumYesNoHumanRightsDueDiligence",
+        "traffickingInHumanBeingsPolicy" : "extendedEnumYesNoTraffickingInHumanBeingsPolicy",
+        "reportedChildLabourIncidents" : "extendedEnumYesNoReportedChildLabourIncidents",
+        "reportedForcedOrCompulsoryLabourIncidents" : "extendedEnumYesNoReportedForcedOrCompulsoryLabourIncidents",
+        "numberOfReportedIncidentsOfHumanRightsViolations" : "extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations"
+      },
+      "antiCorruptionAndAntiBribery" : {
+        "casesOfInsufficientActionAgainstBriberyAndCorruption" : "extendedIntegerCasesOfInsufficientActionAgainstBriberyAndCorruption",
+        "reportedConvictionsOfBriberyAndCorruption" : "extendedIntegerReportedConvictionsOfBriberyAndCorruption",
+        "totalAmountOfReportedFinesOfBriberyAndCorruption" : "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption"
+      }
+    }
+  }
+}

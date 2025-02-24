@@ -106,7 +106,6 @@ class CurrencyComponent(
         specificationCategoryBuilder.addDefaultDatapointAndSpecification(
             this,
             "Currency",
-            "${documentSupport.getNamingPrefix()}Currency",
         )
     }
 }

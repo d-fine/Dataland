@@ -1,0 +1,7 @@
+{
+  "id" : "extendedCurrencyAverageGrossHourlyEarningsFemaleEmployees",
+  "name" : "Average Gross Hourly Earnings Female Employees",
+  "businessDefinition" : "Average gross hourly earnings of female employees",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : "sfdr"
+}

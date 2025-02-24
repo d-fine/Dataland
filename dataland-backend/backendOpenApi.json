@@ -480,6 +480,64 @@
         ]
       }
     },
+    "/internal/cached/public/get-batch": {
+      "post": {
+        "tags": [
+          "temporarily-cached-data-controller"
+        ],
+        "summary": "Retrieve specific data from the cache store of the backend.",
+        "description": "Data identified by the provided data IDs is retrieved.",
+        "operationId": "getBatchReceivedPublicData",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/data/vsme": {
       "post": {
         "tags": [
@@ -20707,7 +20765,8 @@
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime"
+          "uploadTime",
+          "uploaderUserId"
         ],
         "type": "object",
         "properties": {
@@ -20724,8 +20783,7 @@
             "type": "string"
           },
           "uploaderUserId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "uploadTime": {
             "type": "integer",
@@ -21123,12 +21181,12 @@
           "headquarters": {
             "type": "string"
           },
-          "countryCode": {
-            "type": "string"
-          },
           "sector": {
             "type": "string",
             "nullable": true
+          },
+          "countryCode": {
+            "type": "string"
           },
           "lei": {
             "type": "string",

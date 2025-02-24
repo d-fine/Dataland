@@ -10,6 +10,7 @@ import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
 import org.dataland.frameworktoolbox.specific.fixturegenerator.elements.FixtureSectionBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.addQaPropertyWithDocumentSupport
+import org.dataland.frameworktoolbox.specific.specification.elements.CategoryBuilder
 import org.dataland.frameworktoolbox.specific.uploadconfig.elements.UploadCategoryBuilder
 
 /**
@@ -73,6 +74,14 @@ open class DecimalComponent(
                 nullableFixtureExpression = "dataGenerator.randomFloat($rangeParameterSpecification)",
                 nullable = isNullable,
             ),
+        )
+    }
+
+    override fun generateDefaultSpecification(specificationCategoryBuilder: CategoryBuilder) {
+        requireDocumentSupportIn(setOf(ExtendedDocumentSupport))
+        specificationCategoryBuilder.addDefaultDatapointAndSpecification(
+            this,
+            "Decimal",
         )
     }
 }

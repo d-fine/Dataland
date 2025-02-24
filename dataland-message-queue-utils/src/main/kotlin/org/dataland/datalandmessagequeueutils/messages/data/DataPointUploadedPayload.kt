@@ -5,6 +5,12 @@ package org.dataland.datalandmessagequeueutils.messages.data
  */
 data class DataPointUploadedPayload(
     val dataPointId: String,
+    val companyId: String,
+    val companyName: String,
+    val dataPointType: String,
+    val reportingPeriod: String,
+    val uploadTime: Long,
+    val uploaderUserId: String,
     val initialQaStatus: String,
     val initialQaComment: String?,
 )

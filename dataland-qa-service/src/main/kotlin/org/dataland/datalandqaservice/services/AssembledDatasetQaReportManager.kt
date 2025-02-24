@@ -54,6 +54,13 @@ class AssembledDatasetQaReportManager
             val dataPointQaReportIds =
                 dehydrateAndSaveDataPointQaReports(dataType, dataId, report, reporterUserId, uploadTime, correlationId)
 
+            if (dataPointQaReportIds.isEmpty()) {
+                throw InvalidInputApiException(
+                    "The QA report does not contain any data points",
+                    "The QA report does not contain any data points",
+                )
+            }
+
             qaReportRepository.markAllReportsInactiveByDataIdAndReportingUserId(dataId, reporterUserId)
             val savedEntity =
                 qaReportRepository.save(

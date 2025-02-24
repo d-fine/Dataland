@@ -1,0 +1,7 @@
+{
+  "id" : "extendedDecimalScope4GhgEmissionsInTonnes",
+  "name" : "Scope 4 GHG emissions",
+  "businessDefinition" : "Scope 4, as defined by the GHG Protocol, covers emissions avoided when a product is used as a substitute for other goods or services, fulfilling the same functions but with a lower carbon intensity.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr"
+}
