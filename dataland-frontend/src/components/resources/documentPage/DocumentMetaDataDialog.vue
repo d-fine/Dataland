@@ -41,13 +41,13 @@
             <tr>
               <th class="headers-bg">Linked companies</th>
               <td>
-                <span v-for="(name, index) in metaData.companyIds" :key="index">
+                <span v-for="(company, index) in metaData.company" :key="index">
                   <a
-                    :href="`${baseURL}/companies/${name}`"
+                    :href="`${baseURL}/companies/${company.id}`"
                     target="_blank"
                     style="border: 0 none; text-decoration: none; color: #ff6813"
                   >
-                   company: {{ name }}<br />
+                   {{ company.name }}<br />
                     <br />
                   </a>
                 </span>
@@ -74,11 +74,21 @@ const props = defineProps<{
   documentId: string;
 }>();
 
+export interface CompanyDetails {
+  name: string;
+  id: string;
+}
+
+export interface ExtendedDocumentMetaInfoEntity extends Omit<DocumentMetaInfoEntity, 'companyIds'> {
+  company: CompanyDetails[];
+}
+
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const internalDialogVisible = ref(props.dialogVisible);
 const emit = defineEmits(['update:dialogVisible']);
-const metaData = ref<DocumentMetaInfoEntity | null>(null);
+const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
 const baseURL = ref(window.location.origin);
+
 
 /**
  * Get metadata of document
@@ -88,7 +98,20 @@ async function getDocumentMetaInformation(): Promise<void> {
     if (getKeycloakPromise) {
       const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
         .documentController;
-      metaData.value = (await documentControllerApi.getDocumentMetaInformation(props.documentId)).data;
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)())
+          .backendClients.companyDataController;
+      const data:DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId)).data;
+      const companyDetails = ref<CompanyDetails[]>([]);
+      for (const companyId of data.companyIds) {
+        const company = await companyDataControllerApi.getCompanyInfo(companyId);
+        companyDetails.value.push( {id: companyId, name:company.data.companyName});
+      }
+      metaData.value = {
+        ...data,
+        company: companyDetails.value
+      };
+
+
     }
   } catch (error) {
     console.error(error);
