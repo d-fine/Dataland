@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoOecdGuidelinesForMultinationalEnterprisesGrievanceHandling",
   "name" : "OECD Guidelines For Multinational Enterprises Grievance Handling",
-  "businessDefinition" : "Do you have grievance / complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises?",
+  "businessDefinition" : "Existence of grievance/complaints handling mechanisms to address violations of the UNGC principles or OECD Guidelines for Multinational Enterprises. See Regulation (EU) 2022/1288, Annex I, top (22) and table 1, indicator nr. 11.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }

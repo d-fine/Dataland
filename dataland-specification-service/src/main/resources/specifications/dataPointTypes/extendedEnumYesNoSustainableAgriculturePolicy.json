@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoSustainableAgriculturePolicy",
   "name" : "Sustainable Agriculture Policy",
-  "businessDefinition" : "Do you have sustainable land/agriculture practices or policies? If yes, please share the relevant documents with us.",
+  "businessDefinition" : "Existence of sustainable land or agriculture practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }

@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalNonRenewableEnergyConsumptionInGWh",
   "name" : "Non-Renewable Energy Consumption",
-  "businessDefinition" : "Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources.",
+  "businessDefinition" : "Total value of non-renewable energy consumed, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : "sfdr"
 }

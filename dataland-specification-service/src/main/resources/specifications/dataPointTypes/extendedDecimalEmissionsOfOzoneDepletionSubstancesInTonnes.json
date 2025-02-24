@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalEmissionsOfOzoneDepletionSubstancesInTonnes",
   "name" : "Emissions of Ozone Depletion Substances",
-  "businessDefinition" : "Tonnes of ozone depletion substances, chemicals that destroy the earth's protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl)",
+  "businessDefinition" : "Tonnes of ozone depletion substances, chemicals that destroy the earth's protective ozone layer. They include: chlorofluorocarbons (CFCs), halons, carbon tetrachloride (CCl4), methyl chloroform (CH3CCl3), hydrobromofluorocarbons (HBFCs), hydrochlorofluorocarbons (HCFCs), methyl bromide (CH3Br), bromochloromethane (CH2BrCl), hydrofluorocarbons (HFCs). See Regulation (EU) 2022/1288, Annex I, top (29) and table 2, indicator nr. 3 and the Montreal Protocol on Substances that Deplete the Ozone Layer.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : "sfdr"
 }

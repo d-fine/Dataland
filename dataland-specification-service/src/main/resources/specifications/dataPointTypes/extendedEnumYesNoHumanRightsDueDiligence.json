@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoHumanRightsDueDiligence",
   "name" : "Human Rights Due Diligence",
-  "businessDefinition" : "Do you have due diligence processes to identify, prevent, mitigate and address adverse human rights impacts?",
+  "businessDefinition" : "Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 10.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }

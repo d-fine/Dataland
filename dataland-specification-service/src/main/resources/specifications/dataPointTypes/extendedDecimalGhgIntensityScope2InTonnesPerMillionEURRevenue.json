@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalGhgIntensityScope2InTonnesPerMillionEURRevenue",
   "name" : "GHG intensity - scope 2",
-  "businessDefinition" : "Tonnes of Scope 2 GHG emissions / million of the revenue (in the same currency as the total revenue). Scope 2 carbon emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets",
+  "businessDefinition" : "Tonnes of scope 2 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : "sfdr"
 }

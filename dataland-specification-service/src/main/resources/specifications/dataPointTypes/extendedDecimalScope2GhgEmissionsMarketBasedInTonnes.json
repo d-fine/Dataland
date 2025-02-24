@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalScope2GhgEmissionsMarketBasedInTonnes",
   "name" : "Scope 2 GHG emissions (market-based)",
-  "businessDefinition" : "Scope 2 carbon emissions computed using the market-based method",
+  "businessDefinition" : "Scope 2 greenhouse gas emissions computed using the market-based method (equity share approach preferably used).",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : "sfdr"
 }

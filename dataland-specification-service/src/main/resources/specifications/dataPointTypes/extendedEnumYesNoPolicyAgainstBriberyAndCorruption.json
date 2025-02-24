@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoPolicyAgainstBriberyAndCorruption",
   "name" : "Policy against Bribery and Corruption",
-  "businessDefinition" : "Do you have a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption? If yes, please share the policy with us.",
+  "businessDefinition" : "Existence of a policy on anti-corruption and anti-bribery consistent with the United Nations Convention against Corruption. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 15.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }

@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoThreatenedSpeciesExposure",
   "name" : "Threatened Species Exposure",
-  "businessDefinition" : "Do you have operations which affect threatened species?",
+  "businessDefinition" : "Operations, which affect threatened species. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 14.1 .",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }

@@ -1,7 +1,7 @@
 {
   "id" : "extendedCurrencyEnterpriseValue",
   "name" : "Enterprise Value",
-  "businessDefinition" : "The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, and the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation, Annex I top (4).",
+  "businessDefinition" : "The sum, at fiscal year-end, of the market capitalisation of ordinary shares, the market capitalisation of preferred shares, the book value of total debt and non-controlling interests, without the deduction of cash or cash equivalents. See also Regulation (EU) 2022/1288, Annex I, top (4). ",
   "dataPointBaseTypeId" : "extendedCurrency",
   "frameworkOwnership" : "sfdr"
 }

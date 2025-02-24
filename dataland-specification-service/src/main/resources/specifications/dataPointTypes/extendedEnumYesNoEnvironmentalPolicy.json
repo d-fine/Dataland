@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoEnvironmentalPolicy",
   "name" : "Environmental Policy",
-  "businessDefinition" : "Do you have an environmental policy? If yes, please share the policy with us.",
+  "businessDefinition" : "Existence of an environmental policy.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }

@@ -1,7 +1,7 @@
 {
   "id" : "extendedIntegerReportedConvictionsOfBriberyAndCorruption",
   "name" : "Reported Convictions Of Bribery and Corruption",
-  "businessDefinition" : "Number of reported convictions for violations of anti-corruption and anti-bribery laws",
+  "businessDefinition" : "Number of reported convictions for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
   "dataPointBaseTypeId" : "extendedInteger",
   "frameworkOwnership" : "sfdr"
 }

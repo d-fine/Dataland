@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoSupplierCodeOfConduct",
   "name" : "Supplier Code Of Conduct",
-  "businessDefinition" : "Do you have a supplier code of conduct (against unsafe working conditions, precarious work, child labour and forced labour)? If yes, please share the document with us.",
+  "businessDefinition" : "Existence of a supplier code of conduct addressing unsafe working conditions, precarious work, child labor, and forced labor. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 4.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }

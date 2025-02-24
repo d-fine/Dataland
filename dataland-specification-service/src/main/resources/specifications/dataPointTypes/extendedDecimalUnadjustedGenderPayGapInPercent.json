@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalUnadjustedGenderPayGapInPercent",
   "name" : "Unadjusted gender pay gap",
-  "businessDefinition" : "Average unadjusted gender pay gap (female to male ratio, only considering gender)",
+  "businessDefinition" : "(average gross hourly earnings of male paid employees - average gross hourly earnings of female paid employees)/ average gross hourly earnings of male paid employees (in Percent). See Regulation (EU) 2022/1288, Annex I, top (23).",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : "sfdr"
 }

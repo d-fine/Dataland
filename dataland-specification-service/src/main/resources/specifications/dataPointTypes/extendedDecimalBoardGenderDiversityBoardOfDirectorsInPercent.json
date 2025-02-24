@@ -1,7 +1,7 @@
 {
   "id" : "extendedDecimalBoardGenderDiversityBoardOfDirectorsInPercent",
   "name" : "Board gender diversity - Board of Directors",
-  "businessDefinition" : "Percentage of female board members among all board of directors members",
+  "businessDefinition" : "Percentage of female board members among all board of directors members. See Regulation (EU) 2022/1288, Annex I, table 1, indicator nr. 13.",
   "dataPointBaseTypeId" : "extendedDecimal",
   "frameworkOwnership" : "sfdr"
 }

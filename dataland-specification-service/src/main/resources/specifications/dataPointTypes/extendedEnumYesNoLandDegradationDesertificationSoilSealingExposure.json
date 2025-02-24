@@ -1,7 +1,7 @@
 {
   "id" : "extendedEnumYesNoLandDegradationDesertificationSoilSealingExposure",
   "name" : "Land Degradation Desertification Soil Sealing Exposure",
-  "businessDefinition" : "Is the company involved in activities which cause land degradation, desertification or soil sealing? See also Regulation, Annex I, Table 2, indicator 10.",
+  "businessDefinition" : "Involvement in activities, which cause land degradation, desertification or soil sealing. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 10.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
   "frameworkOwnership" : "sfdr"
 }
