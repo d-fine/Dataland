@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -euo pipefail
 
 # Check if LOKI_VOLUME is set
 if [[ -z "$LOKI_VOLUME" ]]; then
