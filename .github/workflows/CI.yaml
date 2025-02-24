@@ -59,19 +59,19 @@ jobs:
         if: always()
       - name: Upload Cypress Component Testing Logs
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: componentTestCypressLogs
           path: cypress-component-test-logs.log
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: lcovResults-frontend
           path: ./dataland-frontend/coverage/*.info
       - name: Upload FE Cypress Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: cypress-component-tests
           path: ./dataland-frontend/cypress
@@ -105,7 +105,7 @@ jobs:
           echo "frameworkList=$(<./dataland-framework-toolbox/build/framework-list.json)" >> "$GITHUB_OUTPUT"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: JaCoCoResultsToolbox-list
           path: ./dataland-framework-toolbox/build/jacoco/runCreateFrameworkList.exec
@@ -146,7 +146,7 @@ jobs:
         if: always()
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: JaCoCoResultsToolbox-${{ matrix.framework }}
           path: ./dataland-framework-toolbox/build/jacoco/runCoverage-${{ matrix.framework }}.exec
@@ -175,7 +175,7 @@ jobs:
         run: ./gradlew dataland-framework-toolbox:integrationTest --no-daemon --stacktrace
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: JaCoCoResultsUnitTests-Toolbox
           path: ./**/*.exec
@@ -248,7 +248,7 @@ jobs:
           ! grep -ri "it\.only" dataland-frontend/tests/
       - name: Upload Test and Coverage Reports
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: GradleReports
           path: |
@@ -256,7 +256,7 @@ jobs:
             ./**/coverage
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: JaCoCoResultsUnitTests-Gradle
           path: ./**/*.exec
@@ -373,19 +373,19 @@ jobs:
           LOKI_VOLUME: "./dataland-loki/data"
       - name: Upload JaCoCo Exec Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: JaCoCoResultsE2ETest-${{ matrix.testGroup }}
           path: ./*.exec
       - name: Upload lcov Exec Results
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: lcovResults-${{ matrix.testGroup }}
           path: ./*.info
       - name: Upload E2E Test and Cypress Reports
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: e2eTestReports-${{ matrix.testGroup }}
           path: |
@@ -394,7 +394,7 @@ jobs:
             ./reports
       - name: Upload database dumps
         if: always()
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: e2eTestDatabaseDumps-${{ matrix.testGroup }}
           path: ./dbdumps/
@@ -482,7 +482,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Upload Reports
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: SonarStageReports
           path: ./build/reports
@@ -506,62 +506,62 @@ jobs:
     if: ${{ success() }}
     steps:
       - name: Merge Parameters Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         with:
           name: parameters
           pattern: parameters-*
           delete-merged: true
       - name: Merge Docker Logs Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: dockerLogs
           pattern: dockerLogs-*
           delete-merged: true
       - name: Merge Jacoco E2E Test Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: JaCoCoResultsE2ETest
           pattern: JaCoCoResultsE2ETest-*
           delete-merged: true
       - name: Merge Jacoco Framework Toolbox Test Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: JaCoCoResultsToolbox
           pattern: JaCoCoResultsToolbox-*
           delete-merged: true
       - name: Merge lcovResults Test Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: lcovResults
           pattern: lcovResults-*
           delete-merged: true
       - name: Merge E2E Test Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: e2eTestReports
           pattern: e2eTestReports-*
           delete-merged: true
       - name: Merge E2E DB dump Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: e2eTestDatabaseDumps
           pattern: e2eTestDatabaseDumps-*
           delete-merged: true
       - name: Merge Jacoco Unit Test Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: JaCoCoResultsUnitTests
           pattern: JaCoCoResultsUnitTests-*
           delete-merged: true
       - name: Merge Docker Image Artifacts
-        uses: actions/upload-artifact/merge@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4
+        uses: actions/upload-artifact/merge@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
         if: always()
         with:
           name: dockerImageVersions
