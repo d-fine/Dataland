@@ -6,6 +6,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       visitAndCheckAppMount: typeof visitAndCheckAppMount;
+      closeCookieBannerIfItExists: typeof closeCookieBannerIfItExists;
       ensureLoggedIn: typeof ensureLoggedIn;
       getKeycloakToken: typeof getKeycloakToken;
       browserThen: typeof browserThen;
@@ -22,7 +23,20 @@ export function visitAndCheckAppMount(endpoint: string): Cypress.Chainable<JQuer
   return cy.visit(endpoint).get('#app').should('exist');
 }
 
+/**
+ * Close the cookie banner if it exists and do nothing if it doesn't exist.
+ */
+export function closeCookieBannerIfItExists(): void {
+  cy.get('body').then(($body) => {
+    const allowCookies = $body.find('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
+    if (allowCookies.length == 1) {
+      allowCookies[0].click();
+    }
+  });
+}
+
 Cypress.Commands.add('visitAndCheckAppMount', visitAndCheckAppMount);
+Cypress.Commands.add('closeCookieBannerIfItExists', closeCookieBannerIfItExists);
 Cypress.Commands.add('ensureLoggedIn', ensureLoggedIn);
 Cypress.Commands.add('getKeycloakToken', getKeycloakToken);
 Cypress.Commands.add('browserThen', browserThen);
