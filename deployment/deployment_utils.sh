@@ -82,4 +82,3 @@ create_loki_dir () {
       sudo chmod a+w '$loki_volume'
   fi"
 }
-
