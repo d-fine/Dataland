@@ -28,6 +28,16 @@
         "summary": "Send a single request",
         "description": "A single of data requests for specific frameworks and companies is being sent.",
         "operationId": "postSingleDataRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -41,6 +51,16 @@
         "responses": {
           "200": {
             "description": "Successfully processed a single data request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleDataRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins can impersonate another user.",
             "content": {
               "application/json": {
                 "schema": {

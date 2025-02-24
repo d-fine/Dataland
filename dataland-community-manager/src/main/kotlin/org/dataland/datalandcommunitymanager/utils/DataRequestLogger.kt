@@ -32,14 +32,11 @@ class DataRequestLogger {
     /**
      * Logs an appropriate message when a single data request has happened.
      */
-    fun logMessageForReceivingSingleDataRequest(
-        companyIdentifier: String,
-        userId: String,
-        correlationId: String,
-    ) {
+    fun logMessageForReceivingSingleDataRequest(preprocessedRequest: SingleDataRequestManager.PreprocessedRequest) {
         singleDataRequestLogger.info(
-            "Received a single data request with Identifier $companyIdentifier by user $userId. " +
-                "-> Processing it. (correlationId: $correlationId)",
+            "Received a single data request with Identifier ${preprocessedRequest.companyId}" +
+                " by user ${preprocessedRequest.userId}. -> Processing it. " +
+                "(correlationId: ${preprocessedRequest.correlationId})",
         )
     }
 
