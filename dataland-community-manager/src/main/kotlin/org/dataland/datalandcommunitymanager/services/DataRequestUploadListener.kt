@@ -74,11 +74,11 @@ class DataRequestUploadListener(
         }
         MessageQueueUtils.rejectMessageOnException {
             dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(
-                dataId,
+                dataId = dataId,
                 correlationId = id,
             )
             dataRequestAlterationManager.notifyUsersWithClosedRequests(
-                dataId,
+                dataId = dataId,
                 correlationId = id,
             )
         }

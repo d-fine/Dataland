@@ -172,7 +172,7 @@ class DataRequestAlterationManager
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
             logger.info(
                 "Sending out e-mail notifications to users with a closed request" +
-                    "concerning  company Id ${metaData.companyId}, " +
+                    "concerning company Id ${metaData.companyId}, " +
                     "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name} " +
                     "because there is a new dataset with QA status Accepted. Correlation ID: $correlationId",
             )

@@ -71,9 +71,7 @@ class SingleDataRequestManager
             val preprocessedRequest = preprocessSingleDataRequest(singleDataRequest, userIdToUse)
 
             dataRequestLogger.logMessageForReceivingSingleDataRequest(
-                singleDataRequest.companyIdentifier,
-                preprocessedRequest.userId, // equals userIdToUse
-                preprocessedRequest.correlationId,
+                preprocessedRequest,
             )
 
             val reportingPeriodsMap = mutableMapOf<String, MutableList<String>>()

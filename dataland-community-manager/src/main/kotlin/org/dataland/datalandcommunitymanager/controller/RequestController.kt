@@ -68,11 +68,7 @@ class RequestController(
             ),
         )
 
-    override fun postSingleDataRequest(
-        singleDataRequest: SingleDataRequest,
-        userId: String?,
-    ): ResponseEntity<SingleDataRequestResponse> {
-        // Maybe put the next few lines of code into a suitably named function.
+    private fun checkAuthenticationForUserImpersonationAttempt(userId: String?) {
         if (
             userId != null &&
             !DatalandAuthentication.fromContext().roles.contains(
@@ -84,6 +80,13 @@ class RequestController(
                 message = "Only admins can post requests in the name of other users.",
             )
         }
+    }
+
+    override fun postSingleDataRequest(
+        singleDataRequest: SingleDataRequest,
+        userId: String?,
+    ): ResponseEntity<SingleDataRequestResponse> {
+        checkAuthenticationForUserImpersonationAttempt(userId)
         return ResponseEntity.ok(
             singleDataRequestManager.processSingleDataRequest(singleDataRequest, userId),
         )
