@@ -198,6 +198,8 @@ jobs:
           GRAFANA_ADMIN: ${{ vars.GRAFANA_ADMIN }}
           GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
           LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
+          SLACK_ALERT_URL: ${{ secrets.SLACK_ALERT_URL }}
+          SLACK_CRITICAL_ALERT_URL: ${{ secrets.SLACK_CRITICAL_ALERT_URL }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -279,6 +281,8 @@ jobs:
           LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
           GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
           LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
+          SLACK_ALERT_URL: ${{ secrets.SLACK_ALERT_URL }}
+          SLACK_CRITICAL_ALERT_URL: ${{ secrets.SLACK_CRITICAL_ALERT_URL }}
       - name: Move Cypress Results
         if: always()
         run: |

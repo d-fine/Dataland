@@ -68,11 +68,8 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   fi"
 fi
 
-ssh ubuntu@"$target_server_url" "if [ ! -d '$loki_volume' ]; then
-        echo "Creating '$loki_volume' dir as volume for Loki container"
-        sudo mkdir -p $loki_volume
-        sudo chmod a+w '$loki_volume'
-fi"
+# Create the loki_volume directory as volume for the Loki container, if it does not already exist
+create_loki_dir $target_server_url $loki_volume
 
 if [[ $LOAD_GLEIF_GOLDEN_COPY == true ]]; then
   echo "Setting flag indicating that the full GLEIF Golden Copy File should be imported"
@@ -103,3 +100,16 @@ wait_for_docker_containers_healthy_remote $target_server_url $location $profile
 
 # Wait for backend to finish boot process
 wait_for_health "https://$target_server_url/api/actuator/health/ping" "backend"
+
+echo "Configure and (re-)start health check for docker containers"
+# Sync health check files to the remote server
+rsync -av --mkpath ./health-check/ ubuntu@"$target_server_url":/tmp/health-check/
+# Process health check files and (re-)start services
+ssh ubuntu@"$target_server_url" "
+  chmod +x $location/health-check/configure_container_health_check.sh &&
+  set -o allexport &&
+  source \"$location\"/.env &&
+  set +o allexport &&
+  \"$location\"/health-check/configure_container_health_check.sh $loki_volume
+" || exit 1
+
