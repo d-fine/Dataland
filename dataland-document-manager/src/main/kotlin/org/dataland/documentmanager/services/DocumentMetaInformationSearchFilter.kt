@@ -7,11 +7,14 @@ import org.dataland.datalandbackendutils.model.DocumentCategory
  */
 data class DocumentMetaInformationSearchFilter(
     val companyId: String? = null,
-    val documentCategory: DocumentCategory? = null,
+    val documentCategories: Set<DocumentCategory>? = null,
     val reportingPeriod: String? = null,
 ) {
     /**
      * Checks whether all three fields are null.
      */
-    fun isEmpty() = companyId == null && documentCategory == null && reportingPeriod == null
+    fun isEmpty() =
+        companyId == null &&
+            (documentCategories == null || documentCategories == DocumentCategory.entries.toSet()) &&
+            reportingPeriod == null
 }

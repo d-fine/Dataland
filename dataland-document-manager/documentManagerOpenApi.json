@@ -26,7 +26,7 @@
           "document-controller"
         ],
         "summary": "Search for document meta information.",
-        "description": "Search for document meta information by company ID, document category and reporting period. If numberOfResults is not null, it limits the number of returned results. Results are returned sorted by publication date in reverse chronological order. Only results with QA Status \u0027Accepted\u0027 are returned.",
+        "description": "Search for document meta information by company ID, document categories and reporting period. Search results must match the specified company ID and reporting period (if specified)as well as at least one of the specified document categories. If numberOfResultsis not null, it limits the number of returned results. Results are returned sortedby publication date in reverse chronological order. Only results with QA status\u0027Accepted\u0027 are returned.",
         "operationId": "searchForDocumentMetaInformation",
         "parameters": [
           {
@@ -38,17 +38,21 @@
             }
           },
           {
-            "name": "documentCategory",
+            "name": "documentCategories",
             "in": "query",
             "required": false,
             "schema": {
-              "type": "string",
-              "enum": [
-                "AnnualReport",
-                "SustainabilityReport",
-                "Policy",
-                "Other"
-              ]
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "AnnualReport",
+                  "SustainabilityReport",
+                  "Policy",
+                  "Other"
+                ]
+              }
             }
           },
           {

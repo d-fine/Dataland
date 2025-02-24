@@ -126,15 +126,15 @@ class DocumentManagerServiceTest(
             )
 
         assertEquals(searchResults.size, 2)
-        assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentUploadResponse()))
-        assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentUploadResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentMetaInfoResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentMetaInfoResponse()))
     }
 
     @Test
-    fun `check that a search by document category yields the expected results`() {
+    fun `check that a search by a single document category yields the expected results`() {
         val documentMetaInformationSearchFilter =
             DocumentMetaInformationSearchFilter(
-                documentCategory = DocumentCategory.AnnualReport,
+                documentCategories = setOf(DocumentCategory.AnnualReport),
             )
 
         val searchResults =
@@ -143,8 +143,30 @@ class DocumentManagerServiceTest(
             )
 
         assertEquals(searchResults.size, 2)
-        assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentUploadResponse()))
-        assertTrue(searchResults.contains(documentMetaInfoEntity3.toDocumentUploadResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentMetaInfoResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity3.toDocumentMetaInfoResponse()))
+    }
+
+    @Test
+    fun `check that a search by multiple document categories yields the expected results`() {
+        val documentMetaInformationSearchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId = companyId1,
+                documentCategories =
+                    setOf(
+                        DocumentCategory.SustainabilityReport,
+                        DocumentCategory.AnnualReport,
+                    ),
+            )
+
+        val searchResults =
+            documentManager.searchForDocumentMetaInformation(
+                documentMetaInformationSearchFilter,
+            )
+
+        assertEquals(searchResults.size, 2)
+        assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentMetaInfoResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity2.toDocumentMetaInfoResponse()))
     }
 
     @Test
@@ -160,7 +182,7 @@ class DocumentManagerServiceTest(
             )
 
         assertEquals(searchResults.size, 2)
-        assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentUploadResponse()))
-        assertTrue(searchResults.contains(documentMetaInfoEntity3.toDocumentUploadResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity1.toDocumentMetaInfoResponse()))
+        assertTrue(searchResults.contains(documentMetaInfoEntity3.toDocumentMetaInfoResponse()))
     }
 }
