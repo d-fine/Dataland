@@ -104,7 +104,7 @@ class MetaDataController(
                 ),
             )
         }
-        return ResponseEntity.ok(metaInfo.toApiModel())
+        return ResponseEntity.ok(metaInfo.toApiModel(proxyPrimaryUrl))
     }
 
     override fun patchDataMetaInfo(
