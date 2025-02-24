@@ -55,7 +55,7 @@
           @click="toggleShowAll"
           style="margin-left: auto"
         >
-          <span class="text-primary font-semibold d-letters">
+          <span class="text-primary font-semibold d-letters" :data-test="'toggleShowAll'">
             {{ showAllFrameworks ? 'SHOW LESS' : 'SHOW ALL' }}
           </span>
           <i class="material-icons text-primary">
