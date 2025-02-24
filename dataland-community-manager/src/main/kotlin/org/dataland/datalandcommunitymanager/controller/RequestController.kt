@@ -1,7 +1,6 @@
 package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.InsufficientRightsApiException
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -23,8 +22,8 @@ import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManag
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandcommunitymanager.utils.UserAuthenticationTool
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
@@ -68,25 +67,12 @@ class RequestController(
             ),
         )
 
-    private fun checkAuthenticationForUserImpersonationAttempt(userId: String?) {
-        if (
-            userId != null &&
-            !DatalandAuthentication.fromContext().roles.contains(
-                DatalandRealmRole.ROLE_ADMIN,
-            )
-        ) {
-            throw InsufficientRightsApiException(
-                summary = "Insufficient rights for posting this request.",
-                message = "Only admins can post requests in the name of other users.",
-            )
-        }
-    }
-
     override fun postSingleDataRequest(
         singleDataRequest: SingleDataRequest,
         userId: String?,
     ): ResponseEntity<SingleDataRequestResponse> {
-        checkAuthenticationForUserImpersonationAttempt(userId)
+        val userAuthenticationTool = UserAuthenticationTool()
+        userAuthenticationTool.checkAuthenticationForUserImpersonationAttempt(userId)
         return ResponseEntity.ok(
             singleDataRequestManager.processSingleDataRequest(singleDataRequest, userId),
         )
