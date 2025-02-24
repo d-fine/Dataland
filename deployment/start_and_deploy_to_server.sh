@@ -4,7 +4,6 @@ set -euxo pipefail
 environment=$1
 source ./deployment/deployment_utils.sh
 
-
 profile=production
 
 echo "Setting $environment server as deployment target"
