@@ -636,9 +636,12 @@ services:
     profiles: [ "production", "testing", "development" ]
     image: ${GRAFANA_IMAGE:-ghcr.io/d-fine/dataland/dataland_grafana:${DATALAND_GRAFANA_VERSION}}
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+      GF_SERVER_ROOT_URL: http://dataland-admin:6789/grafana/
+      SLACK_ALERT_URL: ${SLACK_ALERT_URL}
+      SLACK_CRITICAL_ALERT_URL: ${SLACK_CRITICAL_ALERT_URL}
+      TARGETSERVER_URL: ${TARGETSERVER_URL}
     expose:
       - "3000"
     volumes:
@@ -675,6 +678,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - alloy_data:/var/lib/alloy/data
+      - /var/log:/var/log
+      - ${LOKI_VOLUME}/health-check-log:/var/log/health-check-log
     depends_on:
       - loki
     networks:
