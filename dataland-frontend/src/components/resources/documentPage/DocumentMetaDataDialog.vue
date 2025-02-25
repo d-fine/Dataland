@@ -47,7 +47,7 @@
                     target="_blank"
                     style="border: 0 none; text-decoration: none; color: #ff6813"
                   >
-                   {{ company.name }}<br />
+                    {{ company.name }}<br />
                     <br />
                   </a>
                 </span>
@@ -89,7 +89,6 @@ const emit = defineEmits(['update:dialogVisible']);
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
 const baseURL = ref(window.location.origin);
 
-
 /**
  * Get metadata of document
  */
@@ -98,20 +97,19 @@ async function getDocumentMetaInformation(): Promise<void> {
     if (getKeycloakPromise) {
       const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
         .documentController;
-      const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)())
-          .backendClients.companyDataController;
-      const data:DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId)).data;
+      const companyDataControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients
+        .companyDataController;
+      const data: DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId))
+        .data;
       const companyDetails = ref<CompanyDetails[]>([]);
       for (const companyId of data.companyIds) {
         const company = await companyDataControllerApi.getCompanyInfo(companyId);
-        companyDetails.value.push( {id: companyId, name:company.data.companyName});
+        companyDetails.value.push({ id: companyId, name: company.data.companyName });
       }
       metaData.value = {
         ...data,
-        company: companyDetails.value
+        company: companyDetails.value,
       };
-
-
     }
   } catch (error) {
     console.error(error);

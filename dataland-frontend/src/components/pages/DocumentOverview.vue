@@ -1,36 +1,36 @@
 <template>
   <TheHeader v-if="!useMobileView" />
 
-    <div ref="sheet">
-      <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
+  <div ref="sheet">
+    <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
 
-      <div class="styled-box">
-        <span>Documents</span>
-      </div>
-
-      <span class="flex align-items-center">
-        <FrameworkDataSearchDropdownFilter
-          :disabled="waitingForData"
-          v-model="selectedDocumentType"
-          ref="DocumentTypeFilter"
-          :available-items="availableDocumentTypes"
-          filter-name="Types"
-          data-test="document-type-picker"
-          filter-id="document-type-filter"
-          filter-placeholder="Search by document type"
-          class="ml-3"
-          style="margin: 15px"
-        />
-
-        <span
-          data-test="reset-filter"
-          style="margin: 15px"
-          class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-          @click="resetFilter"
-          >RESET</span
-        >
-      </span>
+    <div class="styled-box">
+      <span>Documents</span>
     </div>
+
+    <span class="flex align-items-center">
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedDocumentType"
+        ref="DocumentTypeFilter"
+        :available-items="availableDocumentTypes"
+        filter-name="Types"
+        data-test="document-type-picker"
+        filter-id="document-type-filter"
+        filter-placeholder="Search by document type"
+        class="ml-3"
+        style="margin: 15px"
+      />
+
+      <span
+        data-test="reset-filter"
+        style="margin: 15px"
+        class="ml-3 cursor-pointer text-primary font-semibold d-letters"
+        @click="resetFilter"
+        >RESET</span
+      >
+    </span>
+  </div>
   <TheContent class="paper-section flex">
     <div class="col-12 text-left p-3">
       <div class="card">
@@ -59,9 +59,7 @@
           </Column>
         </DataTable>
         <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
-          <p class="font-medium text-xl">
-            The company you searched for does not have any documents on Dataland yet.
-          </p>
+          <p class="font-medium text-xl">The company you searched for does not have any documents on Dataland yet.</p>
         </div>
       </div>
     </div>
@@ -85,7 +83,11 @@ import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkD
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
-import { DocumentMetaInfoDocumentCategoryEnum, DocumentMetaInfoResponse } from '@clients/documentmanager';
+import {
+  DocumentMetaInfoDocumentCategoryEnum,
+  DocumentMetaInfoResponse,
+  SearchForDocumentMetaInformationDocumentCategoriesEnum,
+} from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
@@ -125,17 +127,12 @@ async function getAllDocumentsForFilters(): Promise<void> {
       const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
         .documentController;
       if (selectedDocumentType.value) {
-        const responses: DocumentMetaInfoResponse[][] = await Promise.all(
-          selectedDocumentType.value.map(async (item) => {
-            return (
-              await documentControllerApi.searchForDocumentMetaInformation(
-                props.companyId,
-                item.documentCategoryDataType
-              )
-            ).data;
-          })
-        );
-        documentsFiltered.value = responses.flat();
+        documentsFiltered.value = (
+          await documentControllerApi.searchForDocumentMetaInformation(
+            props.companyId,
+            convertToEnumSet(selectedDocumentType)
+          )
+        ).data;
       } else {
         documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
       }
@@ -184,6 +181,15 @@ function retrieveAvailableDocumentCategories(): Array<DocumentCategorySelectable
     disabled: false,
     documentCategoryDataType: value,
   }));
+}
+
+function convertToEnumSet(
+  selectedTypeRef: typeof selectedDocumentType
+): Set<SearchForDocumentMetaInformationDocumentCategoriesEnum> {
+  if (!selectedTypeRef.value) {
+    return new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>();
+  }
+  return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
 }
 
 onMounted(() => {

@@ -6,7 +6,7 @@ import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum } from '@clients/backend';
 import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
-import {DocumentMetaInfoDocumentCategoryEnum} from "@clients/documentmanager";
+import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
 
 /**
  * convert kebab case string to pascal case string using regex

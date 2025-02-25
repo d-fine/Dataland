@@ -80,7 +80,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import {FRAMEWORKS_ALL, FRAMEWORKS_MAIN} from '@/utils/Constants';
+import { FRAMEWORKS_ALL, FRAMEWORKS_MAIN } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
@@ -92,11 +92,11 @@ import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
   type DocumentMetaInfoResponse,
-  SearchForDocumentMetaInformationDocumentCategoriesEnum
+  SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import router from '@/router';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import {getPluralCategory } from '@/utils/StringFormatter';
+import { getPluralCategory } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -151,7 +151,7 @@ export default defineComponent({
   },
   computed: {
     SearchForDocumentMetaInformationDocumentCategoriesEnum() {
-      return SearchForDocumentMetaInformationDocumentCategoriesEnum
+      return SearchForDocumentMetaInformationDocumentCategoriesEnum;
     },
     useMobileView() {
       return this.injectedUseMobileView;
@@ -208,11 +208,11 @@ export default defineComponent({
         const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .documentController;
         for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
-          const categorySet = new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>([value])
+          const categorySet = new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>([value]);
           this.latestDocuments[`latest${value}`] = (
             await documentControllerApi.searchForDocumentMetaInformation(
               this.companyId,
-                categorySet,
+              categorySet,
               undefined,
               this.chunkSize
             )

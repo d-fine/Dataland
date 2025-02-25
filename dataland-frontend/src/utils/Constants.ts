@@ -1,4 +1,4 @@
-import {DataTypeEnum} from '@clients/backend';
+import { DataTypeEnum } from '@clients/backend';
 
 // - Available frameworks settings
 
@@ -10,8 +10,8 @@ export const FRAMEWORKS_WITH_VIEW_PAGE = ALL_FRAMEWORKS_ORDERED;
 const main = ['eutaxonomy-financials', 'eutaxonomy-non-financials', 'nuclear-and-gas', 'sfdr'];
 export const FRAMEWORKS_WITH_UPLOAD_FORM = ALL_FRAMEWORKS_ORDERED;
 export const FRAMEWORKS_MAIN = ALL_FRAMEWORKS_ORDERED.filter((framework) => main.includes(framework));
-export const FRAMEWORKS_ALL =[...FRAMEWORKS_MAIN];
-FRAMEWORKS_ALL.push(...ALL_FRAMEWORKS_ORDERED.filter((framework) => !FRAMEWORKS_MAIN.includes(framework)))
+export const FRAMEWORKS_ALL = [...FRAMEWORKS_MAIN];
+FRAMEWORKS_ALL.push(...ALL_FRAMEWORKS_ORDERED.filter((framework) => !FRAMEWORKS_MAIN.includes(framework)));
 export const FRAMEWORKS_WITH_EDIT_FUNCTIONALITY = FRAMEWORKS_WITH_UPLOAD_FORM.filter(
   (framework) => framework != DataTypeEnum.Vsme
 );
