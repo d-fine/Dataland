@@ -89,10 +89,14 @@ import { assertDefined } from '@/utils/TypeScriptUtils';
 import { CompanyRole, type CompanyRoleAssignment } from '@clients/communitymanager';
 import { isFrameworkPublic } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
-import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
+import {
+  DocumentMetaInfoDocumentCategoryEnum,
+  type DocumentMetaInfoResponse,
+  SearchForDocumentMetaInformationDocumentCategoriesEnum
+} from '@clients/documentmanager';
 import router from '@/router';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import {getPluralCategory, humanizeStringOrNumber} from '@/utils/StringFormatter';
+import {getPluralCategory } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -146,6 +150,9 @@ export default defineComponent({
     };
   },
   computed: {
+    SearchForDocumentMetaInformationDocumentCategoriesEnum() {
+      return SearchForDocumentMetaInformationDocumentCategoriesEnum
+    },
     useMobileView() {
       return this.injectedUseMobileView;
     },
@@ -182,7 +189,6 @@ export default defineComponent({
   },
   methods: {
     getPluralCategory,
-    humanizeStringOrNumber,
     /**
      * Retrieves the aggregated framework data summary
      */
@@ -198,17 +204,15 @@ export default defineComponent({
      * Retrieves the latest documents metadata
      */
     async getLatestDocuments(): Promise<void> {
-      const documentCategories = Object.keys(DocumentMetaInfoDocumentCategoryEnum);
       try {
         const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .documentController;
-        for (const categoryKey of documentCategories) {
-          const category =
-            DocumentMetaInfoDocumentCategoryEnum[categoryKey as keyof typeof DocumentMetaInfoDocumentCategoryEnum];
-          this.latestDocuments[`latest${category}`] = (
+        for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
+          const categorySet = new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>([value])
+          this.latestDocuments[`latest${value}`] = (
             await documentControllerApi.searchForDocumentMetaInformation(
               this.companyId,
-              category,
+                categorySet,
               undefined,
               this.chunkSize
             )
