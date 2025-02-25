@@ -4,6 +4,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DataPointTestUtils
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
@@ -50,31 +51,7 @@ class Sfdr {
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
 
-        assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
-    }
-
-    private fun assertDataEqualsIgnoringPublicationDates(
-        expected: SfdrData,
-        actual: SfdrData,
-    ) {
-        val expectedString = expected.toString()
-        val allReferencedReportPublicationDates =
-            expected.general.general.referencedReports
-                ?.map { it.value.publicationDate.toString() } ?: emptyList()
-        val actualStringWithAllReferencedReportDatesReplaced = replaceAllByNull(actual.toString(), allReferencedReportPublicationDates)
-        val expectedStringWithAllReferencedReportDatesReplaced = replaceAllByNull(expectedString, allReferencedReportPublicationDates)
-        assertEquals(expectedStringWithAllReferencedReportDatesReplaced, actualStringWithAllReferencedReportDatesReplaced)
-    }
-
-    private fun replaceAllByNull(
-        input: String,
-        toReplace: List<String>,
-    ): String {
-        var result = input
-        for (replacement in toReplace) {
-            result = result.replace(replacement, "null")
-        }
-        return result
+        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test
@@ -96,7 +73,7 @@ class Sfdr {
                     )
             }
 
-        assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test

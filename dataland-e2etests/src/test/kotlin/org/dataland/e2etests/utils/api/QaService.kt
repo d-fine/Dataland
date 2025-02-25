@@ -2,6 +2,7 @@ package org.dataland.e2etests.utils.api
 
 import org.dataland.datalandqaservice.openApiClient.api.AdditionalCompanyInformationDataQaReportControllerApi
 import org.dataland.datalandqaservice.openApiClient.api.QaControllerApi
+import org.dataland.datalandqaservice.openApiClient.api.SfdrDataQaReportControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_QA_SERVICE
 
 /**
@@ -17,4 +18,5 @@ object QaService {
     val assembledDataMigrationControllerApi =
         org.dataland.datalandqaservice.openApiClient.api
             .AssembledDataMigrationControllerApi(BASE_PATH_TO_QA_SERVICE)
+    val sfdrDataQaReportControllerApi = SfdrDataQaReportControllerApi(BASE_PATH_TO_QA_SERVICE)
 }

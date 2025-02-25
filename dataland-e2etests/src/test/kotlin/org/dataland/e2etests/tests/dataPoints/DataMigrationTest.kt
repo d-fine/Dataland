@@ -6,9 +6,11 @@ import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInforma
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataJsonNode
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus
 import org.dataland.e2etests.tests.dataPoints.AssembledDatasetTest.LinkedQaReportTestData
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DataPointTestUtils
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
@@ -27,10 +29,17 @@ import java.io.File
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
     private val linkedQaReportDataFile = File("./build/resources/test/AdditionalCompanyInformationQaReportPreparedFixtures.json")
+    private val sfdrQaReportFile = File("./build/resources/test/SfdrLinkedDataAndQaReportPreparedFixtures.json")
     private val fakeFixtureProvider = FrameworkTestDataProvider.forFrameworkPreparedFixtures(AdditionalCompanyInformationData::class.java)
     private val apiAccessor = ApiAccessor()
+    private val reportingPeriod = "2025"
 
     private lateinit var linkedQaReportData: LinkedQaReportTestData
+
+    data class SfdrLinkedQaReportTestData(
+        val data: SfdrData,
+        val qaReport: org.dataland.datalandqaservice.openApiClient.model.SfdrData,
+    )
 
     @BeforeAll
     fun postTestDocuments() {
@@ -43,6 +52,11 @@ class DataMigrationTest {
         linkedQaReportData = moshiAdapter.fromJson(linkedQaReportDataFile.readText())!!
     }
 
+    private fun loadSfdrLinkedQaReportData(file: File): SfdrLinkedQaReportTestData {
+        val moshiAdapter = moshi.adapter(SfdrLinkedQaReportTestData::class.java)
+        return moshiAdapter.fromJson(file.readText())!!
+    }
+
     private fun uploadDummyDataset(data: AdditionalCompanyInformationData = linkedQaReportData.data): DataMetaInformation {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         return Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
@@ -51,7 +65,23 @@ class DataMigrationTest {
                 CompanyAssociatedDataJsonNode(
                     companyId = companyId,
                     data = data,
-                    reportingPeriod = "2025",
+                    reportingPeriod = reportingPeriod,
+                ),
+        )
+    }
+
+    private fun uploadGenericDummyDataset(
+        data: SfdrData,
+        dataType: DataTypeEnum,
+    ): DataMetaInformation {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        return Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
+            dataType = dataType,
+            companyAssociatedDataJsonNode =
+                CompanyAssociatedDataJsonNode(
+                    companyId = companyId,
+                    data = data,
+                    reportingPeriod = reportingPeriod,
                 ),
         )
     }
@@ -60,6 +90,7 @@ class DataMigrationTest {
     fun `ensure the data can be retrieved correctly after migration`() {
         val dataMetaInfo = uploadDummyDataset()
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
+
         val downloadedDataset =
             Backend.additionalCompanyInformationDataControllerApi
                 .getCompanyAssociatedAdditionalCompanyInformationData(dataMetaInfo.dataId)
@@ -150,6 +181,36 @@ class DataMigrationTest {
             .waitForData(retryOnHttpErrors = setOf(HttpStatus.INTERNAL_SERVER_ERROR)) {
                 QaService.additionalCompanyInformationDataQaReportControllerApi
                     .getAdditionalCompanyInformationDataQaReport(qaReportInfo.dataId, qaReportInfo.qaReportId)
+            }.let {
+                assertEquals(linkedQaReportData.qaReport, it.report)
+            }
+    }
+
+    @Test
+    fun `ensure that sfdr data gets migrated correctly`() {
+        val originalData = FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java).getTData(1).first()
+        val dataMetaInfo = uploadGenericDummyDataset(data = originalData, dataType = DataTypeEnum.sfdr)
+        Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
+        val migratedData = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
+        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(originalData, migratedData.data)
+    }
+
+    @Test
+    fun `ensure that sfdr qa reports get migrated correctly`() {
+        val linkedQaReportData = loadSfdrLinkedQaReportData(sfdrQaReportFile)
+        val dataMetaInfo = uploadGenericDummyDataset(data = linkedQaReportData.data, dataType = DataTypeEnum.sfdr)
+        val qaReportInfo =
+            QaService.assembledDataMigrationControllerApi.forceUploadStoredQaReport(
+                dataId = dataMetaInfo.dataId,
+                body = linkedQaReportData.qaReport,
+            )
+        Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
+        ApiAwait
+            // When the API Call is faster than the migration, the QA Report might not be migrated yet, resulting
+            // in a 500. This is expected.
+            .waitForData(retryOnHttpErrors = setOf(HttpStatus.INTERNAL_SERVER_ERROR)) {
+                QaService.sfdrDataQaReportControllerApi
+                    .getSfdrDataQaReport(qaReportInfo.dataId, qaReportInfo.qaReportId)
             }.let {
                 assertEquals(linkedQaReportData.qaReport, it.report)
             }
