@@ -207,7 +207,7 @@ export default defineComponent({
       scrollEmittedByToolbar: false,
       latestScrollPosition: 0,
       activeDataForCurrentCompanyAndFramework: [] as Array<DataAndMetaInformation<FrameworkData>>,
-      isDataProcessedSuccessfully: true,
+      isDataProcessedSuccessfully: false,
       hasUserUploaderRights: false,
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
@@ -238,25 +238,33 @@ export default defineComponent({
     },
 
     dataTypesInDropdown(): DropDownOption[] {
-      const dataTypesDropDownOption = new Set<DropDownOption>();
-      this.activeDataForCurrentCompanyAndFramework.forEach((dataAndMetaInformation) => {
-        const dataType = dataAndMetaInformation.metaInfo.dataType;
+      const availableDataTypesForCompany = [
+        ...new Set(
+          this.activeDataForCurrentCompanyAndFramework.map(
+            (dataAndMetaInformation) => dataAndMetaInformation.metaInfo.dataType
+          )
+        ),
+      ];
+      const dataTypesDropDownOptions = Array<DropDownOption>();
+
+      availableDataTypesForCompany.forEach((dataType) => {
         if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
-          dataTypesDropDownOption.add({
+          dataTypesDropDownOptions.push({
             label: humanizeStringOrNumber(dataType),
             value: dataType,
           });
         }
       });
-      return Array.from(dataTypesDropDownOption).sort((a, b) => a.value.localeCompare(b.value));
+      return dataTypesDropDownOptions.sort((a, b) => a.value.localeCompare(b.value));
     },
 
     availableReportingPeriods(): string[] {
-      const reportingPeriods: string[] = [];
+      const reportingPeriods = new Set<string>();
       this.activeDataForCurrentCompanyAndFramework.forEach((dataAndMetaInformation) => {
-        reportingPeriods.push(dataAndMetaInformation.metaInfo.reportingPeriod);
+        if (dataAndMetaInformation.metaInfo.dataType == this.chosenDataTypeInDropdown)
+          reportingPeriods.add(dataAndMetaInformation.metaInfo.reportingPeriod);
       });
-      return reportingPeriods.sort();
+      return Array.from(reportingPeriods).sort();
     },
 
     /**
@@ -361,7 +369,7 @@ export default defineComponent({
           apiClientProvider
         ) as PublicFrameworkDataApi<FrameworkData>;
         const apiResponse = await frameworkDataApi.getAllCompanyData(this.companyId, true);
-        this.activeDataForCurrentCompanyAndFramework = apiResponse.data;
+        this.activeDataForCurrentCompanyAndFramework = Array.from(apiResponse.data);
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         this.isDataProcessedSuccessfully = false;
@@ -397,7 +405,7 @@ export default defineComponent({
     /**
      * Download the dataset from the selected reporting period as a file in the selected format
      * @param selectedYear selected reporting year
-     * @param selectedFileTypeIdentifier selected export file type
+     * @param selectedFileType selected export file type
      */
     async handleDatasetDownload(selectedYear: string, selectedFileType: string) {
       try {
