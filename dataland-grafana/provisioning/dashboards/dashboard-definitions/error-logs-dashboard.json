@@ -26,7 +26,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Show Log messages of Internal Server Errors 500,\nidentified by log message contains exactly \"500 Internal Server Error\", but ignoring additional logs from alerts with excluding log messages containing \"query_hash=\"",
+      "description": "Show Log messages of Internal Server Errors 500,\nShow log messages of internal server errors 500 that exactly contain \"500 Internal Server Error.\" Ignore duplicate logs that process these error messages by excluding logs that contain \"query_hash=\". \n\nNote: Log message timestamps may use server time instead of browser time.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -40,6 +40,7 @@
       "id": 1,
       "options": {
         "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
@@ -48,13 +49,14 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
+          "direction": "backward",
           "editorMode": "code",
           "expr": "{service_name=~\".+\"} |~ \"500 Internal Server Error\" != \"query_hash=\"",
           "queryType": "range",
@@ -69,6 +71,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
+      "description": "Note: Time is based on browser time.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -141,13 +144,15 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
+          "direction": "backward",
           "editorMode": "code",
           "expr": "count_over_time({service_name=~\".+\"} |~ \"500 Internal Server Error\" != \"query_hash=\" [1m])",
           "queryType": "range",
@@ -162,6 +167,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
+      "description": "Show log messages of unhealthy container, identified by job=health_check, level=error.  \n\nNote: Log timestamps use server time, not browser time.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -175,6 +181,7 @@
       "id": 6,
       "options": {
         "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
@@ -183,9 +190,10 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
+          "direction": "backward",
           "editorMode": "code",
           "expr": "{job=\"health_check\", level=\"error\"}",
           "queryType": "range",
@@ -200,6 +208,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
+      "description": "Note: Time is based on browser time.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -271,13 +280,15 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
+          "direction": "backward",
           "editorMode": "code",
           "expr": "count_over_time({job=\"health_check\", level=\"error\"} [1m])",
           "queryType": "range",
@@ -292,7 +303,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Show detected Stack Traces, identified by log message containing \"Exception\" (case-insensitive match), but ignoring additional logs from alerts with excluding log messages containing \"query_hash=\"",
+      "description": "Show detected Stack Traces, identified by log message containing \"Exception\" (case-insensitive match).  Ignore duplicate logs that process these error messages by excluding logs that contain \"query_hash=\".\n\nNote: Log message timestamps may use server time, not browser time.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -306,6 +317,7 @@
       "id": 2,
       "options": {
         "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
@@ -314,13 +326,14 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
+          "direction": "backward",
           "editorMode": "code",
           "expr": "{service_name=~\".+\"} |~ \"(?i)Exception\" != \"query_hash=\"",
           "queryType": "range",
@@ -335,6 +348,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
+      "description": "Note: Time is based on browser time.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -405,13 +419,15 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
+          "direction": "backward",
           "editorMode": "code",
           "expr": "count_over_time({service_name=~\".+\"} |~ \"(?i)Exception(\\\\(|:)?\" != \"query_hash=\" [1m])",
           "queryType": "range",
@@ -426,7 +442,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
-      "description": "Show all Log Messages containing \"error\" (case-insensitive match), but ignoring additional logs from alerts with excluding log messages containing \"query_hash=\"",
+      "description": "Show all Log Messages containing \"error\" (case-insensitive match). Ignore duplicate logs that process these error messages by excluding logs that contain \"query_hash=\".\n\nNote: Log message timestamps may use server time, not browser time.",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -440,6 +456,7 @@
       "id": 3,
       "options": {
         "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
@@ -448,13 +465,14 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
+          "direction": "backward",
           "editorMode": "code",
           "expr": "{service_name=~\".+\", job!=\"health_check\"} |~ \"(?i)error\" != \"query_hash=\"",
           "queryType": "range",
@@ -469,6 +487,7 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
+      "description": "Note: Time is based on browser time.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -539,13 +558,15 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
+          "direction": "backward",
           "editorMode": "code",
           "expr": "count_over_time({service_name=~\".+\", job!=\"health_check\"} |~ \"(?i)error\" != \"query_hash=\" [1m])",
           "queryType": "range",
@@ -597,6 +618,6 @@
   "timezone": "browser",
   "title": "Error Logs",
   "uid": "beb8ybzf6qupsc",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
