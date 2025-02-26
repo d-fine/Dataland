@@ -371,6 +371,8 @@ jobs:
           GRAFANA_ADMIN: "admin"
           GRAFANA_PASSWORD: "password"
           LOKI_VOLUME: "./dataland-loki/data"
+          SLACK_ALERT_URL: "irrelevant_in_ci"
+          SLACK_CRITICAL_ALERT_URL: "irrelevant_in_ci"
       - name: Upload JaCoCo Exec Results
         if: always()
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
