@@ -61,10 +61,10 @@ class Sfdr {
                 listOfOneCompanyInformation,
                 listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
-                reportingPeriod = "2022",
             )
 
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
+        Thread.sleep(2000)
         val downloadedAssociatedData =
             ApiAwait.waitForData(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
                 apiAccessor.dataControllerApiForSfdrData
