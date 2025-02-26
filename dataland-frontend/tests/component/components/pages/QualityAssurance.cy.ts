@@ -306,7 +306,7 @@ describe('Component tests for the Quality Assurance page', () => {
     assertUnfilteredDatatableState();
   });
 
-  it.only('Check if dataset can be reviewed on the view page', () => {
+  it('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'p2pTestDataId',
       companyId: 'testCompanyId',
