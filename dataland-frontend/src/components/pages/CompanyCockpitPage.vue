@@ -7,7 +7,7 @@
         <div class="card">
           <div class="card__title">Latest Documents</div>
           <div class="card__separator" />
-          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum">
+          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category">
             <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
             <div v-if="getDocumentData(category).length === 0">-</div>
             <div v-else>
@@ -146,13 +146,9 @@ export default defineComponent({
       showAllFrameworks: false,
       latestDocuments,
       chunkSize: 3,
-      percentCompleted: undefined as number | undefined,
     };
   },
   computed: {
-    SearchForDocumentMetaInformationDocumentCategoriesEnum() {
-      return SearchForDocumentMetaInformationDocumentCategoriesEnum;
-    },
     useMobileView() {
       return this.injectedUseMobileView;
     },

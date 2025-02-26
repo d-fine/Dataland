@@ -5,7 +5,7 @@
     :modal="true"
     header="Document Details"
     class="col-6"
-    v-model:visible="internalDialogVisible"
+    v-model:visible="isOpen"
     @hide="closeDialog"
   >
     <div v-if="metaData" class="p-datatable p-component">
@@ -70,7 +70,6 @@ import type { DocumentMetaInfoEntity } from '@clients/documentmanager';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 
 const props = defineProps<{
-  dialogVisible: boolean;
   documentId: string;
 }>();
 
@@ -83,9 +82,8 @@ export interface ExtendedDocumentMetaInfoEntity extends Omit<DocumentMetaInfoEnt
   company: CompanyDetails[];
 }
 
+const isOpen = defineModel<boolean>('isOpen');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
-const internalDialogVisible = ref(props.dialogVisible);
-const emit = defineEmits(['update:dialogVisible']);
 const metaData = ref<ExtendedDocumentMetaInfoEntity | null>(null);
 const baseURL = ref(window.location.origin);
 
@@ -116,28 +114,19 @@ async function getDocumentMetaInformation(): Promise<void> {
   }
 }
 
-watch(internalDialogVisible, (newValue) => {
-  emit('update:dialogVisible', newValue);
-});
-
 watch(
-  () => props.dialogVisible,
-  (newValue) => {
-    if (internalDialogVisible.value !== newValue) {
-      internalDialogVisible.value = newValue;
-    }
-    if (newValue && props.documentId) {
-      getDocumentMetaInformation();
-    }
+  () => props.documentId,
+  () => {
+    getDocumentMetaInformation().catch((error) => console.error(error));
   }
 );
 
-const closeDialog = () => {
-  internalDialogVisible.value = false;
+const closeDialog = (): void => {
+  isOpen.value = false;
 };
 
 onMounted(() => {
-  getDocumentMetaInformation();
+  getDocumentMetaInformation().catch((error) => console.error(error));
 });
 </script>
 

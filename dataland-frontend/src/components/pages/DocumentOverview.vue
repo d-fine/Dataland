@@ -34,7 +34,17 @@
   <TheContent class="paper-section flex">
     <div class="col-12 text-left p-3">
       <div class="card">
-        <DataTable v-if="documentsFiltered && documentsFiltered.length > 0" :value="documentsFiltered">
+        <DataTable
+          v-if="documentsFiltered && documentsFiltered.length > 0"
+          :value="documentsFiltered"
+          :paginator="true"
+          :lazy="true"
+          :total-records="totalRecords"
+          :rows="rowsPerPage"
+          :first="firstRowIndex"
+          @page="onPage($event)"
+          :alwaysShowPaginator="true"
+        >
           <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
           <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
             <template #body="slotProps">
@@ -64,16 +74,16 @@
       </div>
     </div>
   </TheContent>
-  <DocumentMetaDataDialog :dialog-visible.sync="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
+  <DocumentMetaDataDialog v-model:isOpen="isMetaInfoDialogOpen" :document-id="selectedDocumentId" />
   <TheFooter :is-light-version="true" :sections="footerContent" />
 </template>
 
 <script setup lang="ts">
-import { Content, Page } from '@/types/ContentTypes.ts';
+import { type Content, type Page } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
 import { inject, onMounted, ref, watch } from 'vue';
-import { DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
-import DataTable, { DataTablePageEvent } from 'primevue/datatable';
+import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
+import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -85,8 +95,8 @@ import { ApiClientProvider } from '@/services/ApiClients.ts';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import {
   DocumentMetaInfoDocumentCategoryEnum,
-  DocumentMetaInfoResponse,
-  SearchForDocumentMetaInformationDocumentCategoriesEnum,
+  type DocumentMetaInfoResponse,
+  type SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
@@ -105,16 +115,17 @@ const documentsFiltered = ref<DocumentMetaInfoResponse[]>([]);
 const selectedDocumentType = ref<Array<DocumentCategorySelectableItem>>();
 const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>(retrieveAvailableDocumentCategories());
 const rowsPerPage = 100;
+const totalRecords = ref(0);
 const firstRowIndex = ref(0);
 const currentChunkIndex = ref(0);
 const isMetaInfoDialogOpen = ref(false);
 const selectedDocumentId = ref<string>('');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 
-watch(selectedDocumentType, (newSelected) => {
+watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
   currentChunkIndex.value = 0;
-  console.log('Neu:', newSelected);
+  getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 
 /**
@@ -130,12 +141,22 @@ async function getAllDocumentsForFilters(): Promise<void> {
         documentsFiltered.value = (
           await documentControllerApi.searchForDocumentMetaInformation(
             props.companyId,
-            convertToEnumSet(selectedDocumentType)
+            convertToEnumSet(selectedDocumentType),
+            undefined,
+            rowsPerPage,
+            currentChunkIndex.value
           )
         ).data;
       } else {
         documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
       }
+      totalRecords.value = (
+        await documentControllerApi.searchForDocumentMetaInformation(
+          props.companyId,
+          convertToEnumSet(selectedDocumentType),
+          undefined
+        )
+      ).data.length;
     }
   } catch (error) {
     console.error(error);
@@ -154,7 +175,7 @@ function resetFilter(): void {
  * Updates the current Page
  * @param event DataTablePageEvent
  */
-function onPage(event: DataTablePageEvent) {
+function onPage(event: DataTablePageEvent): void {
   window.scrollTo(0, 0);
   if (event.page != currentChunkIndex.value) {
     currentChunkIndex.value = event.page;
@@ -166,7 +187,7 @@ function onPage(event: DataTablePageEvent) {
  * Opens the Dialog box with the meta information
  * @param documentId Id of selected document
  */
-function openMetaInfoDialog(documentId: string) {
+function openMetaInfoDialog(documentId: string): void {
   selectedDocumentId.value = documentId;
   isMetaInfoDialogOpen.value = true;
 }
@@ -183,6 +204,10 @@ function retrieveAvailableDocumentCategories(): Array<DocumentCategorySelectable
   }));
 }
 
+/**
+ * Converts to enumSet
+ * @returns Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>
+ */
 function convertToEnumSet(
   selectedTypeRef: typeof selectedDocumentType
 ): Set<SearchForDocumentMetaInformationDocumentCategoriesEnum> {
@@ -193,7 +218,7 @@ function convertToEnumSet(
 }
 
 onMounted(() => {
-  getAllDocumentsForFilters();
+  getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 </script>
 
