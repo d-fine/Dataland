@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
@@ -16,7 +17,6 @@ import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -41,6 +41,7 @@ class SingleDataRequestManager
         @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
         @Autowired private val securityUtilsService: SecurityUtilsService,
         @Autowired private val companyRolesManager: CompanyRolesManager,
+        @Autowired private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -116,7 +117,11 @@ class SingleDataRequestManager
 
             utils.throwExceptionIfNotJwtAuth()
             validateSingleDataRequestContent(singleDataRequest)
-            performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
+            performQuotaCheckForNonPremiumUser(
+                userIdToUse,
+                singleDataRequest.reportingPeriods.size,
+                companyId,
+            )
 
             return PreprocessedRequest(
                 companyId = companyId,
@@ -145,19 +150,19 @@ class SingleDataRequestManager
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
             } else if (utils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod,
+                    reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
                 dataAccessManager.existsAccessRequestWithNonPendingStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod,
+                    reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 )
             ) {
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
-                    datalandCompanyId = preprocessedRequest.companyId, dataType = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod, contacts = preprocessedRequest.contacts,
-                    message = preprocessedRequest.message,
+                    userId = preprocessedRequest.userId, datalandCompanyId = preprocessedRequest.companyId,
+                    dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
+                    contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
             }
@@ -181,7 +186,7 @@ class SingleDataRequestManager
             val accessRequestAlreadyInPendingStatus =
                 dataAccessManager.existsAccessRequestWithNonPendingStatus(
                     companyId = companyId, framework = dataType,
-                    reportingPeriod = reportingPeriod,
+                    reportingPeriod = reportingPeriod, userId = userId,
                 )
             return(
                 dataType == DataTypeEnum.vsme &&
@@ -192,16 +197,17 @@ class SingleDataRequestManager
         }
 
         private fun performQuotaCheckForNonPremiumUser(
+            userId: String,
             numberOfReportingPeriods: Int,
             companyId: String,
         ) {
-            val userInfo = DatalandAuthentication.fromContext()
-            if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER) &&
+            val userRoles = keycloakUserService.getUserRoleNames(userId)
+            if (!userRoles.contains("ROLE_PREMIUM_USER") &&
                 !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                        userInfo.userId, getEpochTimeStartOfDay(),
+                        userId, getEpochTimeStartOfDay(),
                     )
 
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods

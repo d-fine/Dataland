@@ -165,7 +165,7 @@ class DataRequestAlterationManager
          * @param correlationId The correlation id of the QA approval event.
          */
         @Transactional
-        fun notifyUsersWithClosedRequests(
+        fun notifyUsersWithClosedOrResolvedRequests(
             dataId: String,
             correlationId: String,
         ) {
@@ -182,12 +182,12 @@ class DataRequestAlterationManager
                         dataType = setOf(metaData.dataType),
                         datalandCompanyId = metaData.companyId,
                         reportingPeriod = metaData.reportingPeriod,
-                        requestStatus = setOf(RequestStatus.Closed),
+                        requestStatus = setOf(RequestStatus.Closed, RequestStatus.Resolved),
                     ),
                 )
 
             dataRequestEntities.forEach {
-                requestEmailManager.sendEmailToUserWithClosedRequest(
+                requestEmailManager.sendEmailToUserWithClosedOrResolvedRequest(
                     it,
                     correlationId,
                 )

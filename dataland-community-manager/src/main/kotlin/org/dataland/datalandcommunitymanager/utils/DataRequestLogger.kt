@@ -35,7 +35,7 @@ class DataRequestLogger {
     fun logMessageForReceivingSingleDataRequest(preprocessedRequest: SingleDataRequestManager.PreprocessedRequest) {
         singleDataRequestLogger.info(
             "Received a single data request with Identifier ${preprocessedRequest.companyId}" +
-                " by user ${preprocessedRequest.userId}. -> Processing it. " +
+                " for user ${preprocessedRequest.userId}. -> Processing it. " +
                 "(correlationId: ${preprocessedRequest.correlationId})",
         )
     }
@@ -62,13 +62,14 @@ class DataRequestLogger {
      * returned "true".
      */
     fun logMessageForCheckingIfDataRequestAlreadyExists(
+        userId: String,
         companyId: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
         requestStatus: RequestStatus,
     ) {
         bulkDataRequestLogger.info(
-            "The following data request already exists for the requesting user and therefore " +
+            "The following data request already exists for user with id $userId and therefore " +
                 "is not being recreated: (companyId: $companyId, framework: $framework, " +
                 "reportingPeriod: $reportingPeriod, requestStatus: $requestStatus)",
         )

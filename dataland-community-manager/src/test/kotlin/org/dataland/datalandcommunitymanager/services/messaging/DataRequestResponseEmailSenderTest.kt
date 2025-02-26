@@ -64,7 +64,7 @@ class DataRequestResponseEmailSenderTest {
             .getCompanyInfo(eq(dummyDatalandCompanyId))
 
         val actualMessage =
-            dataRequestResponseEmailSender.buildEmailMessageForUserWithClosedRequest(
+            dataRequestResponseEmailSender.buildEmailMessageForUserWithClosedOrResolvedRequest(
                 mockDataRequestEntity,
             )
 

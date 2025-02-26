@@ -85,6 +85,7 @@ class BulkDataRequestManagerTest {
         `when`(
             utilsMock.storeDataRequestEntityAsOpen(
                 anyString(),
+                anyString(),
                 any(),
                 anyString(),
                 anyOrNull(),

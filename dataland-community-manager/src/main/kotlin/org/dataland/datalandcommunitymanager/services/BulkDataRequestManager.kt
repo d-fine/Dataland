@@ -12,6 +12,7 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.ResourceResponse
 import org.dataland.datalandcommunitymanager.services.messaging.BulkDataRequestEmailMessageSender
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -219,6 +220,7 @@ class BulkDataRequestManager(
         dimensionsToProcess: List<DatasetDimensions>,
         userProvidedIdentifierToDatalandCompanyIdMapping: Map<String, CompanyIdAndName>,
     ): List<ResourceResponse> {
+        val userId = DatalandAuthentication.fromContext().userId
         val acceptedDataRequests = mutableListOf<ResourceResponse>()
 
         dimensionsToProcess.forEach {
@@ -230,6 +232,7 @@ class BulkDataRequestManager(
 
             val storedRequest =
                 utils.storeDataRequestEntityAsOpen(
+                    userId,
                     it.companyId,
                     it.dataType,
                     it.reportingPeriod,

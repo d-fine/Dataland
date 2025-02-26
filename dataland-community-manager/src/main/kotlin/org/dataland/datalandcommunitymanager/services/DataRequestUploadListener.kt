@@ -77,7 +77,7 @@ class DataRequestUploadListener(
                 dataId = dataId,
                 correlationId = id,
             )
-            dataRequestAlterationManager.notifyUsersWithClosedRequests(
+            dataRequestAlterationManager.notifyUsersWithClosedOrResolvedRequests(
                 dataId = dataId,
                 correlationId = id,
             )

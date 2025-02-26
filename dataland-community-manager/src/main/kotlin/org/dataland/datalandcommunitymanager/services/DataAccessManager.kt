@@ -9,7 +9,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
-import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -139,8 +138,7 @@ class DataAccessManager(
         } else {
             storeAccessRequestEntityAsPending(
                 datalandCompanyId = companyId, dataType = dataType, reportingPeriod = reportingPeriod,
-                contacts = contacts,
-                message = message,
+                contacts = contacts, message = message, userId = userId,
             )
         }
     }
@@ -159,12 +157,13 @@ class DataAccessManager(
         reportingPeriod: String,
         contacts: Set<String>? = null,
         message: String? = null,
+        userId: String,
     ): DataRequestEntity {
         val creationTime = Instant.now().toEpochMilli()
 
         val dataRequestEntity =
             DataRequestEntity(
-                userId = DatalandAuthentication.fromContext().userId,
+                userId = userId,
                 dataType = dataType.value,
                 reportingPeriod = reportingPeriod,
                 datalandCompanyId = datalandCompanyId,
@@ -200,12 +199,12 @@ class DataAccessManager(
         companyId: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
+        userId: String,
     ): Boolean {
         val pendingDataRequests =
-            findAlreadyExistingAccessRequestForCurrentUser(
+            findAlreadyExistingAccessRequestForUser(
                 companyId = companyId, framework = framework, reportingPeriod = reportingPeriod,
-                accessStatus =
-                    AccessStatus.Pending,
+                accessStatus = AccessStatus.Pending, requestingUserId = userId,
             )
 
         return (!pendingDataRequests.isNullOrEmpty())
@@ -219,13 +218,13 @@ class DataAccessManager(
      * @param accessStatus the access status of the request
      * @return a list of the found data requests, or null if none was found
      */
-    fun findAlreadyExistingAccessRequestForCurrentUser(
+    fun findAlreadyExistingAccessRequestForUser(
         companyId: String,
         framework: DataTypeEnum,
         reportingPeriod: String,
         accessStatus: AccessStatus,
+        requestingUserId: String,
     ): List<DataRequestEntity>? {
-        val requestingUserId = DatalandAuthentication.fromContext().userId
         val foundRequests =
             dataRequestRepository
                 .findByUserIdAndDatalandCompanyIdAndDataTypeAndReportingPeriod(

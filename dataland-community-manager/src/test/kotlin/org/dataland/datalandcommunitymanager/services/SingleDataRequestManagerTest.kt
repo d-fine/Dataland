@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
@@ -52,6 +53,7 @@ class SingleDataRequestManagerTest {
     private lateinit var mockAccessRequestEmailSender: AccessRequestEmailSender
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
     private lateinit var mockDataAccessManager: DataAccessManager
+    private lateinit var mockKeycloakUserService: KeycloakUserService
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyCompanyIdAndName = CompanyIdAndName("Dummy Company AG", companyIdRegexSafeCompanyId)
@@ -78,6 +80,7 @@ class SingleDataRequestManagerTest {
         mockAccessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
         mockDataAccessManager = mock(DataAccessManager::class.java)
+        mockKeycloakUserService = mock(KeycloakUserService::class.java)
         singleDataRequestManager =
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
@@ -89,7 +92,8 @@ class SingleDataRequestManagerTest {
                 accessRequestEmailSender = mockAccessRequestEmailSender,
                 securityUtilsService = mockSecurityUtilsService,
                 companyRolesManager = mockCompanyRolesManager,
-                maxRequestsForUser,
+                keycloakUserService = mockKeycloakUserService,
+                maxRequestsForUser = maxRequestsForUser,
             )
 
         val mockSecurityContext = createSecurityContextMock()
@@ -113,8 +117,7 @@ class SingleDataRequestManagerTest {
         var requestsCount = 0
         val dataRequestRepositoryMock = mock(DataRequestRepository::class.java)
         `when`(
-            dataRequestRepositoryMock
-                .getNumberOfDataRequestsPerformedByUserFromTimestamp(anyString(), anyLong()),
+            dataRequestRepositoryMock.getNumberOfDataRequestsPerformedByUserFromTimestamp(anyString(), anyLong()),
         ).then {
             requestsCount += 1
             return@then requestsCount - 1
@@ -126,6 +129,7 @@ class SingleDataRequestManagerTest {
         val utilsMock = mock(DataRequestProcessingUtils::class.java)
         `when`(
             utilsMock.storeDataRequestEntityAsOpen(
+                anyString(),
                 anyString(),
                 any(),
                 anyString(),
@@ -147,8 +151,9 @@ class SingleDataRequestManagerTest {
                 adminComment = "dummyAdminComment",
             )
         }
-        `when`(utilsMock.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean()))
-            .thenReturn(dummyCompanyIdAndName)
+        `when`(utilsMock.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean())).thenReturn(
+            dummyCompanyIdAndName,
+        )
         return utilsMock
     }
 
@@ -227,18 +232,22 @@ class SingleDataRequestManagerTest {
         )
 
         val numberOfTimesExternalMessageIsSend = if (expectedExternalMessagesSent >= 1) 1 else 0
-        verify(mockSingleDataRequestEmailMessageSender, times(numberOfTimesExternalMessageIsSend))
-            .sendSingleDataRequestExternalMessage(
-                any(),
-                argThat { size == expectedExternalMessagesSent },
-                any(),
-                anyString(),
-            )
-        verify(mockSingleDataRequestEmailMessageSender, times(expectedInternalMessagesSent))
-            .sendSingleDataRequestInternalMessage(
-                any(),
-                anyString(),
-            )
+        verify(
+            mockSingleDataRequestEmailMessageSender,
+            times(numberOfTimesExternalMessageIsSend),
+        ).sendSingleDataRequestExternalMessage(
+            any(),
+            argThat { size == expectedExternalMessagesSent },
+            any(),
+            anyString(),
+        )
+        verify(
+            mockSingleDataRequestEmailMessageSender,
+            times(expectedInternalMessagesSent),
+        ).sendSingleDataRequestInternalMessage(
+            any(),
+            anyString(),
+        )
     }
 
     @Test
@@ -254,24 +263,25 @@ class SingleDataRequestManagerTest {
             )
 
         `when`(
-            mockCompanyRolesManager
-                .getCompanyRoleAssignmentsByParameters(
-                    CompanyRole.CompanyOwner, companyIdRegexSafeCompanyId, null,
-                ),
+            mockCompanyRolesManager.getCompanyRoleAssignmentsByParameters(
+                CompanyRole.CompanyOwner, companyIdRegexSafeCompanyId, null,
+            ),
         ).thenReturn(
             listOf(CompanyRoleAssignmentEntity(CompanyRole.CompanyOwner, companyIdRegexSafeCompanyId, "123")),
         )
 
         `when`(
-            mockDataRequestProcessingUtils
-                .matchingDatasetExists(companyIdRegexSafeCompanyId, reportingPeriod, DataTypeEnum.vsme),
+            mockDataRequestProcessingUtils.matchingDatasetExists(
+                companyIdRegexSafeCompanyId,
+                reportingPeriod,
+                DataTypeEnum.vsme,
+            ),
         ).thenReturn(true)
 
         `when`(
-            mockDataAccessManager
-                .hasAccessToPrivateDataset(
-                    companyIdRegexSafeCompanyId, reportingPeriod, DataTypeEnum.vsme, userId,
-                ),
+            mockDataAccessManager.hasAccessToPrivateDataset(
+                companyIdRegexSafeCompanyId, reportingPeriod, DataTypeEnum.vsme, userId,
+            ),
         ).thenReturn(false)
 
         singleDataRequestManager.processSingleDataRequest(request)
@@ -285,18 +295,15 @@ class SingleDataRequestManagerTest {
         contacts: Set<String>,
         message: String,
     ) {
-        verify(mockDataAccessManager, times(1))
-            .createAccessRequestToPrivateDataset(
-                userId, companyIdRegexSafeCompanyId, DataTypeEnum.vsme, reportingPeriod, contacts, message,
-            )
+        verify(mockDataAccessManager, times(1)).createAccessRequestToPrivateDataset(
+            userId, companyIdRegexSafeCompanyId, DataTypeEnum.vsme, reportingPeriod, contacts, message,
+        )
 
-        verify(mockAccessRequestEmailSender, times(1))
-            .notifyCompanyOwnerAboutNewRequest(any(), any())
+        verify(mockAccessRequestEmailSender, times(1)).notifyCompanyOwnerAboutNewRequest(any(), any())
 
         verifyNoInteractions(mockSingleDataRequestEmailMessageSender)
 
-        verify(mockDataRequestProcessingUtils, times(0))
-            .storeDataRequestEntityAsOpen(any(), any(), any(), any(), any())
+        verify(mockDataRequestProcessingUtils, times(0)).storeDataRequestEntityAsOpen(any(), any(), any(), any(), any())
     }
 
     @Test
@@ -309,8 +316,7 @@ class SingleDataRequestManagerTest {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
 
-        verify(spySingleDataRequestManager, times(1))
-            .preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
+        verify(spySingleDataRequestManager, times(1)).preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
     }
 
     @Test
@@ -323,7 +329,6 @@ class SingleDataRequestManagerTest {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest, expectedUserIdToUse)
         }
 
-        verify(spySingleDataRequestManager, times(1))
-            .preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
+        verify(spySingleDataRequestManager, times(1)).preprocessSingleDataRequest(any(), eq(expectedUserIdToUse))
     }
 }
