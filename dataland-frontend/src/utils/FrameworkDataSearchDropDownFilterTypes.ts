@@ -1,7 +1,5 @@
 import { type DataTypeEnum } from '@clients/backend';
-import {
-  SearchForDocumentMetaInformationDocumentCategoriesEnum,
-} from '@clients/documentmanager';
+import { type SearchForDocumentMetaInformationDocumentCategoriesEnum } from '@clients/documentmanager';
 
 export interface SelectableItem {
   displayName: string;
