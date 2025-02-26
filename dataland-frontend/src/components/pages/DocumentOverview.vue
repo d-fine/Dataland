@@ -39,9 +39,11 @@
           :value="documentsFiltered"
           :paginator="true"
           :lazy="true"
+          paginator-position="bottom"
           :total-records="totalRecords"
           :rows="rowsPerPage"
           :first="firstRowIndex"
+          @sort="onSort($event)"
           @page="onPage($event)"
           :alwaysShowPaginator="true"
         >
@@ -51,7 +53,13 @@
               {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
             </template>
           </Column>
-          <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" />
+          <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
+            <template #body="slotProps">
+              <div>
+                {{ dateStringFormatter(slotProps.data.publicationDate) }}
+              </div></template
+            >
+          </Column>
           <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
           <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
             <template #body="documentProps">
@@ -83,7 +91,7 @@ import { type Content, type Page } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
 import { inject, onMounted, ref, watch } from 'vue';
 import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
-import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
+import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -101,6 +109,7 @@ import {
 import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { dateStringFormatter } from '@/utils/DataFormatUtils';
 
 const props = defineProps<{
   companyId: string;
@@ -117,14 +126,15 @@ const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>(retrie
 const rowsPerPage = 100;
 const totalRecords = ref(0);
 const firstRowIndex = ref(0);
-const currentChunkIndex = ref(0);
+const currentPage = ref(0);
 const isMetaInfoDialogOpen = ref(false);
 const selectedDocumentId = ref<string>('');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
+const sortOrder = ref(1);
 
 watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
-  currentChunkIndex.value = 0;
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 
@@ -141,27 +151,18 @@ async function getAllDocumentsForFilters(): Promise<void> {
         documentsFiltered.value = (
           await documentControllerApi.searchForDocumentMetaInformation(
             props.companyId,
-            convertToEnumSet(selectedDocumentType),
-            undefined,
-            rowsPerPage,
-            currentChunkIndex.value
+            convertToEnumSet(selectedDocumentType)
           )
         ).data;
       } else {
         documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
       }
-      totalRecords.value = (
-        await documentControllerApi.searchForDocumentMetaInformation(
-          props.companyId,
-          convertToEnumSet(selectedDocumentType),
-          undefined
-        )
-      ).data.length;
     }
   } catch (error) {
     console.error(error);
   }
   waitingForData.value = false;
+  updateCurrentDisplayedData();
 }
 
 /**
@@ -172,15 +173,57 @@ function resetFilter(): void {
 }
 
 /**
+ * Updates the displayedDocumentData
+ */
+function updateCurrentDisplayedData(): void {
+  documentsFiltered.value.sort((a, b) => customSorting(a, b));
+  totalRecords.value = documentsFiltered.value.length;
+  documentsFiltered.value = documentsFiltered.value.slice(
+    rowsPerPage * currentPage.value,
+    rowsPerPage * (1 + currentPage.value)
+  );
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+/**
+ * Compares two extended stored data requests (sort field, request status, last modified, company name)
+ * @param a ExtendedStoredDataRequest to sort
+ * @param b ExtendedStoredDataRequest to sort
+ * @returns result of the comparison
+ */
+function customSorting(a: DocumentMetaInfoResponse, b: DocumentMetaInfoResponse): number {
+  const aValue = a[sortField.value] ?? '';
+  const bValue = b[sortField.value] ?? '';
+
+  if (sortField.value != ('requestStatus' as keyof DocumentMetaInfoResponse)) {
+    if (aValue < bValue) return -1 * sortOrder.value;
+    if (aValue > bValue) return sortOrder.value;
+    return 0;
+  } else {
+    return sortOrder.value;
+  }
+}
+
+/**
  * Updates the current Page
  * @param event DataTablePageEvent
  */
 function onPage(event: DataTablePageEvent): void {
-  window.scrollTo(0, 0);
-  if (event.page != currentChunkIndex.value) {
-    currentChunkIndex.value = event.page;
-    firstRowIndex.value = currentChunkIndex.value * rowsPerPage;
-  }
+  currentPage.value = event.page;
+  updateCurrentDisplayedData();
+}
+
+/**
+ * Sorts the list of storedDataRequests
+ * @param event contains column to sort and sortOrder
+ */
+function onSort(event: DataTableSortEvent): void {
+  sortField.value = event.sortField as keyof DocumentMetaInfoResponse;
+  sortOrder.value = event.sortOrder ?? 1;
+  updateCurrentDisplayedData();
 }
 
 /**
