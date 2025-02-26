@@ -12,6 +12,8 @@ import ViewFrameworkData from '@/components/pages/ViewFrameworkData.vue';
 import { getMountingFunction } from '@ct/testUtils/Mount';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
+import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 
 describe('Component tests for the Quality Assurance page', () => {
   let p2pFixture: FixtureData<PathwaysToParisData>;
@@ -304,7 +306,7 @@ describe('Component tests for the Quality Assurance page', () => {
     assertUnfilteredDatatableState();
   });
 
-  it('Check if dataset can be reviewed on the view page', () => {
+  it.only('Check if dataset can be reviewed on the view page', () => {
     const mockDataMetaInfo: DataMetaInformation = {
       dataId: 'p2pTestDataId',
       companyId: 'testCompanyId',
@@ -315,18 +317,24 @@ describe('Component tests for the Quality Assurance page', () => {
       qaStatus: QaStatus.Pending,
       ref: 'https://example.com',
     };
-
-    cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
-    cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, p2pFixture.companyInformation);
-    cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
     const mockCompanyAssociatedP2pData: CompanyAssociatedDataPathwaysToParisData = {
       companyId: mockDataMetaInfo.companyId,
       reportingPeriod: mockDataMetaInfo.reportingPeriod,
       data: p2pFixture.t,
     };
+    const mockP2pDataAndMetaInfo: DataAndMetaInformation<PathwaysToParisData> = buildDataAndMetaInformationMock(
+      mockDataMetaInfo,
+      p2pFixture.t
+    );
+
+    cy.intercept(`**/community/requests/user`, {});
+    cy.intercept(`**/api/metadata?companyId=${mockDataMetaInfo.companyId}`, [mockDataMetaInfoForActiveDataset]);
+    cy.intercept(`**/api/companies/${mockDataMetaInfo.companyId}/info`, p2pFixture.companyInformation);
+    cy.intercept(`**/api/metadata/${mockDataMetaInfo.dataId}`, mockDataMetaInfo);
     cy.intercept(`**/api/data/${DataTypeEnum.P2p}/${mockDataMetaInfo.dataId}`, mockCompanyAssociatedP2pData).as(
       'fetchP2pData'
     );
+    cy.intercept(`**/api/data/${DataTypeEnum.P2p}/companies/${mockDataMetaInfo.companyId}*`, [mockP2pDataAndMetaInfo]);
 
     getMountingFunction({
       keycloak: keycloakMockWithUploaderAndReviewerRoles,

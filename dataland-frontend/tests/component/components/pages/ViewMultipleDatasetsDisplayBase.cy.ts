@@ -5,21 +5,38 @@ import { type DataMetaInformation, DataTypeEnum, type LksgData, QaStatus } from 
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import router from '@/router';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
-import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { buildDataAndMetaInformationMock } from '@sharedUtils/components/ApiResponseMocks.ts';
 
 describe('Component test for the view multiple dataset display base component', () => {
-  let preparedFixtures: Array<FixtureData<LksgData>>;
+  const reportingYear = 2023;
+  const lksgMetaInfo: DataMetaInformation = {
+    dataId: `dataset-a`,
+    reportingPeriod: reportingYear.toString(),
+    qaStatus: QaStatus.Accepted,
+    currentlyActive: true,
+    dataType: DataTypeEnum.Lksg,
+    companyId: 'mock-company-id',
+    uploadTime: 0,
+    uploaderUserId: 'mock-uploader-id',
+  };
+
+  let preparedFixtureLksgData: LksgData;
+  let companyInformation: CompanyInformation;
 
   before(function () {
     cy.fixture('CompanyInformationWithLksgPreparedFixtures').then(function (jsonContent) {
-      preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      const preparedFixtures = jsonContent as Array<FixtureData<LksgData>>;
+      const preparedFixture = getPreparedFixture('lksg-with-nulls-and-no-child-labor-under-18', preparedFixtures);
+      preparedFixtureLksgData = preparedFixture.t;
+      companyInformation = preparedFixture.companyInformation;
     });
   });
 
   it('Check if the toggle of hidden fields works for empty and conditional fields', () => {
-    const preparedFixture = getPreparedFixture('lksg-with-nulls-and-no-child-labor-under-18', preparedFixtures);
-    const mockDataAndMetaInfo: DataAndMetaInformation<LksgData> = constructCompanyApiResponse(preparedFixture.t);
-    const companyInformation = preparedFixture.companyInformation;
+    const mockDataAndMetaInfo: DataAndMetaInformation<LksgData> = buildDataAndMetaInformationMock(
+      lksgMetaInfo,
+      preparedFixtureLksgData
+    );
 
     cy.intercept('/community/requests/user', {});
     cy.intercept('/api/companies/mock-company-id/info', companyInformation);
@@ -48,15 +65,14 @@ describe('Component test for the view multiple dataset display base component', 
   });
 
   it('Check whether Edit Data button has dropdown with two different Reporting Periods', () => {
-    const preparedFixture = getPreparedFixture('lksg-with-nulls-and-no-child-labor-under-18', preparedFixtures);
-    const mockedData2024 = constructCompanyApiResponse(preparedFixture.t);
+    const mockedData2024 = buildDataAndMetaInformationMock(lksgMetaInfo, preparedFixtureLksgData);
     mockedData2024.metaInfo.dataId = 'id-2024';
     mockedData2024.metaInfo.reportingPeriod = '2024';
-    const mockedData2023 = constructCompanyApiResponse(preparedFixture.t);
+    const mockedData2023 = buildDataAndMetaInformationMock(lksgMetaInfo, preparedFixtureLksgData);
     mockedData2023.metaInfo.dataId = 'id-2023';
     mockedData2023.metaInfo.reportingPeriod = '2023';
     cy.intercept('/community/requests/user', {});
-    cy.intercept(`/api/companies/*/info`, preparedFixture.companyInformation);
+    cy.intercept(`/api/companies/*/info`, companyInformation);
     cy.intercept(`/api/data/lksg/companies/mock-company-id*`, [mockedData2024, mockedData2023]);
 
     cy.spy(router, 'push').as('routerPush');
@@ -86,28 +102,6 @@ describe('Component test for the view multiple dataset display base component', 
     );
   });
 });
-
-/**
- * Create a DataAndMetaInformation object for LksgData and a defined DataMetaInformation mock
- * @param baseDataset the lksg dataset
- * @returns a mocked DataAndMetaInformation object
- */
-function constructCompanyApiResponse<T extends FrameworkData>(baseDataset: T): DataAndMetaInformation<T> {
-  const reportingYear = 2023;
-  const lksgData: T = structuredClone(baseDataset);
-  lksgData.general.masterData.dataDate = `${reportingYear}-01-01`;
-  const metaData: DataMetaInformation = {
-    dataId: `dataset-a`,
-    reportingPeriod: reportingYear.toString(),
-    qaStatus: QaStatus.Accepted,
-    currentlyActive: true,
-    dataType: DataTypeEnum.Lksg,
-    companyId: 'mock-company-id',
-    uploadTime: 0,
-    uploaderUserId: 'mock-uploader-id',
-  };
-  return { metaInfo: metaData, data: lksgData };
-}
 
 /**
  * This function toggles the hide data button and checks whether a specific field is hidden or displayed.
