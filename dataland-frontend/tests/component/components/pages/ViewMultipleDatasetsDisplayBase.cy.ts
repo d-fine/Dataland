@@ -23,7 +23,7 @@ describe('Component test for the view multiple dataset display base component', 
 
     cy.intercept('/community/requests/user', {});
     cy.intercept('/api/companies/mock-company-id/info', companyInformation);
-    cy.intercept('/api/data/lksg/companies/mock-company-id', [mockDataAndMetaInfo]);
+    cy.intercept('/api/data/lksg/companies/mock-company-id*', [mockDataAndMetaInfo]);
     cy.intercept(`/api/data/lksg/dataset-a`, {
       companyId: mockDataAndMetaInfo.metaInfo.companyId,
       reportingPeriod: mockDataAndMetaInfo.metaInfo.reportingPeriod,
@@ -57,7 +57,7 @@ describe('Component test for the view multiple dataset display base component', 
     mockedData2023.metaInfo.reportingPeriod = '2023';
     cy.intercept('/community/requests/user', {});
     cy.intercept(`/api/companies/*/info`, preparedFixture.companyInformation);
-    cy.intercept(`/api/data/lksg/companies/mock-company-id`, [mockedData2024, mockedData2023]);
+    cy.intercept(`/api/data/lksg/companies/mock-company-id*`, [mockedData2024, mockedData2023]);
 
     cy.spy(router, 'push').as('routerPush');
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
