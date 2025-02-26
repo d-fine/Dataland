@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import { DataTypeEnum } from '@clients/backend';
 import ViewMultipleDatasetsDisplayBase from '@/components/generics/ViewMultipleDatasetsDisplayBase.vue';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
@@ -28,7 +28,7 @@ export default defineComponent({
       required: true,
     },
     dataType: {
-      type: String,
+      type: String as PropType<DataTypeEnum>,
       required: true,
     },
     dataId: {
