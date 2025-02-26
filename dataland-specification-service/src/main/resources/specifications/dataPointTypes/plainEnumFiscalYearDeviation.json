@@ -3,5 +3,6 @@
   "name" : "Fiscal Year Deviation",
   "businessDefinition" : "Does the fiscal year deviate from the calendar year?",
   "dataPointBaseTypeId" : "plainEnumFiscalYearDeviation",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

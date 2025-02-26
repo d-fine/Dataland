@@ -79,4 +79,6 @@ open class IntegerComponent(
             "Integer",
         )
     }
+
+    override fun getConstraints(): List<String>? = getMinMaxValidationRule(minimumValue, maximumValue)?.let { listOf(it) }
 }

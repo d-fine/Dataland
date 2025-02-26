@@ -3,5 +3,6 @@
   "name" : "ISO 14001 Certificate",
   "businessDefinition" : "The company is ISO 14001 certified.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

@@ -3,5 +3,6 @@
   "name" : "Water Reused",
   "businessDefinition" : "Amount of water recycled and reused by the company. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 6.2 .",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
 }

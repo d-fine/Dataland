@@ -3,5 +3,6 @@
   "name" : "Scope 1 and 2 GHG emissions",
   "businessDefinition" : "Sum of scope 1 and 2 greenhouse gas emissions (computed preferably using the location-based method and equity share approach).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

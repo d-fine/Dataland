@@ -3,5 +3,6 @@
   "name" : "Corruption Legal Proceedings",
   "businessDefinition" : "Involvement in corruption-related legal proceedings.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

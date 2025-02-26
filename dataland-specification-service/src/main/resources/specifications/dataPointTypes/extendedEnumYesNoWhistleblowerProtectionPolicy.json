@@ -3,5 +3,6 @@
   "name" : "Whistleblower Protection Policy",
   "businessDefinition" : "Existence of a policy on the protection of whistleblowers. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 6.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

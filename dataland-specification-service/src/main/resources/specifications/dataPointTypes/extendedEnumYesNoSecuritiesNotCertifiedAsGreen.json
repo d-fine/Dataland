@@ -3,5 +3,6 @@
   "name" : "Securities Not Certified As Green",
   "businessDefinition" : "Do you have securities in investments not certified as green under a future EU legal act setting up an EU Green Bond Standard?",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

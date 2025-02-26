@@ -108,4 +108,6 @@ class CurrencyComponent(
             "Currency",
         )
     }
+
+    override fun getConstraints(): List<String>? = getMinMaxValidationRule(minimumValue, maximumValue)?.let { listOf(it) }
 }

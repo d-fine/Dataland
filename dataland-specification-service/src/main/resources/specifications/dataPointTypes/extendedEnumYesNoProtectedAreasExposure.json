@@ -3,5 +3,6 @@
   "name" : "Protected Areas Exposure",
   "businessDefinition" : "Sites or operations that are partially or fully located in or near protected areas, where their activities adversely impact these regions. For further details, please refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

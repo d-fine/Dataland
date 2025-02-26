@@ -3,5 +3,6 @@
   "name" : "Financed scope 1 and scope 2 emissions",
   "businessDefinition" : "The sum of scope 1 and scope 2 emissions of financed companies.",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

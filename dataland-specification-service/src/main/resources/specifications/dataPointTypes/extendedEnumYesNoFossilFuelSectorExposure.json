@@ -3,5 +3,6 @@
   "name" : "Fossil Fuel Sector Exposure",
   "businessDefinition" : "(Part of) revenues derived from exploration, mining, extraction, production, processing, storage, refining or distribution, including transportation, storage and trade, of fossil fuels. (Fossil fuels mean non-renewable carbon-based energy sources such as solid fuels, natural gas and oil.) See also Regulation (EU) 2022/1288, Annex I, top (5).",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

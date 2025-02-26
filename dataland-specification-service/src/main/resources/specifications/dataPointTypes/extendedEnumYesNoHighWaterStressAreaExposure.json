@@ -3,5 +3,6 @@
   "name" : "High Water Stress Area Exposure",
   "businessDefinition" : "Sites (partly) located in \"areas of high water stress\", i.e. in regions where the percentage of total water withdrawn is high (40-80%) or extremely high (greater than 80%), without a water management policy. See Regulation (EU) 2022/1288, Annex I, top (13) and table 2, indicator nr. 8.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

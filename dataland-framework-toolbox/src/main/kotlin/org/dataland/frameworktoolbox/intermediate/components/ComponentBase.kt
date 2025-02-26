@@ -251,4 +251,9 @@ open class ComponentBase(
             "This component (${javaClass.canonicalName})" +
                 " did not implement specification generation.",
         )
+
+    /**
+     * Return constraints as a list of parseable strings
+     */
+    open fun getConstraints(): List<String>? = null
 }

@@ -3,5 +3,6 @@
   "name" : "Scope 2 GHG emissions",
   "businessDefinition" : "Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

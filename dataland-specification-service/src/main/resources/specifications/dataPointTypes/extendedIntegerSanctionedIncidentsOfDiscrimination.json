@@ -3,5 +3,6 @@
   "name" : "Sanctioned Incidents Of Discrimination",
   "businessDefinition" : "Number of discrimination related incidents reported that lead to any kind of penalty and/or fine. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 7.2 .",
   "dataPointBaseTypeId" : "extendedInteger",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
 }
