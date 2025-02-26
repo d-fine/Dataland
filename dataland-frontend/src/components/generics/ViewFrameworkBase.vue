@@ -2,7 +2,7 @@
   <TheHeader :showUserProfileDropdown="!viewInPreviewMode" />
   <TheContent class="paper-section min-h-screen">
     <CompanyInfoSheet
-      :company-id="companyId"
+      :company-id="companyID"
       @fetched-company-information="handleFetchedCompanyInformation"
       :show-single-data-request-button="true"
       :framework="dataType"
@@ -171,7 +171,7 @@ export default defineComponent({
   },
   emits: ['updateActiveDataMetaInfoForChosenFramework'],
   props: {
-    companyId: {
+    companyID: {
       type: String,
       required: true,
     },
@@ -237,7 +237,7 @@ export default defineComponent({
       );
     },
     targetLinkForAddingNewDataset() {
-      return `/companies/${this.companyId ?? ''}/frameworks/upload`;
+      return `/companies/${this.companyID ?? ''}/frameworks/upload`;
     },
 
     availableReportingPeriods(): string[] {
@@ -280,7 +280,7 @@ export default defineComponent({
     },
     /**
      * Saves the company information emitted by the CompanyInformation vue components event.
-     * @param fetchedCompanyInformation the company information for the current companyId
+     * @param fetchedCompanyInformation the company information for the current companyID
      */
     handleFetchedCompanyInformation(fetchedCompanyInformation: CompanyInformation) {
       this.fetchedCompanyInformation = fetchedCompanyInformation;
@@ -307,7 +307,7 @@ export default defineComponent({
      */
     goToUpdateForm(reportingPeriod: string) {
       void router.push(
-        `/companies/${assertDefined(this.companyId)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
+        `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
       );
     },
     /**
@@ -334,7 +334,7 @@ export default defineComponent({
      */
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
-        void router.push(`/companies/${this.companyId}/frameworks/${this.chosenDataTypeInDropdown}`);
+        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
       }
     },
 
@@ -345,7 +345,7 @@ export default defineComponent({
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
-        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyId);
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         const metadata = apiResponse.data;
         const availableDataTypes = new Set(metadata.map((metaInfo) => metaInfo.dataType));
         availableDataTypes.forEach((dataType) => {
@@ -375,7 +375,7 @@ export default defineComponent({
           this.dataType,
           apiClientProvider
         ) as PublicFrameworkDataApi<FrameworkData>;
-        const apiResponse = await frameworkDataApi.getAllCompanyData(this.companyId, true);
+        const apiResponse = await frameworkDataApi.getAllCompanyData(this.companyID, true);
         this.activeDataForCurrentCompanyAndFramework = Array.from(apiResponse.data);
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
@@ -400,7 +400,7 @@ export default defineComponent({
         })
         .then(() => {
           if (!this.hasUserUploaderRights) {
-            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyId, this.getKeycloakPromise).then(
+            return hasUserCompanyRoleForCompany(CompanyRole.CompanyOwner, this.companyID, this.getKeycloakPromise).then(
               (hasUserUploaderRights) => {
                 this.hasUserUploaderRights = hasUserUploaderRights;
               }
@@ -436,18 +436,18 @@ export default defineComponent({
         }
 
         const fileExtension = ExportFileTypeInformation[exportFileType].fileExtension;
-        const filename = `${selectedYear}-${this.dataType}-${this.companyId}.${fileExtension}`;
+        const filename = `${selectedYear}-${this.dataType}-${this.companyID}.${fileExtension}`;
 
         const dataResponse = await frameworkDataApi.exportCompanyAssociatedDataByDimensions(
           selectedYear,
-          this.companyId,
+          this.companyID,
           exportFileType
         );
         const dataContent =
           exportFileType == ExportFileType.Json ? JSON.stringify(dataResponse.data) : dataResponse.data;
 
         if (!dataResponse) {
-          throw new Error(`Retrieving ${this.dataType} data for company with companyId ${this.companyId}
+          throw new Error(`Retrieving ${this.dataType} data for company with companyID ${this.companyID}
            and reporting period ${selectedFileType} failed.`);
         }
 
@@ -475,7 +475,7 @@ export default defineComponent({
     },
   },
   watch: {
-    companyId() {
+    companyID() {
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     },
     isReviewableByCurrentUser() {

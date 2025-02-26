@@ -22,7 +22,7 @@ describe('Component test for ViewFrameworkBase', () => {
       },
       props: {
         dataType: DataTypeEnum.EutaxonomyFinancials,
-        companyId: 'mock-company-id',
+        companyID: 'mock-company-id',
       },
     }).then(({ component }) => {
       cy.wait('@metaDataFetch').then(() => {
@@ -52,7 +52,7 @@ describe('Component test for ViewFrameworkBase', () => {
       },
       props: {
         dataType: DataTypeEnum.Lksg,
-        companyId: 'mock-company-id',
+        companyID: 'mock-company-id',
       },
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
@@ -71,7 +71,7 @@ describe('Component test for ViewFrameworkBase', () => {
       },
       props: {
         dataType: DataTypeEnum.Lksg,
-        companyId: 'mock-company-id',
+        companyID: 'mock-company-id',
       },
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
@@ -93,7 +93,7 @@ describe('Component test for ViewFrameworkBase', () => {
       },
       props: {
         dataType: DataTypeEnum.Lksg,
-        companyId: 'mock-company-id',
+        companyID: 'mock-company-id',
       },
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
@@ -112,7 +112,7 @@ describe('Component test for ViewFrameworkBase', () => {
       },
       props: {
         dataType: DataTypeEnum.Lksg,
-        companyId: 'mock-company-id',
+        companyID: 'mock-company-id',
       },
     }).then(({ component }) => {
       cy.wait('@dataFetch').then(() => {
