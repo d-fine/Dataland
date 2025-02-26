@@ -128,7 +128,9 @@ import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum, ExportFileType } from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+
+import { ExportFileType } from '@clients/backend';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -149,7 +151,7 @@ import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrame
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 
-type DropDownOption = { label: string; value: string };
+type DropdownOption = { label: string; value: string };
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -199,6 +201,7 @@ export default defineComponent({
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
       chosenDataTypeInDropdown: '',
+      dataTypesInDropdown: [] as Array<DropdownOption>,
       humanizeStringOrNumber,
       windowScrollHandler: (): void => {
         this.handleScroll();
@@ -237,27 +240,6 @@ export default defineComponent({
       return `/companies/${this.companyId ?? ''}/frameworks/upload`;
     },
 
-    dataTypesInDropdown(): DropDownOption[] {
-      const availableDataTypesForCompany = [
-        ...new Set(
-          this.activeDataForCurrentCompanyAndFramework.map(
-            (dataAndMetaInformation) => dataAndMetaInformation.metaInfo.dataType
-          )
-        ),
-      ];
-      const dataTypesDropDownOptions = Array<DropDownOption>();
-
-      availableDataTypesForCompany.forEach((dataType) => {
-        if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
-          dataTypesDropDownOptions.push({
-            label: humanizeStringOrNumber(dataType),
-            value: dataType,
-          });
-        }
-      });
-      return dataTypesDropDownOptions.sort((a, b) => a.value.localeCompare(b.value));
-    },
-
     availableReportingPeriods(): string[] {
       const reportingPeriods = new Set<string>();
       this.activeDataForCurrentCompanyAndFramework.forEach((dataAndMetaInformation) => {
@@ -281,6 +263,7 @@ export default defineComponent({
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? '';
+    void this.getDataTypesForDropdown();
     void this.getAllActiveDataForCurrentCompanyAndFramework();
 
     void this.setViewPageAttributesForUser();
@@ -352,6 +335,30 @@ export default defineComponent({
     handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
       if (this.dataType != dropDownChangeEvent.value) {
         void router.push(`/companies/${this.companyId}/frameworks/${this.chosenDataTypeInDropdown}`);
+      }
+    },
+
+    /**
+     * Retrieves all dataTypes available for current Company and populates dropdown menu
+     */
+    async getDataTypesForDropdown() {
+      try {
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
+        const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyId);
+        const metadata = apiResponse.data;
+        const availableDataTypes = new Set(metadata.map((metaInfo) => metaInfo.dataType));
+        availableDataTypes.forEach((dataType) => {
+          if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
+            this.dataTypesInDropdown.push({
+              label: humanizeStringOrNumber(dataType),
+              value: dataType,
+            });
+          }
+        });
+        this.dataTypesInDropdown.sort((a, b) => a.label.localeCompare(b.label));
+      } catch (error) {
+        console.log(error);
       }
     },
 
