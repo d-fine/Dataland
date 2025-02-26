@@ -7,7 +7,7 @@ export default defineConfig({
   //This section is to prevent the vite cold start issue https://github.com/cypress-io/cypress/issues/22557
   optimizeDeps: {
     include: [
-      '@clients/backend',
+      // '@clients/backend',
       '@clients/apikeymanager',
       '@clients/documentmanager',
       '@vue/test-utils',
