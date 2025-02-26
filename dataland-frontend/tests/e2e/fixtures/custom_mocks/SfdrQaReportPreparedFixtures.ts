@@ -1,7 +1,7 @@
 import { generateFixtureDataset, pickOneElement, removeAllUnusedReferencedReports } from '@e2e/fixtures/FixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
-  SfdrData as SfdrQaData,
+  type SfdrData as SfdrQaData,
   ExtendedDataPointBigDecimalQualityEnum,
   ExtendedDataPointYesNoQualityEnum,
   ExtendedDataPointYesNoValueEnum,
@@ -59,6 +59,9 @@ function generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand(): Sfdr
   };
 }
 
+/**
+ * Generates a pair of qa report and data for the Sfdr with various verdicts.
+ */
 export function generateSfdrLinkedQaReports(): {
   data: SfdrData;
   qaReport: SfdrQaData;
