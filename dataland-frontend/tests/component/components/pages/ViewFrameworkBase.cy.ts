@@ -7,6 +7,7 @@ import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRole
 
 describe('Component test for ViewFrameworkBase', () => {
   beforeEach(() => {
+    cy.intercept('/api/metadata*', { fixture: 'MetaInfoDataMocksForOneCompany', times: 1 }).as('metaDataFetch');
     cy.intercept('**/api/data/**/companies/*', {
       fixture: 'DataAndMetaInfoMocksForOneCompany',
       times: 1,
@@ -24,7 +25,7 @@ describe('Component test for ViewFrameworkBase', () => {
         companyId: 'mock-company-id',
       },
     }).then(({ component }) => {
-      cy.wait('@dataFetch').then(() => {
+      cy.wait('@metaDataFetch').then(() => {
         assert(component.isDataProcessedSuccessfully);
         expect(component.dataTypesInDropdown).to.be.an('array').that.is.not.empty;
         expect(component.dataTypesInDropdown).to.deep.equal([
