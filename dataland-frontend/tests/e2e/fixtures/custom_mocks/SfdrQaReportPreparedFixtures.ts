@@ -1,12 +1,11 @@
 import { generateFixtureDataset, pickOneElement, removeAllUnusedReferencedReports } from '@e2e/fixtures/FixtureUtils';
 import { type FixtureData } from '@sharedUtils/Fixtures';
 import {
-  type SfdrData as SfdrQaData,
+  type SfdrData as SfdrQaReport,
   ExtendedDataPointBigDecimalQualityEnum,
   ExtendedDataPointYesNoQualityEnum,
   ExtendedDataPointYesNoValueEnum,
   QaReportDataPointVerdict,
-  type SfdrData as SfdrQaReport,
 } from '@clients/qaservice';
 import type { SfdrData } from '@clients/backend';
 import { SfdrGenerator } from '@e2e/fixtures/frameworks/sfdr/SfdrGenerator.ts';
@@ -64,7 +63,7 @@ function generateSfdrQaReportWithCorrectionForPrimaryForestAndWoodedLand(): Sfdr
  */
 export function generateSfdrLinkedQaReports(): {
   data: SfdrData;
-  qaReport: SfdrQaData;
+  qaReport: SfdrQaReport;
 } {
   const dataGenerator = new SfdrGenerator(0);
   const data: SfdrData = {

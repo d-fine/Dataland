@@ -57,21 +57,8 @@ class DataMigrationTest {
         return moshiAdapter.fromJson(file.readText())!!
     }
 
-    private fun uploadDummyDataset(data: AdditionalCompanyInformationData = linkedQaReportData.data): DataMetaInformation {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        return Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
-            dataType = DataTypeEnum.additionalMinusCompanyMinusInformation,
-            companyAssociatedDataJsonNode =
-                CompanyAssociatedDataJsonNode(
-                    companyId = companyId,
-                    data = data,
-                    reportingPeriod = reportingPeriod,
-                ),
-        )
-    }
-
     private fun uploadGenericDummyDataset(
-        data: SfdrData,
+        data: Any,
         dataType: DataTypeEnum,
     ): DataMetaInformation {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
@@ -88,7 +75,7 @@ class DataMigrationTest {
 
     @Test
     fun `ensure the data can be retrieved correctly after migration`() {
-        val dataMetaInfo = uploadDummyDataset()
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
 
         val downloadedDataset =
@@ -118,7 +105,7 @@ class DataMigrationTest {
     @Test
     fun `ensure that nullish values get migrated correctly`() {
         val fixture = fakeFixtureProvider.getByCompanyName("additional-company-information-dataset-with-nullish-fields").t
-        val dataMetaInfo = uploadDummyDataset(fixture)
+        val dataMetaInfo = uploadGenericDummyDataset(fixture, DataTypeEnum.additionalMinusCompanyMinusInformation)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val downloadedDataset =
             Backend.additionalCompanyInformationDataControllerApi
@@ -132,7 +119,7 @@ class DataMigrationTest {
 
     @Test
     fun `ensure a dataset cannot be migrated twice`() {
-        val dataMetaInfo = uploadDummyDataset()
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         assertThrows<ClientException> {
             Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
@@ -142,7 +129,7 @@ class DataMigrationTest {
     @ParameterizedTest
     @EnumSource(QaStatus::class, names = ["Accepted", "Rejected"])
     fun `ensure the data points keep the QA status of the dataset after migration`(qaStatus: QaStatus) {
-        val dataMetaInfo = uploadDummyDataset()
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
         ApiAwait.waitForSuccess(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
             QaService.qaControllerApi.changeQaStatus(dataMetaInfo.dataId, qaStatus)
         }
@@ -168,7 +155,7 @@ class DataMigrationTest {
 
     @Test
     fun `ensure that qa reports get migrated`() {
-        val dataMetaInfo = uploadDummyDataset()
+        val dataMetaInfo = uploadGenericDummyDataset(linkedQaReportData.data, DataTypeEnum.additionalMinusCompanyMinusInformation)
         val qaReportInfo =
             QaService.assembledDataMigrationControllerApi.forceUploadStoredQaReport(
                 dataId = dataMetaInfo.dataId,

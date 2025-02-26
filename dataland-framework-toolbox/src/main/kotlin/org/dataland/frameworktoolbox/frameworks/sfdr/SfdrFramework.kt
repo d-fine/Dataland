@@ -29,6 +29,13 @@ class SfdrFramework :
     override fun getComponentGenerationUtils(): ComponentGenerationUtils = SfdrComponentGenerationUtils()
 
     override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("general") {
+                edit<ReportPreuploadComponent>("referencedReports") {
+                    isPartOfQaReport = false
+                }
+            }
+        }
         setSectionColorsAndExpansion(framework.root)
         overwriteDataPointSpecificationForEnums(framework.root)
     }
@@ -36,9 +43,6 @@ class SfdrFramework :
     private fun overwriteDataPointSpecificationForEnums(root: ComponentGroupApi) {
         root.edit<ComponentGroup>("general") {
             edit<ComponentGroup>("general") {
-                edit<ReportPreuploadComponent>("referencedReports") {
-                    isPartOfQaReport = false
-                }
                 edit<SingleSelectComponent>("fiscalYearDeviation") {
                     specificationGenerator = { categoryBuilder ->
                         categoryBuilder.addDefaultDatapointAndSpecification(
