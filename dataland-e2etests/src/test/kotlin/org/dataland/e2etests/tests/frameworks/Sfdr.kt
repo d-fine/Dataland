@@ -61,6 +61,7 @@ class Sfdr {
                 listOfOneCompanyInformation,
                 listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
+                reportingPeriod = "2022",
             )
 
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
