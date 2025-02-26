@@ -1,6 +1,10 @@
+// -------------------------------------------------------------
+// var logs
+// -------------------------------------------------------------
+
 local.file_match "system" {
 	path_targets = [{
-		__address__ = "localhost",
+		__address__ = "loki:3100",
 		__path__    = "/var/log/*log",
 		job         = "varlogs",
 	}]
@@ -9,36 +13,92 @@ local.file_match "system" {
 loki.source.file "system" {
 	targets               = local.file_match.system.targets
 	forward_to            = [loki.write.local_loki.receiver]
-	legacy_positions_file = "/tmp/positions.yaml"
 }
 
+// -------------------------------------------------------------
+// health check logs
+// -------------------------------------------------------------
+
+local.file_match "health_check" {
+    path_targets = [{
+        __address__ = "loki:3100",
+        __path__    = "/var/log/health-check-log/*log",
+        job         = "health_check",
+    }]
+}
+
+loki.source.file "health_check_files" {
+	targets               = local.file_match.health_check.targets
+	forward_to            = [loki.process.extract_container_label.receiver]
+}
+
+loki.process "extract_container_label" {
+    // Extract the value of "container" from the log line
+    stage.logfmt {
+        // Mapping the "container" field from your logs
+        mapping = {
+            "extracted_container" = "container",
+            "extracted_level" = "level",
+        }
+    }
+
+    stage.labels {
+        // Use the extracted value as the label
+        values = {
+            "container" = "extracted_container",
+            "level" = "extracted_level",
+        }
+    }
+
+    forward_to = [loki.write.local_loki.receiver]
+}
+
+// -------------------------------------------------------------
+// docker container logs
+// -------------------------------------------------------------
+
 discovery.docker "containers" {
-  host = "unix:///var/run/docker.sock"
+    host = "unix:///var/run/docker.sock"
 }
 
 discovery.relabel "default" {
-  targets = discovery.docker.containers.targets
+    targets = discovery.docker.containers.targets
 
-  rule {
-    action = "labelmap"
-    regex = "__meta_docker_container_label_([^_]+)"
-  }
-  rule {
-    action = "replace"
-    source_labels = ["__meta_docker_container_name"]
-    target_label = "container"
-  }
+    rule {
+      action = "labelmap"
+      regex = "__meta_docker_container_label_([^_]+)"
+    }
+    rule {
+        action = "replace"
+        source_labels = ["__meta_docker_container_name"]
+        target_label = "container"
+    }
+    rule {
+        action = "replace"
+        source_labels = ["container"]
+        regex = "/(.*)"
+        replacement = "$1"
+        target_label = "container"
+    }
+    rule {
+        action = "replace"
+        target_label = "job"
+        replacement = "docker_containers"
+    }
 }
 
 loki.source.docker "default" {
-  host       = "unix:///var/run/docker.sock"
-  targets    = discovery.relabel.default.output
-  forward_to = [loki.write.local_loki.receiver]
+    host       = "unix:///var/run/docker.sock"
+    targets    = discovery.relabel.default.output
+    forward_to = [loki.write.local_loki.receiver]
 }
+
+// -------------------------------------------------------------
+// send logs to loki
+// -------------------------------------------------------------
 
 loki.write "local_loki" {
 	endpoint {
 		url = "http://loki:3100/loki/api/v1/push"
 	}
-	external_labels = {}
 }
