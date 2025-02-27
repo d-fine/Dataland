@@ -252,8 +252,6 @@ export default defineComponent({
     /**
      * Loads the P2p-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param reportingPeriod the relevant reporting period
-     * @param companyId the company id
      */
     async loadP2pData(): Promise<void> {
       this.waitingForData = true;
@@ -272,13 +270,13 @@ export default defineComponent({
           this.waitingForData = false;
           throw ReferenceError('DataResponse from PathwayToParisDataController invalid.');
         }
-        this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
-        const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
+        this.listOfFilledKpis = getFilledKpis(dataResponse.data);
+        const dataDateFromDataset = dataResponse.data?.general?.general?.dataDate;
         if (dataDateFromDataset) {
           this.dataDate = new Date(dataDateFromDataset);
         }
         this.companyAssociatedP2pData = objectDropNull(
-          p2pDataset as ObjectType
+          dataResponse as ObjectType
         ) as CompanyAssociatedDataPathwaysToParisData;
         this.waitingForData = false;
       }
