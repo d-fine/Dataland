@@ -31,46 +31,52 @@
       >
     </span>
   </div>
-  <TheContent class="paper-section flex">
-    <div class="col-12 text-left p-3">
-      <div class="card">
-        <DataTable
-          v-if="documentsFiltered && documentsFiltered.length > 0"
-          :value="documentsFiltered"
-          :paginator="true"
-          :lazy="true"
-          :total-records="totalRecords"
-          :rows="rowsPerPage"
-          :first="firstRowIndex"
-          @page="onPage($event)"
-          :alwaysShowPaginator="true"
+  <TheContent class="paper-section flex flex-col p-3">
+    <DataTable
+      v-if="documentsFiltered && documentsFiltered.length > 0"
+      :value="documentsFiltered"
+      :paginator="true"
+      :lazy="true"
+      paginator-position="bottom"
+      :total-records="totalRecords"
+      :rows="rowsPerPage"
+      :first="firstRowIndex"
+      @sort="onSort($event)"
+      @page="onPage($event)"
+      :alwaysShowPaginator="true"
+    >
+      <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
+      <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
+        <template #body="slotProps">
+          {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
+        </template>
+      </Column>
+      <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
+        <template #body="slotProps">
+          <div>
+            {{ dateStringFormatter(slotProps.data.publicationDate) }}
+          </div></template
         >
-          <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
-          <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
-            <template #body="slotProps">
-              {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
-            </template>
-          </Column>
-          <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true" />
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
-          <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-            <template #body="documentProps">
-              <span
-                class="text-primary no-underline font-bold cursor-pointer"
-                @click="openMetaInfoDialog(documentProps.data.documentId)"
-                ><span> VIEW DETAILS</span> <span class="ml-3">></span>
-              </span>
-            </template>
-          </Column>
-          <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-            <template #body="document">
-              <DocumentLink :download-name="'DOWNLOAD'" :file-reference="document.data.documentId" show-icon />
-            </template>
-          </Column>
-        </DataTable>
-        <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
-          <p class="font-medium text-xl">The company you searched for does not have any documents on Dataland yet.</p>
-        </div>
+      </Column>
+      <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+        <template #body="documentProps">
+          <span
+            class="text-primary no-underline font-bold cursor-pointer"
+            @click="openMetaInfoDialog(documentProps.data.documentId)"
+            ><span> VIEW DETAILS</span> <span class="ml-3">></span>
+          </span>
+        </template>
+      </Column>
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+        <template #body="document">
+          <DocumentLink :download-name="'DOWNLOAD'" :file-reference="document.data.documentId" show-icon />
+        </template>
+      </Column>
+    </DataTable>
+    <div v-else class="centered-element-wrapper">
+      <div class="text-content-wrapper">
+        <p class="font-medium text-xl">The company you searched for does not have any documents on Dataland yet.</p>
       </div>
     </div>
   </TheContent>
@@ -83,7 +89,7 @@ import { type Content, type Page } from '@/types/ContentTypes.ts';
 import contentData from '@/assets/content.json';
 import { inject, onMounted, ref, watch } from 'vue';
 import { type DocumentCategorySelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes.ts';
-import DataTable, { type DataTablePageEvent } from 'primevue/datatable';
+import DataTable, { type DataTablePageEvent, type DataTableSortEvent } from 'primevue/datatable';
 import Column from 'primevue/column';
 import TheHeader from '@/components/generics/TheHeader.vue';
 import TheContent from '@/components/generics/TheContent.vue';
@@ -101,6 +107,7 @@ import {
 import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { dateStringFormatter } from '@/utils/DataFormatUtils';
 
 const props = defineProps<{
   companyId: string;
@@ -117,14 +124,15 @@ const availableDocumentTypes = ref<Array<DocumentCategorySelectableItem>>(retrie
 const rowsPerPage = 100;
 const totalRecords = ref(0);
 const firstRowIndex = ref(0);
-const currentChunkIndex = ref(0);
+const currentPage = ref(0);
 const isMetaInfoDialogOpen = ref(false);
 const selectedDocumentId = ref<string>('');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
+const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
+const sortOrder = ref(1);
 
 watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
-  currentChunkIndex.value = 0;
   getAllDocumentsForFilters().catch((error) => console.error(error));
 });
 
@@ -141,27 +149,18 @@ async function getAllDocumentsForFilters(): Promise<void> {
         documentsFiltered.value = (
           await documentControllerApi.searchForDocumentMetaInformation(
             props.companyId,
-            convertToEnumSet(selectedDocumentType),
-            undefined,
-            rowsPerPage,
-            currentChunkIndex.value
+            convertToEnumSet(selectedDocumentType)
           )
         ).data;
       } else {
         documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
       }
-      totalRecords.value = (
-        await documentControllerApi.searchForDocumentMetaInformation(
-          props.companyId,
-          convertToEnumSet(selectedDocumentType),
-          undefined
-        )
-      ).data.length;
     }
   } catch (error) {
     console.error(error);
   }
   waitingForData.value = false;
+  updateCurrentDisplayedData();
 }
 
 /**
@@ -172,15 +171,57 @@ function resetFilter(): void {
 }
 
 /**
+ * Updates the displayedDocumentData
+ */
+function updateCurrentDisplayedData(): void {
+  documentsFiltered.value.sort((a, b) => customSorting(a, b));
+  totalRecords.value = documentsFiltered.value.length;
+  documentsFiltered.value = documentsFiltered.value.slice(
+    rowsPerPage * currentPage.value,
+    rowsPerPage * (1 + currentPage.value)
+  );
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+/**
+ * Compares two extended stored data requests (sort field, request status, last modified, company name)
+ * @param a ExtendedStoredDataRequest to sort
+ * @param b ExtendedStoredDataRequest to sort
+ * @returns result of the comparison
+ */
+function customSorting(a: DocumentMetaInfoResponse, b: DocumentMetaInfoResponse): number {
+  const aValue = a[sortField.value] ?? '';
+  const bValue = b[sortField.value] ?? '';
+
+  if (sortField.value != ('requestStatus' as keyof DocumentMetaInfoResponse)) {
+    if (aValue < bValue) return -1 * sortOrder.value;
+    if (aValue > bValue) return sortOrder.value;
+    return 0;
+  } else {
+    return sortOrder.value;
+  }
+}
+
+/**
  * Updates the current Page
  * @param event DataTablePageEvent
  */
 function onPage(event: DataTablePageEvent): void {
-  window.scrollTo(0, 0);
-  if (event.page != currentChunkIndex.value) {
-    currentChunkIndex.value = event.page;
-    firstRowIndex.value = currentChunkIndex.value * rowsPerPage;
-  }
+  currentPage.value = event.page;
+  updateCurrentDisplayedData();
+}
+
+/**
+ * Sorts the list of storedDataRequests
+ * @param event contains column to sort and sortOrder
+ */
+function onSort(event: DataTableSortEvent): void {
+  sortField.value = event.sortField as keyof DocumentMetaInfoResponse;
+  sortOrder.value = event.sortOrder ?? 1;
+  updateCurrentDisplayedData();
 }
 
 /**
@@ -243,5 +284,24 @@ onMounted(() => {
   background: #5a4f36;
   color: white;
   width: 200px;
+}
+.text-content-wrapper {
+  margin: 4rem;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--surface-0);
+  display: flex;
+  min-height: 200px;
+  justify-content: center;
+  max-width: 400px;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+.centered-element-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 </style>
