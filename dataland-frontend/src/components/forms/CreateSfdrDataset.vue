@@ -109,7 +109,7 @@ import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { sfdrDataModel } from '@/frameworks/sfdr/UploadConfig';
 import { type CompanyAssociatedDataSfdrData, type CompanyReport, DataTypeEnum, type SfdrData } from '@clients/backend';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -215,6 +215,8 @@ export default defineComponent({
       listOfFilledKpis: [] as Array<string>,
       namesAndReferencesOfAllCompanyReportsForTheDataset: {},
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
+      templateDataId: null as LocationQueryValue | LocationQueryValue[],
+      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -246,9 +248,13 @@ export default defineComponent({
     },
   },
   created() {
-    const reportingPeriod = this.route.query.reportingPeriod;
-    if (reportingPeriod && typeof reportingPeriod === 'string') {
-      void this.loadSfdrData(reportingPeriod, this.companyID);
+    this.templateDataId = this.route.query.templateDataId;
+    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    if (
+      (this.templateDataId && typeof this.templateDataId === 'string') ||
+      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
+    ) {
+      void this.loadSfdrData();
     } else {
       this.waitingForData = false;
     }
@@ -267,29 +273,45 @@ export default defineComponent({
     },
 
     /**
-     * Loads the SFDR-Dataset identified by the provided dataId and pre-configures the form to contain the data
-     * from the dataset
-     * @param reportingPeriod the relevant reporting period
-     * @param companyId the company id
+     * Loads the SFDR-Dataset identified either by the provided reportingPeriod and companyId,
+     * or the dataId, and pre-configures the form to contain the data from the dataset
      */
-    async loadSfdrData(reportingPeriod: string, companyId: string): Promise<void> {
+    async loadSfdrData(): Promise<void> {
       this.waitingForData = true;
       const sfdrDataControllerApi = this.buildSfdrDataApi();
-      const dataResponse = await sfdrDataControllerApi.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId);
-      const sfdrResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
-      this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
-      this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
-        ?.applicableHighImpactClimateSectors
-        ? Object.keys(sfdrResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors).map(
-            (it): string => {
+      if (sfdrDataControllerApi) {
+        let dataResponse;
+        if (this.templateDataId) {
+          dataResponse = await additionalCompanyInformationDataControllerApi.getFrameworkData(
+            this.templateDataId.toString()
+          );
+        } else if (this.templateReportingPeriod) {
+          dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(
+            this.templateReportingPeriod.toString(),
+            this.companyID
+          );
+        }
+        if (!dataResponse) {
+          this.waitingForData = false;
+          throw ReferenceError('DataResponse from SfdrDataController invalid.');
+        }
+        const sfdrResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(sfdrResponseData.data);
+        this.referencedReportsForPrefill = sfdrResponseData.data.general.general.referencedReports ?? {};
+        this.climateSectorsForPrefill = sfdrResponseData?.data?.environmental?.energyPerformance
+          ?.applicableHighImpactClimateSectors
+          ? Object.keys(
+              sfdrResponseData?.data?.environmental?.energyPerformance?.applicableHighImpactClimateSectors
+            ).map((it): string => {
               return HighImpactClimateSectorsNaceCodes[it as keyof typeof HighImpactClimateSectorsNaceCodes] ?? it;
-            }
-          )
-        : [];
-      this.companyAssociatedSfdrData = objectDropNull(sfdrResponseData as ObjectType) as CompanyAssociatedDataSfdrData;
+            })
+          : [];
+        this.companyAssociatedSfdrData = objectDropNull(
+          sfdrResponseData as ObjectType
+        ) as CompanyAssociatedDataSfdrData;
 
-      this.waitingForData = false;
+        this.waitingForData = false;
+      }
     },
     /**
      * Sends data to add SFDR data

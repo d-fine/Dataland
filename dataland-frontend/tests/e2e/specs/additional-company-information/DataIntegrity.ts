@@ -68,8 +68,8 @@ describeIf(
                       storedCompany.companyId +
                       '/frameworks/' +
                       DataTypeEnum.AdditionalCompanyInformation +
-                      '/upload?reportingPeriod=' +
-                      dataMetaInformation.reportingPeriod
+                      '/upload?templateDataId=' +
+                      dataMetaInformation.dataId
                   );
                 cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);

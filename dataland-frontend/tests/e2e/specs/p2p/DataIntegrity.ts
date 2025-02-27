@@ -56,8 +56,8 @@ describeIf(
                     storedCompany.companyId +
                     '/frameworks/' +
                     DataTypeEnum.P2p +
-                    '/upload?reportingPeriod=' +
-                    dataMetaInformation.reportingPeriod
+                    '/upload?templateDataId=' +
+                    dataMetaInformation.dataId
                 );
                 cy.wait('@getCompanyInformation', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);

@@ -144,7 +144,7 @@ import {
   type CompanyReport,
   DataTypeEnum,
 } from '@clients/backend';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import DateFormField from '@/components/forms/parts/fields/DateFormField.vue';
 import SubmitButton from '@/components/forms/parts/SubmitButton.vue';
@@ -213,6 +213,8 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       listOfFilledKpis: [] as Array<string>,
       fieldSpecificDocuments: new Map<string, DocumentToUpload[]>(),
+      templateDataId: null as LocationQueryValue | LocationQueryValue[],
+      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -239,9 +241,13 @@ export default defineComponent({
     },
   },
   created() {
-    const reportingPeriod = this.route.query.reportingPeriod;
-    if (reportingPeriod && typeof reportingPeriod === 'string') {
-      void this.loadAdditionalCompanyInformationData(reportingPeriod, this.companyID);
+    this.templateDataId = this.route.query.templateDataId;
+    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    if (
+      (this.templateDataId && typeof this.templateDataId === 'string') ||
+      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
+    ) {
+      void this.loadAdditionalCompanyInformationData();
     } else {
       this.waitingForData = false;
     }
@@ -251,29 +257,39 @@ export default defineComponent({
      * Builds an api to get and upload Additional Company Information data
      * @returns the api
      */
-    buildAdditionalCompanyInformationDataApi(): PublicFrameworkDataApi<AdditionalCompanyInformationData> | null {
+    buildAdditionalCompanyInformationDataApi(): PublicFrameworkDataApi<AdditionalCompanyInformationData> | undefined {
       const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
       const frameworkDefinition = getBasePublicFrameworkDefinition(DataTypeEnum.AdditionalCompanyInformation);
       if (frameworkDefinition) {
         return frameworkDefinition.getPublicFrameworkApiClient(undefined, apiClientProvider.axiosInstance);
       }
-      return null;
+      return undefined;
     },
 
     /**
-     * Loads the AdditionalCompanyInformation-Dataset identified by the provided reportingPeriod and companyId,
-     * and pre-configures the form to contain the data from the dataset
-     * @param reportingPeriod the relevant reporting period
-     * @param companyId the company id
+     * Loads the AdditionalCompanyInformation-Dataset identified either by the provided reportingPeriod and companyId,
+     * or the dataId, and pre-configures the form to contain the data from the dataset
      */
-    async loadAdditionalCompanyInformationData(reportingPeriod: string, companyId: string): Promise<void> {
+    async loadAdditionalCompanyInformationData(): Promise<void> {
       this.waitingForData = true;
       const additionalCompanyInformationDataControllerApi = this.buildAdditionalCompanyInformationDataApi();
       if (additionalCompanyInformationDataControllerApi) {
-        const dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(
-          reportingPeriod,
-          companyId
-        );
+        let dataResponse;
+        if (this.templateDataId) {
+          dataResponse = await additionalCompanyInformationDataControllerApi.getFrameworkData(
+            this.templateDataId.toString()
+          );
+        } else if (this.templateReportingPeriod) {
+          dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(
+            this.templateReportingPeriod.toString(),
+            this.companyID
+          );
+        }
+        if (!dataResponse) {
+          this.waitingForData = false;
+          throw ReferenceError('DataResponse from AdditionalCompanyInformationDataController invalid.');
+        }
+
         const additionalCompanyInformationResponseData = dataResponse.data;
         this.listOfFilledKpis = getFilledKpis(additionalCompanyInformationResponseData.data);
         this.referencedReportsForPrefill =

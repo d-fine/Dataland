@@ -118,7 +118,7 @@ import {
   DataTypeEnum,
   type EsgDatenkatalogData,
 } from '@clients/backend';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -219,6 +219,8 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
+      templateDataId: null as LocationQueryValue | LocationQueryValue[],
+      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -250,9 +252,13 @@ export default defineComponent({
     },
   },
   created() {
-    const reportingPeriod = this.route.query.reportingPeriod;
-    if (reportingPeriod && typeof reportingPeriod === 'string') {
-      void this.loadEsgDatenkatalogData(reportingPeriod, this.companyID);
+    this.templateDataId = this.route.query.templateDataId;
+    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    if (
+      (this.templateDataId && typeof this.templateDataId === 'string') ||
+      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
+    ) {
+      void this.loadEsgDatenkatalogData();
     } else {
       this.waitingForData = false;
     }
@@ -274,22 +280,32 @@ export default defineComponent({
     },
 
     /**
-     * Loads the EsgDatenkatalog-Dataset identified by the provided dataId and pre-configures the form to contain
-     * the data from the dataset
-     * @param reportingPeriod the relevant reporting period
-     * @param companyId the company id
+     * Loads the EsgDatenkatalog-Dataset identified either by the provided reportingPeriod and companyId,
+     * or the dataId, and pre-configures the form to contain the data from the dataset
      */
-    async loadEsgDatenkatalogData(reportingPeriod: string, companyId: string): Promise<void> {
+    async loadEsgDatenkatalogData(): Promise<void> {
       this.waitingForData = true;
       const esgDatenkatalogDataControllerApi = this.buildEsgDatenkatalogDataApi();
-      const dataResponse = await assertDefined(esgDatenkatalogDataControllerApi).getCompanyAssociatedDataByDimensions(
-        reportingPeriod,
-        companyId
-      );
-      const esgDatenkatalogResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(esgDatenkatalogResponseData.data);
-      this.companyAssociatedEsgDatenkatalogData = objectDropNull(esgDatenkatalogResponseData);
-      this.waitingForData = false;
+      if (esgDatenkatalogDataControllerApi) {
+        let dataResponse;
+        if (this.templateDataId) {
+          dataResponse = await esgDatenkatalogDataControllerApi.getFrameworkData(this.templateDataId.toString());
+        } else if (this.templateReportingPeriod) {
+          dataResponse = await esgDatenkatalogDataControllerApi.getCompanyAssociatedDataByDimensions(
+            this.templateReportingPeriod.toString(),
+            this.companyID
+          );
+        }
+        if (!dataResponse) {
+          this.waitingForData = false;
+          throw ReferenceError('DataResponse from EsgDatenkatalogDataController invalid.');
+        }
+
+        const esgDatenkatalogResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(esgDatenkatalogResponseData.data);
+        this.companyAssociatedEsgDatenkatalogData = objectDropNull(esgDatenkatalogResponseData);
+        this.waitingForData = false;
+      }
     },
     /**
      * Sends data to add esg datenkatalog data

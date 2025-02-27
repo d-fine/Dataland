@@ -43,6 +43,7 @@ describeIf(
         'assure that the re-uploaded dataset equals the pre-uploaded one',
       () => {
         const testCompanyName = 'Company-Created-In-Eu-Taxonomy-Financials-Blanket-Test-Company';
+        const reportingPeriod = '2023';
         getKeycloakToken(admin_name, admin_pw).then((token: string) => {
           return uploadCompanyViaApi(token, generateDummyCompanyInformation(testCompanyName)).then((storedCompany) => {
             return assignCompanyOwnershipToDatalandAdmin(token, storedCompany.companyId).then(() => {
@@ -50,19 +51,20 @@ describeIf(
                 EuTaxonomyFinancialsBaseFrameworkDefinition,
                 token,
                 storedCompany.companyId,
-                '2023',
+                reportingPeriod,
                 euTaxonomyFinancialsFixtureForTest.t
               ).then((dataMetaInformation) => {
-                cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}**`)
-                  .as('fetchDataForPrefill')
-                  .visitAndCheckAppMount(
-                    '/companies/' +
-                      storedCompany.companyId +
-                      '/frameworks/' +
-                      DataTypeEnum.EutaxonomyFinancials +
-                      '/upload?reportingPeriod=' +
-                      dataMetaInformation.reportingPeriod
-                  );
+                cy.intercept(`**/api/data/${DataTypeEnum.EutaxonomyFinancials}/${dataMetaInformation.dataId}**`).as(
+                  'fetchDataForPrefill'
+                );
+                cy.visitAndCheckAppMount(
+                  '/companies/' +
+                    storedCompany.companyId +
+                    '/frameworks/' +
+                    DataTypeEnum.EutaxonomyFinancials +
+                    '/upload?templateDataId=' +
+                    dataMetaInformation.dataId
+                );
                 cy.wait('@fetchDataForPrefill', { timeout: Cypress.env('medium_timeout_in_ms') as number });
                 cy.get('h1').should('contain', testCompanyName);
                 cy.intercept({

@@ -145,7 +145,7 @@ import {
   DataTypeEnum,
   type EutaxonomyNonFinancialsData,
 } from '@clients/backend';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -257,6 +257,8 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       editMode: false,
       listOfFilledKpis: [] as Array<string>,
+      templateDataId: null as LocationQueryValue | LocationQueryValue[],
+      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -280,10 +282,14 @@ export default defineComponent({
     },
   },
   created() {
-    const reportingPeriod = this.route.query.reportingPeriod;
-    if (reportingPeriod && typeof reportingPeriod === 'string') {
+    this.templateDataId = this.route.query.templateDataId;
+    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    if (
+      (this.templateDataId && typeof this.templateDataId === 'string') ||
+      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
+    ) {
       this.editMode = true;
-      void this.loadEutaxonomyNonFinancialsData(reportingPeriod, this.companyID);
+      void this.loadEutaxonomyNonFinancialsData();
     } else {
       this.waitingForData = false;
     }
@@ -304,27 +310,38 @@ export default defineComponent({
       } else return undefined;
     },
     /**
-     * Loads the EutaxonomyNonFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
-     * from the dataset
-     * @param reportingPeriod the relevant reporting period
-     * @param companyId the company id
+     * Loads the EutaxonomyNonFinancials-Dataset identified either by the provided reportingPeriod and companyId,
+     * or the dataId, and pre-configures the form to contain the data from the dataset
      */
-    async loadEutaxonomyNonFinancialsData(reportingPeriod: string, companyId: string): Promise<void> {
+    async loadEutaxonomyNonFinancialsData(): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyForNonFinancialsDataControllerApi = this.buildEuTaxonomyNonFinancialsDataApi();
+      if (euTaxonomyForNonFinancialsDataControllerApi) {
+        let dataResponse;
+        if (this.templateDataId) {
+          dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getFrameworkData(
+            this.templateDataId.toString()
+          );
+        } else if (this.templateReportingPeriod) {
+          dataResponse = await euTaxonomyForNonFinancialsDataControllerApi.getCompanyAssociatedDataByDimensions(
+            this.templateReportingPeriod.toString(),
+            this.companyID
+          );
+        }
+        if (!dataResponse) {
+          this.waitingForData = false;
+          throw ReferenceError('DataResponse from EuTaxonomyNonFinancialsDataController invalid.');
+        }
 
-      const dataResponse = await euTaxonomyForNonFinancialsDataControllerApi!.getCompanyAssociatedDataByDimensions(
-        reportingPeriod,
-        companyId
-      );
-      const euTaxonomyNonFinancialsResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
-      if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(euTaxonomyNonFinancialsResponseData.reportingPeriod);
+        const euTaxonomyNonFinancialsResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(euTaxonomyNonFinancialsResponseData);
+        if (euTaxonomyNonFinancialsResponseData?.reportingPeriod) {
+          this.reportingPeriod = new Date(euTaxonomyNonFinancialsResponseData.reportingPeriod);
+        }
+        this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
+        this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(euTaxonomyNonFinancialsResponseData);
+        this.waitingForData = false;
       }
-      this.referencedReportsForPrefill = euTaxonomyNonFinancialsResponseData.data.general?.referencedReports ?? {};
-      this.companyAssociatedEutaxonomyNonFinancialsData = objectDropNull(euTaxonomyNonFinancialsResponseData);
-      this.waitingForData = false;
     },
 
     /**
