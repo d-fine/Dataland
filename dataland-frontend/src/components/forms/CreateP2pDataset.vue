@@ -92,7 +92,7 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
+//@ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { computed, defineComponent, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
@@ -270,13 +270,14 @@ export default defineComponent({
           this.waitingForData = false;
           throw ReferenceError('DataResponse from PathwayToParisDataController invalid.');
         }
-        this.listOfFilledKpis = getFilledKpis(dataResponse.data);
-        const dataDateFromDataset = dataResponse.data?.general?.general?.dataDate;
+        const p2pDataset: CompanyAssociatedDataPathwaysToParisData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
+        const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
         if (dataDateFromDataset) {
           this.dataDate = new Date(dataDateFromDataset);
         }
         this.companyAssociatedP2pData = objectDropNull(
-          dataResponse as ObjectType
+          p2pDataset as ObjectType
         ) as CompanyAssociatedDataPathwaysToParisData;
         this.waitingForData = false;
       }
