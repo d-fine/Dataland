@@ -282,11 +282,9 @@ export default defineComponent({
       if (sfdrDataControllerApi) {
         let dataResponse;
         if (this.templateDataId) {
-          dataResponse = await additionalCompanyInformationDataControllerApi.getFrameworkData(
-            this.templateDataId.toString()
-          );
+          dataResponse = await sfdrDataControllerApi.getFrameworkData(this.templateDataId.toString());
         } else if (this.templateReportingPeriod) {
-          dataResponse = await additionalCompanyInformationDataControllerApi.getCompanyAssociatedDataByDimensions(
+          dataResponse = await sfdrDataControllerApi.getCompanyAssociatedDataByDimensions(
             this.templateReportingPeriod.toString(),
             this.companyID
           );
