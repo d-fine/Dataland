@@ -232,10 +232,10 @@ class BulkDataRequestManager(
 
             val storedRequest =
                 utils.storeDataRequestEntityAsOpen(
-                    userId,
-                    it.companyId,
-                    it.dataType,
-                    it.reportingPeriod,
+                    userId = userId,
+                    datalandCompanyId = it.companyId,
+                    dataType = it.dataType,
+                    reportingPeriod = it.reportingPeriod,
                 )
 
             acceptedDataRequests.add(

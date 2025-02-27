@@ -129,24 +129,24 @@ class SingleDataRequestManagerTest {
         val utilsMock = mock(DataRequestProcessingUtils::class.java)
         `when`(
             utilsMock.storeDataRequestEntityAsOpen(
-                anyString(),
-                anyString(),
-                any(),
-                anyString(),
-                any(),
-                any(),
+                userId = anyString(),
+                datalandCompanyId = anyString(),
+                dataType = any(),
+                reportingPeriod = anyString(),
+                contacts = any(),
+                message = any(),
             ),
         ).thenAnswer {
             DataRequestEntity(
                 dataRequestId = "request-id",
-                datalandCompanyId = it.arguments[0] as String,
-                reportingPeriod = it.arguments[2] as String,
+                datalandCompanyId = it.arguments[1] as String,
+                reportingPeriod = it.arguments[3] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
-                dataType = (it.arguments[1] as DataTypeEnum).value,
+                dataType = (it.arguments[2] as DataTypeEnum).value,
                 messageHistory = mutableListOf(),
                 dataRequestStatusHistory = emptyList(),
-                userId = "user-id",
+                userId = it.arguments[0] as String,
                 requestPriority = RequestPriority.Low,
                 adminComment = "dummyAdminComment",
             )
@@ -303,7 +303,14 @@ class SingleDataRequestManagerTest {
 
         verifyNoInteractions(mockSingleDataRequestEmailMessageSender)
 
-        verify(mockDataRequestProcessingUtils, times(0)).storeDataRequestEntityAsOpen(any(), any(), any(), any(), any())
+        verify(mockDataRequestProcessingUtils, times(0)).storeDataRequestEntityAsOpen(
+            userId = any(),
+            datalandCompanyId = any(),
+            dataType = any(),
+            reportingPeriod = any(),
+            contacts = any(),
+            message = any(),
+        )
     }
 
     @Test
