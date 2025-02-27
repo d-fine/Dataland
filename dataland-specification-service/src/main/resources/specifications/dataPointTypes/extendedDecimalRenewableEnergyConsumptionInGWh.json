@@ -3,5 +3,6 @@
   "name" : "Renewable Energy Consumption",
   "businessDefinition" : "Total value of renewable energy consumed, meaning energy from non-fossil sources, namely wind, solar (solar thermal and solar photovoltaic) and geothermal energy, ambient energy, tide, wave and other ocean energy, hydropower, biomass, landfill gas, sewage treatment plant gas, and biogas. See also Regulation (EU) 2022/1288, Annex I, top (6).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
 }

@@ -60,6 +60,7 @@ class CategoryBuilder(
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
                 dataPointBaseTypeId = dataPointBaseTypeId ?: "${component.documentSupport.getNamingPrefix()}$typeNameSuffix",
+                constraints = component.getConstraints(),
             )
         val datapoint =
             addDatapointToFrameworkHierarchy(
@@ -77,6 +78,7 @@ class CategoryBuilder(
         name: String,
         businessDefinition: String,
         dataPointBaseTypeId: String,
+        constraints: List<String>?,
     ): DataPointType {
         require(builder.database.dataPointBaseTypes.containsKey(dataPointBaseTypeId)) {
             "Data point base type id $dataPointBaseTypeId does not exist in the database."
@@ -88,6 +90,7 @@ class CategoryBuilder(
                 businessDefinition = businessDefinition,
                 dataPointBaseTypeId = dataPointBaseTypeId,
                 frameworkOwnership = builder.framework.identifier,
+                constraints = constraints,
             )
         require(!builder.database.dataPointTypes.containsKey(id)) {
             "Data point specification with id $id already exists in the database."

@@ -3,5 +3,6 @@
   "name" : "Scope 3 downstream GHG emissions ",
   "businessDefinition" : "Indirect (gross) scope 3 greenhouse gas emissions that occur as a result of the use or disposal of the reporting company’s sold products and services (equity share approach preferably used).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

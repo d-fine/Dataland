@@ -3,5 +3,6 @@
   "name" : "Trafficking In Human Beings Policy",
   "businessDefinition" : "Existence of a policy against trafficking in human beings. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 11.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

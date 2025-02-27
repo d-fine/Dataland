@@ -3,5 +3,6 @@
   "name" : "GHG intensity - scope 2",
   "businessDefinition" : "Tonnes of scope 2 GHG emissions per million units of revenue (in the same currency as total revenue). Scope 2 emissions refer to those generated from the consumption of purchased electricity, steam, or other energy sources produced upstream by external entities or companies. Preferably, these should be calculated using the location-based method and the equity share approach for emissions.",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
 }

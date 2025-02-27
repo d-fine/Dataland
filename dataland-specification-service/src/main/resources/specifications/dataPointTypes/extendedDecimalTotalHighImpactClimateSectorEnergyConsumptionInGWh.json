@@ -3,5 +3,6 @@
   "name" : "Total High Impact Climate Sector Energy Consumption",
   "businessDefinition" : "\"High impact climate sectors\" refers to the sectors outlined in Sections A to H and Section L of Annex I of Regulation (EC) No 1893/2006 by the European Parliament and Council. This regulation, established on 20 December 2006, provides the statistical classification of economic activities known as NACE Revision 2 and amends Council Regulation (EEC) No 3037/90 and certain EC regulations related to specific statistical areas (OJ L 393, 30.12.2006, p. 1).",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr"
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
 }

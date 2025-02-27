@@ -84,4 +84,6 @@ open class DecimalComponent(
             "Decimal",
         )
     }
+
+    override fun getConstraints(): List<String>? = getMinMaxValidationRule(minimumValue, maximumValue)?.let { listOf(it) }
 }
