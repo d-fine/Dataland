@@ -17,6 +17,7 @@ import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -201,8 +202,19 @@ class SingleDataRequestManager
             numberOfReportingPeriods: Int,
             companyId: String,
         ) {
-            val userRoles = keycloakUserService.getUserRoleNames(userId)
-            if (!userRoles.contains("ROLE_PREMIUM_USER") &&
+            val authenticationOfLoggedInUser = DatalandAuthentication.fromContext()
+            val requestIsForPremiumUser: Boolean
+            if (userId == authenticationOfLoggedInUser.userId) {
+                val userRoles = authenticationOfLoggedInUser.roles
+                requestIsForPremiumUser =
+                    userRoles.contains(
+                        DatalandRealmRole.ROLE_PREMIUM_USER,
+                    )
+            } else {
+                val userRoleNames = keycloakUserService.getUserRoleNames(userId)
+                requestIsForPremiumUser = userRoleNames.contains("ROLE_PREMIUM_USER")
+            }
+            if (!requestIsForPremiumUser &&
                 !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
