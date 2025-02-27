@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.validation.Validator
+import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
@@ -51,9 +52,11 @@ class DataPointValidator
         ) {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
-            val dataPointBaseTypeId = specificationClient.getDataPointTypeSpecification(dataPointType).dataPointBaseType.id
+            val dataPointTypeSpecification = specificationClient.getDataPointTypeSpecification(dataPointType)
+            val dataPointBaseTypeId = dataPointTypeSpecification.dataPointBaseType.id
+            val constraints = dataPointTypeSpecification.constraints
             val validationClass = specificationClient.getDataPointBaseType(dataPointBaseTypeId).validatedBy
-            validateConsistency(dataPoint, validationClass, correlationId)
+            validateConsistency(dataPoint, validationClass, correlationId, constraints)
         }
 
         /**
@@ -102,10 +105,12 @@ class DataPointValidator
             jsonData: String,
             className: String,
             correlationId: String,
+            constraints: List<String>? = null,
         ) {
             assertClassNameIsAuthorized(className, correlationId)
             val dataPointObject = checkCastIntoClass(jsonData, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
+            constraints?.let { validateConstraints(dataPointObject as BaseDataPoint<*>, constraints) }
         }
 
         /**

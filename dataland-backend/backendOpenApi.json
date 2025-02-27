@@ -374,14 +374,14 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Invalid input parameters."
-          },
           "200": {
             "description": "Successfully added dataset."
           },
           "400": {
             "description": "Bad request has been submitted."
+          },
+          "404": {
+            "description": "Invalid input parameters."
           },
           "default": {
             "description": "An error occurred",
@@ -1892,8 +1892,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Found no company corresponding the identifier.",
+          "200": {
+            "description": "Found a company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1902,8 +1902,8 @@
               }
             }
           },
-          "200": {
-            "description": "Found a company corresponding the identifier.",
+          "404": {
+            "description": "Found no company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -21178,15 +21178,15 @@
           "companyName": {
             "type": "string"
           },
+          "countryCode": {
+            "type": "string"
+          },
           "headquarters": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
-          },
-          "countryCode": {
-            "type": "string"
           },
           "lei": {
             "type": "string",
