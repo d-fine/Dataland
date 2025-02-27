@@ -67,8 +67,8 @@ describeIf(
                     storedCompany.companyId +
                     '/frameworks/' +
                     DataTypeEnum.EutaxonomyNonFinancials +
-                    '/upload?reportingPeriod=' +
-                    dataMetaInformation.reportingPeriod
+                    '/upload?templateDataId=' +
+                    dataMetaInformation.dataId
                 );
 
                 cy.wait('@getDataToPrefillForm', { timeout: Cypress.env('medium_timeout_in_ms') as number }).then(

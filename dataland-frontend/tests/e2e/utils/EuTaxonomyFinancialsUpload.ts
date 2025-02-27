@@ -1,6 +1,6 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
-  type CompanyAssociatedDataEutaxonomyFinancialsData,
+  type DataAndMetaInformationEutaxonomyFinancialsData,
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
@@ -30,12 +30,12 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.C
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
     (interception) => {
-      const referencedReports = assertDefined(
-        (interception?.response?.body as CompanyAssociatedDataEutaxonomyFinancialsData)?.data?.general?.general
-          ?.referencedReports
-      );
-      expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
-      expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
+      const dataAndMetaInformation: DataAndMetaInformationEutaxonomyFinancialsData[] =
+        assertDefined(interception).response?.body;
+      const referencedReports = dataAndMetaInformation[0]?.data?.general?.general?.referencedReports;
+      assert(referencedReports);
+      expect(TEST_PDF_FILE_NAME in referencedReports!).to.equal(expectIncludedFile);
+      expect(`${TEST_PDF_FILE_NAME}2` in referencedReports!).to.equal(true);
     }
   );
 }
