@@ -1612,6 +1612,49 @@
         ]
       }
     },
+    "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration": {
+      "post": {
+        "tags": [
+          "assembled-dataset-migration-controller"
+        ],
+        "summary": "Triggers the migration from stored datasets to assembled datasets for all available datasets.",
+        "description": "The data is migrated.",
+        "operationId": "triggerMigrationForAllStoredDatasets",
+        "responses": {
+          "200": {
+            "description": "Migration successful."
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration/{dataId}": {
       "post": {
         "tags": [
@@ -21213,10 +21256,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }

@@ -45,11 +45,14 @@ object JsonComparator {
                 it.value.isNull || it.value.isEmpty
             }
 
-    private fun equalExceptFormatting(expected: JsonNode, actual: JsonNode): Boolean {
+    private fun valuesDiffer(
+        expected: JsonNode,
+        actual: JsonNode,
+    ): Boolean {
         if (expected.isNumber && actual.isNumber) {
-            return BigDecimal(expected.asText()).compareTo(BigDecimal(actual.asText())) == 0
+            return BigDecimal(expected.asText()).compareTo(BigDecimal(actual.asText())) != 0
         }
-        return expected == actual
+        return expected != actual
     }
 
     private fun findNodeDifferences(
@@ -76,12 +79,7 @@ object JsonComparator {
             expected.isArray && actual.isArray -> {
                 compareArrays(expected, actual, currentPath, options, differenceList)
             }
-            expected.isNumber && actual.isNumber -> {
-                if (!equalExceptFormatting(expected, actual)) {
-                    differenceList.add(JsonDiff(currentPath, expected, actual))
-                }
-            }
-            expected != actual -> {
+            valuesDiffer(expected, actual) -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
             }
             else -> {

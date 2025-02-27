@@ -7,7 +7,6 @@ import org.dataland.keycloakAdapter.auth.DatalandApiKeyAuthentication
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
@@ -18,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 /**
  * Triggers the migration of stored datasets to assembled datasets when the backend starts
  */
-@ConditionalOnProperty("dataland.migrate-stored-datasets-on-startup")
-@Service
+@Service("AssembledDataMigrationTrigger")
 class AssembledDataMigrationTrigger
     @Autowired
     constructor(
@@ -54,7 +52,7 @@ class AssembledDataMigrationTrigger
             val allDatasetsThatNeedToBeMigrated =
                 dataMetaInformationRepository
                     .getAllDataMetaInformationThatDoNotHaveDataPoints(allFrameworksThatSupportDataPoints)
-            return allDatasetsThatNeedToBeMigrated.map { it.dataId }
+            return allDatasetsThatNeedToBeMigrated.sortedBy { it.uploadTime }.map { it.dataId }
         }
 
         /**

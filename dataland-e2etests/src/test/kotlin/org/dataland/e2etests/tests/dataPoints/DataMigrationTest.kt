@@ -3,7 +3,10 @@ package org.dataland.e2etests.tests.dataPoints
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationData
+import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationGeneral
+import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationGeneralFinancialInformation
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataJsonNode
+import org.dataland.datalandbackend.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
@@ -25,6 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.springframework.http.HttpStatus
 import java.io.File
+import java.math.BigDecimal
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
@@ -60,18 +64,18 @@ class DataMigrationTest {
     private fun uploadGenericDummyDataset(
         data: Any,
         dataType: DataTypeEnum,
-    ): DataMetaInformation {
-        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        return Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
+        companyId: String? = null,
+    ): DataMetaInformation =
+        Backend.dataMigrationControllerApi.forceUploadDatasetAsStoredDataset(
             dataType = dataType,
             companyAssociatedDataJsonNode =
                 CompanyAssociatedDataJsonNode(
-                    companyId = companyId,
+                    companyId = companyId ?: apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId,
                     data = data,
                     reportingPeriod = reportingPeriod,
                 ),
+            bypassQa = true,
         )
-    }
 
     @Test
     fun `ensure the data can be retrieved correctly after migration`() {
@@ -201,5 +205,70 @@ class DataMigrationTest {
             }.let {
                 assertEquals(linkedQaReportData.qaReport, it.report)
             }
+    }
+
+    @Test
+    fun `ensure that the active status is correctly preserved by the migration`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val firstDataset = FrameworkTestDataProvider.forFrameworkFixtures(SfdrData::class.java).getTData(1).first()
+        val secondDataset =
+            FrameworkTestDataProvider
+                .forFrameworkPreparedFixtures(SfdrData::class.java)
+                .getByCompanyName("Sfdr-dataset-with-no-null-fields")
+                .t
+
+        uploadGenericDummyDataset(firstDataset, DataTypeEnum.sfdr, companyId = companyId)
+        Thread.sleep(2000)
+        uploadGenericDummyDataset(secondDataset, DataTypeEnum.sfdr, companyId = companyId)
+        Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
+        Thread.sleep(3000)
+        val downloadedDataset =
+            Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
+        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(downloadedDataset.data, secondDataset)
+    }
+
+    @Test
+    fun `ensure that after the migration non overlapping accepted datasets results in the correct dynamic view`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        val firstDataset =
+            AdditionalCompanyInformationData(
+                general =
+                    AdditionalCompanyInformationGeneral(
+                        financialInformation =
+                            AdditionalCompanyInformationGeneralFinancialInformation(
+                                equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
+                            ),
+                    ),
+            )
+        val secondDataset =
+            AdditionalCompanyInformationData(
+                general =
+                    AdditionalCompanyInformationGeneral(
+                        financialInformation =
+                            AdditionalCompanyInformationGeneralFinancialInformation(
+                                debt = CurrencyDataPoint(BigDecimal.valueOf(2)),
+                            ),
+                    ),
+            )
+        val expectedDataset =
+            AdditionalCompanyInformationData(
+                general =
+                    AdditionalCompanyInformationGeneral(
+                        financialInformation =
+                            AdditionalCompanyInformationGeneralFinancialInformation(
+                                equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
+                                debt = CurrencyDataPoint(BigDecimal.valueOf(2)),
+                            ),
+                    ),
+            )
+        uploadGenericDummyDataset(firstDataset, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
+        Thread.sleep(2000)
+        uploadGenericDummyDataset(secondDataset, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
+        Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
+        Thread.sleep(3000)
+        val downloadedDataset =
+            Backend.additionalCompanyInformationDataControllerApi
+                .getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
+        assertEquals(downloadedDataset.data, expectedDataset)
     }
 }
