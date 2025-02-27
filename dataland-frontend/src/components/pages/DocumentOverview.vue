@@ -34,6 +34,7 @@
   <TheContent class="paper-section flex flex-col p-3">
     <DataTable
       v-if="documentsFiltered && documentsFiltered.length > 0"
+      data-test="documents-overview-table"
       :value="documentsFiltered"
       :paginator="true"
       :lazy="true"

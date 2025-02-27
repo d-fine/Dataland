@@ -38,10 +38,12 @@ describe('Component test for the Document Overview', () => {
             times: 1,
         }).as('fetchCompanyInfo');
         const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
-        cy.intercept('**/community/company-ownership/*', {
+        cy.intercept('**/community/company-ownership/' + dummyCompanyId, {
             statusCode: hasCompanyAtLeastOneOwnerStatusCode,
         }).as('fetchCompanyOwnershipExistence');
-        console.log(['before intercept', documentsFiltered.value]);
+        cy.intercept('**/community/company-role-assignments/CompanyOwner/' + dummyCompanyId + '/mock-user-id', {
+            statusCode: 200,
+        }).as('fetchValidateCompanyRole');
         cy.intercept(`**/?companyId=` + dummyCompanyId,{
             body: mockFetchedDocuments,
             times: 1,
@@ -50,19 +52,17 @@ describe('Component test for the Document Overview', () => {
             body: mockFetchedDocuments,
             times: 1,
         }).as('fetchDocumentsFiltered');
-        console.log(['after intercept', documentsFiltered]);
     }
 
     /**
-     * Waits for the 4 requests that happen when the document overview page is being mounted
+     * Waits for the 5 requests that happen when the document overview page is being mounted
      */
     function waitForRequestsOnMounted(): void {
         cy.wait('@fetchCompanyInfo');
         cy.wait('@fetchCompanyOwnershipExistence');
-        console.log(['before intercept', documentsFiltered.value]);
+        cy.wait('@fetchValidateCompanyRole');
         cy.wait('@fetchDocumentsFilteredCompanyId');
         cy.wait('@fetchDocumentsFiltered');
-        console.log(['before intercept', documentsFiltered.value]);
     }
 
     /**
@@ -91,24 +91,26 @@ describe('Component test for the Document Overview', () => {
         });
     }
 
-    it('Check for all expected elements for a logged-in uploader-user and for a company without company owner', () => {
-        const hasCompanyAtLeastOneOwner = false;
+    it('Check for all expected elements for a logged-in uploader-user', () => {
+        const hasCompanyAtLeastOneOwner = true;
         mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
         mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
         waitForRequestsOnMounted();
-        cy.wait(Cypress.env('medium_timeout_in_ms') as number );
+
         cy.get("[data-test='sheet']")
             .should('exist').and('contain', companyInformationForTest.companyName);
-        // console.log(['before intercept', documentsFiltered.value]);
         cy.get("[data-test='documents-overview-table']")
             .should('exist')
             .within(() => {
                 cy.get('tbody tr')
-                    .should('have.length', 2);
+                    .should('have.length', mockFetchedDocuments.length);
             });
+        // TODO: Check content of at least one row
     });
 
-    // it('Check filter')
-    //
-    // it('Check view details')
+    // it('Check filter function')
+    // TODO
+
+    // it('Check view details button opens DocumentMetaDataDialog')
+    // TODO
 });
