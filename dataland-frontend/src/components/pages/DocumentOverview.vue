@@ -31,54 +31,52 @@
       >
     </span>
   </div>
-  <TheContent class="paper-section flex">
-    <div class="col-12 text-left p-3">
-      <div class="card">
-        <DataTable
-          v-if="documentsFiltered && documentsFiltered.length > 0"
-          :value="documentsFiltered"
-          :paginator="true"
-          :lazy="true"
-          paginator-position="bottom"
-          :total-records="totalRecords"
-          :rows="rowsPerPage"
-          :first="firstRowIndex"
-          @sort="onSort($event)"
-          @page="onPage($event)"
-          :alwaysShowPaginator="true"
+  <TheContent class="paper-section flex flex-col p-3">
+    <DataTable
+      v-if="documentsFiltered && documentsFiltered.length > 0"
+      :value="documentsFiltered"
+      :paginator="true"
+      :lazy="true"
+      paginator-position="bottom"
+      :total-records="totalRecords"
+      :rows="rowsPerPage"
+      :first="firstRowIndex"
+      @sort="onSort($event)"
+      @page="onPage($event)"
+      :alwaysShowPaginator="true"
+    >
+      <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
+      <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
+        <template #body="slotProps">
+          {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
+        </template>
+      </Column>
+      <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
+        <template #body="slotProps">
+          <div>
+            {{ dateStringFormatter(slotProps.data.publicationDate) }}
+          </div></template
         >
-          <Column header="DOCUMENT NAME" field="documentName" :sortable="true" />
-          <Column header="DOCUMENT TYPE" field="documentCategory" :sortable="true">
-            <template #body="slotProps">
-              {{ humanizeStringOrNumber(slotProps.data.documentCategory) }}
-            </template>
-          </Column>
-          <Column header="PUBLICATION DATE" field="publicationDate" :sortable="true">
-            <template #body="slotProps">
-              <div>
-                {{ dateStringFormatter(slotProps.data.publicationDate) }}
-              </div></template
-            >
-          </Column>
-          <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
-          <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-            <template #body="documentProps">
-              <span
-                class="text-primary no-underline font-bold cursor-pointer"
-                @click="openMetaInfoDialog(documentProps.data.documentId)"
-                ><span> VIEW DETAILS</span> <span class="ml-3">></span>
-              </span>
-            </template>
-          </Column>
-          <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
-            <template #body="document">
-              <DocumentLink :download-name="'DOWNLOAD'" :file-reference="document.data.documentId" show-icon />
-            </template>
-          </Column>
-        </DataTable>
-        <div class="d-center-div text-center px-7 py-4" v-else data-test="DataSearchNoResultsText">
-          <p class="font-medium text-xl">The company you searched for does not have any documents on Dataland yet.</p>
-        </div>
+      </Column>
+      <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+        <template #body="documentProps">
+          <span
+            class="text-primary no-underline font-bold cursor-pointer"
+            @click="openMetaInfoDialog(documentProps.data.documentId)"
+            ><span> VIEW DETAILS</span> <span class="ml-3">></span>
+          </span>
+        </template>
+      </Column>
+      <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
+        <template #body="document">
+          <DocumentLink :download-name="'DOWNLOAD'" :file-reference="document.data.documentId" show-icon />
+        </template>
+      </Column>
+    </DataTable>
+    <div v-else class="centered-element-wrapper">
+      <div class="text-content-wrapper">
+        <p class="font-medium text-xl">The company you searched for does not have any documents on Dataland yet.</p>
       </div>
     </div>
   </TheContent>
@@ -286,5 +284,24 @@ onMounted(() => {
   background: #5a4f36;
   color: white;
   width: 200px;
+}
+.text-content-wrapper {
+  margin: 4rem;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--surface-0);
+  display: flex;
+  min-height: 200px;
+  justify-content: center;
+  max-width: 400px;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+.centered-element-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
 }
 </style>
