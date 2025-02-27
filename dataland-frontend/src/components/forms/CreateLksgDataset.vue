@@ -263,8 +263,10 @@ const postLkSGData = async (): Promise<void> => {
 };
 
 onMounted(() => {
-  const reportingPeriod = route.query.reportingPeriod;
-  if (reportingPeriod && typeof reportingPeriod === 'string') {
+  if (
+    (templateDataId && typeof templateDataId === 'string') ||
+    (templateReportingPeriod && typeof templateReportingPeriod === 'string')
+  ) {
     void loadLKSGData();
   } else {
     waitingForData.value = false;
