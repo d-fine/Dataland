@@ -92,5 +92,8 @@ else
   docker compose "${compose_profiles[@]}" up -d --build
 fi
 
+mkdir -p "${LOKI_VOLUME}/health-check-log"
+./health-check/healthCheck.sh
+
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace

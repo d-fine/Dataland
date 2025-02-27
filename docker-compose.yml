@@ -101,7 +101,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - api-key-manager-db
-    image: postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
     volumes:
       - api_key_manager_data:/var/lib/postgresql/data
     environment:
@@ -109,10 +109,6 @@ services:
       POSTGRES_USER: api_key_manager
       POSTGRES_PASSWORD: ${API_KEY_MANAGER_DB_PASSWORD}
       PGUSER: api_key_manager
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   document-manager:
@@ -141,7 +137,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - document-manager-db
-    image: postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
     volumes:
       - document_manager_data:/var/lib/postgresql/data
     environment:
@@ -149,10 +145,6 @@ services:
       POSTGRES_USER: document_manager
       POSTGRES_PASSWORD: ${DOCUMENT_MANAGER_DB_PASSWORD}
       PGUSER: document_manager
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   backend:
@@ -180,7 +172,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - backend-db
-    image: postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
     volumes:
       - backend_data:/var/lib/postgresql/data
     environment:
@@ -188,10 +180,6 @@ services:
       POSTGRES_USER: backend
       POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD}
       PGUSER: backend
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     shm_size: 6gb
     command:
       -c work_mem=256MB
@@ -237,7 +225,7 @@ services:
     # https://github.com/docker/for-win/issues/8861
     restart: always
     profiles: [ "developmentContainerFrontend" ]
-    image: node:23.8.0@sha256:a182b9b37154a3e11e5c1d15145470ceb22069646d0b7390de226da2548aa2a7
+    image: node:23.8.0@sha256:8af12633b69f4c1f37f357dfd76e1da0663f3c41fef3152de84e33fcbfaa3e6c
     networks:
       internal:
         aliases:
@@ -284,7 +272,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal-storage-db
-    image: postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
     volumes:
       - internal_storage_data:/var/lib/postgresql/data
     environment:
@@ -292,10 +280,6 @@ services:
       POSTGRES_USER: internal_storage
       POSTGRES_PASSWORD: ${INTERNAL_STORAGE_DB_PASSWORD}
       PGUSER: internal_storage
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   keycloak-db:
@@ -303,7 +287,7 @@ services:
     profiles: [ "production", "testing", "development", "init" ]
     networks:
       - keycloak-db
-    image: postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
     volumes:
       - keycloak_data:/var/lib/postgresql/data
     environment:
@@ -311,10 +295,6 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
       PGUSER: keycloak
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   keycloak:
@@ -461,7 +441,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - qa-service-db
-    image: postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
     volumes:
       - qa_service_data:/var/lib/postgresql/data
     environment:
@@ -469,10 +449,6 @@ services:
       POSTGRES_USER: qa_service
       POSTGRES_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       PGUSER: qa_service
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   batch-manager:
@@ -521,7 +497,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - community-manager-db
-    image: postgres:15.10@sha256:d609c3005478af92bddad773423df829b7402ea0b356d5b72edd2fd54d1ad3ea
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
     volumes:
       - community_manager_data:/var/lib/postgresql/data
     environment:
@@ -529,10 +505,6 @@ services:
       POSTGRES_USER: community_manager
       POSTGRES_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       PGUSER: community_manager
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   specification-service:
@@ -573,7 +545,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - email-service-db
-    image: postgres:17.0@sha256:f176fef320ed02c347e9f85352620945547a9a23038f02b57cf7939a198182ae
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v2:${DATALAND_POSTGRES_V2_VERSION}
     volumes:
       - email_service_data:/var/lib/postgresql/data
     environment:
@@ -581,10 +553,6 @@ services:
       POSTGRES_USER: email_service
       POSTGRES_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
       PGUSER: email_service
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready || false" ]
-      interval: 30s
-      timeout: 3s
     logging:
       <<: *loki-logging
   external-storage:
@@ -668,9 +636,12 @@ services:
     profiles: [ "production", "testing", "development" ]
     image: ${GRAFANA_IMAGE:-ghcr.io/d-fine/dataland/dataland_grafana:${DATALAND_GRAFANA_VERSION}}
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s:%(http_port)s/grafana/
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+      GF_SERVER_ROOT_URL: http://dataland-admin:6789/grafana/
+      SLACK_ALERT_URL: ${SLACK_ALERT_URL}
+      SLACK_CRITICAL_ALERT_URL: ${SLACK_CRITICAL_ALERT_URL}
+      TARGETSERVER_URL: ${TARGETSERVER_URL}
     expose:
       - "3000"
     volumes:
@@ -707,6 +678,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - alloy_data:/var/lib/alloy/data
+      - /var/log:/var/log
+      - ${LOKI_VOLUME}/health-check-log:/var/log/health-check-log
     depends_on:
       - loki
     networks:
