@@ -99,7 +99,7 @@
           <OverlayPanel ref="reportingPeriodsOverlayPanel">
             <SimpleReportingPeriodSelectorDialog
               :reporting-periods="availableReportingPeriods"
-              @selected-reporting-period="goToUpdateForm"
+              @selected-reporting-period="goToUpdateFormByReportingPeriod"
             />
           </OverlayPanel>
         </div>
@@ -291,21 +291,30 @@ export default defineComponent({
      */
     editDataset(event: Event) {
       if (this.singleDataMetaInfoToDisplay) {
-        this.goToUpdateForm(this.singleDataMetaInfoToDisplay.reportingPeriod);
+        this.goToUpdateFormByDataId(this.singleDataMetaInfoToDisplay.dataId);
       } else if (this.availableReportingPeriods.length > 1 && !this.singleDataMetaInfoToDisplay) {
         const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
         if (panel) {
           panel.toggle(event);
         }
       } else if (this.availableReportingPeriods.length == 1 && !this.singleDataMetaInfoToDisplay) {
-        this.goToUpdateForm(this.availableReportingPeriods[0]);
+        this.goToUpdateFormByReportingPeriod(this.availableReportingPeriods[0]);
       }
+    },
+    /**
+     * Navigates to the data update form
+     * @param dataId dataId
+     */
+    goToUpdateFormByDataId(dataId: string) {
+      void router.push(
+        `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(this.dataType)}/upload?templateDataId=${dataId}`
+      );
     },
     /**
      * Navigates to the data update form
      * @param reportingPeriod reporting period
      */
-    goToUpdateForm(reportingPeriod: string) {
+    goToUpdateFormByReportingPeriod(reportingPeriod: string) {
       void router.push(
         `/companies/${assertDefined(this.companyID)}/frameworks/${assertDefined(this.dataType)}/upload?reportingPeriod=${reportingPeriod}`
       );
