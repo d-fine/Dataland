@@ -1,6 +1,7 @@
 package org.dataland.e2etests.tests.dataPoints
 
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataPointMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as QaStatusBackend
 import org.dataland.datalandqaservice.openApiClient.model.QaStatus as QaStatusQaService
@@ -31,11 +33,13 @@ class SingleDataPointTest {
     private fun uploadDummyDatapoint(
         companyId: String,
         bypassQa: Boolean,
+        dataPoint: String = dummyDatapoint,
+        dataPointType: String = dummyDataPointType,
     ): DataPointMetaInformation {
         val uploadedDataPoint =
             UploadedDataPoint(
-                dataPoint = dummyDatapoint,
-                dataPointType = dummyDataPointType,
+                dataPoint = dataPoint,
+                dataPointType = dataPointType,
                 companyId = companyId,
                 reportingPeriod = "2022",
             )
@@ -45,6 +49,26 @@ class SingleDataPointTest {
     }
 
     private fun createDummyCompany(): String = Backend.companyDataControllerApi.postCompany(listOfOneCompanyInformation.first()).companyId
+
+    private fun validateConstraintCheck(
+        values: List<Number>,
+        dataPointType: String,
+        assertFailure: Boolean,
+    ) {
+        withTechnicalUser(TechnicalUser.Admin) {
+            val companyId = createDummyCompany()
+            values.forEach {
+                val uploadFunction = {
+                    uploadDummyDatapoint(companyId, bypassQa = false, "{\"value\": $it}", dataPointType)
+                }
+                if (assertFailure) {
+                    assertThrows<ClientException> { uploadFunction() }
+                } else {
+                    assertDoesNotThrow { uploadFunction() }
+                }
+            }
+        }
+    }
 
     @Test
     fun `ensure a data point can be uploaded and downloaded without inconsistencies`() {
@@ -149,5 +173,19 @@ class SingleDataPointTest {
             assertEquals(dummyDatapoint, dataPointInstance.dataPoint)
             assertEquals(datapointMetaInformation.qaStatus, QaStatusBackend.Accepted)
         }
+    }
+
+    @Test
+    fun `ensure 'between'-constraint works as expected`() {
+        val constrainedType = "extendedDecimalBoardGenderDiversityBoardOfDirectorsInPercent"
+        validateConstraintCheck(listOf(-0, 1, 37, 99.8, 100), constrainedType, false)
+        validateConstraintCheck(listOf(-0.0001, -1e8, 101), constrainedType, true)
+    }
+
+    @Test
+    fun `ensure 'min'-constraint works as expected`() {
+        val constrainedType = "extendedDecimalRateOfAccidents"
+        validateConstraintCheck(listOf(-0, 1, 37, 99.8, 100), constrainedType, false)
+        validateConstraintCheck(listOf(-0.0001, -1e8), constrainedType, true)
     }
 }
