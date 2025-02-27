@@ -176,14 +176,14 @@ class SingleDataPointTest {
     }
 
     @Test
-    fun `ensure 'between'-constraint works as expected`() {
+    fun `ensure between constraint works as expected`() {
         val constrainedType = "extendedDecimalBoardGenderDiversityBoardOfDirectorsInPercent"
         validateConstraintCheck(listOf(-0, 1, 37, 99.8, 100), constrainedType, false)
         validateConstraintCheck(listOf(-0.0001, -1e8, 101), constrainedType, true)
     }
 
     @Test
-    fun `ensure 'min'-constraint works as expected`() {
+    fun `ensure min constraint works as expected`() {
         val constrainedType = "extendedDecimalRateOfAccidents"
         validateConstraintCheck(listOf(-0, 1, 37, 99.8, 100), constrainedType, false)
         validateConstraintCheck(listOf(-0.0001, -1e8), constrainedType, true)
