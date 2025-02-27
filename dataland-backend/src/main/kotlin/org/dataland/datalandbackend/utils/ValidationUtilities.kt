@@ -6,6 +6,12 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import java.math.BigDecimal
 import java.math.BigInteger
 
+private fun throwInvalidValidatorException(className: String?): Nothing =
+    throw InvalidInputApiException(
+        "This validator is used for a wrong type",
+        "Type $className is not handled by number validator",
+    )
+
 /**
  * Returns true if the first argument is null or larger than or equal to the second argument.
  */
@@ -17,10 +23,7 @@ fun isGreaterOrEqual(
     is BigDecimal -> value >= BigDecimal.valueOf(minimumValue)
     is BigInteger -> value >= BigInteger.valueOf(minimumValue)
     is Long -> value >= minimumValue
-    else -> throw InvalidInputApiException(
-        "This validator is used for a wrong type",
-        "Type ${value::class.simpleName} is not handled by number validator",
-    )
+    else -> throwInvalidValidatorException(value::class.simpleName)
 }
 
 /**
@@ -34,10 +37,7 @@ fun isLessOrEqual(
     is BigDecimal -> value <= BigDecimal.valueOf(maximumValue)
     is BigInteger -> value <= BigInteger.valueOf(maximumValue)
     is Long -> value <= maximumValue
-    else -> throw InvalidInputApiException(
-        "This validator is used for a wrong type",
-        "Type ${value::class.simpleName} is not handled by number validator",
-    )
+    else -> throwInvalidValidatorException(value::class.simpleName)
 }
 
 /**
@@ -67,10 +67,7 @@ private fun validateBoundaryConstraint(
     if (dataPoint?.value == null) {
         true
     } else if (dataPoint.value !is Number) {
-        throw InvalidInputApiException(
-            "This validator is used for a wrong type",
-            "Type ${dataPoint.value!!::class.simpleName} as data point value is not handled by number validator",
-        )
+        throwInvalidValidatorException(dataPoint.value!!::class.simpleName)
     } else {
         comparingOp(dataPoint.value as Number, boundary)
     }
@@ -102,7 +99,7 @@ private fun validateBetweenConstraint(
     if (!validateMaximumValueConstraint(dataPoint, maxValue) || !validateMinimumValueConstraint(dataPoint, minValue)) {
         throw InvalidInputApiException(
             "Boundary constraint violation",
-            "This posted number lies outside the allowed range [$minValue, $maxValue]",
+            "The posted number lies outside the allowed range [$minValue, $maxValue]",
         )
     }
 }
@@ -115,7 +112,7 @@ private fun validateMinConstraint(
     if (!validateMinimumValueConstraint(dataPoint, minValue)) {
         throw InvalidInputApiException(
             "Minimum constraint violation",
-            "This posted number is smaller than the allowed minimum $minValue",
+            "The posted number is smaller than the allowed minimum $minValue",
         )
     }
 }
@@ -128,7 +125,7 @@ private fun validateMaxConstraint(
     if (!validateMaximumValueConstraint(dataPoint, maxValue)) {
         throw InvalidInputApiException(
             "Maximum constraint violation",
-            "This posted number is larger than the allowed maximum $maxValue",
+            "The posted number is larger than the allowed maximum $maxValue",
         )
     }
 }
