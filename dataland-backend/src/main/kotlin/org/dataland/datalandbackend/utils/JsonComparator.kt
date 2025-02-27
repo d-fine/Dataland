@@ -55,17 +55,6 @@ object JsonComparator {
         return expected != actual
     }
 
-    private fun findNumberNodeDifferences(
-        expected: JsonNode,
-        actual: JsonNode,
-        currentPath: String = "",
-        differenceList: MutableList<JsonDiff>,
-    ) {
-        if (!equalExceptFormatting(expected, actual)) {
-            differenceList.add(JsonDiff(currentPath, expected, actual))
-        }
-    }
-
     private fun findNullNodeDifferences(
         expected: JsonNode,
         actual: JsonNode,
