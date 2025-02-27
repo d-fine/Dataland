@@ -416,7 +416,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@use '@/assets/scss/variables' as *;
+@use '@/assets/scss/variables';
 
 .no-line-height {
   line-height: 0;
@@ -439,8 +439,8 @@ export default defineComponent({
 .message {
   width: 100%;
   border: #e0dfde solid 1px;
-  padding: $spacing-md;
-  border-radius: $radius-xxs;
+  padding: variables.$spacing-md;
+  border-radius: variables.$radius-xxs;
   text-align: left;
   display: flex;
   flex-direction: column;

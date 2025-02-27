@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import type DynamicDialog  from 'primevue/dynamicdialog'; //
+import type DynamicDialog from 'primevue/dynamicdialog'; // probably rework the whole component with useDialog (https://primevue.org/dynamicdialog/)
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { ONLY_AUXILIARY_DATA_PROVIDED } from '@/utils/Constants';
 import { assertDefined } from '@/utils/TypeScriptUtils';

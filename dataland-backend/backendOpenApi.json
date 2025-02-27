@@ -414,6 +414,72 @@
         ]
       }
     },
+    "/metadata/filters": {
+      "post": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Search in Dataland for meta info about data using multiple filters.",
+        "description": "Meta info about datasets registered by Dataland can be retrieved.",
+        "operationId": "postListOfDataMetaInfoFilters",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DataMetaInformationSearchFilter"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataMetaInformation"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/data/vsme": {
       "post": {
         "tags": [
@@ -1541,6 +1607,134 @@
         ]
       }
     },
+    "/metadata/{dataId}": {
+      "get": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Look up meta info about a specific dataset.",
+        "description": "Meta info about a specific dataset registered by Dataland and identified by its data ID is retrieved.",
+        "operationId": "getDataMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved specific meta info.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "meta-data-controller"
+        ],
+        "summary": "Update meta data of dataset selectively",
+        "description": "Provided fields of the meta data with the given dataId are updated.",
+        "operationId": "patchDataMetaInfo",
+        "parameters": [
+          {
+            "name": "dataId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataMetaInformationPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated dataset.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/metadata/nonSourceable/{companyId}/{dataType}/{reportingPeriod}": {
       "head": {
         "tags": [
@@ -1933,66 +2127,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DataMetaInformation"
                   }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/metadata/{dataId}": {
-      "get": {
-        "tags": [
-          "meta-data-controller"
-        ],
-        "summary": "Look up meta info about a specific dataset.",
-        "description": "Meta info about a specific dataset registered by Dataland and identified by its data ID is retrieved.",
-        "operationId": "getDataMetaInfo",
-        "parameters": [
-          {
-            "name": "dataId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved specific meta info.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DataMetaInformation"
                 }
               }
             }
@@ -6748,6 +6882,10 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "ref": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -6805,6 +6943,50 @@
           },
           "reason": {
             "type": "string"
+          }
+        }
+      },
+      "DataMetaInformationSearchFilter": {
+        "required": [
+          "onlyActive"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataType": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DataTypeEnum"
+              }
+            ]
+          },
+          "reportingPeriod": {
+            "type": "string",
+            "nullable": true
+          },
+          "onlyActive": {
+            "type": "boolean"
+          },
+          "uploaderUserIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "qaStatus": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QaStatus"
+              }
+            ]
           }
         }
       },
@@ -20594,6 +20776,17 @@
       "JsonNode": {
         "type": "object"
       },
+      "DataMetaInformationPatch": {
+        "required": [
+          "uploaderUserId"
+        ],
+        "type": "object",
+        "properties": {
+          "uploaderUserId": {
+            "type": "string"
+          }
+        }
+      },
       "CompanyInformationPatch": {
         "type": "object",
         "properties": {
@@ -20921,10 +21114,6 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
-          },
           "companyId": {
             "type": "string"
           },
@@ -20936,6 +21125,10 @@
           },
           "countryCode": {
             "type": "string"
+          },
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "lei": {
             "type": "string",

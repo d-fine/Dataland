@@ -52,7 +52,7 @@
 <script lang="ts">
 // @ts-nocheck
 import Tree from 'primevue/tree';
-import { type TreeNode } from 'primevue/treenode'; //here
+import { type TreeNode } from 'primevue/treenode';
 import InputText from 'primevue/inputtext';
 import Popover from 'primevue/popover';
 import Checkbox from 'primevue/checkbox';

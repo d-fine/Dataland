@@ -26,17 +26,32 @@ class KeycloakUserService(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
+    private fun buildRequestToGetUserById(userId: String): Request =
+        Request.Builder().url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId").build()
+
+    /**
+     * check if userId belongs to actual keycloak user
+     * @param userId userId of the user in question
+     * @return true if call to Keycloak API was successful, false otherwise
+     */
+    fun isKeycloakUserId(userId: String): Boolean {
+        logger.info("Check if Keycloak userId '$userId' exists.")
+        val request = buildRequestToGetUserById(userId)
+        val response =
+            authenticatedOkHttpClient
+                .newCall(request)
+                .execute()
+        return response.isSuccessful
+    }
+
     /**
      * get user information for given keycloak user id
+     * if no user can be found, return KeycloakUserInfo object with input userId
      * @param userId the userId of the user in question
      * @returns the User Object
      */
     fun getUser(userId: String): KeycloakUserInfo {
-        val request =
-            Request
-                .Builder()
-                .url("$keycloakBaseUrl/admin/realms/datalandsecurity/users/$userId")
-                .build()
+        val request = buildRequestToGetUserById(userId)
         val response =
             authenticatedOkHttpClient
                 .newCall(request)

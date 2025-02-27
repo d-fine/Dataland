@@ -10,6 +10,7 @@ object MessageType {
     const val DATA_MIGRATED = "Data migrated"
     const val DOCUMENT_RECEIVED = "Document received"
     const val DOCUMENT_STORED = "Document stored"
+    const val METAINFO_UPDATED = "DataMetaInformation updated"
     const val QA_REQUESTED = "QA requested"
     const val SEND_EMAIL = "Send email"
     const val PRIVATE_DATA_STORED = "Private Data Stored"

@@ -45,7 +45,7 @@ class PublicDataUploadProcessorTest {
             .thenReturn(
                 DataMetaInformation(
                     dataId.toString(), companyId.toString(), DataTypeEnum.heimathafen, 0, "2022", false,
-                    org.dataland.datalandbackend.openApiClient.model.QaStatus.Pending, null,
+                    org.dataland.datalandbackend.openApiClient.model.QaStatus.Pending, "test",
                 ),
             )
 

@@ -17,97 +17,51 @@
           id="requestDataFormId"
           name="requestDataFormName"
         >
-          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper">
+          <div class="grid px-8 py-4 justify-content-center uploadFormWrapper align-items-center">
             <template v-if="submittingInProgress || postBulkDataRequestObjectProcessed">
-              <div class="col-12 md:col-6 xl:col-8 flex align-items-center justify-content-center">
-                <div class="col-12 status text-center">
+              <div class="col-12">
+                <div class="status text-center">
                   <template v-if="submittingInProgress">
-                    <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
+                    <div class="status-wrapper col-8 col-offset-2">
+                      <i class="pi pi-spinner pi-spin text-primary text-6xl" aria-hidden="true" />
+                    </div>
                   </template>
-
                   <template v-else>
-                    <template v-if="submittingSucceeded">
-                      <em class="material-icons info-icon green-text">check_circle</em>
-                      <h1 class="status-text" data-test="requestStatusText">Success</h1>
-                    </template>
+                    <div class="status text-center col-8 col-offset-2">
+                      <div class="status-wrapper">
+                        <div v-if="requestSuccessStatus == 'Success'" class="status-container">
+                          <em class="material-icons info-icon green-text mr-2">check_circle</em>
+                          <h1 class="status-text" data-test="requestStatusText">Success</h1>
+                        </div>
+                        <div v-if="requestSuccessStatus == 'Partial Success'" class="status-container">
+                          <em class="material-icons info-icon info-color-text mr-2">info</em>
+                          <h1 class="status-text" data-test="requestStatusText">Partial Success</h1>
+                        </div>
+                        <div v-if="!isSuccessful || requestSuccessStatus == 'No Success'" class="status-container">
+                          <em class="material-icons info-icon red-text mr-2">error</em>
+                          <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
+                        </div>
+                      </div>
+                      <p class="col-6 col-offset-3 mb-4">{{ message }}</p>
 
-                    <template v-if="!submittingSucceeded">
-                      <em class="material-icons info-icon red-text">error</em>
-                      <h1 class="status-text" data-test="requestStatusText">Request Unsuccessful</h1>
-                    </template>
-
-                    <p v-if="message" class="py-3">{{ message }}</p>
-
-                    <PrimeButton
-                      type="button"
-                      @click="goToMyRequests()"
-                      label="TO MY DATA REQUESTS"
-                      class="uppercase p-button-outlined"
+                      <PrimeButton
+                        type="button"
+                        @click="goToMyRequests()"
+                        label="TO MY DATA REQUESTS"
+                        class="uppercase p-button-outlined"
+                      />
+                    </div>
+                    <BulkDataRequestSummary
+                      class="col-8 col-offset-2"
+                      v-if="isSuccessful"
+                      :bulk-data-request-response="bulkDataRequestResponse"
+                      :humanized-reporting-periods="humanizedReportingPeriods"
+                      :summary-section-reporting-periods-heading="summarySectionReportingPeriodsHeading"
+                      :humanized-selected-frameworks="humanizedSelectedFrameworks"
+                      :summary-section-frameworks-heading="summarySectionFrameworksHeading"
                     />
                   </template>
                 </div>
-              </div>
-
-              <div class="col-12 md:col-6 xl:col-4 bg-white radius-1 p-4">
-                <h1 class="p-0">Data Request Summary</h1>
-                <template v-if="submittingInProgress">
-                  <i class="pi pi-spinner pi-spin text-xl text-primary" aria-hidden="true" />
-                </template>
-                <template v-else>
-                  <div class="summary-section border-bottom py-5">
-                    <h6 class="summary-section-heading m-0">{{ summarySectionReportingPeriodsHeading }}</h6>
-                    <p class="summary-section-data m-0 mt-3">{{ humanizedReportingPeriods }}</p>
-                  </div>
-                  <div class="summary-section border-bottom py-5">
-                    <h6 class="summary-section-heading m-0">{{ summarySectionFrameworksHeading }}</h6>
-                    <p class="summary-section-data m-0 mt-3">{{ humanizedSelectedFrameworks.join(', ') }}</p>
-                  </div>
-
-                  <div
-                    v-if="submittingSucceeded && acceptedCompanyIdentifiers.length"
-                    class="summary-section py-5"
-                    data-test="acceptedIdentifiers"
-                  >
-                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
-                      <em class="material-icons info-icon green-text">check_circle</em>
-                      {{ summarySectionIdentifiersHeading(acceptedCompanyIdentifiers, 'REQUESTED') }}
-                    </h6>
-                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
-                      <template v-for="identifier in acceptedCompanyIdentifiers" :key="identifier">
-                        <div class="identifier mb-2">{{ identifier }}</div>
-                      </template>
-                    </p>
-                  </div>
-
-                  <div
-                    v-if="submittingSucceeded && rejectedCompanyIdentifiers.length"
-                    class="summary-section py-5"
-                    data-test="rejectedIdentifiers"
-                  >
-                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">
-                      <em class="material-icons info-icon red-text">error</em>
-                      {{ summarySectionIdentifiersHeading(rejectedCompanyIdentifiers, 'REJECTED') }}
-                    </h6>
-                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
-                      <template v-for="identifier in rejectedCompanyIdentifiers" :key="identifier">
-                        <div class="identifier mb-2">{{ identifier }}</div>
-                      </template>
-                    </p>
-                  </div>
-
-                  <div
-                    v-if="!submittingSucceeded"
-                    class="summary-section py-5"
-                    data-test="selectedIdentifiersUnsuccessfulSubmit"
-                  >
-                    <h6 class="summary-section-heading m-0" data-test="identifiersHeading">SELECTED IDENTIFIERS</h6>
-                    <p class="summary-section-data m-0 mt-3" data-test="identifiersList">
-                      <template v-for="identifier in identifiers" :key="identifier">
-                        <div class="identifier mb-2">{{ identifier }}</div>
-                      </template>
-                    </p>
-                  </div>
-                </template>
               </div>
             </template>
 
@@ -134,6 +88,7 @@
 
                     <BasicFormSection :data-test="'selectFrameworkDiv'" header="Select at least one framework">
                       <MultiSelectFormFieldBindData
+                        name="FrameworkSelection"
                         data-test="selectFrameworkSelect"
                         placeholder="Select framework"
                         :options="availableFrameworks"
@@ -213,6 +168,7 @@ import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import TheContent from '@/components/generics/TheContent.vue';
 import TheHeader from '@/components/generics/TheHeader.vue';
+import { SuccessStatus } from '@/types/SuccessStatus.ts';
 import AuthenticationWrapper from '@/components/wrapper/AuthenticationWrapper.vue';
 import TheFooter from '@/components/generics/TheNewFooter.vue';
 import contentData from '@/assets/content.json';
@@ -224,12 +180,14 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { AxiosError } from 'axios';
 import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import ToggleChipFormInputs from '@/components/general/ToggleChipFormInputs.vue';
-import { type BulkDataRequest, type BulkDataRequestDataTypesEnum } from '@clients/communitymanager';
+import type { BulkDataRequest, BulkDataRequestDataTypesEnum, BulkDataRequestResponse } from '@clients/communitymanager';
 import router from '@/router';
+import BulkDataRequestSummary from '@/components/pages/BulkDataRequestSummary.vue';
 
 export default defineComponent({
   name: 'BulkDataRequest',
   components: {
+    BulkDataRequestSummary,
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,
     TheHeader,
@@ -256,9 +214,9 @@ export default defineComponent({
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: '',
       identifiers: [] as Array<string>,
-      acceptedCompanyIdentifiers: [] as Array<string>,
-      rejectedCompanyIdentifiers: [] as Array<string>,
-      submittingSucceeded: false,
+      bulkDataRequestResponse: undefined as BulkDataRequestResponse | undefined,
+      requestSuccessStatus: {},
+      isSuccessful: false,
       submittingInProgress: false,
       postBulkDataRequestObjectProcessed: false,
       message: '',
@@ -276,7 +234,7 @@ export default defineComponent({
 
   computed: {
     humanizedSelectedFrameworks(): string[] {
-      return this.selectedFrameworks.map((it) => humanizeStringOrNumber(it));
+      return this.selectedFrameworks.map((it) => `${humanizeStringOrNumber(it)}`);
     },
     selectedReportingPeriods(): string[] {
       return this.reportingPeriods
@@ -305,17 +263,6 @@ export default defineComponent({
       if (!this.selectedReportingPeriods.length) {
         this.selectedReportingPeriodsError = true;
       }
-    },
-    /**
-     * Creates section title for identifiers
-     * @param items string array to calculate size and proper grammar
-     * @param statusText optional text identifying the status of the heading
-     * @returns a formatted heading
-     */
-    summarySectionIdentifiersHeading(items: string[], statusText = ''): string {
-      const numberOfItems = items.length;
-      const messageSegments = [items.length, statusText, `IDENTIFIER${numberOfItems > 1 ? 'S' : ''}`];
-      return messageSegments.filter((segment) => !!segment).join(' ');
     },
     /**
      * Remove framework from selected frameworks from array
@@ -358,11 +305,10 @@ export default defineComponent({
         const requestDataControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .requestController;
         const response = await requestDataControllerApi.postBulkDataRequest(bulkDataRequestObject);
-
-        this.message = response.data.message;
-        this.rejectedCompanyIdentifiers = response.data.rejectedCompanyIdentifiers;
-        this.acceptedCompanyIdentifiers = response.data.acceptedCompanyIdentifiers;
-        this.submittingSucceeded = this.acceptedCompanyIdentifiers.length > 0;
+        this.bulkDataRequestResponse = response.data;
+        this.calculateRequestSuccessStatus();
+        this.composeSummaryMessage();
+        this.isSuccessful = true;
       } catch (error) {
         console.error(error);
         if (error instanceof AxiosError) {
@@ -375,6 +321,47 @@ export default defineComponent({
       } finally {
         this.submittingInProgress = false;
         this.postBulkDataRequestObjectProcessed = true;
+      }
+    },
+
+    /**
+     * Composes the summary message in case the bulkDataRequestResponse contains meaningful data.
+     */
+    composeSummaryMessage() {
+      if (!this.bulkDataRequestResponse || this.bulkDataRequestResponse == {}) {
+        return;
+      }
+      const numberOfAccepted = this.bulkDataRequestResponse.acceptedDataRequests.length;
+      const numberOfExisting =
+        this.bulkDataRequestResponse.alreadyExistingDatasets.length +
+        this.bulkDataRequestResponse.alreadyExistingNonFinalRequests.length;
+      const numberOfRejected = this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
+
+      this.message =
+        `${numberOfAccepted} data requests were created. ${numberOfExisting} data requests were skipped. ` +
+        `${numberOfRejected} out of ${this.identifiers.length} provided company identifiers could not be recognized and were rejected. ` +
+        'More details can be found in the summary below.';
+    },
+
+    /**
+     * Calculate the SuccessStatus of the BulkDataRequest.
+     * If no requests rejected -> Success
+     * If some but not all rejected -> Partial Success
+     * Else -> No Success
+     */
+    calculateRequestSuccessStatus() {
+      const sumOfAllRequestedData =
+        this.bulkDataRequestResponse.acceptedDataRequests.length +
+        this.bulkDataRequestResponse.alreadyExistingNonFinalRequests.length +
+        this.bulkDataRequestResponse.alreadyExistingDatasets.length +
+        this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length;
+
+      if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length === 0) {
+        this.requestSuccessStatus = SuccessStatus.Success;
+      } else if (this.bulkDataRequestResponse.rejectedCompanyIdentifiers.length < sumOfAllRequestedData) {
+        this.requestSuccessStatus = SuccessStatus.PartialSuccess;
+      } else {
+        this.requestSuccessStatus = SuccessStatus.NoSuccess;
       }
     },
 
@@ -404,6 +391,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@use '@/assets/scss/variables';
+
 .uploadFormWrapper {
   min-height: calc(100vh - 200px);
 
@@ -414,6 +403,7 @@ export default defineComponent({
       line-height: 48px;
       letter-spacing: 0.25px;
     }
+
     .info-icon {
       font-size: 48px;
     }
@@ -423,15 +413,18 @@ export default defineComponent({
     &.border-bottom {
       border-bottom: 1px solid #dadada;
     }
+
     .summary-section-heading {
-      font-weight: 400;
-      font-size: 14px;
+      font-weight: 500;
+      font-size: 16px;
       line-height: 20px;
+
       .info-icon {
         margin-bottom: -2px;
         vertical-align: bottom;
       }
     }
+
     .summary-section-data {
       font-weight: 700;
 
@@ -443,6 +436,21 @@ export default defineComponent({
       }
     }
   }
+}
+
+.status-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+}
+
+.info-color-text {
+  color: variables.$orange-prime;
 }
 
 .no-framework {

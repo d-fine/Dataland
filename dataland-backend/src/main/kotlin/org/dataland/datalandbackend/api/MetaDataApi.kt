@@ -7,12 +7,15 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformationPatch
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfo
 import org.dataland.datalandbackend.model.metainformation.NonSourceableInfoResponse
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -63,6 +66,30 @@ interface MetaDataApi {
     ): ResponseEntity<List<DataMetaInformation>>
 
     /**
+     * A method to post multiple filters at once to search for meta information about datasets registered by Dataland
+     * @param dataMetaInformationSearchFilters A list of data meta information request filters
+     * @return a list of matching DataMetaInformation
+     */
+    @Operation(
+        summary = "Search in Dataland for meta info about data using multiple filters.",
+        description = "Meta info about datasets registered by Dataland can be retrieved.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully retrieved meta info."),
+        ],
+    )
+    @PostMapping(
+        value = ["/filters"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun postListOfDataMetaInfoFilters(
+        @RequestBody dataMetaInformationSearchFilters: List<DataMetaInformationSearchFilter>,
+    ): ResponseEntity<List<DataMetaInformation>>
+
+    /**
      * A method to retrieve meta info about a specific dataset
      * @param dataId as unique identifier for a specific dataset
      * @return the DataMetaInformation for the specified dataset
@@ -85,6 +112,33 @@ interface MetaDataApi {
     @PreAuthorize("hasRole('ROLE_USER') or @DataManager.isDatasetPublic(#dataId)")
     fun getDataMetaInfo(
         @PathVariable dataId: String,
+    ): ResponseEntity<DataMetaInformation>
+
+    /**
+     * A method to update meta info for a specific dataset
+     * @param dataId unique identifier of the dataset to be patched
+     * @param dataMetaInformationPatch request body containing the meta information to be patched
+     * @return updated information about the dataset
+     */
+    @Operation(
+        summary = "Update meta data of dataset selectively",
+        description = "Provided fields of the meta data with the given dataId are updated.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Successfully updated dataset."),
+        ],
+    )
+    @PatchMapping(
+        value = ["/{dataId}"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
+    )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun patchDataMetaInfo(
+        @PathVariable("dataId") dataId: String,
+        @Valid @RequestBody(required = true)
+        dataMetaInformationPatch: DataMetaInformationPatch,
     ): ResponseEntity<DataMetaInformation>
 
     /**
