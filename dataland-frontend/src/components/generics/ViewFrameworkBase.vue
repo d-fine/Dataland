@@ -128,9 +128,13 @@ import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
-
-import { ExportFileType } from '@clients/backend';
+import {
+  type CompanyInformation,
+  type DataMetaInformation,
+  DataTypeEnum,
+  ExportFileType,
+  type VsmeData,
+} from '@clients/backend';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -150,6 +154,7 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import { AxiosError } from 'axios';
 
 type DropdownOption = { label: string; value: string };
 
@@ -286,7 +291,9 @@ export default defineComponent({
       this.fetchedCompanyInformation = fetchedCompanyInformation;
     },
     /**
-     * Opens Overlay Panel for selecting a reporting period to edit data for
+     * Triggered on click on Edit button. In singleDatasetView, it triggers call to upload page with templateDataId. In
+     * datasetOverview with only one dataset available, it triggers call to upload page with reportingPeriod.
+     * In datasetOverview with multiple datasets available, a modal is opened to choose reportingPeriod to edit.
      * @param event event
      */
     editDataset(event: Event) {
@@ -302,7 +309,7 @@ export default defineComponent({
       }
     },
     /**
-     * Navigates to the data update form
+     * Navigates to the data update form with templateDataId
      * @param dataId dataId
      */
     goToUpdateFormByDataId(dataId: string) {
@@ -311,7 +318,7 @@ export default defineComponent({
       );
     },
     /**
-     * Navigates to the data update form
+     * Navigates to the data update form by using reportingPeriod
      * @param reportingPeriod reporting period
      */
     goToUpdateFormByReportingPeriod(reportingPeriod: string) {
@@ -372,10 +379,11 @@ export default defineComponent({
     },
 
     /**
-     * Goes through all data meta info for the currently viewed company and does two things.
-     * First it sets the distinct frameworks as options in the framework-dropdown.
-     * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
-     * info of the currently active dataset.
+     * For public datasets, retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
+     * mapOfReportingPeriodToActiveDataset is populated with this information (computed property).
+     * For private datasets, the call to getAllCompanyData may lead to 403 if user doesn't have sufficient rights.
+     * Instead, the metadata endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
+     * filled with retrieved metadata and empty data object.
      */
     async getAllActiveDataForCurrentCompanyAndFramework() {
       try {
@@ -388,8 +396,31 @@ export default defineComponent({
         this.activeDataForCurrentCompanyAndFramework = Array.from(apiResponse.data);
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
+        if (error instanceof AxiosError && error?.status == 403 && this.dataType == DataTypeEnum.Vsme) {
+          await this.getMetadataForPrivateDataset();
+        } else {
+          this.isDataProcessedSuccessfully = false;
+          console.error(error);
+        }
+      }
+    },
+
+    /**
+     * Get available metadata in case that data cannot be received due to insufficient access rights for private data.
+     */
+    async getMetadataForPrivateDataset() {
+      try {
+        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+        const metadataControllerApi = apiClientProvider.backendClients.metaDataController;
+        const apiResponse = await metadataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const metaInformation: DataMetaInformation[] = apiResponse.data;
+        this.activeDataForCurrentCompanyAndFramework = metaInformation.map((metaInfo) => {
+          return { metaInfo: metaInfo, data: {} } as DataAndMetaInformation<VsmeData>;
+        });
+        this.isDataProcessedSuccessfully = true;
+      } catch (error) {
         this.isDataProcessedSuccessfully = false;
-        console.error(error);
+        console.log(error);
       }
     },
 
