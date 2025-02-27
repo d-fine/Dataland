@@ -45,11 +45,41 @@ object JsonComparator {
                 it.value.isNull || it.value.isEmpty
             }
 
-    private fun equalExceptFormatting(expected: JsonNode, actual: JsonNode): Boolean {
+    private fun equalExceptFormatting(
+        expected: JsonNode,
+        actual: JsonNode,
+    ): Boolean {
         if (expected.isNumber && actual.isNumber) {
             return BigDecimal(expected.asText()).compareTo(BigDecimal(actual.asText())) == 0
         }
         return expected == actual
+    }
+
+    private fun findNumberNodeDifferences(
+        expected: JsonNode,
+        actual: JsonNode,
+        currentPath: String = "",
+        differenceList: MutableList<JsonDiff>,
+    ) {
+        if (!equalExceptFormatting(expected, actual)) {
+            differenceList.add(JsonDiff(currentPath, expected, actual))
+        }
+    }
+
+    private fun findNullNodeDifferences(
+        expected: JsonNode,
+        actual: JsonNode,
+        options: JsonComparisonOptions,
+        currentPath: String = "",
+        differenceList: MutableList<JsonDiff>,
+    ) {
+        if (expected.isNull && actual.isNull) {
+            // Both nodes are null
+        } else if (options.fullyNullObjectsAreEqualToNull && isFullyNullObject(expected) && isFullyNullObject(actual)) {
+            // Both objects are null-ish
+        } else {
+            differenceList.add(JsonDiff(currentPath, expected, actual))
+        }
     }
 
     private fun findNodeDifferences(
@@ -60,15 +90,8 @@ object JsonComparator {
         differenceList: MutableList<JsonDiff>,
     ) {
         when {
-            expected.isNull && actual.isNull -> {
-                // Both nodes are null
-            }
             expected.isNull || actual.isNull -> {
-                if (options.fullyNullObjectsAreEqualToNull && isFullyNullObject(expected) && isFullyNullObject(actual)) {
-                    // Both objects are null-ish
-                } else {
-                    differenceList.add(JsonDiff(currentPath, expected, actual))
-                }
+                findNullNodeDifferences(expected, actual, options, currentPath, differenceList)
             }
             expected.isObject && actual.isObject -> {
                 compareObjects(expected, options, actual, currentPath, differenceList)
@@ -77,9 +100,7 @@ object JsonComparator {
                 compareArrays(expected, actual, currentPath, options, differenceList)
             }
             expected.isNumber && actual.isNumber -> {
-                if (!equalExceptFormatting(expected, actual)) {
-                    differenceList.add(JsonDiff(currentPath, expected, actual))
-                }
+                findNumberNodeDifferences(expected, actual, currentPath, differenceList)
             }
             expected != actual -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
