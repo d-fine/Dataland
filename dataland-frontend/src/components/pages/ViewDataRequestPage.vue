@@ -579,8 +579,10 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     goToResolveDataRequestPage() {
-      if (this.answeringDataSet && this.answeringDataSet.ref)
-        return router.push(this.answeringDataSet.ref.split('/' + this.answeringDataSet.dataId)[0]);
+      if (this.answeringDataSet)
+        return router.push(
+          `/companies/${this.answeringDataSet.companyId}/frameworks/${this.answeringDataSet.dataType}`
+        );
     },
     /**
      * Method to check if request status is answered

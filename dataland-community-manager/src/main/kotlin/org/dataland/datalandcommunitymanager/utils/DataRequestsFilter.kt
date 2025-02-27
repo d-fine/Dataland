@@ -65,7 +65,7 @@ data class DataRequestsFilter(
         get() = datalandCompanyIds?.isNotEmpty() ?: false
 
     val preparedDatalandCompanyIds: Set<String>
-        get() = datalandCompanyIds ?: setOf()
+        get() = datalandCompanyIds ?: emptySet()
 
     val shouldFilterByReportingPeriod: Boolean
         get() = reportingPeriod?.isNotEmpty() ?: false
