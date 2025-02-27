@@ -6,10 +6,10 @@ import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import java.math.BigDecimal
 import java.math.BigInteger
 
-private fun throwInvalidValidatorException(className: String?): Nothing =
+private fun throwInvalidValidatorException(message: String): Nothing =
     throw InvalidInputApiException(
         "This validator is used for a wrong type",
-        "Type $className is not handled by number validator",
+        message,
     )
 
 /**
@@ -23,7 +23,10 @@ fun isGreaterOrEqual(
     is BigDecimal -> value >= BigDecimal.valueOf(minimumValue)
     is BigInteger -> value >= BigInteger.valueOf(minimumValue)
     is Long -> value >= minimumValue
-    else -> throwInvalidValidatorException(value::class.simpleName)
+    else ->
+        throwInvalidValidatorException(
+            "Type ${value::class.simpleName} is not handled by number validator",
+        )
 }
 
 /**
@@ -37,7 +40,10 @@ fun isLessOrEqual(
     is BigDecimal -> value <= BigDecimal.valueOf(maximumValue)
     is BigInteger -> value <= BigInteger.valueOf(maximumValue)
     is Long -> value <= maximumValue
-    else -> throwInvalidValidatorException(value::class.simpleName)
+    else ->
+        throwInvalidValidatorException(
+            "Type ${value::class.simpleName} is not handled by number validator",
+        )
 }
 
 /**
@@ -67,7 +73,9 @@ private fun validateBoundaryConstraint(
     if (dataPoint?.value == null) {
         true
     } else if (dataPoint.value !is Number) {
-        throwInvalidValidatorException(dataPoint.value!!::class.simpleName)
+        throwInvalidValidatorException(
+            "Type ${dataPoint.value!!::class.simpleName} as data point value is not handled by number validator",
+        )
     } else {
         comparingOp(dataPoint.value as Number, boundary)
     }
