@@ -3,19 +3,21 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
+import org.mockito.kotlin.doThrow
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import java.text.SimpleDateFormat
 
 class DataPointValidatorTest {
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
-    private val specificationClient = mock(SpecificationControllerApi::class.java)
+    private val specificationClient = mock<SpecificationControllerApi>()
     private val dataPointValidator =
         DataPointValidator(objectMapper, specificationClient, Validation.buildDefaultValidatorFactory().validator)
 
@@ -66,8 +68,9 @@ class DataPointValidatorTest {
         val dataPoint = "dummy"
         val dataPointType = "non-existent-identifier"
 
-        `when`(specificationClient.getDataPointTypeSpecification(dataPointType))
-            .thenThrow(ClientException("Data point identifier not found."))
+        doThrow(ClientException("Data point identifier not found."))
+            .whenever(specificationClient)
+            .getDataPointTypeSpecification(dataPointType)
 
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateDataPoint(dataPointType, dataPoint, correlationId)
@@ -78,6 +81,18 @@ class DataPointValidatorTest {
     fun `check that parsing a data point with a broken enum results in the expected exception`() {
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithBrokenEnum), validationClass, correlationId)
+        }
+    }
+
+    @Test
+    fun `verify that an unknown constraint in the specification service causes an internal server exception`() {
+        assertThrows<InternalServerErrorApiException> {
+            dataPointValidator.validateConsistency(
+                getJsonString(currencyDataPoint),
+                validationClass,
+                correlationId,
+                listOf("between:0,100", "invalid constraint", "max:200"),
+            )
         }
     }
 }

@@ -55,6 +55,33 @@ object JsonComparator {
         return expected != actual
     }
 
+    private fun findNumberNodeDifferences(
+        expected: JsonNode,
+        actual: JsonNode,
+        currentPath: String = "",
+        differenceList: MutableList<JsonDiff>,
+    ) {
+        if (!equalExceptFormatting(expected, actual)) {
+            differenceList.add(JsonDiff(currentPath, expected, actual))
+        }
+    }
+
+    private fun findNullNodeDifferences(
+        expected: JsonNode,
+        actual: JsonNode,
+        options: JsonComparisonOptions,
+        currentPath: String = "",
+        differenceList: MutableList<JsonDiff>,
+    ) {
+        if (expected.isNull && actual.isNull) {
+            // Both nodes are null
+        } else if (options.fullyNullObjectsAreEqualToNull && isFullyNullObject(expected) && isFullyNullObject(actual)) {
+            // Both objects are null-ish
+        } else {
+            differenceList.add(JsonDiff(currentPath, expected, actual))
+        }
+    }
+
     private fun findNodeDifferences(
         expected: JsonNode,
         actual: JsonNode,
@@ -63,15 +90,8 @@ object JsonComparator {
         differenceList: MutableList<JsonDiff>,
     ) {
         when {
-            expected.isNull && actual.isNull -> {
-                // Both nodes are null
-            }
             expected.isNull || actual.isNull -> {
-                if (options.fullyNullObjectsAreEqualToNull && isFullyNullObject(expected) && isFullyNullObject(actual)) {
-                    // Both objects are null-ish
-                } else {
-                    differenceList.add(JsonDiff(currentPath, expected, actual))
-                }
+                findNullNodeDifferences(expected, actual, options, currentPath, differenceList)
             }
             expected.isObject && actual.isObject -> {
                 compareObjects(expected, options, actual, currentPath, differenceList)
