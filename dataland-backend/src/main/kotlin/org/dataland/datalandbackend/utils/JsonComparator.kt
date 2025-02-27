@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
+import java.math.BigDecimal
 
 /**
  * Compares two JSON nodes and returns a list of differences.
@@ -41,8 +42,15 @@ object JsonComparator {
         node.isNull ||
             node.isObject &&
             node.fields().asSequence().all {
-                it.value.isNull
+                it.value.isNull || it.value.isEmpty
             }
+
+    private fun equalExceptFormatting(expected: JsonNode, actual: JsonNode): Boolean {
+        if (expected.isNumber && actual.isNumber) {
+            return BigDecimal(expected.asText()).compareTo(BigDecimal(actual.asText())) == 0
+        }
+        return expected == actual
+    }
 
     private fun findNodeDifferences(
         expected: JsonNode,
@@ -67,6 +75,11 @@ object JsonComparator {
             }
             expected.isArray && actual.isArray -> {
                 compareArrays(expected, actual, currentPath, options, differenceList)
+            }
+            expected.isNumber && actual.isNumber -> {
+                if (!equalExceptFormatting(expected, actual)) {
+                    differenceList.add(JsonDiff(currentPath, expected, actual))
+                }
             }
             expected != actual -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
