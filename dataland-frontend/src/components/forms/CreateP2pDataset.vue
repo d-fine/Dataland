@@ -255,7 +255,7 @@ export default defineComponent({
      * @param reportingPeriod the relevant reporting period
      * @param companyId the company id
      */
-    async loadP2pData(reportingPeriod: string, companyId: string): Promise<void> {
+    async loadP2pData(): Promise<void> {
       this.waitingForData = true;
       const p2pDataControllerApi = this.buildP2pDataApi();
       if (p2pDataControllerApi) {
@@ -272,9 +272,6 @@ export default defineComponent({
           this.waitingForData = false;
           throw ReferenceError('DataResponse from PathwayToParisDataController invalid.');
         }
-
-        const p2pDataset = (await p2pDataControllerApi.getCompanyAssociatedDataByDimensions(reportingPeriod, companyId))
-          .data;
         this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
         const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
         if (dataDateFromDataset) {
