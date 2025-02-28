@@ -7,7 +7,7 @@
         <div class="card">
           <div class="card__title">Latest Documents</div>
           <div class="card__separator" />
-          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category">
+          <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
             <div class="card__subtitle">{{ getPluralCategory(label.toString()) }}</div>
             <div v-if="getDocumentData(category).length === 0">-</div>
             <div v-else>
@@ -181,7 +181,7 @@ export default defineComponent({
 
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    void this.getLatestDocuments();
+    this.getLatestDocuments();
   },
   methods: {
     getPluralCategory,
@@ -199,20 +199,16 @@ export default defineComponent({
     /**
      * Retrieves the latest documents metadata
      */
-    async getLatestDocuments(): Promise<void> {
+    getLatestDocuments(): void {
       try {
         const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .documentController;
         for (const value of Object.values(SearchForDocumentMetaInformationDocumentCategoriesEnum)) {
           const categorySet = new Set<SearchForDocumentMetaInformationDocumentCategoriesEnum>([value]);
-          this.latestDocuments[`latest${value}`] = (
-            await documentControllerApi.searchForDocumentMetaInformation(
-              this.companyId,
-              categorySet,
-              undefined,
-              this.chunkSize
-            )
-          ).data;
+          documentControllerApi
+            .searchForDocumentMetaInformation(this.companyId, categorySet, undefined, this.chunkSize)
+            .then((metaInformation) => (this.latestDocuments[`latest${value}`] = metaInformation.data))
+            .catch((error) => console.error(error));
         }
       } catch (error) {
         console.error(error);
@@ -266,7 +262,7 @@ export default defineComponent({
       void router.push(`/companies/${this.companyId}/documents`);
     },
     /**
-     * Shorten docuemnt names
+     * Shorten document names
      */
     truncatedDocumentName(name: string) {
       return name.length > 25 ? name.slice(0, 25) + '...' : name;
