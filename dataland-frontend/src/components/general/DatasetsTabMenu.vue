@@ -1,21 +1,17 @@
 <template>
-  <Tabs
-    value="0"
-    v-if="initialTabIndex != undefined"
-    :activeIndex="initialTabIndex"
-    @tab-change="handleTabChange"
-    class="col-12"
-  >
+  <Tabs value="/companies" v-if="initialTabIndex != undefined" @tab-change="handleTabChange" class="col-12">
     <TabList>
       <Tab
-          v-for="tab in tabs"
-          :key="tab.label"
-          :value="tab.value"
-          :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
+        v-for="tab in tabs"
+        :key="tab.label"
+        :value="tab.value"
+        :tabindex="initialTabIndex"
+        :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
+        :active="initialTabIndex == tabs.indexOf(tab)"
       >
-        <router-link v-if="tab.route" v-slot="{href, navigate}" :to="tab.route">
-          <a :href="href" @click="navigate" class="flex items-center gap-2 text-inherit">
-            <span>{{tab.label}}</span>
+        <router-link v-if="tab.route" v-slot="{ href, navigate }" :to="tab.route">
+          <a :href="href" @click="navigate">
+            <span>{{ tab.label }}</span>
           </a>
         </router-link>
       </Tab>
@@ -50,12 +46,17 @@ export default defineComponent({
   data(): { tabs: Tab[] } {
     return {
       tabs: [
-        { label: 'COMPANIES', value: 'companies', route: '/companies', isVisible: true},
-        { label: 'MY DATASETS', value: 'dataset', route: '/datasets', isVisible: true},
-        { label: 'QA', value: 'qualityassurance', route: '/qualityassurance', isVisible: false},
-        { label: 'MY DATA REQUESTS', value: 'datarequest', route: '/requests', isVisible: true},
-        { label: 'DATA REQUESTS FOR MY COMPANIES',value: 'companyrequest', route: '/companyrequests', isVisible: false},
-        { label: 'ALL DATA REQUESTS', value: 'allrequests', route: '/requestoverview', isVisible: false},
+        { label: 'COMPANIES', value: 'companies', route: '/companies', isVisible: true },
+        { label: 'MY DATASETS', value: 'dataset', route: '/datasets', isVisible: true },
+        { label: 'QA', value: 'qualityassurance', route: '/qualityassurance', isVisible: false },
+        { label: 'MY DATA REQUESTS', value: 'datarequest', route: '/requests', isVisible: true },
+        {
+          label: 'DATA REQUESTS FOR MY COMPANIES',
+          value: 'companyrequest',
+          route: '/companyrequests',
+          isVisible: false,
+        },
+        { label: 'ALL DATA REQUESTS', value: 'allrequests', route: '/requestoverview', isVisible: false },
       ],
     };
   },
@@ -127,9 +128,3 @@ export interface Tab {
   isVisible: boolean;
 }
 </script>
-
-<style>
-.p-tabview .p-tabview-nav li.p-disabled .p-tabview-nav-link {
-  display: none;
-}
-</style>
