@@ -2,6 +2,10 @@ import { type DataMetaInformation, DataTypeEnum, QaStatus } from '@clients/backe
 import { DataMetaInformationGenerator } from '@e2e/fixtures/data_meta_information/DataMetaInformationFixtures';
 import { faker } from '@faker-js/faker';
 import { range } from '@/utils/ArrayUtils';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
+
+type MetaInfoAssociatedWithReportingPeriodByDataType = { [key in DataTypeEnum]?: (string | DataMetaInformation)[][] };
 
 /**
  * Generates a list of data meta information for some data types
@@ -33,4 +37,33 @@ export function generateMetaInfoDataForOneCompany(): DataMetaInformation[] {
   range(1).forEach(() => generateActiveMetaInfoWithTypeAndAppend(DataTypeEnum.Sfdr));
 
   return listOfMetaInfo;
+}
+
+/**
+ * Creates an object that is used on the framework view page to hold data meta info
+ * @param metaInfoDataForOneCompany the underlying data meta info to build the object
+ * @returns the object
+ */
+export function extractMetaInfoAssociatedWithReportingPeriodByDataType(
+  metaInfoDataForOneCompany: DataMetaInformation[]
+): MetaInfoAssociatedWithReportingPeriodByDataType {
+  const holdingObject: MetaInfoAssociatedWithReportingPeriodByDataType = {};
+  [DataTypeEnum.EutaxonomyFinancials, DataTypeEnum.Lksg].forEach((dataType) => {
+    holdingObject[dataType] = metaInfoDataForOneCompany
+      .filter((metaInfo) => metaInfo.dataType == dataType)
+      .map((metaInfo) => [metaInfo.reportingPeriod, metaInfo]);
+  });
+  return holdingObject;
+}
+
+/**
+ *
+ * @param metaInfo
+ * @param dataset
+ */
+export function createDataAndMetaInfoMock<T extends FrameworkData>(
+  metaInfo: DataMetaInformation,
+  dataset: T
+): DataAndMetaInformation<T> {
+  return { metaInfo: metaInfo, data: dataset } as DataAndMetaInformation<T>;
 }

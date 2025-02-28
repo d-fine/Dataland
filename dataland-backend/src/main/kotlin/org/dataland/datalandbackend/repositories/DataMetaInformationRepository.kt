@@ -70,22 +70,21 @@ interface DataMetaInformationRepository : JpaRepository<DataMetaInformationEntit
     ): DataMetaInformationEntity?
 
     /**
-     * Counts the dataset meta information
-     * filtered by company ID, data type and if it is currently active
+     * Gets the distinct reporting periods matching the search parameters provided
      * @param companyId the ID of the company to filter for
      * @param dataType the data type to filter for
      * @param currentlyActive the currently active filter
-     * @returns the number of data meta informations that fulfill these criteria
+     * @returns the distinct reporting periods matching the search parameter
      */
     @Query(
-        "SELECT COUNT(d) FROM DataMetaInformationEntity d " +
+        "SELECT DISTINCT d.reportingPeriod FROM DataMetaInformationEntity d " +
             "WHERE d.company.companyId = ?1 AND d.dataType = ?2 AND d.currentlyActive = ?3",
     )
-    fun countByCompanyIdAndDataTypeAndCurrentlyActive(
+    fun getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
         companyId: String,
         dataType: String,
         currentlyActive: Boolean,
-    ): Long
+    ): Set<String>
 
     /**
      * Queries the meta information for datasets uploaded by a specific user

@@ -18,14 +18,16 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
   it('Edit and subsequent upload should work properly when removing or changing referenced documents', () => {
     const dummyData = getPreparedFixture('lksg-all-fields', preparedFixtures).t;
     mountEditForm(dummyData).then(() => {
-      cy.get("[data-test^='BaseDataPointFormField'] button[data-test='files-to-upload-remove']")
+      cy.get('[data-test^="BaseDataPointFormField"] button[data-test="files-to-upload-remove"]', {
+        timeout: Cypress.env('medium_timeout_in_ms') as number,
+      })
         .first()
         .parents('[data-test^="BaseDataPointFormField"]')
         .first()
         .find('input.p-radiobutton')
         .eq(1)
         .click()
-        .find("button[data-test='files-to-upload-remove']")
+        .find('button[data-test="files-to-upload-remove"]')
         .should('not.exist');
     });
   });
@@ -33,32 +35,32 @@ describe('Test YesNoBaseDataPointFormField for entries', () => {
   it('Edit and subsequent upload should work properly changing subcontracting companies', () => {
     const dummyData = getPreparedFixture('lksg-with-subcontracting-countries', preparedFixtures).t;
     mountEditForm(dummyData).then(() => {
-      cy.get("[data-test='subcontractingCompaniesCountries']", {
+      cy.get('[data-test="subcontractingCompaniesCountries"]', {
         timeout: Cypress.env('medium_timeout_in_ms') as number,
       }).within(() => {
         cy.get('.p-multiselect').first().should('contains.text', 'Germany');
         cy.get('.p-multiselect').first().should('contains.text', 'United Kingdom');
         cy.get('.p-multiselect').first().click();
-        cy.get("h5:contains('Subcontracting Companies Industries in Germany')")
+        cy.get('h5:contains("Subcontracting Companies Industries in Germany")')
           .parents('.form-field')
           .first()
           .find('.d-nace-chipview')
           .children()
           .should('have.length', 2);
-        cy.get("h5:contains('Subcontracting Companies Industries in United Kingdom')")
+        cy.get('h5:contains("Subcontracting Companies Industries in United Kingdom")')
           .parents('.form-field')
           .first()
           .find('.d-nace-chipview')
           .children()
           .should('have.length', 1);
       });
-      cy.get("h5:contains('Subcontracting Companies Industries in Albania')").should('not.exist');
+      cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('not.exist');
       cy.get('[data-pc-name="multiselect"]')
         .get('[data-pc-section="wrapper"]')
         .get('[data-pc-section="list"]')
-        .find("li:contains('Albania')")
+        .find('li:contains("Albania")')
         .click();
-      cy.get("h5:contains('Subcontracting Companies Industries in Albania')").should('exist');
+      cy.get('h5:contains("Subcontracting Companies Industries in Albania")').should('exist');
       cy.intercept('**/api/data/lksg*', (request) => {
         const body = request.body as CompanyAssociatedDataLksgData;
         expect(body.data.general.productionSpecific?.subcontractingCompaniesCountries).to.deep.equal({
@@ -85,12 +87,12 @@ function mountEditForm(data: LksgData): Cypress.Chainable {
     reportingPeriod: '2024',
     data: data,
   };
-  cy.intercept('**/api/data/lksg/*', dummyCompanyAssociatedData);
+  cy.intercept('**/api/data/lksg/**', dummyCompanyAssociatedData);
   const router = createRouter({
     routes: [{ path: '/', component: CreateLksgDataset }],
     history: createMemoryHistory(),
   });
-  void router.push({ path: '/', query: { templateDataId: 'data-id' } });
+  void router.push({ path: '/', query: { reportingPeriod: '2024' } });
 
   const mountingFunction = getMountingFunction({
     router: router,

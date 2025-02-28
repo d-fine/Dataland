@@ -1,12 +1,11 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
-  type CompanyAssociatedDataEutaxonomyFinancialsData,
+  type DataAndMetaInformationEutaxonomyFinancialsData,
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
 import { TEST_PDF_FILE_NAME, TEST_PDF_FILE_PATH } from '@sharedUtils/ConstantsForPdfs';
 import { type FixtureData } from '@sharedUtils/Fixtures';
-import { type CyHttpMessages } from 'cypress/types/net-stubbing';
 import { goToEditFormOfMostRecentDatasetForCompanyAndFramework } from './GeneralUtils';
 
 /**
@@ -30,12 +29,12 @@ export function getFirstEuTaxonomyFinancialsFixtureDataFromFixtures(): Cypress.C
 export function gotoEditForm(companyId: string, expectIncludedFile: boolean): void {
   goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyFinancials).then(
     (interception) => {
-      const referencedReports = assertDefined(
-        (interception?.response?.body as CompanyAssociatedDataEutaxonomyFinancialsData)?.data?.general?.general
-          ?.referencedReports
-      );
-      expect(TEST_PDF_FILE_NAME in referencedReports).to.equal(expectIncludedFile);
-      expect(`${TEST_PDF_FILE_NAME}2` in referencedReports).to.equal(true);
+      const dataAndMetaInformation: DataAndMetaInformationEutaxonomyFinancialsData[] =
+        assertDefined(interception).response?.body;
+      const referencedReports = dataAndMetaInformation[0]?.data?.general?.general?.referencedReports;
+      assert(referencedReports);
+      expect(TEST_PDF_FILE_NAME in referencedReports!).to.equal(expectIncludedFile);
+      expect(`${TEST_PDF_FILE_NAME}2` in referencedReports!).to.equal(true);
     }
   );
 }
@@ -65,28 +64,4 @@ export function checkIfLinkedReportsAreDownloadable(companyId: string): void {
       cy.task('deleteFolder', Cypress.config('downloadsFolder'));
     });
   });
-}
-
-/**
- * After a Eu Taxonomy financial or non financial form has been filled in this function submits the form and checks
- * if a 200 response is returned by the backend
- * @param submissionDataIntercept function that asserts content of an intercepted request
- */
-export function submitFilledInEuTaxonomyForm(
-  submissionDataIntercept: (request: CyHttpMessages.IncomingHttpRequest) => void
-): void {
-  const postRequestAlias = 'postDataAlias';
-  cy.intercept(
-    {
-      method: 'POST',
-      url: `**/api/data/**`,
-      times: 1,
-    },
-    submissionDataIntercept
-  ).as(postRequestAlias);
-  cy.get('button[data-test="submitButton"]').click();
-  cy.wait(`@${postRequestAlias}`, { timeout: Cypress.env('long_timeout_in_ms') as number }).then((interception) => {
-    expect(interception.response?.statusCode).to.eq(200);
-  });
-  cy.contains('td', 'EU Taxonomy');
 }

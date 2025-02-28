@@ -1,6 +1,8 @@
 package org.dataland.datalandbackend.services
 
 import org.dataland.datalandbackend.model.StorableDataset
+import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 
 /**
@@ -43,4 +45,15 @@ interface DatasetStorageService {
         dataDimensions: BasicDataDimensions,
         correlationId: String,
     ): String?
+
+    /**
+     * Retrieves all datasets for a certain company and data type depending on the content of the [searchFilter]
+     * @param searchFilter the filter containing the parameters to search for
+     * @param correlationId the correlation id for the operation
+     * @return a list of datasets and the corresponding meta information
+     */
+    fun getAllDatasetsAndMetaInformation(
+        searchFilter: DataMetaInformationSearchFilter,
+        correlationId: String,
+    ): List<PlainDataAndMetaInformation>
 }

@@ -4,20 +4,21 @@ package org.dataland.datalandbackend.frameworks.${frameworkPackageName}
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.swagger.v3.oas.annotations.Operation
 import org.dataland.datalandbackend.controller.DataController
+<#list frameworkDataType.imports as import>import ${import}
+</#list>
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
 import org.dataland.datalandbackend.model.metainformation.DataAndMetaInformation
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
 import org.dataland.datalandbackend.services.DataExportService
 import org.dataland.datalandbackend.services.DataMetaInformationManager
+<#list frameworkDataManager.imports as import>import ${import}
+</#list>
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-<#list frameworkDataType.imports as import>import ${import}
-</#list>
-<#list frameworkDataManager.imports as import>import ${import}
-</#list>
 
 /**
  * Controller for the ${frameworkIdentifier} framework endpoints
@@ -59,22 +60,13 @@ class ${frameworkDataType.shortenedQualifier}Controller(
         return super.postCompanyAssociatedData(companyAssociatedData, bypassQa)
     }
 
-    @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToJson")
-    override fun exportCompanyAssociatedDataToJson(dataId: String):
-        ResponseEntity<InputStreamResource> {
-        return super.exportCompanyAssociatedDataToJson(dataId)
-    }
-
-    @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToCsv")
-    override fun exportCompanyAssociatedDataToCsv(dataId: String):
-        ResponseEntity<InputStreamResource> {
-        return super.exportCompanyAssociatedDataToCsv(dataId)
-    }
-
-    @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ToExcel")
-    override fun exportCompanyAssociatedDataToExcel(dataId: String):
-        ResponseEntity<InputStreamResource> {
-        return super.exportCompanyAssociatedDataToExcel(dataId)
+    @Operation(operationId = "exportCompanyAssociated${frameworkDataType.shortenedQualifier}ByDimensions")
+    override fun exportCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+        exportFileType: ExportFileType,
+    ): ResponseEntity<InputStreamResource> {
+        return super.exportCompanyAssociatedDataByDimensions(reportingPeriod, companyId, exportFileType)
     }
 
     @Operation(operationId = "getAllCompany${frameworkDataType.shortenedQualifier}")

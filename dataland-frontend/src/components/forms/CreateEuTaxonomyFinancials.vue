@@ -145,7 +145,7 @@ import {
   DataTypeEnum,
   type EutaxonomyFinancialsData,
 } from '@clients/backend';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs, checkIfAllUploadedReportsAreReferencedInDataModel } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -248,6 +248,8 @@ export default defineComponent({
       reportingPeriod: undefined as undefined | Date,
       editMode: false,
       listOfFilledKpis: [] as Array<string>,
+      templateDataId: null as LocationQueryValue | LocationQueryValue[],
+      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -271,10 +273,14 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string' && dataId !== '') {
+    this.templateDataId = this.route.query.templateDataId;
+    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    if (
+      (this.templateDataId && typeof this.templateDataId === 'string') ||
+      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
+    ) {
       this.editMode = true;
-      void this.loadEuTaxonomyFinancialsData(dataId);
+      void this.loadEuTaxonomyFinancialsData();
     } else {
       this.waitingForData = false;
     }
@@ -295,24 +301,36 @@ export default defineComponent({
       } else return undefined;
     },
     /**
-     * Loads the EuTaxonomyFinancials-Dataset identified by the provided dataId and pre-configures the form to contain the data
-     * from the dataset
-     * @param dataId the id of the dataset to load
+     * Loads the EuTaxonomyFinancials-Dataset identified either by the provided reportingPeriod and companyId,
+     * or the dataId, and pre-configures the form to contain the data from the dataset
      */
-    async loadEuTaxonomyFinancialsData(dataId: string): Promise<void> {
+    async loadEuTaxonomyFinancialsData(): Promise<void> {
       this.waitingForData = true;
       const euTaxonomyFinancialsDataControllerApi = this.buildEuTaxonomyFinancialsDataApi();
-
-      const dataResponse = await euTaxonomyFinancialsDataControllerApi!.getFrameworkData(dataId);
-      const euTaxonomyFinancialsResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);
-      if (euTaxonomyFinancialsResponseData?.reportingPeriod) {
-        this.reportingPeriod = new Date(euTaxonomyFinancialsResponseData.reportingPeriod);
+      if (euTaxonomyFinancialsDataControllerApi) {
+        let dataResponse;
+        if (this.templateDataId) {
+          dataResponse = await euTaxonomyFinancialsDataControllerApi.getFrameworkData(this.templateDataId.toString());
+        } else if (this.templateReportingPeriod) {
+          dataResponse = await euTaxonomyFinancialsDataControllerApi.getCompanyAssociatedDataByDimensions(
+            this.templateReportingPeriod.toString(),
+            this.companyID
+          );
+        }
+        if (!dataResponse) {
+          this.waitingForData = false;
+          throw ReferenceError('DataResponse from EuTaxonomyFinancialsDataController invalid.');
+        }
+        const euTaxonomyFinancialsResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(euTaxonomyFinancialsResponseData.data);
+        if (euTaxonomyFinancialsResponseData?.reportingPeriod) {
+          this.reportingPeriod = new Date(euTaxonomyFinancialsResponseData.reportingPeriod);
+        }
+        this.referencedReportsForPrefill =
+          euTaxonomyFinancialsResponseData.data.general?.general?.referencedReports ?? {};
+        this.companyAssociatedEuTaxonomyFinancialsData = objectDropNull(euTaxonomyFinancialsResponseData);
+        this.waitingForData = false;
       }
-      this.referencedReportsForPrefill =
-        euTaxonomyFinancialsResponseData.data.general?.general?.referencedReports ?? {};
-      this.companyAssociatedEuTaxonomyFinancialsData = objectDropNull(euTaxonomyFinancialsResponseData);
-      this.waitingForData = false;
     },
 
     /**

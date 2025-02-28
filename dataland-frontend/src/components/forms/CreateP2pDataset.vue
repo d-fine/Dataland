@@ -92,11 +92,11 @@
   </Card>
 </template>
 <script lang="ts">
-// @ts-nocheck
+//@ts-nocheck
 import { FormKit } from '@formkit/vue';
 import { computed, defineComponent, inject } from 'vue';
 import { assertDefined } from '@/utils/TypeScriptUtils';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs } from '@/utils/ValidationUtils';
 import { objectDropNull, type ObjectType } from '@/utils/UpdateObjectUtils';
 import { smoothScroll } from '@/utils/SmoothScroll';
@@ -109,7 +109,12 @@ import PrimeButton from 'primevue/button';
 import { type DriveMixType } from '@/api-models/DriveMixType';
 import { type Category, type Subcategory } from '@/utils/GenericFrameworkTypes';
 import { AxiosError } from 'axios';
-import { type CompanyAssociatedDataPathwaysToParisData, DataTypeEnum, type P2pDriveMix } from '@clients/backend';
+import {
+  type CompanyAssociatedDataPathwaysToParisData,
+  DataTypeEnum,
+  type P2pDriveMix,
+  type PathwaysToParisData,
+} from '@clients/backend';
 import { p2pDataModel } from '@/components/resources/frameworkDataSearch/p2p/P2pDataModel';
 import UploadFormHeader from '@/components/forms/parts/elements/basic/UploadFormHeader.vue';
 import YesNoFormField from '@/components/forms/parts/fields/YesNoFormField.vue';
@@ -130,6 +135,7 @@ import CurrencyDataPointFormField from '@/components/forms/parts/fields/Currency
 import YesNoNaFormField from '@/components/forms/parts/fields/YesNoNaFormField.vue';
 import YesNoBaseDataPointFormField from '@/components/forms/parts/fields/YesNoBaseDataPointFormField.vue';
 import YesNoNaBaseDataPointFormField from '@/components/forms/parts/fields/YesNoNaBaseDataPointFormField.vue';
+import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import YesNoExtendedDataPointFormField from '@/components/forms/parts/fields/YesNoExtendedDataPointFormField.vue';
 import { type DocumentToUpload, uploadFiles } from '@/utils/FileUploadUtils';
 import { getFilledKpis } from '@/utils/DataPoint';
@@ -185,6 +191,8 @@ export default defineComponent({
       checkCustomInputs,
       fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
       listOfFilledKpis: [] as Array<string>,
+      templateDataId: null as LocationQueryValue | LocationQueryValue[],
+      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -217,35 +225,62 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadP2pData(dataId);
+    this.templateDataId = this.route.query.templateDataId;
+    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    if (
+      (this.templateDataId && typeof this.templateDataId === 'string') ||
+      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
+    ) {
+      void this.loadP2pData();
     } else {
       this.waitingForData = false;
     }
   },
   methods: {
     /**
+     * Builds an api to get and upload P2P data
+     * @returns the api
+     */
+    buildP2pDataApi(): PublicFrameworkDataApi<PathwaysToParisData> | undefined {
+      const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
+      const frameworkDefinition = apiClientProvider.getUnifiedFrameworkDataController(DataTypeEnum.P2p);
+      if (frameworkDefinition) {
+        return frameworkDefinition;
+      }
+      return undefined;
+    },
+    /**
      * Loads the P2p-Dataset identified by the provided dataId and pre-configures the form to contain the data
      * from the dataset
-     * @param dataId the id of the dataset to load
      */
-    async loadP2pData(dataId: string): Promise<void> {
+    async loadP2pData(): Promise<void> {
       this.waitingForData = true;
-      const p2pDataControllerApi = new ApiClientProvider(
-        assertDefined(this.getKeycloakPromise)()
-      ).getUnifiedFrameworkDataController(DataTypeEnum.P2p);
-
-      const p2pDataset = (await p2pDataControllerApi.getFrameworkData(dataId)).data;
-      this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
-      const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
-      if (dataDateFromDataset) {
-        this.dataDate = new Date(dataDateFromDataset);
+      const p2pDataControllerApi = this.buildP2pDataApi();
+      if (p2pDataControllerApi) {
+        let dataResponse;
+        if (this.templateDataId) {
+          dataResponse = await p2pDataControllerApi.getFrameworkData(this.templateDataId.toString());
+        } else if (this.templateReportingPeriod) {
+          dataResponse = await p2pDataControllerApi.getCompanyAssociatedDataByDimensions(
+            this.templateReportingPeriod.toString(),
+            this.companyID
+          );
+        }
+        if (!dataResponse) {
+          this.waitingForData = false;
+          throw ReferenceError('DataResponse from PathwayToParisDataController invalid.');
+        }
+        const p2pDataset: CompanyAssociatedDataPathwaysToParisData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(p2pDataset.data);
+        const dataDateFromDataset = p2pDataset.data?.general?.general?.dataDate;
+        if (dataDateFromDataset) {
+          this.dataDate = new Date(dataDateFromDataset);
+        }
+        this.companyAssociatedP2pData = objectDropNull(
+          p2pDataset as ObjectType
+        ) as CompanyAssociatedDataPathwaysToParisData;
+        this.waitingForData = false;
       }
-      this.companyAssociatedP2pData = objectDropNull(
-        p2pDataset as ObjectType
-      ) as CompanyAssociatedDataPathwaysToParisData;
-      this.waitingForData = false;
     },
     /**
      * Sends data to add P2p data
