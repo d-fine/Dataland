@@ -192,20 +192,20 @@ interface StoredCompanyRepository : JpaRepository<StoredCompanyEntity, String> {
         nativeQuery = true,
         value =
             "SELECT " +
-                "CHILD_COMPANIES.company_id AS companyId, " +
-                "CHILD_COMPANIES.company_name AS companyName, " +
-                "CHILD_COMPANIES.headquarters, " +
-                "CHILD_COMPANIES.country_code AS countryCode, " +
-                "CHILD_COMPANIES.sector, " +
-                "CHILD_IDENTIFIERS.identifier_value AS lei " +
-                "FROM stored_companies CHILD_COMPANIES " +
-                "INNER JOIN company_identifiers PARENT_IDENTIFIERS " +
-                "ON PARENT_IDENTIFIERS.identifier_value = CHILD_COMPANIES.parent_company_lei " +
-                "LEFT JOIN company_identifiers CHILD_IDENTIFIERS " +
-                "ON CHILD_IDENTIFIERS.company_id = CHILD_COMPANIES.company_id " +
-                "AND CHILD_IDENTIFIERS.identifier_type = 'Lei'" +
-                "WHERE PARENT_IDENTIFIERS.identifier_type = 'Lei' " +
-                "AND PARENT_IDENTIFIERS.company_id = :#{#companyId};",
+                "childCompanies.company_id AS companyId, " +
+                "childCompanies.company_name AS companyName, " +
+                "childCompanies.headquarters, " +
+                "childCompanies.country_code AS countryCode, " +
+                "childCompanies.sector, " +
+                "childIdentifiers.identifier_value AS lei " +
+                "FROM stored_companies childCompanies " +
+                "INNER JOIN company_identifiers parentIdentifiers " +
+                "ON parentIdentifiers.identifier_value = childCompanies.parent_company_lei " +
+                "LEFT JOIN company_identifiers childIdentifiers " +
+                "ON childIdentifiers.company_id = childCompanies.company_id " +
+                "AND childIdentifiers.identifier_type = 'Lei'" +
+                "WHERE parentIdentifiers.identifier_type = 'Lei' " +
+                "AND parentIdentifiers.company_id = :#{#companyId};",
     )
     fun getCompanySubsidiariesByParentId(
         @Param("companyId") companyId: String,
