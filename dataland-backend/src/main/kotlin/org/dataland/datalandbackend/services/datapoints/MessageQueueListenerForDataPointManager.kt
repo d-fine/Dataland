@@ -19,7 +19,6 @@ import org.springframework.amqp.rabbit.annotation.QueueBinding
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * Implementation of a data manager for Dataland including metadata storages
@@ -58,7 +57,6 @@ class MessageQueueListenerForDataPointManager
             ],
             containerFactory = "consumerBatchContainerFactory",
         )
-        @Transactional
         fun updateQaStatus(messages: List<Message>) {
             logger.info("Processing ${messages.size} Data Point QA Status Updated Messages.")
 

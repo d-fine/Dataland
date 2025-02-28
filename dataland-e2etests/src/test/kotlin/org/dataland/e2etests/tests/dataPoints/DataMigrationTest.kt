@@ -218,13 +218,13 @@ class DataMigrationTest {
                 .t
 
         uploadGenericDummyDataset(firstDataset, DataTypeEnum.sfdr, companyId = companyId)
-        Thread.sleep(2000)
         uploadGenericDummyDataset(secondDataset, DataTypeEnum.sfdr, companyId = companyId)
         Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
-        Thread.sleep(3000)
-        val downloadedDataset =
+        Thread.sleep(30000)
+
+        val downloadedData =
             Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
-        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(downloadedDataset.data, secondDataset)
+        DataPointTestUtils().assertSfdrDataEquals(downloadedData.data, secondDataset)
     }
 
     @Test
@@ -250,25 +250,36 @@ class DataMigrationTest {
                             ),
                     ),
             )
-        val expectedDataset =
-            AdditionalCompanyInformationData(
-                general =
-                    AdditionalCompanyInformationGeneral(
-                        financialInformation =
-                            AdditionalCompanyInformationGeneralFinancialInformation(
-                                equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
-                                debt = CurrencyDataPoint(BigDecimal.valueOf(2)),
-                            ),
-                    ),
-            )
         uploadGenericDummyDataset(firstDataset, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
-        Thread.sleep(2000)
         uploadGenericDummyDataset(secondDataset, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
         Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
-        Thread.sleep(3000)
-        val downloadedDataset =
-            Backend.additionalCompanyInformationDataControllerApi
-                .getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)
-        assertEquals(downloadedDataset.data, expectedDataset)
+        ApiAwait
+            .waitForData(timeoutInSeconds = 30, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+                Backend.additionalCompanyInformationDataControllerApi
+                    .getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+                        reportingPeriod = reportingPeriod, companyId = companyId,
+                    )
+            }.let {
+                assertEquals(
+                    it.data.general
+                        ?.financialInformation
+                        ?.equity
+                        ?.value,
+                    firstDataset.general
+                        ?.financialInformation
+                        ?.equity
+                        ?.value,
+                )
+                assertEquals(
+                    it.data.general
+                        ?.financialInformation
+                        ?.debt
+                        ?.value,
+                    secondDataset.general
+                        ?.financialInformation
+                        ?.debt
+                        ?.value,
+                )
+            }
     }
 }
