@@ -3,7 +3,9 @@ package org.dataland.e2etests.tests.dataPoints
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataAdditionalCompanyInformationData
+import org.dataland.datalandbackend.openApiClient.model.DataAndMetaInformationAdditionalCompanyInformationData
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
+import org.dataland.datalandbackend.openApiClient.model.UploadedDataPoint
 import org.dataland.datalandqaservice.openApiClient.model.CurrencyDataPoint
 import org.dataland.datalandqaservice.openApiClient.model.DataPointQaReport
 import org.dataland.datalandqaservice.openApiClient.model.QaReportDataPointCurrencyDataPoint
@@ -15,6 +17,7 @@ import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -26,10 +29,15 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AssembledDatasetTest {
-    private val testDataProvider = FrameworkTestDataProvider.forFrameworkFixtures(AdditionalCompanyInformationData::class.java)
+    private val testDataProvider =
+        FrameworkTestDataProvider.forFrameworkFixtures(AdditionalCompanyInformationData::class.java)
     private val dummyDataset = testDataProvider.getTData(1)[0]
     private val apiAccessor = ApiAccessor()
-    private val linkedQaReportDataFile = File("./build/resources/test/AdditionalCompanyInformationQaReportPreparedFixtures.json")
+    private val linkedQaReportDataFile =
+        File("./build/resources/test/AdditionalCompanyInformationQaReportPreparedFixtures.json")
+    private val reportingPeriod = "2025"
+    private val testValue = 1.2345.toBigDecimal()
+    private val testComment = "This is a specific test comment."
 
     data class LinkedQaReportTestData(
         val data: AdditionalCompanyInformationData,
@@ -57,7 +65,7 @@ class AssembledDatasetTest {
             Backend.additionalCompanyInformationDataControllerApi.postCompanyAssociatedAdditionalCompanyInformationData(
                 CompanyAssociatedDataAdditionalCompanyInformationData(
                     companyId = companyId,
-                    reportingPeriod = "2025",
+                    reportingPeriod = reportingPeriod,
                     data = dummyDataset,
                 ),
                 bypassQa = bypassQa,
@@ -174,7 +182,7 @@ class AssembledDatasetTest {
             Backend.additionalCompanyInformationDataControllerApi.postCompanyAssociatedAdditionalCompanyInformationData(
                 CompanyAssociatedDataAdditionalCompanyInformationData(
                     companyId = companyId,
-                    reportingPeriod = "2025",
+                    reportingPeriod = reportingPeriod,
                     data = linkedQaReportData.data,
                 ),
                 bypassQa = false,
@@ -198,8 +206,10 @@ class AssembledDatasetTest {
     fun `ensure a qa report for an assembled dataset can be downloaded`() {
         val linkedQaReportMetaInfo = uploadAdditionalCompanyInformationWithLinkedQaReport()
         QaService.additionalCompanyInformationDataQaReportControllerApi
-            .getAdditionalCompanyInformationDataQaReport(linkedQaReportMetaInfo.dataId, linkedQaReportMetaInfo.qaReportId)
-            .let {
+            .getAdditionalCompanyInformationDataQaReport(
+                linkedQaReportMetaInfo.dataId,
+                linkedQaReportMetaInfo.qaReportId,
+            ).let {
                 assertEquals(linkedQaReportData.qaReport, it.report)
             }
     }
@@ -262,5 +272,67 @@ class AssembledDatasetTest {
                 assertQaReportsAlign(expectedData.qaReport, it[0])
             }
         }
+    }
+
+    private fun postExtendedCurrencyEquityDatapoint(
+        companyId: String,
+        reportingPeriod: String,
+    ) {
+        val dummyDatapoint = """{"value": "$testValue", "currency": "EUR", "comment": "$testComment"}""".trimIndent()
+        val dummyDataPointType = "extendedCurrencyEquity"
+        val uploadedDataPoint =
+            UploadedDataPoint(
+                dataPoint = dummyDatapoint,
+                dataPointType = dummyDataPointType,
+                companyId = companyId,
+                reportingPeriod = reportingPeriod,
+            )
+        ApiAwait.waitForSuccess { Backend.dataPointControllerApi.postDataPoint(uploadedDataPoint, bypassQa = true) }
+    }
+
+    private fun getAdditionalCompanyInformationDataset(
+        companyId: String,
+        reportingPeriod: String,
+    ): DataAndMetaInformationAdditionalCompanyInformationData =
+        ApiAwait.waitForData {
+            Backend.additionalCompanyInformationDataControllerApi
+                .getAllCompanyAdditionalCompanyInformationData(companyId, reportingPeriod = reportingPeriod)[0]
+        }
+
+    @Test
+    fun `ensure that uploading a datapoint for an existing dataset changes active data retrieved by api`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+        ApiAwait.waitForSuccess { uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = true) }
+
+        this.postExtendedCurrencyEquityDatapoint(companyId, reportingPeriod)
+
+        val activeAdditionalCompanyInformationDataset =
+            this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)
+
+        val currencyDataPoint =
+            activeAdditionalCompanyInformationDataset.data.general
+                ?.financialInformation
+                ?.equity
+        assertNotNull(currencyDataPoint)
+        assertEquals(currencyDataPoint?.value, testValue)
+        assertEquals(currencyDataPoint?.comment, testComment)
+    }
+
+    @Test
+    fun `ensure that uploading only a single datapoint for a company renders dataset active`() {
+        val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
+
+        this.postExtendedCurrencyEquityDatapoint(companyId, reportingPeriod)
+
+        val activeAdditionalCompanyInformationDataset =
+            this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)
+
+        val currencyDataPoint =
+            activeAdditionalCompanyInformationDataset.data.general
+                ?.financialInformation
+                ?.equity
+        assertNotNull(currencyDataPoint)
+        assertEquals(currencyDataPoint?.value, testValue)
+        assertEquals(currencyDataPoint?.comment, testComment)
     }
 }
