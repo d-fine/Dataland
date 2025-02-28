@@ -189,7 +189,7 @@ class SingleDataRequestManager
                     companyId = companyId, framework = dataType,
                     reportingPeriod = reportingPeriod, userId = userId,
                 )
-            return(
+            return (
                 dataType == DataTypeEnum.vsme &&
                     matchingDatasetExists &&
                     !hasAccessToPrivateDataset &&
@@ -197,24 +197,23 @@ class SingleDataRequestManager
             )
         }
 
+        private fun requestIsForPremiumUser(userId: String): Boolean {
+            val authenticationOfLoggedInUser = DatalandAuthentication.fromContext()
+            return if (userId == authenticationOfLoggedInUser.userId) {
+                authenticationOfLoggedInUser.roles.contains(
+                    DatalandRealmRole.ROLE_PREMIUM_USER,
+                )
+            } else {
+                keycloakUserService.getUserRoleNames(userId).contains("ROLE_PREMIUM_USER")
+            }
+        }
+
         private fun performQuotaCheckForNonPremiumUser(
             userId: String,
             numberOfReportingPeriods: Int,
             companyId: String,
         ) {
-            val authenticationOfLoggedInUser = DatalandAuthentication.fromContext()
-            val requestIsForPremiumUser: Boolean
-            if (userId == authenticationOfLoggedInUser.userId) {
-                val userRoles = authenticationOfLoggedInUser.roles
-                requestIsForPremiumUser =
-                    userRoles.contains(
-                        DatalandRealmRole.ROLE_PREMIUM_USER,
-                    )
-            } else {
-                val userRoleNames = keycloakUserService.getUserRoleNames(userId)
-                requestIsForPremiumUser = userRoleNames.contains("ROLE_PREMIUM_USER")
-            }
-            if (!requestIsForPremiumUser &&
+            if (!requestIsForPremiumUser(userId) &&
                 !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
@@ -358,9 +357,11 @@ class SingleDataRequestManager
                     1 ->
                         "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
                             "it was already created by you before and exists on Dataland."
+
                     totalNumberOfReportingPeriods ->
                         "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
                             "already created by you before and exist on Dataland."
+
                     else ->
                         "The data requests for $numberOfReportingPeriodsCorrespondingToDuplicates of your " +
                             "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
