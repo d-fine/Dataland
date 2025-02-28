@@ -19,7 +19,6 @@ import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 describe('Component tests for the view data request page', function (): void {
   const requestId = 'dummyRequestId';
   const dummyUserId = 'dummyUserId';
-  const dummyDataId = 'dummyDataId';
   const dummyEmail = 'dummy@mail.de';
   const dummyCompanyId = 'dummyCompanyId';
   const dummyCompanyName = 'dummyCompanyName';
@@ -75,8 +74,8 @@ describe('Component tests for the view data request page', function (): void {
    */
   function interceptUserActiveDatasetOnMounted(hasActiveDataSet: boolean): void {
     const dummyMetaData = {
-      dataId: dummyDataId,
-      ref: `/companies/${dummyCompanyId}/frameworks/${dummyFramework}/${dummyDataId}`,
+      companyId: dummyCompanyId,
+      dataType: dummyFramework,
     };
     cy.intercept(`**/api/metadata?**`, {
       body: hasActiveDataSet ? [dummyMetaData] : [],
