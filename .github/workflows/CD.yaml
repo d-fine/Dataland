@@ -198,6 +198,8 @@ jobs:
           GRAFANA_ADMIN: ${{ vars.GRAFANA_ADMIN }}
           GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
           LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
+          SLACK_ALERT_URL: ${{ secrets.SLACK_ALERT_URL }}
+          SLACK_CRITICAL_ALERT_URL: ${{ secrets.SLACK_CRITICAL_ALERT_URL }}
       - uses: ./.github/workflows/dockerLogs
         if: always()
         with:
@@ -237,7 +239,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Download frontend API clients
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4
         with:
           name: frontendClients
           path: ./dataland-frontend/build/clients/
@@ -279,6 +281,8 @@ jobs:
           LOGGING_OPTIONS_MAX_FILE: ${{ vars.LOGGING_OPTIONS_MAX_FILE }}
           GRAFANA_PASSWORD: ${{ secrets.GRAFANA_PASSWORD }}
           LOKI_VOLUME: ${{ vars.LOKI_VOLUME }}
+          SLACK_ALERT_URL: ${{ secrets.SLACK_ALERT_URL }}
+          SLACK_CRITICAL_ALERT_URL: ${{ secrets.SLACK_CRITICAL_ALERT_URL }}
       - name: Move Cypress Results
         if: always()
         run: |
