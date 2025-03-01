@@ -15,6 +15,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.dataland.datalandinternalstorage.openApiClient.infrastructure.ClientException
+import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.exceptions.MessageQueueRejectException
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
@@ -38,6 +39,7 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.amqp.AmqpException
 import org.springframework.amqp.AmqpRejectAndDontRequeueException
+import org.springframework.amqp.core.Message
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -60,6 +62,7 @@ class DataManagerTest(
     @Autowired val dataManagerUtils: DataManagerUtils,
     @Autowired val companyRoleChecker: CompanyRoleChecker,
     @Autowired val nonSourceableDataManager: NonSourceableDataManager,
+    @Autowired val cloudEventsMessageHandler: CloudEventMessageHandler,
 ) {
     val mockStorageClient: StorageControllerApi = mock<StorageControllerApi>()
     val mockMessageQueuePublications: MessageQueuePublications = mock<MessageQueuePublications>()
@@ -85,6 +88,14 @@ class DataManagerTest(
                 dataManager, nonSourceableDataManager,
             )
     }
+
+    private fun getSingleDataStoredMessage(dataId: String): List<Message> =
+        listOf(
+            cloudEventsMessageHandler.buildCEMessage(
+                objectMapper.writeValueAsString(DataIdPayload(dataId)),
+                MessageType.DATA_STORED, "",
+            ),
+        )
 
     private fun addCompanyAndReturnStorableEuTaxonomyDatasetForNonFinancialsForIt(): StorableDataset {
         val companyInformation = testDataProvider.getCompanyInformation(1).first()
@@ -121,7 +132,7 @@ class DataManagerTest(
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
-            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+            getSingleDataStoredMessage(dataId),
         )
         val thrown =
             assertThrows<ResourceNotFoundApiException> {
@@ -139,7 +150,7 @@ class DataManagerTest(
             objectMapper.writeValueAsString(euTaxonomyNonFinancialDataset.copy(dataType = DataType("eutaxonomy-financials"))),
         )
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
-            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+            getSingleDataStoredMessage(dataId),
         )
         val thrown =
             assertThrows<InternalServerErrorApiException> {
@@ -165,7 +176,7 @@ class DataManagerTest(
         )
 
         messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
-            objectMapper.writeValueAsString(DataIdPayload(dataId)), "", MessageType.DATA_STORED,
+            getSingleDataStoredMessage(dataId),
         )
         val thrown =
             assertThrows<InternalServerErrorApiException> {
@@ -188,7 +199,7 @@ class DataManagerTest(
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
                 messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
-                    objectMapper.writeValueAsString(DataIdPayload("")), "", MessageType.DATA_STORED,
+                    getSingleDataStoredMessage(""),
                 )
             }
         assertEquals("Invalid UUID string: ", thrown.message)

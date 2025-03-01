@@ -23,6 +23,7 @@ class JsonComparatorTest {
             """{"a": null};{"a": {}}""",
             """{"a": {}};{"a": null}""",
             """{"a": null};{"a": {"c": null}}""",
+            """{"a": null};{"a": {"b": null, "c": {}, "d": []}}""",
         ],
     )
     fun `should see fully null objects and null as equal iff the option is enabled`(
@@ -135,5 +136,21 @@ class JsonComparatorTest {
         assertEquals("field1", differences[0].path)
         assertEquals("null", differences[0].expected.toString())
         assertEquals("\"value1\"", differences[0].actual.toString())
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        delimiter = ';',
+        value = [
+            """{"a": 1.0};{"a": 1}""",
+            """{"a": 3.7534466E7};{"a": 37534466}""",
+        ],
+    )
+    fun `should not detect differences due to number formatting`(
+        expected: String,
+        actual: String,
+    ) {
+        val differences = compareJsonStrings(expected, actual)
+        assertEquals(0, differences.size)
     }
 }

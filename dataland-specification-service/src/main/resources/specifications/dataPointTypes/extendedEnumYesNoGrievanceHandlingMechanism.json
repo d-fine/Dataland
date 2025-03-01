@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoGrievanceHandlingMechanism",
+  "name" : "Grievance Handling Mechanism",
+  "businessDefinition" : "Existence of a grievance/complaints handling mechanism related to employee matters. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 5.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

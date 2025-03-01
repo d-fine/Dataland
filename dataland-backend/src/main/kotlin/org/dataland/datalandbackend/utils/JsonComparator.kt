@@ -2,6 +2,7 @@ package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.NullNode
+import java.math.BigDecimal
 
 /**
  * Compares two JSON nodes and returns a list of differences.
@@ -41,8 +42,34 @@ object JsonComparator {
         node.isNull ||
             node.isObject &&
             node.fields().asSequence().all {
-                it.value.isNull
+                it.value.isNull || it.value.isEmpty
             }
+
+    private fun valuesDiffer(
+        expected: JsonNode,
+        actual: JsonNode,
+    ): Boolean {
+        if (expected.isNumber && actual.isNumber) {
+            return BigDecimal(expected.asText()).compareTo(BigDecimal(actual.asText())) != 0
+        }
+        return expected != actual
+    }
+
+    private fun findNullNodeDifferences(
+        expected: JsonNode,
+        actual: JsonNode,
+        options: JsonComparisonOptions,
+        currentPath: String = "",
+        differenceList: MutableList<JsonDiff>,
+    ) {
+        if (expected.isNull && actual.isNull) {
+            // Both nodes are null
+        } else if (options.fullyNullObjectsAreEqualToNull && isFullyNullObject(expected) && isFullyNullObject(actual)) {
+            // Both objects are null-ish
+        } else {
+            differenceList.add(JsonDiff(currentPath, expected, actual))
+        }
+    }
 
     private fun findNodeDifferences(
         expected: JsonNode,
@@ -52,15 +79,8 @@ object JsonComparator {
         differenceList: MutableList<JsonDiff>,
     ) {
         when {
-            expected.isNull && actual.isNull -> {
-                // Both nodes are null
-            }
             expected.isNull || actual.isNull -> {
-                if (options.fullyNullObjectsAreEqualToNull && isFullyNullObject(expected) && isFullyNullObject(actual)) {
-                    // Both objects are null-ish
-                } else {
-                    differenceList.add(JsonDiff(currentPath, expected, actual))
-                }
+                findNullNodeDifferences(expected, actual, options, currentPath, differenceList)
             }
             expected.isObject && actual.isObject -> {
                 compareObjects(expected, options, actual, currentPath, differenceList)
@@ -68,7 +88,7 @@ object JsonComparator {
             expected.isArray && actual.isArray -> {
                 compareArrays(expected, actual, currentPath, options, differenceList)
             }
-            expected != actual -> {
+            valuesDiffer(expected, actual) -> {
                 differenceList.add(JsonDiff(currentPath, expected, actual))
             }
             else -> {
