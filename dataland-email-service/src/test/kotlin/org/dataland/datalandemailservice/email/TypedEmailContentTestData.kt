@@ -6,6 +6,7 @@ import org.dataland.datalandmessagequeueutils.messages.email.CompanyOwnershipCla
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
 import org.dataland.datalandmessagequeueutils.messages.email.DatasetRequestedClaimOwnership
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
@@ -69,6 +70,17 @@ class TypedEmailContentTestData : ArgumentsProvider {
         listOf(
             COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, NUMBER_OF_DAYS.toString(), BASE_URL,
             "Your data request has been answered.",
+        )
+
+    val dataRequestUpdated =
+        DataRequestUpdated(COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId).also {
+            it.baseUrl = BASE_URL
+        }
+
+    val dataRequestUpdatedKeywords =
+        listOf(
+            COMPANY_NAME, DATA_TYPE_LABEL_A, REPORTING_PERIOD_A, CREATION_DATE, dataRequestId, BASE_URL,
+            "Your data request has been updated with new data.",
         )
 
     val dataRequestClosed =
@@ -217,6 +229,7 @@ class TypedEmailContentTestData : ArgumentsProvider {
             Arguments.of(datasetRequestedClaimOwnership, datasetRequestedClaimOwnershipKeywords),
             Arguments.of(dataRequestAnswered, dataRequestAnsweredKeywords),
             Arguments.of(dataRequestClosed, dataRequestClosedKeywords),
+            Arguments.of(dataRequestUpdated, dataRequestUpdatedKeywords),
             Arguments.of(dataRequestNonSourceableMail, dataRequestNonSourceableKeywords),
             Arguments.of(companyOwnershipClaimApproved, companyOwnershipClaimApprovedKeywords),
             Arguments.of(accessToDatasetRequested, accessToDatasetRequestedKeywords),

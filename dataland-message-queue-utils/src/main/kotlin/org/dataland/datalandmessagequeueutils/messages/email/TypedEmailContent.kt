@@ -211,6 +211,25 @@ data class DataRequestAnswered(
 }
 
 /**
+ * A class for the DataRequestUpdated email.
+ */
+data class DataRequestUpdated(
+    val companyName: String,
+    val dataTypeLabel: String,
+    val reportingPeriod: String,
+    val creationDate: String,
+    val dataRequestId: String,
+) : TypedEmailContent(),
+    InitializeBaseUrlLater {
+    override val subject = "Your data request has been updated!"
+    override val textTemplate = "/text/data_request_updated.ftl"
+    override val htmlTemplate = "/html/data_request_updated.ftl"
+
+    @JsonIgnore
+    override lateinit var baseUrl: String
+}
+
+/**
  * A class for the DataRequestClosed email.
  */
 data class DataRequestClosed(

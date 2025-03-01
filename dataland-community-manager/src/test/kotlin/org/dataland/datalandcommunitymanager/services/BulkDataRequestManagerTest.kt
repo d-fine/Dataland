@@ -43,7 +43,6 @@ class BulkDataRequestManagerTest {
 
     private val companyIdRegexSafeCompanyId = UUID.randomUUID().toString()
     private val dummyRequestId = "request-id"
-    private val dummyUserId = "user-id"
     private val dummyAdminComment = "dummyAdminComment"
     private val dummyCompanyIdAndName = CompanyIdAndName(companyIdRegexSafeCompanyId, "Dummy Company AG")
     private val dummyReportingPeriod = "2023-Q1"
@@ -84,23 +83,24 @@ class BulkDataRequestManagerTest {
         val utilsMock = mock(DataRequestProcessingUtils::class.java)
         `when`(
             utilsMock.storeDataRequestEntityAsOpen(
-                anyString(),
-                any(),
-                anyString(),
-                anyOrNull(),
-                anyOrNull(),
+                userId = anyString(),
+                datalandCompanyId = anyString(),
+                dataType = any(),
+                reportingPeriod = anyString(),
+                contacts = anyOrNull(),
+                message = anyOrNull(),
             ),
         ).thenAnswer {
             DataRequestEntity(
                 dataRequestId = dummyRequestId,
-                datalandCompanyId = it.arguments[0] as String,
-                reportingPeriod = it.arguments[2] as String,
+                datalandCompanyId = it.arguments[1] as String,
+                reportingPeriod = it.arguments[3] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
-                dataType = (it.arguments[1] as DataTypeEnum).value,
+                dataType = (it.arguments[2] as DataTypeEnum).value,
                 messageHistory = mutableListOf(),
                 dataRequestStatusHistory = emptyList(),
-                userId = dummyUserId,
+                userId = it.arguments[0] as String,
                 requestPriority = RequestPriority.Low,
                 adminComment = dummyAdminComment,
             )

@@ -10,6 +10,7 @@ import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestAnswered
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestClosed
 import org.dataland.datalandmessagequeueutils.messages.email.DataRequestNonSourceable
+import org.dataland.datalandmessagequeueutils.messages.email.DataRequestUpdated
 import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.springframework.beans.factory.annotation.Autowired
@@ -138,6 +139,46 @@ class DataRequestResponseEmailSender(
             correlationId,
             ExchangeName.SEND_EMAIL,
             RoutingKeyNames.EMAIL,
+        )
+    }
+
+    /**
+     * Function to send an e-mail notification to a user with a closed data request that there
+     * has been a QA approval for a dataset with regard to the same company, reporting period and
+     * framework.
+     */
+    fun sendEmailToUserWithClosedOrResolvedRequest(
+        dataRequestEntity: DataRequestEntity,
+        correlationId: String,
+    ) {
+        val message = buildEmailMessageForUserWithClosedOrResolvedRequest(dataRequestEntity)
+        cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+            body = objectMapper.writeValueAsString(message),
+            type = MessageType.SEND_EMAIL,
+            correlationId = correlationId,
+            exchange = ExchangeName.SEND_EMAIL,
+            routingKey = RoutingKeyNames.EMAIL,
+        )
+    }
+
+    /**
+     * Function to build the EmailMessage object corresponding to the e-mail sent to
+     * a user with a closed request after a relevant QA status update event happened.
+     */
+    fun buildEmailMessageForUserWithClosedOrResolvedRequest(dataRequestEntity: DataRequestEntity): EmailMessage {
+        val dataRequestUpdatedMail =
+            DataRequestUpdated(
+                companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),
+                reportingPeriod = dataRequestEntity.reportingPeriod,
+                dataTypeLabel = dataRequestEntity.getDataTypeDescription(),
+                creationDate = convertUnitTimeInMsToDate(dataRequestEntity.creationTimestamp),
+                dataRequestId = dataRequestEntity.dataRequestId,
+            )
+        return EmailMessage(
+            typedEmailContent = dataRequestUpdatedMail,
+            receiver = listOf(EmailRecipient.UserId(dataRequestEntity.userId)),
+            cc = emptyList(),
+            bcc = emptyList(),
         )
     }
 }

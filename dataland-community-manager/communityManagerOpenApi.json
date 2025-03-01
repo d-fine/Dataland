@@ -28,6 +28,16 @@
         "summary": "Send a single request",
         "description": "A single of data requests for specific frameworks and companies is being sent.",
         "operationId": "postSingleDataRequest",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -41,6 +51,16 @@
         "responses": {
           "200": {
             "description": "Successfully processed a single data request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleDataRequestResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only admins can impersonate another user.",
             "content": {
               "application/json": {
                 "schema": {
@@ -322,11 +342,11 @@
           }
         ],
         "responses": {
+           "200": {
+            "description": "The specified user has the company role."
+          },
           "404": {
             "description": "Either the specified company does not exist on Dataland or the user does not have the company role for it."
-          },
-          "200": {
-            "description": "The specified user has the company role."
           },
           "default": {
             "description": "An error occurred",
@@ -439,11 +459,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "The specified company has no company owner(s) yet"
-          },
           "200": {
             "description": "The specified company has company owner(s)."
+          },
+          "404": {
+            "description": "The specified company has no company owner(s) yet"
           },
           "default": {
             "description": "An error occurred",
@@ -1201,8 +1221,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "The specified company does not exist on Dataland.",
+          "200": {
+            "description": "Successfully retrieved company role assignments.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1214,8 +1234,8 @@
               }
             }
           },
-          "200": {
-            "description": "Successfully retrieved company role assignments.",
+          "404": {
+            "description": "The specified company does not exist on Dataland.",
             "content": {
               "application/json": {
                 "schema": {
