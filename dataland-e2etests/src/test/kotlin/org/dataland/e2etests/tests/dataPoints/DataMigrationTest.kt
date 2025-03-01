@@ -227,24 +227,26 @@ class DataMigrationTest {
         DataPointTestUtils().assertSfdrDataEquals(downloadedData.data, secondDataset)
     }
 
-    private val minimalDatasetDebt = AdditionalCompanyInformationData(
-        general =
-            AdditionalCompanyInformationGeneral(
-                financialInformation =
-                    AdditionalCompanyInformationGeneralFinancialInformation(
-                        debt = CurrencyDataPoint(BigDecimal.valueOf(1)),
-                    ),
-            ),
-    )
-    private val minimalDatasetEquity = AdditionalCompanyInformationData(
-        general =
-            AdditionalCompanyInformationGeneral(
-                financialInformation =
-                    AdditionalCompanyInformationGeneralFinancialInformation(
-                        equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
-                    ),
-            ),
-    )
+    private val minimalDatasetDebt =
+        AdditionalCompanyInformationData(
+            general =
+                AdditionalCompanyInformationGeneral(
+                    financialInformation =
+                        AdditionalCompanyInformationGeneralFinancialInformation(
+                            debt = CurrencyDataPoint(BigDecimal.valueOf(1)),
+                        ),
+                ),
+        )
+    private val minimalDatasetEquity =
+        AdditionalCompanyInformationData(
+            general =
+                AdditionalCompanyInformationGeneral(
+                    financialInformation =
+                        AdditionalCompanyInformationGeneralFinancialInformation(
+                            equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
+                        ),
+                ),
+        )
 
     @Test
     fun `ensure that after the migration non overlapping accepted datasets results in the correct dynamic view`() {
