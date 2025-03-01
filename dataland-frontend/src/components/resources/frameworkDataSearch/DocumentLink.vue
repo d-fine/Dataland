@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
-import { type RawAxiosResponseHeaders } from 'axios';
+
 import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import { type PrivateFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
@@ -30,9 +30,11 @@ import {
   getBasePrivateFrameworkDefinition,
 } from '@/frameworks/BasePrivateFrameworkRegistry';
 import DownloadProgressSpinner from '@/components/resources/frameworkDataSearch/DownloadProgressSpinner.vue';
-import { getHeaderIfItIsASingleString } from '@/utils/Axios';
+import { getFileExtensionFromHeaders, getMimeTypeFromHeaders } from '@/utils/Axios';
 
 export default defineComponent({
+  name: 'DocumentLink',
+  components: { DownloadProgressSpinner },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -43,8 +45,6 @@ export default defineComponent({
       percentCompleted: undefined as number | undefined,
     };
   },
-  name: 'DocumentLink',
-  components: { DownloadProgressSpinner },
   props: {
     label: String,
     suffix: String,
@@ -103,8 +103,8 @@ export default defineComponent({
           .then((getDocumentsFromStorageResponse) => {
             downloadCompleted = true;
             this.percentCompleted = 100;
-            const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
-            const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+            const fileExtension = getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+            const mimeType = getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
             const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
             docUrl.href = URL.createObjectURL(newBlob);
             docUrl.setAttribute('download', `${this.downloadName}.${fileExtension}`);
@@ -133,31 +133,14 @@ export default defineComponent({
         .then((getDocumentsFromStorageResponse) => {
           downloadCompleted = true;
           this.percentCompleted = 100;
-          const fileExtension = this.getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
-          const mimeType = this.getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
+          const fileExtension = getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
+          const mimeType = getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
           const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
           docUrl.href = URL.createObjectURL(newBlob);
           docUrl.setAttribute('download', `${this.downloadName}.${fileExtension}`);
           document.body.appendChild(docUrl);
           docUrl.click();
         });
-    },
-    /**
-     * Extracts the file extension from the http response headers
-     * @param headers the headers of the get document http response
-     * @returns the file type extension of the downloaded file
-     */
-    getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): DownloadableFileExtension {
-      const contentDisposition = assertDefined(getHeaderIfItIsASingleString(headers, 'content-disposition')).split('.');
-      return contentDisposition[contentDisposition.length - 1] as DownloadableFileExtension;
-    },
-    /**
-     * Extracts the content type from the http response headers
-     * @param headers the headers of the get document http response
-     * @returns the mime type of the received document
-     */
-    getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): string {
-      return assertDefined(getHeaderIfItIsASingleString(headers, 'content-type'));
     },
   },
   computed: {
@@ -166,5 +149,4 @@ export default defineComponent({
     },
   },
 });
-type DownloadableFileExtension = 'pdf' | 'xlsx' | 'xls' | 'ods';
 </script>
