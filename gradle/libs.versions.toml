@@ -135,7 +135,7 @@ mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", versio
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
 # Awaitility
-awaitility = { group = "org.awaitility", name = "awaitility", version = "4.2.2" }
+awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
 
 # JSON
 json = { group = "org.json", name = "json", version = "20250107" }
