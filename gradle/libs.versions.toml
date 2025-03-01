@@ -32,7 +32,7 @@ poi = "5.4.0"
 jodconverter = "4.4.8"
 spring-boot = "3.4.3"
 spring-framework = "6.2.3"
-detekt = "1.23.7"
+detekt = "1.23.8"
 bouncy-castle = "1.70"
 
 [libraries]
