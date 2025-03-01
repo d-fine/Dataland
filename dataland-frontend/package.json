@@ -41,7 +41,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "3.13.11",
+    "@cypress/code-coverage": "3.13.12",
     "@faker-js/faker": "9.5.0",
     "@tsconfig/node20": "20.1.4",
     "@types/markdown-it": "14.1.2",
