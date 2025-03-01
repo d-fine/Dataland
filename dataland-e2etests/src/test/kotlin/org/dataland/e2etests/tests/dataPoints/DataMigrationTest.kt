@@ -227,31 +227,30 @@ class DataMigrationTest {
         DataPointTestUtils().assertSfdrDataEquals(downloadedData.data, secondDataset)
     }
 
+    private val minimalDatasetDebt = AdditionalCompanyInformationData(
+        general =
+            AdditionalCompanyInformationGeneral(
+                financialInformation =
+                    AdditionalCompanyInformationGeneralFinancialInformation(
+                        debt = CurrencyDataPoint(BigDecimal.valueOf(1)),
+                    ),
+            ),
+    )
+    private val minimalDatasetEquity = AdditionalCompanyInformationData(
+        general =
+            AdditionalCompanyInformationGeneral(
+                financialInformation =
+                    AdditionalCompanyInformationGeneralFinancialInformation(
+                        equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
+                    ),
+            ),
+    )
+
     @Test
     fun `ensure that after the migration non overlapping accepted datasets results in the correct dynamic view`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
-        val firstDataset =
-            AdditionalCompanyInformationData(
-                general =
-                    AdditionalCompanyInformationGeneral(
-                        financialInformation =
-                            AdditionalCompanyInformationGeneralFinancialInformation(
-                                equity = CurrencyDataPoint(BigDecimal.valueOf(1)),
-                            ),
-                    ),
-            )
-        val secondDataset =
-            AdditionalCompanyInformationData(
-                general =
-                    AdditionalCompanyInformationGeneral(
-                        financialInformation =
-                            AdditionalCompanyInformationGeneralFinancialInformation(
-                                debt = CurrencyDataPoint(BigDecimal.valueOf(2)),
-                            ),
-                    ),
-            )
-        uploadGenericDummyDataset(firstDataset, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
-        uploadGenericDummyDataset(secondDataset, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
+        uploadGenericDummyDataset(minimalDatasetEquity, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
+        uploadGenericDummyDataset(minimalDatasetDebt, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
         Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
         ApiAwait
             .waitForData(timeoutInSeconds = 30, retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
@@ -265,7 +264,7 @@ class DataMigrationTest {
                         ?.financialInformation
                         ?.equity
                         ?.value,
-                    firstDataset.general
+                    minimalDatasetEquity.general
                         ?.financialInformation
                         ?.equity
                         ?.value,
@@ -275,7 +274,7 @@ class DataMigrationTest {
                         ?.financialInformation
                         ?.debt
                         ?.value,
-                    secondDataset.general
+                    minimalDatasetDebt.general
                         ?.financialInformation
                         ?.debt
                         ?.value,
