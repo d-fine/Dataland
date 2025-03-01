@@ -72,6 +72,6 @@
     "vite": "6.1.1",
     "vite-plugin-istanbul": "6.0.2",
     "vue-markdown-render": "2.2.1",
-    "vue-tsc": "2.2.2"
+    "vue-tsc": "2.2.4"
   }
 }
