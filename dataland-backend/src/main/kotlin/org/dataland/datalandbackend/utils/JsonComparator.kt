@@ -42,7 +42,7 @@ object JsonComparator {
         node.isNull ||
             node.isObject &&
             node.fields().asSequence().all {
-                it.value.isNull || it.value.isEmpty
+                it.value.isNull || it.value.isEmpty || isFullyNullObject(it.value)
             }
 
     private fun valuesDiffer(

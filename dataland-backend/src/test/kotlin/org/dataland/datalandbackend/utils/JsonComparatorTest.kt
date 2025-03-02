@@ -24,6 +24,7 @@ class JsonComparatorTest {
             """{"a": {}};{"a": null}""",
             """{"a": null};{"a": {"c": null}}""",
             """{"a": null};{"a": {"b": null, "c": {}, "d": []}}""",
+            """{"a": null};{"a": {"b": null, "c": {"d": null, "e": null, "f": {"g": null, "h": {}}}}}""",
         ],
     )
     fun `should see fully null objects and null as equal iff the option is enabled`(
