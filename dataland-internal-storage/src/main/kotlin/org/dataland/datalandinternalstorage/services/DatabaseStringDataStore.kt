@@ -158,9 +158,7 @@ class DatabaseStringDataStore(
 
     /**
      * Method that listens to the data point storage queue and stores data points into the database
-     * @param payload the content of the message
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
+     * @param messages a list of messages containing relevant information
      */
     @RabbitListener(
         bindings = [
