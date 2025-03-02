@@ -85,7 +85,7 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ) {
-            if (expectedClassNames.none { className.contains(it) } ) {
+            if (expectedClassNames.none { className.contains(it) }) {
                 logger.error("Invalid class name $className (correlation ID: $correlationId).")
                 throw InvalidInputApiException(
                     "Invalid class name.",
