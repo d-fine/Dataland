@@ -131,7 +131,7 @@ class DataManagerTest(
         val dataId = dataManager.storeDataset(euTaxonomyNonFinancialDataset, false, correlationId)
         `when`(mockStorageClient.selectDataById(dataId, correlationId))
             .thenThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+        messageQueueListenerForDataManager.removeStoredItemsFromTemporaryStore(
             getSingleDataStoredMessage(dataId),
         )
         val thrown =
@@ -149,7 +149,7 @@ class DataManagerTest(
         `when`(mockStorageClient.selectDataById(dataId, correlationId)).thenReturn(
             objectMapper.writeValueAsString(euTaxonomyNonFinancialDataset.copy(dataType = DataType("eutaxonomy-financials"))),
         )
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+        messageQueueListenerForDataManager.removeStoredItemsFromTemporaryStore(
             getSingleDataStoredMessage(dataId),
         )
         val thrown =
@@ -175,7 +175,7 @@ class DataManagerTest(
             buildReturnOfMockDataSelect(storableDatasetForNonFinancials),
         )
 
-        messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+        messageQueueListenerForDataManager.removeStoredItemsFromTemporaryStore(
             getSingleDataStoredMessage(dataId),
         )
         val thrown =
@@ -198,7 +198,7 @@ class DataManagerTest(
     fun `check an exception is thrown in logging of stored data when dataId is empty`() {
         val thrown =
             assertThrows<AmqpRejectAndDontRequeueException> {
-                messageQueueListenerForDataManager.removeStoredItemFromTemporaryStore(
+                messageQueueListenerForDataManager.removeStoredItemsFromTemporaryStore(
                     getSingleDataStoredMessage(""),
                 )
             }

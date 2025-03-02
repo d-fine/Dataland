@@ -181,7 +181,7 @@ class DatabaseStringDataStore(
         containerFactory = "consumerBatchContainerFactory",
     )
     @Transactional
-    fun storeDataPoint(messages: List<Message>) {
+    fun storeDataPoints(messages: List<Message>) {
         logger.info("Processing ${messages.size} Data Point Received Messages.")
 
         MessageQueueUtils.rejectMessageOnException {

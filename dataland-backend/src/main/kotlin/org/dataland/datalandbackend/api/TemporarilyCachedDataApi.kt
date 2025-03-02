@@ -39,7 +39,7 @@ interface TemporarilyCachedDataApi {
 
     /**
      * Retrieve batched data from the internal cache
-     * @param dataId filters the requested data to a specific entry.
+     * @param dataIds filters the requested data according to a list of data IDs.
      */
     @Operation(
         summary = "Retrieve specific data from the cache store of the backend.",
@@ -55,7 +55,7 @@ interface TemporarilyCachedDataApi {
         produces = ["application/json"],
     )
     fun getBatchReceivedPublicData(
-        @RequestBody dataId: List<String>,
+        @RequestBody dataIds: List<String>,
     ): ResponseEntity<Map<String, String>>
 
     /**

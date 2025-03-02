@@ -31,11 +31,12 @@ class DataPointValidator
         private val validatedExistingDatapointTypes = ConcurrentHashMap<String, Boolean>()
 
         companion object {
-            val WHITELSITED_CLASS_NAMES =
+            val expectedClassNames =
                 setOf(
+                    "org.dataland.datalandbackend.model.",
                     "java.time.LocalDate",
-                    "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector," +
-                        "org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
+                    "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector",
+                    "org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
                 )
         }
 
@@ -84,9 +85,7 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ) {
-            if (!className.startsWith("org.dataland.datalandbackend.model.") &&
-                !WHITELSITED_CLASS_NAMES.contains(className)
-            ) {
+            if (expectedClassNames.none { className.contains(it) } ) {
                 logger.error("Invalid class name $className (correlation ID: $correlationId).")
                 throw InvalidInputApiException(
                     "Invalid class name.",

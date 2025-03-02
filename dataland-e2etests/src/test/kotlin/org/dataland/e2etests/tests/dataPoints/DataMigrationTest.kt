@@ -249,7 +249,7 @@ class DataMigrationTest {
         )
 
     @Test
-    fun `ensure that after the migration non overlapping accepted datasets results in the correct dynamic view`() {
+    fun `ensure that after the migration non overlapping accepted datasets result in the correct dynamic view`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         uploadGenericDummyDataset(minimalDatasetEquity, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)
         uploadGenericDummyDataset(minimalDatasetDebt, DataTypeEnum.additionalMinusCompanyMinusInformation, companyId = companyId)

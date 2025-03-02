@@ -143,7 +143,7 @@ class MessageQueueListenerForDataManager(
         ],
         containerFactory = "consumerBatchContainerFactory",
     )
-    fun removeStoredItemFromTemporaryStore(messages: List<Message>) {
+    fun removeStoredItemsFromTemporaryStore(messages: List<Message>) {
         logger.info("Processing ${messages.size} Data Point Received Messages.")
         MessageQueueUtils.rejectMessageOnException {
             for (message in messages) {
