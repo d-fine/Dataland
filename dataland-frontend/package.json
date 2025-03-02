@@ -41,7 +41,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "3.13.11",
+    "@cypress/code-coverage": "3.13.12",
     "@faker-js/faker": "9.5.0",
     "@tsconfig/node20": "20.1.4",
     "@types/markdown-it": "14.1.2",
@@ -54,7 +54,7 @@
     "cypress": "13.17.0",
     "depcheck": "1.4.7",
     "dompurify": "3.2.4",
-    "eslint": "9.20.1",
+    "eslint": "9.21.0",
     "eslint-plugin-cypress": "4.1.0",
     "eslint-plugin-jsdoc": "50.6.3",
     "eslint-plugin-vue": "9.32.0",
@@ -65,7 +65,7 @@
     "npm-check-updates": "17.1.15",
     "otplib": "12.0.1",
     "prettier": "3.5.2",
-    "sass": "1.85.0",
+    "sass": "1.85.1",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.7.3",
