@@ -24,7 +24,7 @@
         font-family: variables.$ibm-plex-sans;
       }
 
-      &:hover {
+      &:not(.p-disabled):hover {
         border-color: variables.$gray-light;
       }
       &.p-disabled {
@@ -34,7 +34,10 @@
     }
     .p-tab-active {
       border-color: colors.$main-color;
-      color: colors.$main-color;
+      a{
+        color: colors.$main-color;
+      }
+
 
       &:hover {
         border-color: colors.$main-color;
