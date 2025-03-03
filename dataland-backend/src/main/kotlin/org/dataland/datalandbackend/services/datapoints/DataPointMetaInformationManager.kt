@@ -107,4 +107,21 @@ class DataPointMetaInformationManager
             dataPointMetaInformation.currentlyActive = newCurrentlyActiveValue
             dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
         }
+
+        /**
+         * Method to get the reporting periods with active data points for a specific set of data point types and one company
+         * @param dataPointTypes the data point types to filter for
+         * @param companyId the company to filter for
+         * @return the reporting periods with at least one active data point
+         */
+        fun getReportingPeriodsWithActiveDataPoints(
+            dataPointTypes: Set<String>,
+            companyId: String,
+        ): Set<String> =
+            dataPointMetaInformationRepositoryInterface
+                .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
+                    dataPointTypes = dataPointTypes,
+                    companyId = companyId,
+                ).map { it.reportingPeriod }
+                .toSet()
     }

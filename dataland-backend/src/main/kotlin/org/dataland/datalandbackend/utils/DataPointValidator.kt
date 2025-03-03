@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.validation.Validator
 import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
+import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
+import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
 import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
 import org.slf4j.LoggerFactory
@@ -25,6 +27,7 @@ class DataPointValidator
     constructor(
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
+        private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val validator: Validator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -110,6 +113,48 @@ class DataPointValidator
             val dataPointObject = checkCastIntoClass(jsonData, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
             constraints?.let { validateConstraints(dataPointObject as BaseDataPoint<*>, constraints) }
+        }
+
+        /**
+         * Validates the dataset by checking the data points and referenced reports
+         * @param datasetContent the content of the dataset
+         * @param referencedReports the referenced reports
+         * @param correlationId the correlation id for the operation
+         */
+        fun validateDataset(
+            datasetContent: Map<String, JsonSpecificationLeaf>,
+            referencedReports: Map<String, CompanyReport>?,
+            correlationId: String,
+        ) {
+            referencedReportsUtilities.validateReferencedReportConsistency(referencedReports ?: emptyMap())
+            val observedDocumentReferences = mutableSetOf<String>()
+
+            datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->
+                val dataPoint = objectMapper.writeValueAsString(dataPointJsonLeaf.content)
+                if (dataPoint.isEmpty()) return@forEach
+                validateDataPoint(dataPointType, dataPoint, correlationId)
+
+                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
+                if (companyReport != null && referencedReports != null) {
+                    observedDocumentReferences.add(companyReport.fileReference)
+                    referencedReportsUtilities.validateReportConsistencyWithGlobalList(
+                        companyReport,
+                        referencedReports,
+                    )
+                }
+            }
+
+            if (referencedReports != null) {
+                val expectedObservedReferences = referencedReports.values.map { it.fileReference }.toSet()
+                val unusedReferences = expectedObservedReferences - observedDocumentReferences
+                if (unusedReferences.isNotEmpty()) {
+                    throw InvalidInputApiException(
+                        "Mismatching document references",
+                        "The following document references were not used " +
+                            "but listed in the referenced report field: $unusedReferences",
+                    )
+                }
+            }
         }
 
         /**

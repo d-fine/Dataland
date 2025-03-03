@@ -7,8 +7,11 @@ import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.services.CompanyQueryManager
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -31,6 +34,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
@@ -51,6 +55,7 @@ class AssembledDataManager
         private val dataPointManager: DataPointManager,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
+        private val metaDataManager: DataPointMetaInformationManager,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -70,7 +75,7 @@ class AssembledDataManager
         ): String {
             val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) =
                 splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
-            validateDataset(dataContent, referencedReports, correlationId)
+            dataPointValidator.validateDataset(dataContent, referencedReports, correlationId)
             return storeSplitDataset(uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
         }
 
@@ -390,9 +395,7 @@ class AssembledDataManager
             correlationId: String,
         ): String? {
             val framework = dataDimensions.dataType
-            val frameworkSpecification = getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-            val relevantDataPointTypes = JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+            val relevantDataPointTypes = getRelevantDataPointTypes(framework)
             val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
             val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
 
@@ -403,5 +406,71 @@ class AssembledDataManager
                 )
             }
             return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
+        }
+
+        /**
+         * Retrieves the relevant data point types for a specific framework
+         * @param framework the name of the framework
+         * @return a set of all relevant data point types
+         */
+        fun getRelevantDataPointTypes(framework: String): Set<String> {
+            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
+            return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
+        }
+
+        /**
+         * Retrieves all reporting periods with at least on active data point for a specific company and framework
+         */
+        fun getAllReportingPeriodsWithActiveDataPoints(
+            companyId: String,
+            framework: String,
+        ): Set<String> =
+            try {
+                metaDataManager.getReportingPeriodsWithActiveDataPoints(
+                    dataPointTypes = getRelevantDataPointTypes(framework),
+                    companyId = companyId,
+                )
+            } catch (ignore: InvalidInputApiException) {
+                emptySet()
+            }
+
+        override fun getAllDatasetsAndMetaInformation(
+            searchFilter: DataMetaInformationSearchFilter,
+            correlationId: String,
+        ): List<PlainDataAndMetaInformation> {
+            requireNotNull(searchFilter.dataType) { "Framework must be specified." }
+            requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
+            val companyId = searchFilter.companyId
+            val framework = searchFilter.dataType.toString()
+            val reportingPeriods = getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
+            if (reportingPeriods.isEmpty()) {
+                throw ResourceNotFoundApiException(
+                    "No data available.",
+                    "No data found for company $companyId and framework $framework.",
+                )
+            }
+
+            return reportingPeriods.map {
+                val data =
+                    getDatasetData(BasicDataDimensions(companyId, framework, it), correlationId)
+                        ?: throw IllegalStateException(
+                            "Data expected for $it, $companyId and ${searchFilter.dataType}" +
+                                " but not found. Correlation ID: $correlationId",
+                        )
+                PlainDataAndMetaInformation(
+                    metaInfo =
+                        DataMetaInformation(
+                            dataId = "not available",
+                            companyId = companyId,
+                            dataType = searchFilter.dataType,
+                            reportingPeriod = it,
+                            currentlyActive = true,
+                            uploadTime = Instant.now().toEpochMilli(),
+                            qaStatus = QaStatus.Accepted,
+                        ),
+                    data = data,
+                )
+            }
         }
     }

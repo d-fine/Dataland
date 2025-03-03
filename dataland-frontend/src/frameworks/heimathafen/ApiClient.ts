@@ -2,10 +2,11 @@
 import { type AxiosPromise, type AxiosRequestConfig, type AxiosInstance } from 'axios';
 import { type CompanyAssociatedData } from '@/api-models/CompanyAssociatedData';
 import {
+  HeimathafenDataControllerApi,
+  type HeimathafenData,
   type Configuration,
   type DataMetaInformation,
-  type HeimathafenData,
-  HeimathafenDataControllerApi,
+  type ExportFileType,
 } from '@clients/backend';
 import { type PublicFrameworkDataApi } from '@/utils/api/UnifiedFrameworkDataApi';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
@@ -38,27 +39,30 @@ export class HeimathafenApiClient implements PublicFrameworkDataApi<HeimathafenD
     return this.openApiDataController.postCompanyAssociatedHeimathafenData(data, bypassQa, options);
   }
 
-  exportCompanyAssociatedDataToJson(
-    dataId: string,
+  exportCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
+    fileFormat: ExportFileType,
     options?: AxiosRequestConfig
   ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
   AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToJson(dataId, options);
+    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataByDimensions(
+      reportingPeriod,
+      companyId,
+      fileFormat,
+      options
+    );
   }
 
-  exportCompanyAssociatedDataToCsv(
-    dataId: string,
+  getCompanyAssociatedDataByDimensions(
+    reportingPeriod: string,
+    companyId: string,
     options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToCsv(dataId, options);
-  }
-
-  exportCompanyAssociatedDataToExcel(
-    dataId: string,
-    options?: AxiosRequestConfig
-  ): //eslint-disable-next-line @typescript-eslint/no-explicit-any
-  AxiosPromise<any> {
-    return this.openApiDataController.exportCompanyAssociatedHeimathafenDataToExcel(dataId, options);
+  ): AxiosPromise<CompanyAssociatedData<HeimathafenData>> {
+    return this.openApiDataController.getCompanyAssociatedHeimathafenDataByDimensions(
+      reportingPeriod,
+      companyId,
+      options
+    );
   }
 }

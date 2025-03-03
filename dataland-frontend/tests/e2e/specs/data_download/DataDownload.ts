@@ -1,12 +1,12 @@
 import { join } from 'path';
-import { DataTypeEnum, type LksgData, type StoredCompany } from '@clients/backend';
+import { DataTypeEnum, ExportFileType, type LksgData, type StoredCompany } from '@clients/backend';
 import { admin_name, admin_pw, getBaseUrl, reader_name, reader_pw } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
 import { uploadFrameworkDataForPublicToolboxFramework } from '@e2e/utils/FrameworkUpload.ts';
 import LksgBaseFrameworkDefinition from '@/frameworks/lksg/BaseFrameworkDefinition';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
-import { ExportFileTypes } from '@/types/ExportFileTypes.ts';
+import { ExportFileTypeInformation } from '@/types/ExportFileTypeInformation.ts';
 import { describeIf } from '@e2e/support/TestUtility.ts';
 
 describeIf(
@@ -19,7 +19,6 @@ describeIf(
     const dataType = DataTypeEnum.Lksg;
     const minimumFileSizeInByte = 5000;
 
-    let dataId: string;
     let storedCompany: StoredCompany;
     let lksgFixtureWithNoNullFields: FixtureData<LksgData>;
 
@@ -47,9 +46,9 @@ describeIf(
 
     /**
      * Visit framework data page, select download format and click download button
-     * @param fileFormat Needs to be one of the identifiers of an ExportFileTypes
+     * @param fileType Needs to be one of the identifiers of an ExportFileTypes
      */
-    function visitPageAndClickDownloadButton(fileFormat: string): void {
+    function visitPageAndClickDownloadButton(fileType: string): void {
       cy.visit(getBaseUrl() + `/companies/${storedCompany.companyId}/frameworks/${dataType}`);
 
       cy.get('button[data-test=downloadDataButton]').should('exist').click();
@@ -57,7 +56,7 @@ describeIf(
         .should('exist')
         .within(() => {
           cy.get('[data-test="reportingYearSelector"]').select(reportingPeriod);
-          cy.get('[data-test="formatSelector"]').select(fileFormat);
+          cy.get('[data-test="fileTypeSelector"]').select(fileType);
           cy.get('button[data-test=downloadDataButtonInModal]').click();
         });
     }
@@ -81,9 +80,7 @@ describeIf(
               reportingPeriod,
               lksgFixtureWithNoNullFields.t,
               true
-            ).then((dataMetaInformation) => {
-              dataId = dataMetaInformation.dataId;
-            });
+            );
           }
         );
       });
@@ -94,10 +91,11 @@ describeIf(
     });
 
     it('Download data as csv file, check for appropriate size and delete it afterwards', () => {
-      const exportFileType = ExportFileTypes.CsvFile;
-      const fileName = `${dataId}.${exportFileType.fileExtension}`;
+      const exportFileType = ExportFileType.Csv;
+      const fileTypeInformation = ExportFileTypeInformation.CSV;
+      const fileName = `${reportingPeriod}-${dataType}-${storedCompany.companyId}.${fileTypeInformation.fileExtension}`;
 
-      visitPageAndClickDownloadButton(exportFileType.identifier);
+      visitPageAndClickDownloadButton(exportFileType.toString());
 
       const filePath = join(Cypress.config('downloadsFolder'), fileName);
       checkThatFileExists(filePath);
@@ -105,10 +103,11 @@ describeIf(
     });
 
     it('Download data as Excel-compatible csv file, check for appropriate size and delete it afterwards', () => {
-      const exportFileType = ExportFileTypes.ExcelFile;
-      const fileName = `${dataId}.${exportFileType.fileExtension}`;
+      const exportFileType = ExportFileType.Excel;
+      const fileTypeInformation = ExportFileTypeInformation.EXCEL;
+      const fileName = `${reportingPeriod}-${dataType}-${storedCompany.companyId}.${fileTypeInformation.fileExtension}`;
 
-      visitPageAndClickDownloadButton(exportFileType.identifier);
+      visitPageAndClickDownloadButton(exportFileType.toString());
 
       const filePath = join(Cypress.config('downloadsFolder'), fileName);
       checkThatFileExists(filePath);
@@ -121,10 +120,11 @@ describeIf(
     });
 
     it('Download data as json file, check for appropriate size and delete it afterwards', () => {
-      const exportFileType = ExportFileTypes.JsonFile;
-      const fileName = `${dataId}.${exportFileType.fileExtension}`;
+      const exportFileType = ExportFileType.Json;
+      const fileTypeInformation = ExportFileTypeInformation.JSON;
+      const fileName = `${reportingPeriod}-${dataType}-${storedCompany.companyId}.${fileTypeInformation.fileExtension}`;
 
-      visitPageAndClickDownloadButton(exportFileType.identifier);
+      visitPageAndClickDownloadButton(exportFileType.toString());
 
       const filePath = join(Cypress.config('downloadsFolder'), fileName);
       checkThatFileExists(filePath);

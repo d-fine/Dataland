@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
@@ -70,8 +71,7 @@ class AssembledDataManagerTest {
         AssembledDataManager(
             dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
             specificationClient, datasetDatapointRepository, spyDataPointManager,
-            ReferencedReportsUtilities(testObjectMapper),
-            companyQueryManager,
+            ReferencedReportsUtilities(testObjectMapper), companyQueryManager, metaDataManager,
         )
 
     private val correlationId = "test-correlation-id"
@@ -180,6 +180,17 @@ class AssembledDataManagerTest {
 
         assertThrows<ResourceNotFoundApiException> {
             assembledDataManager.getDatasetData(dataDimensions, correlationId)
+        }
+
+        val searchFilter =
+            DataMetaInformationSearchFilter(
+                companyId = companyId,
+                dataType = DataType(framework),
+                reportingPeriod = reportingPeriod,
+                onlyActive = true,
+            )
+        assertThrows<ResourceNotFoundApiException> {
+            assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId)
         }
     }
 
