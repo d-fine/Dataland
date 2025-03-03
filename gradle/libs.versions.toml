@@ -20,10 +20,10 @@ kotlin = "2.0.0"
 okhttp3 = "4.12.0"
 moshi = "1.15.2"
 mockito = "5.15.2"
-junit-jupiter = "5.11.4"
+junit-jupiter = "5.12.0"
 log4j = "2.24.3"
 jackson = "2.18.2"
-logback = "1.5.16"
+logback = "1.5.17"
 flyway = "11.3.3"
 cloudevents = "4.0.1"
 itext = "9.1.0"
@@ -70,7 +70,7 @@ logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.
 logback-core = { group = "ch.qos.logback", name = "logback-core", version.ref = "logback" }
 
 # SLF4J
-slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "2.0.16" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version = "2.0.17" }
 
 # Spring
 spring-boot = { group = "org.springframework.boot", name = "spring-boot", version.ref = "spring-boot" }
@@ -135,7 +135,7 @@ mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", versio
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junit-jupiter" }
 
 # Awaitility
-awaitility = { group = "org.awaitility", name = "awaitility", version = "4.2.2" }
+awaitility = { group = "org.awaitility", name = "awaitility", version = "4.3.0" }
 
 # JSON
 json = { group = "org.json", name = "json", version = "20250107" }
