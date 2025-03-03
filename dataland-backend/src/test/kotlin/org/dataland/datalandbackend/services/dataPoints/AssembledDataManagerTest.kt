@@ -39,6 +39,7 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import java.time.Instant
 import java.util.Optional
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 
 class AssembledDataManagerTest {
     private val dataManager = mock(DataManager::class.java)
@@ -176,6 +177,17 @@ class AssembledDataManagerTest {
         assertThrows<ResourceNotFoundApiException> {
             assembledDataManager.getDatasetData(dataDimensions, correlationId)
         }
+
+        val searchFilter = DataMetaInformationSearchFilter(
+            companyId = companyId,
+            dataType = DataType(framework),
+            reportingPeriod = reportingPeriod,
+            onlyActive = true,
+        )
+        assertThrows<ResourceNotFoundApiException> {
+            assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId)
+        }
+
     }
 
     private fun setMockData(

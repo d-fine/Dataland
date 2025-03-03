@@ -390,8 +390,8 @@ class AssembledDataManager
             val companyId = searchFilter.companyId
             val framework = searchFilter.dataType.toString()
             val reportingPeriods = getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
-            require(reportingPeriods.isNotEmpty()) {
-                InvalidInputApiException(
+            if (reportingPeriods.isEmpty()) {
+                throw ResourceNotFoundApiException(
                     "No data available.",
                     "No data found for company $companyId and framework $framework.",
                 )
