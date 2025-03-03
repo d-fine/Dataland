@@ -120,7 +120,7 @@ class DataRequestAlterationManagerTest {
                 searchFilter =
                     DataRequestsFilter(
                         dataType = setOf(metaData.dataType),
-                        datalandCompanyId = setOf(metaData.companyId),
+                        datalandCompanyIds = setOf(metaData.companyId),
                         reportingPeriod = metaData.reportingPeriod,
                         requestStatus = setOf(RequestStatus.Open, RequestStatus.NonSourceable),
                     ),
