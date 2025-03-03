@@ -37,13 +37,13 @@ describe('Component test for the Document Overview', () => {
       times: 1,
     }).as('fetchCompanyInfo');
     const hasCompanyAtLeastOneOwnerStatusCode = hasCompanyAtLeastOneOwner ? 200 : 404;
-    cy.intercept('**/community/company-ownership/' + dummyCompanyId, {
+    cy.intercept(`**/community/company-ownership/${dummyCompanyId}`, {
       statusCode: hasCompanyAtLeastOneOwnerStatusCode,
     }).as('fetchCompanyOwnershipExistence');
-    cy.intercept('**/community/company-role-assignments/CompanyOwner/' + dummyCompanyId + '/mock-user-id', {
+    cy.intercept(`**/community/company-role-assignments/CompanyOwner/${dummyCompanyId}/mock-user-id`, {
       statusCode: 200,
     }).as('fetchValidateCompanyRole');
-    cy.intercept(`**/?companyId=` + dummyCompanyId, {
+    cy.intercept(`**/?companyId=${dummyCompanyId}`, {
       body: mockFetchedDocuments,
       times: 1,
     }).as('fetchDocumentsFilteredCompanyId');
