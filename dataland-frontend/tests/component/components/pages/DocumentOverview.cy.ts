@@ -122,7 +122,7 @@ describe('Component test for the Document Overview', () => {
       });
   });
 
-  it.only('Checks if filter function shows only results with selected DocumentCategory and if reset button resets filter to show all results', () => {
+  it('Checks if filter function shows only results with selected DocumentCategory and if reset button resets filter to show all results', () => {
     const hasCompanyAtLeastOneOwner = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
