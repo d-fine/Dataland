@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import org.dataland.datalandbackend.model.companies.CompanyAssociatedData
+import org.dataland.datalandbackendutils.model.ExportFileType
 import org.dataland.datalandbackendutils.utils.JsonUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -27,12 +28,28 @@ class DataExportService
         }
 
         /**
+         * Create a ByteStream to be used for Export from CompanyAssociatedData.
+         * @param companyAssociatedData passed companyAssociatedData to be exported
+         * @return InputStreamResource byteStream for export.
+         * Note that swagger only supports InputStreamResources and not OutputStreams
+         */
+        fun <T> buildStreamFromCompanyAssociatedData(
+            companyAssociatedData: CompanyAssociatedData<T>,
+            exportFileType: ExportFileType,
+        ): InputStreamResource =
+            when (exportFileType) {
+                ExportFileType.CSV -> buildCsvStreamFromCompanyAssociatedData(companyAssociatedData)
+                ExportFileType.EXCEL -> buildExcelStreamFromCompanyAssociatedData(companyAssociatedData)
+                ExportFileType.JSON -> buildJsonStreamFromCompanyAssociatedData(companyAssociatedData)
+            }
+
+        /**
          * Create a ByteStream to be used for CSV Export from CompanyAssociatedData.
          * @param companyAssociatedData passed companyAssociatedData to be exported
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
-        fun <T> buildCsvStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
+        private fun <T> buildCsvStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
             val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
 
             val csvSchemaAndData = createCsvSchemaAndDataFromJson(jsonTree)
@@ -53,7 +70,7 @@ class DataExportService
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
-        fun <T> buildExcelStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
+        private fun <T> buildExcelStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
             val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
 
             val csvSchemaAndData = createCsvSchemaAndDataFromJson(jsonTree)
@@ -77,7 +94,7 @@ class DataExportService
          * @return InputStreamResource byteStream for export.
          * Note that swagger only supports InputStreamResources and not OutputStreams
          */
-        fun <T> buildJsonStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
+        private fun <T> buildJsonStreamFromCompanyAssociatedData(companyAssociatedData: CompanyAssociatedData<T>): InputStreamResource {
             val jsonTree: JsonNode = convertDataToJson(companyAssociatedData)
             val outputStream = ByteArrayOutputStream()
 
