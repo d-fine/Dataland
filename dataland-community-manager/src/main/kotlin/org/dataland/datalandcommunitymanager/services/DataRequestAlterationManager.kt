@@ -323,7 +323,7 @@ class DataRequestAlterationManager
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
                         dataType = setOf(metaData.dataType),
-                        datalandCompanyId = metaData.companyId,
+                        datalandCompanyIds = setOf(metaData.companyId),
                         reportingPeriod = metaData.reportingPeriod,
                         requestStatus = setOf(RequestStatus.Closed, RequestStatus.Resolved),
                     ),
