@@ -12,6 +12,12 @@ import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
+import org.dataland.specificationservice.openApiClient.model.DataPointBaseTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.DataPointTypeSpecification
+import org.dataland.specificationservice.openApiClient.model.IdWithRef
 
 class DataPointValidatorTest {
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
@@ -79,6 +85,47 @@ class DataPointValidatorTest {
     fun `check that parsing a data point with a broken enum results in the expected exception`() {
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithBrokenEnum), validationClass, correlationId)
+        }
+    }
+
+    @Test
+    fun `check that unused referenced reports are rejected`() {
+        val dataPointId = "someCurrencyDataPoint"
+        val dataPointBaseTypeId = "extendedCurrencyDataPoint"
+
+        val dataPoint = JsonSpecificationLeaf(
+            dataPointId = dataPointId,
+            jsonPath = "dummy",
+            content = getJsonNode(currencyDataPoint)
+        )
+
+        val companyReport = CompanyReport(
+            fileReference = "fileReference",
+            fileName = "fileName",
+            publicationDate = LocalDate.parse("2021-01-01"),
+        )
+
+        whenever(specificationClient.getDataPointTypeSpecification("dummy"))
+            .thenReturn(DataPointTypeSpecification(
+                dataPointType = IdWithRef(id = dataPointId, ref = "dummy"),
+                name = "dummy",
+                businessDefinition = "dummy",
+                dataPointBaseType = IdWithRef(id = dataPointBaseTypeId, ref = "dummy"),
+                usedBy = emptyList()
+            ))
+
+        whenever(specificationClient.getDataPointBaseType(dataPointBaseTypeId))
+            .thenReturn(DataPointBaseTypeSpecification(
+                dataPointBaseType = IdWithRef(id = dataPointBaseTypeId, ref = "dummy"),
+                name = "dummy",
+                businessDefinition = "dummy",
+                validatedBy = "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint",
+                usedBy = emptyList(),
+                example = "dummy"
+            ))
+
+        assertThrows<InvalidInputApiException> {
+            dataPointValidator.validateDataset(mapOf("dummy" to dataPoint), mapOf("report" to companyReport), correlationId)
         }
     }
 }
