@@ -34,7 +34,7 @@
         </div>
       </div>
       <div>
-        <div class="card-grid">
+        <div class="card-grid" :data-test="'summaryPanels'">
           <ClaimOwnershipPanel v-if="isClaimPanelVisible" :company-id="companyId" />
           <FrameworkSummaryPanel
             v-for="framework of frameworksToDisplay"
