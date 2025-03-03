@@ -4,7 +4,10 @@ import { generateMetaInfoDataForOneCompany } from '@e2e/fixtures/custom_mocks/Da
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from '@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker';
 import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker';
 import { generateStoredDataRequests } from '@e2e/fixtures/custom_mocks/StoredDataRequestsFaker';
-import { generateSfdrQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
+import {
+  generateSfdrLinkedQaReports,
+  generateSfdrQaReportPreparedFixtures,
+} from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
 import { generateEuTaxonomyNonFinancialsQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/EuTaxonomyNonFinancialsQaReportPreparedFixtures';
 import { generateAdditionalCompanyInformationLinkedQaReports } from '@e2e/fixtures/custom_mocks/AdditionalCompanyInformationQaPreparedFixtures.ts';
 import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
@@ -66,5 +69,9 @@ export function exportCustomMocks(): void {
   fs.writeFileSync(
     '../testing/data/AdditionalCompanyInformationQaReportPreparedFixtures.json',
     JSON.stringify(generateAdditionalCompanyInformationLinkedQaReports(), null, '\t')
+  );
+  fs.writeFileSync(
+    '../testing/data/SfdrLinkedDataAndQaReportPreparedFixtures.json',
+    JSON.stringify(generateSfdrLinkedQaReports(), null, '\t')
   );
 }

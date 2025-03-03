@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyAverageGrossHourlyEarningsMaleEmployees",
+  "name" : "Average Gross Hourly Earnings Male Employees",
+  "businessDefinition" : "Average gross hourly earnings of male employees",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoEnvironmentalPolicy",
+  "name" : "Environmental Policy",
+  "businessDefinition" : "Existence of an environmental policy.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

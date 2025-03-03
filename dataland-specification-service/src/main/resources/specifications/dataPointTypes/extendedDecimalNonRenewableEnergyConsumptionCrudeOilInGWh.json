@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionCrudeOilInGWh",
+  "name" : "Non-Renewable Energy Consumption Crude Oil",
+  "businessDefinition" : "Energy consumption from crude oil (including petrol, diesel, fuel oil and others) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

@@ -4,7 +4,9 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
+import org.dataland.e2etests.utils.DataPointTestUtils
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpStatus
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class Sfdr {
@@ -47,7 +50,8 @@ class Sfdr {
 
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
-        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+
+        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test
@@ -58,14 +62,19 @@ class Sfdr {
                 listOfOneSfdrDataset,
                 apiAccessor::sfdrUploaderFunction,
             )
+
         val receivedDataMetaInformation = listOfUploadInfo[0].actualStoredDataMetaInfo
+        Thread.sleep(2000)
         val downloadedAssociatedData =
-            apiAccessor.dataControllerApiForSfdrData
-                .getCompanyAssociatedSfdrDataByDimensions(
-                    reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
-                    companyId = receivedDataMetaInformation.companyId,
-                )
-        assertEquals(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+            ApiAwait.waitForData(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+                apiAccessor.dataControllerApiForSfdrData
+                    .getCompanyAssociatedSfdrDataByDimensions(
+                        reportingPeriod = receivedDataMetaInformation!!.reportingPeriod,
+                        companyId = receivedDataMetaInformation.companyId,
+                    )
+            }
+
+        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
     }
 
     @Test

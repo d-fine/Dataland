@@ -1,0 +1,8 @@
+{
+  "id" : "extendedIntegerNumberOfReportedIncidentsOfHumanRightsViolations",
+  "name" : "Number Of Reported Incidents Of Human Rights Violations",
+  "businessDefinition" : "Number of cases of severe human rights issues and incidents connected to the company. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 14. ",
+  "dataPointBaseTypeId" : "extendedInteger",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

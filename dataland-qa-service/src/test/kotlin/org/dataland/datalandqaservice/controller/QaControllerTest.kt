@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import java.util.UUID
 import org.dataland.datalandbackend.openApiClient.model.QaStatus as OpenApiClientQaStatus
 import org.dataland.datalandbackendutils.model.QaStatus as BackendUtilsQaStatus
@@ -46,13 +46,13 @@ class QaControllerTest(
     @Autowired private val dataPointQaReviewManager: DataPointQaReviewManager,
     @Autowired private val objectMapper: ObjectMapper,
 ) {
-    @MockBean
+    @MockitoBean
     private lateinit var dataPointControllerApi: DataPointControllerApi
 
-    @MockBean
+    @MockitoBean
     private lateinit var companyControllerApi: CompanyDataControllerApi
 
-    @MockBean
+    @MockitoBean
     private lateinit var cloudEventMessageHandler: CloudEventMessageHandler
 
     val dataId = UUID.randomUUID().toString()
@@ -73,6 +73,7 @@ class QaControllerTest(
                 qaStatus = OpenApiClientQaStatus.Accepted,
                 currentlyActive = true,
                 uploadTime = 0,
+                uploaderUserId = "",
             ),
         )
 

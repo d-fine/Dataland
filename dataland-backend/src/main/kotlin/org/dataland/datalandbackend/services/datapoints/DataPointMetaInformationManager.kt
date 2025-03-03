@@ -33,6 +33,15 @@ class DataPointMetaInformationManager
             }
 
         /**
+         * Get meta info about a batch of data points
+         * @param dataPointIds filters the requested meta info to one specific data ID
+         * @return meta info about data behind the dataId
+         */
+        @Transactional(readOnly = true)
+        fun getDataPointMetaInformationByIds(dataPointIds: List<String>): List<DataPointMetaInformationEntity> =
+            dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds)
+
+        /**
          * Get the currently active data id for a specific set of data point dimensions
          * @param dataPointDimensions the data point dimensions to get the currently active data id for
          * @return the id of the currently active data point

@@ -17,6 +17,7 @@ import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformation
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
+import org.dataland.datalandbackend.utils.TestDataProvider
 import org.dataland.datalandbackend.utils.TestResourceFileReader
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
@@ -64,12 +65,13 @@ class AssembledDataManagerTest {
         )
 
     private val spyDataPointManager = spy(dataPointManager)
+    private val testDataProvider = TestDataProvider(testObjectMapper)
 
     private val assembledDataManager =
         AssembledDataManager(
             dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
             specificationClient, datasetDatapointRepository, spyDataPointManager,
-            ReferencedReportsUtilities(testObjectMapper), metaDataManager,
+            ReferencedReportsUtilities(testObjectMapper), companyQueryManager, metaDataManager,
         )
 
     private val correlationId = "test-correlation-id"
@@ -102,6 +104,7 @@ class AssembledDataManagerTest {
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
         `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
+        `when`(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())
 
         val uploadedDataset =
             StorableDataset(
@@ -120,7 +123,8 @@ class AssembledDataManagerTest {
                 argThat { dataPointType == it }, any(), any(), any(), any(),
             )
         }
-        verify(messageQueuePublications, times(expectedDataPointTypes.size)).publishDataPointUploadedMessage(any(), any(), eq(null), any())
+        verify(messageQueuePublications, times(expectedDataPointTypes.size))
+            .publishDataPointUploadedMessage(any(), any(), any(), eq(null), any())
         verify(messageQueuePublications, times(1)).publishDatasetQaRequiredMessage(any(), any(), any())
         verify(messageQueuePublications, times(0)).publishDatasetUploadedMessage(any(), any(), any())
         verify(datasetDatapointRepository, times(1)).save(
@@ -203,28 +207,32 @@ class AssembledDataManagerTest {
             ),
         )
 
-        `when`(metaDataManager.getDataPointMetaInformationById(any())).thenAnswer { invocation ->
-            val dataPointId = invocation.getArgument<String>(0)
-            DataPointMetaInformationEntity(
-                dataPointId = dataPointId,
-                companyId = companyId,
-                dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
-                reportingPeriod = reportingPeriod,
-                uploaderUserId = uploaderUserId,
-                uploadTime = Instant.now().toEpochMilli(),
-                currentlyActive = true,
-                qaStatus = QaStatus.Accepted,
-            )
+        `when`(metaDataManager.getDataPointMetaInformationByIds(any())).thenAnswer { invocation ->
+            val dataPointId = invocation.getArgument<List<String>>(0)
+            dataPointId.map { dataPointId ->
+                DataPointMetaInformationEntity(
+                    dataPointId = dataPointId,
+                    companyId = companyId,
+                    dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
+                    reportingPeriod = reportingPeriod,
+                    uploaderUserId = uploaderUserId,
+                    uploadTime = Instant.now().toEpochMilli(),
+                    currentlyActive = true,
+                    qaStatus = QaStatus.Accepted,
+                )
+            }
         }
 
-        `when`(storageClient.selectDataPointById(any(), any())).thenAnswer { invocation ->
-            val dataPointId = invocation.getArgument<String>(0)
-            StorableDataPoint(
-                dataPoint = dataContent[dataPointId] ?: "",
-                dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
-                companyId = companyId,
-                reportingPeriod = reportingPeriod,
-            )
+        `when`(storageClient.selectBatchDataPointsByIds(any(), any())).thenAnswer { invocation ->
+            val dataPointId = invocation.getArgument<List<String>>(1)
+            dataPointId.associateWith { dataPointId ->
+                StorableDataPoint(
+                    dataPoint = dataContent[dataPointId] ?: "",
+                    dataPointType = dataPoints.filterValues { it == dataPointId }.keys.first(),
+                    companyId = companyId,
+                    reportingPeriod = reportingPeriod,
+                )
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package org.dataland.datalandbackend.services.datapoints
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.dataland.datalandbackend.entities.DatasetDatapointEntity
@@ -8,9 +7,11 @@ import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.model.datapoints.UploadedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.metainformation.DataMetaInformation
+import org.dataland.datalandbackend.model.metainformation.DataPointMetaInformation
 import org.dataland.datalandbackend.model.metainformation.PlainDataAndMetaInformation
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
 import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
+import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
@@ -53,6 +54,7 @@ class AssembledDataManager
         private val datasetDatapointRepository: DatasetDatapointRepository,
         private val dataPointManager: DataPointManager,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
+        private val companyManager: CompanyQueryManager,
         private val metaDataManager: DataPointMetaInformationManager,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
@@ -145,9 +147,9 @@ class AssembledDataManager
             dataPointType: String,
             correlationId: String,
             uploadedDataset: StorableDataset,
-        ): String? {
+        ): DataPointMetaInformation? {
             val dataPoint = dataPointJsonLeaf.content
-            if (dataPoint.isEmpty) return null
+            if (dataPoint.isNull || (dataPoint.isObject && dataPoint.isEmpty)) return null
 
             referencedReportsUtilities.updatePublicationDateInJsonNode(
                 dataPoint,
@@ -160,20 +162,21 @@ class AssembledDataManager
             )
 
             val dataPointId = IdUtils.generateUUID()
-            dataPointManager.storeDataPoint(
-                uploadedDataPoint =
-                    UploadedDataPoint(
-                        dataPoint = objectMapper.writeValueAsString(dataPoint),
-                        dataPointType = dataPointType,
-                        companyId = uploadedDataset.companyId,
-                        reportingPeriod = uploadedDataset.reportingPeriod,
-                    ),
-                dataPointId = dataPointId,
-                uploaderUserId = uploadedDataset.uploaderUserId,
-                uploadTime = uploadedDataset.uploadTime,
-                correlationId = correlationId,
-            )
-            return dataPointId
+            val metaInfo =
+                dataPointManager.storeDataPoint(
+                    uploadedDataPoint =
+                        UploadedDataPoint(
+                            dataPoint = objectMapper.writeValueAsString(dataPoint),
+                            dataPointType = dataPointType,
+                            companyId = uploadedDataset.companyId,
+                            reportingPeriod = uploadedDataset.reportingPeriod,
+                        ),
+                    dataPointId = dataPointId,
+                    uploaderUserId = uploadedDataset.uploaderUserId,
+                    uploadTime = uploadedDataset.uploadTime,
+                    correlationId = correlationId,
+                )
+            return metaInfo
         }
 
         /**
@@ -190,6 +193,7 @@ class AssembledDataManager
             initialQaComment: String?,
         ) {
             logger.info("Processing dataset with id $datasetId (correlation ID: $correlationId).")
+            val companyInformation = companyManager.getCompanyById(uploadedDataset.companyId).toApiModel()
 
             val createdDataIds = mutableMapOf<String, String>()
             dataContent.forEach { (dataPointType, dataPointJsonLeaf) ->
@@ -201,12 +205,13 @@ class AssembledDataManager
                     uploadedDataset = uploadedDataset,
                 )?.let {
                     messageQueuePublications.publishDataPointUploadedMessage(
-                        dataPointId = it,
+                        dataPointMetaInformation = it,
+                        companyInformation = companyInformation,
                         initialQaStatus = initialQaStatus,
                         initialQaComment = initialQaComment,
                         correlationId = correlationId,
                     )
-                    createdDataIds[dataPointType] = it
+                    createdDataIds[dataPointType] = it.dataPointId
                 }
             }
             this.datasetDatapointRepository.save(
@@ -318,13 +323,17 @@ class AssembledDataManager
                 .insertReferencedReportsIntoFrameworkSchema(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
 
             val referencedReports = mutableMapOf<String, CompanyReport>()
-            val allDataPoints = mutableMapOf<String, JsonNode>()
+            val allStoredDatapoints = dataPointManager.retrieveDataPoints(dataIds, correlationId)
+            val allDataPoints =
+                allStoredDatapoints.entries
+                    .associate {
+                        it.value.dataPointType to objectMapper.readTree(it.value.dataPoint)
+                    }.toMutableMap()
 
-            dataIds.forEach { dataId ->
-                val storedDataPoint = dataPointManager.retrieveDataPoint(dataId, correlationId)
-                allDataPoints[storedDataPoint.dataPointType] = objectMapper.readTree(storedDataPoint.dataPoint)
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(storedDataPoint.dataPoint)
-                if (companyReport != null) {
+            allStoredDatapoints.values.forEach {
+                val companyReports = mutableListOf<CompanyReport>()
+                referencedReportsUtilities.getAllCompanyReportsFromDataSource(it.dataPoint, companyReports)
+                companyReports.forEach { companyReport ->
                     referencedReports[companyReport.fileName ?: companyReport.fileReference] = companyReport
                 }
             }
