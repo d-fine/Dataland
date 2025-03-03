@@ -8,7 +8,6 @@ import {
   type StoredDataRequestMessageObject,
 } from '@clients/communitymanager';
 import type { CompanyInformation } from '@clients/backend';
-import { QaStatus } from '@clients/backend';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
@@ -51,7 +50,9 @@ describe('Component tests for the view data request page', function (): void {
       reportingPeriod: dummyReportingYear,
       datalandCompanyId: dummyCompanyId,
       messageHistory: messageHistory,
-      dataRequestStatusHistory: [],
+      dataRequestStatusHistory: [
+        { status: requestStatus, creationTimestamp: dummyCreationTime, accessStatus: AccessStatus.Public },
+      ],
       lastModifiedDate: dummyLastModifiedDate,
       requestStatus: requestStatus,
       accessStatus: AccessStatus.Public,
@@ -70,11 +71,14 @@ describe('Component tests for the view data request page', function (): void {
   }
   /**
    * Mocks the api-manager answer for basic company information
-   * @param qaStatus the desired active dataset
    */
-  function interceptUserActiveDatasetOnMounted(qaStatus: QaStatus): void {
+  function interceptUserActiveDatasetOnMounted(hasActiveDataSet: boolean): void {
+    const dummyMetaData = {
+      companyId: dummyCompanyId,
+      dataType: dummyFramework,
+    };
     cy.intercept(`**/api/metadata?**`, {
-      body: [{ qaStatus: qaStatus }],
+      body: hasActiveDataSet ? [dummyMetaData] : [],
       status: 200,
     }).as('fetchActiveDatasets');
   }
@@ -107,6 +111,7 @@ describe('Component tests for the view data request page', function (): void {
    * @param requestStatus the request Status to check for
    */
   function checkBasicPageElementsAsUser(requestStatus: RequestStatus): void {
+    cy.wait('@fetchActiveDatasets');
     cy.contains('Data Request').should('exist');
     cy.contains('Request Details').should('exist').should('have.class', 'card__title');
     cy.contains('Provided Contact Details and Messages').should('exist').should('have.class', 'card__title');
@@ -167,7 +172,7 @@ describe('Component tests for the view data request page', function (): void {
       createStoredDataRequest(RequestStatus.Resolved, [dummyMessageObject])
     );
     interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
+    interceptUserActiveDatasetOnMounted(true);
     interceptPatchRequest();
     cy.spy(router, 'push').as('routerPush');
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
@@ -191,7 +196,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check view data request page for withdrawn request without data renders as expected', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Withdrawn, []));
     interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Rejected);
+    interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
       props: {
@@ -210,7 +215,7 @@ describe('Component tests for the view data request page', function (): void {
       createStoredDataRequest(RequestStatus.NonSourceable, [dummyMessageObject])
     );
     interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Pending);
+    interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
       props: {
@@ -244,7 +249,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check view data request page for open request without data and withdraw the data request', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Pending);
+    interceptUserActiveDatasetOnMounted(false);
     interceptPatchRequest();
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
       props: { requestId: requestId },
@@ -271,7 +276,7 @@ describe('Component tests for the view data request page', function (): void {
   it('Check view data request page for open request with data and check the routing to data view page', function () {
     interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
     interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
+    interceptUserActiveDatasetOnMounted(true);
     interceptPatchRequest();
     cy.spy(router, 'push').as('routerPush');
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router: router })(
@@ -293,7 +298,7 @@ describe('Component tests for the view data request page', function (): void {
       const dummyRequest = createStoredDataRequest(RequestStatus.Answered, []);
       interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
       interceptUserAskForCompanyNameOnMounted();
-      interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
+      interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
       cy.spy(router, 'push').as('routerPush');
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
@@ -315,7 +320,7 @@ describe('Component tests for the view data request page', function (): void {
     function () {
       interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, [dummyMessageObject]));
       interceptUserAskForCompanyNameOnMounted();
-      interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
+      interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
         props: { requestId: requestId },
@@ -331,7 +336,7 @@ describe('Component tests for the view data request page', function (): void {
       createStoredDataRequest(RequestStatus.Answered, [dummyMessageObject])
     );
     interceptUserAskForCompanyNameOnMounted();
-    interceptUserActiveDatasetOnMounted(QaStatus.Accepted);
+    interceptUserActiveDatasetOnMounted(true);
     interceptPatchRequest();
     getMountingFunction({
       keycloak: minimalKeycloakMock({

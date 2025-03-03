@@ -83,7 +83,7 @@ class DataRequestQueryManagerTest {
     private val filterWithoutEmailAddress =
         DataRequestsFilter(
             dataType = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
-            datalandCompanyId = testCompanyId,
+            datalandCompanyIds = setOf(testCompanyId),
             reportingPeriod = testReportingPeriod,
             requestStatus = setOf(RequestStatus.Open),
         )
@@ -94,7 +94,7 @@ class DataRequestQueryManagerTest {
         DataRequestsFilter(
             dataType = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
             emailAddress = emailAddressSubstring,
-            datalandCompanyId = testCompanyId,
+            datalandCompanyIds = setOf(testCompanyId),
             reportingPeriod = testReportingPeriod,
             requestStatus = setOf(RequestStatus.Open),
         )

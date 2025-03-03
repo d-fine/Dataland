@@ -1,5 +1,6 @@
 package org.dataland.datalandcommunitymanager.services
 
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -47,7 +48,7 @@ class DataRequestTimeScheduler(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
             )
-            alterationManager.patchDataRequest(it.dataRequestId, RequestStatus.Closed)
+            alterationManager.patchDataRequest(it.dataRequestId, DataRequestPatch(requestStatus = RequestStatus.Closed))
         }
     }
 }

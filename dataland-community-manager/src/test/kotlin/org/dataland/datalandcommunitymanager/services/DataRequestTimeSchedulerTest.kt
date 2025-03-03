@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
@@ -72,8 +73,9 @@ class DataRequestTimeSchedulerTest {
         testUtils.mockSecurityContext()
         mockDataRequestAlterationManager = mock(DataRequestAlterationManager::class.java)
         `when`(
-            mockDataRequestAlterationManager
-                .patchDataRequest(dataRequestIdStaleAndAnswered, RequestStatus.Closed),
+            mockDataRequestAlterationManager.patchDataRequest(
+                dataRequestIdStaleAndAnswered, DataRequestPatch(requestStatus = RequestStatus.Closed),
+            ),
         ).thenReturn(null)
         mockDataRequestRepository = mock(DataRequestRepository::class.java)
         dataRequestTimeScheduler =
@@ -106,7 +108,8 @@ class DataRequestTimeSchedulerTest {
         dataRequestTimeScheduler.patchStaleAnsweredRequestToClosed()
         verify(mockDataRequestAlterationManager, times(2))
             .patchDataRequest(
-                dataRequestIdStaleAndAnswered, RequestStatus.Closed,
+                dataRequestIdStaleAndAnswered,
+                DataRequestPatch(requestStatus = RequestStatus.Closed),
             )
     }
 

@@ -101,7 +101,7 @@ class RequestController(
                 dataType,
                 userId,
                 emailAddress,
-                datalandCompanyId,
+                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                 reportingPeriod,
                 requestStatus,
                 accessStatus,
@@ -142,7 +142,7 @@ class RequestController(
                 dataType,
                 userId,
                 emailAddress,
-                datalandCompanyId,
+                datalandCompanyId?.let { setOf(datalandCompanyId) } ?: emptySet(),
                 reportingPeriod,
                 requestStatus,
                 accessStatus,
@@ -169,14 +169,8 @@ class RequestController(
         ResponseEntity.ok(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
-                dataRequestPatch.requestStatus,
-                dataRequestPatch.accessStatus,
-                dataRequestPatch.contacts,
-                dataRequestPatch.message,
+                dataRequestPatch,
                 correlationId = null,
-                dataRequestPatch.requestPriority,
-                dataRequestPatch.adminComment,
-                dataRequestPatch.requestStatusChangeReason,
             ),
         )
 }
