@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.entities.DatasetDatapointEntity
 import org.dataland.datalandbackend.model.DataType
 import org.dataland.datalandbackend.model.StorableDataset
 import org.dataland.datalandbackend.repositories.DatasetDatapointRepository
+import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 import org.dataland.datalandbackend.services.CompanyQueryManager
 import org.dataland.datalandbackend.services.CompanyRoleChecker
 import org.dataland.datalandbackend.services.DataManager
@@ -39,7 +40,6 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import java.time.Instant
 import java.util.Optional
-import org.dataland.datalandbackend.repositories.utils.DataMetaInformationSearchFilter
 
 class AssembledDataManagerTest {
     private val dataManager = mock(DataManager::class.java)
@@ -178,16 +178,16 @@ class AssembledDataManagerTest {
             assembledDataManager.getDatasetData(dataDimensions, correlationId)
         }
 
-        val searchFilter = DataMetaInformationSearchFilter(
-            companyId = companyId,
-            dataType = DataType(framework),
-            reportingPeriod = reportingPeriod,
-            onlyActive = true,
-        )
+        val searchFilter =
+            DataMetaInformationSearchFilter(
+                companyId = companyId,
+                dataType = DataType(framework),
+                reportingPeriod = reportingPeriod,
+                onlyActive = true,
+            )
         assertThrows<ResourceNotFoundApiException> {
             assembledDataManager.getAllDatasetsAndMetaInformation(searchFilter, correlationId)
         }
-
     }
 
     private fun setMockData(
