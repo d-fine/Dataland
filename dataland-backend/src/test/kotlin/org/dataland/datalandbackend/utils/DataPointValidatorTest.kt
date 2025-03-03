@@ -3,8 +3,8 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
-import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackend.model.documents.CompanyReport
+import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
@@ -26,7 +26,12 @@ class DataPointValidatorTest {
     private val specificationClient = mock<SpecificationControllerApi>()
     private val referencedReportsUtilities = mock<ReferencedReportsUtilities>()
     private val dataPointValidator =
-        DataPointValidator(objectMapper, specificationClient, referencedReportsUtilities, Validation.buildDefaultValidatorFactory().validator)
+        DataPointValidator(
+            objectMapper, specificationClient, referencedReportsUtilities,
+            Validation
+                .buildDefaultValidatorFactory()
+                .validator,
+        )
 
     private val correlationId = "correlationId"
     private val validationClass = "org.dataland.datalandbackend.model.datapoints.extended.ExtendedCurrencyDataPoint"
@@ -90,7 +95,6 @@ class DataPointValidatorTest {
             dataPointValidator.validateConsistency(getJsonString(currencyDataPointWithBrokenEnum), validationClass, correlationId)
         }
     }
-
 
     @Test
     fun `check that unused referenced reports are rejected`() {

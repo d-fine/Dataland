@@ -134,13 +134,16 @@ class DataPointValidator
                 if (dataPoint.isEmpty()) return@forEach
                 validateDataPoint(dataPointType, dataPoint, correlationId)
 
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
-                if (companyReport != null && referencedReports != null) {
-                    observedDocumentReferences.add(companyReport.fileReference)
-                    referencedReportsUtilities.validateReportConsistencyWithGlobalList(
-                        companyReport,
-                        referencedReports,
-                    )
+                val companyReports = mutableListOf<CompanyReport>()
+                referencedReportsUtilities.getAllCompanyReportsFromDataSource(dataPoint, companyReports)
+                companyReports.forEach { companyReport ->
+                    if (referencedReports != null) {
+                        observedDocumentReferences.add(companyReport.fileReference)
+                        referencedReportsUtilities.validateReportConsistencyWithGlobalList(
+                            companyReport,
+                            referencedReports,
+                        )
+                    }
                 }
             }
 
