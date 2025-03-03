@@ -319,7 +319,7 @@ class AssembledDatasetTest {
     }
 
     @Test
-    fun `ensure that uploading only a single datapoint for a company renders dataset active`() {
+    fun `ensure that uploading only a single datapoint for a company renders the reporting period active`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         this.postExtendedCurrencyEquityDatapoint(companyId, reportingPeriod)

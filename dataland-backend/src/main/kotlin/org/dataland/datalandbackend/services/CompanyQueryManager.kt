@@ -169,8 +169,8 @@ class CompanyQueryManager(
     ): Set<String> =
         dataMetaInfoRepository
             .getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
-                companyId,
-                dataType.name,
-                true,
+                companyId = companyId,
+                dataType = dataType.name,
+                currentlyActive = true,
             )
 }

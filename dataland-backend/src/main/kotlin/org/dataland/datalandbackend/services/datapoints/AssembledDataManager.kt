@@ -390,9 +390,20 @@ class AssembledDataManager
             val companyId = searchFilter.companyId
             val framework = searchFilter.dataType.toString()
             val reportingPeriods = getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
-            require(reportingPeriods.isNotEmpty()) { "No data found for company $companyId and framework $framework." }
+            require(reportingPeriods.isNotEmpty()) {
+                InvalidInputApiException(
+                    "No data available.",
+                    "No data found for company $companyId and framework $framework.",
+                )
+            }
 
             return reportingPeriods.map {
+                val data =
+                    getDatasetData(BasicDataDimensions(companyId, framework, it), correlationId)
+                        ?: throw IllegalStateException(
+                            "Data expected for $it, $companyId and ${searchFilter.dataType}" +
+                                " but not found. Correlation ID: $correlationId",
+                        )
                 PlainDataAndMetaInformation(
                     metaInfo =
                         DataMetaInformation(
@@ -404,7 +415,7 @@ class AssembledDataManager
                             uploadTime = Instant.now().toEpochMilli(),
                             qaStatus = QaStatus.Accepted,
                         ),
-                    data = getDatasetData(BasicDataDimensions(companyId, framework, it), correlationId) ?: "",
+                    data = data,
                 )
             }
         }
