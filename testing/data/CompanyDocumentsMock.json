@@ -1,15 +1,5 @@
 [
   {
-    "documentId": "c9e1ae456c14a88ec4dd830baa6e1c87d33e0e52abd201152d4dc1d4c2290515",
-    "documentName": "docu2",
-    "documentCategory": "Policy",
-    "companyIds": [
-      "9381e663-71cf-416d-817f-c5f97d2cfc8c"
-    ],
-    "publicationDate": "2025-02-27",
-    "reportingPeriod": "string"
-  },
-  {
     "documentId": "7b0cb43fb333a1182264496a7f16f933472713e657ce8c0b866a31b68938a16c",
     "documentName": "docu1",
     "documentCategory": "AnnualReport",
@@ -17,6 +7,17 @@
       "9381e663-71cf-416d-817f-c5f97d2cfc8c"
     ],
     "publicationDate": "2025-02-26",
-    "reportingPeriod": "string"
+    "reportingPeriod": "2023"
+  },
+  {
+    "documentId": "c9e1ae456c14a88ec4dd830baa6e1c87d33e0e52abd201152d4dc1d4c2290515",
+    "documentName": "docu2",
+    "documentCategory": "Policy",
+    "companyIds": [
+      "9381e663-71cf-416d-817f-c5f97d2cfc8c"
+    ],
+    "publicationDate": "2025-02-27",
+    "reportingPeriod": "2022"
   }
+
 ]
