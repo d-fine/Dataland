@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
+import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequestResponse
@@ -41,6 +42,7 @@ class SingleDataRequestManager
         @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
         @Autowired private val securityUtilsService: SecurityUtilsService,
         @Autowired private val companyRolesManager: CompanyRolesManager,
+        @Autowired private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
@@ -63,11 +65,15 @@ class SingleDataRequestManager
          * @return the stored data request object
          */
         @Transactional
-        fun processSingleDataRequest(singleDataRequest: SingleDataRequest): SingleDataRequestResponse {
-            val preprocessedRequest = preprocessSingleDataRequest(singleDataRequest)
+        fun processSingleDataRequest(
+            singleDataRequest: SingleDataRequest,
+            userId: String? = null,
+        ): SingleDataRequestResponse {
+            val userIdToUse = userId ?: DatalandAuthentication.fromContext().userId
+            val preprocessedRequest = preprocessSingleDataRequest(singleDataRequest, userIdToUse)
 
             dataRequestLogger.logMessageForReceivingSingleDataRequest(
-                singleDataRequest.companyIdentifier, preprocessedRequest.userId, preprocessedRequest.correlationId,
+                preprocessedRequest,
             )
 
             val reportingPeriodsMap = mutableMapOf<String, MutableList<String>>()
@@ -104,16 +110,23 @@ class SingleDataRequestManager
          * @param singleDataRequest is the single data process which should be preprocessed
          * @return the processed single request
          */
-        fun preprocessSingleDataRequest(singleDataRequest: SingleDataRequest): PreprocessedRequest {
+        fun preprocessSingleDataRequest(
+            singleDataRequest: SingleDataRequest,
+            userIdToUse: String,
+        ): PreprocessedRequest {
             val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
 
             utils.throwExceptionIfNotJwtAuth()
             validateSingleDataRequestContent(singleDataRequest)
-            performQuotaCheckForNonPremiumUser(singleDataRequest.reportingPeriods.size, companyId)
+            performQuotaCheckForNonPremiumUser(
+                userIdToUse,
+                singleDataRequest.reportingPeriods.size,
+                companyId,
+            )
 
             return PreprocessedRequest(
                 companyId = companyId,
-                userId = DatalandAuthentication.fromContext().userId,
+                userId = userIdToUse,
                 dataType = singleDataRequest.dataType,
                 contacts = singleDataRequest.contacts.takeIf { !it.isNullOrEmpty() },
                 message = singleDataRequest.message.takeIf { !it.isNullOrBlank() },
@@ -138,19 +151,19 @@ class SingleDataRequestManager
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DATA_ACCESS_REQUESTS to reportingPeriod)
             } else if (utils.existsDataRequestWithNonFinalStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod,
+                    reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 ) ||
                 dataAccessManager.existsAccessRequestWithNonPendingStatus(
                     companyId = preprocessedRequest.companyId, framework = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod,
+                    reportingPeriod = reportingPeriod, userId = preprocessedRequest.userId,
                 )
             ) {
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_DUBLICATE_DATA_REQUESTS to reportingPeriod)
             } else {
                 utils.storeDataRequestEntityAsOpen(
-                    datalandCompanyId = preprocessedRequest.companyId, dataType = preprocessedRequest.dataType,
-                    reportingPeriod = reportingPeriod, contacts = preprocessedRequest.contacts,
-                    message = preprocessedRequest.message,
+                    userId = preprocessedRequest.userId, datalandCompanyId = preprocessedRequest.companyId,
+                    dataType = preprocessedRequest.dataType, reportingPeriod = reportingPeriod,
+                    contacts = preprocessedRequest.contacts, message = preprocessedRequest.message,
                 )
                 mutableMapOf(ReportingPeriodKeys.REPORTING_PERIODS_OF_STORED_DATA_REQUESTS to reportingPeriod)
             }
@@ -174,9 +187,9 @@ class SingleDataRequestManager
             val accessRequestAlreadyInPendingStatus =
                 dataAccessManager.existsAccessRequestWithNonPendingStatus(
                     companyId = companyId, framework = dataType,
-                    reportingPeriod = reportingPeriod,
+                    reportingPeriod = reportingPeriod, userId = userId,
                 )
-            return(
+            return (
                 dataType == DataTypeEnum.vsme &&
                     matchingDatasetExists &&
                     !hasAccessToPrivateDataset &&
@@ -184,17 +197,28 @@ class SingleDataRequestManager
             )
         }
 
+        private fun requestIsForPremiumUser(userId: String): Boolean {
+            val authenticationOfLoggedInUser = DatalandAuthentication.fromContext()
+            return if (userId == authenticationOfLoggedInUser.userId) {
+                authenticationOfLoggedInUser.roles.contains(
+                    DatalandRealmRole.ROLE_PREMIUM_USER,
+                )
+            } else {
+                keycloakUserService.getUserRoleNames(userId).contains("ROLE_PREMIUM_USER")
+            }
+        }
+
         private fun performQuotaCheckForNonPremiumUser(
+            userId: String,
             numberOfReportingPeriods: Int,
             companyId: String,
         ) {
-            val userInfo = DatalandAuthentication.fromContext()
-            if (!userInfo.roles.contains(DatalandRealmRole.ROLE_PREMIUM_USER) &&
+            if (!requestIsForPremiumUser(userId) &&
                 !securityUtilsService.isUserMemberOfTheCompany(UUID.fromString(companyId))
             ) {
                 val numberOfDataRequestsPerformedByUserFromTimestamp =
                     dataRequestRepository.getNumberOfDataRequestsPerformedByUserFromTimestamp(
-                        userInfo.userId, getEpochTimeStartOfDay(),
+                        userId, getEpochTimeStartOfDay(),
                     )
 
                 if (numberOfDataRequestsPerformedByUserFromTimestamp + numberOfReportingPeriods
@@ -333,9 +357,11 @@ class SingleDataRequestManager
                     1 ->
                         "The request for one of your $totalNumberOfReportingPeriods reporting periods was not stored, as " +
                             "it was already created by you before and exists on Dataland."
+
                     totalNumberOfReportingPeriods ->
                         "No data request was stored, as all reporting periods correspond to duplicate requests that were " +
                             "already created by you before and exist on Dataland."
+
                     else ->
                         "The data requests for $numberOfReportingPeriodsCorrespondingToDuplicates of your " +
                             "$totalNumberOfReportingPeriods reporting periods were not stored, as they were already " +
