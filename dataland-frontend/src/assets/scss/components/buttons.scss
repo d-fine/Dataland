@@ -199,6 +199,21 @@
   }
 }
 
+.tertiary-button {
+  color: colors.$main-color;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  white-space: nowrap;
+  width: fit-content;
+  cursor: pointer;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+  letter-spacing: 0.05em;
+  font-weight: 600 !important;
+  text-decoration: none;
+}
+
 .link {
   color: colors.$main-color;
   background: transparent;

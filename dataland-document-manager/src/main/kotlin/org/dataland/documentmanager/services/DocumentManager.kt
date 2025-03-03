@@ -141,6 +141,12 @@ class DocumentManager
             return documentExists
         }
 
+        /**
+         * Retrieve Document meta information by documentId
+         * @param documentId identifier of document
+         * @param correlationId
+         * @return document meta information
+         */
         private fun retrieveDocumentMetaInfoFromStorage(
             documentId: String,
             correlationId: String,
@@ -255,5 +261,26 @@ class DocumentManager
             logger.info("Retrieve meta data for document with documentId $documentId. Correlation ID: $correlationId.")
             return documentMetaInfoRepository.getByDocumentId(documentId)
                 ?: throw DocumentNotFoundException(documentId, correlationId)
+        }
+
+        /**
+         * Search for document meta information by companyId, documentCategory and reportingPeriod. There is the
+         * option to only return a chunk of the search results, controlled by the parameters chunkSize and chunkIndex.
+         */
+        fun searchForDocumentMetaInformation(
+            documentMetaInformationSearchFilter: DocumentMetaInformationSearchFilter,
+            chunkSize: Int = 100,
+            chunkIndex: Int = 0,
+        ): List<DocumentMetaInfoResponse> {
+            val limit = chunkSize
+            val offset = limit * chunkIndex
+            return documentMetaInfoRepository
+                .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
+                    documentMetaInformationSearchFilter.companyId,
+                    documentMetaInformationSearchFilter.documentCategories,
+                    documentMetaInformationSearchFilter.reportingPeriod,
+                    limit,
+                    offset,
+                ).map { it.toDocumentMetaInfoResponse() }
         }
     }

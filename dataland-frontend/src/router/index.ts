@@ -17,6 +17,7 @@ const ApiKeysPage = (): Promise<RouteComponent> => import('@/components/pages/Ap
 const BulkDataRequest = (): Promise<RouteComponent> => import('@/components/pages/BulkDataRequest.vue');
 const SingleDataRequest = (): Promise<RouteComponent> => import('@/components/pages/SingleDataRequest.vue');
 const ViewFrameworkData = (): Promise<RouteComponent> => import('@/components/pages/ViewFrameworkData.vue');
+const DocumentOverview = (): Promise<RouteComponent> => import('@/components/pages/DocumentOverview.vue');
 const DatasetOverview = (): Promise<RouteComponent> => import('@/components/pages/DatasetOverview.vue');
 const MyDataRequestsOverview = (): Promise<RouteComponent> => import('@/components/pages/MyDataRequestsOverview.vue');
 const ViewDataRequestPage = (): Promise<RouteComponent> => import('@/components/pages/ViewDataRequestPage.vue');
@@ -93,6 +94,12 @@ const routes = [
     props: true,
     name: 'Company framework data for specific reporting period',
     component: ViewFrameworkData,
+  },
+  {
+    path: `/companies/:companyId/documents`,
+    props: true,
+    name: 'Document Overview',
+    component: DocumentOverview,
   },
   {
     path: '/requestoverview',
