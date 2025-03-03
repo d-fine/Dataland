@@ -22,6 +22,7 @@ import org.dataland.datalandcommunitymanager.services.DataRequestAlterationManag
 import org.dataland.datalandcommunitymanager.services.DataRequestQueryManager
 import org.dataland.datalandcommunitymanager.services.SingleDataRequestManager
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
+import org.dataland.datalandcommunitymanager.utils.UserAuthenticationTool
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -66,10 +67,16 @@ class RequestController(
             ),
         )
 
-    override fun postSingleDataRequest(singleDataRequest: SingleDataRequest): ResponseEntity<SingleDataRequestResponse> =
-        ResponseEntity.ok(
-            singleDataRequestManager.processSingleDataRequest(singleDataRequest),
+    override fun postSingleDataRequest(
+        singleDataRequest: SingleDataRequest,
+        userId: String?,
+    ): ResponseEntity<SingleDataRequestResponse> {
+        val userAuthenticationTool = UserAuthenticationTool()
+        userAuthenticationTool.checkAuthenticationForUserImpersonationAttempt(userId)
+        return ResponseEntity.ok(
+            singleDataRequestManager.processSingleDataRequest(singleDataRequest, userId),
         )
+    }
 
     override fun getDataRequestById(dataRequestId: UUID): ResponseEntity<StoredDataRequest> =
         ResponseEntity.ok(

@@ -11,15 +11,15 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
  * convenient usage of SEPL instructions in the query
  */
 data class DataRequestsFilter(
-    val dataType: Set<DataTypeEnum>?,
-    val userId: String?,
-    val emailAddress: String?,
-    val datalandCompanyIds: Set<String>?,
-    val reportingPeriod: String?,
-    val requestStatus: Set<RequestStatus>?,
-    val accessStatus: Set<AccessStatus>?,
-    val adminComment: String?,
-    val requestPriority: Set<RequestPriority>?,
+    val dataType: Set<DataTypeEnum>? = null,
+    val userId: String? = null,
+    val emailAddress: String? = null,
+    val datalandCompanyIds: Set<String>? = null,
+    val reportingPeriod: String? = null,
+    val requestStatus: Set<RequestStatus>? = null,
+    val accessStatus: Set<AccessStatus>? = null,
+    val adminComment: String? = null,
+    val requestPriority: Set<RequestPriority>? = null,
 ) {
     val shouldFilterByDataType: Boolean
         get() = dataType?.isNotEmpty() ?: false
