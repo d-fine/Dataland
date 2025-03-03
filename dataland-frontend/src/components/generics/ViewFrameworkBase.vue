@@ -155,6 +155,7 @@ import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrame
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
 import { AxiosError } from 'axios';
+import { useRoute } from 'vue-router';
 
 type DropdownOption = { label: string; value: string };
 
@@ -220,6 +221,8 @@ export default defineComponent({
       hasUserReviewerRights: false,
       hideEmptyFields: !this.hasUserReviewerRights,
       isDownloadModalOpen: false,
+      route: useRoute(),
+      dataId: null as null | string | string[],
     };
   },
   provide() {
@@ -268,9 +271,13 @@ export default defineComponent({
   },
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? '';
+    this.dataId = this.route.params.dataId;
     void this.getDataTypesForDropdown();
-    void this.getAllActiveDataForCurrentCompanyAndFramework();
-
+    if (this.dataId) {
+      void this.getMetadataForDataset();
+    } else {
+      void this.getAllActiveDataForCurrentCompanyAndFramework();
+    }
     void this.setViewPageAttributesForUser();
 
     window.addEventListener('scroll', this.windowScrollHandler);
@@ -397,7 +404,7 @@ export default defineComponent({
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         if (error instanceof AxiosError && error?.status == 403 && this.dataType == DataTypeEnum.Vsme) {
-          await this.getMetadataForPrivateDataset();
+          await this.getMetadataForDataset();
         } else {
           this.isDataProcessedSuccessfully = false;
           console.error(error);
@@ -408,7 +415,7 @@ export default defineComponent({
     /**
      * Get available metadata in case that data cannot be received due to insufficient access rights for private data.
      */
-    async getMetadataForPrivateDataset() {
+    async getMetadataForDataset() {
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metadataControllerApi = apiClientProvider.backendClients.metaDataController;
