@@ -74,7 +74,6 @@ describe('Component test for the Document Overview', () => {
     isLoggedIn: boolean,
     isMobile: boolean,
     keycloakRoles?: string[]
-    // companyRoleAssignments?: CompanyRoleAssignment[]
   ): Cypress.Chainable {
     return getMountingFunction({
       keycloak: minimalKeycloakMock({
@@ -117,9 +116,24 @@ describe('Component test for the Document Overview', () => {
       });
   });
 
-  // it('Check filter function')
+  /*it('Check if filter function shows only results with selected ', () => {
+
+     })*/
   // TODO
 
-  // it('Check view details button opens DocumentMetaDataDialog')
-  // TODO
+  it('Check if view details button opens DocumentMetaDataDialog', () => {
+    const hasCompanyAtLeastOneOwner = true;
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+    mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
+    waitForRequestsOnMounted();
+
+    cy.get("[data-test='documents-overview-table']").within(() => {
+      cy.get('tbody tr')
+        .first()
+        .within(() => {
+          cy.get('td').eq(4).click();
+        });
+    });
+    cy.get("[data-test='document-details-modal']").should('exist');
+  });
 });

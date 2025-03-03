@@ -7,6 +7,7 @@
     class="col-6"
     v-model:visible="isOpen"
     @hide="closeDialog"
+    data-test="document-details-modal"
   >
     <div v-if="metaData" class="p-datatable p-component">
       <div class="p-datatable-wrapper overflow-auto">
