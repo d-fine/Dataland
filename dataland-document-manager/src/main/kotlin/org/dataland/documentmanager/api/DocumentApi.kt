@@ -230,10 +230,10 @@ interface DocumentApi {
         summary = "Search for document meta information.",
         description =
             "Search for document meta information by company ID, document categories and reporting period. " +
-                "Search results must match the specified company ID and reporting period (if specified)" +
-                "as well as at least one of the specified document categories. If numberOfResults" +
-                "is not null, it limits the number of returned results. Results are returned sorted" +
-                "by publication date in reverse chronological order. Only results with QA status" +
+                "Search results must match the specified company ID and reporting period (if specified) " +
+                "as well as at least one of the specified document categories. If numberOfResults " +
+                "is not null, it limits the number of returned results. Results are returned sorted " +
+                "by publication date in reverse chronological order. Only results with QA status " +
                 "'Accepted' are returned.",
     )
     @ApiResponses(
@@ -245,7 +245,7 @@ interface DocumentApi {
             ApiResponse(
                 responseCode = "400",
                 description =
-                    "Bad request; make sure that at least one search parameter is non-null and" +
+                    "Bad request; make sure that at least one search parameter is non-null and " +
                         "that the chunk index is within bounds (when in doubt, use chunk index 0).",
             ),
         ],

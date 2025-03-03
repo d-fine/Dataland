@@ -6,7 +6,7 @@ import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum } from '@clients/backend';
 import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
-import { DocumentMetaInfoDocumentCategoryEnum } from '@clients/documentmanager';
+import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -180,4 +180,14 @@ export function getPluralCategory(category: string): string {
     default:
       return humanizeStringOrNumber(category);
   }
+}
+
+/**
+ * Returns the filename to a given document, that has not more than 28 characters.
+ * @param document The document of interest
+ * @return A string containing the eventually shortened name
+ */
+export function truncatedDocumentName(document: DocumentMetaInfoResponse): string {
+  const name = document.documentName || document.documentId;
+  return name.length > 28 ? name.slice(0, 25) + '...' : name;
 }

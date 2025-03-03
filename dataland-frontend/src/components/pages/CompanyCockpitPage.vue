@@ -13,24 +13,17 @@
             <div v-else>
               <div v-for="document in getDocumentData(category)" :key="document.documentId">
                 <DocumentLink
-                  :download-name="
-                    truncatedDocumentName(document.documentName ? document.documentName : document.documentId) +
-                    ' (' +
-                    document.publicationDate +
-                    ')'
-                  "
+                  :download-name="truncatedDocumentName(document)"
+                  :label="truncatedDocumentName(document) + ' (' + document.publicationDate + ')'"
                   :file-reference="document.documentId"
                   show-icon
                 />
               </div>
             </div>
           </div>
-          <div class="p-col-12 text-right">
-            <div class="document-button cursor-pointer flex flex-row align-items-center" @click="goToDocumentOverview">
-              <span class="text-primary font-semibold d-letters"> VIEW ALL DOCUMENTS</span>
-              <span class="material-icons text-primary">arrow_forward_ios</span>
-            </div>
-          </div>
+          <a :href="`/companies/${companyId}/documents`" class="tertiary-button">
+            VIEW ALL DOCUMENTS <span class="material-icons">arrow_forward_ios</span>
+          </a>
         </div>
       </div>
       <div>
@@ -94,9 +87,8 @@ import {
   type DocumentMetaInfoResponse,
   SearchForDocumentMetaInformationDocumentCategoriesEnum,
 } from '@clients/documentmanager';
-import router from '@/router';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { getPluralCategory } from '@/utils/StringFormatter';
+import { getPluralCategory, truncatedDocumentName } from '@/utils/StringFormatter';
 
 export default defineComponent({
   name: 'CompanyCockpitPage',
@@ -184,6 +176,7 @@ export default defineComponent({
     this.getLatestDocuments();
   },
   methods: {
+    truncatedDocumentName,
     getPluralCategory,
     /**
      * Retrieves the aggregated framework data summary
@@ -254,18 +247,6 @@ export default defineComponent({
      */
     toggleShowAll() {
       this.showAllFrameworks = !this.showAllFrameworks;
-    },
-    /**
-     * routing to DocumentOverview page
-     */
-    goToDocumentOverview() {
-      void router.push(`/companies/${this.companyId}/documents`);
-    },
-    /**
-     * Shorten document names
-     */
-    truncatedDocumentName(name: string) {
-      return name.length > 25 ? name.slice(0, 25) + '...' : name;
     },
   },
 });
