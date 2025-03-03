@@ -6,7 +6,7 @@ import type { FixtureData } from '@sharedUtils/Fixtures.ts';
 import { getMountingFunction } from '@ct/testUtils/Mount.ts';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles.ts';
-import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
+import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
@@ -15,9 +15,10 @@ describe('Component test for the Document Overview', () => {
   let mockFetchedDocuments: DocumentMetaInfoResponse[];
   const dummyCompanyId = '550e8400-e29b-11d4-a716-446655440000';
   const dummyUserId = 'mock-user-id';
+  const searchStringForApi = 'AnnualReport';
 
   before(function () {
-    cy.fixture('CompanyInformationWithHeimathafenData').then(function (jsonContent) {
+    cy.fixture('CompanyInformationWithHeimathafenData').then(function (jsonContent): void {
       const heimathafenFixtures = jsonContent as Array<FixtureData<HeimathafenData>>;
       companyInformationForTest = heimathafenFixtures[0].companyInformation;
     });
@@ -50,6 +51,11 @@ describe('Component test for the Document Overview', () => {
       body: mockFetchedDocuments,
       times: 1,
     }).as('fetchDocumentsFiltered');
+
+    cy.intercept(`**/?companyId=${dummyCompanyId}&documentCategories=${searchStringForApi}`, {
+      body: mockFetchedDocuments.filter((document) => document.documentCategory === 'AnnualReport'),
+      times: 1,
+    }).as('fetchDocumentsFilteredDocumentType');
   }
 
   /**
@@ -104,7 +110,7 @@ describe('Component test for the Document Overview', () => {
       .within(() => {
         cy.get('tbody tr')
           .should('have.length', Object.keys(mockFetchedDocuments).length)
-          .first()
+          .first() //make sure first object in testing/data/documents/CompanyDocumentsMock.json is the one with earliest publicationDate
           .within(() => {
             cy.get('td').eq(0).should('contain', mockFetchedDocuments[0].documentName);
             cy.get('td').eq(1).should('contain', humanizeStringOrNumber(mockFetchedDocuments[0].documentCategory));
@@ -116,10 +122,45 @@ describe('Component test for the Document Overview', () => {
       });
   });
 
-  /*it('Check if filter function shows only results with selected ', () => {
+  it.only('Checks if filter function shows only results with selected DocumentCategory and if reset button resets filter to show all results', () => {
+    const hasCompanyAtLeastOneOwner = true;
+    mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
+    mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
+    waitForRequestsOnMounted();
+    const filterString = 'Annual';
+    const stringInMultiSelect = 'Annual Report';
+    let numOfFilteredOptions = 0;
+    for (let i = 0; i < mockFetchedDocuments.length; i++) {
+      if (mockFetchedDocuments[i].documentCategory == 'AnnualReport') numOfFilteredOptions++;
+    }
+    const numOfAllMultiSelectOptions = Object.keys(DocumentMetaInfoDocumentCategoryEnum).length;
+    const numOfMultiSelectOptionsAfterFilter = Object.values(DocumentMetaInfoDocumentCategoryEnum).filter((value) =>
+      value.includes(filterString)
+    ).length;
 
-     })*/
-  // TODO
+    cy.get("[data-test='document-type-picker']").should('exist').click();
+    cy.get('.d-framework-data-search-dropdown')
+      .should('exist')
+      .within(() => {
+        cy.get('ul').children().should('have.length', numOfAllMultiSelectOptions);
+        cy.get('input').should('exist').type(filterString);
+        cy.get('ul').children().should('have.length', numOfMultiSelectOptionsAfterFilter);
+        cy.contains('li', stringInMultiSelect).should('exist').click();
+      });
+
+    cy.get("[data-test='documents-overview-table']")
+      .should('exist')
+      .within(() => {
+        cy.get('tbody tr').should('have.length', numOfFilteredOptions);
+      });
+
+    cy.get("[data-test='reset-filter']").click();
+    cy.get("[data-test='documents-overview-table']")
+      .should('exist')
+      .within(() => {
+        cy.get('tbody tr').should('have.length', Object.keys(mockFetchedDocuments).length);
+      });
+  });
 
   it('Check if view details button opens DocumentMetaDataDialog', () => {
     const hasCompanyAtLeastOneOwner = true;
