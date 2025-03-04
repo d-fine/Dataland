@@ -38,6 +38,11 @@ object JsonComparator {
         return differences
     }
 
+    /**
+     * Checks recursively if a given JSON node is a fully null object (all fields are null or empty).
+     * @param node The JSON node to check.
+     * @return True if the node is a fully null object, false otherwise.
+     */
     fun isFullyNullObject(node: JsonNode): Boolean =
         node.isNull ||
             node.isObject &&
