@@ -305,6 +305,7 @@ class AssembledDatasetTest {
         ApiAwait.waitForSuccess { uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = true) }
 
         this.postExtendedCurrencyEquityDatapoint(companyId, reportingPeriod)
+        Thread.sleep(2500)
 
         val activeAdditionalCompanyInformationDataset =
             this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)
@@ -323,6 +324,7 @@ class AssembledDatasetTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         this.postExtendedCurrencyEquityDatapoint(companyId, reportingPeriod)
+        Thread.sleep(2500)
 
         val activeAdditionalCompanyInformationDataset =
             this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)

@@ -132,7 +132,7 @@ class DataPointValidatorTest {
                     dataPointBaseType = IdWithRef(id = dataPointBaseTypeId, ref = "dummy"),
                     name = "dummy",
                     businessDefinition = "dummy",
-                    validatedBy = "org.dataland.datalandbackend.model.datapoints.standard.CurrencyDataPoint",
+                    validatedBy = "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint",
                     usedBy = emptyList(),
                     example = "dummy",
                 ),
