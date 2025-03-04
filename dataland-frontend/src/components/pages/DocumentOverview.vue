@@ -111,7 +111,7 @@ import {
 } from '@clients/documentmanager';
 import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
+import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 
 const props = defineProps<{
