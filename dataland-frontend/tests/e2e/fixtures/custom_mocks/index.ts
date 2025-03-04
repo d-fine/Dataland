@@ -1,6 +1,8 @@
 import fs from 'fs';
-import { extractMetaInfoAssociatedWithReportingPeriodByDataType } from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker';
-import { generateMetaInfoDataForOneCompany } from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker';
+import {
+  generateMetaInfoDataForOneCompany,
+  extractMetaInfoAssociatedWithReportingPeriodByDataType,
+} from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker';
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from '@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker';
 import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker';
 import { generateStoredDataRequests } from '@e2e/fixtures/custom_mocks/StoredDataRequestsFaker';
