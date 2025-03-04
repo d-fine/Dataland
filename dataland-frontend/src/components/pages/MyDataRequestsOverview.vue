@@ -129,12 +129,8 @@
                       v-if="slotProps.data.requestStatus == RequestStatus.Answered"
                       class="text-right text-primary no-underline font-bold"
                     >
-                      <span
-                        id="resolveButton"
-                        style="cursor: pointer"
-                        data-test="requested-Datasets-Resolve"
-                        @click="goToAnsweringDataSetPage(slotProps.data)"
-                        >VIEW DATASET</span
+                      <span id="resolveButton" style="cursor: pointer" data-test="requested-Datasets-Resolve"
+                        >RESOLVE</span
                       >
                       <span class="ml-3">></span>
                     </div>
@@ -196,7 +192,6 @@ import {
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import router from '@/router';
-import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -275,23 +270,6 @@ export default defineComponent({
     getFrameworkSubtitle,
     convertUnixTimeInMsToDateString,
     /**
-     * Navigates to the company view page
-     * @param companyId Dataland companyId
-     * @param framework Dataland framework
-     * @returns the promise of the router push action
-     */
-    async goToAnsweringDataSetPage(extendedStoredDataRequest: ExtendedStoredDataRequest) {
-      try {
-        if (this.getKeycloakPromise) {
-          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
-          const url = await getAnsweringDataSetUrl(extendedStoredDataRequest, apiClientProvider);
-          if (url) return router.push(url);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
      * Navigates to the bulk data request page
      * @returns the promise of the router push action
      */
@@ -327,12 +305,8 @@ export default defineComponent({
      * @returns the promise of the router push action
      */
     onRowClick(event: DataTableRowClickEvent) {
-      const clickedElement = event.originalEvent.target as HTMLElement;
-      const isResolveButtonClick = clickedElement.id === 'resolveButton';
-      if (!isResolveButtonClick) {
-        const requestIdOfClickedRow = event.data.dataRequestId;
-        return router.push(`/requests/${requestIdOfClickedRow}`);
-      }
+      const requestIdOfClickedRow = event.data.dataRequestId;
+      return router.push(`/requests/${requestIdOfClickedRow}`);
     },
     /**
      * Sorts the list of storedDataRequests
