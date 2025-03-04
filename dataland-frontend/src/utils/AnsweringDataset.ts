@@ -43,7 +43,7 @@ export async function getAnsweringDataSetUrl(
     storedDataRequest.reportingPeriod,
     apiClientProvider
   );
-  if (answeringDataMetaInfo) {
+  if (!answeringDataMetaInfo) {
     const parentCompanyId = await getParentCompanyId(storedDataRequest.datalandCompanyId, apiClientProvider);
     if (!parentCompanyId) return;
     answeringDataMetaInfo = await getDataMetaInfo(

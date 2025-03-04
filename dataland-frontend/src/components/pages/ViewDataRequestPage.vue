@@ -327,7 +327,7 @@ export default defineComponent({
       .then(() => {
         if (this.getKeycloakPromise) {
           const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
-          getCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
+          this.getAndStoreCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
             console.error(error)
           );
           this.checkForAvailableData(this.storedDataRequest, apiClientProvider).catch((error) => console.error(error));
@@ -355,6 +355,16 @@ export default defineComponent({
       this.hasValidEmailForm = hasValidForm;
       this.emailContacts = contacts;
       this.emailMessage = message;
+    },
+    /**
+     * Retrieve the company name and store it if a value was found.
+     */
+    async getAndStoreCompanyName(companyId: string, apiClientProvider: ApiClientProvider) {
+      try {
+        this.companyName = await getCompanyName(companyId, apiClientProvider);
+      } catch (error) {
+        console.error(error);
+      }
     },
     /**
      * Method to check if there exist an approved dataset for a dataRequest
