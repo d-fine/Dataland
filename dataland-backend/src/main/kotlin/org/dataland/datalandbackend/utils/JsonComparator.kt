@@ -44,11 +44,11 @@ object JsonComparator {
      * @return True if the node is a fully null object, false otherwise.
      */
     fun isFullyNullObject(node: JsonNode): Boolean =
-        node.isNull ||
-            node.isObject &&
-            node.fields().asSequence().all {
-                it.value.isNull || it.value.isEmpty || isFullyNullObject(it.value)
-            }
+        node.isNull || isEmptyNestedNode(node) || isNestedNode(node) && node.fields().asSequence().all { isFullyNullObject(it.value) }
+
+    private fun isEmptyNestedNode(node: JsonNode): Boolean = isNestedNode(node) && node.isEmpty
+
+    private fun isNestedNode(node: JsonNode): Boolean = node.isObject || node.isArray
 
     private fun valuesDiffer(
         expected: JsonNode,

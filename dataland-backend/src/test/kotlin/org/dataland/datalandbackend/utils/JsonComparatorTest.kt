@@ -154,4 +154,17 @@ class JsonComparatorTest {
         val differences = compareJsonStrings(expected, actual)
         assertEquals(0, differences.size)
     }
+
+    @ParameterizedTest
+    @CsvSource(
+        delimiter = ';',
+        value = [
+            """{"a": {"b": null, "c": 1}}""",
+            """{"a": {"b": null, "c": {"d": [], "e": "Test"}}}""",
+            """{"a": {}, "b": [], "c": {"d": null, "e": "Test"}}}""",
+        ],
+    )
+    fun `nested objects with partially null values should not be equal to null`(jsonString: String) {
+        assertEquals(JsonComparator.isFullyNullObject(JsonTestUtils.testObjectMapper.readTree(jsonString)), false)
+    }
 }
