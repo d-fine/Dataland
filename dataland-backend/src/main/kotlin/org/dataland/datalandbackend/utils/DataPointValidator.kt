@@ -127,8 +127,9 @@ class DataPointValidator
             correlationId: String,
         ) {
             referencedReportsUtilities.validateReferencedReportConsistency(referencedReports ?: emptyMap())
-            val observedDocumentReferences = mutableSetOf<String>()
+            assertDatasetIsNotEmpty(datasetContent, correlationId)
 
+            val observedDocumentReferences = mutableSetOf<String>()
             datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->
                 val dataPoint = objectMapper.writeValueAsString(dataPointJsonLeaf.content)
                 if (dataPoint.isEmpty()) return@forEach
@@ -157,6 +158,32 @@ class DataPointValidator
                             "but listed in the referenced report field: $unusedReferences",
                     )
                 }
+            }
+        }
+
+        /**
+         * Checks if the provided dataset contains any data
+         * @param datasetContent The content of the dataset in form of a map
+         * @param correlationId The correlation ID of the operation
+         * @throws InvalidInputApiException if the dataset is empty
+         */
+        private fun assertDatasetIsNotEmpty(
+            datasetContent: Map<String, JsonSpecificationLeaf>,
+            correlationId: String,
+        ) {
+            var containsData = false
+            for (jsonSpecificationLeaf in datasetContent.values) {
+                if (!JsonComparator.isFullyNullObject(jsonSpecificationLeaf.content)) {
+                    containsData = true
+                    break
+                }
+            }
+
+            if (!containsData) {
+                throw InvalidInputApiException(
+                    "Empty dataset.",
+                    "The provided dataset is empty. Correlation ID: $correlationId",
+                )
             }
         }
 

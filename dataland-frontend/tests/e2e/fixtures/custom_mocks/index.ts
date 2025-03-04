@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { extractMetaInfoAssociatedWithReportingPeriodByDataType } from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker.ts';
+import { extractMetaInfoAssociatedWithReportingPeriodByDataType } from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker';
 import { generateMetaInfoDataForOneCompany } from '@e2e/fixtures/custom_mocks/DataMetaInformationFaker';
 import { generateMapOfFrameworkNameToAggregatedFrameworkDataSummary } from '@e2e/fixtures/custom_mocks/MapOfDataTypeToAggregatedFrameworkDataSummaryFaker';
 import { generateListOfDataSearchStoredCompany } from '@e2e/fixtures/custom_mocks/DataSearchStoredCompanyFaker';
@@ -9,9 +9,9 @@ import {
   generateSfdrQaReportPreparedFixtures,
 } from '@e2e/fixtures/custom_mocks/SfdrQaReportPreparedFixtures';
 import { generateEuTaxonomyNonFinancialsQaReportPreparedFixtures } from '@e2e/fixtures/custom_mocks/EuTaxonomyNonFinancialsQaReportPreparedFixtures';
-import { generateAdditionalCompanyInformationLinkedQaReports } from '@e2e/fixtures/custom_mocks/AdditionalCompanyInformationQaPreparedFixtures.ts';
-import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
-import { type FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { generateAdditionalCompanyInformationLinkedQaReports } from '@e2e/fixtures/custom_mocks/AdditionalCompanyInformationQaPreparedFixtures';
+import { type DataAndMetaInformation } from '@/api-models/DataAndMetaInformation';
+import { type FrameworkData } from '@/utils/GenericFrameworkTypes';
 
 /**
  * Generates mocks that are not only dataset mocks

@@ -38,7 +38,7 @@ object JsonComparator {
         return differences
     }
 
-    private fun isFullyNullObject(node: JsonNode): Boolean =
+    fun isFullyNullObject(node: JsonNode): Boolean =
         node.isNull ||
             node.isObject &&
             node.fields().asSequence().all {

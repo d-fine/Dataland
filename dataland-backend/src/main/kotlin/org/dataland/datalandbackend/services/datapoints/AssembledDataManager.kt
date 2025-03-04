@@ -18,6 +18,7 @@ import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
+import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
@@ -149,7 +150,7 @@ class AssembledDataManager
             uploadedDataset: StorableDataset,
         ): DataPointMetaInformation? {
             val dataPoint = dataPointJsonLeaf.content
-            if (dataPoint.isNull || (dataPoint.isObject && dataPoint.isEmpty)) return null
+            if (JsonComparator.isFullyNullObject(dataPoint)) return null
 
             referencedReportsUtilities.updatePublicationDateInJsonNode(
                 dataPoint,
@@ -264,7 +265,7 @@ class AssembledDataManager
             try {
                 specificationClient.getFrameworkSpecification(framework)
             } catch (clientException: ClientException) {
-                logger.error("Framework $framework not found: ${clientException.message}.")
+                logger.warn("Framework $framework not found: ${clientException.message}.")
                 throw InvalidInputApiException(
                     "Framework $framework not found.",
                     "The specified framework $framework is not known to the specification service.",
