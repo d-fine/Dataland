@@ -15,7 +15,7 @@
           <tbody class="p-datatable-body">
             <tr>
               <th class="headers-bg">Name</th>
-              <td class="nowrap">
+              <td class="nowrap" data-test="document-link">
                 <DocumentLink
                   :download-name="metaData.documentName ? metaData.documentName : metaData.documentId"
                   :file-reference="metaData.documentId"
@@ -25,23 +25,23 @@
             </tr>
             <tr>
               <th class="headers-bg">Publication date</th>
-              <td>{{ metaData.publicationDate }}</td>
+              <td data-test="publication-date">{{ metaData.publicationDate }}</td>
             </tr>
             <tr>
               <th class="headers-bg">Document type</th>
-              <td>{{ metaData?.documentCategory }}</td>
+              <td data-test="document-type">{{ metaData?.documentCategory }}</td>
             </tr>
             <tr v-if="metaData.reportingPeriod">
               <th class="headers-bg">Reporting period</th>
-              <td class="nowrap">{{ metaData.reportingPeriod }}</td>
+              <td class="nowrap" data-test="reporting-period">{{ metaData.reportingPeriod }}</td>
             </tr>
             <tr>
               <th class="headers-bg">Upload time</th>
-              <td>{{ metaData.uploadTime }}</td>
+              <td data-test="upload-time">{{ metaData.uploadTime }}</td>
             </tr>
             <tr>
               <th class="headers-bg">Linked companies</th>
-              <td>
+              <td data-test="linked-companies">
                 <span v-for="(company, index) in metaData.company" :key="index">
                   <a
                     :href="`${baseURL}/companies/${company.id}`"
