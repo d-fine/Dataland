@@ -133,8 +133,8 @@
                         id="resolveButton"
                         style="cursor: pointer"
                         data-test="requested-Datasets-Resolve"
-                        @click="goToResolveDataRequestPage(slotProps.data.datalandCompanyId, slotProps.data.dataType)"
-                        >RESOLVE</span
+                        @click="goToAnsweringDataSetPage(slotProps.data)"
+                        >VIEW DATASET</span
                       >
                       <span class="ml-3">></span>
                     </div>
@@ -185,7 +185,6 @@ import { frameworkHasSubTitle, getFrameworkSubtitle, getFrameworkTitle } from '@
 import DatasetsTabMenu from '@/components/general/DatasetsTabMenu.vue';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import { type ExtendedStoredDataRequest, RequestStatus } from '@clients/communitymanager';
-import { type DataTypeEnum } from '@clients/backend';
 import InputText from 'primevue/inputtext';
 import FrameworkDataSearchDropdownFilter from '@/components/resources/frameworkDataSearch/FrameworkDataSearchDropdownFilter.vue';
 import { type FrameworkSelectableItem, type SelectableItem } from '@/utils/FrameworkDataSearchDropDownFilterTypes';
@@ -197,6 +196,7 @@ import {
   retrieveAvailableFrameworks,
 } from '@/utils/RequestsOverviewPageUtils';
 import router from '@/router';
+import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
 
 export default defineComponent({
   name: 'MyDataRequestsOverview',
@@ -280,9 +280,16 @@ export default defineComponent({
      * @param framework Dataland framework
      * @returns the promise of the router push action
      */
-    goToResolveDataRequestPage(companyId: string, framework: DataTypeEnum) {
-      const url = `/companies/${companyId}/frameworks/${framework}`;
-      return router.push(url);
+    async goToAnsweringDataSetPage(extendedStoredDataRequest: ExtendedStoredDataRequest) {
+      try {
+        if (this.getKeycloakPromise) {
+          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
+          const url = await getAnsweringDataSetUrl(extendedStoredDataRequest, apiClientProvider);
+          if (url) return router.push(url);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
     /**
      * Navigates to the bulk data request page

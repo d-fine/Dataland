@@ -150,11 +150,11 @@
               <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
             </div>
             <div
-              v-show="answeringDataSet"
+              v-show="answeringDataSetUrl"
               class="link claim-panel-text"
               style="font-weight: bold"
               data-test="viewDataset"
-              @click="goToResolveDataRequestPage()"
+              @click="goToAnsweringDataSetPage()"
             >
               VIEW DATASET
             </div>
@@ -178,7 +178,7 @@
                     <PrimeButton
                       data-test="resolveRequestButton"
                       v-show="isUsersOwnRequest && isRequestStatusAnswered()"
-                      @click="goToResolveDataRequestPage()"
+                      @click="goToAnsweringDataSetPage()"
                     >
                       <span class="d-letters pl-2"> Resolve Request </span>
                     </PrimeButton>
@@ -270,12 +270,13 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
-import { type DataMetaInformation, type DataTypeEnum, IdentifierType } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
 import router from '@/router';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
+import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
+import { getCompanyName } from '@/utils/CompanyInformation.ts';
 
 export default defineComponent({
   name: 'ViewDataRequest',
@@ -317,15 +318,20 @@ export default defineComponent({
       emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
       reopenMessageError: false,
-      answeringDataSet: undefined as DataMetaInformation | undefined,
+      answeringDataSetUrl: undefined as string | undefined,
     };
   },
   mounted() {
     this.getRequest()
       .catch((error) => console.error(error))
       .then(() => {
-        this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
-        this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
+        if (this.getKeycloakPromise) {
+          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
+          getCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
+            console.error(error)
+          );
+          this.checkForAvailableData(this.storedDataRequest, apiClientProvider).catch((error) => console.error(error));
+        }
         this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
         void this.setUserAccessFields();
       })
@@ -354,52 +360,12 @@ export default defineComponent({
      * Method to check if there exist an approved dataset for a dataRequest
      * @param storedDataRequest dataRequest
      */
-    async checkForAvailableData(storedDataRequest: StoredDataRequest) {
+    async checkForAvailableData(storedDataRequest: StoredDataRequest, apiClientProvider: ApiClientProvider) {
       try {
-        if (this.getKeycloakPromise) {
-          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
-          this.answeringDataSet = await this.getDataMetaInfo(
-            storedDataRequest.datalandCompanyId,
-            storedDataRequest.dataType,
-            storedDataRequest.reportingPeriod,
-            apiClientProvider
-          );
-          if (!this.answeringDataSet) {
-            const parentCompanyId = await this.getParentCompanyId(storedDataRequest.datalandCompanyId);
-            if (!parentCompanyId) return;
-            this.answeringDataSet = await this.getDataMetaInfo(
-              parentCompanyId,
-              storedDataRequest.dataType,
-              storedDataRequest.reportingPeriod,
-              apiClientProvider
-            );
-          }
-        }
+        this.answeringDataSetUrl = await getAnsweringDataSetUrl(storedDataRequest, apiClientProvider);
       } catch (error) {
         console.error(error);
       }
-    },
-    /**
-     * Retrieve the meta data object of the active data set identified by the given parameters.
-     * @param companyId the company to which the dataset belongs
-     * @param dataType the framework to search for
-     * @param reportingPeriod the reporting period to search for
-     * @param apiClientProvider an api client provider to use when polling the backend
-     * @return the meta data object if found, else "undefined"
-     */
-    async getDataMetaInfo(
-      companyId: string,
-      dataType: string,
-      reportingPeriod: string,
-      apiClientProvider: ApiClientProvider
-    ): Promise<DataMetaInformation | undefined> {
-      const datasets = await apiClientProvider.backendClients.metaDataController.getListOfDataMetaInfo(
-        companyId,
-        dataType as DataTypeEnum,
-        true,
-        reportingPeriod
-      );
-      return datasets.data.length > 0 ? datasets.data[0] : undefined;
     },
     /**
      * Method to get the request from the api
@@ -412,51 +378,6 @@ export default defineComponent({
               this.requestId
             )
           ).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Method to get the company information from the backend
-     * @param companyId companyId
-     */
-    async getCompanyInformation(companyId: string) {
-      try {
-        if (this.getKeycloakPromise) {
-          const companyDataController = new ApiClientProvider(this.getKeycloakPromise()).backendClients
-            .companyDataController;
-          return (await companyDataController.getCompanyInfo(companyId)).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Method to get the company name from the backend
-     * @param companyId companyId
-     */
-    async getCompanyName(companyId: string) {
-      const companyInformation = await this.getCompanyInformation(companyId);
-      if (companyInformation) this.companyName = companyInformation.companyName;
-    },
-    /**
-     * Get the id of the parent company.
-     * @param companyId the company whose parent shall be found
-     */
-    async getParentCompanyId(companyId: string) {
-      const companyInformation = await this.getCompanyInformation(companyId);
-      if (!companyInformation?.parentCompanyLei) return undefined;
-      try {
-        if (this.getKeycloakPromise) {
-          const companyDataController = new ApiClientProvider(this.getKeycloakPromise()).backendClients
-            .companyDataController;
-          return (
-            await companyDataController.getCompanyIdByIdentifier(
-              IdentifierType.Lei,
-              companyInformation.parentCompanyLei
-            )
-          ).data.companyId;
         }
       } catch (error) {
         console.error(error);
@@ -578,11 +499,8 @@ export default defineComponent({
      * Navigates to the company view page
      * @returns the promise of the router push action
      */
-    goToResolveDataRequestPage() {
-      if (this.answeringDataSet)
-        return router.push(
-          `/companies/${this.answeringDataSet.companyId}/frameworks/${this.answeringDataSet.dataType}`
-        );
+    goToAnsweringDataSetPage() {
+      if (this.answeringDataSetUrl) return router.push(this.answeringDataSetUrl);
     },
     /**
      * Method to check if request status is answered
