@@ -273,6 +273,7 @@ export default defineComponent({
   @media only screen and (max-width: newVariables.$small) {
     width: 100%;
     grid-template-columns: repeat(1, 1fr);
+    padding: 24px 3%;
   }
 }
 
@@ -302,6 +303,12 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  @media only screen and (max-width: newVariables.$small) {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 20px;
+  }
 
   &__title {
     font-size: 21px;

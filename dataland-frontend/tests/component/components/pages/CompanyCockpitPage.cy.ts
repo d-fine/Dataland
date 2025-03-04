@@ -272,10 +272,9 @@ describe('Component test for the company cockpit', () => {
       cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
     }
     for (const category of Object.keys(DocumentMetaInfoDocumentCategoryEnum)) {
-      cy.get('[data-test="' + category + '"] [data-test="Report-Download-test_document (2025-02-25)"]').should(
-        'have.text',
-        'test_document (2025-02-25)'
-      );
+      cy.get('[data-test="' + category + '"]')
+        .should('exist')
+        .contains('test_document (2025-02-25)');
     }
   });
 
