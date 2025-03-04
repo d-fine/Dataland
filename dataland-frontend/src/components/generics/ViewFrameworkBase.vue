@@ -128,13 +128,7 @@ import TheFooter from '@/components/generics/TheFooter.vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import {
-  type CompanyInformation,
-  type DataMetaInformation,
-  DataTypeEnum,
-  ExportFileType,
-  type VsmeData,
-} from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, ExportFileType } from '@clients/backend';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -413,17 +407,23 @@ export default defineComponent({
     },
 
     /**
-     * Get available metadata in case that data cannot be received due to insufficient access rights for private data.
+     * Get available metadata in case of either insufficient rights.
      */
     async getMetadataForDataset() {
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metadataControllerApi = apiClientProvider.backendClients.metaDataController;
-        const apiResponse = await metadataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const metaInformation: DataMetaInformation[] = apiResponse.data;
-        this.activeDataForCurrentCompanyAndFramework = metaInformation.map((metaInfo) => {
-          return { metaInfo: metaInfo, data: {} } as DataAndMetaInformation<VsmeData>;
-        });
+        if (this.dataId && typeof this.dataId == 'string') {
+          const apiResonse = await metadataControllerApi.getDataMetaInfo(this.dataId);
+          const metaInformation: DataMetaInformation = apiResonse.data;
+          this.activeDataForCurrentCompanyAndFramework = [{ metaInfo: metaInformation, data: {} }];
+        } else {
+          const apiResponse = await metadataControllerApi.getListOfDataMetaInfo(this.companyID);
+          const metaInformation: DataMetaInformation[] = apiResponse.data;
+          this.activeDataForCurrentCompanyAndFramework = metaInformation.map((metaInfo) => {
+            return { metaInfo: metaInfo, data: {} };
+          });
+        }
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         this.isDataProcessedSuccessfully = false;
