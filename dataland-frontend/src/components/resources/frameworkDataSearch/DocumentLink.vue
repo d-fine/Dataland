@@ -1,9 +1,6 @@
 <template>
-  <div
-    style="position: relative; display: flex; align-items: center; justify-content: flex-start"
-    data-test="download-link"
-  >
-    <span @click="downloadDocument()" class="text-primary cursor-pointer" :class="fontStyle" style="flex: 0 0 auto">
+  <div class="text-primary">
+    <a @click="downloadDocument()" class="cursor-pointer" :class="fontStyle" style="flex: 0 0 auto">
       <span class="underline pl-1" :data-test="'Report-Download-' + downloadName">{{ label ?? downloadName }}</span>
       <i
         v-if="showIcon"
@@ -13,10 +10,22 @@
         style="font-size: 12px"
       />
       <span class="underline ml-1 pl-1">{{ suffix }}</span>
-    </span>
+    </a>
     <DownloadProgressSpinner :percent-completed="percentCompleted" />
   </div>
 </template>
+
+<style scoped>
+div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: calc(41vw - 175px);
+  @media only screen and (max-width: 768px) {
+    max-width: calc(100vw - 200px);
+  }
+}
+</style>
 
 <script lang="ts">
 import { defineComponent, inject } from 'vue';

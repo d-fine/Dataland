@@ -62,18 +62,16 @@
       <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="documentProps">
-          <span
-            class="text-primary no-underline font-bold cursor-pointer"
-            @click="openMetaInfoDialog(documentProps.data.documentId)"
-            ><span> VIEW DETAILS</span> <span class="ml-3">></span>
-          </span>
+          <a class="tertiary-button" @click="openMetaInfoDialog(documentProps.data.documentId)">
+            VIEW DETAILS <span class="material-icons">arrow_forward_ios</span>
+          </a>
         </template>
       </Column>
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="document">
           <DocumentLink
-            :label="'DOWNLOAD'"
-            :download-name="document.data.documentName"
+            :download-name="truncatedDocumentName(document.data)"
+            :label="truncatedDocumentName(document.data) + ' (' + document.data.publicationDate + ')'"
             :file-reference="document.data.documentId"
             show-icon
             data-test="download-button"
