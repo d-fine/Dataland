@@ -72,6 +72,7 @@
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
         <template #body="document">
           <DocumentLink
+            :label="'DOWNLOAD'"
             :download-name="document.data.documentName"
             :file-reference="document.data.documentId"
             show-icon
