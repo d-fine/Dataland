@@ -134,11 +134,13 @@ class DataPointMetaInformationManager
         fun getLatestUploadTimeOfActiveDataPoints(
             dataPointTypes: Set<String>,
             companyId: String,
+            reportingPeriod: String,
         ): Long =
             dataPointMetaInformationRepositoryInterface
-                .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
+                .findByDataPointTypeInAndCompanyIdAndReportingPeriodAndCurrentlyActiveTrue(
                     dataPointTypes = dataPointTypes,
                     companyId = companyId,
+                    reportingPeriod = reportingPeriod,
                 ).map { it.uploadTime }
                 .maxOf { it }
     }

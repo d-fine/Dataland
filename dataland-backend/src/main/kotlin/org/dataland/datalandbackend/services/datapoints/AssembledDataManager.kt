@@ -383,9 +383,10 @@ class AssembledDataManager
         fun getLatestUploadTime(
             companyId: String,
             framework: String,
+            reportingPeriod: String,
         ): Long {
             val dataPointTypes = getRelevantDataPointTypes(framework)
-            return metaDataManager.getLatestUploadTimeOfActiveDataPoints(dataPointTypes, companyId)
+            return metaDataManager.getLatestUploadTimeOfActiveDataPoints(dataPointTypes, companyId, reportingPeriod)
         }
 
         /**
@@ -435,7 +436,7 @@ class AssembledDataManager
                             dataType = searchFilter.dataType,
                             reportingPeriod = reportingPeriod,
                             currentlyActive = true,
-                            uploadTime = getLatestUploadTime(companyId = companyId, framework = framework),
+                            uploadTime = getLatestUploadTime(companyId, framework, reportingPeriod),
                             qaStatus = QaStatus.Accepted,
                         ),
                     data = data,
