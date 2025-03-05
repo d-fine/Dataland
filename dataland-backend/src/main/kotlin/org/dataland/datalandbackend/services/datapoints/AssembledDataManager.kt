@@ -35,7 +35,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 import java.time.LocalDate
 import kotlin.jvm.optionals.getOrNull
 
@@ -376,6 +375,20 @@ class AssembledDataManager
         }
 
         /**
+         * Retrieves the latest upload time of an active data point belonging to a given framework and a specific company
+         * @param companyId the ID of the company
+         * @param framework the name of the framework
+         * @return the latest upload time of an active data point as a long
+         */
+        fun getLatestUploadTime(
+            companyId: String,
+            framework: String,
+        ): Long {
+            val dataPointTypes = getRelevantDataPointTypes(framework)
+            return metaDataManager.getLatestUploadTimeOfActiveDataPoints(dataPointTypes, companyId)
+        }
+
+        /**
          * Retrieves all reporting periods with at least on active data point for a specific company and framework
          */
         fun getAllReportingPeriodsWithActiveDataPoints(
@@ -407,11 +420,11 @@ class AssembledDataManager
                 )
             }
 
-            return reportingPeriods.map {
+            return reportingPeriods.map { reportingPeriod ->
                 val data =
-                    getDatasetData(BasicDataDimensions(companyId, framework, it), correlationId)
+                    getDatasetData(BasicDataDimensions(companyId, framework, reportingPeriod), correlationId)
                         ?: throw IllegalStateException(
-                            "Data expected for $it, $companyId and ${searchFilter.dataType}" +
+                            "Data expected for $reportingPeriod, $companyId and ${searchFilter.dataType}" +
                                 " but not found. Correlation ID: $correlationId",
                         )
                 PlainDataAndMetaInformation(
@@ -420,9 +433,9 @@ class AssembledDataManager
                             dataId = "not available",
                             companyId = companyId,
                             dataType = searchFilter.dataType,
-                            reportingPeriod = it,
+                            reportingPeriod = reportingPeriod,
                             currentlyActive = true,
-                            uploadTime = Instant.now().toEpochMilli(),
+                            uploadTime = getLatestUploadTime(companyId = companyId, framework = framework),
                             qaStatus = QaStatus.Accepted,
                         ),
                     data = data,

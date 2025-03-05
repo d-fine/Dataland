@@ -15,12 +15,12 @@ import org.dataland.specificationservice.openApiClient.model.IdWithRef
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import org.mockito.kotlin.doReturn
 
 class DataPointValidatorTest {
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
@@ -116,15 +116,19 @@ class DataPointValidatorTest {
                 publicationDate = LocalDate.parse("2021-01-01"),
             )
 
-        doReturn(mock<DataPointTypeSpecification> {
-            on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
-            on { dataPointType } doReturn IdWithRef(id = dataPointId, ref = "dummy")
-        }).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
+        doReturn(
+            mock<DataPointTypeSpecification> {
+                on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+                on { dataPointType } doReturn IdWithRef(id = dataPointId, ref = "dummy")
+            },
+        ).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
 
-        doReturn(mock<DataPointBaseTypeSpecification> {
-            on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
-            on { validatedBy } doReturn "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint"
-        }).whenever(specificationClient).getDataPointBaseType(dataPointBaseTypeId)
+        doReturn(
+            mock<DataPointBaseTypeSpecification> {
+                on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+                on { validatedBy } doReturn "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint"
+            },
+        ).whenever(specificationClient).getDataPointBaseType(dataPointBaseTypeId)
 
         assertThrows<InvalidInputApiException> {
             dataPointValidator.validateDataset(mapOf(dataPointId to dataPoint), mapOf("report" to companyReport), correlationId)

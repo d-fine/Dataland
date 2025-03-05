@@ -124,4 +124,21 @@ class DataPointMetaInformationManager
                     companyId = companyId,
                 ).map { it.reportingPeriod }
                 .toSet()
+
+        /**
+         * Method to get the latest upload time of active data points given a set of data point types for a specific company
+         * @param dataPointTypes the data point types to filter for
+         * @param companyId the company to filter for
+         * @return the latest upload time of active data points as a long
+         */
+        fun getLatestUploadTimeOfActiveDataPoints(
+            dataPointTypes: Set<String>,
+            companyId: String,
+        ): Long =
+            dataPointMetaInformationRepositoryInterface
+                .findByDataPointTypeInAndCompanyIdAndCurrentlyActiveTrue(
+                    dataPointTypes = dataPointTypes,
+                    companyId = companyId,
+                ).map { it.uploadTime }
+                .maxOf { it }
     }
