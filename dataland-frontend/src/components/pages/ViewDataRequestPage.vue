@@ -175,13 +175,10 @@
                     since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                   </span>
                   <span style="margin-left: auto">
-                    <PrimeButton
-                      data-test="resolveRequestButton"
-                      v-show="isUsersOwnRequest && isRequestStatusAnswered()"
-                      @click="goToAnsweringDataSetPage()"
-                    >
-                      <span class="d-letters pl-2"> Resolve Request </span>
-                    </PrimeButton>
+                    <ReviewRequestButtons
+                      v-if="isUsersOwnRequest && isRequestStatusAnswered()"
+                      :data-request-id="storedDataRequest.dataRequestId"
+                    />
                   </span>
                 </span>
                 <div class="card__separator" />
@@ -277,10 +274,12 @@ import router from '@/router';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
 import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
 import { getCompanyName } from '@/utils/CompanyInformation.ts';
+import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 
 export default defineComponent({
   name: 'ViewDataRequest',
   components: {
+    ReviewRequestButtons,
     TheContent,
     EmailDetails,
     PrimeDialog,
