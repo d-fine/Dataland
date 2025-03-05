@@ -20,6 +20,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import org.mockito.kotlin.doReturn
 
 class DataPointValidatorTest {
     private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
@@ -115,31 +116,18 @@ class DataPointValidatorTest {
                 publicationDate = LocalDate.parse("2021-01-01"),
             )
 
-        whenever(specificationClient.getDataPointTypeSpecification("dummy"))
-            .thenReturn(
-                DataPointTypeSpecification(
-                    dataPointType = IdWithRef(id = dataPointId, ref = "dummy"),
-                    name = "dummy",
-                    businessDefinition = "dummy",
-                    dataPointBaseType = IdWithRef(id = dataPointBaseTypeId, ref = "dummy"),
-                    usedBy = emptyList(),
-                ),
-            )
+        doReturn(mock<DataPointTypeSpecification> {
+            on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+            on { dataPointType } doReturn IdWithRef(id = dataPointId, ref = "dummy")
+        }).whenever(specificationClient).getDataPointTypeSpecification(dataPointId)
 
-        whenever(specificationClient.getDataPointBaseType(dataPointBaseTypeId))
-            .thenReturn(
-                DataPointBaseTypeSpecification(
-                    dataPointBaseType = IdWithRef(id = dataPointBaseTypeId, ref = "dummy"),
-                    name = "dummy",
-                    businessDefinition = "dummy",
-                    validatedBy = "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint",
-                    usedBy = emptyList(),
-                    example = "dummy",
-                ),
-            )
+        doReturn(mock<DataPointBaseTypeSpecification> {
+            on { dataPointBaseType } doReturn IdWithRef(id = dataPointBaseTypeId, ref = "dummy")
+            on { validatedBy } doReturn "org.dataland.datalandbackend.model.datapoints.CurrencyDataPoint"
+        }).whenever(specificationClient).getDataPointBaseType(dataPointBaseTypeId)
 
         assertThrows<InvalidInputApiException> {
-            dataPointValidator.validateDataset(mapOf("dummy" to dataPoint), mapOf("report" to companyReport), correlationId)
+            dataPointValidator.validateDataset(mapOf(dataPointId to dataPoint), mapOf("report" to companyReport), correlationId)
         }
     }
 
