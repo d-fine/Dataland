@@ -19,19 +19,22 @@ describe('Component test for ViewFrameworkBase', () => {
         companyID: 'mock-company-id',
       });
       cy.wait('@metaDataFetch').then(() => {
-        expect(mounted.wrapper.vm.dataTypesInDropdown).to.be.an('array').that.is.not.empty;
-        expect(mounted.wrapper.vm.dataTypesInDropdown).to.deep.equal([
-          {
-            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
-            value: DataTypeEnum.EutaxonomyFinancials,
-          },
-          {
-            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyNonFinancials),
-            value: DataTypeEnum.EutaxonomyNonFinancials,
-          },
-          { label: humanizeStringOrNumber(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
-          { label: humanizeStringOrNumber(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
-        ]);
+        cy.get('#chooseFrameworkDropdown').click();
+        cy.get('#chooseFrameworkDropdown_list').children().should('have.length', 5);
+        cy.get('#chooseFrameworkDropdown_list').within(() => {
+          cy.get('#chooseFrameworkDropdown_0').should(
+            'have.text',
+            humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials)
+          );
+          cy.get('#chooseFrameworkDropdown_1').should(
+            'have.text',
+            humanizeStringOrNumber(DataTypeEnum.EutaxonomyNonFinancials)
+          );
+          cy.get('#chooseFrameworkDropdown_2').should('have.text', humanizeStringOrNumber(DataTypeEnum.Lksg));
+          cy.get('#chooseFrameworkDropdown_3').should('have.text', humanizeStringOrNumber(DataTypeEnum.Sfdr));
+          cy.get('#chooseFrameworkDropdown_4').should('have.text', 'Documents');
+        });
+        cy.get('#chooseFrameworkDropdown').click();
       });
     });
   });

@@ -3,34 +3,26 @@
 
   <div ref="sheet">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
-
-    <div class="styled-box">
-      <span>Documents</span>
-    </div>
-
-    <span class="flex align-items-center">
-      <FrameworkDataSearchDropdownFilter
-        :disabled="waitingForData"
-        v-model="selectedDocumentType"
-        ref="DocumentTypeFilter"
-        :available-items="availableDocumentTypes"
-        filter-name="Types"
-        data-test="document-type-picker"
-        filter-id="document-type-filter"
-        filter-placeholder="Search by document type"
-        class="ml-3"
-        style="margin: 15px"
-      />
-
-      <span
-        data-test="reset-filter"
-        style="margin: 15px"
-        class="ml-3 cursor-pointer text-primary font-semibold d-letters"
-        @click="resetFilter"
-        >RESET</span
-      >
-    </span>
+    <ChangeFrameworkDropdown
+      :list-of-data-meta-info="listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod"
+      data-type="Documents"
+      :company-i-d="companyId"
+    />
+    <FrameworkDataSearchDropdownFilter
+      :disabled="waitingForData"
+      v-model="selectedDocumentType"
+      ref="DocumentTypeFilter"
+      :available-items="availableDocumentTypes"
+      filter-name="Types"
+      data-test="document-type-picker"
+      filter-id="document-type-filter"
+      filter-placeholder="Search by document type"
+      class="ml-3"
+      style="margin: 15px"
+    />
+    <span class="tertiary-button" data-test="reset-filter" @click="resetFilter"> RESET </span>
   </div>
+
   <TheContent class="paper-section flex flex-col p-3">
     <DataTable
       v-if="documentsFiltered && documentsFiltered.length > 0"
@@ -113,6 +105,8 @@ import type Keycloak from 'keycloak-js';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
 import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFormatter.ts';
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
+import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
+import type { DataMetaInformation } from '@clients/backend';
 
 const props = defineProps<{
   companyId: string;
@@ -135,10 +129,12 @@ const selectedDocumentId = ref<string>('');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
+const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = ref<DataMetaInformation[]>([]);
 
 watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
   getAllDocumentsForFilters().catch((error) => console.error(error));
+  getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit().catch((error) => console.error(error));
 });
 
 /**
@@ -160,6 +156,10 @@ async function getAllDocumentsForFilters(): Promise<void> {
       } else {
         documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
       }
+      const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
+      const metaDataControllerApi = backendClients.metaDataController;
+      const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
+      listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.value = apiResponse.data;
     }
   } catch (error) {
     console.error(error);
@@ -263,10 +263,31 @@ function convertToEnumSet(
   return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
 }
 
+/**
+ * Goes through all data meta info for the currently viewed company and does two things.
+ * First it sets the distinct frameworks as options in the framework-dropdown.
+ * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
+ * info of the currently active dataset.
+ */
+async function getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit(): void {
+  const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
+  const metaDataControllerApi = backendClients.metaDataController;
+  const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
+  listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.value = apiResponse.data;
+}
+
 onMounted(() => {
   getAllDocumentsForFilters().catch((error) => console.error(error));
+  getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit().catch((error) => console.error(error));
 });
 </script>
+
+<style>
+/** This is used to turn of the search bar in the FrameworkDataSearchDropdownFilter, because there are only 4 elements here. **/
+.p-multiselect-header {
+  display: none !important;
+}
+</style>
 
 <style scoped lang="scss">
 .sheet {
