@@ -186,7 +186,7 @@ describe('Component tests for the view data request page', function (): void {
       checkBasicPageElementsAsUser(RequestStatus.Resolved);
       cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
       cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
-      cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+      cy.get('[data-test="resolveRequestButton"]').should('not.exist');
 
       cy.get('[data-test="viewDataset"]').should('exist').click();
       cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`);
@@ -206,7 +206,7 @@ describe('Component tests for the view data request page', function (): void {
     checkBasicPageElementsAsUser(RequestStatus.Withdrawn);
     cy.get('[data-test="newMessage"]').should('exist').should('not.be.visible');
     cy.get('[data-test="card_withdrawn"]').should('exist').should('not.be.visible');
-    cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="resolveRequestButton"]').should('not.exist');
     cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
   });
 
@@ -257,7 +257,7 @@ describe('Component tests for the view data request page', function (): void {
     checkBasicPageElementsAsUser(RequestStatus.Open);
     cy.get('[data-test="card_providedContactDetails"]').should('exist').get('[data-test="newMessage"]').should('exist');
 
-    cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="resolveRequestButton"]').should('not.exist');
     cy.get('[data-test="viewDataset"]').should('exist').should('not.be.visible');
     cy.get('[data-test="card_withdrawn"]')
       .should('exist')
@@ -292,24 +292,42 @@ describe('Component tests for the view data request page', function (): void {
   });
 
   it(
-    'Check view data request page for answered request and ' +
-      'check the routing to data view page on resolve request click',
+    'Check view data request page for answered request and ' + 'check resolve and reopen buttons vanish on resolve',
     function () {
       const dummyRequest = createStoredDataRequest(RequestStatus.Answered, []);
       interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
       interceptUserAskForCompanyNameOnMounted();
       interceptUserActiveDatasetOnMounted(true);
       interceptPatchRequest();
-      cy.spy(router, 'push').as('routerPush');
       getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
         props: { requestId: requestId },
       }).then(() => {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="resolveRequestButton"]').should('exist').click();
-        cy.get('@routerPush').should(
-          'have.been.calledWith',
-          `/companies/${dummyCompanyId}/frameworks/${dummyFramework}`
-        );
+        cy.get('[data-test="successText"').should('exist');
+        cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
+        cy.get('[data-test="resolveRequestButton"]').should('not.exist');
+      });
+    }
+  );
+
+  it(
+    'Check view data request page for answered request and ' + 'check resolve and reopen buttons vanish on reopen',
+    function () {
+      const dummyRequest = createStoredDataRequest(RequestStatus.Answered, []);
+      interceptUserAskForSingleDataRequestsOnMounted(dummyRequest);
+      interceptUserAskForCompanyNameOnMounted();
+      interceptUserActiveDatasetOnMounted(true);
+      interceptPatchRequest();
+      getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }), router })(ViewDataRequestPage, {
+        props: { requestId: requestId },
+      }).then(() => {
+        checkBasicPageElementsAsUser(dummyRequest.requestStatus);
+        cy.get('[data-test="reOpenRequestButton"]').should('exist').click();
+        cy.get('[data-test="updateRequestButton"]').should('exist').click({ force: true });
+        cy.get('[data-test="successText"').should('exist');
+        cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
+        cy.get('[data-test="reOpenRequestButton"]').should('not.exist');
       });
     }
   );
@@ -349,6 +367,6 @@ describe('Component tests for the view data request page', function (): void {
     });
 
     checkBasicPageElementsAsAdmin(RequestStatus.Answered);
-    cy.get('[data-test="resolveRequestButton"]').should('exist').should('not.be.visible');
+    cy.get('[data-test="resolveRequestButton"]').should('not.exist');
   });
 });
