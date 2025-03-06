@@ -413,17 +413,11 @@ export default defineComponent({
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metadataControllerApi = apiClientProvider.backendClients.metaDataController;
-        if (this.dataId && typeof this.dataId == 'string') {
-          const apiResonse = await metadataControllerApi.getDataMetaInfo(this.dataId);
-          const metaInformation: DataMetaInformation = apiResonse.data;
-          this.activeDataForCurrentCompanyAndFramework = [{ metaInfo: metaInformation, data: {} }];
-        } else {
-          const apiResponse = await metadataControllerApi.getListOfDataMetaInfo(this.companyID);
-          const metaInformation: DataMetaInformation[] = apiResponse.data;
-          this.activeDataForCurrentCompanyAndFramework = metaInformation.map((metaInfo) => {
-            return { metaInfo: metaInfo, data: {} };
-          });
-        }
+        const apiResponse = await metadataControllerApi.getListOfDataMetaInfo(this.companyID);
+        const metaInformation: DataMetaInformation[] = apiResponse.data;
+        this.activeDataForCurrentCompanyAndFramework = metaInformation.map((metaInfo) => {
+          return { metaInfo: metaInfo, data: {} };
+        });
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         this.isDataProcessedSuccessfully = false;
