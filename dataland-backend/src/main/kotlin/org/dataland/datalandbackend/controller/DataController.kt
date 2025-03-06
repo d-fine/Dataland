@@ -98,21 +98,9 @@ open class DataController<T>(
                 reportingPeriod = reportingPeriod,
             )
         val correlationId = IdUtils.generateCorrelationId(dataDimensions)
-        val dataAsString =
-            datasetStorageService.getDatasetData(dataDimensions, correlationId)
-                ?: throw ResourceNotFoundApiException(
-                    summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
-                    message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
-                )
-
-        val result =
-            CompanyAssociatedData(
-                companyId = companyId,
-                reportingPeriod = reportingPeriod,
-                data = objectMapper.readValue(dataAsString, clazz),
-            )
-
-        return ResponseEntity.ok(result)
+        return ResponseEntity.ok(
+            this.buildCompanyAssociatedData(dataDimensions, correlationId),
+        )
     }
 
     private fun getData(
@@ -130,87 +118,49 @@ open class DataController<T>(
     ): ResponseEntity<List<DataAndMetaInformation<T>>> {
         val reportingPeriodInLog = reportingPeriod ?: "all reporting periods"
         logger.info(logMessageBuilder.getFrameworkDatasetsForCompanyMessage(dataType, companyId, reportingPeriodInLog))
-        val metaInfos =
-            dataMetaInformationManager.searchDataMetaInfo(
+        val allRelevantData =
+            datasetStorageService.getAllDatasetsAndMetaInformation(
                 DataMetaInformationSearchFilter(
                     companyId = companyId,
                     dataType = dataType,
                     onlyActive = showOnlyActive,
                     reportingPeriod = reportingPeriod,
                 ),
+                correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null),
             )
-        val authentication = DatalandAuthentication.fromContextOrNull()
-        val listOfFrameworkDataAndMetaInfo = mutableListOf<DataAndMetaInformation<T>>()
-        metaInfos.filter { it.isDatasetViewableByUser(authentication) }.forEach {
-            val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = null)
-            listOfFrameworkDataAndMetaInfo.add(
+        return ResponseEntity.ok(
+            allRelevantData.map {
                 DataAndMetaInformation(
-                    it.toApiModel(), getData(it.dataId, correlationId),
-                ),
+                    it.metaInfo,
+                    objectMapper.readValue(it.data, clazz),
+                )
+            },
+        )
+    }
+
+    override fun exportCompanyAssociatedDataByDimensions(
+        reportingPeriod: String,
+        companyId: String,
+        exportFileType: ExportFileType,
+    ): ResponseEntity<InputStreamResource> {
+        val dataDimensions =
+            BasicDataDimensions(
+                companyId = companyId,
+                dataType = dataType.toString(),
+                reportingPeriod = reportingPeriod,
             )
-        }
-        return ResponseEntity.ok(listOfFrameworkDataAndMetaInfo)
-    }
+        val correlationId = IdUtils.generateCorrelationId(dataDimensions)
+        val companyAssociatedData = this.buildCompanyAssociatedData(dataDimensions, correlationId)
 
-    override fun exportCompanyAssociatedDataToJson(dataId: String): ResponseEntity<InputStreamResource> {
-        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        this.verifyAccess(metaInfo)
-        val companyId = metaInfo.company.companyId
-        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
-        val companyAssociatedData =
-            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
+        val companyAssociatedDataForExport =
+            dataExportService.buildStreamFromCompanyAssociatedData(companyAssociatedData, exportFileType)
 
-        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
-
-        val companyAssociatedDataJson =
-            dataExportService.buildJsonStreamFromCompanyAssociatedData(companyAssociatedData)
-
-        logger.info("Creation of JSON for export successful.")
+        logger.info("Creation of ${exportFileType.name} for export successful.")
 
         return ResponseEntity
             .ok()
-            .headers(buildHttpHeadersForExport(dataId, ExportFileType.JSON))
-            .body(companyAssociatedDataJson)
-    }
-
-    override fun exportCompanyAssociatedDataToCsv(dataId: String): ResponseEntity<InputStreamResource> {
-        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        this.verifyAccess(metaInfo)
-        val companyId = metaInfo.company.companyId
-        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
-        val companyAssociatedData =
-            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
-
-        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
-
-        val companyAssociatedDataCsv = dataExportService.buildCsvStreamFromCompanyAssociatedData(companyAssociatedData)
-
-        logger.info("Creation of CSV for export successful.")
-
-        return ResponseEntity
-            .ok()
-            .headers(buildHttpHeadersForExport(dataId, ExportFileType.CSV))
-            .body(companyAssociatedDataCsv)
-    }
-
-    override fun exportCompanyAssociatedDataToExcel(dataId: String): ResponseEntity<InputStreamResource> {
-        val metaInfo = dataMetaInformationManager.getDataMetaInformationByDataId(dataId)
-        this.verifyAccess(metaInfo)
-        val companyId = metaInfo.company.companyId
-        val correlationId = IdUtils.generateCorrelationId(companyId = companyId, dataId = dataId)
-        val companyAssociatedData =
-            this.buildCompanyAssociatedData(dataId, companyId, metaInfo.reportingPeriod, correlationId)
-
-        logger.info(logMessageBuilder.getCompanyAssociatedDataSuccessMessage(dataId, companyId, correlationId))
-
-        val companyAssociatedDataExcel = dataExportService.buildExcelStreamFromCompanyAssociatedData(companyAssociatedData)
-
-        logger.info("Creation of Excel for export successful.")
-
-        return ResponseEntity
-            .ok()
-            .headers(buildHttpHeadersForExport(dataId, ExportFileType.EXCEL))
-            .body(companyAssociatedDataExcel)
+            .headers(buildHttpHeadersForExport(dataDimensions, exportFileType))
+            .body(companyAssociatedDataForExport)
     }
 
     private fun buildHttpHeadersForExport(
@@ -224,6 +174,22 @@ open class DataController<T>(
                 .attachment()
                 .filename("$dataId.${exportFileType.fileExtension}")
                 .build()
+        return headers
+    }
+
+    private fun buildHttpHeadersForExport(
+        dataDimensions: BasicDataDimensions,
+        exportFileType: ExportFileType,
+    ): HttpHeaders {
+        val headers = HttpHeaders()
+        headers.contentType = exportFileType.mediaType
+        headers.contentDisposition =
+            ContentDisposition
+                .attachment()
+                .filename(
+                    "${dataDimensions.reportingPeriod}-${dataDimensions.dataType}-${dataDimensions.companyId}" +
+                        ".${exportFileType.fileExtension}",
+                ).build()
         return headers
     }
 
@@ -252,6 +218,23 @@ open class DataController<T>(
             companyId = companyId,
             reportingPeriod = reportingPeriod,
             data = getData(dataId, correlationId),
+        )
+    }
+
+    private fun buildCompanyAssociatedData(
+        dataDimensions: BasicDataDimensions,
+        correlationId: String,
+    ): CompanyAssociatedData<T> {
+        val dataAsString =
+            datasetStorageService.getDatasetData(dataDimensions, correlationId) ?: throw ResourceNotFoundApiException(
+                summary = logMessageBuilder.dynamicDatasetNotFoundSummary,
+                message = logMessageBuilder.getDynamicDatasetNotFoundMessage(dataDimensions),
+            )
+
+        return CompanyAssociatedData(
+            companyId = dataDimensions.companyId,
+            reportingPeriod = dataDimensions.reportingPeriod,
+            data = objectMapper.readValue(dataAsString, clazz),
         )
     }
 
