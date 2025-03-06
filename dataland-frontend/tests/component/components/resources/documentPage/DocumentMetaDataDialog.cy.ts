@@ -2,6 +2,7 @@ import { type CompanyInformation } from '@clients/backend';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
+import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 
 describe('Component test for the Document Meta Data Dialog', () => {
   const dummyDocumentId: string = '00000000-0000-0000-0000-000000000000';
