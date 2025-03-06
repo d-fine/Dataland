@@ -29,7 +29,8 @@
 import { defineComponent, type PropType, ref } from 'vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataMetaInformation } from '@clients/backend';
+import type { DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
+import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
 import { type DataTypeEnumAndDocumentsEntry } from '@/types/DataTypeEnumAndDocumentsEntry.ts';
 
 const dropdownExtended = ref<boolean>(false);
@@ -47,7 +48,7 @@ export default defineComponent({
       required: true,
     },
     listOfDataMetaInfo: {
-      type: Array as PropType<DataMetaInformation[]>,
+      type: Array as PropType<Array<DataAndMetaInformation<FrameworkData>>>,
       required: true,
     },
   },
@@ -69,9 +70,11 @@ export default defineComponent({
      * implemented, the distinct frameworks are set as options for the framework-dropdown element.
      * @param listOfDataMetaInfo a list of data meta info
      */
-    getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
+    getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
+      listOfDataMetaInfo: Array<DataAndMetaInformation<FrameworkData>>
+    ) {
       const setOfAvailableFrameworksForCompany = [
-        ...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataType)),
+        ...new Set(listOfDataMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.metaInfo.dataType)),
       ];
       const dataTypesInDropdown = setOfAvailableFrameworksForCompany
         .filter((dataType) => FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType))
