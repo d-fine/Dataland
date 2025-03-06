@@ -14,6 +14,7 @@ import org.dataland.datalandbackend.services.MessageQueuePublications
 import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
 import org.dataland.datalandbackend.services.datapoints.DataPointManager
 import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformationManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
@@ -34,11 +35,13 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import java.time.Instant
 import java.util.Optional
 
@@ -64,14 +67,16 @@ class AssembledDataManagerTest {
             companyQueryManager, companyRoleChecker, testObjectMapper, logMessageBuilder,
         )
 
+    private val dataPointUtils = DataPointUtils(testObjectMapper, specificationClient, metaDataManager)
+
     private val spyDataPointManager = spy(dataPointManager)
     private val testDataProvider = TestDataProvider(testObjectMapper)
 
     private val assembledDataManager =
         AssembledDataManager(
             dataManager, messageQueuePublications, dataPointValidator, testObjectMapper,
-            specificationClient, datasetDatapointRepository, spyDataPointManager,
-            ReferencedReportsUtilities(testObjectMapper), companyQueryManager, metaDataManager,
+            datasetDatapointRepository, spyDataPointManager,
+            ReferencedReportsUtilities(testObjectMapper), companyQueryManager, dataPointUtils,
         )
 
     private val correlationId = "test-correlation-id"
@@ -95,7 +100,7 @@ class AssembledDataManagerTest {
 
     @BeforeEach
     fun setGeneralMocks() {
-        `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
+        doReturn(frameworkSpecification).whenever(specificationClient).getFrameworkSpecification(any())
     }
 
     @Test
@@ -103,7 +108,6 @@ class AssembledDataManagerTest {
         val expectedDataPointTypes = listOf("extendedEnumFiscalYearDeviation", "extendedDateFiscalYearEnd", "extendedCurrencyEquity")
         val inputData = TestResourceFileReader.getJsonString(inputData)
 
-        `when`(specificationClient.getFrameworkSpecification(any())).thenReturn(frameworkSpecification)
         `when`(companyQueryManager.getCompanyById(any())).thenReturn(testDataProvider.getEmptyStoredCompanyEntity())
 
         val uploadedDataset =

@@ -16,21 +16,18 @@ import org.dataland.datalandbackend.services.DataManager
 import org.dataland.datalandbackend.services.DatasetStorageService
 import org.dataland.datalandbackend.services.LogMessageBuilder
 import org.dataland.datalandbackend.services.MessageQueuePublications
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonComparator
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities
 import org.dataland.datalandbackend.utils.ReferencedReportsUtilities.Companion.REFERENCED_REPORTS_ID
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
 import org.dataland.datalandbackendutils.utils.JsonSpecificationUtils
 import org.dataland.datalandbackendutils.utils.QaBypass
-import org.dataland.specificationservice.openApiClient.api.SpecificationControllerApi
-import org.dataland.specificationservice.openApiClient.infrastructure.ClientException
-import org.dataland.specificationservice.openApiClient.model.FrameworkSpecification
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -50,12 +47,11 @@ class AssembledDataManager
         private val messageQueuePublications: MessageQueuePublications,
         private val dataPointValidator: DataPointValidator,
         private val objectMapper: ObjectMapper,
-        private val specificationClient: SpecificationControllerApi,
         private val datasetDatapointRepository: DatasetDatapointRepository,
         private val dataPointManager: DataPointManager,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
         private val companyManager: CompanyQueryManager,
-        private val metaDataManager: DataPointMetaInformationManager,
+        private val dataPointUtils: DataPointUtils,
     ) : DatasetStorageService {
         private val logger = LoggerFactory.getLogger(javaClass)
         private val logMessageBuilder = LogMessageBuilder()
@@ -98,7 +94,7 @@ class AssembledDataManager
             data: String,
             dataType: String,
         ): SplitDataset {
-            val frameworkSpecification = getFrameworkSpecification(dataType)
+            val frameworkSpecification = dataPointUtils.getFrameworkSpecification(dataType)
             val frameworkSchema = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
             val frameworkUsesReferencedReports = frameworkSpecification.referencedReportJsonPath != null
 
@@ -256,22 +252,6 @@ class AssembledDataManager
         }
 
         /**
-         * Retrieve a framework specification from the specification service
-         * @param framework the name of the framework to retrieve the specification for
-         * @return the FrameworkSpecification object
-         */
-        private fun getFrameworkSpecification(framework: String): FrameworkSpecification =
-            try {
-                specificationClient.getFrameworkSpecification(framework)
-            } catch (clientException: ClientException) {
-                logger.warn("Framework $framework not found: ${clientException.message}.")
-                throw InvalidInputApiException(
-                    "Framework $framework not found.",
-                    "The specified framework $framework is not known to the specification service.",
-                )
-            }
-
-        /**
          * Retrieves a dataset by assembling the data points from the internal storage
          * @param datasetId the id of the dataset
          * @param dataType the type of dataset
@@ -317,7 +297,7 @@ class AssembledDataManager
             framework: String,
             correlationId: String,
         ): String {
-            val frameworkSpecification = getFrameworkSpecification(framework)
+            val frameworkSpecification = dataPointUtils.getFrameworkSpecification(framework)
             val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema)
             referencedReportsUtilities
                 .insertReferencedReportsIntoFrameworkSchema(frameworkTemplate, frameworkSpecification.referencedReportJsonPath)
@@ -350,7 +330,7 @@ class AssembledDataManager
             correlationId: String,
         ): String? {
             val framework = dataDimensions.dataType
-            val relevantDataPointTypes = getRelevantDataPointTypes(framework)
+            val relevantDataPointTypes = dataPointUtils.getRelevantDataPointTypes(framework)
             val relevantDataPointDimensions = relevantDataPointTypes.map { dataDimensions.toBasicDataPointDimensions(it) }
             val dataPointIds = dataPointManager.getAssociatedDataPointIds(relevantDataPointDimensions)
 
@@ -363,48 +343,6 @@ class AssembledDataManager
             return assembleDatasetFromDataPoints(dataPointIds, framework, correlationId)
         }
 
-        /**
-         * Retrieves the relevant data point types for a specific framework
-         * @param framework the name of the framework
-         * @return a set of all relevant data point types
-         */
-        fun getRelevantDataPointTypes(framework: String): Set<String> {
-            val frameworkSpecification = getFrameworkSpecification(framework)
-            val frameworkTemplate = objectMapper.readTree(frameworkSpecification.schema) as ObjectNode
-            return JsonSpecificationUtils.dehydrateJsonSpecification(frameworkTemplate, frameworkTemplate).keys
-        }
-
-        /**
-         * Retrieves the latest upload time of an active data point belonging to a given framework and a specific company
-         * @param companyId the ID of the company
-         * @param framework the name of the framework
-         * @return the latest upload time of an active data point as a long
-         */
-        fun getLatestUploadTime(
-            companyId: String,
-            framework: String,
-            reportingPeriod: String,
-        ): Long {
-            val dataPointTypes = getRelevantDataPointTypes(framework)
-            return metaDataManager.getLatestUploadTimeOfActiveDataPoints(dataPointTypes, companyId, reportingPeriod)
-        }
-
-        /**
-         * Retrieves all reporting periods with at least on active data point for a specific company and framework
-         */
-        fun getAllReportingPeriodsWithActiveDataPoints(
-            companyId: String,
-            framework: String,
-        ): Set<String> =
-            try {
-                metaDataManager.getReportingPeriodsWithActiveDataPoints(
-                    dataPointTypes = getRelevantDataPointTypes(framework),
-                    companyId = companyId,
-                )
-            } catch (ignore: InvalidInputApiException) {
-                emptySet()
-            }
-
         override fun getAllDatasetsAndMetaInformation(
             searchFilter: DataMetaInformationSearchFilter,
             correlationId: String,
@@ -413,7 +351,9 @@ class AssembledDataManager
             requireNotNull(searchFilter.companyId) { "Company ID must be specified." }
             val companyId = searchFilter.companyId
             val framework = searchFilter.dataType.toString()
-            val reportingPeriods = getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
+            val reportingPeriods =
+                dataPointUtils
+                    .getAllReportingPeriodsWithActiveDataPoints(companyId = companyId, framework = framework)
             if (reportingPeriods.isEmpty()) {
                 throw ResourceNotFoundApiException(
                     "No data available.",
@@ -422,8 +362,9 @@ class AssembledDataManager
             }
 
             return reportingPeriods.map { reportingPeriod ->
+                val dataPointDimensions = BasicDataDimensions(companyId, framework, reportingPeriod)
                 val data =
-                    getDatasetData(BasicDataDimensions(companyId, framework, reportingPeriod), correlationId)
+                    getDatasetData(dataPointDimensions, correlationId)
                         ?: throw IllegalStateException(
                             "Data expected for $reportingPeriod, $companyId and ${searchFilter.dataType}" +
                                 " but not found. Correlation ID: $correlationId",
@@ -436,7 +377,7 @@ class AssembledDataManager
                             dataType = searchFilter.dataType,
                             reportingPeriod = reportingPeriod,
                             currentlyActive = true,
-                            uploadTime = getLatestUploadTime(companyId, framework, reportingPeriod),
+                            uploadTime = dataPointUtils.getLatestUploadTime(dataPointDimensions),
                             qaStatus = QaStatus.Accepted,
                         ),
                     data = data,
