@@ -41,7 +41,6 @@
               <th>Upload time</th>
               <td data-test="upload-time">{{ convertUnixTimeInMsToDateString(metaData.uploadTime) }}</td>
             </tr>
-            /*
             <tr>
               <th>Linked companies</th>
               <td data-test="linked-companies">
@@ -56,7 +55,6 @@
                 </a>
               </td>
             </tr>
-            */
           </tbody>
         </table>
       </div>

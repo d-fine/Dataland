@@ -37,7 +37,6 @@ const dropdownExtended = ref<boolean>(false);
 
 export default defineComponent({
   name: 'ChangeFrameworkDropdown',
-  components: {},
   props: {
     companyID: {
       type: String,
