@@ -1,6 +1,7 @@
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import {
   type CompanyAssociatedDataEutaxonomyNonFinancialsData,
+  type DataAndMetaInformationEutaxonomyNonFinancialsData,
   type DataMetaInformation,
   DataTypeEnum,
 } from '@clients/backend';
@@ -52,14 +53,13 @@ describeIf(
     function goToEditFormAndValidateExistenceOfReports(companyId: string, isPdfTestFileExpected: boolean): void {
       goToEditFormOfMostRecentDatasetForCompanyAndFramework(companyId, DataTypeEnum.EutaxonomyNonFinancials).then(
         (interceptionOfGetDataRequestForEditMode) => {
-          const referencedReportsInDataset = assertDefined(
-            (
-              interceptionOfGetDataRequestForEditMode?.response
-                ?.body as CompanyAssociatedDataEutaxonomyNonFinancialsData
-            ).data.general?.referencedReports
-          );
-          expect(TEST_PDF_FILE_NAME in referencedReportsInDataset).to.equal(isPdfTestFileExpected);
-          expect(`${TEST_PDF_FILE_NAME}2` in referencedReportsInDataset).to.equal(true);
+          const dataAndMetaInformation: DataAndMetaInformationEutaxonomyNonFinancialsData[] = assertDefined(
+            interceptionOfGetDataRequestForEditMode
+          ).response?.body;
+          const referencedReportsInDataset = dataAndMetaInformation[0]?.data?.general?.referencedReports;
+          assert(referencedReportsInDataset);
+          expect(TEST_PDF_FILE_NAME in referencedReportsInDataset!).to.equal(isPdfTestFileExpected);
+          expect(`${TEST_PDF_FILE_NAME}2` in referencedReportsInDataset!).to.equal(true);
         }
       );
     }
