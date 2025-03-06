@@ -438,7 +438,7 @@ describeIf(
       );
 
       getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'not.exist');
-      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'not.exist');
+      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
       getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');
 
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
@@ -448,7 +448,7 @@ describeIf(
       clickBackButton();
 
       getElementAndAssertExistence('noCompanyWithThisIdErrorIndicator', 'exist');
-      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
+      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'exist');
     });
 
     it('Check if the version change bar works as expected on several framework view pages', () => {
