@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.servers.Server
         Info(
             title = "Dataland User Service API documentation",
             version = "1.0.0",
+            description = "Manage User Portfolios and more",
         ),
     servers = [Server(url = "/users")],
 )

@@ -210,7 +210,7 @@ jobs:
         run: |
           sudo apt update && sudo apt install libreoffice
           #TODO: look into a more elegant solution for the line below
-          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test  :dataland-specification-service:test :dataland-specification-lib:test --no-daemon --stacktrace
+          ./gradlew :dataland-backend:test :dataland-backend-utils:test :dataland-internal-storage:test :dataland-api-key-manager:test :dataland-qa-service:test :dataland-document-manager:test :dataland-batch-manager:test :dataland-community-manager:test :dataland-email-service:test :dataland-user-service:test :dataland-framework-toolbox:test :dataland-external-storage:test :dataland-data-exporter:test  :dataland-specification-service:test :dataland-specification-lib:test --no-daemon --stacktrace
         if: always()
         env:
           MAILJET_API_ID: ${{ secrets.MAILJET_API_ID }}

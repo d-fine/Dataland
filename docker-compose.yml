@@ -460,7 +460,7 @@ services:
     profiles: [ "production", "testing", "development" ]
     networks:
       - internal
-      - document-manager-db
+      - user-service-db
     image: ${USER_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_user_service_test:${DATALAND_USER_SERVICE_TEST_VERSION}}
     expose:
       - "8080"
@@ -471,7 +471,7 @@ services:
       INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
       USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       USER_SERVICE_MIGRATION_BASELINE_VERSION: ${USER_SERVICE_MIGRATION_BASELINE_VERSION:-1}
-      USER_SERVICE_MANAGER_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
+      DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
     depends_on:
       - user-service-db
     logging:

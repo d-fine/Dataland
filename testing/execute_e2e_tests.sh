@@ -36,7 +36,7 @@ docker exec -i dala-e2e-test-email-service-db-1 /bin/bash -c "PGPASSWORD=${EMAIL
 docker exec -i dala-e2e-test-user-service-db-1 /bin/bash -c "PGPASSWORD=${USER_SERVICE_DB_PASSWORD} pg_dump --username user_service user_service" > ./dbdumps/${CYPRESS_TEST_GROUP}/user-service-db.sql || true
 
 # Stop services to make JaCoCo write the Coverage Reports and copy them to pwd
-services="backend api-key-manager document-manager internal-storage qa-service community-manager email-service external-storage data-exporter specification-service"
+services="backend api-key-manager document-manager internal-storage qa-service community-manager email-service external-storage data-exporter specification-service user-service"
 for service in $services
 do
   docker exec dala-e2e-test-${service}-1 pkill -f java
