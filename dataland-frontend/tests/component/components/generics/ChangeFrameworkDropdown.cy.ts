@@ -68,13 +68,31 @@ describe('Component test for ChangeFrameworkDropdown', () => {
         listOfDataMetaInfo: listOfDataMetaInfo,
       },
     }).then(() => {
-      cy.get('[data-test="chooseFrameworkDropdown"]').should('exist').click();
+      // Dropdown is closed
+      cy.get('[data-test="chooseFrameworkList"]').should('not.exist');
+
+      // Open dropdown
+      cy.get('[data-test="chooseFrameworkDropdown"]').click();
+      cy.get('[data-test="chooseFrameworkList"]').should('be.visible');
       cy.get('[data-test="chooseFrameworkList"]').children().should('have.length', numberOfEntries);
+
+      // Check hyperlinks
+      cy.get('[data-test="chooseFrameworkList"]')
+        .contains('Additional Company Information')
+        .should('have.attr', 'href', '/companies/dummy-companyId/frameworks/additional-company-information');
+      cy.get('[data-test="chooseFrameworkList"]')
+        .contains('LkSG')
+        .should('have.attr', 'href', '/companies/dummy-companyId/frameworks/lksg');
+      cy.get('[data-test="chooseFrameworkList"]')
+        .contains('SFDR')
+        .should('have.attr', 'href', '/companies/dummy-companyId/frameworks/sfdr');
+      cy.get('[data-test="chooseFrameworkList"]')
+        .contains('Documents')
+        .should('have.attr', 'href', '/companies/dummy-companyId/documents');
+
+      // Close dropdown
+      cy.get('[data-test="chooseFrameworkDropdown"]').click();
+      cy.get('[data-test="chooseFrameworkList"]').should('not.exist');
     });
-
-    // check for children
   });
-  /*it('Check if clicking dropdown option results in correct path', () => {
-
-    })*/
 });
