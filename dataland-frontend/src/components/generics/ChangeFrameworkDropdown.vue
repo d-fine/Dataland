@@ -18,8 +18,9 @@ import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
 import { defineComponent, type PropType } from 'vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import { type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { type DataMetaInformation } from '@clients/backend';
 import router from '@/router';
+import { type DataTypeEnumAndDocumentsEntry } from '@/types/DataTypeEnumAndDocumentsEntry.ts';
 
 export default defineComponent({
   name: 'ChangeFrameworkDropdown',
@@ -32,7 +33,7 @@ export default defineComponent({
       required: true,
     },
     dataType: {
-      type: String as PropType<DataTypeEnum | 'Documents'>,
+      type: String as PropType<DataTypeEnumAndDocumentsEntry>,
       required: true,
     },
     listOfDataMetaInfo: {

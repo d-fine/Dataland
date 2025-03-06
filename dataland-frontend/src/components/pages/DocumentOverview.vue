@@ -269,7 +269,7 @@ function convertToEnumSet(
  * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
  * info of the currently active dataset.
  */
-async function getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit(): void {
+async function getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit(): Promise<void> {
   const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
   const metaDataControllerApi = backendClients.metaDataController;
   const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
