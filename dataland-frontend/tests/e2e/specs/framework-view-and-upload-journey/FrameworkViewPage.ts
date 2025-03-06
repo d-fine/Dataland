@@ -430,7 +430,7 @@ describeIf(
       cy.ensureLoggedIn();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
-      getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'exist');
+      getElementAndAssertExistence('noDataForThisDataIdPresentErrorIndicator', 'exist');
       getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');
 
       cy.visit(
