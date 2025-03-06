@@ -25,11 +25,13 @@
             </tr>
             <tr>
               <th>Publication date</th>
-              <td data-test="publication-date">{{ metaData.publicationDate }}</td>
+              <td data-test="publication-date">
+                {{ metaData.publicationDate ? dateStringFormatter(metaData.publicationDate) : '' }}
+              </td>
             </tr>
             <tr>
               <th>Document type</th>
-              <td data-test="document-type">{{ metaData?.documentCategory }}</td>
+              <td data-test="document-type">{{ humanizeStringOrNumber(metaData?.documentCategory) }}</td>
             </tr>
             <tr v-if="metaData.reportingPeriod">
               <th>Reporting period</th>
@@ -37,7 +39,7 @@
             </tr>
             <tr>
               <th>Upload time</th>
-              <td data-test="upload-time">{{ metaData.uploadTime }}</td>
+              <td data-test="upload-time">{{ convertUnixTimeInMsToDateString(metaData.uploadTime) }}</td>
             </tr>
             /*
             <tr>
@@ -70,6 +72,8 @@ import { assertDefined } from '@/utils/TypeScriptUtils.ts';
 import type Keycloak from 'keycloak-js';
 import type { DocumentMetaInfoEntity } from '@clients/documentmanager';
 import DocumentLink from '@/components/resources/frameworkDataSearch/DocumentLink.vue';
+import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 
 const props = defineProps<{
   documentId: string;
