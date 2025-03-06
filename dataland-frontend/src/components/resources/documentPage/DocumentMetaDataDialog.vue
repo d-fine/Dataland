@@ -102,9 +102,7 @@ async function getDocumentMetaInformation(): Promise<void> {
       const data: DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId))
         .data;
       const companyDetails = ref<CompanyDetails[]>([]);
-      console.log(data);
       for (const companyId of Array.from(data.companyIds)) {
-        console.log(companyId);
         const company = await companyDataControllerApi.getCompanyInfo(companyId);
         companyDetails.value.push({ id: companyId, name: company.data.companyName });
       }
@@ -112,7 +110,6 @@ async function getDocumentMetaInformation(): Promise<void> {
         ...data,
         company: companyDetails.value,
       };
-      console.log(metaData);
     }
   } catch (error) {
     console.error(error);
