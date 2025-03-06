@@ -17,19 +17,11 @@
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
-            <Dropdown
+            <ChangeFrameworkDropdown
               v-if="!isReviewableByCurrentUser"
-              id="chooseFrameworkDropdown"
-              v-model="chosenDataTypeInDropdown"
-              :options="dataTypesInDropdown"
-              optionLabel="label"
-              optionValue="value"
-              :placeholder="humanizeStringOrNumber(dataType)"
-              aria-label="Choose framework"
-              class="fill-dropdown always-fill"
-              dropdownIcon="pi pi-angle-down"
-              @change="handleChangeFrameworkEvent"
-              data-test="chooseFrameworkDropdown"
+              :list-of-data-meta-info="listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod"
+              :data-type="dataType"
+              :company-i-d="companyID"
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
@@ -125,13 +117,10 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
 import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
 
 import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
@@ -152,16 +141,17 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
   components: {
+    ChangeFrameworkDropdown,
     DownloadDatasetModal,
     CompanyInfoSheet,
     TheContent,
     TheHeader,
     MarginWrapper,
-    Dropdown,
     TheFooter,
     PrimeButton,
     OverlayPanel,
@@ -201,8 +191,6 @@ export default defineComponent({
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
       chosenDataTypeInDropdown: '',
-      dataTypesInDropdown: [] as { label: string; value: string }[],
-      humanizeStringOrNumber,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -213,6 +201,7 @@ export default defineComponent({
        * This object is filled if ViewFrameworkBase displays multiple datasets.
        * If ViewFrameworkBase is used to display a single dataset, singleDataMetaInfoToDisplay is populated instead.
        */
+      listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod: [] as DataMetaInformation[],
       mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>(),
       isDataProcessedSuccessfully: true,
       hasUserUploaderRights: false,
@@ -324,38 +313,6 @@ export default defineComponent({
         this.pageScrolled = document.documentElement.scrollTop > 195;
       }
     },
-    /**
-     * Visits the framework view page for the framework which was chosen in the dropdown
-     * @param dropDownChangeEvent the change event emitted by the dropdown component
-     */
-    handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
-      if (this.dataType != dropDownChangeEvent.value) {
-        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
-      }
-    },
-
-    /**
-     * Uses a list of data meta info to derive all distinct frameworks that occur in that list. Only if those distinct
-     * frameworks are also included in the frontend constant which contains all frameworks that have view-pages
-     * implemented, the distinct frameworks are set as options for the framework-dropdown element.
-     * @param listOfDataMetaInfo a list of data meta info
-     */
-    getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo: DataMetaInformation[]) {
-      this.dataTypesInDropdown = [];
-      const setOfAvailableFrameworksForCompany = [
-        ...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataType)),
-      ];
-      const listOfDistinctAvailableAndViewableFrameworksForCompany: string[] = [];
-      setOfAvailableFrameworksForCompany.forEach((dataType) => {
-        if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
-          listOfDistinctAvailableAndViewableFrameworksForCompany.push(dataType);
-        }
-      });
-      listOfDistinctAvailableAndViewableFrameworksForCompany.sort((a, b) => a.localeCompare(b));
-      listOfDistinctAvailableAndViewableFrameworksForCompany.forEach((dataType) => {
-        this.dataTypesInDropdown.push({ label: humanizeStringOrNumber(dataType), value: dataType });
-      });
-    },
 
     /**
      * Uses a list of data meta info to set a map which has the distinct repoting periods as keys, and the respective
@@ -389,12 +346,9 @@ export default defineComponent({
         const backendClients = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).backendClients;
         const metaDataControllerApi = backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
-        this.getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
-        );
+        this.listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = apiResponse.data;
         this.setMapOfReportingPeriodToActiveDatasetFromListOfActiveMetaDataInfo(
-          listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
+          this.listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod
         );
         this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
         this.isDataProcessedSuccessfully = true;
