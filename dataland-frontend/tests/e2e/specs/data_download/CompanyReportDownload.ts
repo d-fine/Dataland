@@ -22,7 +22,8 @@ describeIf(
     executionEnvironments: ['developmentLocal', 'ci', 'developmentCd'],
   },
   () => {
-    const documentName = 'test-report.pdf';
+    const documentName = 'test-report';
+    const fileName = documentName + '.pdf';
     let documentMetaInfoResponse: DocumentMetaInfoResponse;
 
     let storedCompany: StoredCompany;
@@ -82,7 +83,7 @@ describeIf(
 
       visitPageAndClickDownloadButton();
 
-      const filePath = join(Cypress.config('downloadsFolder'), documentName);
+      const filePath = join(Cypress.config('downloadsFolder'), fileName);
       checkThatFileExistsAndDelete(filePath);
     });
   }
