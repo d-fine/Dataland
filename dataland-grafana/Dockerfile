@@ -1,8 +1,17 @@
-# basis image from grafana
-FROM grafana/grafana:11.5.1@sha256:5781759b3d27734d4d548fcbaf60b1180dbf4290e708f01f292faa6ae764c5e6
+# Base image from Grafana
+FROM grafana/grafana:11.5.2@sha256:8b37a2f028f164ce7b9889e1765b9d6ee23fec80f871d156fbf436d6198d32b7
 
-COPY ./dataland-grafana/provisioning/datasources/loki.yaml /etc/grafana/provisioning/datasources/loki.yaml
+# Copy the pre-configured provisioning directory and entrypoint script into the image
+COPY ./dataland-grafana/provisioning /etc/grafana/provisioning
+COPY ./dataland-grafana/custom-entrypoint.sh /grafana-entrypoint.sh
 
-CMD ["/run.sh"]
+# Use root to update permissions and then switch back
+USER root
+# Allow grafana user to write to certain directories/files
+RUN chmod +x /grafana-entrypoint.sh
+RUN chown -R grafana /etc/grafana/provisioning
+USER grafana
+
+ENTRYPOINT ["/grafana-entrypoint.sh"]
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s CMD curl --fail http://localhost:3000/api/health || exit 1

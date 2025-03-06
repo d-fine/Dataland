@@ -84,4 +84,19 @@ class RequestEmailManager(
             correlationId = correlationId,
         )
     }
+
+    /**
+     * Function to send an e-mail notification to a user with a closed data request that there
+     * has been a QA approval for a dataset with regard to the same company, reporting period and
+     * framework.
+     */
+    fun sendEmailToUserWithClosedOrResolvedRequest(
+        dataRequestEntity: DataRequestEntity,
+        correlationId: String,
+    ) {
+        dataRequestResponseEmailMessageSender.sendEmailToUserWithClosedOrResolvedRequest(
+            dataRequestEntity,
+            correlationId,
+        )
+    }
 }

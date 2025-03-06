@@ -71,7 +71,7 @@ export default defineComponent({
 
           this.dataTableContents.push({
             reportingPeriod: key,
-            editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?templateDataId=${value.dataId}`,
+            editUrl: `/companies/${value.companyId}/frameworks/${value.dataType}/upload?reportingPeriod=${key}`,
             dataRequestId: answeredDataRequestIds,
             actionOnClick: this.actionOnClick,
             isClickable: isClickable,

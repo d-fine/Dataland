@@ -82,30 +82,21 @@ class DataRequestQueryManagerTest {
 
     private val filterWithoutEmailAddress =
         DataRequestsFilter(
-            setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
-            null,
-            null,
-            testCompanyId,
-            testReportingPeriod,
-            setOf(RequestStatus.Open),
-            null,
-            null,
-            null,
+            dataType = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            datalandCompanyId = testCompanyId,
+            reportingPeriod = testReportingPeriod,
+            requestStatus = setOf(RequestStatus.Open),
         )
 
     private val emailAddressSubstring = "beta"
 
     private val filterWithEmailAddressBeta =
         DataRequestsFilter(
-            setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
-            null,
-            emailAddressSubstring,
-            testCompanyId,
-            testReportingPeriod,
-            setOf(RequestStatus.Open),
-            null,
-            null,
-            null,
+            dataType = setOf(DataTypeEnum.p2p, DataTypeEnum.lksg),
+            emailAddress = emailAddressSubstring,
+            datalandCompanyId = testCompanyId,
+            reportingPeriod = testReportingPeriod,
+            requestStatus = setOf(RequestStatus.Open),
         )
 
     private val dummyAggregatedRequests =

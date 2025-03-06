@@ -116,7 +116,7 @@ import Calendar from 'primevue/calendar';
 import SuccessMessage from '@/components/messages/SuccessMessage.vue';
 import FailMessage from '@/components/messages/FailMessage.vue';
 import { type CompanyAssociatedDataHeimathafenData, DataTypeEnum, type HeimathafenData } from '@clients/backend';
-import { useRoute } from 'vue-router';
+import { type LocationQueryValue, useRoute } from 'vue-router';
 import { checkCustomInputs } from '@/utils/ValidationUtils';
 import NaceCodeFormField from '@/components/forms/parts/fields/NaceCodeFormField.vue';
 import InputTextFormField from '@/components/forms/parts/fields/InputTextFormField.vue';
@@ -215,6 +215,8 @@ export default defineComponent({
       messageCounter: 0,
       checkCustomInputs,
       fieldSpecificDocuments: new Map() as Map<string, DocumentToUpload>,
+      templateDataId: null as LocationQueryValue | LocationQueryValue[],
+      templateReportingPeriod: null as LocationQueryValue | LocationQueryValue[],
     };
   },
   computed: {
@@ -242,9 +244,13 @@ export default defineComponent({
     },
   },
   created() {
-    const dataId = this.route.query.templateDataId;
-    if (dataId && typeof dataId === 'string') {
-      void this.loadHeimathafenData(dataId);
+    this.templateDataId = this.route.query.templateDataId;
+    this.templateReportingPeriod = this.route.query.reportingPeriod;
+    if (
+      (this.templateDataId && typeof this.templateDataId === 'string') ||
+      (this.templateReportingPeriod && typeof this.templateReportingPeriod === 'string')
+    ) {
+      void this.loadHeimathafenData();
     } else {
       this.waitingForData = false;
     }
@@ -264,18 +270,31 @@ export default defineComponent({
     },
 
     /**
-     * Loads the Heimathafen-Dataset identified by the provided dataId and pre-configures the form to contain the data
-     * from the dataset
-     * @param dataId the id of the dataset to load
+     * Loads the Heimathafen-Dataset identified either by the provided reportingPeriod and companyId,
+     * or the dataId, and pre-configures the form to contain the data from the dataset
      */
-    async loadHeimathafenData(dataId: string): Promise<void> {
+    async loadHeimathafenData(): Promise<void> {
       this.waitingForData = true;
       const heimathafenDataControllerApi = this.buildHeimathafenDataApi();
-      const dataResponse = await heimathafenDataControllerApi.getFrameworkData(dataId);
-      const heimathafenResponseData = dataResponse.data;
-      this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
-      this.companyAssociatedHeimathafenData = objectDropNull(heimathafenResponseData);
-      this.waitingForData = false;
+      if (heimathafenDataControllerApi) {
+        let dataResponse;
+        if (this.templateDataId) {
+          dataResponse = await heimathafenDataControllerApi.getFrameworkData(this.templateDataId.toString());
+        } else if (this.templateReportingPeriod) {
+          dataResponse = await heimathafenDataControllerApi.getCompanyAssociatedDataByDimensions(
+            this.templateReportingPeriod.toString(),
+            this.companyID
+          );
+        }
+        if (!dataResponse) {
+          this.waitingForData = false;
+          throw ReferenceError('DataResponse from HeimathafenDataController invalid.');
+        }
+        const heimathafenResponseData = dataResponse.data;
+        this.listOfFilledKpis = getFilledKpis(heimathafenResponseData.data);
+        this.companyAssociatedHeimathafenData = objectDropNull(heimathafenResponseData);
+        this.waitingForData = false;
+      }
     },
     /**
      * Sends data to add Heimathafen data

@@ -161,6 +161,7 @@ sonar {
                 "dataland-frontend/src/components/generics/TheNewFooter.vue," +
                 "dataland-frontend/src/components/resources/aboutPage/**," +
                 "dataland-frontend/src/components/resources/newLandingPage/**," +
+                "dataland-frontend/src/components/forms/CreateHeimathafenDataset.vue," +
 
                 // frontend configs
                 "dataland-frontend/src/frameworks/heimathafen/ViewConfig.ts," +

@@ -37,14 +37,12 @@ describe('Component test for the Document Meta Data Dialog', () => {
     cy.intercept('**/documents/*/metadata', { fixture: 'DummyDocumentMetaInfoEntity' }).as(
       'fetchDocumentMetaInfoEntity'
     );
-    cy.intercept(`**/api/companies/${dummyCompanyId1}/info`, {
-      body: dummyCompanyInformation1,
-      //times: 1,
-    }).as('fetchFirstCompanyInformation');
-    cy.intercept(`**/api/companies/${dummyCompanyId2}/info`, {
-      body: dummyCompanyInformation2,
-      //times: 1,
-    }).as('fetchSecondCompanyInformation');
+    cy.intercept(`**/api/companies/${dummyCompanyId1}/info`, { body: dummyCompanyInformation1 }).as(
+      'fetchFirstCompanyInformation'
+    );
+    cy.intercept(`**/api/companies/${dummyCompanyId2}/info`, { body: dummyCompanyInformation2 }).as(
+      'fetchSecondCompanyInformation'
+    );
   });
 
   it.only('Check if all expected elements are displayed correctly', () => {
