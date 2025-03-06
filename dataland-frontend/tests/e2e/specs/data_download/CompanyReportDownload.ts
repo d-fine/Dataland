@@ -12,8 +12,11 @@ import {
 } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
-import { addCompanyToDocumentMetaInfoViaApi, uploadDocumentViaApi } from '@e2e/utils/DocumentUpload.ts';
-import { type DocumentMetaInfoResponse } from '@clients/documentmanager';
+import {
+  changeDocumentNameAndAddCompanyToDocumentMetaInfoViaApi,
+  uploadDocumentViaApi,
+} from '@e2e/utils/DocumentUpload.ts';
+import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { join } from 'path';
 
 describeIf(
@@ -77,8 +80,16 @@ describeIf(
     });
 
     it('Download document, check for file name and appropriate size, and delete it afterwards', () => {
-      getKeycloakToken(uploader_name, uploader_pw).then((token: string) => {
-        return addCompanyToDocumentMetaInfoViaApi(token, documentMetaInfoResponse.documentId, storedCompany.companyId);
+      const documentMetaInfoPatch: DocumentMetaInfoPatch = {
+        documentName: documentName,
+        companyIds: [storedCompany.companyId] as unknown as Set<string>,
+      };
+      getKeycloakToken(admin_name, admin_pw).then((token: string) => {
+        return changeDocumentNameAndAddCompanyToDocumentMetaInfoViaApi(
+          token,
+          documentMetaInfoResponse.documentId,
+          documentMetaInfoPatch
+        );
       });
 
       visitPageAndClickDownloadButton();

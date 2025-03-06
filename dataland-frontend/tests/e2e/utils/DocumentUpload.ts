@@ -1,5 +1,10 @@
 import { Configuration } from '@clients/backend';
-import { DocumentControllerApi, type DocumentMetaInfo, type DocumentMetaInfoResponse } from '@clients/documentmanager';
+import {
+  DocumentControllerApi,
+  type DocumentMetaInfo,
+  type DocumentMetaInfoPatch,
+  type DocumentMetaInfoResponse,
+} from '@clients/documentmanager';
 import { createHash } from 'crypto';
 import { type AxiosError } from 'axios';
 
@@ -67,16 +72,16 @@ export async function uploadDocumentViaApi(
 }
 
 /**
- * Patch the company id list in the stored metainformation of a given document by adding
+ * Patch the company id list in the stored meta information of a given document by adding
  * a single new company id.
  * @param token the bearer token used to authorize the API requests
- * @param documentId the id of the document whose metainfo shall be patched.
- * @param companyId the company id to add
+ * @param documentId the id of the document whose meta info shall be patched.
+ * @param documentMetaInfoPatch meta data do patch
  */
-export async function addCompanyToDocumentMetaInfoViaApi(
+export async function changeDocumentNameAndAddCompanyToDocumentMetaInfoViaApi(
   token: string,
   documentId: string,
-  companyId: string
+  documentMetaInfoPatch: DocumentMetaInfoPatch
 ): Promise<DocumentMetaInfoResponse> {
   const documentControllerApi = new DocumentControllerApi(
     new Configuration({
@@ -85,7 +90,7 @@ export async function addCompanyToDocumentMetaInfoViaApi(
   );
   const documentHash = createHash('sha256').digest('hex');
   return await documentControllerApi
-    .patchDocumentMetaInfoCompanyIds(documentId, companyId)
+    .patchDocumentMetaInfo(documentId, documentMetaInfoPatch)
     .then((response) => {
       return response.data;
     })
