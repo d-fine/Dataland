@@ -1,32 +1,42 @@
 <template>
-  <Dropdown
-    id="chooseFrameworkDropdown"
-    :options="getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo)"
-    optionLabel="label"
-    optionValue="value"
-    :placeholder="humanizeStringOrNumber(dataType)"
-    aria-label="Choose framework or documents"
-    class="fill-dropdown always-fill"
-    dropdownIcon="pi pi-angle-down"
-    @change="changeUrl"
-    data-test="chooseFrameworkDropdown"
-  />
+  <span data-test="chooseFrameworkDropdown" class="p-dropdown-panel">
+    <span
+      @click="toggleDropdown"
+      class="fill-dropdown always-fill"
+      :class="dropdownExtended ? 'p-overlay-open' : ''"
+      :aria-expanded="dropdownExtended"
+    >
+      <span class="p-dropdown-label p-inputtext p-placeholder">
+        {{ humanizeStringOrNumber(dataType) }}
+        <span class="p-dropdown-trigger-icon pi pi-angle-down" aria-hidden="true" data-pc-section="dropdownicon"></span>
+      </span>
+    </span>
+    <span v-if="dropdownExtended" class="p-dropdown-trigger p-dropdown-items" data-test="chooseFrameworkList">
+      <a
+        v-for="option in getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo)"
+        :key="option.label"
+        :href="option.value"
+        class="p-dropdown-item"
+        :class="humanizeStringOrNumber(dataType) === option.label ? ' p-highlight' : ''"
+      >
+        {{ option.label }}
+      </a>
+    </span>
+  </span>
 </template>
 
 <script lang="ts">
-import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent, type PropType, ref } from 'vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataMetaInformation } from '@clients/backend';
-import router from '@/router';
 import { type DataTypeEnumAndDocumentsEntry } from '@/types/DataTypeEnumAndDocumentsEntry.ts';
+
+const dropdownExtended = ref<boolean>(false);
 
 export default defineComponent({
   name: 'ChangeFrameworkDropdown',
-  components: {
-    Dropdown,
-  },
+  components: {},
   props: {
     companyID: {
       type: String,
@@ -44,15 +54,13 @@ export default defineComponent({
   data() {
     return {
       humanizeStringOrNumber,
+      dropdownExtended,
     };
   },
   methods: {
-    /**
-     * Visits the page, which was chosen in the dropdown
-     * @param event the change event emitted by the dropdown component
-     */
-    changeUrl(event: DropdownChangeEvent) {
-      return router.push(event.value);
+    /** Expands or collapses the drop-down. **/
+    toggleDropdown() {
+      dropdownExtended.value = !dropdownExtended.value;
     },
 
     /**
@@ -80,3 +88,29 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.p-dropdown-panel {
+  position: relative;
+}
+.fill-dropdown {
+  padding: 0.5rem;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+}
+.p-dropdown-items {
+  width: fit-content;
+  display: block;
+  position: absolute;
+  background-color: #ffffff;
+}
+.p-dropdown-item {
+  display: block;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.p-dropdown-trigger-icon {
+  margin-left: 1rem;
+}
+</style>

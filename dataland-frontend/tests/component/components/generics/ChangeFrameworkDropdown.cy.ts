@@ -69,7 +69,7 @@ describe('Component test for ChangeFrameworkDropdown', () => {
       },
     }).then(() => {
       cy.get('[data-test="chooseFrameworkDropdown"]').should('exist').click();
-      cy.get('[data-test="chooseFrameworkDropdown"]').children().should('have.length', numberOfEntries);
+      cy.get('[data-test="chooseFrameworkList"]').children().should('have.length', numberOfEntries);
     });
 
     // check for children
