@@ -3,24 +3,26 @@
 
   <div ref="sheet">
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
-    <ChangeFrameworkDropdown
-      :list-of-data-meta-info="listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod"
-      data-type="Documents"
-      :company-i-d="companyId"
-    />
-    <FrameworkDataSearchDropdownFilter
-      :disabled="waitingForData"
-      v-model="selectedDocumentType"
-      ref="DocumentTypeFilter"
-      :available-items="availableDocumentTypes"
-      filter-name="Types"
-      data-test="document-type-picker"
-      filter-id="document-type-filter"
-      filter-placeholder="Search by document type"
-      class="ml-3"
-      style="margin: 15px"
-    />
-    <span class="tertiary-button" data-test="reset-filter" @click="resetFilter"> RESET </span>
+    <div style="text-align: left; margin: 0 1rem">
+      <ChangeFrameworkDropdown
+        :list-of-data-meta-info="listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod"
+        data-type="Documents"
+        :company-i-d="companyId"
+      />
+      <FrameworkDataSearchDropdownFilter
+        :disabled="waitingForData"
+        v-model="selectedDocumentType"
+        ref="DocumentTypeFilter"
+        :available-items="availableDocumentTypes"
+        filter-name="Types"
+        data-test="document-type-picker"
+        filter-id="document-type-filter"
+        filter-placeholder="Search by document type"
+        class="ml-3"
+        style="margin: 1rem"
+      />
+      <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
+    </div>
   </div>
 
   <TheContent class="paper-section flex flex-col p-3">
@@ -269,7 +271,7 @@ function convertToEnumSet(
  * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
  * info of the currently active dataset.
  */
-async function getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit(): void {
+async function getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit(): Promise<void> {
   const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
   const metaDataControllerApi = backendClients.metaDataController;
   const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
