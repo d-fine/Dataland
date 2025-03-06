@@ -14,7 +14,7 @@
         <table class="p-datatable-table" aria-label="Data point content">
           <tbody class="p-datatable-body">
             <tr>
-              <th class="headers-bg">Name</th>
+              <th>Name</th>
               <td class="nowrap" data-test="document-link">
                 <DocumentLink
                   :download-name="metaData.documentName ? metaData.documentName : metaData.documentId"
@@ -24,36 +24,37 @@
               </td>
             </tr>
             <tr>
-              <th class="headers-bg">Publication date</th>
+              <th>Publication date</th>
               <td data-test="publication-date">{{ metaData.publicationDate }}</td>
             </tr>
             <tr>
-              <th class="headers-bg">Document type</th>
+              <th>Document type</th>
               <td data-test="document-type">{{ metaData?.documentCategory }}</td>
             </tr>
             <tr v-if="metaData.reportingPeriod">
-              <th class="headers-bg">Reporting period</th>
+              <th>Reporting period</th>
               <td class="nowrap" data-test="reporting-period">{{ metaData.reportingPeriod }}</td>
             </tr>
             <tr>
-              <th class="headers-bg">Upload time</th>
+              <th>Upload time</th>
               <td data-test="upload-time">{{ metaData.uploadTime }}</td>
             </tr>
+            /*
             <tr>
-              <th class="headers-bg">Linked companies</th>
+              <th>Linked companies</th>
               <td data-test="linked-companies">
-                <span v-for="(company, index) in metaData.company" :key="index">
-                  <a
-                    :href="`${baseURL}/companies/${company.id}`"
-                    target="_blank"
-                    style="border: 0 none; text-decoration: none; color: #ff6813"
-                  >
-                    {{ company.name }}<br />
-                    <br />
-                  </a>
-                </span>
+                <a
+                  v-for="(company, index) in metaData.company"
+                  :key="index"
+                  :href="`${baseURL}/companies/${company.id}`"
+                  target="_blank"
+                  class="linked-companies"
+                >
+                  {{ company.name }}
+                </a>
               </td>
             </tr>
+            */
           </tbody>
         </table>
       </div>
@@ -101,7 +102,9 @@ async function getDocumentMetaInformation(): Promise<void> {
       const data: DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId))
         .data;
       const companyDetails = ref<CompanyDetails[]>([]);
-      for (const companyId of data.companyIds) {
+      console.log(data);
+      for (const companyId of Array.from(data.companyIds)) {
+        console.log(companyId);
         const company = await companyDataControllerApi.getCompanyInfo(companyId);
         companyDetails.value.push({ id: companyId, name: company.data.companyName });
       }
@@ -109,6 +112,7 @@ async function getDocumentMetaInformation(): Promise<void> {
         ...data,
         company: companyDetails.value,
       };
+      console.log(metaData);
     }
   } catch (error) {
     console.error(error);
@@ -135,25 +139,36 @@ onMounted(() => {
 .p-datatable-table {
   border-spacing: 0;
   border-collapse: collapse;
+
   tr {
     border-bottom: 1px solid #e3e2df;
+
     &:last-child {
       border: none;
     }
+
     td {
       padding: 0.5rem;
       border: none;
+
       &.nowrap {
         white-space: nowrap;
       }
     }
+
     th {
-      &.headers-bg {
-        width: 2rem;
-        padding-right: 1rem;
-        font-weight: normal;
-      }
+      width: 2rem;
+      padding-right: 1rem;
+      font-weight: normal;
     }
   }
+}
+
+.linked-companies {
+  border: 0 none;
+  text-decoration: none;
+  color: #ff6813;
+  display: block;
+  margin: 0.5em;
 }
 </style>
