@@ -49,8 +49,10 @@ class DataPointTestUtils {
     ): org.dataland.datalandqaservice.openApiClient.model.SfdrData {
         val replacement =
             listOf(
-                "{\"comment\":\"\",\"verdict\":\"QaNotAttempted\",\"correctedData\":{\"value\":null,\"quality\":null,\"comment\":null,\"dataSource\":null}}",
-                "{\"comment\":\"\",\"verdict\":\"QaNotAttempted\",\"correctedData\":{\"value\":null,\"quality\":null,\"comment\":null,\"dataSource\":null,\"currency\":null}}",
+                "{\"comment\":\"\",\"verdict\":\"QaNotAttempted\",\"correctedData\":{\"value\":null," +
+                    "\"quality\":null,\"comment\":null,\"dataSource\":null}}",
+                "{\"comment\":\"\",\"verdict\":\"QaNotAttempted\",\"correctedData\":{\"value\":null," +
+                    "\"quality\":null,\"comment\":null,\"dataSource\":null,\"currency\":null}}",
             )
         val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
         val updatedInput = replaceAllByNull(objectMapper.writeValueAsString(qaReport), replacement)
