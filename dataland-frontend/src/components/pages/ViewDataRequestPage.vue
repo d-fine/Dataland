@@ -177,6 +177,7 @@
                   <span style="margin-left: auto">
                     <ReviewRequestButtons
                       v-if="isUsersOwnRequest && isRequestStatusAnswered()"
+                      @request-reopened-or-resolved="initializeComponent()"
                       :data-request-id="storedDataRequest.dataRequestId"
                     />
                   </span>
@@ -321,20 +322,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.getRequest()
-      .catch((error) => console.error(error))
-      .then(() => {
-        if (this.getKeycloakPromise) {
-          const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
-          this.getAndStoreCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
-            console.error(error)
-          );
-          this.checkForAvailableData(this.storedDataRequest, apiClientProvider).catch((error) => console.error(error));
-        }
-        this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-        void this.setUserAccessFields();
-      })
-      .catch((error) => console.error(error));
+    this.initializeComponent();
   },
   methods: {
     getRequestStatusLabel,
@@ -344,6 +332,27 @@ export default defineComponent({
     getFrameworkSubtitle,
     frameworkHasSubTitle,
     getFrameworkTitle,
+    /**
+     * Perform all steps required to set up the component.
+     */
+    initializeComponent() {
+      this.getRequest()
+        .catch((error) => console.error(error))
+        .then(() => {
+          if (this.getKeycloakPromise) {
+            const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
+            this.getAndStoreCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
+              console.error(error)
+            );
+            this.checkForAvailableData(this.storedDataRequest, apiClientProvider).catch((error) =>
+              console.error(error)
+            );
+          }
+          this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+          void this.setUserAccessFields();
+        })
+        .catch((error) => console.error(error));
+    },
     /**
      * Method to update the email fields
      * @param hasValidForm boolean indicating if the input is correct

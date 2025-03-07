@@ -83,7 +83,7 @@
       {{ dialog }}
     </div>
     <div style="margin: 10px">
-      <PrimeButton label="CLOSE" @click="closeSuccessModal()" class="p-button-outlined" />
+      <PrimeButton label="CLOSE" @click="closeSuccessModal(dialogIsSuccess)" class="p-button-outlined" />
     </div>
   </PrimeDialog>
   <div>
@@ -178,8 +178,9 @@ export default defineComponent({
     /**
      * Closes the SuccessModal
      */
-    closeSuccessModal() {
+    closeSuccessModal(dialogIsSuccess: boolean) {
       this.dialogIsVisible = false;
+      if (dialogIsSuccess) this.$emit('request-reopened-or-resolved');
     },
     /**
      * Opens the SuccessModal with given dialog

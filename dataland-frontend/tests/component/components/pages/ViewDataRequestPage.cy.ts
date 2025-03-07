@@ -305,6 +305,7 @@ describe('Component tests for the view data request page', function (): void {
         checkBasicPageElementsAsUser(dummyRequest.requestStatus);
         cy.get('[data-test="resolveRequestButton"]').should('exist').click();
         cy.get('[data-test="successText"').should('exist');
+        interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Resolved, []));
         cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
         cy.get('[data-test="resolveRequestButton"]').should('not.exist');
       });
@@ -326,6 +327,7 @@ describe('Component tests for the view data request page', function (): void {
         cy.get('[data-test="reOpenRequestButton"]').should('exist').click();
         cy.get('[data-test="updateRequestButton"]').should('exist').click({ force: true });
         cy.get('[data-test="successText"').should('exist');
+        interceptUserAskForSingleDataRequestsOnMounted(createStoredDataRequest(RequestStatus.Open, []));
         cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
         cy.get('[data-test="reOpenRequestButton"]').should('not.exist');
       });
