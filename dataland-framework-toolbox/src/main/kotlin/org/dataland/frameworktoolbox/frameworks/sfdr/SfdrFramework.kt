@@ -57,7 +57,7 @@ class SfdrFramework :
                     specificationGenerator = { categoryBuilder ->
                         categoryBuilder.addDefaultDatapointAndSpecification(
                             this,
-                            "SfdrDate",
+                            "DateSfdr",
                             "plainDate",
                         )
                     }

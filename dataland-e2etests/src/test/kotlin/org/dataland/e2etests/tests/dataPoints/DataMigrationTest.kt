@@ -26,6 +26,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.http.HttpStatus
 import java.io.File
 import java.math.BigDecimal
@@ -33,7 +34,6 @@ import java.math.BigDecimal
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
     private val linkedQaReportDataFile = File("./build/resources/test/AdditionalCompanyInformationQaReportPreparedFixtures.json")
-    private val sfdrQaReportFile = File("./build/resources/test/SfdrLinkedDataAndQaReportPreparedFixtures.json")
     private val fakeFixtureProvider = FrameworkTestDataProvider.forFrameworkPreparedFixtures(AdditionalCompanyInformationData::class.java)
     private val apiAccessor = ApiAccessor()
     private val reportingPeriod = "2025"
@@ -186,9 +186,15 @@ class DataMigrationTest {
         DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(originalData, migratedData.data)
     }
 
-    @Test
-    fun `ensure that sfdr qa reports get migrated correctly`() {
-        val linkedQaReportData = loadSfdrLinkedQaReportData(sfdrQaReportFile)
+    @ParameterizedTest
+    @ValueSource(
+        strings = [
+            "./build/resources/test/SfdrLinkedDataAndQaReportPreparedFixtures.json",
+            "./build/resources/test/SfdrLinkedDataAndQaReportWithManyNullsPreparedFixtures.json",
+        ],
+    )
+    fun `ensure that sfdr qa reports get migrated correctly`(testDataLocation: String) {
+        val linkedQaReportData = loadSfdrLinkedQaReportData(File(testDataLocation))
         val dataMetaInfo = uploadGenericDummyDataset(data = linkedQaReportData.data, dataType = DataTypeEnum.sfdr)
         val qaReportInfo =
             QaService.assembledDataMigrationControllerApi.forceUploadStoredQaReport(
@@ -203,7 +209,7 @@ class DataMigrationTest {
                 QaService.sfdrDataQaReportControllerApi
                     .getSfdrDataQaReport(qaReportInfo.dataId, qaReportInfo.qaReportId)
             }.let {
-                assertEquals(linkedQaReportData.qaReport, it.report)
+                assertEquals(DataPointTestUtils().removeEmptyEntries(linkedQaReportData.qaReport), it.report)
             }
     }
 

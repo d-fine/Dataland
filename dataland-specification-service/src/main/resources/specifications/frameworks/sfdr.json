@@ -6,7 +6,7 @@
   "schema" : {
     "general" : {
       "general" : {
-        "dataDate" : "plainSfdrDateDataDate",
+        "dataDate" : "plainDateSfdrDataDate",
         "fiscalYearDeviation" : "plainEnumFiscalYearDeviation",
         "fiscalYearEnd" : "plainDateFiscalYearEnd"
       }

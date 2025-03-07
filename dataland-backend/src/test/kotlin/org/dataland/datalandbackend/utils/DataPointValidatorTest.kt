@@ -1,7 +1,6 @@
 package org.dataland.datalandbackend.utils
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import jakarta.validation.Validation
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InternalServerErrorApiException
@@ -19,11 +18,10 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 class DataPointValidatorTest {
-    private val objectMapper = jacksonObjectMapper().findAndRegisterModules().setDateFormat(SimpleDateFormat("yyyy-MM-dd"))
+    private val objectMapper = JsonTestUtils.testObjectMapper
     private val specificationClient = mock<SpecificationControllerApi>()
     private val referencedReportsUtilities = mock<ReferencedReportsUtilities>()
     private val dataPointValidator =
