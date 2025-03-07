@@ -89,11 +89,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Framework is not known by dataland."
-          },
           "200": {
             "description": "Successfully checked that the framework is known by dataland."
+          },
+          "404": {
+            "description": "Framework is not known by dataland."
           },
           "default": {
             "description": "An error occurred",

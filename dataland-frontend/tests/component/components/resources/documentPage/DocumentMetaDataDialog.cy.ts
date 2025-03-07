@@ -1,5 +1,4 @@
 import { type CompanyInformation } from '@clients/backend';
-import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
@@ -46,13 +45,11 @@ describe('Component test for the Document Meta Data Dialog', () => {
   });
 
   it('Check if all expected elements are displayed correctly', () => {
-    cy.mountWithPlugins(DocumentMetaDataDialog, {
-      keycloak: minimalKeycloakMock({}),
-      props: {
+    //@ts-ignore
+    cy.mountWithPlugins(DocumentMetaDataDialog, {}).then((mounted) => {
+      void mounted.wrapper.setProps({
         documentId: dummyDocumentId,
-        isOpen: true,
-      },
-    }).then(() => {
+      });
       cy.get("[data-test='document-details-modal']").should('exist');
       cy.get("[data-test='document-link']").should('exist').and('contain', `dummy-document`);
       cy.get("[data-test='publication-date']")
