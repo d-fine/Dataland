@@ -43,7 +43,7 @@ describeIf(
     const nameOfCompanyBeta = 'company-beta-with-eutaxo-and-lksg-data-' + uniqueCompanyMarker;
     let companyIdOfBeta: string;
 
-    const frameworkDropdownSelector = '#chooseFrameworkDropdown';
+    const frameworkDropdownSelector = '[data-test="chooseFrameworkDropdown"n';
     const dropdownItemsSelector = 'div.p-dropdown-items-wrapper li';
     const dropdownPanelSelector = 'div.p-dropdown-panel';
 
