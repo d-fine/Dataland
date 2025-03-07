@@ -13,7 +13,7 @@
     </span>
     <span v-if="dropdownExtended" class="p-dropdown-trigger p-dropdown-items" data-test="chooseFrameworkList">
       <a
-        v-for="option in getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(listOfDataMetaInfo)"
+        v-for="option in getFrameworkListSorted(listOfMetaInfo)"
         :key="option.label"
         :href="option.value"
         class="p-dropdown-item"
@@ -29,8 +29,7 @@
 import { defineComponent, type PropType, ref } from 'vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
-import type { DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
-import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
+import { type DataMetaInformation } from '@clients/backend';
 
 const dropdownExtended = ref<boolean>(false);
 
@@ -45,8 +44,8 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    listOfDataMetaInfo: {
-      type: Array as PropType<Array<DataAndMetaInformation<FrameworkData>>>,
+    listOfMetaInfo: {
+      type: Array as PropType<Array<DataMetaInformation>>,
       required: true,
     },
   },
@@ -68,11 +67,9 @@ export default defineComponent({
      * implemented, the distinct frameworks are set as options for the framework-dropdown element.
      * @param listOfDataMetaInfo a list of data meta info
      */
-    getDistinctAvailableFrameworksAndPutThemSortedIntoDropdown(
-      listOfDataMetaInfo: Array<DataAndMetaInformation<FrameworkData>>
-    ) {
+    getFrameworkListSorted(listOfDataMetaInfo: Array<DataMetaInformation>) {
       const setOfAvailableFrameworksForCompany = [
-        ...new Set(listOfDataMetaInfo.map((dataAndMetaInfo) => dataAndMetaInfo.metaInfo.dataType)),
+        ...new Set(listOfDataMetaInfo.map((dataMetaInfo) => dataMetaInfo.dataType)),
       ];
       const dataTypesInDropdown = setOfAvailableFrameworksForCompany
         .filter((dataType) => FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType))

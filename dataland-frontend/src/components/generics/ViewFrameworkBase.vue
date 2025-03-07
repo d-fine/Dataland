@@ -18,7 +18,9 @@
           <div class="flex">
             <ChangeFrameworkDropdown
               v-if="!isReviewableByCurrentUser"
-              :list-of-data-meta-info="activeDataForCurrentCompanyAndFramework"
+              :list-of-meta-info="
+                activeDataForCurrentCompanyAndFramework.map((dataAndMetaData) => dataAndMetaData.metaInfo)
+              "
               :data-type="dataType"
               :company-i-d="companyID"
             />

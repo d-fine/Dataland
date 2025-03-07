@@ -5,7 +5,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
     <div style="text-align: left; margin: 0 1rem">
       <ChangeFrameworkDropdown
-        :list-of-data-meta-info="listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod"
+        :list-of-meta-info="listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod"
         data-type="Documents"
         :company-i-d="companyId"
       />
