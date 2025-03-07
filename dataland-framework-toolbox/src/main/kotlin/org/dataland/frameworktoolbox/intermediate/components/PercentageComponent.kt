@@ -93,4 +93,6 @@ class PercentageComponent(
             ),
         )
     }
+
+    override fun getConstraints(): List<String>? = getMinMaxValidationRule(MIN_PERCENTAGE, MAX_PERCENTAGE)?.let { listOf(it) }
 }

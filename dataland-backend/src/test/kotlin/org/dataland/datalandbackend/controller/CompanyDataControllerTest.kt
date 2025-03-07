@@ -10,7 +10,7 @@ import org.dataland.datalandbackend.repositories.CompanyIdentifierRepository
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
-import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
 import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
@@ -41,7 +41,7 @@ internal class CompanyDataControllerTest(
     @Autowired val companyQueryManager: CompanyQueryManager,
     @Autowired val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired val companyBaseManager: CompanyBaseManager,
-    @Autowired private val assembledDataManager: AssembledDataManager,
+    @Autowired private val dataPointUtils: DataPointUtils,
 ) {
     private val validator: Validator = Validation.buildDefaultValidatorFactory().validator
 
@@ -55,7 +55,7 @@ internal class CompanyDataControllerTest(
                 companyQueryManager,
                 companyIdentifierRepositoryInterface,
                 companyBaseManager,
-                assembledDataManager,
+                dataPointUtils,
             )
     }
 

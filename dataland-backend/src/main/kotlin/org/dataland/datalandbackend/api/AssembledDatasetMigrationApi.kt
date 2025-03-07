@@ -25,6 +25,22 @@ import org.springframework.web.bind.annotation.RequestParam
 @SecurityRequirement(name = "default-oauth")
 interface AssembledDatasetMigrationApi {
     /**
+     * A method to migrate all data from stored datasets to assembled datasets
+     */
+    @Operation(
+        summary = "Triggers the migration from stored datasets to assembled datasets for all available datasets.",
+        description = "The data is migrated.",
+    )
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Migration successful."),
+        ],
+    )
+    @PostMapping("/stored-dataset-to-assembled-dataset-migration")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    fun triggerMigrationForAllStoredDatasets()
+
+    /**
      * A method to migrate data from stored datasets to assembled datasets
      * @param dataId to migrate
      */

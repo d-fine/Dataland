@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalWorkdaysLostInDays",
+  "name" : "Workdays Lost",
+  "businessDefinition" : "Number of workdays lost to injuries, accidents, fatalities or illness in total",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

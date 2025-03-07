@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRelativeNonRenewableEnergyConsumptionInPercent",
+  "name" : "Relative Non-Renewable Energy Consumption",
+  "businessDefinition" : "Share of non-renewable energy consumption from total energy consumption (i.e. renewable plus non-renewable).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

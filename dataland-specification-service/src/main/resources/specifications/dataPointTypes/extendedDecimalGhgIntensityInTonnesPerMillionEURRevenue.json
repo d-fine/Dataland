@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalGhgIntensityInTonnesPerMillionEURRevenue",
+  "name" : "GHG intensity",
+  "businessDefinition" : "Tonnes of GHG emissions per million units of revenue (in the same currency as total revenue), preferably calculated using the location-based method and the equity share approach for emissions.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

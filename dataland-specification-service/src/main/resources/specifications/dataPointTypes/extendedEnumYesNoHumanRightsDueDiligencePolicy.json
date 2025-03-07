@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoHumanRightsDueDiligencePolicy",
+  "name" : "Human Rights Due Diligence Policy",
+  "businessDefinition" : "Do you have policies in place to support/respect human rights and carry out due diligence to ensure that the business activities do not have a negative human rights impact? If yes, please share the relevant documents with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

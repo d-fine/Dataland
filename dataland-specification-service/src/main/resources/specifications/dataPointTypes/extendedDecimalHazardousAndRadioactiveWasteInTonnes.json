@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalHazardousAndRadioactiveWasteInTonnes",
+  "name" : "Hazardous and Radioactive Waste",
+  "businessDefinition" : "Tonnes of hazardous waste and radioactive waste generated: Hazardous waste are Explosives, Oxidizing substances, Highly flammable, Flammable, Irritant Harmful, Toxic, Carcinogenic, Corrosive, Infectious, Toxic for reproduction, Mutagenic, waste which releases toxic or very toxic gases in contact with water, air or an acid, Sensitizing, Ecotoxic, waste capable by any means after disposal of yielding another substance which possesses any of the characteristics listed above. Radioactice waste means radioactive material in gaseous, liquid or solid form for which no further use is foreseen. See Regulation (EU) 2022/1288, Annex I, top (14)-(16), Directive 2008/98/EC Annex III and Council Directive 2011/70/Euratom, Article 3 (7).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}
