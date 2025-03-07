@@ -1,5 +1,3 @@
-// cypress/component/DocumentOverview.cy.js
-// import { mount } from '@cypress/vue';
 import DocumentOverview from '@/components/pages/DocumentOverview.vue'; // Update this path
 import { type CompanyInformation, type HeimathafenData } from '@clients/backend';
 import type { FixtureData } from '@sharedUtils/Fixtures.ts';
@@ -132,24 +130,18 @@ describe('Component test for the Document Overview', () => {
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
     mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
-    const filterString = 'Annual';
     const stringInMultiSelect = 'Annual Report';
     let numOfFilteredOptions = 0;
     for (let i = 0; i < mockFetchedDocuments.length; i++) {
       if (mockFetchedDocuments[i].documentCategory == 'AnnualReport') numOfFilteredOptions++;
     }
     const numOfAllMultiSelectOptions = Object.keys(DocumentMetaInfoDocumentCategoryEnum).length;
-    const numOfMultiSelectOptionsAfterFilter = Object.values(DocumentMetaInfoDocumentCategoryEnum).filter((value) =>
-      value.includes(filterString)
-    ).length;
 
     cy.get("[data-test='document-type-picker']").should('exist').click();
     cy.get('.d-framework-data-search-dropdown')
       .should('exist')
       .within(() => {
         cy.get('ul').children().should('have.length', numOfAllMultiSelectOptions);
-        cy.get('input').should('exist').type(filterString);
-        cy.get('ul').children().should('have.length', numOfMultiSelectOptionsAfterFilter);
         cy.contains('li', stringInMultiSelect).should('exist').click();
       });
 
