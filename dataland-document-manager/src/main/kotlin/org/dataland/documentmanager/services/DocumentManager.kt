@@ -14,6 +14,7 @@ import org.dataland.documentmanager.exceptions.DocumentNotFoundException
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.documentmanager.services.conversion.lowercaseExtension

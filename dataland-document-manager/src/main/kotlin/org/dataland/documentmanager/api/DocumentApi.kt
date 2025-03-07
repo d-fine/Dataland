@@ -225,16 +225,21 @@ interface DocumentApi {
 
     /**
      * Search for document meta information by document ID. Only results with QA status "Accepted" are returned.
+     * @param companyId The company ID to filter by, ignored if null.
+     * @param documentCategories The document categories to filter by, ignored if null.
+     * @param reportingPeriod The reporting period to filter by, ignored if null.
+     * @param chunkSize The maximum size of the chunk of search results returned. If
+     * null, all search results are returned.
+     * @param chunkIndex The index, counting started at 0, of the chunk that shall be
+     * returned.
+     * @return A ResponseEntity wrapping a list of DocumentUploadResponse objects.
      */
     @Operation(
         summary = "Search for document meta information.",
         description =
             "Search for document meta information by company ID, document categories and reporting period. " +
-                "Search results must match the specified company ID and reporting period (if specified) " +
-                "as well as at least one of the specified document categories. If numberOfResults " +
-                "is not null, it limits the number of returned results. Results are returned sorted " +
-                "by publication date in reverse chronological order. Only results with QA status " +
-                "'Accepted' are returned.",
+                "Results are returned sorted by publication date in reverse chronological order. Only results" +
+                "with QA status 'Accepted' are returned.",
     )
     @ApiResponses(
         value = [

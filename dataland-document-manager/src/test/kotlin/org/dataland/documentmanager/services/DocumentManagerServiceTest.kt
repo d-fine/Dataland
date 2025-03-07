@@ -7,6 +7,7 @@ import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.documentmanager.DatalandDocumentManager
 import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
+import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -42,21 +43,35 @@ class DocumentManagerServiceTest(
     private val companyId2 = "company-id-2"
     private val companyId3 = "company-id-3"
 
+    private val documentName1 = "document-1"
+    private val documentName2 = "document-2"
+    private val documentName3 = "document-3"
+
     private val documentId1 = "document-id-1"
     private val documentId2 = "document-id-2"
     private val documentId3 = "document-id-3"
+
+    private val uploaderId1 = "uploader-1"
+    private val uploaderId2 = "uploader-2"
+
+    private val date1 = "2024-01-01"
+    private val date2 = "2024-06-30"
+    private val date3 = "2023-06-30"
+
+    private val reportingPeriod2023 = "2023"
+    private val reportingPeriod2024 = "2024"
 
     private val documentMetaInfoEntity1 =
         DocumentMetaInfoEntity(
             documentId = documentId1,
             documentType = DocumentType.Pdf,
-            documentName = "document-1",
+            documentName = documentName1,
             documentCategory = DocumentCategory.SustainabilityReport,
             companyIds = mutableSetOf(companyId1),
-            uploaderId = "uploader-1",
+            uploaderId = uploaderId1,
             uploadTime = 0,
-            publicationDate = LocalDate.parse("2024-01-01"),
-            reportingPeriod = "2023",
+            publicationDate = LocalDate.parse(date1),
+            reportingPeriod = reportingPeriod2023,
             qaStatus = QaStatus.Accepted,
         )
 
@@ -64,13 +79,13 @@ class DocumentManagerServiceTest(
         DocumentMetaInfoEntity(
             documentId = documentId2,
             documentType = DocumentType.Pdf,
-            documentName = "document-2",
+            documentName = documentName2,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(companyId1, companyId2),
-            uploaderId = "uploader-1",
+            uploaderId = uploaderId1,
             uploadTime = 0,
-            publicationDate = LocalDate.parse("2024-06-30"),
-            reportingPeriod = "2024",
+            publicationDate = LocalDate.parse(date2),
+            reportingPeriod = reportingPeriod2024,
             qaStatus = QaStatus.Accepted,
         )
 
@@ -78,13 +93,13 @@ class DocumentManagerServiceTest(
         DocumentMetaInfoEntity(
             documentId = documentId3,
             documentType = DocumentType.Pdf,
-            documentName = "document-3",
+            documentName = documentName3,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(companyId3),
-            uploaderId = "uploader-2",
+            uploaderId = uploaderId2,
             uploadTime = 0,
-            publicationDate = LocalDate.parse("2023-06-30"),
-            reportingPeriod = "2023",
+            publicationDate = LocalDate.parse(date3),
+            reportingPeriod = reportingPeriod2023,
             qaStatus = QaStatus.Accepted,
         )
 
@@ -173,7 +188,7 @@ class DocumentManagerServiceTest(
     fun `check that a search by reporting period yields the expected results`() {
         val documentMetaInformationSearchFilter =
             DocumentMetaInformationSearchFilter(
-                reportingPeriod = "2023",
+                reportingPeriod = reportingPeriod2023,
             )
 
         val searchResults =

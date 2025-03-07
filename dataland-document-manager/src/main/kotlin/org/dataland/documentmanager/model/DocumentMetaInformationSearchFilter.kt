@@ -1,4 +1,4 @@
-package org.dataland.documentmanager.services
+package org.dataland.documentmanager.model
 
 import org.dataland.datalandbackendutils.model.DocumentCategory
 
@@ -11,9 +11,9 @@ data class DocumentMetaInformationSearchFilter(
     val reportingPeriod: String? = null,
 ) {
     /**
-     * Checks whether all three fields are null.
+     * Checks whether the search filter is syntactically trivial (i.e., everything matches).
      */
-    fun isEmpty() =
+    fun isInvalid() =
         companyId == null &&
             (documentCategories == null || documentCategories == DocumentCategory.entries.toSet()) &&
             reportingPeriod == null

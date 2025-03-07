@@ -10,8 +10,8 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
 import org.dataland.documentmanager.services.DocumentManager
-import org.dataland.documentmanager.services.DocumentMetaInformationSearchFilter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
 import org.springframework.http.HttpHeaders
@@ -114,21 +114,7 @@ class DocumentController(
     }
 
     /**
-     * Searches in storage for document meta information matching the non-null search
-     * parameter values and optionally only returns a chunk of the search results.
-     * Only document meta information with QaStatus "Accepted" is returned, and results
-     * are ordered by publication date in reverse chronological order.
-     * @param companyId The company ID to filter by, ignored if null.
-     * @param documentCategories The document categories to filter by, ignored if null.
-     * @param reportingPeriod The reporting period to filter by, ignored if null.
-     * @param chunkSize The maximum size of the chunk of search results returned. If
-     * null, all search results are returned.
-     * @param chunkIndex The index, counting started at 0, of the chunk that shall be
-     * returned. If chunkSize is null, there is only a single chunk, so chunkIndex
-     * must be 0 then.
-     * @return A ResponseEntity wrapping a list of DocumentUploadResponse objects. In
-     * addition to the values of the three potential search parameter fields, these
-     * contain the document ids and names as well as publication dates.
+     * Searches in storage for document meta information.
      */
     override fun searchForDocumentMetaInformation(
         companyId: String?,
@@ -143,16 +129,25 @@ class DocumentController(
                 message = "Chunk size must be positive.",
             )
         }
+        if (chunkIndex < 0) {
+            throw InvalidInputApiException(
+                summary = "Invalid chunk index.",
+                message = "Chunk index must be non-negative.",
+            )
+        }
         val documentMetaInformationSearchFilter =
             DocumentMetaInformationSearchFilter(
                 companyId,
                 documentCategories,
                 reportingPeriod,
             )
-        if (documentMetaInformationSearchFilter.isEmpty()) {
+        if (documentMetaInformationSearchFilter.isInvalid()) {
             throw InvalidInputApiException(
-                summary = "At least one search parameter must be non-null.",
-                message = "At least one search parameter must be non-null.",
+                summary = "Invalid meta information search filter.",
+                message =
+                    "Search filter must impose an actual restriction. Please provide " +
+                        "at least one search parameter and make sure that not all document " +
+                        "categories are requested if companyId and reportingPeriod are omitted.",
             )
         }
         return ResponseEntity.ok(

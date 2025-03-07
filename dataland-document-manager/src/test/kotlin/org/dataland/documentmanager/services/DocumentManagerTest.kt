@@ -14,6 +14,7 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
@@ -339,7 +340,7 @@ class DocumentManagerTest(
         assertEquals(dummyDocumentMetaInfo.reportingPeriod, dummyDocumentMetaInfoEntity.reportingPeriod)
     }
 
-    private fun setUpDocumentIdToBeFound(documentId: String) {
+    private fun setupDocumentIdToBeFound(documentId: String) {
         doReturn(true).whenever(mockDocumentMetaInfoRepository).existsById(documentId)
         doReturn(buildDocumentMetaInfoEntityWithDocumentId(documentId))
             .whenever(
@@ -350,16 +351,14 @@ class DocumentManagerTest(
     @Test
     fun `check that retrieval of document metainfo works for an existing document id`() {
         val response1 = dummyDocumentUploadResponse
-        setUpDocumentIdToBeFound(response1.documentId)
+        setupDocumentIdToBeFound(response1.documentId)
         val response2 = documentManager.retrieveDocumentMetaInfo(response1.documentId)
         assertEquals(response1, response2)
     }
 
     @Test
     fun `check that the search filter is built correctly in a search request with no specified chunkSize`() {
-        // Empty list, since the database response itself is irrelevant, only that the correct query is made.
-        val emptyList: List<DocumentMetaInfoEntity> = listOf()
-        doReturn(emptyList)
+        doReturn(listOf<DocumentMetaInfoEntity>())
             .whenever(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = any(),
@@ -377,7 +376,7 @@ class DocumentManagerTest(
         documentManager.searchForDocumentMetaInformation(searchFilter)
         verify(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
-                companyId = knownCompanyId,
+                companyId = searchFilter.companyId,
                 documentCategories = null,
                 reportingPeriod = "2023",
             )
@@ -385,8 +384,7 @@ class DocumentManagerTest(
 
     @Test
     fun `check that search filter, limit and offset are built correctly in a search request`() {
-        val emptyList: List<DocumentMetaInfoEntity> = listOf()
-        doReturn(emptyList)
+        doReturn(listOf<DocumentMetaInfoEntity>())
             .whenever(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(
                 companyId = any(),
