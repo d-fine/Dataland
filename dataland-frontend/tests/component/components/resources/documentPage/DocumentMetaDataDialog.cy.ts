@@ -2,6 +2,7 @@ import { type CompanyInformation } from '@clients/backend';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
+import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
 
 describe('Component test for the Document Meta Data Dialog', () => {
   const dummyDocumentId: string = '00000000-0000-0000-0000-000000000000';
@@ -46,10 +47,13 @@ describe('Component test for the Document Meta Data Dialog', () => {
 
   it('Check if all expected elements are displayed correctly', () => {
     //@ts-ignore
-    cy.mountWithPlugins(DocumentMetaDataDialog, {}).then((mounted) => {
-      void mounted.wrapper.setProps({
+    cy.mountWithPlugins(DocumentMetaDataDialog, {
+      keycloak: minimalKeycloakMock({}),
+      props: {
         documentId: dummyDocumentId,
-      });
+        isOpen: true,
+      },
+    }).then(() => {
       cy.get("[data-test='document-details-modal']").should('exist');
       cy.get("[data-test='document-link']").should('exist').and('contain', `dummy-document`);
       cy.get("[data-test='publication-date']")
