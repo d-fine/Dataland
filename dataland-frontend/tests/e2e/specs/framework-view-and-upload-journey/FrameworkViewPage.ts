@@ -43,7 +43,7 @@ describeIf(
     const nameOfCompanyBeta = 'company-beta-with-eutaxo-and-lksg-data-' + uniqueCompanyMarker;
     let companyIdOfBeta: string;
 
-    const frameworkDropdownSelector = 'div#chooseFrameworkDropdown';
+    const frameworkDropdownSelector = '#chooseFrameworkDropdown';
     const dropdownItemsSelector = 'div.p-dropdown-items-wrapper li';
     const dropdownPanelSelector = 'div.p-dropdown-panel';
 
@@ -374,6 +374,8 @@ describeIf(
       typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, companyIdOfAlpha, false);
 
       validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
+      cy.get('[data-test=toggleShowAll]').scrollIntoView();
+      cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
       validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
       validateChosenFramework(DataTypeEnum.Lksg);

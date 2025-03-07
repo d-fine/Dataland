@@ -31,7 +31,6 @@ import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import type { DataAndMetaInformation } from '@/api-models/DataAndMetaInformation.ts';
 import type { FrameworkData } from '@/utils/GenericFrameworkTypes.ts';
-import { type DataTypeEnumAndDocumentsEntry } from '@/types/DataTypeEnumAndDocumentsEntry.ts';
 
 const dropdownExtended = ref<boolean>(false);
 
@@ -43,7 +42,7 @@ export default defineComponent({
       required: true,
     },
     dataType: {
-      type: String as PropType<DataTypeEnumAndDocumentsEntry>,
+      type: String,
       required: true,
     },
     listOfDataMetaInfo: {
