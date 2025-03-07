@@ -26,7 +26,7 @@
           "document-controller"
         ],
         "summary": "Search for document meta information.",
-        "description": "Search for document meta information by company ID, document categories and reporting period. Search results must match the specified company ID and reporting period (if specified)as well as at least one of the specified document categories. If numberOfResultsis not null, it limits the number of returned results. Results are returned sortedby publication date in reverse chronological order. Only results with QA status\u0027Accepted\u0027 are returned.",
+        "description": "Search for document meta information by company ID, document categories and reporting period. Results are returned sorted by publication date in reverse chronological order. Only resultswith QA status \u0027Accepted\u0027 are returned.",
         "operationId": "searchForDocumentMetaInformation",
         "parameters": [
           {
@@ -97,7 +97,7 @@
             }
           },
           "400": {
-            "description": "Bad request; make sure that at least one search parameter is non-null andthat the chunk index is within bounds (when in doubt, use chunk index 0).",
+            "description": "Bad request; make sure that at least one search parameter is non-null and that the chunk index is within bounds (when in doubt, use chunk index 0).",
             "content": {
               "application/json": {
                 "schema": {
@@ -332,11 +332,11 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Successfully checked that a document does not exist."
-          },
           "200": {
             "description": "Successfully checked document existence."
+          },
+          "404": {
+            "description": "Successfully checked that a document does not exist."
           },
           "default": {
             "description": "An error occurred",
@@ -396,8 +396,8 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Document Id does not match any stored document.",
+          "200": {
+            "description": "Successfully updated the document\u0027s meta information.",
             "content": {
               "application/json": {
                 "schema": {
@@ -416,8 +416,8 @@
               }
             }
           },
-          "200": {
-            "description": "Successfully updated the document\u0027s meta information.",
+          "404": {
+            "description": "Document Id does not match any stored document.",
             "content": {
               "application/json": {
                 "schema": {
@@ -484,16 +484,6 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Document Id does not match any stored document.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Successfully updated the companyIds field in the document\u0027s meta information.",
             "content": {
@@ -506,6 +496,16 @@
           },
           "403": {
             "description": "You do not have the right to update the companyIds field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentMetaInfoResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Document Id does not match any stored document.",
             "content": {
               "application/json": {
                 "schema": {
@@ -564,8 +564,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Document meta information could not be retrieved.",
+          "200": {
+            "description": "Successfully received document meta information.",
             "content": {
               "application/json": {
                 "schema": {
@@ -574,8 +574,8 @@
               }
             }
           },
-          "200": {
-            "description": "Successfully received document meta information.",
+          "404": {
+            "description": "Document meta information could not be retrieved.",
             "content": {
               "application/json": {
                 "schema": {

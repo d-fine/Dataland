@@ -45,7 +45,7 @@ describe('Component test for the Document Meta Data Dialog', () => {
     );
   });
 
-  it.only('Check if all expected elements are displayed correctly', () => {
+  it('Check if all expected elements are displayed correctly', () => {
     cy.mountWithPlugins(DocumentMetaDataDialog, {
       keycloak: minimalKeycloakMock({}),
       props: {
