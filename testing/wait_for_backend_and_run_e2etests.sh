@@ -12,6 +12,7 @@ is_infrastructure_up () {
   services["keycloak"]=http://local-dev.dataland.com/keycloak/realms/datalandsecurity/
   services["api-key-manager"]=http://local-dev.dataland.com/api-keys/actuator/health/ping
   services["qa-service"]=http://local-dev.dataland.com/qa/actuator/health/ping
+  services["user-service"]=http://local-dev.dataland.com/users/actuator/health/ping
   services["community-manager"]=http://local-dev.dataland.com/community/actuator/health/ping
   services["external-storage"]=http://local-dev.dataland.com/external-storage/actuator/health/ping
 
