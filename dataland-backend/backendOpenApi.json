@@ -374,14 +374,14 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Invalid input parameters."
-          },
           "200": {
             "description": "Successfully added dataset."
           },
           "400": {
             "description": "Bad request has been submitted."
+          },
+          "404": {
+            "description": "Invalid input parameters."
           },
           "default": {
             "description": "An error occurred",
@@ -1834,8 +1834,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Found no company corresponding the identifier.",
+          "200": {
+            "description": "Found a company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1844,8 +1844,8 @@
               }
             }
           },
-          "200": {
-            "description": "Found a company corresponding the identifier.",
+          "404": {
+            "description": "Found no company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -15402,6 +15402,38 @@
               }
             ]
           },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "iloCoreLabourStandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "humanRightsDueDiligence": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
@@ -20202,15 +20234,15 @@
         ],
         "type": "object",
         "properties": {
+          "sector": {
+            "type": "string",
+            "nullable": true
+          },
           "companyId": {
             "type": "string"
           },
           "companyName": {
             "type": "string"
-          },
-          "sector": {
-            "type": "string",
-            "nullable": true
           },
           "headquarters": {
             "type": "string"
