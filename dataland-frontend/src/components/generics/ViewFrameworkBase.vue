@@ -16,19 +16,13 @@
       >
         <div class="flex justify-content-between align-items-center d-search-filters-panel">
           <div class="flex">
-            <Dropdown
+            <ChangeFrameworkDropdown
               v-if="!isReviewableByCurrentUser"
-              id="chooseFrameworkDropdown"
-              v-model="chosenDataTypeInDropdown"
-              :options="dataTypesInDropdown"
-              optionLabel="label"
-              optionValue="value"
-              :placeholder="humanizeStringOrNumber(dataType)"
-              aria-label="Choose framework"
-              class="fill-dropdown always-fill"
-              dropdownIcon="pi pi-angle-down"
-              @change="handleChangeFrameworkEvent"
-              data-test="chooseFrameworkDropdown"
+              :list-of-meta-info="
+                activeDataForCurrentCompanyAndFramework.map((dataAndMetaData) => dataAndMetaData.metaInfo)
+              "
+              :data-type="dataType"
+              :company-i-d="companyID"
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">
@@ -121,13 +115,10 @@ import { ApiClientProvider } from '@/services/ApiClients';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import type Keycloak from 'keycloak-js';
 import PrimeButton from 'primevue/button';
-import Dropdown, { type DropdownChangeEvent } from 'primevue/dropdown';
 import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import {
   type CompanyInformation,
   type DataMetaInformation,
@@ -135,6 +126,7 @@ import {
   ExportFileType,
   type VsmeData,
 } from '@clients/backend';
+import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -154,20 +146,22 @@ import { getFrameworkDataApiForIdentifier } from '@/frameworks/FrameworkApiUtils
 import { getAllPrivateFrameworkIdentifiers } from '@/frameworks/BasePrivateFrameworkRegistry.ts';
 import { isFrameworkEditable } from '@/utils/Frameworks';
 import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/KeycloakRoles';
+import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import { AxiosError } from 'axios';
 import { useRoute } from 'vue-router';
+import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
 
 type DropdownOption = { label: string; value: string };
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
   components: {
+    ChangeFrameworkDropdown,
     DownloadDatasetModal,
     CompanyInfoSheet,
     TheContent,
     TheHeader,
     MarginWrapper,
-    Dropdown,
     TheFooter,
     PrimeButton,
     OverlayPanel,
@@ -208,7 +202,6 @@ export default defineComponent({
       fetchedCompanyInformation: {} as CompanyInformation,
       chosenDataTypeInDropdown: '',
       dataTypesInDropdown: [] as Array<DropdownOption>,
-      humanizeStringOrNumber,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -351,15 +344,6 @@ export default defineComponent({
         this.pageScrolled = document.documentElement.scrollTop > 195;
       }
     },
-    /**
-     * Visits the framework view page for the framework which was chosen in the dropdown
-     * @param dropDownChangeEvent the change event emitted by the dropdown component
-     */
-    handleChangeFrameworkEvent(dropDownChangeEvent: DropdownChangeEvent) {
-      if (this.dataType != dropDownChangeEvent.value) {
-        void router.push(`/companies/${this.companyID}/frameworks/${this.chosenDataTypeInDropdown}`);
-      }
-    },
 
     /**
      * Retrieves all dataTypes available for current Company and populates dropdown menu
@@ -400,6 +384,7 @@ export default defineComponent({
           apiClientProvider
         ) as PublicFrameworkDataApi<FrameworkData>;
         const apiResponse = await frameworkDataApi.getAllCompanyData(this.companyID, true);
+        this.$emit('updateActiveDataMetaInfoForChosenFramework', this.mapOfReportingPeriodToActiveDataset);
         this.activeDataForCurrentCompanyAndFramework = Array.from(apiResponse.data);
         this.isDataProcessedSuccessfully = true;
       } catch (error) {

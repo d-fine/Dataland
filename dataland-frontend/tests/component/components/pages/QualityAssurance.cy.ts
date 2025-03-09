@@ -350,7 +350,7 @@ describe('Component tests for the Quality Assurance page', () => {
     cy.get('h1').contains(p2pFixture.companyInformation.companyName).should('be.visible');
 
     cy.get('#framework_data_search_bar_standard').should('not.exist');
-    cy.get('#chooseFrameworkDropdown').should('not.exist');
+    cy.get('[data-test="chooseFrameworkDropdown"').should('not.exist');
     cy.get('a[data-test="gotoNewDatasetButton"]').should('not.exist');
 
     cy.get('div[data-test="datasetDisplayStatusContainer"] span').contains('This dataset is currently pending review');

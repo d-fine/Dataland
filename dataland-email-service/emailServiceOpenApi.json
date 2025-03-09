@@ -40,8 +40,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Could not find an email address corresponding to this UUID.",
+          "200": {
+            "description": "Successfully unsubscribed email address corresponding to this UUID.",
             "content": {
               "*/*": {
                 "schema": {
@@ -50,8 +50,8 @@
               }
             }
           },
-          "200": {
-            "description": "Successfully unsubscribed email address corresponding to this UUID.",
+          "404": {
+            "description": "Could not find an email address corresponding to this UUID.",
             "content": {
               "*/*": {
                 "schema": {
