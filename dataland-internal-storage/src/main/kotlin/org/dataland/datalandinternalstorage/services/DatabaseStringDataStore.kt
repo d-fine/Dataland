@@ -20,6 +20,9 @@ import org.dataland.datalandmessagequeueutils.messages.data.DataMetaInfoPatchPay
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
 import org.dataland.datalandmessagequeueutils.messages.data.DataUploadedPayload
 import org.dataland.datalandmessagequeueutils.utils.MessageQueueUtils
+import org.dataland.datalandmessagequeueutils.utils.getCorrelationId
+import org.dataland.datalandmessagequeueutils.utils.getType
+import org.dataland.datalandmessagequeueutils.utils.readMessagePayload
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.Message
 import org.springframework.amqp.rabbit.annotation.Argument
@@ -155,9 +158,7 @@ class DatabaseStringDataStore(
 
     /**
      * Method that listens to the data point storage queue and stores data points into the database
-     * @param payload the content of the message
-     * @param correlationId the correlation ID of the current user process
-     * @param type the type of the message
+     * @param messages a list of messages containing relevant information
      */
     @RabbitListener(
         bindings = [
@@ -175,29 +176,42 @@ class DatabaseStringDataStore(
                 key = [RoutingKeyNames.DATA_POINT_UPLOAD],
             ),
         ],
+        containerFactory = "consumerBatchContainerFactory",
     )
-    fun storeDataPoint(
-        @Payload payload: String,
-        @Header(MessageHeaderKey.CORRELATION_ID) correlationId: String,
-        @Header(MessageHeaderKey.TYPE) type: String,
-    ) {
-        MessageQueueUtils.validateMessageType(type, MessageType.PUBLIC_DATA_RECEIVED)
+    @Transactional
+    fun storeDataPoints(messages: List<Message>) {
+        logger.info("Processing ${messages.size} Data Point Received Messages.")
+
         MessageQueueUtils.rejectMessageOnException {
-            val dataId = MessageQueueUtils.readMessagePayload<DataPointUploadedPayload>(payload, objectMapper).dataPointId
-            MessageQueueUtils.validateDataId(dataId)
-            val dataPointString = retrieveData(dataId, correlationId)
-            val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
-            logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
-            storeDataPointItemWithoutTransaction(
-                DataPointItem(
-                    dataPointId = dataId,
-                    companyId = storableDataPoint.companyId,
-                    reportingPeriod = storableDataPoint.reportingPeriod,
-                    dataPointType = storableDataPoint.dataPointType,
-                    dataPoint = objectMapper.writeValueAsString(storableDataPoint.dataPoint),
-                ),
-            )
-            publishStorageEvent(dataId, correlationId)
+            val allDataAndCorrelationIds =
+                messages.map {
+                    MessageQueueUtils.validateMessageType(it.getType(), MessageType.PUBLIC_DATA_RECEIVED)
+                    Pair(it.readMessagePayload<DataPointUploadedPayload>(objectMapper).dataPointId, it.getCorrelationId())
+                }
+            val allContents =
+                temporarilyCachedDataClient.getBatchReceivedPublicData(
+                    allDataAndCorrelationIds.map
+                        { it.first },
+                )
+            val allStoredDataPoints = mutableListOf<DataPointItem>()
+
+            for ((dataId, correlationId) in allDataAndCorrelationIds) {
+                MessageQueueUtils.validateDataId(dataId)
+                val dataPointString = allContents[dataId]
+                val storableDataPoint = objectMapper.readValue(dataPointString, StorableDataPoint::class.java)
+                logger.info("Storing data point with data ID: $dataId and correlation ID: $correlationId.")
+                allStoredDataPoints.add(
+                    DataPointItem(
+                        dataPointId = dataId,
+                        companyId = storableDataPoint.companyId,
+                        reportingPeriod = storableDataPoint.reportingPeriod,
+                        dataPointType = storableDataPoint.dataPointType,
+                        dataPoint = objectMapper.writeValueAsString(storableDataPoint.dataPoint),
+                    ),
+                )
+                publishStorageEvent(dataId, correlationId)
+            }
+            dataPointItemRepository.saveAll(allStoredDataPoints)
         }
     }
 
@@ -221,17 +235,6 @@ class DatabaseStringDataStore(
     }
 
     /**
-     * Stores a Data Point Item while ensuring that there is no active transaction. This will guarantee that the data
-     * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
-     * is commited after exit of this method.
-     * @param dataPointItem the DataItem to be stored
-     */
-    @Transactional(propagation = Propagation.NEVER)
-    fun storeDataPointItemWithoutTransaction(dataPointItem: DataPointItem) {
-        dataPointItemRepository.save(dataPointItem)
-    }
-
-    /**
      * Stores a Data Item while ensuring that there is no active transaction. This will guarantee that the write
      * point is commited after exit of this method.
      * @param dataItem the DatapointItem to be stored
@@ -242,26 +245,24 @@ class DatabaseStringDataStore(
     }
 
     /**
-     * Reads data point from a database
-     * @param dataId the ID of the data to be retrieved
+     * Reads data points from a database
+     * @param dataIds the IDs of the data to be retrieved
      * @return the data as json string with ID dataId
      */
-    fun selectDataPoint(
-        dataId: String,
+    fun selectDataPoints(
+        dataIds: List<String>,
         correlationId: String,
-    ): StorableDataPoint {
-        val entry =
-            dataPointItemRepository
-                .findById(dataId)
-                .orElseThrow {
-                    logger.info("Data point with data ID: $dataId could not be found. Correlation ID: $correlationId.")
-                    ResourceNotFoundApiException(
-                        "Data point not found",
-                        "No data point with the ID: $dataId could be found in the data store.",
-                    )
-                }
-
-        return entry.toStorableDataPoint(objectMapper)
+    ): Map<String, StorableDataPoint> {
+        val retrievedEntries = dataPointItemRepository.findAllById(dataIds)
+        val missingIdentifiers = dataIds.toSet() - retrievedEntries.map { it.dataPointId }.toSet()
+        if (missingIdentifiers.isNotEmpty()) {
+            logger.info("Data points with data IDs: $missingIdentifiers could not be found. Correlation ID: $correlationId.")
+            throw ResourceNotFoundApiException(
+                "Data points not found",
+                "No data points with the IDs: $missingIdentifiers could be found in the data store.",
+            )
+        }
+        return retrievedEntries.associate { it.dataPointId to it.toStorableDataPoint(objectMapper) }
     }
 
     /**

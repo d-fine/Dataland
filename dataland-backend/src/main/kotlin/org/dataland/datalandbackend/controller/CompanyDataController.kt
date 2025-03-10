@@ -16,7 +16,7 @@ import org.dataland.datalandbackend.repositories.utils.StoredCompanySearchFilter
 import org.dataland.datalandbackend.services.CompanyAlterationManager
 import org.dataland.datalandbackend.services.CompanyBaseManager
 import org.dataland.datalandbackend.services.CompanyQueryManager
-import org.dataland.datalandbackend.services.datapoints.AssembledDataManager
+import org.dataland.datalandbackend.utils.DataPointUtils
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.utils.validateIsEmailAddress
 import org.slf4j.LoggerFactory
@@ -39,7 +39,7 @@ class CompanyDataController(
     @Autowired private val companyQueryManager: CompanyQueryManager,
     @Autowired private val companyIdentifierRepositoryInterface: CompanyIdentifierRepository,
     @Autowired private val companyBaseManager: CompanyBaseManager,
-    @Autowired private val assembledDataManager: AssembledDataManager,
+    @Autowired private val dataPointUtils: DataPointUtils,
 ) : CompanyApi {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -198,7 +198,7 @@ class CompanyDataController(
                 AggregatedFrameworkDataSummary(
                     (
                         companyQueryManager.getAllReportingPeriodsWithActiveDatasets(companyId, it) union
-                            assembledDataManager.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
+                            dataPointUtils.getAllReportingPeriodsWithActiveDataPoints(companyId, it.toString())
                     ).size.toLong(),
                 )
             },
