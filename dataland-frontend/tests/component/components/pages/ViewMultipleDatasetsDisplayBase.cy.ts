@@ -79,16 +79,17 @@ describe('Component test for the view multiple dataset display base component', 
     cy.mountWithPlugins(ViewMultipleDatasetsDisplayBase, {
       keycloak: minimalKeycloakMock({ roles: [KEYCLOAK_ROLE_UPLOADER] }),
       router: router,
-      props: {
+    }).then((mounted) => {
+      void mounted.wrapper.setProps({
         companyId: mockedData2023.metaInfo.companyId,
         dataType: DataTypeEnum.Lksg,
         viewInPreviewMode: false,
-      },
+      });
     });
-    cy.get('[data-test="editDatasetButton"').find('.material-icons-outlined').should('exist').click();
-    cy.get('[data-test="select-reporting-period-dialog"')
+    cy.get('[data-test="editDatasetButton"]').find('.material-icons-outlined').should('exist').click();
+    cy.get('[data-test="select-reporting-period-dialog"]')
       .should('exist')
-      .get('[data-test="reporting-periods"')
+      .get('[data-test="reporting-periods"]')
       .last()
       .should('contain', '2024')
       .should('contain', '2023')
