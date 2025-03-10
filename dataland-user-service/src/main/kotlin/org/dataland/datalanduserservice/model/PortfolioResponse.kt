@@ -12,7 +12,7 @@ data class PortfolioResponse(
     @field:JsonProperty(required = true)
     override val portfolioName: String,
     @field:JsonProperty(required = true)
-    override val userId: String,
+    val userId: String,
     @field:JsonProperty(required = true)
     val creationTimestamp: Long,
     @field:JsonProperty(required = true)

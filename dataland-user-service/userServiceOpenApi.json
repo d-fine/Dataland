@@ -617,17 +617,11 @@
       "Portfolio": {
         "required": [
           "companyIds",
-          "creationTimestamp",
           "dataTypes",
-          "lastUpdateTimestamp",
-          "portfolioName",
-          "userId"
+          "portfolioName"
         ],
         "type": "object",
         "properties": {
-          "portfolioName": {
-            "type": "string"
-          },
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
@@ -635,23 +629,15 @@
               "type": "string"
             }
           },
+          "portfolioName": {
+            "type": "string"
+          },
           "dataTypes": {
             "uniqueItems": true,
             "type": "array",
             "items": {
               "type": "string"
             }
-          },
-          "userId": {
-            "type": "string"
-          },
-          "creationTimestamp": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "lastUpdateTimestamp": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },
