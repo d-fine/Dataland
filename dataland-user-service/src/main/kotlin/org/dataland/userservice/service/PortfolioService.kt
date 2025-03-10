@@ -3,6 +3,7 @@ package org.dataland.userservice.service
 import org.dataland.userservice.entity.PortfolioEntity
 import org.dataland.userservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.userservice.model.Portfolio
+import org.dataland.userservice.model.PortfolioResponse
 import org.dataland.userservice.repository.PortfolioRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,7 +46,7 @@ class PortfolioService
         fun getAllPortfoliosForUser(
             userId: String,
             correlationId: String,
-        ): List<Portfolio> {
+        ): List<PortfolioResponse> {
             logger.info("Retrieve all portfolios for user with userId: $userId. CorrelationId: $correlationId.")
             return portfolioRepository.getAllByUserId(userId).map { it.toPortfolioResponse() }
         }
@@ -58,7 +59,7 @@ class PortfolioService
             userId: String,
             portfolioId: String,
             correlationId: String,
-        ): Portfolio {
+        ): PortfolioResponse {
             logger.info("Retrieve portfolio with portfolioId: $portfolioId for user with userId: $userId. CorrelationId: $correlationId.")
             return portfolioRepository
                 .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
@@ -74,7 +75,7 @@ class PortfolioService
             portfolioId: String,
             companyId: String,
             correlationId: String,
-        ): Portfolio {
+        ): PortfolioResponse {
             logger.info(
                 "Add company with companyId: $companyId to portfolio with portfolioId: $portfolioId for user" +
                     " with userId: $userId. CorrelationId: $correlationId.",
@@ -83,6 +84,7 @@ class PortfolioService
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
             portfolio.companyIds.add(companyId)
+            portfolio.lastUpdateTimestamp = Instant.now().toEpochMilli()
             return portfolio.toPortfolioResponse()
         }
 
@@ -94,7 +96,7 @@ class PortfolioService
             userId: String,
             portfolio: Portfolio,
             correlationId: String,
-        ): Portfolio {
+        ): PortfolioResponse {
             logger.info(
                 "Create new portfolio for user with userId: $userId. CorrelationId: $correlationId.",
             )
@@ -110,15 +112,18 @@ class PortfolioService
             portfolio: Portfolio,
             portfolioId: String,
             correlationId: String,
-        ): Portfolio {
+        ): PortfolioResponse {
             logger.info(
                 "Replace portfolio with portfolioId: $portfolioId for user with userId: $userId. CorrelationId: $correlationId.",
             )
+            val originalPortfolio =
+                portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
+                    ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
             return this.savePortfolio(
                 userId,
                 portfolio,
                 portfolioId = portfolioId,
-                lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                creationTimestamp = originalPortfolio.creationTimestamp,
             )
         }
 
@@ -140,6 +145,7 @@ class PortfolioService
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
             portfolio.companyIds.remove(companyId)
+            portfolio.lastUpdateTimestamp = Instant.now().toEpochMilli()
         }
 
         /**
@@ -164,21 +170,20 @@ class PortfolioService
             userId: String,
             portfolio: Portfolio,
             portfolioId: String? = null,
-            lastUpdateTimestamp: Long? = null,
-        ): Portfolio =
-            portfolioRepository
-                .save(
-                    PortfolioEntity(
-                        portfolioId =
-                            UUID.fromString(portfolioId)
-                                ?: UUID.randomUUID(),
-                        // TODO testing that this works with null input
-                        portfolioName = portfolio.portfolioName,
-                        userId = userId,
-                        creationTimestamp = Instant.now().toEpochMilli(),
-                        lastUpdateTimestamp = lastUpdateTimestamp ?: Instant.now().toEpochMilli(),
-                        companyIds = portfolio.companyIds.toMutableSet(),
-                        dataTypes = portfolio.dataTypes.toMutableSet(),
-                    ),
-                ).toPortfolioResponse()
+            creationTimestamp: Long? = null,
+        ): PortfolioResponse {
+            val entity =
+                PortfolioEntity(
+                    portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.randomUUID(),
+                    portfolioName = portfolio.portfolioName,
+                    userId = userId,
+                    creationTimestamp = creationTimestamp ?: Instant.now().toEpochMilli(),
+                    lastUpdateTimestamp = Instant.now().toEpochMilli(),
+                    companyIds = portfolio.companyIds.toMutableSet(),
+                    dataTypes = portfolio.dataTypes.toMutableSet(),
+                )
+            return portfolioRepository
+                .save(entity)
+                .toPortfolioResponse()
+        }
     }

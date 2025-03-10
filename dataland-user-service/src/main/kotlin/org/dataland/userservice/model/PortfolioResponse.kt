@@ -14,9 +14,9 @@ data class PortfolioResponse(
     @field:JsonProperty(required = true)
     override val userId: String,
     @field:JsonProperty(required = true)
-    override val creationTimestamp: Long,
+    val creationTimestamp: Long,
     @field:JsonProperty(required = true)
-    override val lastUpdateTimestamp: Long,
+    val lastUpdateTimestamp: Long,
     @field:JsonProperty(required = true)
     override val companyIds: Set<String>,
     @field:JsonProperty(required = true)
