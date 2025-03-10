@@ -30,6 +30,12 @@ describeIf(
   function (): void {
     const uniqueCompanyMarker = Date.now().toString();
     const nameOfCompanyAlpha = 'company-alpha-with-four-different-framework-types-' + uniqueCompanyMarker;
+    const expectedFrameworkDropdownItemsForAlpha = new Set<string>([
+      humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
+      humanizeStringOrNumber(DataTypeEnum.P2p),
+      humanizeStringOrNumber(DataTypeEnum.Lksg),
+      humanizeStringOrNumber(DataTypeEnum.Sfdr),
+    ]);
     let companyIdOfAlpha: string;
 
     let dataIdOfSupersededLksg2023ForAlpha: string;
@@ -38,7 +44,8 @@ describeIf(
     let companyIdOfBeta: string;
 
     const frameworkDropdownSelector = '[data-test="chooseFrameworkDropdown"]';
-    const dropdownItemsSelector = '[data-test="chooseFrameworkDropdown"] a';
+    const dropdownItemsSelector = '[data-test="chooseFrameworkList"] a';
+    const dropdownItemList = '[data-test="chooseFrameworkList"]';
 
     const nonExistingDataId = 'abcd123123123123123-non-existing';
     const nonExistingCompanyId = 'ABC-non-existing';
@@ -121,6 +128,30 @@ describeIf(
         .find('.p-dropdown-label')
         .contains(humanizeStringOrNumber(expectedChosenFramework));
       cy.get('table').should('exist');
+    }
+
+    /**
+     * Validates that the framework dropdown contains the expected framework options.
+     * @param expectedDropdownOptions The expected frameworks for the dropdown
+     */
+    function validateFrameworkDropdownOptions(expectedDropdownOptions: Set<string>): void {
+      // Click anywhere and assert that there is no currently open dropdown modal (fix for flakyness)
+      cy.get('body').click(0, 0);
+      cy.get(dropdownItemList).should('not.exist');
+
+      cy.get(frameworkDropdownSelector).click();
+      let optionsCounter = 0;
+      cy.get(dropdownItemsSelector).should('exist');
+      cy.get(`${dropdownItemsSelector}:contains("No available options")`).should('not.exist');
+      cy.get(dropdownItemsSelector).should('exist');
+      cy.get(dropdownItemsSelector).each((item) => {
+        expect(expectedDropdownOptions.has(item.text())).to.equal(true);
+        optionsCounter++;
+      });
+      cy.then(() => {
+        expect(expectedDropdownOptions.size).to.equal(optionsCounter);
+      });
+      cy.get(frameworkDropdownSelector).click({ force: true });
     }
 
     /**
@@ -331,7 +362,7 @@ describeIf(
       uploadCompanyBetaAndData();
     });
 
-    it.only('Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit', () => {
+    it('Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
       verifySearchResultTableExists();
@@ -343,6 +374,7 @@ describeIf(
       validateFrameworkSummaryPanel(DataTypeEnum.Lksg, 2, true);
 
       validateChosenFramework(DataTypeEnum.Lksg);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
     it(
@@ -352,6 +384,8 @@ describeIf(
         cy.ensureLoggedIn(uploader_name, uploader_pw);
         visitSearchPageWithQueryParamsAndClickOnFirstSearchResult(DataTypeEnum.P2p, nameOfCompanyAlpha);
 
+        cy.get('[data-test=toggleShowAll]').scrollIntoView();
+        cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
         validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
         validateFrameworkSummaryPanel(DataTypeEnum.P2p, 1, true);
 
@@ -370,21 +404,25 @@ describeIf(
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}`);
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.EutaxonomyFinancials);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.P2p);
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.P2p);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       selectFrameworkInDropdown(DataTypeEnum.Lksg);
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.Lksg);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
 
       clickBackButton();
 
       validateNoErrorMessagesAreShown();
       validateChosenFramework(DataTypeEnum.P2p);
+      validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
     it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
