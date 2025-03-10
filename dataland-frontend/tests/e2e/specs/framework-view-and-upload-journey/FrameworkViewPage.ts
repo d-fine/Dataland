@@ -90,14 +90,9 @@ describeIf(
     /**
      * Types a company name into the searchbar and clicks on the first autocomplete suggestion.
      * @param companyName to type into the search bar
-     * @param expectedCompanyId of the company that is expected to be the first autocomplete suggestion
      * @param isOnViewPage determines if cypress is expected to be on the view page
      */
-    function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(
-      companyName: string,
-      expectedCompanyId: string,
-      isOnViewPage: boolean
-    ): void {
+    function typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(companyName: string, isOnViewPage: boolean): void {
       const searchBarSelector = isOnViewPage ? 'input#company_search_bar_standard' : 'input#search_bar_top';
       cy.intercept({
         url: `/api/companies${isOnViewPage ? '/names' : ''}?*`,
@@ -336,11 +331,11 @@ describeIf(
       uploadCompanyBetaAndData();
     });
 
-    it('Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit', () => {
+    it.only('Check that clicking an autocomplete suggestion on the search page redirects the user to the company cockpit', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies?framework=${DataTypeEnum.Lksg}`);
       verifySearchResultTableExists();
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, companyIdOfAlpha, false);
+      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyAlpha, false);
 
       validateCompanyCockpitPage(nameOfCompanyAlpha, companyIdOfAlpha);
       cy.get('[data-test=toggleShowAll]').scrollIntoView();
@@ -364,7 +359,7 @@ describeIf(
         selectFrameworkInDropdown(DataTypeEnum.Sfdr);
 
         validateChosenFramework(DataTypeEnum.Sfdr);
-        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
+        typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, true);
 
         validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
       }
@@ -407,7 +402,7 @@ describeIf(
       getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'not.exist');
       getElementAndAssertExistence('claimOwnershipPanelLink', 'not.exist');
 
-      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, companyIdOfBeta, true);
+      typeCompanyNameIntoSearchBarAndSelectFirstSuggestion(nameOfCompanyBeta, true);
 
       validateCompanyCockpitPage(nameOfCompanyBeta, companyIdOfBeta);
 

@@ -383,7 +383,7 @@ class DocumentManagerTest(
     }
 
     @Test
-    fun `check that search filter, limit and offset are built correctly in a search request`() {
+    fun `check that search filter and limit and offset are built correctly in a search request`() {
         doReturn(listOf<DocumentMetaInfoEntity>())
             .whenever(mockDocumentMetaInfoRepository)
             .findByCompanyIdAndDocumentCategoryAndReportingPeriod(

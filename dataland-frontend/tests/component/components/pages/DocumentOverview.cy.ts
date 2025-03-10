@@ -74,11 +74,7 @@ describe('Component test for the Document Overview', () => {
    * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
    * @returns the mounted component
    */
-  function mountDocumentOverviewWithAuthentication(
-    isLoggedIn: boolean,
-    isMobile: boolean,
-    keycloakRoles?: string[]
-  ): Cypress.Chainable {
+  function mountDocumentOverviewWithAuthentication(isLoggedIn: boolean, keycloakRoles?: string[]): Cypress.Chainable {
     return getMountingFunction({
       keycloak: minimalKeycloakMock({
         authenticated: isLoggedIn,
@@ -95,7 +91,7 @@ describe('Component test for the Document Overview', () => {
   it('Check for all expected elements for a logged-in uploader-user', () => {
     const hasCompanyAtLeastOneOwner = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
+    mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
     let myPublicationDateToTest: string = '1900-02-26';
     if (mockFetchedDocuments[0].publicationDate) {
@@ -128,12 +124,12 @@ describe('Component test for the Document Overview', () => {
   it('Checks if filter function shows only results with selected DocumentCategory and if reset button resets filter to show all results', () => {
     const hasCompanyAtLeastOneOwner = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
+    mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
     const stringInMultiSelect = 'Annual Report';
     let numOfFilteredOptions = 0;
-    for (let i = 0; i < mockFetchedDocuments.length; i++) {
-      if (mockFetchedDocuments[i].documentCategory == 'AnnualReport') numOfFilteredOptions++;
+    for (const document of mockFetchedDocuments) {
+      if (document.documentCategory == 'AnnualReport') numOfFilteredOptions++;
     }
     const numOfAllMultiSelectOptions = Object.keys(DocumentMetaInfoDocumentCategoryEnum).length;
 
@@ -162,7 +158,7 @@ describe('Component test for the Document Overview', () => {
   it('Check if view details button opens DocumentMetaDataDialog', () => {
     const hasCompanyAtLeastOneOwner = true;
     mockRequestsOnMounted(hasCompanyAtLeastOneOwner);
-    mountDocumentOverviewWithAuthentication(true, false, [KEYCLOAK_ROLE_UPLOADER]);
+    mountDocumentOverviewWithAuthentication(true, [KEYCLOAK_ROLE_UPLOADER]);
     waitForRequestsOnMounted();
 
     cy.get("[data-test='documents-overview-table']").within(() => {

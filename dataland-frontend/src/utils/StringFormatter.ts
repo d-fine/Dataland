@@ -188,6 +188,6 @@ export function getPluralCategory(category: string): string {
  * @return A string containing the eventually shortened name
  */
 export function truncatedDocumentName(document: DocumentMetaInfoResponse): string {
-  const name = document.documentName || document.documentId;
+  const name = document.documentName ?? document.documentId;
   return name.length > 28 ? name.slice(0, 25) + '...' : name;
 }
