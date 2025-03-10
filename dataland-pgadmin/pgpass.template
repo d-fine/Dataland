@@ -6,3 +6,4 @@ document-manager-db:5432:*:document_manager:${DOCUMENT_MANAGER_DB_PASSWORD}
 qa-service-db:5432:*:qa_service:${QA_SERVICE_DB_PASSWORD}
 community-manager-db:5432:*:community_manager:${COMMUNITY_MANAGER_DB_PASSWORD}
 email-service-db:5432:*:email_service:${EMAIL_SERVICE_DB_PASSWORD}
+user-service-db:5432:*:user_service:${USER_SERVICE_DB_PASSWORD}
