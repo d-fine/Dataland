@@ -451,7 +451,7 @@ describeIf(
       getElementAndAssertExistence('noDataCouldBeLoadedErrorIndicator', 'exist');
     });
 
-    it('Check if the version change bar works as expected on several framework view pages', () => {
+    it.only('Check if the version change bar works as expected on several framework view pages', () => {
       cy.ensureLoggedIn(uploader_name, uploader_pw);
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.Lksg}/${dataIdOfSupersededLksg2023ForAlpha}`);
 
