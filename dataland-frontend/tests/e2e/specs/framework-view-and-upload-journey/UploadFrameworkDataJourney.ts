@@ -213,11 +213,11 @@ describe('As a user, I expect the dataset upload process to behave as I expect',
        */
       function checkIfDropDownSwitchRendersData(): void {
         cy.get('[data-test="chooseFrameworkDropdown"]').click();
-        cy.get("li:contains('EU Taxonomy Financials')").click();
+        cy.get('[data-test="chooseFrameworkDropdown"] :contains("EU Taxonomy Financials")').click();
         cy.get('td[data-cell-label="Fiscal Year End"]').should('be.visible');
 
         cy.get('[data-test="chooseFrameworkDropdown"]').click();
-        cy.get("li:contains('LkSG')").click();
+        cy.get('[data-test="chooseFrameworkDropdown"] :contains("LkSG")').click();
         cy.get('td[data-cell-label="Data Date"]').should('be.visible');
 
         cy.get('td[data-cell-label="Data Date"]').next('td').find('span').should('be.visible').contains('2022-07-30');
