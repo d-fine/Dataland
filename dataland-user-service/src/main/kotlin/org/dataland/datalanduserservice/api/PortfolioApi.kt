@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.dataland.datalanduserservice.model.Portfolio
+import org.dataland.datalanduserservice.model.PortfolioResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -40,7 +41,7 @@ interface PortfolioApi {
     @PreAuthorize(
         "hasRole('ROLE_USER')",
     )
-    fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<Portfolio>>
+    fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<PortfolioResponse>>
 
     /**
      * Get portfolio by portfolioId.
@@ -62,7 +63,7 @@ interface PortfolioApi {
     )
     fun getPortfolio(
         @PathVariable("portfolioId") portfolioId: String,
-    ): ResponseEntity<Portfolio>
+    ): ResponseEntity<PortfolioResponse>
 
     /**
      * Patch an existing portfolio by adding a new companyId to the list of companyIds.
@@ -86,7 +87,7 @@ interface PortfolioApi {
     fun patchPortfolio(
         @PathVariable("portfolioId") portfolioId: String,
         @PathVariable("companyId") companyId: String,
-    ): ResponseEntity<Portfolio>
+    ): ResponseEntity<PortfolioResponse>
 
     /**
      * Post a new portfolio.
@@ -108,7 +109,7 @@ interface PortfolioApi {
     )
     fun createPortfolio(
         @RequestBody(required = true) portfolio: Portfolio,
-    ): ResponseEntity<Portfolio>
+    ): ResponseEntity<PortfolioResponse>
 
     /**
      * Replace an existing portfolio.
@@ -132,7 +133,7 @@ interface PortfolioApi {
     fun replacePortfolio(
         @PathVariable(name = "portfolioId") portfolioId: String,
         @RequestBody(required = true) portfolio: Portfolio,
-    ): ResponseEntity<Portfolio>
+    ): ResponseEntity<PortfolioResponse>
 
     /**
      * Delete an existing portfolio.

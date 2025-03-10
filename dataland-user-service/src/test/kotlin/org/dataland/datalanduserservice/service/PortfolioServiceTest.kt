@@ -136,7 +136,6 @@ class PortfolioServiceTest {
         verify(portfolioRepository).save(portfolioEntityCaptor.capture())
 
         assertEquals(portfolioPayload.portfolioName, portfolioEntityCaptor.firstValue.portfolioName)
-        assertEquals(portfolioPayload.userId, portfolioEntityCaptor.firstValue.userId)
         assertEquals(portfolioPayload.companyIds, portfolioEntityCaptor.firstValue.companyIds)
         assertEquals(portfolioPayload.dataTypes, portfolioEntityCaptor.firstValue.dataTypes)
         assertEquals(
@@ -242,7 +241,6 @@ class PortfolioServiceTest {
     private fun PortfolioEntity.toPortfolioPayload() =
         PortfolioPayload(
             portfolioName = this.portfolioName,
-            userId = this.userId,
             companyIds = this.companyIds,
             dataTypes = this.dataTypes,
         )

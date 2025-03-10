@@ -6,6 +6,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.Portfolio
+import org.dataland.datalanduserservice.model.PortfolioResponse
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,13 +25,13 @@ class PortfolioController
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val portfolioService: PortfolioService,
     ) : PortfolioApi {
-        override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<Portfolio>> {
+        override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<PortfolioResponse>> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
             return ResponseEntity.ok(portfolioService.getAllPortfoliosForUser(userId, correlationId))
         }
 
-        override fun getPortfolio(portfolioId: String): ResponseEntity<Portfolio> {
+        override fun getPortfolio(portfolioId: String): ResponseEntity<PortfolioResponse> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
             return ResponseEntity.ok(portfolioService.getPortfolioForUser(userId, portfolioId, correlationId))
@@ -39,7 +40,7 @@ class PortfolioController
         override fun patchPortfolio(
             portfolioId: String,
             companyId: String,
-        ): ResponseEntity<Portfolio> {
+        ): ResponseEntity<PortfolioResponse> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
 
@@ -47,7 +48,7 @@ class PortfolioController
             return ResponseEntity.ok(portfolioService.addCompany(userId, portfolioId, companyId, correlationId))
         }
 
-        override fun createPortfolio(portfolio: Portfolio): ResponseEntity<Portfolio> {
+        override fun createPortfolio(portfolio: Portfolio): ResponseEntity<PortfolioResponse> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
 
@@ -58,7 +59,7 @@ class PortfolioController
         override fun replacePortfolio(
             portfolioId: String,
             portfolio: Portfolio,
-        ): ResponseEntity<Portfolio> {
+        ): ResponseEntity<PortfolioResponse> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
             if (!portfolioService.existsPortfolioForUser(userId, portfolioId, correlationId)) {
