@@ -1,10 +1,10 @@
-package org.dataland.userservice.service
+package org.dataland.datalanduserservice.service
 
-import org.dataland.userservice.entity.PortfolioEntity
-import org.dataland.userservice.exceptions.PortfolioNotFoundApiException
-import org.dataland.userservice.model.Portfolio
-import org.dataland.userservice.model.PortfolioResponse
-import org.dataland.userservice.repository.PortfolioRepository
+import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
+import org.dataland.datalanduserservice.model.Portfolio
+import org.dataland.datalanduserservice.model.PortfolioResponse
+import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

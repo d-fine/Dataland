@@ -1,4 +1,4 @@
-package org.dataland.userservice.model
+package org.dataland.datalanduserservice.model
 
 /**
  * Interface for the Portfolio API models

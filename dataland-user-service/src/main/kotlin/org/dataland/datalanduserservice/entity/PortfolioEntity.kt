@@ -1,4 +1,4 @@
-package org.dataland.userservice.entity
+package org.dataland.datalanduserservice.entity
 
 import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
-import org.dataland.userservice.model.PortfolioResponse
+import org.dataland.datalanduserservice.model.PortfolioResponse
 import java.util.UUID
 
 /**

@@ -1,10 +1,13 @@
-package org.dataland.userservice.controller
+package org.dataland.datalanduserservice.controller
 
+import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
+import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalanduserservice.api.PortfolioApi
+import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
+import org.dataland.datalanduserservice.model.Portfolio
+import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
-import org.dataland.userservice.api.PortfolioApi
-import org.dataland.userservice.exceptions.PortfolioNotFoundApiException
-import org.dataland.userservice.model.Portfolio
-import org.dataland.userservice.service.PortfolioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -18,6 +21,7 @@ import java.util.UUID
 class PortfolioController
     @Autowired
     constructor(
+        private val companyDataControllerApi: CompanyDataControllerApi,
         private val portfolioService: PortfolioService,
     ) : PortfolioApi {
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<Portfolio>> {
@@ -38,12 +42,16 @@ class PortfolioController
         ): ResponseEntity<Portfolio> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
+
+            isCompanyIdValid(companyId)
             return ResponseEntity.ok(portfolioService.addCompany(userId, portfolioId, companyId, correlationId))
         }
 
         override fun createPortfolio(portfolio: Portfolio): ResponseEntity<Portfolio> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
+
+            portfolio.companyIds.forEach { isCompanyIdValid(it) }
             return ResponseEntity(portfolioService.createPortfolio(userId, portfolio, correlationId), HttpStatus.CREATED)
         }
 
@@ -56,6 +64,8 @@ class PortfolioController
             if (!portfolioService.existsPortfolioForUser(userId, portfolioId, correlationId)) {
                 throw PortfolioNotFoundApiException(portfolioId, correlationId)
             }
+
+            portfolio.companyIds.forEach { isCompanyIdValid(it) }
             return ResponseEntity.ok(portfolioService.replacePortfolio(userId, portfolio, portfolioId, correlationId))
         }
 
@@ -78,5 +88,26 @@ class PortfolioController
                 portfolioService.removeCompanyFromPortfolio(userId, portfolioId, companyId, correlationId),
                 HttpStatus.NO_CONTENT,
             )
+        }
+
+        /**
+         * Checks if passed companyId is valid by calling respective HEAD endpoint in backend companyDataController
+         * @param companyId
+         * @return returns true if companyId is valid
+         */
+        private fun isCompanyIdValid(companyId: String): Boolean {
+            try {
+                companyDataControllerApi.isCompanyIdValid(companyId)
+                return true
+            } catch (exception: ClientException) {
+                if (exception.statusCode == HttpStatus.NOT_FOUND.value()) {
+                    throw ResourceNotFoundApiException(
+                        summary = "Company with CompanyId $companyId not found.",
+                        message = "Company with CompanyId $companyId not found.",
+                    )
+                } else {
+                    throw exception
+                }
+            }
         }
     }

@@ -146,10 +146,10 @@ tasks.register("generateUserServiceClient", org.openapitools.generator.gradle.pl
     description = "Task to generate clients for the user service."
     group = "clients"
     val userServiceClientDestinationPackage = "org.dataland.userService.openApiClient"
-    input = project.file("${project.rootDir}/dataland-document-manager/userServiceOpenApi.json").path
+    input = project.file("${project.rootDir}/dataland-user-service/userServiceOpenApi.json").path
     outputDir.set(
         layout.buildDirectory
-            .dir("clients/document-manager")
+            .dir("clients/user-service")
             .get()
             .toString(),
     )

@@ -1,10 +1,9 @@
 package org.dataland.datalanduserservice.service
 
-import org.dataland.userservice.entity.PortfolioEntity
-import org.dataland.userservice.exceptions.PortfolioNotFoundApiException
-import org.dataland.userservice.model.PortfolioPayload
-import org.dataland.userservice.repository.PortfolioRepository
-import org.dataland.userservice.service.PortfolioService
+import org.dataland.datalanduserservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
+import org.dataland.datalanduserservice.model.PortfolioPayload
+import org.dataland.datalanduserservice.repository.PortfolioRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach

@@ -1,4 +1,4 @@
-package org.dataland.userservice.model
+package org.dataland.datalanduserservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

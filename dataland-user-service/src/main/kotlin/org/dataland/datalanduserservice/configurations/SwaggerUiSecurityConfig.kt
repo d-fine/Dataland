@@ -1,4 +1,4 @@
-package org.dataland.userservice.configurations
+package org.dataland.datalanduserservice.configurations
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

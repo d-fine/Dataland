@@ -1,4 +1,4 @@
-package org.dataland.userservice.configurations
+package org.dataland.datalanduserservice.configurations
 
 import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean

@@ -1,10 +1,10 @@
-package org.dataland.userservice.api
+package org.dataland.datalanduserservice.api
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.userservice.model.Portfolio
+import org.dataland.datalanduserservice.model.Portfolio
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping

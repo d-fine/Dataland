@@ -1,4 +1,4 @@
-package org.dataland.userservice.exceptions
+package org.dataland.datalanduserservice.exceptions
 
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 

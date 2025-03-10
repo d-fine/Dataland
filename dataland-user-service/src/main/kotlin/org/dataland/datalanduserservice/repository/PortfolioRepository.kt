@@ -1,6 +1,6 @@
-package org.dataland.userservice.repository
+package org.dataland.datalanduserservice.repository
 
-import org.dataland.userservice.entity.PortfolioEntity
+import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
