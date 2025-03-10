@@ -9,7 +9,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
-import org.dataland.userservice.model.Portfolio
 import org.dataland.userservice.model.PortfolioResponse
 import java.util.UUID
 
@@ -30,17 +29,17 @@ data class PortfolioEntity(
     @CollectionTable(name = "company_ids", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "company_ids")
     @OrderBy("asc")
-    val companyIds: Set<String>,
+    val companyIds: MutableSet<String>,
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "data_types", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "data_types")
     @OrderBy("asc")
-    val dataTypes: Set<String>,
+    val dataTypes: MutableSet<String>,
 ) {
     /**
      * create PortfolioResponse from entity
      */
-    fun toPortfolioResponse(): Portfolio =
+    fun toPortfolioResponse(): PortfolioResponse =
         PortfolioResponse(
             portfolioId.toString(),
             portfolioName,

@@ -106,7 +106,7 @@ interface PortfolioApi {
     @PreAuthorize(
         "hasRole('ROLE_USER')",
     )
-    fun postPortfolio(
+    fun createPortfolio(
         @RequestBody(required = true) portfolio: Portfolio,
     ): ResponseEntity<Portfolio>
 

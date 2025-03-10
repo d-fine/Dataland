@@ -2,6 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Dataland User Service API documentation",
+    "description": "Manage User Portfolios and more",
     "version": "1.0.0"
   },
   "servers": [
@@ -20,6 +21,363 @@
     }
   ],
   "paths": {
+    "/portfolios/{portfolioId}/": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get portfolio by portfolioId.",
+        "operationId": "getPortfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved portfolios.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Replace an existing portfolio.",
+        "description": "Replace the existing portfolio with given portfolioId entirely",
+        "operationId": "replacePortfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Portfolio"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully replaced existing portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Delete an existing portfolio.",
+        "description": "Delete the portfolio with given portfolioId entirely",
+        "operationId": "deletePortfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted existing portfolio.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/": {
+      "get": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Get all portfolios for the currently logged-in user.",
+        "description": "All portfolios for the currently logged-in user are retrieved.",
+        "operationId": "getAllPortfoliosForCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all portfolios.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Portfolio"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Post a new portfolio.",
+        "operationId": "createPortfolio",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Portfolio"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created a new portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/portfolios/{portfolioId}/{companyId}": {
+      "patch": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Add a new companyId to an existing portfolio.",
+        "description": "Add a new companyId to the list of companyIds for an existing companyId.",
+        "operationId": "patchPortfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated portfolio.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
     "/actuator": {
       "get": {
         "tags": [
@@ -190,10 +548,113 @@
           }
         }
       }
+    },
+    "/portfolios/{portfolioId}/{companyId}/": {
+      "delete": {
+        "tags": [
+          "portfolio-controller"
+        ],
+        "summary": "Remove a company from an existing portfolio.",
+        "description": "Remove the company with companyId from the portfolio with given portfolioId.",
+        "operationId": "removeCompanyFromPortfolio",
+        "parameters": [
+          {
+            "name": "portfolioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully removed company from existing portfolio.",
+            "content": {}
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "Portfolio": {
+        "required": [
+          "companyIds",
+          "creationTimestamp",
+          "dataTypes",
+          "lastUpdateTimestamp",
+          "portfolioName",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "portfolioName": {
+            "type": "string"
+          },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "userId": {
+            "type": "string"
+          },
+          "creationTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "lastUpdateTimestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
       "Link": {
         "type": "object",
         "properties": {

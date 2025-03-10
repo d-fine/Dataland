@@ -21,5 +21,21 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     fun getPortfolioByUserIdAndPortfolioId(
         userId: String,
         portfolioId: UUID,
-    ): PortfolioEntity
+    ): PortfolioEntity?
+
+    /**
+     * Delete specific portfolio by portfolioId for userId
+     */
+    fun deleteByUserIdAndPortfolioId(
+        userId: String,
+        portfolioId: UUID,
+    )
+
+    /**
+     * Checks if specific portfolio by portfolioId for userId exists
+     */
+    fun existsByUserIdAndPortfolioId(
+        userId: String,
+        portfolioId: UUID,
+    ): Boolean
 }
