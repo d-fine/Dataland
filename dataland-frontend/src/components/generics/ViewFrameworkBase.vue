@@ -259,7 +259,7 @@ export default defineComponent({
   created() {
     this.chosenDataTypeInDropdown = this.dataType ?? '';
     this.dataId = this.route.params.dataId;
-    void this.getDataTypesForDropdown();
+    void this.getDataMetaData();
     if (this.dataId) {
       this.getMetadataForDataset();
     } else {
@@ -340,15 +340,16 @@ export default defineComponent({
     },
 
     /**
-     * Retrieves all dataTypes available for current Company and populates dropdown menu
+     * Retrieves all data meta data available for current company
      */
-    async getDataTypesForDropdown() {
+    async getDataMetaData() {
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
         this.dataMetaInformation = apiResponse.data;
       } catch (error) {
+        this.isDataProcessedSuccessfully = false;
         console.log(error);
       }
     },
@@ -385,14 +386,13 @@ export default defineComponent({
      * Get available metadata in case that data cannot be received due to insufficient access rights for private data.
      */
     getMetadataForDataset() {
-      try {
+      if (this.dataMetaInformation) {
         this.activeDataForCurrentCompanyAndFramework = this.dataMetaInformation.map((metaInfo) => {
           return { metaInfo: metaInfo, data: {} } as DataAndMetaInformation<VsmeData>;
         });
         this.isDataProcessedSuccessfully = true;
-      } catch (error) {
+      } else {
         this.isDataProcessedSuccessfully = false;
-        console.log(error);
       }
     },
 
@@ -488,7 +488,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void this.getDataTypesForDropdown();
+      void this.getDataMetaData();
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     },
     isReviewableByCurrentUser() {
