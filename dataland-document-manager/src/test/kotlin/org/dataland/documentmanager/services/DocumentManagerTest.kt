@@ -352,7 +352,7 @@ class DocumentManagerTest(
     fun `check that retrieval of document metainfo works for an existing document id`() {
         val response1 = dummyDocumentUploadResponse
         setupDocumentIdToBeFound(response1.documentId)
-        val response2 = documentManager.retrieveDocumentMetaInfo(response1.documentId)
+        val response2 = documentManager.retrieveDocumentMetaInfo(response1.documentId).toDocumentMetaInfoResponse()
         assertEquals(response1, response2)
     }
 
