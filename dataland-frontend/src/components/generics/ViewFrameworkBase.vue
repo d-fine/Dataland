@@ -18,9 +18,7 @@
           <div class="flex">
             <ChangeFrameworkDropdown
               v-if="!isReviewableByCurrentUser"
-              :list-of-meta-info="
-                activeDataForCurrentCompanyAndFramework.map((dataAndMetaData) => dataAndMetaData.metaInfo)
-              "
+              :list-of-meta-info="dataMetaInformation"
               :data-type="dataType"
               :company-i-d="companyID"
             />
@@ -126,7 +124,6 @@ import {
   ExportFileType,
   type VsmeData,
 } from '@clients/backend';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -149,9 +146,6 @@ import { KEYCLOAK_ROLE_REVIEWER, KEYCLOAK_ROLE_UPLOADER } from '@/utils/Keycloak
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import { AxiosError } from 'axios';
 import { useRoute } from 'vue-router';
-import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants.ts';
-
-type DropdownOption = { label: string; value: string };
 
 export default defineComponent({
   name: 'ViewFrameworkBase',
@@ -201,7 +195,7 @@ export default defineComponent({
     return {
       fetchedCompanyInformation: {} as CompanyInformation,
       chosenDataTypeInDropdown: '',
-      dataTypesInDropdown: [] as Array<DropdownOption>,
+      dataMetaInformation: [] as Array<DataMetaInformation>,
       windowScrollHandler: (): void => {
         this.handleScroll();
       },
@@ -267,7 +261,7 @@ export default defineComponent({
     this.dataId = this.route.params.dataId;
     void this.getDataTypesForDropdown();
     if (this.dataId) {
-      void this.getMetadataForDataset();
+      this.getMetadataForDataset();
     } else {
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     }
@@ -353,17 +347,7 @@ export default defineComponent({
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
         const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const metadata = apiResponse.data;
-        const availableDataTypes = new Set(metadata.map((metaInfo) => metaInfo.dataType));
-        availableDataTypes.forEach((dataType) => {
-          if (FRAMEWORKS_WITH_VIEW_PAGE.includes(dataType)) {
-            this.dataTypesInDropdown.push({
-              label: humanizeStringOrNumber(dataType),
-              value: dataType,
-            });
-          }
-        });
-        this.dataTypesInDropdown.sort((a, b) => a.label.localeCompare(b.label));
+        this.dataMetaInformation = apiResponse.data;
       } catch (error) {
         console.log(error);
       }
@@ -389,7 +373,7 @@ export default defineComponent({
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         if (error instanceof AxiosError && error?.status == 403 && this.dataType == DataTypeEnum.Vsme) {
-          await this.getMetadataForDataset();
+          this.getMetadataForDataset();
         } else {
           this.isDataProcessedSuccessfully = false;
           console.error(error);
@@ -400,13 +384,9 @@ export default defineComponent({
     /**
      * Get available metadata in case that data cannot be received due to insufficient access rights for private data.
      */
-    async getMetadataForDataset() {
+    getMetadataForDataset() {
       try {
-        const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
-        const metadataControllerApi = apiClientProvider.backendClients.metaDataController;
-        const apiResponse = await metadataControllerApi.getListOfDataMetaInfo(this.companyID);
-        const metaInformation: DataMetaInformation[] = apiResponse.data;
-        this.activeDataForCurrentCompanyAndFramework = metaInformation.map((metaInfo) => {
+        this.activeDataForCurrentCompanyAndFramework = this.dataMetaInformation.map((metaInfo) => {
           return { metaInfo: metaInfo, data: {} } as DataAndMetaInformation<VsmeData>;
         });
         this.isDataProcessedSuccessfully = true;
@@ -508,6 +488,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
+      void this.getDataTypesForDropdown();
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     },
     isReviewableByCurrentUser() {

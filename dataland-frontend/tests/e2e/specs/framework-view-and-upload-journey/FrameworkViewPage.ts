@@ -35,6 +35,7 @@ describeIf(
       humanizeStringOrNumber(DataTypeEnum.P2p),
       humanizeStringOrNumber(DataTypeEnum.Lksg),
       humanizeStringOrNumber(DataTypeEnum.Sfdr),
+      'Documents',
     ]);
     let companyIdOfAlpha: string;
 
@@ -139,7 +140,7 @@ describeIf(
       cy.get('body').click(0, 0);
       cy.get(dropdownItemList).should('not.exist');
 
-      cy.get(frameworkDropdownSelector).click();
+      cy.get(frameworkDropdownSelector + ' .p-dropdown-label').click();
       let optionsCounter = 0;
       cy.get(dropdownItemsSelector).should('exist');
       cy.get(`${dropdownItemsSelector}:contains("No available options")`).should('not.exist');
@@ -151,7 +152,7 @@ describeIf(
       cy.then(() => {
         expect(expectedDropdownOptions.size).to.equal(optionsCounter);
       });
-      cy.get(frameworkDropdownSelector).click({ force: true });
+      cy.get(frameworkDropdownSelector + ' .p-dropdown-label').click({ force: true });
     }
 
     /**
