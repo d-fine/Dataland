@@ -70,7 +70,6 @@ describe('Component test for the Document Overview', () => {
   /**
    * Mounts the document overview page with a specific authentication
    * @param isLoggedIn determines if the mount shall happen from a logged-in users perspective
-   * @param isMobile determines if the mount shall happen from a mobie-users perspective
    * @param keycloakRoles defines the keycloak roles of the user if the mount happens from a logged-in users perspective
    * @returns the mounted component
    */
