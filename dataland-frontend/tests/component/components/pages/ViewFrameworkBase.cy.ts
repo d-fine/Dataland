@@ -24,7 +24,7 @@ describe('Component test for ViewFrameworkBase', () => {
         companyID: 'mock-company-id',
       },
     }).then(({ component }) => {
-      cy.wait('@metaDataFetch').then(() => {
+      cy.wait('@dataFetch').then(() => {
         assert(component.isDataProcessedSuccessfully);
         expect(component.dataMetaInformation.length).to.equal(9);
       });
