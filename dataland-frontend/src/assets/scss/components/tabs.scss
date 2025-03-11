@@ -1,7 +1,6 @@
 @use '../colors';
 @use '../variables';
 
-
 .p-tabs {
   padding: 0;
   .p-tablist-tab-list {
@@ -38,63 +37,9 @@
         color: colors.$main-color;
       }
 
-
       &:hover {
         border-color: colors.$main-color;
       }
     }
-
-  }
-
-}
-
-
-
-/*
-
-
-
-.p-tabview {
-  padding: 0;
-  .p-tabview-nav {
-    background: variables.$white;
-    li {
-      margin-right: 0;
-      .p-tabview-nav-link {
-        border-bottom: 2px solid variables.$white;
-        background: variables.$white;
-        color: variables.$gray;
-        padding: 1.25rem 0;
-        margin: 0 1.25rem;
-        font-weight: 700;
-        transition: box-shadow 0.2s;
-      }
-      &:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
-        background: variables.$white;
-        border-color: variables.$gray-light;
-        color: variables.$gray;
-      }
-      &.p-highlight .p-tabview-nav-link {
-        background: variables.$white;
-        border-color: colors.$main-color;
-        color: colors.$main-color;
-      }
-    }
-  }
-  .p-tabview-nav-btn.p-link {
-    background: variables.$white;
-    color: colors.$main-color;
-    width: 3rem;
-    box-shadow:
-      0 3px 1px -2px rgba(0, 0, 0, 0.2),
-      0 2px 2px 0 rgba(0, 0, 0, 0.14),
-      0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    border-radius: 0;
-  }
-  .p-tabview-panels {
-    padding: 0;
-    margin: 0;
-    border: 0 none;
   }
 }
-*/
