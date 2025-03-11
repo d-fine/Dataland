@@ -426,7 +426,7 @@ describeIf(
       validateFrameworkDropdownOptions(expectedFrameworkDropdownItemsForAlpha);
     });
 
-    it.only("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
+    it("Check that invalid data ID, reporting period or company ID in URL don't break any user flow on the view-page", () => {
       cy.ensureLoggedIn();
       cy.visit(`/companies/${companyIdOfAlpha}/frameworks/${DataTypeEnum.EutaxonomyFinancials}/${nonExistingDataId}`);
 
