@@ -1,6 +1,7 @@
 package org.dataland.datalanduserservice.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 
 /**
  * --- API model ---
@@ -20,5 +21,5 @@ data class PortfolioResponse(
     @field:JsonProperty(required = true)
     override val companyIds: Set<String>,
     @field:JsonProperty(required = true)
-    override val dataTypes: Set<String>,
+    override val dataTypes: Set<DataTypeEnum>,
 ) : Portfolio

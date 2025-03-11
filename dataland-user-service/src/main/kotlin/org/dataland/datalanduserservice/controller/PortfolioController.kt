@@ -5,7 +5,7 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
-import org.dataland.datalanduserservice.model.Portfolio
+import org.dataland.datalanduserservice.model.PortfolioPayload
 import org.dataland.datalanduserservice.model.PortfolioResponse
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -48,7 +48,7 @@ class PortfolioController
             return ResponseEntity.ok(portfolioService.addCompany(userId, portfolioId, companyId, correlationId))
         }
 
-        override fun createPortfolio(portfolio: Portfolio): ResponseEntity<PortfolioResponse> {
+        override fun createPortfolio(portfolio: PortfolioPayload): ResponseEntity<PortfolioResponse> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
 
@@ -58,7 +58,7 @@ class PortfolioController
 
         override fun replacePortfolio(
             portfolioId: String,
-            portfolio: Portfolio,
+            portfolio: PortfolioPayload,
         ): ResponseEntity<PortfolioResponse> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()

@@ -1,5 +1,6 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.PortfolioPayload
@@ -25,7 +26,7 @@ import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PortfolioServiceTest {
-    private val portfolioRepository = mock<PortfolioRepository>()
+    private val mockPortfolioRepository = mock<PortfolioRepository>()
     private lateinit var portfolioService: PortfolioService
 
     private val dummyPortfolioId = UUID.randomUUID()
@@ -39,18 +40,18 @@ class PortfolioServiceTest {
 
     @BeforeEach
     fun setup() {
-        reset(portfolioRepository)
+        reset(mockPortfolioRepository)
         doAnswer { invocation -> invocation.arguments[0] as PortfolioEntity }
-            .whenever(portfolioRepository)
+            .whenever(mockPortfolioRepository)
             .save(any<PortfolioEntity>())
 
-        portfolioService = PortfolioService(portfolioRepository)
+        portfolioService = PortfolioService(mockPortfolioRepository)
     }
 
     @ParameterizedTest
     @ValueSource(booleans = [true, false])
     fun `verify that existsPortfolioForUser returns the expected values`(boolean: Boolean) {
-        doReturn(boolean).whenever(portfolioRepository).existsByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+        doReturn(boolean).whenever(mockPortfolioRepository).existsByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
         assertEquals(
             boolean,
             portfolioService
@@ -61,7 +62,7 @@ class PortfolioServiceTest {
     @Test
     fun `verify that retrieving all portfolios for dummyUser1 yields correct results`() {
         doReturn(listOf(dummyPortfolioEntity1, dummyPortfolioEntity2))
-            .whenever(portfolioRepository)
+            .whenever(mockPortfolioRepository)
             .getAllByUserId(dummyUserId)
         assertEquals(2, portfolioService.getAllPortfoliosForUser(dummyUserId, dummyCorrelationId).size)
         assertEquals(
@@ -75,17 +76,21 @@ class PortfolioServiceTest {
     @Test
     fun `verify that retrieving portfolio by Id for dummyUser yields correct results`() {
         doReturn(dummyPortfolioEntity1)
-            .whenever(portfolioRepository)
+            .whenever(mockPortfolioRepository)
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioEntity1.portfolioId)
         assertEquals(
             dummyPortfolioEntity1.toPortfolioResponse(),
-            portfolioService.getPortfolioForUser(dummyUserId, dummyPortfolioEntity1.portfolioId.toString(), dummyCorrelationId),
+            portfolioService.getPortfolioForUser(
+                dummyUserId,
+                dummyPortfolioEntity1.portfolioId.toString(),
+                dummyCorrelationId,
+            ),
         )
     }
 
     @Test
     fun `verify that service throws PortfolioNotFoundApiException if portfolio cannot be found for user`() {
-        doReturn(null).whenever(portfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+        doReturn(null).whenever(mockPortfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioService.getPortfolioForUser(
@@ -98,28 +103,24 @@ class PortfolioServiceTest {
 
     @Test
     fun `test that adding a company to an existing portfolio works as expected`() {
-        val expectedResponse =
-            dummyPortfolioEntity1.copy(companyIds = mutableSetOf(dummyCompanyId)).toPortfolioResponse()
-
         doReturn(dummyPortfolioEntity1)
-            .whenever(portfolioRepository)
+            .whenever(mockPortfolioRepository)
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioEntity1.portfolioId)
 
-        assertEquals(
-            expectedResponse,
-            portfolioService
-                .addCompany(
-                    dummyUserId,
-                    dummyPortfolioEntity1.portfolioId.toString(),
-                    dummyCompanyId,
-                    dummyCorrelationId,
-                ),
-        )
+        val portfolioResponse =
+            portfolioService.addCompany(
+                dummyUserId,
+                dummyPortfolioEntity1.portfolioId.toString(),
+                dummyCompanyId,
+                dummyCorrelationId,
+            )
+
+        assertEquals(mutableSetOf(dummyCompanyId), portfolioResponse.companyIds)
     }
 
     @Test
     fun `test that adding a company to a non existing portfolio throws a PortfolioNotFoundApiException`() {
-        doReturn(null).whenever(portfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+        doReturn(null).whenever(mockPortfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioService.addCompany(dummyUserId, dummyPortfolioId.toString(), dummyCompanyId, dummyCorrelationId)
@@ -133,7 +134,7 @@ class PortfolioServiceTest {
         val portfolioResponse =
             portfolioService.createPortfolio(dummyUserId, portfolioPayload, dummyCorrelationId)
 
-        verify(portfolioRepository).save(portfolioEntityCaptor.capture())
+        verify(mockPortfolioRepository).save(portfolioEntityCaptor.capture())
 
         assertEquals(portfolioPayload.portfolioName, portfolioEntityCaptor.firstValue.portfolioName)
         assertEquals(portfolioPayload.companyIds, portfolioEntityCaptor.firstValue.companyIds)
@@ -149,7 +150,7 @@ class PortfolioServiceTest {
         val portfolioEntityCaptor = argumentCaptor<PortfolioEntity>()
 
         doReturn(dummyPortfolioEntity1)
-            .whenever(portfolioRepository)
+            .whenever(mockPortfolioRepository)
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioEntity1.portfolioId)
 
         val replacingPortfolioResponse =
@@ -160,7 +161,7 @@ class PortfolioServiceTest {
                 dummyCorrelationId,
             )
 
-        verify(portfolioRepository).save(portfolioEntityCaptor.capture())
+        verify(mockPortfolioRepository).save(portfolioEntityCaptor.capture())
 
         assertEquals(dummyPortfolioEntity1.portfolioId.toString(), replacingPortfolioResponse.portfolioId)
         assertEquals(dummyPortfolioEntity1.creationTimestamp, replacingPortfolioResponse.creationTimestamp)
@@ -173,7 +174,7 @@ class PortfolioServiceTest {
 
     @Test
     fun `test that attempting to replace a non existing portfolio throws a PortfolioNotFoundApiException`() {
-        doReturn(null).whenever(portfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+        doReturn(null).whenever(mockPortfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioService.replacePortfolio(
@@ -188,7 +189,7 @@ class PortfolioServiceTest {
     @Test
     fun `test that removing a company from a portfolio works as expected`() {
         doReturn(dummyPortfolioEntity2)
-            .whenever(portfolioRepository)
+            .whenever(mockPortfolioRepository)
             .getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioEntity2.portfolioId)
 
         portfolioService.removeCompanyFromPortfolio(
@@ -204,7 +205,7 @@ class PortfolioServiceTest {
 
     @Test
     fun `test that removing a company from a non existing portfolio throws a PortfolioNotFoundApiException`() {
-        doReturn(null).whenever(portfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
+        doReturn(null).whenever(mockPortfolioRepository).getPortfolioByUserIdAndPortfolioId(dummyUserId, dummyPortfolioId)
 
         assertThrows<PortfolioNotFoundApiException> {
             portfolioService.removeCompanyFromPortfolio(
@@ -224,7 +225,7 @@ class PortfolioServiceTest {
         portfolioName: String,
         userId: String,
         companyIds: Set<String>? = null,
-        dataTypes: Set<String>? = null,
+        dataTypes: Set<DataTypeEnum>? = null,
     ) = PortfolioEntity(
         portfolioId = portfolioId ?: UUID.randomUUID(),
         portfolioName = portfolioName,

@@ -4,7 +4,8 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
-import org.dataland.datalanduserservice.model.Portfolio
+import jakarta.validation.Valid
+import org.dataland.datalanduserservice.model.PortfolioPayload
 import org.dataland.datalanduserservice.model.PortfolioResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -108,7 +109,7 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun createPortfolio(
-        @RequestBody(required = true) portfolio: Portfolio,
+        @Valid @RequestBody(required = true) portfolio: PortfolioPayload,
     ): ResponseEntity<PortfolioResponse>
 
     /**
@@ -132,7 +133,7 @@ interface PortfolioApi {
     )
     fun replacePortfolio(
         @PathVariable(name = "portfolioId") portfolioId: String,
-        @RequestBody(required = true) portfolio: Portfolio,
+        @Valid @RequestBody(required = true) portfolio: PortfolioPayload,
     ): ResponseEntity<PortfolioResponse>
 
     /**

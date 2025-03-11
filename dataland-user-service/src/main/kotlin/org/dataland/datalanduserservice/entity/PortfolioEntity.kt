@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.entity
 
 import jakarta.persistence.CollectionTable
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
@@ -10,6 +11,8 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalanduserservice.converter.DataTypeEnumConverter
 import org.dataland.datalanduserservice.model.PortfolioResponse
 import java.util.UUID
 
@@ -20,10 +23,7 @@ import java.util.UUID
 @Table(
     name = "portfolios",
     uniqueConstraints = [
-        UniqueConstraint(
-            name = "unique_portfolio_name_per_user",
-            columnNames = ["user_id", "portfolio_name"],
-        ),
+        UniqueConstraint(name = "unique_portfolio_name_per_user", columnNames = ["user_id", "portfolio_name"]),
     ],
 )
 data class PortfolioEntity(
@@ -45,7 +45,8 @@ data class PortfolioEntity(
     @CollectionTable(name = "data_types", joinColumns = [JoinColumn(name = "portfolio_id")])
     @Column(name = "data_types")
     @OrderBy("asc")
-    val dataTypes: MutableSet<String>,
+    @Convert(converter = DataTypeEnumConverter::class)
+    val dataTypes: MutableSet<DataTypeEnum>,
 ) {
     /**
      * create PortfolioResponse from entity
