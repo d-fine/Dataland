@@ -117,13 +117,7 @@ import { computed, defineComponent, inject, type PropType, ref } from 'vue';
 
 import TheFooter from '@/components/generics/TheFooter.vue';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
-import {
-  type CompanyInformation,
-  type DataMetaInformation,
-  DataTypeEnum,
-  ExportFileType,
-  type VsmeData,
-} from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, ExportFileType } from '@clients/backend';
 
 import SimpleReportingPeriodSelectorDialog from '@/components/general/SimpleReportingPeriodSelectorDialog.vue';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -256,10 +250,11 @@ export default defineComponent({
       return map;
     },
   },
-  created() {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  async created() {
     this.chosenDataTypeInDropdown = this.dataType ?? '';
     this.dataId = this.route.params.dataId;
-    void this.getDataMetaData();
+    await this.getDataMetaData();
     if (this.dataId) {
       this.getMetadataForDataset();
     } else {
@@ -374,6 +369,7 @@ export default defineComponent({
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         if (error instanceof AxiosError && error?.status == 403 && this.dataType == DataTypeEnum.Vsme) {
+          await this.getDataMetaData();
           this.getMetadataForDataset();
         } else {
           this.isDataProcessedSuccessfully = false;
@@ -388,7 +384,7 @@ export default defineComponent({
     getMetadataForDataset() {
       if (this.dataMetaInformation) {
         this.activeDataForCurrentCompanyAndFramework = this.dataMetaInformation.map((metaInfo) => {
-          return { metaInfo: metaInfo, data: {} } as DataAndMetaInformation<VsmeData>;
+          return { metaInfo: metaInfo, data: {} };
         });
         this.isDataProcessedSuccessfully = true;
       } else {
