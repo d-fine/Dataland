@@ -342,7 +342,7 @@
           }
         ],
         "responses": {
-          "200": {
+           "200": {
             "description": "The specified user has the company role."
           },
           "404": {

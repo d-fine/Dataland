@@ -18,7 +18,7 @@
           <div class="flex">
             <ChangeFrameworkDropdown
               v-if="!isReviewableByCurrentUser"
-              :list-of-meta-info="dataMetaInformation"
+              :data-meta-information="dataMetaInformation"
               :data-type="dataType"
               :company-i-d="companyID"
             />
@@ -250,14 +250,16 @@ export default defineComponent({
       return map;
     },
   },
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  async created() {
+
+  created() {
     this.chosenDataTypeInDropdown = this.dataType ?? '';
     this.dataId = this.route.params.dataId;
-    await this.getDataMetaData();
     if (this.dataId) {
-      this.getMetadataForDataset();
+      void this.getDataMetaData().then(() => {
+        this.setActiveDataForCurrentCompanyAndFramework();
+      });
     } else {
+      void this.getDataMetaData();
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     }
     void this.setViewPageAttributesForUser();
@@ -370,7 +372,7 @@ export default defineComponent({
       } catch (error) {
         if (error instanceof AxiosError && error?.status == 403 && this.dataType == DataTypeEnum.Vsme) {
           await this.getDataMetaData();
-          this.getMetadataForDataset();
+          this.setActiveDataForCurrentCompanyAndFramework();
         } else {
           this.isDataProcessedSuccessfully = false;
           console.error(error);
@@ -381,7 +383,7 @@ export default defineComponent({
     /**
      * Get available metadata in case that data cannot be received due to insufficient access rights for private data.
      */
-    getMetadataForDataset() {
+    setActiveDataForCurrentCompanyAndFramework() {
       if (this.dataMetaInformation) {
         this.activeDataForCurrentCompanyAndFramework = this.dataMetaInformation.map((metaInfo) => {
           return { metaInfo: metaInfo, data: {} };
