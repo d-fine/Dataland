@@ -1,5 +1,6 @@
 package org.dataland.datalanduserservice.service
 
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalanduserservice.entity.PortfolioEntity
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.Portfolio
@@ -138,8 +139,6 @@ class PortfolioService
             companyId: String,
             correlationId: String,
         ) {
-            // TODO: Ensure that removing last company is not possible! Write test for this.
-
             logger.info(
                 "Remove company with companyId: $companyId from portfolio with portfolioId: $portfolioId for user" +
                     " with userId: $userId. CorrelationId: $correlationId.",
@@ -147,6 +146,12 @@ class PortfolioService
             val portfolio =
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
                     ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
+            if (portfolio.companyIds.size == 1) {
+                throw InvalidInputApiException(
+                    summary = "Removing the last company is not permitted.",
+                    message = "Removing the last company from a portfolio is not permitted.",
+                )
+            }
             portfolio.companyIds.remove(companyId)
             portfolio.lastUpdateTimestamp = Instant.now().toEpochMilli()
         }

@@ -171,7 +171,7 @@ interface PortfolioApi {
     )
     @ApiResponses(
         value = [
-            ApiResponse(responseCode = "200", description = "Successfully removed company from existing portfolio."),
+            ApiResponse(responseCode = "204", description = "Successfully removed company from existing portfolio."),
         ],
     )
     @DeleteMapping(
