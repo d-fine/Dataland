@@ -576,7 +576,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Successfully removed company from existing portfolio.",
             "content": {}
           },

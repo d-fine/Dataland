@@ -75,6 +75,14 @@ class PortfolioController
             if (!portfolioService.existsPortfolioForUser(userId, portfolioId, correlationId)) {
                 throw PortfolioNotFoundApiException(portfolioId, correlationId)
             }
+            if (portfolioService.existsPortfolioWithNameForUser(userId, portfolio.portfolioName, correlationId)) {
+                throw ConflictApiException(
+                    message = "Conflicting input detected.",
+                    summary =
+                        "Conflicting input detected for portfolio with portfolioName ${portfolio.portfolioName}." +
+                            " Please ensure that portfolio names are unique.",
+                )
+            }
 
             portfolio.companyIds.forEach { isCompanyIdValid(it) }
             return ResponseEntity.ok(portfolioService.replacePortfolio(userId, portfolio, portfolioId, correlationId))
