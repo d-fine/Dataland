@@ -32,10 +32,18 @@ interface PortfolioRepository : JpaRepository<PortfolioEntity, String> {
     )
 
     /**
-     * Checks if specific portfolio by portfolioId for userId exists
+     * Checks if specific portfolio with portfolioId for userId exists
      */
     fun existsByUserIdAndPortfolioId(
         userId: String,
         portfolioId: UUID,
+    ): Boolean
+
+    /**
+     * Checks if specific portfolio with portfolioName for userId exists
+     */
+    fun existsByUserIdAndPortfolioName(
+        userId: String,
+        portfolioName: String,
     ): Boolean
 }

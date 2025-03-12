@@ -42,6 +42,22 @@ class PortfolioService
         }
 
         /**
+         * Checks if a portfolio with the same name exists for user
+         */
+        @Transactional(readOnly = true)
+        fun existsPortfolioWithNameForUser(
+            userId: String,
+            portfolioName: String,
+            correlationId: String,
+        ): Boolean {
+            logger.info(
+                "Check if portfolio with portfolioName: $portfolioName exists exists for user with userId: $userId." +
+                    " CorrelationId: $correlationId.",
+            )
+            return portfolioRepository.existsByUserIdAndPortfolioName(userId, portfolioName)
+        }
+
+        /**
          * Retrieve all portfolios from repo for user
          */
         @Transactional(readOnly = true)
@@ -180,7 +196,7 @@ class PortfolioService
             portfolioId: String? = null,
             creationTimestamp: Long? = null,
         ): PortfolioResponse {
-            val entity =
+            val portfolioEntity =
                 PortfolioEntity(
                     portfolioId = portfolioId?.let { UUID.fromString(it) } ?: UUID.randomUUID(),
                     portfolioName = portfolio.portfolioName,
@@ -190,9 +206,6 @@ class PortfolioService
                     companyIds = portfolio.companyIds.toMutableSet(),
                     dataTypes = portfolio.dataTypes.toMutableSet(),
                 )
-            // TODO catch dataIntegrityViolation
-            return portfolioRepository
-                .save(entity)
-                .toPortfolioResponse()
+            return portfolioRepository.save(portfolioEntity).toPortfolioResponse()
         }
     }

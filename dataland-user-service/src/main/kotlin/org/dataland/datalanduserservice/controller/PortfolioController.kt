@@ -2,6 +2,7 @@ package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalanduserservice.api.PortfolioApi
 import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
@@ -51,6 +52,15 @@ class PortfolioController
         override fun createPortfolio(portfolio: PortfolioPayload): ResponseEntity<PortfolioResponse> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()
+
+            if (portfolioService.existsPortfolioWithNameForUser(userId, portfolio.portfolioName, correlationId)) {
+                throw ConflictApiException(
+                    message = "Conflicting input detected.",
+                    summary =
+                        "Conflicting input detected for portfolio with portfolioName ${portfolio.portfolioName}." +
+                            " Please ensure that portfolio names are unique.",
+                )
+            }
 
             portfolio.companyIds.forEach { isCompanyIdValid(it) }
             return ResponseEntity(portfolioService.createPortfolio(userId, portfolio, correlationId), HttpStatus.CREATED)

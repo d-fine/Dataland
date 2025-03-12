@@ -3,6 +3,7 @@ package org.dataland.datalanduserservice
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.ConflictApiException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
@@ -28,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -100,7 +100,7 @@ class DatalandUserServiceSpringbootTest
 
         @Nested
         @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-        inner class UserTests {
+        inner class TestsForUserRole {
             @Test
             fun `test that posting and retrieving valid portfolios with valid companyIds and valid dataTypes works`() {
                 assertDoesNotThrow {
@@ -132,7 +132,7 @@ class DatalandUserServiceSpringbootTest
                 val portfolioWithExistingName =
                     dummyPortfolioPayload2.copy(portfolioName = dummyPortfolioPayload1.portfolioName)
                 assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload1) }
-                assertThrows<DataIntegrityViolationException> { portfolioApi.createPortfolio(portfolioWithExistingName) }
+                assertThrows<ConflictApiException> { portfolioApi.createPortfolio(portfolioWithExistingName) }
             }
 
             @Test
