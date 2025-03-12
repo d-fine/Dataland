@@ -25,6 +25,8 @@ class PortfolioController
         private val companyDataControllerApi: CompanyDataControllerApi,
         private val portfolioService: PortfolioService,
     ) : PortfolioApi {
+        // TODO remove userId from controller; it is not used here! Instead put into Service wherever needed.
+
         override fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<PortfolioResponse>> {
             val userId = DatalandAuthentication.fromContext().userId
             val correlationId = UUID.randomUUID().toString()

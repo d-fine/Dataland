@@ -138,6 +138,8 @@ class PortfolioService
             companyId: String,
             correlationId: String,
         ) {
+            // TODO: Ensure that removing last company is not possible! Write test for this.
+
             logger.info(
                 "Remove company with companyId: $companyId from portfolio with portfolioId: $portfolioId for user" +
                     " with userId: $userId. CorrelationId: $correlationId.",
@@ -183,6 +185,7 @@ class PortfolioService
                     companyIds = portfolio.companyIds.toMutableSet(),
                     dataTypes = portfolio.dataTypes.toMutableSet(),
                 )
+            // TODO catch dataIntegrityViolation
             return portfolioRepository
                 .save(entity)
                 .toPortfolioResponse()
