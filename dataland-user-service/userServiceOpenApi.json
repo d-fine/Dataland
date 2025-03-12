@@ -100,7 +100,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Portfolio"
+                "$ref": "#/components/schemas/PortfolioPayload"
               }
             }
           },
@@ -262,7 +262,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Portfolio"
+                "$ref": "#/components/schemas/PortfolioPayload"
               }
             }
           },
@@ -614,7 +614,7 @@
   },
   "components": {
     "schemas": {
-      "Portfolio": {
+      "PortfolioPayload": {
         "required": [
           "companyIds",
           "dataTypes",
@@ -622,6 +622,9 @@
         ],
         "type": "object",
         "properties": {
+          "portfolioName": {
+            "type": "string"
+          },
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
@@ -647,9 +650,6 @@
                 "additional-company-information"
               ]
             }
-          },
-          "portfolioName": {
-            "type": "string"
           }
         }
       },

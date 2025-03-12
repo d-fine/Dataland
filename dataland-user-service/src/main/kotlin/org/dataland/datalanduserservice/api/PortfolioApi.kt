@@ -36,8 +36,8 @@ interface PortfolioApi {
         ],
     )
     @GetMapping(
-        produces = ["application/json"],
         value = ["/portfolios/"],
+        produces = ["application/json"],
     )
     @PreAuthorize(
         "hasRole('ROLE_USER')",
@@ -56,8 +56,8 @@ interface PortfolioApi {
         ],
     )
     @GetMapping(
-        produces = ["application/json"],
         value = ["/portfolios/{portfolioId}/"],
+        produces = ["application/json"],
     )
     @PreAuthorize(
         "hasRole('ROLE_USER')",
@@ -79,8 +79,9 @@ interface PortfolioApi {
         ],
     )
     @PatchMapping(
-        produces = ["application/json"],
         value = ["/portfolios/{portfolioId}/{companyId}"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
     )
     @PreAuthorize(
         "hasRole('ROLE_USER')",
@@ -102,8 +103,9 @@ interface PortfolioApi {
         ],
     )
     @PostMapping(
-        produces = ["application/json"],
         value = ["/portfolios/"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
     )
     @PreAuthorize(
         "hasRole('ROLE_USER')",
@@ -125,8 +127,9 @@ interface PortfolioApi {
         ],
     )
     @PutMapping(
-        produces = ["application/json"],
         value = ["/portfolios/{portfolioId}/"],
+        consumes = ["application/json"],
+        produces = ["application/json"],
     )
     @PreAuthorize(
         "hasRole('ROLE_USER')",

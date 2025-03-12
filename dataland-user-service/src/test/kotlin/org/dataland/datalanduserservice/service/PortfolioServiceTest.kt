@@ -41,7 +41,7 @@ class PortfolioServiceTest {
     @BeforeEach
     fun setup() {
         reset(mockPortfolioRepository)
-        doAnswer { invocation -> invocation.arguments[0] as PortfolioEntity }
+        doAnswer { invocation -> invocation.arguments[0] }
             .whenever(mockPortfolioRepository)
             .save(any<PortfolioEntity>())
 

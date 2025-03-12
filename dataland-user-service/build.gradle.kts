@@ -29,7 +29,7 @@ dependencies {
     implementation(project(":dataland-backend-utils"))
     implementation(project(":dataland-keycloak-adapter"))
     implementation(project(":dataland-message-queue-utils"))
-    implementation(libs.jackson.module.kotlin)
+    implementation(libs.jackson.kotlin)
     implementation(libs.json)
     implementation(libs.log4j.api)
     implementation(libs.log4j.to.slf4j)
