@@ -141,7 +141,7 @@ class DocumentManagerTest(
             companyIds = dummyDocumentMetaInfo.companyIds.toMutableSet(),
             publicationDate = dummyDocumentMetaInfo.publicationDate,
             reportingPeriod = dummyDocumentMetaInfo.reportingPeriod,
-            uploaderId = "",
+            uploaderId = "dummy-uploader-id",
             uploadTime = 0,
             qaStatus = qaStatus,
         )

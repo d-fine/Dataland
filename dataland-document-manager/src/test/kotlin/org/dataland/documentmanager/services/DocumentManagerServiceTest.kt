@@ -10,16 +10,22 @@ import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
 import org.dataland.documentmanager.repositories.DocumentMetaInfoRepository
 import org.dataland.documentmanager.services.conversion.FileProcessor
+import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.annotation.DirtiesContext.ClassMode
 import java.time.LocalDate
@@ -36,6 +42,8 @@ class DocumentManagerServiceTest(
     val mockStorageApi = mock<StreamingStorageControllerApi>()
     val mockCloudEventMessageHandler = mock<CloudEventMessageHandler>()
     val mockFileProcessor = mock<FileProcessor>()
+    val mockSecurityContext = mock<SecurityContext>()
+    val mockAuthentication = mock<DatalandJwtAuthentication>()
 
     lateinit var documentManager: DocumentManager
 
@@ -116,7 +124,18 @@ class DocumentManagerServiceTest(
             mockStorageApi,
             mockCloudEventMessageHandler,
             mockFileProcessor,
+            mockSecurityContext,
+            mockAuthentication,
         )
+        val authenticationMock =
+            AuthenticationMock.mockJwtAuthentication(
+                "requester@example.com",
+                "1234-221-1111elf",
+                setOf(DatalandRealmRole.ROLE_USER),
+            )
+        Mockito.`when`(mockSecurityContext.authentication).thenReturn(authenticationMock)
+        Mockito.`when`(authenticationMock.credentials).thenReturn("")
+        SecurityContextHolder.setContext(mockSecurityContext)
 
         documentManager =
             DocumentManager(
