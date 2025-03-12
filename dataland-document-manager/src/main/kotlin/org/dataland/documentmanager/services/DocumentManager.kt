@@ -97,6 +97,7 @@ class DocumentManager
                 documentName = documentMetaInfoEntity.documentName,
                 documentCategory = documentMetaInfoEntity.documentCategory,
                 companyIds = documentMetaInfoEntity.companyIds,
+                uploaderId = documentMetaInfoEntity.uploaderId,
                 publicationDate = documentMetaInfoEntity.publicationDate,
                 reportingPeriod = documentMetaInfoEntity.reportingPeriod,
             )
@@ -282,6 +283,7 @@ class DocumentManager
                     documentMetaInformationSearchFilter.reportingPeriod,
                     limit,
                     offset,
-                ).map { it.toDocumentMetaInfoResponse() }
+                ).filter { it.isViewableByUser() }
+                .map { it.toDocumentMetaInfoResponse() }
         }
     }

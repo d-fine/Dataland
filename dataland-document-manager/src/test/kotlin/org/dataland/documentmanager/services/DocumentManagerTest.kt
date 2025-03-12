@@ -75,6 +75,7 @@ class DocumentManagerTest(
             documentName = mockDocumentName,
             documentCategory = DocumentCategory.AnnualReport,
             companyIds = mutableSetOf(knownCompanyId),
+            uploaderId = "dummy-uploader-id",
             publicationDate = LocalDate.parse("2023-01-01"),
             reportingPeriod = "2023",
         )

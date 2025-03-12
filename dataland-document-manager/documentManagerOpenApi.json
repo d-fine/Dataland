@@ -880,7 +880,8 @@
       },
       "DocumentMetaInfoResponse": {
         "required": [
-          "documentId"
+          "documentId",
+          "uploaderId"
         ],
         "type": "object",
         "properties": {
@@ -905,6 +906,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "uploaderId": {
+            "type": "string"
           },
           "publicationDate": {
             "type": "string",
@@ -951,6 +955,7 @@
           "companyIds",
           "documentId",
           "documentType",
+          "isViewableByUser",
           "qaStatus",
           "uploadTime",
           "uploaderId"
@@ -998,6 +1003,9 @@
           },
           "qaStatus": {
             "$ref": "#/components/schemas/QaStatus"
+          },
+          "isViewableByUser": {
+            "type": "boolean"
           }
         }
       },
