@@ -158,20 +158,21 @@ class CompanyQueryManager(
     fun isCompanyPublic(companyId: String): Boolean = getCompanyById(companyId).isTeaserCompany
 
     /**
-     * Counts the active datasets of a company and a specific data type
+     * Get all reporting periods for which at least one active dataset of the specified company and data type exists
      * @param companyId the ID of the company
      * @param dataType the data type for which the datasets should be counted
-     * @returns the number of active datasets of the specified company and data type
+     * @returns the reporting periods of active datasets of the specified company and data type
      */
-    fun countActiveDatasets(
+    fun getAllReportingPeriodsWithActiveDatasets(
         companyId: String,
         dataType: DataType,
-    ): Long =
-        dataMetaInfoRepository.countByCompanyIdAndDataTypeAndCurrentlyActive(
-            companyId,
-            dataType.name,
-            true,
-        )
+    ): Set<String> =
+        dataMetaInfoRepository
+            .getDistinctReportingPeriodsByCompanyIdAndDataTypeAndCurrentlyActive(
+                companyId = companyId,
+                dataType = dataType.name,
+                currentlyActive = true,
+            )
 
     /**
      * A method to retrieve a list of subsidiaries of an ultimate parent company.
