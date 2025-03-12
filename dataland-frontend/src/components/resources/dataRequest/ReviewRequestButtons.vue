@@ -57,6 +57,7 @@
     :closable="false"
     style="border-radius: 0.75rem; text-align: center"
     :show-header="false"
+    @update:visible="(isVisible) => onUpdateVisibilitySuccessModal(dialogIsSuccess, isVisible)"
   >
     <template v-if="dialogIsSuccess">
       <div class="text-center" style="display: flex; flex-direction: column">
@@ -133,6 +134,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['request-reopened-or-resolved'],
   data() {
     return {
       toggleEmailDetailsError: false,
@@ -181,6 +183,14 @@ export default defineComponent({
     closeSuccessModal(dialogIsSuccess: boolean) {
       this.dialogIsVisible = false;
       if (dialogIsSuccess) this.$emit('request-reopened-or-resolved');
+    },
+    /**
+     * Emit status change signal if a success dialog was closed.
+     * @param dialogIsSuccess whether the dialog showed a "success"- or an "error"-message
+     * @param isVisible whether the dialog was closed (false) or shown (true)
+     */
+    onUpdateVisibilitySuccessModal(dialogIsSuccess: boolean, isVisible: boolean) {
+      if (dialogIsSuccess && !isVisible) this.$emit('request-reopened-or-resolved');
     },
     /**
      * Opens the SuccessModal with given dialog
