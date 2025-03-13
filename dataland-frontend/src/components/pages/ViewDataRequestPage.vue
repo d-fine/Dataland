@@ -150,11 +150,11 @@
               <div class="card__data">{{ storedDataRequest.reportingPeriod }}</div>
             </div>
             <div
-              v-show="isDatasetAvailable"
+              v-show="answeringDataSetUrl"
               class="link claim-panel-text"
               style="font-weight: bold"
               data-test="viewDataset"
-              @click="goToResolveDataRequestPage()"
+              @click="goToAnsweringDataSetPage()"
             >
               VIEW DATASET
             </div>
@@ -175,13 +175,11 @@
                     since {{ convertUnixTimeInMsToDateString(storedDataRequest.lastModifiedDate) }}
                   </span>
                   <span style="margin-left: auto">
-                    <PrimeButton
-                      data-test="resolveRequestButton"
-                      v-show="isUsersOwnRequest && isRequestStatusAnswered()"
-                      @click="goToResolveDataRequestPage()"
-                    >
-                      <span class="d-letters pl-2"> Resolve Request </span>
-                    </PrimeButton>
+                    <ReviewRequestButtons
+                      v-if="isUsersOwnRequest && isRequestStatusAnswered()"
+                      @request-reopened-or-resolved="initializeComponent()"
+                      :data-request-id="storedDataRequest.dataRequestId"
+                    />
                   </span>
                 </span>
                 <div class="card__separator" />
@@ -270,16 +268,19 @@ import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 import PrimeButton from 'primevue/button';
 import PrimeDialog from 'primevue/dialog';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
-import { type DataTypeEnum, QaStatus } from '@clients/backend';
 import TheContent from '@/components/generics/TheContent.vue';
 import StatusHistory from '@/components/resources/dataRequest/StatusHistory.vue';
 import { checkIfUserHasRole, getUserId } from '@/utils/KeycloakUtils';
 import router from '@/router';
 import { KEYCLOAK_ROLE_ADMIN } from '@/utils/KeycloakRoles';
+import { getAnsweringDataSetUrl } from '@/utils/AnsweringDataset.ts';
+import { getCompanyName } from '@/utils/CompanyInformation.ts';
+import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 
 export default defineComponent({
   name: 'ViewDataRequest',
   components: {
+    ReviewRequestButtons,
     TheContent,
     EmailDetails,
     PrimeDialog,
@@ -305,7 +306,6 @@ export default defineComponent({
     return {
       toggleEmailDetailsError: false,
       successModalIsVisible: false,
-      isDatasetAvailable: false,
       reopenModalIsVisible: false,
       reopenMessage: '',
       reopenedModalIsVisible: false,
@@ -318,18 +318,11 @@ export default defineComponent({
       emailMessage: undefined as string | undefined,
       hasValidEmailForm: false,
       reopenMessageError: false,
+      answeringDataSetUrl: undefined as string | undefined,
     };
   },
   mounted() {
-    this.getRequest()
-      .catch((error) => console.error(error))
-      .then(() => {
-        this.getCompanyName(this.storedDataRequest.datalandCompanyId).catch((error) => console.error(error));
-        this.checkForAvailableData(this.storedDataRequest).catch((error) => console.error(error));
-        this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
-        void this.setUserAccessFields();
-      })
-      .catch((error) => console.error(error));
+    this.initializeComponent();
   },
   methods: {
     getRequestStatusLabel,
@@ -339,6 +332,27 @@ export default defineComponent({
     getFrameworkSubtitle,
     frameworkHasSubTitle,
     getFrameworkTitle,
+    /**
+     * Perform all steps required to set up the component.
+     */
+    initializeComponent() {
+      this.getRequest()
+        .catch((error) => console.error(error))
+        .then(() => {
+          if (this.getKeycloakPromise) {
+            const apiClientProvider = new ApiClientProvider(this.getKeycloakPromise());
+            this.getAndStoreCompanyName(this.storedDataRequest.datalandCompanyId, apiClientProvider).catch((error) =>
+              console.error(error)
+            );
+            this.checkForAvailableData(this.storedDataRequest, apiClientProvider).catch((error) =>
+              console.error(error)
+            );
+          }
+          this.storedDataRequest.dataRequestStatusHistory.sort((a, b) => b.creationTimestamp - a.creationTimestamp);
+          void this.setUserAccessFields();
+        })
+        .catch((error) => console.error(error));
+    },
     /**
      * Method to update the email fields
      * @param hasValidForm boolean indicating if the input is correct
@@ -351,27 +365,22 @@ export default defineComponent({
       this.emailMessage = message;
     },
     /**
+     * Retrieve the company name and store it if a value was found.
+     */
+    async getAndStoreCompanyName(companyId: string, apiClientProvider: ApiClientProvider) {
+      try {
+        this.companyName = await getCompanyName(companyId, apiClientProvider);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    /**
      * Method to check if there exist an approved dataset for a dataRequest
      * @param storedDataRequest dataRequest
      */
-    async checkForAvailableData(storedDataRequest: StoredDataRequest) {
+    async checkForAvailableData(storedDataRequest: StoredDataRequest, apiClientProvider: ApiClientProvider) {
       try {
-        if (this.getKeycloakPromise) {
-          const dataset = await new ApiClientProvider(
-            this.getKeycloakPromise()
-          ).backendClients.metaDataController.getListOfDataMetaInfo(
-            storedDataRequest.datalandCompanyId,
-            storedDataRequest.dataType as DataTypeEnum,
-            undefined,
-            storedDataRequest.reportingPeriod
-          );
-          for (const dataMetaInfo of dataset.data) {
-            if (dataMetaInfo.qaStatus == QaStatus.Accepted) {
-              this.isDatasetAvailable = true;
-              return;
-            }
-          }
-        }
+        this.answeringDataSetUrl = await getAnsweringDataSetUrl(storedDataRequest, apiClientProvider);
       } catch (error) {
         console.error(error);
       }
@@ -387,23 +396,6 @@ export default defineComponent({
               this.requestId
             )
           ).data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    /**
-     * Method to get the company Name from the backend
-     * @param companyId companyId
-     */
-    async getCompanyName(companyId: string) {
-      try {
-        if (this.getKeycloakPromise) {
-          this.companyName = (
-            await new ApiClientProvider(this.getKeycloakPromise()).backendClients.companyDataController.getCompanyInfo(
-              companyId
-            )
-          ).data.companyName;
         }
       } catch (error) {
         console.error(error);
@@ -525,9 +517,8 @@ export default defineComponent({
      * Navigates to the company view page
      * @returns the promise of the router push action
      */
-    goToResolveDataRequestPage() {
-      const url = `/companies/${this.storedDataRequest.datalandCompanyId}/frameworks/${this.storedDataRequest.dataType}`;
-      return router.push(url);
+    goToAnsweringDataSetPage() {
+      if (this.answeringDataSetUrl) return router.push(this.answeringDataSetUrl);
     },
     /**
      * Method to check if request status is answered
