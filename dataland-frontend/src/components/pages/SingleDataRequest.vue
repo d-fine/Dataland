@@ -57,6 +57,20 @@
                         data-test="datapoint-framework"
                       />
                     </BasicFormSection>
+                    <BasicFormSection :data-test="'emailOnUpdate'" header="Receive emails on update">
+                      <InputSwitch
+                        class="p-inputswitch p-inputswitch-slider"
+                        style="display: block; margin: 1rem 0"
+                        data-test="emailOnUpdateInput"
+                        inputId="emailOnUpdateInput"
+                        v-model="emailOnUpdate"
+                      />
+                      <label for="emailOnUpdateInput" v-if="emailOnUpdate">
+                        You receive an email immediately after the next status change, i.e. if the data is available or
+                        the data provider says there is no data.
+                      </label>
+                      <label for="emailOnUpdateInput" v-else> You receive updates in your weekly summary letter.</label>
+                    </BasicFormSection>
                     <BasicFormSection
                       :data-test="'informationCompanyOwnership'"
                       header="Information about company ownership"
@@ -231,6 +245,7 @@ import BasicFormSection from '@/components/general/BasicFormSection.vue';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import PrimeDialog from 'primevue/dialog';
+import InputSwitch from 'primevue/inputswitch';
 import { openEmailClient } from '@/utils/Email';
 import { MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER } from '@/DatalandSettings';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
@@ -243,6 +258,7 @@ export default defineComponent({
   components: {
     SingleSelectFormElement,
     PrimeDialog,
+    InputSwitch,
     BasicFormSection,
     ToggleChipFormInputs,
     CompanyInfoSheet,
@@ -301,6 +317,7 @@ export default defineComponent({
       becomePremiumUserEmailTemplate,
       MAX_NUMBER_OF_DATA_REQUESTS_PER_DAY_FOR_ROLE_USER,
       hasCompanyAtLeastOneOwner: false,
+      emailOnUpdate: false,
     };
   },
   computed: {

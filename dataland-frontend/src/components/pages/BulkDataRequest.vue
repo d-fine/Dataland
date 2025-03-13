@@ -119,6 +119,21 @@
                       </div>
                     </BasicFormSection>
 
+                    <BasicFormSection :data-test="'emailOnUpdate'" header="Receive emails on update">
+                      <InputSwitch
+                        class="p-inputswitch p-inputswitch-slider"
+                        style="display: block; margin: 1rem 0"
+                        data-test="emailOnUpdateInput"
+                        inputId="emailOnUpdateInput"
+                        v-model="emailOnUpdate"
+                      />
+                      <label for="emailOnUpdateInput" v-if="emailOnUpdate">
+                        You receive an email immediately after the next status change, i.e. if the data is available or
+                        the data provider says there is no data <em>for each request. This can be many emails.</em>
+                      </label>
+                      <label for="emailOnUpdateInput" v-else> You receive updates in your weekly summary letter.</label>
+                    </BasicFormSection>
+
                     <BasicFormSection :data-test="'selectIdentifiersDiv'" header="Provide Company Identifiers">
                       <FormKit
                         v-model="identifiersInString"
@@ -162,6 +177,7 @@
 // @ts-nocheck
 import { FormKit } from '@formkit/vue';
 import PrimeButton from 'primevue/button';
+import InputSwitch from 'primevue/inputswitch';
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
 import { type DataTypeEnum, type ErrorResponse } from '@clients/backend';
@@ -190,6 +206,7 @@ export default defineComponent({
     BulkDataRequestSummary,
     MultiSelectFormFieldBindData,
     AuthenticationWrapper,
+    InputSwitch,
     TheHeader,
     TheContent,
     TheFooter,
@@ -213,6 +230,7 @@ export default defineComponent({
       availableFrameworks: [] as { value: DataTypeEnum; label: string }[],
       selectedFrameworks: [] as Array<DataTypeEnum>,
       identifiersInString: '',
+      emailOnUpdate: false,
       identifiers: [] as Array<string>,
       bulkDataRequestResponse: undefined as BulkDataRequestResponse | undefined,
       requestSuccessStatus: {},
