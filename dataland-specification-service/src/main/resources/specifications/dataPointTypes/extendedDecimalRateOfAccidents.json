@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalRateOfAccidents",
+  "name" : "Rate Of Accidents",
+  "businessDefinition" : "Rate of recordable work-related injuries as defined in GRI, i.e. (Number of recordable work-related injuries) /  (number of hours worked ) x 200,000. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 2.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

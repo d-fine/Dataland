@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoWaterManagementPolicy",
+  "name" : "Water Management Policy",
+  "businessDefinition" : "Existence of policies and procedures for water management. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 7.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

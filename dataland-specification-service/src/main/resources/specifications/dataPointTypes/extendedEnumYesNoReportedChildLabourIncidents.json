@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoReportedChildLabourIncidents",
+  "name" : "Reported Child Labour Incidents",
+  "businessDefinition" : "Number of reported incidents of child labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 12.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

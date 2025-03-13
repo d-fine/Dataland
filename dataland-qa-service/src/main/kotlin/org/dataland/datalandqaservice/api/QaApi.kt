@@ -102,7 +102,7 @@ interface QaApi {
         @PathVariable("dataId") dataId: String,
         @RequestParam qaStatus: QaStatus,
         @RequestParam comment: String? = null,
-        @RequestParam overwriteDataPointQaStatus: Boolean = true,
+        @RequestParam overwriteDataPointQaStatus: Boolean = false,
     )
 
     /** A method to count open reviews based on specific filters.

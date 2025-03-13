@@ -23,6 +23,7 @@ fun DataPointType.toDto(
         dataPointType = this.getRef(baseUrl),
         name = this.name,
         businessDefinition = this.businessDefinition,
+        constraints = this.constraints,
         usedBy =
             database.frameworks.values
                 .filter {
@@ -43,4 +44,5 @@ data class DataPointTypeSpecification(
     val businessDefinition: String,
     val dataPointBaseType: IdWithRef,
     val usedBy: List<IdWithRef>,
+    val constraints: List<String>? = null,
 )

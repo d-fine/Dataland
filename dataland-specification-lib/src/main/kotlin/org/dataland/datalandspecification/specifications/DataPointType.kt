@@ -17,6 +17,7 @@ data class DataPointType(
     val businessDefinition: String,
     val dataPointBaseTypeId: String,
     val frameworkOwnership: String? = null,
+    val constraints: List<String>? = null,
 ) {
     /**
      * Validates the integrity of the data point specification.

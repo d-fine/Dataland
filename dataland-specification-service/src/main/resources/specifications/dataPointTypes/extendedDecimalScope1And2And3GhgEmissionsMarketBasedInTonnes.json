@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalScope1And2And3GhgEmissionsMarketBasedInTonnes",
+  "name" : "Scope 1 and 2 and 3 GHG emissions (market-based)",
+  "businessDefinition" : "Sum of scope 1, 2 and 3 greenhouse gas emissions, using the market-based method to compute scope 2 greenhouse gas emissions (equity share approach preferably used).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}
