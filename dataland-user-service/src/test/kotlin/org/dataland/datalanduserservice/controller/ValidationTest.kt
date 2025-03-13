@@ -1,4 +1,4 @@
-package org.dataland.datalanduserservice.service
+package org.dataland.datalanduserservice.controller
 
 import jakarta.validation.Validation
 import org.dataland.datalanduserservice.model.PortfolioPayload

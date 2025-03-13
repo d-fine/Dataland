@@ -7,8 +7,7 @@ import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
  */
 class PortfolioNotFoundApiException(
     portfolioId: String,
-    correlationId: String,
 ) : ResourceNotFoundApiException(
         summary = "Portfolio with portfolioId $portfolioId does not exist.",
-        message = "Portfolio with portfolioId $portfolioId does not exist. CorrelationId: $correlationId.",
+        message = "Portfolio with portfolioId $portfolioId does not exist.",
     )

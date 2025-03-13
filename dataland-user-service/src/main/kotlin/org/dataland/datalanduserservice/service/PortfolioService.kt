@@ -6,6 +6,7 @@ import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.Portfolio
 import org.dataland.datalanduserservice.model.PortfolioResponse
 import org.dataland.datalanduserservice.repository.PortfolioRepository
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -29,11 +30,10 @@ class PortfolioService
          * Checks if the portfolio belongs to the user
          */
         @Transactional(readOnly = true)
-        fun existsPortfolioForUser(
-            userId: String,
-            portfolioId: String,
-            correlationId: String,
-        ): Boolean {
+        fun existsPortfolioForUser(portfolioId: String): Boolean {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+
             logger.info(
                 "Check if portfolio with portfolioId: $portfolioId exists for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
@@ -45,11 +45,10 @@ class PortfolioService
          * Checks if a portfolio with the same name exists for user
          */
         @Transactional(readOnly = true)
-        fun existsPortfolioWithNameForUser(
-            userId: String,
-            portfolioName: String,
-            correlationId: String,
-        ): Boolean {
+        fun existsPortfolioWithNameForUser(portfolioName: String): Boolean {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+
             logger.info(
                 "Check if portfolio with portfolioName: $portfolioName exists exists for user with userId: $userId." +
                     " CorrelationId: $correlationId.",
@@ -61,10 +60,9 @@ class PortfolioService
          * Retrieve all portfolios from repo for user
          */
         @Transactional(readOnly = true)
-        fun getAllPortfoliosForUser(
-            userId: String,
-            correlationId: String,
-        ): List<PortfolioResponse> {
+        fun getAllPortfoliosForUser(): List<PortfolioResponse> {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
             logger.info("Retrieve all portfolios for user with userId: $userId. CorrelationId: $correlationId.")
             return portfolioRepository.getAllByUserId(userId).map { it.toPortfolioResponse() }
         }
@@ -73,15 +71,13 @@ class PortfolioService
          * Retrieve portfolio for user by portfolioId
          */
         @Transactional(readOnly = true)
-        fun getPortfolioForUser(
-            userId: String,
-            portfolioId: String,
-            correlationId: String,
-        ): PortfolioResponse {
+        fun getPortfolioForUser(portfolioId: String): PortfolioResponse {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
             logger.info("Retrieve portfolio with portfolioId: $portfolioId for user with userId: $userId. CorrelationId: $correlationId.")
             return portfolioRepository
                 .getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                ?.toPortfolioResponse() ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
+                ?.toPortfolioResponse() ?: throw PortfolioNotFoundApiException(portfolioId)
         }
 
         /**
@@ -89,18 +85,19 @@ class PortfolioService
          */
         @Transactional
         fun addCompany(
-            userId: String,
             portfolioId: String,
             companyId: String,
-            correlationId: String,
         ): PortfolioResponse {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+
             logger.info(
                 "Add company with companyId: $companyId to portfolio with portfolioId: $portfolioId for user" +
                     " with userId: $userId. CorrelationId: $correlationId.",
             )
             val portfolio =
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                    ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
+                    ?: throw PortfolioNotFoundApiException(portfolioId)
             portfolio.companyIds.add(companyId)
             portfolio.lastUpdateTimestamp = Instant.now().toEpochMilli()
             return portfolio.toPortfolioResponse()
@@ -110,11 +107,10 @@ class PortfolioService
          * Creates a new portfolio.
          */
         @Transactional(propagation = Propagation.REQUIRES_NEW)
-        fun createPortfolio(
-            userId: String,
-            portfolio: Portfolio,
-            correlationId: String,
-        ): PortfolioResponse {
+        fun createPortfolio(portfolio: Portfolio): PortfolioResponse {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+
             logger.info(
                 "Create new portfolio for user with userId: $userId. CorrelationId: $correlationId.",
             )
@@ -126,17 +122,18 @@ class PortfolioService
          */
         @Transactional(propagation = Propagation.REQUIRES_NEW)
         fun replacePortfolio(
-            userId: String,
             portfolio: Portfolio,
             portfolioId: String,
-            correlationId: String,
         ): PortfolioResponse {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
+
             logger.info(
                 "Replace portfolio with portfolioId: $portfolioId for user with userId: $userId. CorrelationId: $correlationId.",
             )
             val originalPortfolio =
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                    ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
+                    ?: throw PortfolioNotFoundApiException(portfolioId)
             return this.savePortfolio(
                 userId,
                 portfolio,
@@ -150,18 +147,18 @@ class PortfolioService
          */
         @Transactional
         fun removeCompanyFromPortfolio(
-            userId: String,
             portfolioId: String,
             companyId: String,
-            correlationId: String,
         ) {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
             logger.info(
                 "Remove company with companyId: $companyId from portfolio with portfolioId: $portfolioId for user" +
                     " with userId: $userId. CorrelationId: $correlationId.",
             )
             val portfolio =
                 portfolioRepository.getPortfolioByUserIdAndPortfolioId(userId, UUID.fromString(portfolioId))
-                    ?: throw PortfolioNotFoundApiException(portfolioId, correlationId)
+                    ?: throw PortfolioNotFoundApiException(portfolioId)
             if (portfolio.companyIds.size == 1) {
                 throw InvalidInputApiException(
                     summary = "Removing the last company is not permitted.",
@@ -176,11 +173,9 @@ class PortfolioService
          * Delete portfolio for user by portfolio Id
          */
         @Transactional
-        fun deletePortfolio(
-            userId: String,
-            portfolioId: String,
-            correlationId: String,
-        ) {
+        fun deletePortfolio(portfolioId: String) {
+            val userId = DatalandAuthentication.fromContext().userId
+            val correlationId = UUID.randomUUID().toString()
             logger.info(
                 "Delete portfolio with portfolioId: $portfolioId for user with userId: $userId. CorrelationId: $correlationId.",
             )

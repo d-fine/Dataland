@@ -36,6 +36,9 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * In this test class, the entire portfolio workflow is tested
+ */
 @SpringBootTest(
     classes = [DatalandUserService::class], properties = ["spring.profiles.active=nodb"],
 )
@@ -100,7 +103,7 @@ class DatalandUserServiceSpringbootTest
 
         @Nested
         @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-        inner class TestsForUserRole {
+        inner class HappyPathTests {
             @Test
             fun `test that posting and retrieving valid portfolios with valid companyIds and valid dataTypes works`() {
                 assertDoesNotThrow {
@@ -113,42 +116,16 @@ class DatalandUserServiceSpringbootTest
             }
 
             @Test
-            fun `test that posting and retrieving portfolio by portfolioId works as expected`() {
-                assertDoesNotThrow {
-                    val portfolioId = portfolioApi.createPortfolio(dummyPortfolioPayload1).body!!.portfolioId
-                    portfolioApi.getPortfolio(portfolioId)
-                }
-            }
-
-            @Test
-            fun `test that posting portfolio with invalid companyId throws ClientException`() {
-                val portfolio = dummyPortfolioPayload1.copy(companyIds = setOf(validCompanyId1, invalidCompanyId))
-
-                assertThrows<ResourceNotFoundApiException> { portfolioApi.createPortfolio(portfolio) }
-            }
-
-            @Test
-            fun `test that posting portfolio with an existing name throws ConflictException`() {
-                val portfolioWithExistingName =
-                    dummyPortfolioPayload2.copy(portfolioName = dummyPortfolioPayload1.portfolioName)
-                assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload1) }
-                assertThrows<ConflictApiException> { portfolioApi.createPortfolio(portfolioWithExistingName) }
-            }
-
-            @Test
-            fun `test that patching an existing portfolio with a valid companyId works as expected`() {
-                assertDoesNotThrow {
-                    val portfolioId = portfolioApi.createPortfolio(dummyPortfolioPayload2).body!!.portfolioId
-                    portfolioApi.patchPortfolio(portfolioId, validCompanyId2)
-                }
-            }
-
-            @Test
-            fun `test that patching an existing portfolio with an invalid companyId throws ResourceNotFoundException`() {
-                assertThrows<ResourceNotFoundApiException> {
-                    val portfolioId = portfolioApi.createPortfolio(dummyPortfolioPayload2).body!!.portfolioId
-                    portfolioApi.patchPortfolio(portfolioId, invalidCompanyId)
-                }
+            fun `test that adding a valid companyId to an existing portfolio works as expected`() {
+                val portfolioId =
+                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload2) }.body!!.portfolioId
+                assertEquals(
+                    2,
+                    portfolioApi
+                        .patchPortfolio(portfolioId, validCompanyId2)
+                        .body!!
+                        .companyIds.size,
+                )
             }
 
             @Test
@@ -196,6 +173,33 @@ class DatalandUserServiceSpringbootTest
                         .body!!
                         .companyIds.size,
                 )
+            }
+        }
+
+        @Nested
+        @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+        inner class ExceptionHandlingTests {
+            @Test
+            fun `test that posting portfolio with an existing name throws ConflictException`() {
+                val portfolioWithExistingName =
+                    dummyPortfolioPayload2.copy(portfolioName = dummyPortfolioPayload1.portfolioName)
+                assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload1) }
+                assertThrows<ConflictApiException> { portfolioApi.createPortfolio(portfolioWithExistingName) }
+            }
+
+            @Test
+            fun `test that posting portfolio with invalid companyId throws ClientException`() {
+                val portfolio = dummyPortfolioPayload1.copy(companyIds = setOf(validCompanyId1, invalidCompanyId))
+
+                assertThrows<ResourceNotFoundApiException> { portfolioApi.createPortfolio(portfolio) }
+            }
+
+            @Test
+            fun `test that patching an existing portfolio with an invalid companyId throws ResourceNotFoundException`() {
+                assertThrows<ResourceNotFoundApiException> {
+                    val portfolioId = portfolioApi.createPortfolio(dummyPortfolioPayload2).body!!.portfolioId
+                    portfolioApi.patchPortfolio(portfolioId, invalidCompanyId)
+                }
             }
 
             @Test
