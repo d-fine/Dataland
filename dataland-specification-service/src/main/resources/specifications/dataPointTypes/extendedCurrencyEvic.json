@@ -3,6 +3,6 @@
   "name" : "EVIC",
   "businessDefinition" : "Enterprise Value Including Cash",
   "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : "additional-company-information",
+  "frameworkOwnership" : [ "additional-company-information" ],
   "constraints" : null
 }

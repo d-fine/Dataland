@@ -9,6 +9,11 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.springframework.stereotype.Component
 import java.io.File
+import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
+import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.edit
 
 /**
  * The EU Taxonomy Financials framework
@@ -21,7 +26,7 @@ class EuTaxonomyFinancialsFramework :
         explanation = "Additional Taxonomy for Financials",
         File("./dataland-framework-toolbox/inputs/eu-taxonomy-financials/eu-taxonomy-financials.xlsx"),
         order = 1,
-        enabledFeatures = FrameworkGenerationFeatures.allExcept(FrameworkGenerationFeatures.DataPointSpecifications),
+        enabledFeatures = FrameworkGenerationFeatures.ENTRY_SET,
     ) {
     override fun customizeDataModel(dataModel: FrameworkDataModelBuilder) {
         addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
@@ -29,6 +34,25 @@ class EuTaxonomyFinancialsFramework :
 
     override fun customizeQaModel(dataModel: FrameworkQaModelBuilder) {
         addSupressMaxLineLengthToPackageBuilder(dataModel.rootPackageBuilder)
+    }
+
+    override fun customizeHighLevelIntermediateRepresentation(framework: Framework) {
+        framework.root.edit<ComponentGroup>("general") {
+            edit<ComponentGroup>("general") {
+                edit<ReportPreuploadComponent>("referencedReports") {
+                    isPartOfQaReport = false
+                }
+                edit<SingleSelectComponent>("fiscalYearDeviation") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "extendedEnumFiscalYearDeviation",
+                        )
+                    }
+                }
+            }
+        }
     }
 
     private fun addSupressMaxLineLengthToPackageBuilder(packageBuilder: PackageBuilder) {

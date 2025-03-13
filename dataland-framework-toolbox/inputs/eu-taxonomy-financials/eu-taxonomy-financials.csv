@@ -1,6 +1,6 @@
 Field Identifier,Category,Sub-Category,Field Name,Tooltip,Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
 1,General,General,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?,Single-Select Radio Button,Deviation | No Deviation,,Extended,,,
-2,General,General,Fiscal Year End,The date at which the fiscal year ends.,Date, ,,Extended,,,
+2,General,General,Fiscal Year End,The date the fiscal year ends.,Date, ,,Extended,,,
 3,General,General,Referenced Reports,Please upload all relevant reports for this dataset in the PDF format.,Report Preupload, ,,,,,
 4,General,General,Are all Group Entities covered?,Are all Group legal entities covered in the reports?,Yes/No, ,,Extended,,,
 5,General,General,Number of Employees,Total Number of Employees (including temporary workers with assignment duration longer than 6 months),Number,"Allowed Range: [0, INF]",,Extended,,,

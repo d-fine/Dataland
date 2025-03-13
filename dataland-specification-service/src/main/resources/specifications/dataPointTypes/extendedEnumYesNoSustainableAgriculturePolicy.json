@@ -3,6 +3,6 @@
   "name" : "Sustainable Agriculture Policy",
   "businessDefinition" : "Existence of sustainable land or agriculture practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 11.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

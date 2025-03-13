@@ -89,14 +89,32 @@ class CategoryBuilder(
                 name = name,
                 businessDefinition = businessDefinition,
                 dataPointBaseTypeId = dataPointBaseTypeId,
-                frameworkOwnership = builder.framework.identifier,
+                frameworkOwnership = listOf(builder.framework.identifier),
                 constraints = constraints,
             )
-        require(!builder.database.dataPointTypes.containsKey(id)) {
-            "Data point specification with id $id already exists in the database."
+        if (builder.database.dataPointTypes.containsKey(id)) {
+            assertDataPointTypeConsistency(existingDataPointType = builder.database.dataPointTypes[id], newDataPointType = newDatapointType)
+            if (builder.database.dataPointTypes[id]?.frameworkOwnership != null) {
+                val allFrameworks = mutableListOf<String>()
+                allFrameworks.addAll(builder.database.dataPointTypes[id]?.frameworkOwnership!!)
+                allFrameworks.add(builder.framework.identifier)
+                builder.database.dataPointTypes[id] = newDatapointType.copy(frameworkOwnership = allFrameworks)
+            }
+        } else {
+            builder.database.dataPointTypes[id] = newDatapointType
         }
-        builder.database.dataPointTypes[id] = newDatapointType
-        return newDatapointType
+
+        return builder.database.dataPointTypes[id] ?: newDatapointType
+    }
+
+    private fun assertDataPointTypeConsistency(existingDataPointType: DataPointType?, newDataPointType: DataPointType) {
+        if (existingDataPointType == null) {
+            return
+        }
+        require(existingDataPointType.copy( frameworkOwnership = null) == newDataPointType.copy(frameworkOwnership = null)) {
+            "Inconsistency detected for Data point type with id ${existingDataPointType.id}. " +
+                    "Existing: $existingDataPointType, new: $newDataPointType"
+        }
     }
 
     /**

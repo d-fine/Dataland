@@ -44,7 +44,7 @@ export const additionalCompanyInformationViewConfiguration: MLDTConfig<Additiona
           {
             type: 'cell',
             label: 'Fiscal Year End',
-            explanation: 'The date the fiscal year ends',
+            explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: AdditionalCompanyInformationData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(
