@@ -3,6 +3,6 @@
   "name" : "Emissions of Air Pollutants",
   "businessDefinition" : "Tonnes of emissions by air pollutants. Emissions by air pollutants include direct sulphur oxides (Sox/SO2) emissions, direct nitrogen oxides (NOx/NO2) emissions, direct ammonia (NH3) emissions, direct particulate matter (PM2.5) emissions, direct non-methane volatile organic compounds (NMVOC) emissions and direct total heavy metals (HM) emissions (encompassing cadmium, mercury and lead). See Regulation (EU) 2022/1288, Annex I, top (28) and table 2, indicator nr. 2 and Directive (EU) 2016/2284, Article 3, points (5)-(8) and Annex I, table A.",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ]
 }

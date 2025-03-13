@@ -32,7 +32,7 @@ class FrameworkSpecificationBuilder(
     init {
         database.dataPointTypes.values
             .filter {
-                it.frameworkOwnership == framework.identifier
+                it.frameworkOwnership?.contains(framework.identifier) ?: false
             }.forEach { database.dataPointTypes.remove(it.id) }
     }
 

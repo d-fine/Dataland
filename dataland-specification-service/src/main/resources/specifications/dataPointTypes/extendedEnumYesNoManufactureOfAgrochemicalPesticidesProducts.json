@@ -3,6 +3,6 @@
   "name" : "Manufacture Of Agrochemical Pesticides Products",
   "businessDefinition" : "Involvement in manufacture of pesticides and other agrochemical products. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 9 and Regulation (EC) No 1893/2006, Annex I, Division 20.2.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

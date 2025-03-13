@@ -3,6 +3,6 @@
   "name" : "Non-Renewable Energy Consumption Coal",
   "businessDefinition" : "Energy consumption from coal (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ]
 }
