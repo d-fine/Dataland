@@ -106,6 +106,14 @@ class PortfolioControllerTest {
     }
 
     @Test
+    fun `test that replacing an existing portfolio by a portfolio with an invalid name throws ConflictApiException`() {
+        doReturn(true).whenever(mockPortfolioService).existsPortfolioForUser(dummyPortfolioId.toString())
+        doReturn(true).whenever(mockPortfolioService).existsPortfolioWithNameForUser(dummyPortfolioName)
+
+        assertThrows<ConflictApiException> { portfolioController.replacePortfolio(dummyPortfolioId.toString(), validPortfolioPayload) }
+    }
+
+    @Test
     fun `test that replacing an existing portfolio by a valid portfolio returns 200 response`() {
         doReturn(true).whenever(mockPortfolioService).existsPortfolioForUser(dummyPortfolioId.toString())
 
