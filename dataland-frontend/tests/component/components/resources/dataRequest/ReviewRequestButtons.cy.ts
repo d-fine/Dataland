@@ -1,13 +1,12 @@
 // @ts-nocheck
 import ReviewRequestButtonsComponent from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { type DataMetaInformation, DataTypeEnum } from '@clients/backend';
 import { RequestStatus, type StoredDataRequest } from '@clients/communitymanager';
 import { checkEmailFieldsAndCheckBox } from '@ct/testUtils/EmailDetails';
 import { convertUnixTimeInMsToDateString } from '@/utils/DataFormatUtils';
 
 describe('Component tests for the data request review buttons', function (): void {
-  const mockCompanyId: string = 'Mock-Company-Id';
+  const mockDataRequestId: string = 'Mock-DataRequest-Id';
   const parentComponentOfEmailDetails = 'updateRequestModal';
   const triggerComponentForEmailDetails = 'updateRequestButton';
   const messageHistory = [
@@ -17,48 +16,22 @@ describe('Component tests for the data request review buttons', function (): voi
       creationTimestamp: 2710,
     },
   ];
-  let mockedRequests: StoredDataRequest[];
-  before(() => {
-    cy.fixture('DataRequestsMock').then((jsonContent) => {
-      mockedRequests = jsonContent as Array<StoredDataRequest>;
-    });
-  });
 
   it('Check review functionality', function () {
     interceptUserRequestsOnMounted();
     interceptPatchRequestsOnMounted();
 
-    const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
-      ['2022', {} as DataMetaInformation],
-    ]);
-    mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
+    mountReviewRequestButtons();
     checkForReviewButtonsPopUpModal('successText');
   });
 
   it('Check review functionality with error message', function () {
     interceptUserRequestsOnMounted();
-    const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
-      ['2022', {} as DataMetaInformation],
-    ]);
-    mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
+
+    mountReviewRequestButtons();
     checkForReviewButtonsPopUpModal('noSuccessText');
   });
 
-  it('Check review functionality with multiple reporting periods', function () {
-    interceptUserRequestsOnMounted();
-    interceptPatchRequestsOnMounted();
-
-    const mockMapOfReportingPeriodToActiveDataset = new Map<string, DataMetaInformation>([
-      ['2020', {} as DataMetaInformation],
-      ['2021', {} as DataMetaInformation],
-      ['2022', {} as DataMetaInformation],
-    ]);
-    mountReviewRequestButtonsWithProps(mockCompanyId, DataTypeEnum.Lksg, mockMapOfReportingPeriodToActiveDataset);
-
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod('resolveRequestButton', 'reOpenRequestButton');
-
-    checkForReviewButtonsAndClickOnDropDownReportingPeriod('reOpenRequestButton', 'resolveRequestButton');
-  });
   /**
    * Checks for pop up modal
    * @param expectedPopUp expected pop up dialog
@@ -74,43 +47,17 @@ describe('Component tests for the data request review buttons', function (): voi
     cy.get(popUpdataTestId).should('exist');
     cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
   }
-  /**
-   * Checks dropdown functionality of request review button
-   * @param buttonToClick desired dialog
-   * @param buttonNotToClick if false, display error message
-   */
-  function checkForReviewButtonsAndClickOnDropDownReportingPeriod(
-    buttonToClick: string,
-    buttonNotToClick: string
-  ): void {
-    cy.get(`[data-test="${buttonNotToClick}"]`).should('exist');
-    cy.get(`[data-test="${buttonToClick}"]`).should('exist').click();
 
-    cy.get('[data-test="reporting-periods"] a').contains('2024').should('not.exist');
-    cy.get('[data-test="reporting-periods"] a').contains('2020').should('not.have.class', 'link');
-    cy.get('[data-test="reporting-periods"] a').contains('2021').should('not.have.class', 'link');
-    cy.get('[data-test="reporting-periods"] a').contains('2022').should('have.class', 'link').click();
-    if (buttonToClick == 'reOpenRequestButton') checkTheUpdateRequestModal();
-    cy.get('button[aria-label="CLOSE"]').should('be.visible').click();
-  }
   /**
    * Mocks the community-manager answer for the request of the users data requests
    */
   function interceptUserRequestsOnMounted(): void {
-    const requestFor2022 = mockedRequests.find(
-      (it) => it.reportingPeriod == '2022' && it.datalandCompanyId == 'Mock-Company-Id'
-    );
-    assert(requestFor2022 !== undefined);
-
-    cy.intercept('GET', `**/community/requests/${requestFor2022!.dataRequestId}`, {
+    cy.intercept('GET', `**/community/requests/${mockDataRequestId}`, {
       body: {
         messageHistory: messageHistory,
       },
       status: 200,
     }).as('fetchSingleDataRequests');
-    cy.intercept('GET', `**/community/requests/user`, {
-      body: mockedRequests,
-    }).as('fetchUserRequests');
   }
   /**
    * Mocks the answer for patching the request status
@@ -148,19 +95,13 @@ describe('Component tests for the data request review buttons', function (): voi
    * @param framework framework
    * @param map mapOfReportingPeriodToActiveDataset
    */
-  function mountReviewRequestButtonsWithProps(
-    companyId: string,
-    framework: DataTypeEnum,
-    map: Map<string, DataMetaInformation>
-  ): void {
+  function mountReviewRequestButtons(): void {
     cy.mountWithPlugins(ReviewRequestButtonsComponent, {
       keycloak: minimalKeycloakMock({}),
 
       // @ts-ignore
       props: {
-        companyId: companyId,
-        framework: framework,
-        mapOfReportingPeriodToActiveDataset: map,
+        dataRequestId: mockDataRequestId,
       },
     });
   }
