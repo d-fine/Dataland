@@ -3,14 +3,29 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter.ts';
 import { convertUnixTimeInMsToDateString, dateStringFormatter } from '@/utils/DataFormatUtils.ts';
 import DocumentMetaDataDialog from '@/components/resources/documentPage/DocumentMetaDataDialog.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak.ts';
+import { type DocumentMetaInfoEntity } from '@clients/documentmanager';
 
 describe('Component test for the Document Meta Data Dialog', () => {
-  const dummyDocumentId: string = '00000000-0000-0000-0000-000000000000';
-  const sampleDocumentCategory: string = 'AnnualReport';
-  const dummyCompanyId1: string = '11111111-1111-1111-1111-111111111111';
-  const dummyCompanyId2: string = '22222222-2222-2222-2222-222222222222';
-  const samplePublicationDate: string = '2024-01-01';
-  const sampleReportingPeriod: string = '2023';
+  let documentMetaInfoEntityFromFixture: DocumentMetaInfoEntity;
+  let dummyDocumentId: string;
+  let sampleDocumentCategory: string;
+  let dummyCompanyId1: string;
+  let dummyCompanyId2: string;
+  let samplePublicationDate: string;
+  let sampleReportingPeriod: string;
+
+  before(function () {
+    cy.fixture('DummyDocumentMetaInfoEntity').then(function (jsonContent: DocumentMetaInfoEntity) {
+      documentMetaInfoEntityFromFixture = jsonContent;
+      dummyDocumentId = documentMetaInfoEntityFromFixture.documentId;
+      sampleDocumentCategory = documentMetaInfoEntityFromFixture.documentCategory!;
+      dummyCompanyId1 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[0];
+      dummyCompanyId2 = Array.from(documentMetaInfoEntityFromFixture.companyIds)[1];
+      samplePublicationDate = documentMetaInfoEntityFromFixture.publicationDate!;
+      sampleReportingPeriod = documentMetaInfoEntityFromFixture.reportingPeriod!;
+    });
+  });
+
   const dummyCompanyName1: string = 'dummy-company-1';
   const dummyHeadquarters1: string = 'dummy-city-1';
   const dummyCountryCode: string = 'DC';

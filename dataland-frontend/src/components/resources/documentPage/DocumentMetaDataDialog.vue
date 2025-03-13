@@ -113,10 +113,7 @@ async function getDocumentMetaInformation(): Promise<void> {
           name: (await companyDetailPromise.promise).data.companyName,
         });
       }
-      metaData.value = {
-        ...data,
-        company: companyDetails,
-      };
+      metaData.value = { ...data, company: companyDetails };
     }
   } catch (error) {
     console.error(error);

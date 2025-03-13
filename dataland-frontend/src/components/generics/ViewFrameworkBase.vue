@@ -20,7 +20,7 @@
               v-if="!isReviewableByCurrentUser"
               :data-meta-information="dataMetaInformation"
               :data-type="dataType"
-              :company-i-d="companyID"
+              :company-id="companyID"
             />
             <slot name="reportingPeriodDropdown" />
             <div class="flex align-content-start align-items-center pl-3">

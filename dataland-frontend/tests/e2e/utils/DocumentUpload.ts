@@ -78,7 +78,7 @@ export async function uploadDocumentViaApi(
  * @param documentId the id of the document whose meta info shall be patched.
  * @param documentMetaInfoPatch meta data do patch
  */
-export async function changeDocumentNameAndAddCompanyToDocumentMetaInfoViaApi(
+export async function patchDocumentMetaInfo(
   token: string,
   documentId: string,
   documentMetaInfoPatch: DocumentMetaInfoPatch

@@ -5,9 +5,9 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
     <div style="text-align: left; margin: 0 1rem">
       <ChangeFrameworkDropdown
-        :list-of-meta-info="listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod"
+        :data-meta-information="dataMetaInformation"
         data-type="Documents"
-        :company-i-d="companyId"
+        :company-id="companyId"
       />
       <FrameworkDataSearchDropdownFilter
         :disabled="waitingForData"
@@ -50,8 +50,8 @@
         <template #body="slotProps">
           <div>
             {{ dateStringFormatter(slotProps.data.publicationDate) }}
-          </div></template
-        >
+          </div>
+        </template>
       </Column>
       <Column header="REPORTING PERIOD" field="reportingPeriod" :sortable="true" />
       <Column field="documentType" header="" class="d-bg-white w-1 d-datatable-column-right">
@@ -131,12 +131,11 @@ const selectedDocumentId = ref<string>('');
 const getKeycloakPromise = inject<() => Promise<Keycloak>>('getKeycloakPromise');
 const sortField = ref<keyof DocumentMetaInfoResponse>('publicationDate');
 const sortOrder = ref(1);
-const listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod = ref<DataMetaInformation[]>([]);
+const dataMetaInformation = ref<DataMetaInformation[]>([]);
 
 watch(selectedDocumentType, () => {
   firstRowIndex.value = 0;
   getAllDocumentsForFilters().catch((error) => console.error(error));
-  getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit().catch((error) => console.error(error));
 });
 
 /**
@@ -145,29 +144,24 @@ watch(selectedDocumentType, () => {
 async function getAllDocumentsForFilters(): Promise<void> {
   waitingForData.value = true;
   try {
-    if (getKeycloakPromise) {
-      const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
-        .documentController;
-      if (selectedDocumentType.value) {
-        documentsFiltered.value = (
-          await documentControllerApi.searchForDocumentMetaInformation(
-            props.companyId,
-            convertToEnumSet(selectedDocumentType)
-          )
-        ).data;
-      } else {
-        documentsFiltered.value = (await documentControllerApi.searchForDocumentMetaInformation(props.companyId)).data;
-      }
-      const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
-      const metaDataControllerApi = backendClients.metaDataController;
-      const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
-      listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.value = apiResponse.data;
-    }
+    const documentControllerApi = new ApiClientProvider(assertDefined(getKeycloakPromise)()).apiClients
+      .documentController;
+    documentsFiltered.value = (
+      await documentControllerApi.searchForDocumentMetaInformation(
+        props.companyId,
+        selectedDocumentType.value ? convertToEnumSet(selectedDocumentType) : undefined
+      )
+    ).data;
+    const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
+    const metaDataControllerApi = backendClients.metaDataController;
+    const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
+    dataMetaInformation.value = apiResponse.data;
   } catch (error) {
     console.error(error);
+  } finally {
+    waitingForData.value = false;
+    updateCurrentDisplayedData();
   }
-  waitingForData.value = false;
-  updateCurrentDisplayedData();
 }
 
 /**
@@ -265,27 +259,13 @@ function convertToEnumSet(
   return new Set(selectedTypeRef.value.map((item) => item.documentCategoryDataType));
 }
 
-/**
- * Goes through all data meta info for the currently viewed company and does two things.
- * First it sets the distinct frameworks as options in the framework-dropdown.
- * Then it builds a map which - for the currently chosen framework - maps all reporting periods to the data meta
- * info of the currently active dataset.
- */
-async function getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit(): Promise<void> {
-  const backendClients = new ApiClientProvider(assertDefined(getKeycloakPromise)()).backendClients;
-  const metaDataControllerApi = backendClients.metaDataController;
-  const apiResponse = await metaDataControllerApi.getListOfDataMetaInfo(props.companyId);
-  listOfActiveDataMetaInfoPerFrameworkAndReportingPeriod.value = apiResponse.data;
-}
-
 onMounted(() => {
   getAllDocumentsForFilters().catch((error) => console.error(error));
-  getFrameworkDropdownOptionsAndActiveDataMetaInfoForEmit().catch((error) => console.error(error));
 });
 </script>
 
 <style>
-/** This is used to turn of the search bar in the FrameworkDataSearchDropdownFilter, because there are only 4 elements here. **/
+/** This is used to turn off the search bar in the FrameworkDataSearchDropdownFilter, because there are only 4 elements here. **/
 .p-multiselect-header {
   display: none !important;
 }
@@ -301,6 +281,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: start;
 }
+
 .styled-box {
   padding: 0.5rem 0.75rem;
   border-width: 2px;
@@ -313,6 +294,7 @@ onMounted(() => {
   color: white;
   width: 200px;
 }
+
 .text-content-wrapper {
   margin: 4rem;
   text-align: center;
@@ -326,6 +308,7 @@ onMounted(() => {
   width: 100%;
   box-sizing: border-box;
 }
+
 .centered-element-wrapper {
   display: flex;
   justify-content: center;

@@ -32,7 +32,7 @@ import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataMetaInformation } from '@clients/backend';
 
 const props = defineProps({
-  companyID: {
+  companyId: {
     type: String,
     required: true,
   },
@@ -64,10 +64,10 @@ function getFrameworkListSorted(dataMetaInformation: Array<DataMetaInformation>)
     .map((dataType) => {
       return {
         label: humanizeStringOrNumber(dataType),
-        value: `/companies/${props.companyID}/frameworks/${dataType}`,
+        value: `/companies/${props.companyId}/frameworks/${dataType}`,
       };
     });
-  dataTypesInDropdown.push({ label: 'Documents', value: `/companies/${props.companyID}/documents` });
+  dataTypesInDropdown.push({ label: 'Documents', value: `/companies/${props.companyId}/documents` });
   return dataTypesInDropdown;
 }
 </script>
