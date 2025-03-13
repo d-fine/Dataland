@@ -34,7 +34,7 @@ before applying any changes and align with the team when to apply them.
 
 On all servers to the following:
 - Execute `sudo apt-get update && sudo apt-get upgrade` to update the server (if updates require a reboot it works better to start it manually with `sudo reboot` than from the opened message window)
-- Execute `sudo docker system prune -a` to clean up unused docker components and liberate disk space
+- Execute `sudo docker system prune -all` to clean up unused docker components and liberate disk space
 - Check for new ubuntu releases and install them if available with `sudo do-release-upgrade` (see internal documentation for details, you might need to run `sudo apt update && sudo apt upgrade` first if packages are missing)  
 
 Start the process with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
