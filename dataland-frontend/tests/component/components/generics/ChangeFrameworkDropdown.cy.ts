@@ -62,9 +62,9 @@ describe('Component test for ChangeFrameworkDropdown', () => {
 
     mount(ChangeFrameworkDropdown, {
       props: {
-        companyID: companyId,
+        companyId: companyId,
         dataType: dataType,
-        metaInfo: listOfDataMetaInfo,
+        dataMetaInformation: listOfDataMetaInfo,
       },
     }).then(() => {
       // Dropdown is closed
