@@ -12,10 +12,7 @@ import {
 } from '@e2e/utils/Cypress.ts';
 import { getKeycloakToken } from '@e2e/utils/Auth.ts';
 import { generateDummyCompanyInformation, uploadCompanyViaApi } from '@e2e/utils/CompanyUpload.ts';
-import {
-  changeDocumentNameAndAddCompanyToDocumentMetaInfoViaApi,
-  uploadDocumentViaApi,
-} from '@e2e/utils/DocumentUpload.ts';
+import { patchDocumentMetaInfo, uploadDocumentViaApi } from '@e2e/utils/DocumentUpload.ts';
 import { type DocumentMetaInfoPatch, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 import { join } from 'path';
 
@@ -85,11 +82,7 @@ describeIf(
         companyIds: [storedCompany.companyId] as unknown as Set<string>,
       };
       getKeycloakToken(admin_name, admin_pw).then((token: string) => {
-        return changeDocumentNameAndAddCompanyToDocumentMetaInfoViaApi(
-          token,
-          documentMetaInfoResponse.documentId,
-          documentMetaInfoPatch
-        );
+        return patchDocumentMetaInfo(token, documentMetaInfoResponse.documentId, documentMetaInfoPatch);
       });
 
       visitPageAndClickDownloadButton();
