@@ -10,6 +10,8 @@ const val BASE_PATH_TO_DOCUMENT_MANAGER = "https://local-dev.dataland.com:443/do
 
 const val BASE_PATH_TO_COMMUNITY_MANAGER = "https://local-dev.dataland.com:443/community"
 
+const val BASE_PATH_TO_USER_SERVICE = "https://local-dev.dataland.com:443/users"
+
 const val PATH_TO_KEYCLOAK_TOKENENDPOINT =
     "https://local-dev.dataland.com:443/keycloak/realms/datalandsecurity/protocol/openid-connect/token"
 

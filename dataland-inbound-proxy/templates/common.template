@@ -56,6 +56,12 @@ location /community/ {
   include utils/errorsAsJson.conf;
 }
 
+location /users/ {
+  proxy_pass http://user-service:8080/users/;
+  include utils/proxy.conf;
+  include utils/errorsAsJson.conf;
+}
+
 location /email/ {
   proxy_pass http://email-service:8080/email/;
   include utils/proxy.conf;
