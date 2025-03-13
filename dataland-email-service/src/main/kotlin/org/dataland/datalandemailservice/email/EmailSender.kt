@@ -6,6 +6,7 @@ import com.mailjet.client.transactional.SendEmailsRequest
 import com.mailjet.client.transactional.TransactionalEmail
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component
 @Component
 class EmailSender(
     @Autowired private val mailjetClient: MailjetClient,
+    @Value("\${dataland.email.service.dry.run}") private val dryRunIsActive: Boolean,
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -23,21 +25,26 @@ class EmailSender(
      */
     fun sendEmail(email: Email) {
         try {
-            logEmail(email)
-            val mailjetEmail = TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
-            val request = SendEmailsRequest.builder().message(mailjetEmail).build()
-            val response = request.sendWith(mailjetClient)
-            response.messages.forEach { logger.info(it.toString()) }
-            logger.info("Email successfully sent.")
+            if (dryRunIsActive) {
+                logEmailInDryRun(email)
+            } else {
+                logEmail(email)
+                val mailjetEmail =
+                    TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
+                val request = SendEmailsRequest.builder().message(mailjetEmail).build()
+                val response = request.sendWith(mailjetClient)
+                response.messages.forEach { logger.info(it.toString()) }
+                logger.info("Email successfully sent.")
+            }
         } catch (e: MailjetException) {
             logger.error("Error sending email, with error: $e")
         }
     }
 
-    private fun logEmail(email: Email) {
-        val emailLog =
+    private fun descriptiveString(email: Email): String {
+        val description =
             buildString {
-                append("Sending email with subject \"${email.content.subject}\"\n")
+                append("email with subject \"${email.content.subject}\"\n")
                 append("(sender: ${email.sender.emailAddress})\n")
                 append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
 
@@ -48,6 +55,27 @@ class EmailSender(
                 if (email.bcc.isNotEmpty()) {
                     append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
                 }
+            }
+
+        return description
+    }
+
+    private fun logEmail(email: Email) {
+        val emailLog =
+            buildString {
+                append("Sending ")
+                append(descriptiveString(email))
+            }
+
+        logger.info(emailLog)
+    }
+
+    private fun logEmailInDryRun(email: Email) {
+        val emailLog =
+            buildString {
+                append("Withholding ")
+                append(descriptiveString(email))
+                append("due to email service dry run!")
             }
 
         logger.info(emailLog)
