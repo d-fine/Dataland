@@ -66,17 +66,16 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancials : BaseJavaMigration()
         )
 
         val dataset = dataTableEntity.dataJsonObject
-        sfdrData
-            .get(
-                Pair(
-                    dataTableEntity.companyAssociatedData.getString("companyId"),
-                    dataTableEntity.companyAssociatedData.getString("reportingPeriod"),
-                ),
-            )?.let {
-                it.forEach { (key, value) ->
-                    dataset.optJSONObject("general").put(key, value ?: JSONObject.NULL)
-                }
+        sfdrData[
+            Pair(
+                dataTableEntity.companyAssociatedData.getString("companyId"),
+                dataTableEntity.companyAssociatedData.getString("reportingPeriod"),
+            ),
+        ]?.let {
+            it.forEach { (key, value) ->
+                dataset.optJSONObject("general").put(key, value ?: JSONObject.NULL)
             }
+        }
         dataTableEntity.companyAssociatedData.put("data", dataset.toString())
     }
 }
