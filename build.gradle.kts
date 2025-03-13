@@ -51,7 +51,11 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt(libs.detekt.cli)
-    detekt(libs.kotlin.compiler.embeddable)
+    detekt(libs.kotlin.compiler.embeddable) {
+        version {
+            strictly("2.0.21")
+        }
+    }
 }
 
 java.sourceCompatibility = jvmVersion
