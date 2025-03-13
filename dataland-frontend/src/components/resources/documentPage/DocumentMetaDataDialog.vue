@@ -103,14 +103,19 @@ async function getDocumentMetaInformation(): Promise<void> {
         .companyDataController;
       const data: DocumentMetaInfoEntity = (await documentControllerApi.getDocumentMetaInformation(props.documentId))
         .data;
-      const companyDetails = ref<CompanyDetails[]>([]);
-      for (const companyId of Array.from(data.companyIds)) {
-        const company = await companyDataControllerApi.getCompanyInfo(companyId);
-        companyDetails.value.push({ id: companyId, name: company.data.companyName });
+      const companyDetailsPromises = Array.from(data.companyIds).map((companyId) => {
+        return { id: companyId, promise: companyDataControllerApi.getCompanyInfo(companyId) };
+      });
+      const companyDetails: CompanyDetails[] = [];
+      for (const companyDetailPromise of companyDetailsPromises) {
+        companyDetails.push({
+          id: companyDetailPromise.id,
+          name: (await companyDetailPromise.promise).data.companyName,
+        });
       }
       metaData.value = {
         ...data,
-        company: companyDetails.value,
+        company: companyDetails,
       };
     }
   } catch (error) {
