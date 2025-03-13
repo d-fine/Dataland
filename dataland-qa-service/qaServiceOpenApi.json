@@ -2870,7 +2870,6 @@
       "QaReportDataPointCurrencyDataPoint": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -2889,7 +2888,6 @@
       "QaReportDataPointExtendedDataPointBigDecimal": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -2908,7 +2906,6 @@
       "QaReportDataPointExtendedDataPointBigInteger": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -2927,7 +2924,6 @@
       "QaReportDataPointExtendedDataPointYesNo": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3770,7 +3766,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasAlignedDenominator": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3789,7 +3784,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasAlignedNumerator": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3808,7 +3802,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasEligibleButNotAligned": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3827,7 +3820,6 @@
       "QaReportDataPointExtendedDataPointNuclearAndGasNonEligible": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -3846,7 +3838,6 @@
       "QaReportDataPointMapStringCompanyReport": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4881,7 +4872,6 @@
       "QaReportDataPointExtendedDataPointEutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4900,7 +4890,6 @@
       "QaReportDataPointExtendedDataPointListEuTaxonomyActivity": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4919,7 +4908,6 @@
       "QaReportDataPointExtendedDataPointListEuTaxonomyAlignedActivity": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4938,7 +4926,6 @@
       "QaReportDataPointExtendedDataPointLocalDate": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -4957,7 +4944,6 @@
       "QaReportDataPointExtendedDataPointYesNoNa": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -5888,7 +5874,6 @@
       "QaReportDataPointExtendedDataPointEutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -5982,7 +5967,6 @@
       "QaReportDataPointExtendedDataPointAdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
@@ -6001,7 +5985,6 @@
       "QaReportDataPointString": {
         "required": [
           "comment",
-          "correctedData",
           "verdict"
         ],
         "type": "object",
