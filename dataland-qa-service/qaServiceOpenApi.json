@@ -4511,6 +4511,18 @@
           "numberOfEmployees": {
             "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointBigDecimal"
           },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "iloCoreLabourStandards": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
+          "humanRightsDueDiligence": {
+            "$ref": "#/components/schemas/QaReportDataPointExtendedDataPointYesNo"
+          },
           "referencedReports": {
             "$ref": "#/components/schemas/QaReportDataPointMapStringCompanyReport"
           }

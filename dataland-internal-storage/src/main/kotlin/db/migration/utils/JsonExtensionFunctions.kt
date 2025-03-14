@@ -18,3 +18,17 @@ fun JSONObject.getOrJavaNull(key: String): Any? {
         anyObject
     }
 }
+
+/**
+ * Returns a nested JSON-field using a path specifier.
+ * @param keyPath the path specifying the field (e.g. "social/socialAndEmployeeMatters/rateOfAccidents").
+ *                Hierarchies are expected to be separated by '/'.
+ */
+fun JSONObject.getFromPath(keyPath: String): Any? =
+    keyPath
+        .split('/')
+        .dropLast(1)
+        .fold(this, { jsonObj: JSONObject?, pathSegment: String ->
+            jsonObj?.optJSONObject(pathSegment)
+        })
+        ?.getOrJavaNull(keyPath.substringAfterLast('/'))

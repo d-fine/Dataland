@@ -1,0 +1,1091 @@
+{
+  "companyId": "27e313a2-c847-4869-90b3-52c7516ef93a",
+  "reportingPeriod": "2021",
+  "data": {
+    "general": {
+      "general": {
+        "dataDate": "2024-09-16",
+        "fiscalYearDeviation": "Deviation",
+        "fiscalYearEnd": "2024-12-15",
+        "referencedReports": {
+          "AnnualReport": {
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "fileName": "AnnualReport",
+            "publicationDate": "2023-07-02"
+          }
+        }
+      }
+    },
+    "environmental": {
+      "greenhouseGasEmissions": {
+        "scope1GhgEmissionsInTonnes": null,
+        "scope2GhgEmissionsInTonnes": {
+          "value": 21783.34,
+          "quality": "Reported",
+          "comment": "back up optical alarm",
+          "dataSource": {
+            "page": "39-348",
+            "tagName": "content",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "scope2GhgEmissionsLocationBasedInTonnes": null,
+        "scope2GhgEmissionsMarketBasedInTonnes": {
+          "value": null,
+          "quality": null,
+          "comment": "parse auxiliary application",
+          "dataSource": null
+        },
+        "scope1And2GhgEmissionsInTonnes": {
+          "value": null,
+          "quality": null,
+          "comment": "bypass auxiliary matrix",
+          "dataSource": null
+        },
+        "scope1And2GhgEmissionsLocationBasedInTonnes": null,
+        "scope1And2GhgEmissionsMarketBasedInTonnes": {
+          "value": 74124.93,
+          "quality": "Estimated",
+          "comment": "generate neural system",
+          "dataSource": null
+        },
+        "scope3GhgEmissionsInTonnes": {
+          "value": 87978.56,
+          "quality": "Reported",
+          "comment": "navigate optical array",
+          "dataSource": {
+            "page": "958-1240",
+            "tagName": "relationships",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "scope3UpstreamGhgEmissionsInTonnes": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "hack open-source circuit",
+          "dataSource": {
+            "page": "1192",
+            "tagName": "markets",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "scope3DownstreamGhgEmissionsInTonnes": {
+          "value": 71212.53,
+          "quality": "Audited",
+          "comment": "input cross-platform matrix",
+          "dataSource": {
+            "page": "501",
+            "tagName": "experiences",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "scope1And2And3GhgEmissionsInTonnes": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": "program neural capacitor",
+          "dataSource": {
+            "page": "234",
+            "tagName": "solutions",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "scope1And2And3GhgEmissionsLocationBasedInTonnes": null,
+        "scope1And2And3GhgEmissionsMarketBasedInTonnes": {
+          "value": 47837.92,
+          "quality": "Reported",
+          "comment": null,
+          "dataSource": {
+            "page": "850",
+            "tagName": "large language models",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "scope4GhgEmissionsInTonnes": null,
+        "enterpriseValue": {
+          "value": 3323681254.03,
+          "quality": "Audited",
+          "comment": "index virtual transmitter",
+          "dataSource": {
+            "page": "1185",
+            "tagName": "e-commerce",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          },
+          "currency": "JMD"
+        },
+        "totalRevenue": {
+          "value": 6738261657.21,
+          "quality": "Reported",
+          "comment": null,
+          "dataSource": {
+            "page": "458-728",
+            "tagName": "metrics",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          },
+          "currency": "NPR"
+        },
+        "carbonFootprintInTonnesPerMillionEURRevenue": {
+          "value": 54901.31,
+          "quality": "Incomplete",
+          "comment": "compress cross-platform microchip",
+          "dataSource": {
+            "page": "1070",
+            "tagName": "solutions",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "ghgIntensityInTonnesPerMillionEURRevenue": {
+          "value": 47187.06,
+          "quality": "Audited",
+          "comment": null,
+          "dataSource": {
+            "page": "813",
+            "tagName": "platforms",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "ghgIntensityScope1InTonnesPerMillionEURRevenue": null,
+        "ghgIntensityScope2InTonnesPerMillionEURRevenue": {
+          "value": 49751.91,
+          "quality": null,
+          "comment": "quantify solid state application",
+          "dataSource": null
+        },
+        "ghgIntensityScope3InTonnesPerMillionEURRevenue": {
+          "value": 78228.89,
+          "quality": "NoDataFound",
+          "comment": "connect cross-platform monitor",
+          "dataSource": null
+        },
+        "ghgIntensityScope4InTonnesPerMillionEURRevenue": {
+          "value": 17504.64,
+          "quality": "NoDataFound",
+          "comment": "back up open-source bus",
+          "dataSource": {
+            "page": "158-963",
+            "tagName": "schemas",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "fossilFuelSectorExposure": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "reboot 1080p application",
+          "dataSource": {
+            "page": "214-809",
+            "tagName": "web services",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "financedScope1AndScope2Emissions": {
+          "value": 92328.49,
+          "quality": "Reported",
+          "comment": "compress 1080p capacitor",
+          "dataSource": {
+            "page": "216-654",
+            "tagName": "niches",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "financedScope3Emissions": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": "reboot redundant transmitter",
+          "dataSource": {
+            "page": "740",
+            "tagName": "channels",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        }
+      },
+      "energyPerformance": {
+        "renewableEnergyProductionInGWh": {
+          "value": null,
+          "quality": null,
+          "comment": "override back-end bus",
+          "dataSource": {
+            "page": "1067-1264",
+            "tagName": "systems",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "renewableEnergyConsumptionInGWh": {
+          "value": 49215.51,
+          "quality": "Estimated",
+          "comment": "synthesize neural firewall",
+          "dataSource": {
+            "page": "343-465",
+            "tagName": "supply-chains",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "nonRenewableEnergyProductionInGWh": {
+          "value": 31210.05,
+          "quality": null,
+          "comment": "generate multi-byte bandwidth",
+          "dataSource": {
+            "page": "894-1153",
+            "tagName": "convergence",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "relativeNonRenewableEnergyProductionInPercent": null,
+        "nonRenewableEnergyConsumptionInGWh": {
+          "value": 82903.61,
+          "quality": null,
+          "comment": "synthesize online protocol",
+          "dataSource": {
+            "page": "652-1009",
+            "tagName": "synergies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "relativeNonRenewableEnergyConsumptionInPercent": {
+          "value": 60901.95,
+          "quality": null,
+          "comment": null,
+          "dataSource": {
+            "page": "182-1151",
+            "tagName": "mindshare",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "applicableHighImpactClimateSectors": {
+          "NaceCodeC": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "value": 13742.72,
+              "quality": "Reported",
+              "comment": "bypass mobile monitor",
+              "dataSource": {
+                "page": "814-1090",
+                "tagName": "mindshare",
+                "fileName": "AnnualReport",
+                "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+                "publicationDate": null
+              }
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": null
+          },
+          "NaceCodeL": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": null,
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": null
+          },
+          "NaceCodeD": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "value": 92964.07,
+              "quality": "Incomplete",
+              "comment": null,
+              "dataSource": {
+                "page": "759-781",
+                "tagName": "architectures",
+                "fileName": "AnnualReport",
+                "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+                "publicationDate": null
+              }
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "value": 70300.51,
+              "quality": "Reported",
+              "comment": "calculate multi-byte sensor",
+              "dataSource": {
+                "page": "1085",
+                "tagName": "niches",
+                "fileName": "AnnualReport",
+                "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+                "publicationDate": null
+              }
+            }
+          },
+          "NaceCodeH": {
+            "highImpactClimateSectorEnergyConsumptionInGWh": {
+              "value": 70772.67,
+              "quality": "Audited",
+              "comment": "override open-source protocol",
+              "dataSource": {
+                "page": "153-942",
+                "tagName": "communities",
+                "fileName": "AnnualReport",
+                "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+                "publicationDate": null
+              }
+            },
+            "highImpactClimateSectorEnergyConsumptionInGWhPerMillionEURRevenue": {
+              "value": 4153.4,
+              "quality": "NoDataFound",
+              "comment": "copy mobile card",
+              "dataSource": {
+                "page": "420-1205",
+                "tagName": "architectures",
+                "fileName": "AnnualReport",
+                "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+                "publicationDate": null
+              }
+            }
+          }
+        },
+        "totalHighImpactClimateSectorEnergyConsumptionInGWh": {
+          "value": 75222.12,
+          "quality": "Estimated",
+          "comment": "input primary pixel",
+          "dataSource": {
+            "page": "833-915",
+            "tagName": "schemas",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "nonRenewableEnergyConsumptionFossilFuelsInGWh": null,
+        "nonRenewableEnergyConsumptionCrudeOilInGWh": {
+          "value": 12705.21,
+          "quality": null,
+          "comment": "reboot online driver",
+          "dataSource": {
+            "page": "382-592",
+            "tagName": "mindshare",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "nonRenewableEnergyConsumptionNaturalGasInGWh": {
+          "value": 35694.3,
+          "quality": "Estimated",
+          "comment": "hack wireless bus",
+          "dataSource": {
+            "page": "650",
+            "tagName": "metrics",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "nonRenewableEnergyConsumptionLigniteInGWh": null,
+        "nonRenewableEnergyConsumptionCoalInGWh": {
+          "value": 31756.84,
+          "quality": "NoDataFound",
+          "comment": null,
+          "dataSource": {
+            "page": "363",
+            "tagName": "partnerships",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "nonRenewableEnergyConsumptionNuclearEnergyInGWh": {
+          "value": 79132.75,
+          "quality": "Audited",
+          "comment": "reboot redundant microchip",
+          "dataSource": {
+            "page": "1029",
+            "tagName": "synergies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "nonRenewableEnergyConsumptionOtherInGWh": {
+          "value": 59644.82,
+          "quality": null,
+          "comment": null,
+          "dataSource": null
+        }
+      },
+      "biodiversity": {
+        "primaryForestAndWoodedLandOfNativeSpeciesExposure": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": null,
+          "dataSource": {
+            "page": "1049",
+            "tagName": "convergence",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "protectedAreasExposure": {
+          "value": "No",
+          "quality": "Audited",
+          "comment": "hack mobile system",
+          "dataSource": {
+            "page": "1124-1176",
+            "tagName": "initiatives",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "rareOrEndangeredEcosystemsExposure": {
+          "value": "Yes",
+          "quality": "NoDataFound",
+          "comment": "index open-source card",
+          "dataSource": {
+            "page": "231-300",
+            "tagName": "partnerships",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "highlyBiodiverseGrasslandExposure": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "input digital sensor",
+          "dataSource": {
+            "page": "1142",
+            "tagName": "large language models",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "manufactureOfAgrochemicalPesticidesProducts": {
+          "value": null,
+          "quality": "Audited",
+          "comment": "index online bus",
+          "dataSource": {
+            "page": "260",
+            "tagName": "users",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "landDegradationDesertificationSoilSealingExposure": {
+          "value": "Yes",
+          "quality": null,
+          "comment": "parse multi-byte hard drive",
+          "dataSource": {
+            "page": "816",
+            "tagName": "paradigms",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "sustainableAgriculturePolicy": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": null,
+          "dataSource": {
+            "page": "915-1159",
+            "tagName": "markets",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "sustainableOceansAndSeasPolicy": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": null,
+          "dataSource": {
+            "page": "651-1122",
+            "tagName": "methodologies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "threatenedSpeciesExposure": null,
+        "biodiversityProtectionPolicy": null,
+        "deforestationPolicy": {
+          "value": null,
+          "quality": "Audited",
+          "comment": "bypass optical transmitter",
+          "dataSource": {
+            "page": "345",
+            "tagName": "markets",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        }
+      },
+      "water": {
+        "emissionsToWaterInTonnes": {
+          "value": 15883.12,
+          "quality": null,
+          "comment": "program wireless bandwidth",
+          "dataSource": {
+            "page": "183-519",
+            "tagName": "synergies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "waterConsumptionInCubicMeters": null,
+        "waterReusedInCubicMeters": null,
+        "relativeWaterUsageInCubicMetersPerMillionEURRevenue": {
+          "value": 18142.14,
+          "quality": "NoDataFound",
+          "comment": null,
+          "dataSource": null
+        },
+        "waterManagementPolicy": {
+          "value": "No",
+          "quality": "Estimated",
+          "comment": "transmit bluetooth monitor",
+          "dataSource": {
+            "page": "53",
+            "tagName": "networks",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "highWaterStressAreaExposure": {
+          "value": "No",
+          "quality": null,
+          "comment": "override solid state array",
+          "dataSource": null
+        }
+      },
+      "waste": {
+        "hazardousAndRadioactiveWasteInTonnes": null,
+        "nonRecycledWasteInTonnes": {
+          "value": 6112.88,
+          "quality": null,
+          "comment": "synthesize digital interface",
+          "dataSource": {
+            "page": "1039",
+            "tagName": "interfaces",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        }
+      },
+      "emissions": {
+        "emissionsOfInorganicPollutantsInTonnes": {
+          "value": 19880.9,
+          "quality": "NoDataFound",
+          "comment": null,
+          "dataSource": {
+            "page": "358-362",
+            "tagName": "markets",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "emissionsOfAirPollutantsInTonnes": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": null,
+          "dataSource": {
+            "page": "22-913",
+            "tagName": "AI",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "emissionsOfOzoneDepletionSubstancesInTonnes": {
+          "value": 41682.96,
+          "quality": "Audited",
+          "comment": "generate bluetooth protocol",
+          "dataSource": {
+            "page": "1051",
+            "tagName": "technologies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "carbonReductionInitiatives": null
+      }
+    },
+    "social": {
+      "socialAndEmployeeMatters": {
+        "humanRightsLegalProceedings": {
+          "value": null,
+          "quality": "Audited",
+          "comment": "transmit haptic capacitor",
+          "dataSource": {
+            "page": "461",
+            "tagName": "interfaces",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "iloCoreLabourStandards": {
+          "value": "Yes",
+          "quality": null,
+          "comment": null,
+          "dataSource": {
+            "page": "57",
+            "tagName": "paradigms",
+            "fileName": "SustainabilityReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "environmentalPolicy": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "input virtual matrix",
+          "dataSource": {
+            "page": "955-1205",
+            "tagName": "initiatives",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "corruptionLegalProceedings": null,
+        "transparencyDisclosurePolicy": {
+          "value": "Yes",
+          "quality": "Incomplete",
+          "comment": "override haptic matrix",
+          "dataSource": {
+            "page": "279-1080",
+            "tagName": "users",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "humanRightsDueDiligencePolicy": {
+          "value": null,
+          "quality": null,
+          "comment": "program optical microchip",
+          "dataSource": null
+        },
+        "policyAgainstChildLabour": null,
+        "policyAgainstForcedLabour": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": "parse solid state port",
+          "dataSource": {
+            "page": "259-614",
+            "tagName": "synergies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "policyAgainstDiscriminationInTheWorkplace": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": "input bluetooth driver",
+          "dataSource": {
+            "page": "416",
+            "tagName": "systems",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "iso14001Certificate": {
+          "value": null,
+          "quality": "Audited",
+          "comment": "index solid state port",
+          "dataSource": {
+            "page": "837",
+            "tagName": "AI",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "policyAgainstBriberyAndCorruption": {
+          "value": "Yes",
+          "quality": "Audited",
+          "comment": "generate bluetooth system",
+          "dataSource": {
+            "page": "1055-1171",
+            "tagName": "relationships",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "fairBusinessMarketingAdvertisingPolicy": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "override primary application",
+          "dataSource": {
+            "page": "395-504",
+            "tagName": "markets",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "technologiesExpertiseTransferPolicy": {
+          "value": "Yes",
+          "quality": "NoDataFound",
+          "comment": "calculate wireless circuit",
+          "dataSource": {
+            "page": "941",
+            "tagName": "large language models",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "fairCompetitionPolicy": {
+          "value": "No",
+          "quality": "NoDataFound",
+          "comment": "compress optical protocol",
+          "dataSource": {
+            "page": "338",
+            "tagName": "metrics",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "violationOfTaxRulesAndRegulation": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": null,
+          "dataSource": {
+            "page": "1105",
+            "tagName": "architectures",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "unGlobalCompactPrinciplesCompliancePolicy": null,
+        "oecdGuidelinesForMultinationalEnterprisesGrievanceHandling": {
+          "value": "Yes",
+          "quality": "Estimated",
+          "comment": "calculate wireless transmitter",
+          "dataSource": null
+        },
+        "averageGrossHourlyEarningsMaleEmployees": {
+          "value": 7237937642.58,
+          "quality": "Reported",
+          "comment": "back up solid state sensor",
+          "dataSource": {
+            "page": "12-438",
+            "tagName": "schemas",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          },
+          "currency": "TTD"
+        },
+        "averageGrossHourlyEarningsFemaleEmployees": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "override bluetooth panel",
+          "dataSource": null,
+          "currency": "MYR"
+        },
+        "unadjustedGenderPayGapInPercent": {
+          "value": 98255.63,
+          "quality": "NoDataFound",
+          "comment": "synthesize optical matrix",
+          "dataSource": {
+            "page": "485",
+            "tagName": "supply-chains",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "femaleBoardMembersSupervisoryBoard": {
+          "value": 8891,
+          "quality": "Audited",
+          "comment": "parse mobile sensor",
+          "dataSource": {
+            "page": "503",
+            "tagName": "deliverables",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "femaleBoardMembersBoardOfDirectors": {
+          "value": 5502,
+          "quality": "Reported",
+          "comment": "calculate multi-byte bus",
+          "dataSource": {
+            "page": "889-1192",
+            "tagName": "synergies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "maleBoardMembersSupervisoryBoard": null,
+        "maleBoardMembersBoardOfDirectors": {
+          "value": 2754,
+          "quality": null,
+          "comment": "reboot open-source monitor",
+          "dataSource": null
+        },
+        "boardGenderDiversitySupervisoryBoardInPercent": null,
+        "boardGenderDiversityBoardOfDirectorsInPercent": {
+          "value": null,
+          "quality": null,
+          "comment": "reboot haptic interface",
+          "dataSource": null
+        },
+        "controversialWeaponsExposure": {
+          "value": "No",
+          "quality": "NoDataFound",
+          "comment": "connect auxiliary port",
+          "dataSource": {
+            "page": "575-746",
+            "tagName": "technologies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "workplaceAccidentPreventionPolicy": {
+          "value": "No",
+          "quality": null,
+          "comment": "connect multi-byte application",
+          "dataSource": {
+            "page": "320",
+            "tagName": "markets",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "rateOfAccidents": {
+          "value": 40064.17,
+          "quality": "Estimated",
+          "comment": "calculate mobile microchip",
+          "dataSource": {
+            "page": "325-800",
+            "tagName": "content",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "workdaysLostInDays": {
+          "value": null,
+          "quality": "Incomplete",
+          "comment": "generate virtual panel",
+          "dataSource": null
+        },
+        "supplierCodeOfConduct": {
+          "value": "No",
+          "quality": "Reported",
+          "comment": "reboot digital interface",
+          "dataSource": {
+            "page": "931",
+            "tagName": "infrastructures",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "grievanceHandlingMechanism": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": "quantify mobile application",
+          "dataSource": null
+        },
+        "whistleblowerProtectionPolicy": {
+          "value": "No",
+          "quality": null,
+          "comment": "transmit online capacitor",
+          "dataSource": {
+            "page": "85-718",
+            "tagName": "deliverables",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "reportedIncidentsOfDiscrimination": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": "program mobile port",
+          "dataSource": {
+            "page": "905",
+            "tagName": "web services",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "sanctionedIncidentsOfDiscrimination": {
+          "value": null,
+          "quality": "Estimated",
+          "comment": null,
+          "dataSource": {
+            "page": "98",
+            "tagName": "technologies",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "excessiveCeoPayRatio": {
+          "value": 12563.59,
+          "quality": "Audited",
+          "comment": "program 1080p monitor",
+          "dataSource": {
+            "page": "384",
+            "tagName": "channels",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        }
+      },
+      "greenSecurities": {
+        "securitiesNotCertifiedAsGreen": {
+          "value": null,
+          "quality": "NoDataFound",
+          "comment": "connect haptic microchip",
+          "dataSource": {
+            "page": "310-932",
+            "tagName": "solutions",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        }
+      },
+      "humanRights": {
+        "humanRightsPolicy": {
+          "value": "No",
+          "quality": "Incomplete",
+          "comment": null,
+          "dataSource": null
+        },
+        "humanRightsDueDiligence": null,
+        "traffickingInHumanBeingsPolicy": {
+          "value": "No",
+          "quality": null,
+          "comment": "override neural pixel",
+          "dataSource": {
+            "page": "703",
+            "tagName": "communities",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "reportedChildLabourIncidents": {
+          "value": "No",
+          "quality": "NoDataFound",
+          "comment": null,
+          "dataSource": {
+            "page": "1099-1169",
+            "tagName": "large language models",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "reportedForcedOrCompulsoryLabourIncidents": {
+          "value": "No",
+          "quality": "Audited",
+          "comment": null,
+          "dataSource": {
+            "page": "939-1260",
+            "tagName": "functionalities",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "numberOfReportedIncidentsOfHumanRightsViolations": {
+          "value": 7367,
+          "quality": "NoDataFound",
+          "comment": null,
+          "dataSource": {
+            "page": "908-1079",
+            "tagName": "schemas",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        }
+      },
+      "antiCorruptionAndAntiBribery": {
+        "casesOfInsufficientActionAgainstBriberyAndCorruption": {
+          "value": 3582,
+          "quality": "NoDataFound",
+          "comment": "override redundant microchip",
+          "dataSource": {
+            "page": "1047-1050",
+            "tagName": "lifetime value",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "reportedConvictionsOfBriberyAndCorruption": {
+          "value": 2210,
+          "quality": null,
+          "comment": null,
+          "dataSource": {
+            "page": "125-1013",
+            "tagName": "deliverables",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          }
+        },
+        "totalAmountOfReportedFinesOfBriberyAndCorruption": {
+          "value": 8339682502.01,
+          "quality": "Estimated",
+          "comment": null,
+          "dataSource": {
+            "page": "942",
+            "tagName": "deliverables",
+            "fileName": "AnnualReport",
+            "fileReference": "1902e40099c913ecf3715388cb2d9f7f84e6f02a19563db6930adb7b6cf22868",
+            "publicationDate": null
+          },
+          "currency": "HKD"
+        }
+      }
+    }
+  }
+}
