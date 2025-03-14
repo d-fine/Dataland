@@ -233,7 +233,7 @@ describe('Component tests for the data requests search page', function (): void 
         .clear()
         .type('companyAnswered');
       cy.get('[data-test="requested-Datasets-Resolve"]').should('exist').should('be.visible').click();
-      cy.get('@routerPush').should('have.been.calledWith', '/companies/compA/frameworks/p2p');
+      cy.get('@routerPush').should('have.been.calledWith', `/requests/${dummyRequestId}`);
     });
   });
 
