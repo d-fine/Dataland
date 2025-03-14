@@ -24,7 +24,7 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancials : BaseJavaMigration()
                 sfdrData,
                 setOf(
                     "social/socialAndEmployeeMatters/iloCoreLabourStandards",
-                    "social/socialAndEmployeeMatters/humanRightsDueDiligence",
+                    "social/humanRights/humanRightsDueDiligence",
                 ),
             )
         migrateCompanyAssociatedDataOfDatatype(

@@ -42,7 +42,7 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancialsTest {
                 TestUtils().readDataSetsAsStoredInDatabase(sfdrTestDataSets),
                 setOf(
                     "social/socialAndEmployeeMatters/iloCoreLabourStandards",
-                    "social/socialAndEmployeeMatters/humanRightsDueDiligence",
+                    "social/humanRights/humanRightsDueDiligence",
                 ),
             )
     }

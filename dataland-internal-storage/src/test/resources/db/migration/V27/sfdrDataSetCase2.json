@@ -990,7 +990,12 @@
             "publicationDate": null
           }
         },
-        "humanRightsDueDiligence": null,
+        "humanRightsDueDiligence": {
+          "value": "No",
+          "quality": "NoDataFound",
+          "comment": "",
+          "dataSource": null
+        },
         "traffickingInHumanBeingsPolicy": {
           "value": "Yes",
           "quality": "Audited",

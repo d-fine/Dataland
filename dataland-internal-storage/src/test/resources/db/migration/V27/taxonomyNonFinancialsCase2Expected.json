@@ -42,7 +42,12 @@
           "publicationDate": null
         }
       },
-      "humanRightsDueDiligence": null
+      "humanRightsDueDiligence": {
+        "value": "No",
+        "quality": "NoDataFound",
+        "comment": "",
+        "dataSource": null
+      }
     },
     "revenue": {
       "totalAmount": null,
