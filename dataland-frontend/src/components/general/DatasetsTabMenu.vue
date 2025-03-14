@@ -8,6 +8,8 @@
         :tabindex="initialTabIndex"
         :disabled="!(tabs.indexOf(tab) == initialTabIndex || (tab.isVisible ?? true))"
         :active="initialTabIndex == tabs.indexOf(tab)"
+        :data-p-active="initialTabIndex == tabs.indexOf(tab)"
+        v-bind:class="initialTabIndex == tabs.indexOf(tab) ? 'p-tab-active' : ''"
       >
         <router-link v-if="tab.route" v-slot="{ href, navigate }" :to="tab.route">
           <a :href="href" @click="navigate">

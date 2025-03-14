@@ -23,7 +23,7 @@
         font-family: variables.$ibm-plex-sans;
       }
 
-      &:not(.p-disabled):hover {
+      &:not(.p-disabled):not(.p-tab-active):hover {
         border-color: variables.$gray-light;
       }
       &.p-disabled {
@@ -35,10 +35,6 @@
       border-color: colors.$main-color;
       a{
         color: colors.$main-color;
-      }
-
-      &:hover {
-        border-color: colors.$main-color;
       }
     }
   }
