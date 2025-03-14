@@ -127,11 +127,13 @@
                         inputId="emailOnUpdateInput"
                         v-model="emailOnUpdate"
                       />
-                      <label for="emailOnUpdateInput" v-if="emailOnUpdate">
+                      <label for="emailOnUpdateInput" v-if="emailOnUpdate" data-test="emailOnUpdateText">
                         You receive an email immediately after the next status change, i.e. if the data is available or
                         the data provider says there is no data <em>for each request. This can be many emails.</em>
                       </label>
-                      <label for="emailOnUpdateInput" v-else> You receive updates in your weekly summary letter.</label>
+                      <label for="emailOnUpdateInput" v-else data-test="emailOnUpdateText">
+                        You receive updates in your weekly summary letter.
+                      </label>
                     </BasicFormSection>
 
                     <BasicFormSection :data-test="'selectIdentifiersDiv'" header="Provide Company Identifiers">

@@ -41,6 +41,23 @@ describe('Component tests for the single data request page', function (): void {
     });
   });
 
+  it('Check email notification toggle', () => {
+    cy.mountWithPlugins(SingleDataRequestComponent, {
+      keycloak: minimalKeycloakMock({}),
+      router: router,
+    }).then(() => {
+      cy.get('[data-test="emailOnUpdate"]').within(() => {
+        cy.get('[data-test="emailOnUpdateInput"]').scrollIntoView();
+        cy.get('[data-test="emailOnUpdateInput"]').should('be.visible');
+        cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'summary');
+        cy.get('[data-test="emailOnUpdateInput"]').click();
+        cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'immediate');
+        cy.get('[data-test="emailOnUpdateInput"]').click();
+        cy.get('[data-test="emailOnUpdateText"]').should('contain.text', 'summary');
+      });
+    });
+  });
+
   it('check email validation', function (): void {
     cy.mountWithPlugins(SingleDataRequestComponent, {
       keycloak: minimalKeycloakMock({}),
