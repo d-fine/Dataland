@@ -15,18 +15,6 @@
   </div>
 </template>
 
-<style scoped>
-div {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: calc(41vw - 175px);
-  @media only screen and (max-width: 768px) {
-    max-width: calc(100vw - 200px);
-  }
-}
-</style>
-
 <script lang="ts">
 import { defineComponent, inject } from 'vue';
 import type Keycloak from 'keycloak-js';
@@ -159,3 +147,15 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: calc(41vw - 175px);
+  @media only screen and (max-width: 768px) {
+    max-width: calc(100vw - 200px);
+  }
+}
+</style>

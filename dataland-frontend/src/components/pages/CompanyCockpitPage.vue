@@ -73,7 +73,7 @@ import type { Content, Page } from '@/types/ContentTypes';
 import type Keycloak from 'keycloak-js';
 import FrameworkSummaryPanel from '@/components/resources/companyCockpit/FrameworkSummaryPanel.vue';
 import CompanyInfoSheet from '@/components/general/CompanyInfoSheet.vue';
-import { FRAMEWORKS_ALL, FRAMEWORKS_MAIN } from '@/utils/Constants';
+import { ALL_FRAMEWORKS_IN_DISPLAYED_ORDER, MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import ClaimOwnershipPanel from '@/components/resources/companyCockpit/ClaimOwnershipPanel.vue';
 import { checkIfUserHasRole } from '@/utils/KeycloakUtils';
 import { hasCompanyAtLeastOneCompanyOwner } from '@/utils/CompanyRolesUtils';
@@ -127,8 +127,8 @@ export default defineComponent({
       aggregatedFrameworkDataSummary: undefined as
         | { [key in DataTypeEnum]: AggregatedFrameworkDataSummary }
         | undefined,
-      FRAMEWORKS_ALL,
-      FRAMEWORKS_MAIN,
+      FRAMEWORKS_ALL: ALL_FRAMEWORKS_IN_DISPLAYED_ORDER,
+      FRAMEWORKS_MAIN: MAIN_FRAMEWORKS_IN_ENUM_CLASS_ORDER,
       DocumentMetaInfoDocumentCategoryEnum,
       isUserCompanyOwnerOrUploader: false,
       isUserKeycloakUploader: false,
@@ -173,7 +173,7 @@ export default defineComponent({
 
   mounted() {
     void this.getAggregatedFrameworkDataSummary();
-    this.getLatestDocuments();
+    this.getMetaInfoForLatestDocuments();
   },
   methods: {
     truncatedDocumentName,
@@ -192,7 +192,7 @@ export default defineComponent({
     /**
      * Retrieves the latest documents metadata
      */
-    getLatestDocuments(): void {
+    getMetaInfoForLatestDocuments(): void {
       try {
         const documentControllerApi = new ApiClientProvider(assertDefined(this.getKeycloakPromise)()).apiClients
           .documentController;

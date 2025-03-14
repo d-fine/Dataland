@@ -1,5 +1,6 @@
 import { type RawAxiosResponseHeaders } from 'axios';
 import { assertDefined } from '@/utils/TypeScriptUtils.ts';
+import { type DownloadableFileExtension } from '@/types/DownloadableFileExtension.ts';
 
 /**
  * Retrieve a header from the headers object if it is a single string
@@ -33,5 +34,3 @@ export function getFileExtensionFromHeaders(headers: RawAxiosResponseHeaders): D
 export function getMimeTypeFromHeaders(headers: RawAxiosResponseHeaders): string {
   return assertDefined(getHeaderIfItIsASingleString(headers, 'content-type'));
 }
-
-type DownloadableFileExtension = 'pdf' | 'xlsx' | 'xls' | 'ods';

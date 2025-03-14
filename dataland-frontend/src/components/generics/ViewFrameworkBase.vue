@@ -255,11 +255,11 @@ export default defineComponent({
     this.chosenDataTypeInDropdown = this.dataType ?? '';
     this.dataId = this.route.params.dataId;
     if (this.dataId) {
-      void this.getDataMetaData().then(() => {
+      void this.getMetaData().then(() => {
         this.setActiveDataForCurrentCompanyAndFramework();
       });
     } else {
-      void this.getDataMetaData();
+      void this.getMetaData();
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     }
     void this.setViewPageAttributesForUser();
@@ -339,7 +339,7 @@ export default defineComponent({
     /**
      * Retrieves all data meta data available for current company
      */
-    async getDataMetaData() {
+    async getMetaData() {
       try {
         const apiClientProvider = new ApiClientProvider(assertDefined(this.getKeycloakPromise)());
         const metaDataControllerApi = apiClientProvider.backendClients.metaDataController;
@@ -355,8 +355,8 @@ export default defineComponent({
      * For public datasets, retrieves all active DataAndMetaInformation for current datatype and companyID. Then, the
      * mapOfReportingPeriodToActiveDataset is populated with this information (computed property).
      * For private datasets, the call to getAllCompanyData may lead to 403 if user doesn't have sufficient rights.
-     * Instead, the metadata endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
-     * filled with retrieved metadata and empty data object.
+     * Instead, the metaData endpoint is called and the activeDataForCurrentCompanyAndFramework property is manually
+     * filled with retrieved metaData and empty data object.
      */
     async getAllActiveDataForCurrentCompanyAndFramework() {
       try {
@@ -371,7 +371,7 @@ export default defineComponent({
         this.isDataProcessedSuccessfully = true;
       } catch (error) {
         if (error instanceof AxiosError && error?.status == 403 && this.dataType == DataTypeEnum.Vsme) {
-          await this.getDataMetaData();
+          await this.getMetaData();
           this.setActiveDataForCurrentCompanyAndFramework();
         } else {
           this.isDataProcessedSuccessfully = false;
@@ -381,7 +381,7 @@ export default defineComponent({
     },
 
     /**
-     * Get available metadata in case that data cannot be received due to insufficient access rights for private data.
+     * Get available metaData in case that data cannot be received due to insufficient access rights for private data.
      */
     setActiveDataForCurrentCompanyAndFramework() {
       if (this.dataMetaInformation) {
@@ -486,7 +486,7 @@ export default defineComponent({
   },
   watch: {
     companyID() {
-      void this.getDataMetaData();
+      void this.getMetaData();
       void this.getAllActiveDataForCurrentCompanyAndFramework();
     },
     isReviewableByCurrentUser() {

@@ -163,7 +163,7 @@ export function getFrameworkSubtitle(framework: string): string {
 }
 
 /**
- * Return the human readble plural of a report category
+ * Return the human readable plural of a report category
  * @param category document category
  * @returns title of category
  */

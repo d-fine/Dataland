@@ -268,11 +268,9 @@ describe('Component test for the company cockpit', () => {
     mockRequestsOnMounted(false);
     mountCompanyCockpitWithAuthentication(false, false, []);
     // For each category a request is made.
-    let i = 0;
-    while (i < Object.keys(DocumentMetaInfoDocumentCategoryEnum).length) {
-      i++;
+    Object.keys(DocumentMetaInfoDocumentCategoryEnum).forEach(() => {
       cy.wait('@fetchDocumentMetadata', { timeout: Cypress.env('medium_timeout_in_ms') as number });
-    }
+    });
     for (const category of Object.keys(DocumentMetaInfoDocumentCategoryEnum)) {
       cy.get('[data-test="' + category + '"]')
         .should('exist')

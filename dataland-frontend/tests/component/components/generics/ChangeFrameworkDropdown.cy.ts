@@ -45,20 +45,23 @@ describe('Component test for ChangeFrameworkDropdown', () => {
   ];
 
   /**
-   * counts the entries of different DataTypeEnum plus 1 for the additional documents entry
-   * @param dataMetaInfoArray list of metadata information to be counted
+   * counts the number of different entries in the dropdown component depending on the given array of
+   * DataMetaInformation.
+   * @param dataMetaInfoArray list of relevant metadata information
+   * @returns the number of distinct framework types among the metadata information plus 1 because
+   * the dropdown also has an entry linking to the documents page
    */
-  function countDataTypesInArray(dataMetaInfoArray: Array<DataMetaInformation>): number {
+  function countDropdownEntries(dataMetaInfoArray: Array<DataMetaInformation>): number {
     const uniqueDataTypes = new Set<string>();
 
     dataMetaInfoArray.forEach((item) => {
       uniqueDataTypes.add(item.dataType);
     });
-    return uniqueDataTypes.size + 1; // for the added 'documents' entry
+    return uniqueDataTypes.size + 1;
   }
 
   it('Check if dropdown data is set properly, all options displayed with no duplicates', () => {
-    const numberOfEntries: number = countDataTypesInArray(listOfDataMetaInfo);
+    const numberOfEntries: number = countDropdownEntries(listOfDataMetaInfo);
 
     mount(ChangeFrameworkDropdown, {
       props: {

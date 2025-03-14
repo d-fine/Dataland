@@ -197,12 +197,12 @@ function customSorting(a: DocumentMetaInfoResponse, b: DocumentMetaInfoResponse)
   const aValue = a[sortField.value] ?? '';
   const bValue = b[sortField.value] ?? '';
 
-  if (sortField.value != ('requestStatus' as keyof DocumentMetaInfoResponse)) {
+  if (sortField.value == ('requestStatus' as keyof DocumentMetaInfoResponse)) {
+    return sortOrder.value;
+  } else {
     if (aValue < bValue) return -1 * sortOrder.value;
     if (aValue > bValue) return sortOrder.value;
     return 0;
-  } else {
-    return sortOrder.value;
   }
 }
 
