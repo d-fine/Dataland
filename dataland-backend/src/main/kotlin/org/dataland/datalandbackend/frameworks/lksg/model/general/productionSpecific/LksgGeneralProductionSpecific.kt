@@ -3,6 +3,9 @@ package org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpe
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.dataland.datalandbackend.frameworks.lksg.custom.LksgProductionSite
+import org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpecific
+    .LksgGeneralProductionspecificMarketOptions
+import org.dataland.datalandbackend.frameworks.lksg.model.general.productionSpecific.SpecificProcurementOptions
 import org.dataland.datalandbackend.model.enums.commons.YesNo
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants
 import java.math.BigDecimal

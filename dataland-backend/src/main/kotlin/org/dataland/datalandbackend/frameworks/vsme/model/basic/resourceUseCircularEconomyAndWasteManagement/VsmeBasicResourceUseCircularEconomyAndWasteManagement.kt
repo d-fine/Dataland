@@ -2,6 +2,8 @@
 package org.dataland.datalandbackend.frameworks.vsme.model.basic.resourceUseCircularEconomyAndWasteManagement
 
 import org.dataland.datalandbackend.frameworks.vsme.custom.VsmeWasteClassificationObject
+import org.dataland.datalandbackend.frameworks.vsme.model.basic.resourceUseCircularEconomyAndWasteManagement
+    .VsmeBasicResourceusecirculareconomyandwastemanagementMeasureWasteOptions
 import java.math.BigDecimal
 
 /**
