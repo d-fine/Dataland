@@ -1860,6 +1860,9 @@
           },
           "requestStatusChangeReason": {
             "type": "string"
+          },
+          "answeringDataId": {
+            "type": "string"
           }
         }
       },
