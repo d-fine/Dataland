@@ -12,6 +12,7 @@ import java.time.LocalDate
  * @param documentName
  * @param documentCategory
  * @param companyIds
+ * @param uploaderId
  * @param publicationDate
  * @param reportingPeriod
  */
@@ -21,6 +22,7 @@ data class DocumentMetaInfoResponse(
     override val documentName: String?,
     override val documentCategory: DocumentCategory?,
     override val companyIds: Set<String>?,
+    val uploaderId: String,
     @field:JsonFormat(pattern = "yyyy-MM-dd")
     override val publicationDate: LocalDate?,
     override val reportingPeriod: String?,

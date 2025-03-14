@@ -15,6 +15,8 @@ import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.datalandbackendutils.model.DocumentType
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import java.time.LocalDate
 
 /**
@@ -50,7 +52,23 @@ data class DocumentMetaInfoEntity(
             documentName = documentName,
             documentCategory = documentCategory,
             companyIds = companyIds,
+            uploaderId = uploaderId,
             publicationDate = publicationDate,
             reportingPeriod = reportingPeriod,
         )
+
+    /**
+     * Check whether user has the right to view this document meta information.
+     */
+    fun isViewableByUser(): Boolean {
+        val viewingUser = DatalandAuthentication.fromContext()
+        return (
+            qaStatus == QaStatus.Accepted ||
+                viewingUser.userId == uploaderId ||
+                viewingUser.roles.contains(DatalandRealmRole.ROLE_ADMIN) ||
+                viewingUser.roles.contains(
+                    DatalandRealmRole.ROLE_REVIEWER,
+                )
+        )
+    }
 }

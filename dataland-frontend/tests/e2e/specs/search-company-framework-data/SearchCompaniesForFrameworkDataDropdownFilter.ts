@@ -15,7 +15,7 @@ import {
 } from '@e2e/utils/FrameworkUpload';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import SfdrBaseFrameworkDefinition from '@/frameworks/sfdr/BaseFrameworkDefinition';
-import { ALL_FRAMEWORKS_ORDERED } from '@/utils/Constants';
+import { ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER } from '@/utils/Constants';
 import EuTaxonomyFinancialsBaseFrameworkDefinition from '@/frameworks/eutaxonomy-financials/BaseFrameworkDefinition';
 
 let companiesWithEuTaxonomyFinancialsData: Array<FixtureData<EutaxonomyFinancialsData>>;
@@ -40,9 +40,9 @@ function escapeParenthesisInRegExp(inputString: string): string {
 describe('As a user, I expect the search functionality on the /companies page to adjust to the selected dropdown filters', () => {
   const failureMessageOnAvailableDatasetsPage = "We're sorry, but your search did not return any results.";
 
-  const frameworkOne = ALL_FRAMEWORKS_ORDERED[0];
-  const frameworkTwo = ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 4];
-  const frameworkThree = ALL_FRAMEWORKS_ORDERED[ALL_FRAMEWORKS_ORDERED.length - 5];
+  const frameworkOne = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[0];
+  const frameworkTwo = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 4];
+  const frameworkThree = ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER[ALL_FRAMEWORKS_IN_ENUM_CLASS_ORDER.length - 5];
 
   it('The framework filter synchronise between the search bar and the URL', { scrollBehavior: false }, () => {
     cy.ensureLoggedIn();

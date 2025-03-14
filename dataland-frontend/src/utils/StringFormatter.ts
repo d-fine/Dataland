@@ -6,6 +6,7 @@ import { HumanizedYesNoNa } from '@/utils/YesNoNa';
 import { getBasePublicFrameworkDefinition } from '@/frameworks/BasePublicFrameworkRegistry';
 import { DataTypeEnum } from '@clients/backend';
 import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrameworkRegistry';
+import { DocumentMetaInfoDocumentCategoryEnum, type DocumentMetaInfoResponse } from '@clients/documentmanager';
 
 /**
  * convert kebab case string to pascal case string using regex
@@ -14,8 +15,7 @@ import { getBasePrivateFrameworkDefinition } from '@/frameworks/BasePrivateFrame
  */
 export function convertKebabCaseToPascalCase(rawText: string): string {
   const camelCase = rawText.replace(/-([a-z])/g, (_, char: string) => char.toUpperCase());
-  const pascalCase = camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
-  return pascalCase;
+  return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
 }
 
 /**
@@ -81,6 +81,8 @@ function humanizeViaMapping(rawText: string): string {
     productionanduseofpersistentorganicpollutants:
       'Production and use of persistent organic pollutants (POPs Convention)',
     exportimportofhazardouswaste: 'Export/import of hazardous waste (Basel Convention)',
+    policy: 'Policy',
+    other: 'Other Document',
   };
 
   const lowerCaseText = rawText.toLowerCase();
@@ -158,4 +160,34 @@ export function getFrameworkSubtitle(framework: string): string {
     default:
       return '';
   }
+}
+
+/**
+ * Return the human readable plural of a report category
+ * @param category document category
+ * @returns title of category
+ */
+export function getPluralCategory(category: string): string {
+  switch (category) {
+    case DocumentMetaInfoDocumentCategoryEnum.Policy:
+      return 'Policies';
+    case DocumentMetaInfoDocumentCategoryEnum.AnnualReport:
+      return 'Annual Reports';
+    case DocumentMetaInfoDocumentCategoryEnum.SustainabilityReport:
+      return 'Sustainability Reports';
+    case DocumentMetaInfoDocumentCategoryEnum.Other:
+      return 'Other Reports';
+    default:
+      return humanizeStringOrNumber(category);
+  }
+}
+
+/**
+ * Returns the filename to a given document, that has not more than 28 characters.
+ * @param document The document of interest
+ * @return A string containing the eventually shortened name
+ */
+export function truncatedDocumentName(document: DocumentMetaInfoResponse): string {
+  const name = document.documentName ?? document.documentId;
+  return name.length > 28 ? name.slice(0, 25) + '...' : name;
 }
