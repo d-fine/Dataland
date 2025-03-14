@@ -31,6 +31,7 @@ class EmailMessageListenerTest {
     private lateinit var emailContactService: EmailContactService
     private lateinit var emailSubscriptionTracker: EmailSubscriptionTracker
     private val proxyPrimaryUrl = "abc.example.com"
+    private val dryRunIsActive = false
 
     private lateinit var emailMessageListener: EmailMessageListener
     private lateinit var testData: TypedEmailContentTestData
@@ -77,7 +78,7 @@ class EmailMessageListenerTest {
 
         emailMessageListener =
             EmailMessageListener(
-                emailSender, objectMapper, emailContactService, emailSubscriptionTracker, proxyPrimaryUrl,
+                emailSender, objectMapper, emailContactService, emailSubscriptionTracker, proxyPrimaryUrl, dryRunIsActive,
             )
 
         testData = TypedEmailContentTestData()
