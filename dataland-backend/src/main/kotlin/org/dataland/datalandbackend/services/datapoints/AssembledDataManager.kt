@@ -191,7 +191,7 @@ class AssembledDataManager
         /**
          * Creates all individual datapoints and associated them with the datapoints
          */
-        @Suppress("LongParameterList")
+        @Suppress("kotlin:S107")
         @Transactional
         fun storeDataPointsForDataset(
             datasetId: String,
