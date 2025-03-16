@@ -28,6 +28,7 @@ class ReferencedReportsUtilities(
         private const val PUBLICATION_DATE_FIELD = "publicationDate"
         private const val FILE_REFERENCE_FIELD = "fileReference"
         private const val DATA_SOURCE_FIELD = "dataSource"
+        private const val FILE_NAME_FIELD = "fileName"
 
         const val REFERENCED_REPORTS_ID = "referencedReports"
     }
@@ -162,27 +163,38 @@ class ReferencedReportsUtilities(
         return currentNode
     }
 
+    private fun nodeMayRequireUpdate(jsonNode: JsonNode): Boolean =
+        jsonNode.isObject &&
+            (jsonNode.has(FILE_REFERENCE_FIELD) || jsonNode.has(FILE_NAME_FIELD))
+
     /**
      * Updates the publication date in a JSON node.
      * @param jsonNode The JSON node to update
      * @param fileReferenceToPublicationDate The mapping of file references to publication dates
      * @param currentNodeName The name of the current JSON node
      */
-    fun updatePublicationDateInJsonNode(
+    fun updateJsonNodeWithDataFromReferencedReports(
         jsonNode: JsonNode,
         fileReferenceToPublicationDate: Map<String, LocalDate>,
+        fileReferenceToFileName: Map<String, String>,
         currentNodeName: String,
     ) {
-        if (jsonNode.isObject && currentNodeName == DATA_SOURCE_FIELD && jsonNode.has(FILE_REFERENCE_FIELD)) {
+        if (currentNodeName == DATA_SOURCE_FIELD && nodeMayRequireUpdate(jsonNode)) {
             val fileReference = jsonNode.get(FILE_REFERENCE_FIELD).asText()
             if (fileReferenceToPublicationDate.containsKey(fileReference)) {
                 (jsonNode as ObjectNode).put(PUBLICATION_DATE_FIELD, fileReferenceToPublicationDate[fileReference].toString())
+            }
+            if (fileReferenceToFileName.containsKey(fileReference)) {
+                (jsonNode as ObjectNode).put(FILE_NAME_FIELD, fileReferenceToFileName[fileReference])
             }
         } else {
             val fields = jsonNode.fields()
             while (fields.hasNext()) {
                 val jsonField = fields.next()
-                updatePublicationDateInJsonNode(jsonField.value, fileReferenceToPublicationDate, jsonField.key)
+                updateJsonNodeWithDataFromReferencedReports(
+                    jsonField.value, fileReferenceToPublicationDate,
+                    fileReferenceToFileName, jsonField.key,
+                )
             }
         }
     }

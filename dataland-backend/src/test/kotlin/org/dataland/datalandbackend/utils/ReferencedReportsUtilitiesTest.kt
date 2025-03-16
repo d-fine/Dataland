@@ -143,8 +143,9 @@ class ReferencedReportsUtilitiesTest {
     }
 
     @Test
-    fun `check that updating a single data point with a publication date works as expected`() {
+    fun `check that updating a single data point with new data works as expected`() {
         val dataPoint = TestResourceFileReader.getJsonString(currencyDataPointWithExtendedDocumentReference)
+        val newName = "NewFileName"
 
         val dataSource = testObjectMapper.readValue(dataPoint, ExtendedCurrencyDataPoint::class.java).dataSource
         val contentNode = testObjectMapper.readTree(dataPoint)
@@ -152,17 +153,19 @@ class ReferencedReportsUtilitiesTest {
         requireNotNull(dataSource) { "Data point does not contain a proper data source" }
 
         val fileReferenceToPublicationDateMapping = mapOf(dataSource.fileReference to LocalDate.parse(testDate))
+        val fileReferenceToFileNameMapping = mapOf(dataSource.fileReference to newName)
 
-        referencedReportsUtilities.updatePublicationDateInJsonNode(
+        referencedReportsUtilities.updateJsonNodeWithDataFromReferencedReports(
             contentNode,
             fileReferenceToPublicationDateMapping,
+            fileReferenceToFileNameMapping,
             "dataSource",
         )
 
         val expected =
             ExtendedDocumentReference(
                 fileReference = dataSource.fileReference,
-                fileName = dataSource.fileName,
+                fileName = fileReferenceToFileNameMapping[dataSource.fileReference],
                 page = dataSource.page,
                 tagName = dataSource.tagName,
                 publicationDate = fileReferenceToPublicationDateMapping[dataSource.fileReference],
@@ -175,7 +178,7 @@ class ReferencedReportsUtilitiesTest {
     }
 
     @Test
-    fun `check that updating a framework with a publication date works as expected`() {
+    fun `check that updating a framework with new data works as expected`() {
         val frameworkContent = TestResourceFileReader.getJsonNode(frameworkWithDataSource)
         val expected = TestResourceFileReader.getJsonNode(expectedFrameworkWithDataSource)
 
@@ -185,9 +188,12 @@ class ReferencedReportsUtilitiesTest {
                 "60a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to LocalDate.parse(testDate),
             )
 
-        referencedReportsUtilities.updatePublicationDateInJsonNode(
+        val fileReferenceToFileNameMapping = mapOf("50a36c418baffd520bb92d84664f06f9732a21f4e2e5ecee6d9136f16e7e0b63" to "NewAnnualReport")
+
+        referencedReportsUtilities.updateJsonNodeWithDataFromReferencedReports(
             frameworkContent,
             fileReferenceToPublicationDateMapping,
+            fileReferenceToFileNameMapping,
             "",
         )
 

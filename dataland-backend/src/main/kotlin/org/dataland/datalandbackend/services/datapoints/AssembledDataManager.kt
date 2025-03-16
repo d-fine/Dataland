@@ -69,10 +69,13 @@ class AssembledDataManager
             bypassQa: Boolean,
             correlationId: String,
         ): String {
-            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping) =
+            val (dataContent, referencedReports, fileReferenceToPublicationDateMapping, fileReferenceToFileNameMapping) =
                 splitDatasetIntoDataPoints(uploadedDataset.data, uploadedDataset.dataType.toString())
             dataPointValidator.validateDataset(dataContent, referencedReports, correlationId)
-            return storeSplitDataset(uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping)
+            return storeSplitDataset(
+                uploadedDataset, correlationId, bypassQa, dataContent, fileReferenceToPublicationDateMapping,
+                fileReferenceToFileNameMapping,
+            )
         }
 
         /**
@@ -82,6 +85,7 @@ class AssembledDataManager
             val dataContent: Map<String, JsonSpecificationLeaf>,
             val referencedReports: Map<String, CompanyReport>?,
             val fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            val fileReferenceToFileNameMapping: Map<String, String>,
         )
 
         /**
@@ -125,7 +129,14 @@ class AssembledDataManager
                     ?.associate { it.fileReference to it.publicationDate!! }
                     ?: emptyMap()
 
-            return SplitDataset(dataContent, referencedReports, fileReferenceToPublicationDateMapping)
+            val fileReferenceToFileNameMapping =
+                referencedReports
+                    ?.values
+                    ?.filter { it.fileName != null }
+                    ?.associate { it.fileReference to it.fileName!! }
+                    ?: emptyMap()
+
+            return SplitDataset(dataContent, referencedReports, fileReferenceToPublicationDateMapping, fileReferenceToFileNameMapping)
         }
 
         /**
@@ -140,6 +151,7 @@ class AssembledDataManager
         private fun storeIndividualDataPoint(
             dataPointJsonLeaf: JsonSpecificationLeaf,
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            fileReferenceToFileNameMapping: Map<String, String>,
             dataPointType: String,
             correlationId: String,
             uploadedDataset: StorableDataset,
@@ -147,9 +159,10 @@ class AssembledDataManager
             val dataPoint = dataPointJsonLeaf.content
             if (JsonComparator.isFullyNullObject(dataPoint)) return null
 
-            referencedReportsUtilities.updatePublicationDateInJsonNode(
+            referencedReportsUtilities.updateJsonNodeWithDataFromReferencedReports(
                 dataPoint,
                 fileReferenceToPublicationDateMapping,
+                fileReferenceToFileNameMapping,
                 "dataSource",
             )
             logger.info(
@@ -183,6 +196,7 @@ class AssembledDataManager
             datasetId: String,
             dataContent: Map<String, JsonSpecificationLeaf>,
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            fileReferenceToFileNameMapping: Map<String, String>,
             uploadedDataset: StorableDataset,
             correlationId: String,
             initialQaStatus: QaStatus,
@@ -196,6 +210,7 @@ class AssembledDataManager
                 storeIndividualDataPoint(
                     dataPointJsonLeaf = dataPointJsonLeaf,
                     fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
+                    fileReferenceToFileNameMapping = fileReferenceToFileNameMapping,
                     dataPointType = dataPointType,
                     correlationId = correlationId,
                     uploadedDataset = uploadedDataset,
@@ -231,6 +246,7 @@ class AssembledDataManager
             bypassQa: Boolean,
             dataContent: Map<String, JsonSpecificationLeaf>,
             fileReferenceToPublicationDateMapping: Map<String, LocalDate>,
+            fileReferenceToFileNameMapping: Map<String, String>,
         ): String {
             val datasetId = IdUtils.generateUUID()
             dataManager.storeMetaDataFrom(datasetId, uploadedDataset, correlationId)
@@ -242,6 +258,7 @@ class AssembledDataManager
                 datasetId = datasetId,
                 dataContent = dataContent,
                 fileReferenceToPublicationDateMapping = fileReferenceToPublicationDateMapping,
+                fileReferenceToFileNameMapping = fileReferenceToFileNameMapping,
                 uploadedDataset = uploadedDataset,
                 correlationId = correlationId,
                 initialQaStatus = qaStatus,
