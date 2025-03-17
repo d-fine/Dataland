@@ -21,6 +21,7 @@ plugins {
 
 dependencies {
     implementation(project(":dataland-backend-utils"))
+    implementation(libs.jackson.module.kotlin)
     implementation(libs.junit.jupiter)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)

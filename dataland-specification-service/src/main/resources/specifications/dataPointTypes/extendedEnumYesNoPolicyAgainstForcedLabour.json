@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoPolicyAgainstForcedLabour",
+  "name" : "Policy against Forced Labour",
+  "businessDefinition" : "Do you have policies in place to abolish all forms of forced labour? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

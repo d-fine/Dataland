@@ -23,7 +23,7 @@ data class DataPointMetaInformation(
     override val companyId: String,
     @field:JsonProperty(required = true)
     override val reportingPeriod: String,
-    val uploaderUserId: String? = null,
+    val uploaderUserId: String,
     @field:JsonProperty(required = true)
     val uploadTime: Long,
     val currentlyActive: Boolean,

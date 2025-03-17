@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyTotalAmountOfReportedFinesOfBriberyAndCorruption",
+  "name" : "Total Amount Of Reported Fines Of Bribery and Corruption",
+  "businessDefinition" : "Amount of fines for violations of anti-corruption and anti-bribery laws. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 17. ",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

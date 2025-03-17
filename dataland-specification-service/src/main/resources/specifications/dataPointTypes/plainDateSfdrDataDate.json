@@ -1,0 +1,8 @@
+{
+  "id" : "plainDateSfdrDataDate",
+  "name" : "Data Date",
+  "businessDefinition" : "The year for which the data is reported.",
+  "dataPointBaseTypeId" : "plainDate",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

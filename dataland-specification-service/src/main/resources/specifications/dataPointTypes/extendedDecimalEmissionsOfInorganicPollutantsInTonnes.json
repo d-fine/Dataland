@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalEmissionsOfInorganicPollutantsInTonnes",
+  "name" : "Emissions of Inorganic Pollutants",
+  "businessDefinition" : "Tonnes of emissions by inorganic pollutants. Inorganic pollutants include those resulting from radiant energy, noise, heat, or light, as well as substances like arsenic, cadmium, lead, mercury, chromium, aluminum, nitrates, nitrites, fluorides, and water contaminants such as arsenic, fluoride, iron, nitrate, and heavy metals. See Regulation (EU) 2022/1288, Annex I, top (27) and table 2, indicator nr. 1.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}
