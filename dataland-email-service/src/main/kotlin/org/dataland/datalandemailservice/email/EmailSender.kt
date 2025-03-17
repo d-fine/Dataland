@@ -24,10 +24,10 @@ class EmailSender(
      * @return a sending success indicator which is true if the sending was successful
      */
     fun sendEmail(email: Email) {
-        try {
-            if (dryRunIsActive) {
-                logEmailInDryRun(email)
-            } else {
+        if (dryRunIsActive) {
+            logEmailInDryRun(email)
+        } else {
+            try {
                 logEmail(email)
                 val mailjetEmail =
                     TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
@@ -35,9 +35,9 @@ class EmailSender(
                 val response = request.sendWith(mailjetClient)
                 response.messages.forEach { logger.info(it.toString()) }
                 logger.info("Email successfully sent.")
+            } catch (e: MailjetException) {
+                logger.error("Error sending email, with error: $e")
             }
-        } catch (e: MailjetException) {
-            logger.error("Error sending email, with error: $e")
         }
     }
 
