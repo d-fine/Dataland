@@ -34,8 +34,17 @@ class EmailMessageListener(
     @Autowired private val emailContactService: EmailContactService,
     @Autowired private val emailSubscriptionTracker: EmailSubscriptionTracker,
     @Value("\${dataland.proxy.primary.url}") private val proxyPrimaryUrl: String,
+    @Value("\${dataland.email.service.dry.run}") private val dryRunIsActive: Boolean,
 ) {
     private val logger = LoggerFactory.getLogger(EmailMessageListener::class.java)
+
+    init {
+        if (dryRunIsActive) {
+            logger.info("Starting e-mail service in dry run mode. E-mails won't be sent but still logged.")
+        } else {
+            logger.info("Starting e-mail service normally. E-mails will be sent and logged.")
+        }
+    }
 
     /**
      * Checks if a message object in the queue fits the expected RoutingKey and EmailMessage Type
