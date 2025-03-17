@@ -40,7 +40,7 @@
     </a>
 </#macro>
 
-<#macro notificationSetting(url)>
+<#macro notificationSetting>
     <tr>
         <td colspan="3">
             This is an immediate notification. Future updates will be sent in a <b>weekly summary</b>.<br/>

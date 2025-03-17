@@ -36,7 +36,7 @@
     <div class="container">
         <table>
             <tbody>
-            <@spacerRow />
+            <@spacerRow/>
             <tr>
                 <td colspan="3">Weekly Summary 📣
                     <br><br>Data for your request(s) has been updated on Dataland this week,
@@ -44,44 +44,40 @@
                     Please note that you may have already reviewed these updates.
                     <br><br>Check details for all your requests using the link below:</td>
             </tr>
-            <@spacerRow />
+            <@spacerRow/>
             <@buttonLink url="${baseUrl}/requests" linkText="VIEW MY DATA REQUESTS" />
-            <@spacerRow />
+            <@spacerRow/>
             <!-- NEW DATA -->
             <#if newData?exists && (newData?size > 0)>
                 <@boldTitle title="New Data" />
-                <@spacerRow />
+                <@spacerRow/>
                 <tr>
                     <td colspan="3"> <@renderTable data=newData /> </td>
                 </tr>
 <#--                <@spacerRow />-->
 <#--                <@buttonLink url="${baseUrl}/requests" linkText="VIEW NEW DATA ON MY DATA REQUESTS" />-->
-                <@spacerRow />
-                <@spacerRow />
+                <@spacerRow/>
+                <@spacerRow/>
             </#if>
             <!-- UPDATED DATA -->
             <#if updatedData?exists && (updatedData?size > 0)>
                 <@boldTitle title="Updated Data" />
-                <@spacerRow />
+                <@spacerRow/>
                 <tr>
                     <td colspan="3"> <@renderTable data=updatedData /> </td>
                 </tr>
-<#--                <@spacerRow />-->
-<#--                <@buttonLink url="${baseUrl}/requests" linkText="VIEW UPDATED DATA ON MY DATA REQUESTS" />-->-->
-                <@spacerRow />
-                <@spacerRow />
+                <@spacerRow/>
+                <@spacerRow/>
             </#if>
             <!-- NON SOURCEABLE DATA -->
             <#if nonSourceableData?exists && (nonSourceableData?size > 0)>
                 <@boldTitle title="Non sourceable Data" />
-                <@spacerRow />
+                <@spacerRow/>
                 <tr>
                     <td colspan="3"> <@renderTable data=nonSourceableData /> </td>
                 </tr>
-<#--                <@spacerRow />-->
-<#--                <@buttonLink url="${baseUrl}/requests" linkText="VIEW NON SOURCEABLE DATA ON MY DATA REQUESTS" />-->
-                <@spacerRow />
-                <@spacerRow />
+                <@spacerRow/>
+                <@spacerRow/>
             </#if>
             </tbody>
         </table>

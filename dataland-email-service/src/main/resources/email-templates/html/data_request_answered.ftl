@@ -21,14 +21,14 @@
             <td colspan="3">Great news! 📣 <br><br>Your data request has been answered.</td>
         </tr>
         <@spacerRow/>
-        <@notificationSetting url="${baseUrl}/requests/${dataRequestId}"/>
-        <@spacerRow />
+        <@notificationSetting/>
+        <@spacerRow/>
         <tr>
             <td colspan="3">
                 <#include "../general/display_request.ftl">
             </td>
         </tr>
-        <@spacerRow />
+        <@spacerRow/>
         <tr>
             <td colspan="3" style="font-weight: bold;">How to proceed?</td>
         </tr>
@@ -41,16 +41,16 @@
                 </ol>
             </td>
         </tr>
-        <@spacerRowTiny />
+        <@spacerRowTiny/>
         <@buttonLink url="${baseUrl}/requests" linkText="REVIEW MY DATA REQUEST" />
-        <@spacerRow />
+        <@spacerRow/>
         <tr>
             <td colspan="3"> Without any actions,
                 your data request will be set to closed automatically
                 in <b>${closedInDays} days</b>.
             </td>
         </tr>
-        <@spacerRow />
+        <@spacerRow/>
         </tbody>
     </table>
     <#include "../general/footer.ftl">
