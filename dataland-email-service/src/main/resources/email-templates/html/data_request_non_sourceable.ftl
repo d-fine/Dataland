@@ -1,5 +1,4 @@
-<#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
-
+<#include "../general/general_makros_html.ftl">
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,42 +22,20 @@
             Unfortunately, no public sources could be found for your requested dataset by a data provider.<br>
             We will continue to check the status of your request regularly and inform you in case the dataset will be uploaded in the future.
             If you are certain the requested data should exist, you may reopen your request on the
-            <a href="${baseUrl}/requests/${dataRequestId}" target="_blank">
-                data request page.
-            </a>
+            <@textLink url="${baseUrl}/requests/${dataRequestId}" linkText="data request page"/>
         </td>
     </tr>
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
+    <@spacerRow/>
+    <@notificationSetting url="${baseUrl}/requests/${dataRequestId}"/>
+    <@spacerRow/>
     <tr>
         <td colspan="3">
             <#include "../general/display_request.ftl">
         </td>
-    <tr>
-        <td style="height: 20px">&nbsp;</td>
     </tr>
-
-
-    <tr>
-        <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
-        <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
-            <a href="${baseUrl}/requests/${dataRequestId}" target="_blank" style="border: 0 none; line-height: 30px; color: #ffffff; font-size: 18px; width: 100%; display: block; text-decoration: none;">
-                REVIEW YOUR REQUEST
-            </a>
-        </td>
-        <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
-    </tr>
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
-    <tr>
-        <td colspan="3" style="font-size: 5px; height: 5px">&nbsp;</td>
-    </tr>
-
-    <tr>
-        <td colspan="3" style="height: 20px">&nbsp;</td>
-    </tr>
+    <@spacerRow/>
+    <@buttonLink url="${baseUrl}/requests/${dataRequestId}" linkText="REVIEW YOUR DATA REQUEST" />
+    <@spacerRow/>
     </tbody>
 </table>
 <#include "../general/footer.ftl">
