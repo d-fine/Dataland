@@ -1,3 +1,5 @@
+<#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
+
 <#macro spacerRow>
     <tr>
         <td colspan="1" style="height: 20px">&nbsp;</td>

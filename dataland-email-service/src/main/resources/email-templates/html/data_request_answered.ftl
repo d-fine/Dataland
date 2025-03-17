@@ -1,4 +1,3 @@
-<#macro if if then else><#if if>${then}<#else>${else}</#if></#macro>
 <#include "../general/general_makros_html.ftl">
 <!DOCTYPE html>
 <html>
@@ -42,7 +41,7 @@
             </td>
         </tr>
         <@spacerRowTiny/>
-        <@buttonLink url="${baseUrl}/requests" linkText="REVIEW MY DATA REQUEST" />
+        <@buttonLink url="${baseUrl}/requests" linkText="REVIEW YOUR DATA REQUEST" />
         <@spacerRow/>
         <tr>
             <td colspan="3"> Without any actions,
