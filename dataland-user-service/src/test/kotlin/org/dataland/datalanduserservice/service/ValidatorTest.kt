@@ -10,6 +10,8 @@ import org.dataland.datalanduserservice.model.BasePortfolio
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.utils.Validator
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
+import org.dataland.keycloakAdapter.auth.DatalandRealmRole
+import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -25,6 +27,7 @@ import org.mockito.kotlin.reset
 import org.mockito.kotlin.whenever
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContext
+import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
 
 class ValidatorTest {
@@ -35,6 +38,8 @@ class ValidatorTest {
     private lateinit var mockAuthentication: DatalandAuthentication
     private lateinit var validator: Validator
 
+    private val username = "data_reader"
+    private val userId = "user-id"
     private val dummyCorrelationId = UUID.randomUUID().toString()
     private val dummyPortfolioId = UUID.randomUUID()
     private val dummyPortfolioName = "Test Portfolio"
@@ -47,11 +52,22 @@ class ValidatorTest {
     @BeforeEach
     fun setup() {
         reset(mockPortfolioService, mockCompanyDataController)
+        this.resetSecurityContext()
         doNothing().whenever(mockCompanyDataController).isCompanyIdValid(validCompanyId)
         doThrow(ClientException(statusCode = HttpStatus.NOT_FOUND.value()))
             .whenever(mockCompanyDataController)
             .isCompanyIdValid(invalidCompanyId)
         validator = Validator(mockCompanyDataController, mockPortfolioService)
+    }
+
+    /**
+     * Setting the security context to use dataland dummy user with role ROLE_USER
+     */
+    private fun resetSecurityContext() {
+        mockAuthentication =
+            AuthenticationMock.mockJwtAuthentication(username, userId, roles = setOf(DatalandRealmRole.ROLE_USER))
+        doReturn(mockAuthentication).whenever(mockSecurityContext).authentication
+        SecurityContextHolder.setContext(mockSecurityContext)
     }
 
     @Test
