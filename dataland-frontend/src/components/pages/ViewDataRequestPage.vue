@@ -196,6 +196,7 @@
                   data-test="emailOnUpdateInput"
                   inputId="emailOnUpdateInput"
                   v-model="emailOnUpdate"
+                  @update:modelValue="changeRecieveEmails()"
                 />
                 <label for="emailOnUpdateInput" v-if="emailOnUpdate">
                   You receive an email immediately after the next status change, i.e. if the data is available or the
@@ -443,6 +444,26 @@ export default defineComponent({
       this.reopenModalIsVisible = true;
     },
     /**
+     * Method to change if the user wants to receive emails on updates
+     */
+    async changeRecieveEmails() {
+      try {
+        await patchDataRequest(
+          this.requestId,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          this.emailOnUpdate,
+          undefined,
+          this.getKeycloakPromise
+        );
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    },
+    /**
      * Method to reopen the non sourceable data request
      */
     async reopenRequest() {
@@ -451,6 +472,7 @@ export default defineComponent({
           await patchDataRequest(
             this.storedDataRequest.dataRequestId,
             RequestStatus.Open as RequestStatus,
+            undefined,
             undefined,
             undefined,
             undefined,
@@ -476,6 +498,7 @@ export default defineComponent({
         await patchDataRequest(
           this.requestId,
           RequestStatus.Withdrawn as RequestStatus,
+          undefined,
           undefined,
           undefined,
           undefined,
@@ -517,6 +540,7 @@ export default defineComponent({
           // as unknown as Set<string> cast required to ensure proper json is created
           this.emailContacts as unknown as Set<string>,
           this.emailMessage,
+          undefined,
           undefined,
           this.getKeycloakPromise
         )

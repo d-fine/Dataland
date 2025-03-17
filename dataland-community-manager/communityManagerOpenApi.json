@@ -342,7 +342,7 @@
           }
         ],
         "responses": {
-           "200": {
+          "200": {
             "description": "The specified user has the company role."
           },
           "404": {
@@ -1456,6 +1456,7 @@
         "required": [
           "companyIdentifier",
           "dataType",
+          "emailOnUpdate",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1503,6 +1504,9 @@
           },
           "message": {
             "type": "string"
+          },
+          "emailOnUpdate": {
+            "type": "boolean"
           }
         }
       },
@@ -1542,6 +1546,7 @@
         "required": [
           "companyIdentifiers",
           "dataTypes",
+          "emailOnUpdate",
           "reportingPeriods"
         ],
         "type": "object",
@@ -1589,6 +1594,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "emailOnUpdate": {
+            "type": "boolean"
           }
         }
       },
@@ -1719,6 +1727,9 @@
           },
           "requestPriority": {
             "$ref": "#/components/schemas/RequestPriority"
+          },
+          "emailOnUpdate": {
+            "type": "boolean"
           },
           "adminComment": {
             "type": "string"

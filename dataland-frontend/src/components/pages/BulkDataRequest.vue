@@ -301,6 +301,7 @@ export default defineComponent({
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
         companyIdentifiers: this.identifiers as unknown as Set<string>,
         dataTypes: this.selectedFrameworks as unknown as Set<BulkDataRequestDataTypesEnum>,
+        emailOnUpdate: this.emailOnUpdate,
       };
     },
     /**

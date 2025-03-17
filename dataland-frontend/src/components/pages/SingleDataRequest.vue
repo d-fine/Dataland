@@ -463,6 +463,7 @@ export default defineComponent({
         reportingPeriods: this.selectedReportingPeriods as unknown as Set<string>,
         contacts: this.selectedContacts as unknown as Set<string>,
         message: this.allowAccessDataRequesterMessage ? this.dataRequesterMessage : '',
+        emailOnUpdate: this.emailOnUpdate,
       };
     },
     /**

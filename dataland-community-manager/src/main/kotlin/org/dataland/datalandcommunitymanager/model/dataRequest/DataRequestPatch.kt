@@ -25,6 +25,7 @@ data class DataRequestPatch(
     val contacts: Set<String>?,
     val message: String?,
     val requestPriority: RequestPriority?,
+    val emailOnUpdate: Boolean?,
     val adminComment: String?,
     val requestStatusChangeReason: String?,
 )

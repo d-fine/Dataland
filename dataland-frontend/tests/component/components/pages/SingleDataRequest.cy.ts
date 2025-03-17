@@ -30,6 +30,7 @@ describe('Component tests for the single data request page', function (): void {
         const singleDataRequest = assertDefined(request.body as SingleDataRequest);
         expect(singleDataRequest.contacts).to.deep.equal(['example@example.com', 'someone@example.com']);
         expect(singleDataRequest.message).to.deep.equal('test text');
+        expect(singleDataRequest.emailOnUpdate).to.equal(false);
 
         request.reply({
           statusCode: 200,

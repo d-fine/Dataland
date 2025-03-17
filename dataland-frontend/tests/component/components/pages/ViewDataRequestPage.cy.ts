@@ -347,11 +347,14 @@ describe('Component tests for the view data request page', function (): void {
     getMountingFunction({ keycloak: minimalKeycloakMock({ userId: dummyUserId }) })(ViewDataRequestPage, {
       props: { requestId: requestId },
     });
+    cy.intercept('PATCH', `**/community/requests/${requestId}`, {
+      status: 200,
+    }).as('patchRequest');
     cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').scrollIntoView();
     cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').should('be.visible');
     cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').click();
-    // TODO: Check if the correct request to the backend is send
+    cy.wait('@patchRequest').its('request.body.emailOnUpdate').should('be.equal', true);
     cy.get('[data-test="emailOnUpdate"] [data-test="emailOnUpdateInput"]').click();
-    // TODO: Check if the correct request to the backend is send
+    cy.wait('@patchRequest').its('request.body.emailOnUpdate').should('be.equal', false);
   });
 });
