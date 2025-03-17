@@ -21,38 +21,36 @@
     <#assign previousFramework = item.framework>
 </#list>
 </#macro>
-
-
 Weekly Summary 📣
 
-Data for your request(s) has been updated on Dataland this week.
+Data for your request(s) has been updated on Dataland this week, listed in the sections below.
 Please note that you may have already reviewed these updates.
 
+Check details for all your requests using the link below.
+VIEW MY DATA REQUESTS: [${baseUrl}/requests]
+
+<#if newData?? && newData?has_content>
 ----------------------------
 New Data
 ----------------------------
 
 <@renderTable data=newData />
 
-VIEW NEW DATA ON MY DATA REQUESTS:
-[${baseUrl}/requests]
 
-
+</#if>
+<#if updatedData?? && updatedData?has_content>
 ----------------------------
 Updated Data
 ----------------------------
 
 <@renderTable data=updatedData />
 
-VIEW UPDATED DATA ON MY DATA REQUESTS:
-[${baseUrl}/requests]
 
-
+</#if>
+<#if nonSourceableData?? && nonSourceableData?has_content>
 ----------------------------
 Non-sourceable Data
 ----------------------------
 
 <@renderTable data=nonSourceableData />
-
-VIEW NON SOURCEABLE DATA ON MY DATA REQUESTS:
-[${baseUrl}/requests]
+</#if>

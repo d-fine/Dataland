@@ -1,4 +1,4 @@
-<#include "../general/common.ftl">
+<#include "../general/general_makros_html.ftl">
 <#include "../general/summary_table.ftl">
 <!DOCTYPE html>
 <html>
@@ -38,40 +38,51 @@
             <tbody>
             <@spacerRow />
             <tr>
-                <td colspan="3">Weekly Summary 📣<br><br>Data for your request(s) has been updated on Dataland this week.
-                    <br>Please note that you may have already reviewed these updates.</td>
+                <td colspan="3">Weekly Summary 📣
+                    <br><br>Data for your request(s) has been updated on Dataland this week,
+                    listed in the sections below.
+                    Please note that you may have already reviewed these updates.
+                    <br><br>Check details for all your requests using the link below:</td>
             </tr>
+            <@spacerRow />
+            <@buttonLink url="${baseUrl}/requests" linkText="VIEW MY DATA REQUESTS" />
             <@spacerRow />
             <!-- NEW DATA -->
-            <@renderBoldTitle title="New Data" />
-            <@spacerRow />
-            <tr>
-                <td colspan="3"> <@renderTable data=newData /> </td>
-            </tr>
-            <@spacerRow />
-            <@renderStyledLink url="${baseUrl}/requests" linkText="VIEW NEW DATA ON MY DATA REQUESTS" />
-            <@spacerRow />
-            <@spacerRow />
+            <#if newData?exists && (newData?size > 0)>
+                <@boldTitle title="New Data" />
+                <@spacerRow />
+                <tr>
+                    <td colspan="3"> <@renderTable data=newData /> </td>
+                </tr>
+<#--                <@spacerRow />-->
+<#--                <@buttonLink url="${baseUrl}/requests" linkText="VIEW NEW DATA ON MY DATA REQUESTS" />-->
+                <@spacerRow />
+                <@spacerRow />
+            </#if>
             <!-- UPDATED DATA -->
-            <@renderBoldTitle title="Updated Data" />
-            <@spacerRow />
-            <tr>
-                <td colspan="3"> <@renderTable data=updatedData /> </td>
-            </tr>
-            <@spacerRow />
-            <@renderStyledLink url="${baseUrl}/requests" linkText="VIEW UPDATED DATA ON MY DATA REQUESTS" />
-            <@spacerRow />
-            <@spacerRow />
+            <#if updatedData?exists && (updatedData?size > 0)>
+                <@boldTitle title="Updated Data" />
+                <@spacerRow />
+                <tr>
+                    <td colspan="3"> <@renderTable data=updatedData /> </td>
+                </tr>
+<#--                <@spacerRow />-->
+<#--                <@buttonLink url="${baseUrl}/requests" linkText="VIEW UPDATED DATA ON MY DATA REQUESTS" />-->-->
+                <@spacerRow />
+                <@spacerRow />
+            </#if>
             <!-- NON SOURCEABLE DATA -->
-            <@renderBoldTitle title="Non sourceable Data" />
-            <@spacerRow />
-            <tr>
-                <td colspan="3"> <@renderTable data=nonSourceableData /> </td>
-            </tr>
-            <@spacerRow />
-            <@renderStyledLink url="${baseUrl}/requests" linkText="VIEW NON SOURCEABLE DATA ON MY DATA REQUESTS" />
-            <@spacerRow />
-            <@spacerRow />
+            <#if nonSourceableData?exists && (nonSourceableData?size > 0)>
+                <@boldTitle title="Non sourceable Data" />
+                <@spacerRow />
+                <tr>
+                    <td colspan="3"> <@renderTable data=nonSourceableData /> </td>
+                </tr>
+<#--                <@spacerRow />-->
+<#--                <@buttonLink url="${baseUrl}/requests" linkText="VIEW NON SOURCEABLE DATA ON MY DATA REQUESTS" />-->
+                <@spacerRow />
+                <@spacerRow />
+            </#if>
             </tbody>
         </table>
     </div>

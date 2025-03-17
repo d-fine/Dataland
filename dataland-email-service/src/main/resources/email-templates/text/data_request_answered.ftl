@@ -1,12 +1,18 @@
+<#import "../general/general_makros_text.ftl" as text>
 Great news!
 
 Your data request has been answered.
+
+<@text.immediateNotification />
+
 Company: ${companyName}
 Framework: ${dataTypeLabel}
 Reporting period: ${reportingPeriod}
 Request created: ${creationDate}
 
-Review the provided data:
+<@text.howToProceed />
+
+Review your data request:
 ${baseUrl}/requests/${dataRequestId}
 
 Without any actions, your data request will be set to closed automatically in ${closedInDays} days.

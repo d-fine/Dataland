@@ -1,4 +1,4 @@
-<#include "../general/common.ftl">
+<#include "general_makros_html.ftl">
 <#macro renderTable(data)>
 <div style="background-color: #f6f6f6; padding: 20px;">
     <table style="background-color: #f6f6f6; border-collapse: collapse; margin: 0; width: 100%">

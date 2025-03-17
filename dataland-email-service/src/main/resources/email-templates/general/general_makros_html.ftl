@@ -16,13 +16,13 @@
     </tr>
 </#macro>
 
-<#macro renderBoldTitle(title)>
+<#macro boldTitle(title)>
     <tr>
         <td colspan="2" style="font-size: 28px; font-weight: bold">${title}</td>
     </tr>
 </#macro>
 
-<#macro renderStyledLink(url, linkText)>
+<#macro buttonLink(url, linkText)>
     <tr>
         <td style="text-align: left; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
         <td style="background-color: #ff5c00; text-align: center; padding:0; margin:0; border: 0; height: 54px; width: 468px;">
@@ -31,5 +31,19 @@
             </a>
         </td>
         <td style="background-color: #ffffff; text-align: right; padding:0; margin:0; border: 0; height: 54px; width: 26px"></td>
+    </tr>
+</#macro>
+
+<#macro textLink(url, linkText)>
+    <a href="${url}" target="_blank" style="border: 0 none; font-weight: bolder; font-size: 17px; color: #FF6813; text-decoration: none;">
+        ${linkText} &#10132;
+    </a>
+</#macro>
+
+<#macro notificationSetting(url)>
+    <tr>
+        <td colspan="3">
+            This is an immediate notification. Future updates will be sent in a <b>weekly summary</b>.<br/>
+        </td>
     </tr>
 </#macro>
