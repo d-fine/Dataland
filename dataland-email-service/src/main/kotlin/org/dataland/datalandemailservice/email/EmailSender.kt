@@ -71,7 +71,7 @@ class EmailSender(
             buildString {
                 append("Withholding ")
                 append(emailDescriptionForLogMessage(email))
-                append("due to email service dry run!")
+                append("\ndue to email service dry run!")
             }
 
         logger.info(emailLog)
