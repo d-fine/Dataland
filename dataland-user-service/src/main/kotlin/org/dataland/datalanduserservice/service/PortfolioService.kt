@@ -7,7 +7,6 @@ import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
@@ -86,7 +85,7 @@ class PortfolioService
         /**
          * Creates a new portfolio.
          */
-        @Transactional(propagation = Propagation.REQUIRES_NEW)
+        @Transactional
         fun createPortfolio(
             portfolio: BasePortfolio,
             correlationId: String,
@@ -100,7 +99,7 @@ class PortfolioService
         /**
          * Replace an existing portfolio.
          */
-        @Transactional(propagation = Propagation.REQUIRES_NEW)
+        @Transactional
         fun replacePortfolio(
             portfolioId: String,
             portfolio: BasePortfolio,
