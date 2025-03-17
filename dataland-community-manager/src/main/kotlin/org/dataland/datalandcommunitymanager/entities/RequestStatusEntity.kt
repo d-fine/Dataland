@@ -31,7 +31,6 @@ data class RequestStatusEntity(
     @JoinColumn(name = "data_request_id")
     var dataRequest: DataRequestEntity,
     val requestStatusChangeReason: String? = null,
-    val answeringDataId: String? = null,
 ) {
     constructor(
         statusObject: StoredDataRequestStatusObject,
@@ -43,7 +42,6 @@ data class RequestStatusEntity(
         creationTimestamp = statusObject.creationTimestamp,
         requestStatusChangeReason = statusObject.requestStatusChangeReason,
         dataRequest = dataRequest,
-        answeringDataId = statusObject.answeringDataId,
     )
 
     /**
@@ -56,6 +54,5 @@ data class RequestStatusEntity(
             accessStatus = accessStatus,
             creationTimestamp = creationTimestamp,
             requestStatusChangeReason = requestStatusChangeReason,
-            answeringDataId = answeringDataId,
         )
 }

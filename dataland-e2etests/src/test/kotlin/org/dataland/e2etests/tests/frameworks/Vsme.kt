@@ -14,7 +14,6 @@ import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.ExceptionUtils.assertAccessDeniedWrapper
-import org.dataland.e2etests.utils.MetaDataUtils.assertDataMetaInfoMatches
 import org.dataland.e2etests.utils.VsmeTestUtils
 import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
 import org.junit.jupiter.api.AfterAll
@@ -93,15 +92,14 @@ class Vsme {
             executeDataRetrievalWithRetries(
                 apiAccessor.metaDataControllerApi::getDataMetaInfo, dataMetaInfoInResponse.dataId,
             )
-        requireNotNull(persistedDataMetaInfo)
-        assertDataMetaInfoMatches(actualDataMetaInfo = persistedDataMetaInfo, expectedDataMetaInfo = dataMetaInfoInResponse)
+        assertEquals(persistedDataMetaInfo, dataMetaInfoInResponse)
 
-        val dataId = persistedDataMetaInfo.dataId
+        val dataId = persistedDataMetaInfo!!.dataId
         apiAccessor.jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
         assertAccessDeniedWrapper { vsmeDataControllerApi.getCompanyAssociatedVsmeData(dataId) }
         assertAccessDeniedWrapper { vsmeDataControllerApi.getPrivateDocument(dataId, hashAlpha) }
 
-        for (role in CompanyRole.entries) {
+        for (role in CompanyRole.values()) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 role,
                 companyId = UUID.fromString(companyId),
@@ -122,7 +120,7 @@ class Vsme {
         val companyAssociatedVsmeData = CompanyAssociatedDataVsmeData(companyId, "2021", testVsmeData)
         val rolesThatShouldBeAllowedToPost = listOf(CompanyRole.CompanyOwner, CompanyRole.DataUploader)
 
-        for (role in CompanyRole.entries) {
+        for (role in CompanyRole.values()) {
             apiAccessor.companyRolesControllerApi.assignCompanyRole(
                 role, companyId = UUID.fromString(companyId), userId = dataAdminUserId,
             )

@@ -18,6 +18,12 @@
           </div>
         </div>
         <div class="right-elements">
+          <ReviewRequestButtons
+            v-if="!!framework && !!mapOfReportingPeriodToActiveDataset"
+            :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
+            :framework="framework"
+            :company-id="companyId"
+          />
           <SingleDataRequestButton :company-id="companyId" v-if="showSingleDataRequestButton" />
           <ContextMenuButton v-if="contextMenuItems.length > 0" :menu-items="contextMenuItems" />
         </div>
@@ -66,8 +72,14 @@
 
 <script lang="ts">
 import { ApiClientProvider } from '@/services/ApiClients';
-import { defineComponent, inject } from 'vue';
-import { type CompanyIdAndName, type CompanyInformation, IdentifierType } from '@clients/backend';
+import { defineComponent, inject, type PropType } from 'vue';
+import {
+  type CompanyIdAndName,
+  type CompanyInformation,
+  type DataMetaInformation,
+  type DataTypeEnum,
+  IdentifierType,
+} from '@clients/backend';
 import type Keycloak from 'keycloak-js';
 import { assertDefined } from '@/utils/TypeScriptUtils';
 import ContextMenuButton from '@/components/general/ContextMenuButton.vue';
@@ -75,13 +87,14 @@ import ClaimOwnershipDialog from '@/components/resources/companyCockpit/ClaimOwn
 import { getErrorMessage } from '@/utils/ErrorMessageUtils';
 import SingleDataRequestButton from '@/components/resources/companyCockpit/SingleDataRequestButton.vue';
 import { hasCompanyAtLeastOneCompanyOwner, hasUserCompanyRoleForCompany } from '@/utils/CompanyRolesUtils';
+import ReviewRequestButtons from '@/components/resources/dataRequest/ReviewRequestButtons.vue';
 import { getCompanyDataForFrameworkDataSearchPageWithoutFilters } from '@/utils/SearchCompaniesForFrameworkDataPageDataRequester';
 import { CompanyRole } from '@clients/communitymanager';
 import router from '@/router';
 
 export default defineComponent({
   name: 'CompanyInformation',
-  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton },
+  components: { ClaimOwnershipDialog, ContextMenuButton, SingleDataRequestButton, ReviewRequestButtons },
   setup() {
     return {
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
@@ -134,6 +147,14 @@ export default defineComponent({
     showSingleDataRequestButton: {
       type: Boolean,
       default: false,
+    },
+    framework: {
+      type: String as PropType<DataTypeEnum>,
+      required: false,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map as PropType<Map<string, DataMetaInformation>>,
+      required: false,
     },
   },
   mounted() {

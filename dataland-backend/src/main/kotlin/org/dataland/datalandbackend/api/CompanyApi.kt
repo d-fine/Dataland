@@ -407,27 +407,4 @@ interface CompanyApi {
     fun isCompanyIdValid(
         @PathVariable("companyId") companyId: String,
     )
-
-    /**
-     * A method to retrieve a list of subsidiaries of an ultimate parent company.
-     * @param companyId identifier of the ultimate parent company in dataland
-     * @return list of subsidiaries
-     */
-    @Operation(
-        summary = "Retrieve subsidiaries.",
-        description = "Retrieve the IDs of all subsidiaries of a given ultimate parent company.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully retrieved company information."),
-        ],
-    )
-    @GetMapping(
-        value = ["/{companyId}/subsidiaries"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize("hasRole('ROLE_USER')")
-    fun getCompanySubsidiariesByParentId(
-        @PathVariable("companyId") companyId: String,
-    ): ResponseEntity<List<BasicCompanyInformation>>
 }

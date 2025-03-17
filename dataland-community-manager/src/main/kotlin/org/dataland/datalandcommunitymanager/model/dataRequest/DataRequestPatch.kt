@@ -13,8 +13,8 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @param requestStatusChangeReason The reason for the change
  */
 data class DataRequestPatch(
-    val requestStatus: RequestStatus? = null,
-    val accessStatus: AccessStatus? = null,
+    val requestStatus: RequestStatus?,
+    val accessStatus: AccessStatus?,
     @field:ArraySchema(
         arraySchema =
             Schema(
@@ -22,9 +22,9 @@ data class DataRequestPatch(
                 example = "[\"testuser@example.com\"]",
             ),
     )
-    val contacts: Set<String>? = null,
-    val message: String? = null,
-    val requestPriority: RequestPriority? = null,
-    val adminComment: String? = null,
-    val requestStatusChangeReason: String? = null,
+    val contacts: Set<String>?,
+    val message: String?,
+    val requestPriority: RequestPriority?,
+    val adminComment: String?,
+    val requestStatusChangeReason: String?,
 )

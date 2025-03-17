@@ -5,60 +5,26 @@ import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestPriority
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
-import org.dataland.keycloakAdapter.auth.DatalandJwtAuthentication
-import org.dataland.keycloakAdapter.auth.DatalandRealmRole
-import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
 import java.time.Instant
 import java.util.UUID
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataRequestEntityTest {
-    private lateinit var mockAuthentication: DatalandJwtAuthentication
     private val testUserId = UUID.randomUUID().toString()
     private val testDataType = DataTypeEnum.eutaxonomyMinusNonMinusFinancials
     private val testReportingPeriod = "2024"
     private val testCompanyId = UUID.randomUUID().toString()
 
-    private lateinit var dataRequest: DataRequestEntity
-
-    private fun setupDataRequestEntity() {
-        dataRequest =
-            DataRequestEntity(
-                userId = testUserId,
-                dataType = testDataType.value,
-                reportingPeriod = testReportingPeriod,
-                datalandCompanyId = testCompanyId,
-                creationTimestamp = Instant.now().toEpochMilli(),
-            )
-    }
-
-    private fun setupSecurityMock() {
-        val mockSecurityContext = mock(SecurityContext::class.java)
-        mockAuthentication =
-            AuthenticationMock.mockJwtAuthentication(
-                "user@example.com",
-                "1234-221-1111elf",
-                setOf(DatalandRealmRole.ROLE_USER),
-            )
-        `when`(mockSecurityContext.authentication).thenReturn(mockAuthentication)
-        `when`(mockAuthentication.credentials).thenReturn("")
-        SecurityContextHolder.setContext(mockSecurityContext)
-    }
-
-    @BeforeAll
-    fun setup() {
-        setupSecurityMock()
-        setupDataRequestEntity()
-    }
+    private val dataRequest =
+        DataRequestEntity(
+            userId = testUserId,
+            dataType = testDataType.value,
+            reportingPeriod = testReportingPeriod,
+            datalandCompanyId = testCompanyId,
+            creationTimestamp = Instant.now().toEpochMilli(),
+        )
 
     @Test
     fun `validate that a new request has priority initialized to normal`() {

@@ -93,7 +93,7 @@ else
 fi
 
 mkdir -p "${LOKI_VOLUME}/health-check-log"
-./health-check/healthCheck.sh &
+./health-check/healthCheck.sh
 
 #start the backend
 ./gradlew dataland-backend:bootRun --args='--spring.profiles.active=development' --no-daemon --stacktrace

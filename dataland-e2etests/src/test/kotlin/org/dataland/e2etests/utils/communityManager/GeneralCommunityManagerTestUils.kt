@@ -283,9 +283,6 @@ fun getNewlyStoredRequestsAfterTimestamp(timestamp: Long): List<ExtendedStoredDa
         storedDataRequest.creationTimestamp > timestamp
     }
 
-fun getUsersStoredRequestWithLatestCreationTime(): ExtendedStoredDataRequest =
-    requestControllerApi.getDataRequestsForRequestingUser().maxBy { it.creationTimestamp }
-
 fun getMessageHistoryOfRequest(dataRequestId: String): List<StoredDataRequestMessageObject> =
     requestControllerApi
         .getDataRequestById(UUID.fromString(dataRequestId))

@@ -38,7 +38,7 @@ On all servers to the following:
 - Check for new ubuntu releases and install them if available with `sudo do-release-upgrade` (see internal documentation for details, you might need to run `sudo apt update && sudo apt upgrade` first if packages are missing)  
 
 Start the process with one of the dev servers (preferably dev2 or dev3) and deploy to it afterwards. If everything was
-fine, proceed with other servers. (Do not redeploy on test or production after the update!)
+fine, proceed with other servers.
 
 - [ ] dev1.dataland.com
 - [ ] dev2.dataland.com

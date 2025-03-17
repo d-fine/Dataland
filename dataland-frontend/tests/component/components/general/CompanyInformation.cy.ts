@@ -1,7 +1,7 @@
 // @ts-nocheck
 import CompanyInformationComponent from '@/components/pages/CompanyInformation.vue';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
-import { type CompanyInformation, type VsmeData } from '@clients/backend';
+import { type CompanyInformation, type DataMetaInformation, DataTypeEnum, type VsmeData } from '@clients/backend';
 import { type FixtureData, getPreparedFixture } from '@sharedUtils/Fixtures';
 import { type StoredDataRequest } from '@clients/communitymanager';
 let vsmeFixtureForTest: FixtureData<VsmeData>;
@@ -69,5 +69,36 @@ describe('Component tests for the company info sheet', function (): void {
       cy.get('[data-test="parent-visible"]').should('have.text', dummyParentCompanyName).click();
       cy.get('@routerPush').should('have.been.calledWith', `/companies/${dummyParentCompanyId}`);
     });
+  });
+
+  it('Check visibility of review request buttons', function () {
+    mockRequestsOnMounted();
+    cy.mountWithPlugins(CompanyInformationComponent, {
+      keycloak: minimalKeycloakMock({}),
+    }).then((mounted) => {
+      void mounted.wrapper.setProps({
+        companyId: dummyCompanyId,
+        framework: DataTypeEnum.EutaxonomyNonFinancials,
+        mapOfReportingPeriodToActiveDataset: new Map<string, DataMetaInformation>([
+          ['1996', {} as DataMetaInformation],
+          ['1997', {} as DataMetaInformation],
+        ]),
+      });
+    });
+    cy.get('[data-test="reOpenRequestButton"]').should('exist');
+    cy.get('[data-test="resolveRequestButton"]').should('exist');
+  });
+  it('Check non-visibility of review request buttons', function () {
+    mockRequestsOnMounted();
+    cy.mountWithPlugins(CompanyInformationComponent, {
+      keycloak: minimalKeycloakMock({}),
+
+      // @ts-ignore
+      props: {
+        companyId: dummyCompanyId,
+      },
+    });
+    cy.get('[data-test="reOpenRequestButton"]').should('not.exist');
+    cy.get('[data-test="resolveRequestButton"]').should('not.exist');
   });
 });

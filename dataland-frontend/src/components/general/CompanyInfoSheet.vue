@@ -23,6 +23,8 @@
       :companyId="companyId"
       :show-single-data-request-button="showSingleDataRequestButton"
       @fetchedCompanyInformation="onFetchedCompanyInformation($event)"
+      :framework="framework"
+      :map-of-reporting-period-to-active-dataset="mapOfReportingPeriodToActiveDataset"
       class="w-12"
     />
   </div>
@@ -40,8 +42,8 @@
 import BackButton from '@/components/general/BackButton.vue';
 import CompanyInformationBanner from '@/components/pages/CompanyInformation.vue';
 import CompaniesOnlySearchBar from '@/components/resources/companiesOnlySearch/CompaniesOnlySearchBar.vue';
-import { type CompanyInformation } from '@clients/backend';
-import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
+import { type CompanyInformation, type DataMetaInformation, type DataTypeEnum } from '@clients/backend';
+import { computed, inject, onMounted, onUnmounted, type PropType, ref } from 'vue';
 import router from '@/router';
 
 const injectedMobileView = inject<{ value: boolean }>('useMobileView');
@@ -50,20 +52,29 @@ const useMobileView = computed<boolean | undefined>(() => injectedMobileView?.va
 const sheet = ref<HTMLDivElement>();
 const attachedSheet = ref<HTMLDivElement>();
 
-const { companyId, showSearchBar, showSingleDataRequestButton } = defineProps({
-  companyId: {
-    type: String,
-    required: true,
-  },
-  showSearchBar: {
-    type: Boolean,
-    default: true,
-  },
-  showSingleDataRequestButton: {
-    type: Boolean,
-    default: false,
-  },
-});
+const { companyId, showSearchBar, showSingleDataRequestButton, framework, mapOfReportingPeriodToActiveDataset } =
+  defineProps({
+    companyId: {
+      type: String,
+      required: true,
+    },
+    showSearchBar: {
+      type: Boolean,
+      default: true,
+    },
+    showSingleDataRequestButton: {
+      type: Boolean,
+      default: false,
+    },
+    framework: {
+      type: String as PropType<DataTypeEnum>,
+      required: false,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map as PropType<Map<string, DataMetaInformation>>,
+      required: false,
+    },
+  });
 
 const emit = defineEmits(['fetchedCompanyInformation']);
 

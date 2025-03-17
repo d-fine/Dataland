@@ -214,9 +214,4 @@ class CompanyDataController(
     override fun isCompanyIdValid(companyId: String) {
         companyQueryManager.verifyCompanyIdExists(companyId)
     }
-
-    override fun getCompanySubsidiariesByParentId(companyId: String): ResponseEntity<List<BasicCompanyInformation>> =
-        ResponseEntity.ok(
-            companyQueryManager.getCompanySubsidiariesByParentId(companyId),
-        )
 }

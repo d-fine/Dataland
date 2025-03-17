@@ -14,7 +14,7 @@ data class DataRequestsFilter(
     val dataType: Set<DataTypeEnum>? = null,
     val userId: String? = null,
     val emailAddress: String? = null,
-    val datalandCompanyIds: Set<String>? = null,
+    val datalandCompanyId: String? = null,
     val reportingPeriod: String? = null,
     val requestStatus: Set<RequestStatus>? = null,
     val accessStatus: Set<AccessStatus>? = null,
@@ -62,10 +62,10 @@ data class DataRequestsFilter(
         }
 
     val shouldFilterByDatalandCompanyId: Boolean
-        get() = datalandCompanyIds?.isNotEmpty() ?: false
+        get() = datalandCompanyId?.isNotEmpty() ?: false
 
-    val preparedDatalandCompanyIds: Set<String>
-        get() = datalandCompanyIds ?: emptySet()
+    val preparedDatalandCompanyId: String
+        get() = datalandCompanyId ?: ""
 
     val shouldFilterByReportingPeriod: Boolean
         get() = reportingPeriod?.isNotEmpty() ?: false

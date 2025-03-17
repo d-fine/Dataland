@@ -57,7 +57,6 @@
     :closable="false"
     style="border-radius: 0.75rem; text-align: center"
     :show-header="false"
-    @update:visible="(isVisible) => onUpdateVisibilitySuccessModal(dialogIsSuccess, isVisible)"
   >
     <template v-if="dialogIsSuccess">
       <div class="text-center" style="display: flex; flex-direction: column">
@@ -84,10 +83,10 @@
       {{ dialog }}
     </div>
     <div style="margin: 10px">
-      <PrimeButton label="CLOSE" @click="closeSuccessModal(dialogIsSuccess)" class="p-button-outlined" />
+      <PrimeButton label="CLOSE" @click="closeSuccessModal()" class="p-button-outlined" />
     </div>
   </PrimeDialog>
-  <div>
+  <div v-if="isVisible">
     <PrimeButton
       class="uppercase p-button-outlined p-button p-button-sm d-letters"
       aria-label="RESOLVE REQUEST"
@@ -95,6 +94,9 @@
       data-test="resolveRequestButton"
     >
       <span class="px-2">RESOLVE REQUEST</span>
+      <span class="material-icons-outlined no-line-height" v-if="mapOfReportingPeriodToActiveDataset.size > 1">
+        arrow_drop_down
+      </span>
     </PrimeButton>
     <PrimeButton
       class="uppercase p-button p-button-sm d-letters"
@@ -103,18 +105,38 @@
       data-test="reOpenRequestButton"
     >
       <span class="px-2">REOPEN REQUEST</span>
+      <span class="material-icons-outlined no-line-height" v-if="mapOfReportingPeriodToActiveDataset.size > 1">
+        arrow_drop_down
+      </span>
     </PrimeButton>
+    <OverlayPanel ref="reportingPeriodsOverlayPanel">
+      <SelectReportingPeriodDialog
+        :mapOfReportingPeriodToActiveDataset="mapOfReportingPeriodToActiveDataset"
+        :answered-data-requests="answeredDataRequestsForViewPage"
+        :action-on-click="actionOnClick"
+        @selected-reporting-period="handleReportingPeriodSelection"
+      />
+    </OverlayPanel>
   </div>
 </template>
 
 <script lang="ts">
 import PrimeButton from 'primevue/button';
-import { defineComponent, inject } from 'vue';
+import { defineComponent, inject, type PropType } from 'vue';
 import type Keycloak from 'keycloak-js';
-import { patchDataRequest } from '@/utils/RequestUtils';
-import { type ErrorResponse } from '@clients/backend';
-import { type AccessStatus, RequestStatus, type StoredDataRequestMessageObject } from '@clients/communitymanager';
+import { getAnsweredDataRequestsForViewPage, patchDataRequest } from '@/utils/RequestUtils';
+import OverlayPanel from 'primevue/overlaypanel';
+import { type DataMetaInformation, type DataTypeEnum, type ErrorResponse } from '@clients/backend';
+import SelectReportingPeriodDialog from '@/components/general/SelectReportingPeriodDialog.vue';
+import { ReportingPeriodTableActions, type ReportingPeriodTableEntry } from '@/utils/PremadeDropdownDatasets';
+import {
+  type AccessStatus,
+  type ExtendedStoredDataRequest,
+  RequestStatus,
+  type StoredDataRequestMessageObject,
+} from '@clients/communitymanager';
 import PrimeDialog from 'primevue/dialog';
+import { assertDefined } from '@/utils/TypeScriptUtils';
 import { AxiosError } from 'axios';
 import EmailDetails from '@/components/resources/dataRequest/EmailDetails.vue';
 import { ApiClientProvider } from '@/services/ApiClients';
@@ -127,14 +149,43 @@ export default defineComponent({
       getKeycloakPromise: inject<() => Promise<Keycloak>>('getKeycloakPromise'),
     };
   },
-  components: { EmailDetails, PrimeButton, PrimeDialog },
+  components: { EmailDetails, PrimeButton, OverlayPanel, SelectReportingPeriodDialog, PrimeDialog },
   props: {
-    dataRequestId: {
+    companyId: {
       type: String,
       required: true,
     },
+    framework: {
+      type: String as PropType<DataTypeEnum>,
+      required: true,
+    },
+    mapOfReportingPeriodToActiveDataset: {
+      type: Map as PropType<Map<string, DataMetaInformation>>,
+      required: true,
+    },
   },
-  emits: ['request-reopened-or-resolved'],
+  emits: ['isVisible'],
+  computed: {
+    isVisible() {
+      return this.answeredDataRequestsForViewPage.length > 0;
+    },
+  },
+  watch: {
+    isVisible(newStatus: boolean) {
+      this.$emit('isVisible', newStatus);
+    },
+    currentChosenDataRequestId: {
+      handler(newRequestId: string) {
+        if (newRequestId.length === 0) {
+          this.messageHistory = [];
+        }
+        this.fetchMessageHistory().catch((error) => console.error(error));
+      },
+    },
+    mapOfReportingPeriodToActiveDataset() {
+      void this.updateAnsweredDataRequestsForViewPage();
+    },
+  },
   data() {
     return {
       toggleEmailDetailsError: false,
@@ -143,11 +194,18 @@ export default defineComponent({
       emailContacts: undefined as string[] | undefined,
       emailMessage: undefined as string | undefined,
       showUpdateRequestDialog: false,
+      answeredDataRequestsForViewPage: [] as ExtendedStoredDataRequest[],
       dialogIsVisible: false,
       dialog: 'Default\n text.',
       dialogIsSuccess: false,
+      actionOnClick: ReportingPeriodTableActions.ReopenRequest,
+      currentChosenDataRequestId: '',
       messageHistory: [] as StoredDataRequestMessageObject[],
+      currentRunId: 0,
     };
+  },
+  mounted() {
+    void this.updateAnsweredDataRequestsForViewPage();
   },
 
   methods: {
@@ -169,7 +227,7 @@ export default defineComponent({
         if (this.getKeycloakPromise) {
           const response = await new ApiClientProvider(
             this.getKeycloakPromise()
-          ).apiClients.requestController.getDataRequestById(this.dataRequestId);
+          ).apiClients.requestController.getDataRequestById(this.currentChosenDataRequestId);
           this.messageHistory = response.data.messageHistory;
         }
       } catch (error) {
@@ -180,17 +238,8 @@ export default defineComponent({
     /**
      * Closes the SuccessModal
      */
-    closeSuccessModal(dialogIsSuccess: boolean) {
+    closeSuccessModal() {
       this.dialogIsVisible = false;
-      if (dialogIsSuccess) this.$emit('request-reopened-or-resolved');
-    },
-    /**
-     * Emit status change signal if a success dialog was closed.
-     * @param dialogIsSuccess whether the dialog showed a "success"- or an "error"-message
-     * @param isVisible whether the dialog was closed (false) or shown (true)
-     */
-    onUpdateVisibilitySuccessModal(dialogIsSuccess: boolean, isVisible: boolean) {
-      if (dialogIsSuccess && !isVisible) this.$emit('request-reopened-or-resolved');
     },
     /**
      * Opens the SuccessModal with given dialog
@@ -203,19 +252,58 @@ export default defineComponent({
       this.dialogIsVisible = true;
     },
     /**
+     * Makes the api call and updates the list of answered data requests.
+     */
+    async updateAnsweredDataRequestsForViewPage() {
+      const runId = ++this.currentRunId;
+      const response = await getAnsweredDataRequestsForViewPage(
+        this.companyId,
+        this.framework,
+        Array.from(this.mapOfReportingPeriodToActiveDataset.keys()),
+        this.getKeycloakPromise
+      );
+      if (runId === this.currentRunId) {
+        this.answeredDataRequestsForViewPage = response;
+      }
+    },
+    /**
      * Method to close the request or provide dropdown for that when the button is clicked
      * @param event ClickEvent
      */
-    async resolveRequest() {
-      await this.patchDataRequest(this.dataRequestId, RequestStatus.Resolved);
+    async resolveRequest(event: Event) {
+      this.actionOnClick = ReportingPeriodTableActions.ResolveRequest;
+      if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
+        this.openReportingPeriodPanel(event);
+      } else {
+        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
+          await this.patchDataRequest(answeredRequest.dataRequestId, RequestStatus.Resolved);
+        }
+      }
     },
     /**
      * Method to reopen the request or provide dropdown for that when the button is clicked
      * @param event ClickEvent
      */
-    async reOpenRequest() {
-      await this.fetchMessageHistory();
-      this.showUpdateRequestDialog = true;
+    reOpenRequest(event: Event) {
+      this.actionOnClick = ReportingPeriodTableActions.ReopenRequest;
+      if (this.mapOfReportingPeriodToActiveDataset.size > 1) {
+        this.openReportingPeriodPanel(event);
+      } else {
+        for (const answeredRequest of this.answeredDataRequestsForViewPage) {
+          this.currentChosenDataRequestId = answeredRequest.dataRequestId;
+          this.showUpdateRequestDialog = true;
+        }
+      }
+    },
+    /**
+     * Opens Overlay Panel for selecting a reporting period to review request for
+     * @param event event
+     */
+    openReportingPeriodPanel(event: Event) {
+      const panel = this.$refs.reportingPeriodsOverlayPanel as OverlayPanel;
+      if (panel) {
+        panel.toggle(event);
+      }
     },
     /**
      * Trys to patch DataRequest, displays possible error message
@@ -253,7 +341,7 @@ export default defineComponent({
         this.openSuccessModal(errorMessage, false);
         return;
       }
-
+      await this.updateAnsweredDataRequestsForViewPage();
       switch (requestStatusToPatch) {
         case RequestStatus.Open:
           this.openSuccessModal('Request reopened successfully.');
@@ -264,12 +352,44 @@ export default defineComponent({
       }
     },
     /**
+     * Handles the selection of the reporting period in th dropdown panel
+     * @param reportingPeriodTableEntry object, which was chosen
+     */
+    async handleReportingPeriodSelection(reportingPeriodTableEntry: ReportingPeriodTableEntry) {
+      const dataRequestId = assertDefined(reportingPeriodTableEntry.dataRequestId);
+      const requestStatusToPatch = assertDefined(
+        this.mapActionToStatus(assertDefined(reportingPeriodTableEntry.actionOnClick))
+      );
+      if (requestStatusToPatch == RequestStatus.Open) {
+        this.currentChosenDataRequestId = dataRequestId;
+        this.showUpdateRequestDialog = true;
+      } else {
+        await this.patchDataRequest(dataRequestId, requestStatusToPatch);
+      }
+    },
+    /**
+     * Helper function to handle the different actions given by the different buttons
+     * @param actionOnClick the action on click
+     * @returns the corresponding request status
+     */
+    mapActionToStatus(actionOnClick: ReportingPeriodTableActions) {
+      switch (actionOnClick) {
+        case ReportingPeriodTableActions.ResolveRequest:
+          return RequestStatus.Resolved;
+        case ReportingPeriodTableActions.ReopenRequest:
+          return RequestStatus.Open;
+      }
+    },
+    /**
      * Handles the click on update request
      */
     async updateRequest() {
+      if (!this.currentChosenDataRequestId) {
+        return;
+      }
       if (this.hasValidEmailForm) {
         await this.patchDataRequest(
-          this.dataRequestId,
+          this.currentChosenDataRequestId,
           RequestStatus.Open,
           undefined,
           this.emailContacts,

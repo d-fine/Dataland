@@ -25,7 +25,6 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.springframework.security.core.context.SecurityContext
@@ -123,7 +122,7 @@ class DataAccessManagerTest {
         doNothing().`when`(dataRequestProcessingUtils).addNewRequestStatusToHistory(
             dataRequestEntity = any(), requestStatus = any(),
             accessStatus = any(), requestStatusChangeReason = anyString(),
-            modificationTime = any(), answeringDataId = any(),
+            modificationTime = any(),
         )
         doNothing().`when`(dataRequestProcessingUtils).addMessageToMessageHistory(
             dataRequestEntity = any(), contacts = anySet(), message = anyString(),
@@ -231,7 +230,7 @@ class DataAccessManagerTest {
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
                 accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
-                modificationTime = any(), answeringDataId = anyOrNull(),
+                modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(0))
             .addMessageToMessageHistory(
@@ -259,7 +258,7 @@ class DataAccessManagerTest {
             .addNewRequestStatusToHistory(
                 dataRequestEntity = any(), requestStatus = any(),
                 accessStatus = eq(AccessStatus.Pending), requestStatusChangeReason = eq(null),
-                modificationTime = any(), answeringDataId = anyOrNull(),
+                modificationTime = any(),
             )
         verify(mockDataRequestProcessingUtils, times(1))
             .addMessageToMessageHistory(
