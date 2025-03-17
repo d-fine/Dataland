@@ -638,6 +638,12 @@
             "items": {
               "$ref": "#/components/schemas/IdWithRef"
             }
+          },
+          "constraints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

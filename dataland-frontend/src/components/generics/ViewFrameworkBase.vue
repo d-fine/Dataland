@@ -381,7 +381,7 @@ export default defineComponent({
     },
 
     /**
-     * Get available metaData in case that data cannot be received due to insufficient access rights for private data.
+     * Get available metaData in case of either insufficient rights.
      */
     setActiveDataForCurrentCompanyAndFramework() {
       if (this.dataMetaInformation) {

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoPolicyAgainstChildLabour",
+  "name" : "Policy against Child Labour",
+  "businessDefinition" : "Do you have policies in place to abolish all forms of child labour? If yes, please share the policy with us.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

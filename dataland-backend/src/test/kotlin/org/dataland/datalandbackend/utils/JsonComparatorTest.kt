@@ -23,6 +23,8 @@ class JsonComparatorTest {
             """{"a": null};{"a": {}}""",
             """{"a": {}};{"a": null}""",
             """{"a": null};{"a": {"c": null}}""",
+            """{"a": null};{"a": {"b": null, "c": {}, "d": []}}""",
+            """{"a": null};{"a": {"b": null, "c": {"d": null, "e": null, "f": {"g": null, "h": {}}}}}""",
         ],
     )
     fun `should see fully null objects and null as equal iff the option is enabled`(
@@ -135,5 +137,34 @@ class JsonComparatorTest {
         assertEquals("field1", differences[0].path)
         assertEquals("null", differences[0].expected.toString())
         assertEquals("\"value1\"", differences[0].actual.toString())
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        delimiter = ';',
+        value = [
+            """{"a": 1.0};{"a": 1}""",
+            """{"a": 3.7534466E7};{"a": 37534466}""",
+        ],
+    )
+    fun `should not detect differences due to number formatting`(
+        expected: String,
+        actual: String,
+    ) {
+        val differences = compareJsonStrings(expected, actual)
+        assertEquals(0, differences.size)
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        delimiter = ';',
+        value = [
+            """{"a": {"b": null, "c": 1}}""",
+            """{"a": {"b": null, "c": {"d": [], "e": "Test"}}}""",
+            """{"a": {}, "b": [], "c": {"d": null, "e": "Test"}}}""",
+        ],
+    )
+    fun `nested objects with partially null values should not be equal to null`(jsonString: String) {
+        assertEquals(JsonComparator.isFullyNullObject(JsonTestUtils.testObjectMapper.readTree(jsonString)), false)
     }
 }

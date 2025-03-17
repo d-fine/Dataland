@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoCorruptionLegalProceedings",
+  "name" : "Corruption Legal Proceedings",
+  "businessDefinition" : "Involvement in corruption-related legal proceedings.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}
