@@ -8,7 +8,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
  * --- API model ---
  * Portfolio API model for GET/POST methods
  */
-data class PortfolioPayload(
+data class PortfolioUpload(
     @field:JsonProperty(required = true)
     override val portfolioName: String,
     @field:JsonProperty(required = true)
@@ -16,5 +16,5 @@ data class PortfolioPayload(
     override val companyIds: Set<String>,
     @field:JsonProperty(required = true)
     @field:NotEmpty(message = "Please provide at least one dataType.")
-    override val dataTypes: Set<DataTypeEnum>,
+    override val frameworks: Set<DataTypeEnum>,
 ) : Portfolio

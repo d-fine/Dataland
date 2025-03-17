@@ -8,5 +8,5 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 interface Portfolio {
     val portfolioName: String
     val companyIds: Set<String>
-    val dataTypes: Set<DataTypeEnum>
+    val frameworks: Set<DataTypeEnum>
 }

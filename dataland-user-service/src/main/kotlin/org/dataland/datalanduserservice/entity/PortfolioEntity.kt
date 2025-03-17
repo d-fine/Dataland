@@ -13,7 +13,7 @@ import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalanduserservice.converter.DataTypeEnumConverter
-import org.dataland.datalanduserservice.model.PortfolioResponse
+import org.dataland.datalanduserservice.model.BasePortfolio
 import java.util.UUID
 
 /**
@@ -46,19 +46,19 @@ data class PortfolioEntity(
     @Column(name = "data_types")
     @OrderBy("asc")
     @Convert(converter = DataTypeEnumConverter::class)
-    val dataTypes: MutableSet<DataTypeEnum>,
+    val frameworks: MutableSet<DataTypeEnum>,
 ) {
     /**
      * create PortfolioResponse from entity
      */
-    fun toPortfolioResponse(): PortfolioResponse =
-        PortfolioResponse(
+    fun toBasePortfolio(): BasePortfolio =
+        BasePortfolio(
             portfolioId.toString(),
             portfolioName,
             userId,
             creationTimestamp,
             lastUpdateTimestamp,
             companyIds,
-            dataTypes,
+            frameworks,
         )
 }

@@ -44,7 +44,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PortfolioResponse"
+                  "$ref": "#/components/schemas/BasePortfolio"
                 }
               }
             }
@@ -100,7 +100,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PortfolioPayload"
+                "$ref": "#/components/schemas/PortfolioUpload"
               }
             }
           },
@@ -112,7 +112,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PortfolioResponse"
+                  "$ref": "#/components/schemas/BasePortfolio"
                 }
               }
             }
@@ -216,7 +216,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PortfolioResponse"
+                    "$ref": "#/components/schemas/BasePortfolio"
                   }
                 }
               }
@@ -262,7 +262,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PortfolioPayload"
+                "$ref": "#/components/schemas/PortfolioUpload"
               }
             }
           },
@@ -274,75 +274,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PortfolioResponse"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
-    "/portfolios/{portfolioId}/{companyId}": {
-      "patch": {
-        "tags": [
-          "portfolio-controller"
-        ],
-        "summary": "Add a new companyId to an existing portfolio.",
-        "description": "Add a new companyId to the list of companyIds for an existing companyId.",
-        "operationId": "patchPortfolio",
-        "parameters": [
-          {
-            "name": "portfolioId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully updated portfolio.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PortfolioResponse"
+                  "$ref": "#/components/schemas/BasePortfolio"
                 }
               }
             }
@@ -548,76 +480,14 @@
           }
         }
       }
-    },
-    "/portfolios/{portfolioId}/{companyId}/": {
-      "delete": {
-        "tags": [
-          "portfolio-controller"
-        ],
-        "summary": "Remove a company from an existing portfolio.",
-        "description": "Remove the company with companyId from the portfolio with given portfolioId.",
-        "operationId": "removeCompanyFromPortfolio",
-        "parameters": [
-          {
-            "name": "portfolioId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Successfully removed company from existing portfolio.",
-            "content": {}
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
     }
   },
   "components": {
     "schemas": {
-      "PortfolioPayload": {
+      "PortfolioUpload": {
         "required": [
           "companyIds",
-          "dataTypes",
+          "frameworks",
           "portfolioName"
         ],
         "type": "object",
@@ -632,7 +502,7 @@
               "type": "string"
             }
           },
-          "dataTypes": {
+          "frameworks": {
             "uniqueItems": true,
             "type": "array",
             "items": {
@@ -653,11 +523,11 @@
           }
         }
       },
-      "PortfolioResponse": {
+      "BasePortfolio": {
         "required": [
           "companyIds",
           "creationTimestamp",
-          "dataTypes",
+          "frameworks",
           "lastUpdateTimestamp",
           "portfolioId",
           "portfolioName",
@@ -689,7 +559,7 @@
               "type": "string"
             }
           },
-          "dataTypes": {
+          "frameworks": {
             "uniqueItems": true,
             "type": "array",
             "items": {

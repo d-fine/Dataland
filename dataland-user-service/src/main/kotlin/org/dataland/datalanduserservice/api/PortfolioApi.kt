@@ -5,13 +5,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
-import org.dataland.datalanduserservice.model.PortfolioPayload
-import org.dataland.datalanduserservice.model.PortfolioResponse
+import org.dataland.datalanduserservice.model.BasePortfolio
+import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -42,7 +41,7 @@ interface PortfolioApi {
     @PreAuthorize(
         "hasRole('ROLE_USER')",
     )
-    fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<PortfolioResponse>>
+    fun getAllPortfoliosForCurrentUser(): ResponseEntity<List<BasePortfolio>>
 
     /**
      * Get portfolio by portfolioId.
@@ -64,32 +63,7 @@ interface PortfolioApi {
     )
     fun getPortfolio(
         @PathVariable("portfolioId") portfolioId: String,
-    ): ResponseEntity<PortfolioResponse>
-
-    /**
-     * Patch an existing portfolio by adding a new companyId to the list of companyIds.
-     */
-    @Operation(
-        summary = "Add a new companyId to an existing portfolio.",
-        description = "Add a new companyId to the list of companyIds for an existing companyId.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "200", description = "Successfully updated portfolio."),
-        ],
-    )
-    @PatchMapping(
-        value = ["/portfolios/{portfolioId}/{companyId}"],
-        consumes = ["application/json"],
-        produces = ["application/json"],
-    )
-    @PreAuthorize(
-        "hasRole('ROLE_USER')",
-    )
-    fun patchPortfolio(
-        @PathVariable("portfolioId") portfolioId: String,
-        @PathVariable("companyId") companyId: String,
-    ): ResponseEntity<PortfolioResponse>
+    ): ResponseEntity<BasePortfolio>
 
     /**
      * Post a new portfolio.
@@ -111,8 +85,8 @@ interface PortfolioApi {
         "hasRole('ROLE_USER')",
     )
     fun createPortfolio(
-        @Valid @RequestBody(required = true) portfolio: PortfolioPayload,
-    ): ResponseEntity<PortfolioResponse>
+        @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
+    ): ResponseEntity<BasePortfolio>
 
     /**
      * Replace an existing portfolio.
@@ -136,8 +110,8 @@ interface PortfolioApi {
     )
     fun replacePortfolio(
         @PathVariable(name = "portfolioId") portfolioId: String,
-        @Valid @RequestBody(required = true) portfolio: PortfolioPayload,
-    ): ResponseEntity<PortfolioResponse>
+        @Valid @RequestBody(required = true) portfolioUpload: PortfolioUpload,
+    ): ResponseEntity<BasePortfolio>
 
     /**
      * Delete an existing portfolio.
@@ -160,29 +134,5 @@ interface PortfolioApi {
     )
     fun deletePortfolio(
         @PathVariable(name = "portfolioId") portfolioId: String,
-    ): ResponseEntity<Unit>
-
-    /**
-     * Remove a company from an existing portfolio.
-     */
-    @Operation(
-        summary = "Remove a company from an existing portfolio.",
-        description = "Remove the company with companyId from the portfolio with given portfolioId.",
-    )
-    @ApiResponses(
-        value = [
-            ApiResponse(responseCode = "204", description = "Successfully removed company from existing portfolio."),
-        ],
-    )
-    @DeleteMapping(
-        produces = ["application/json"],
-        value = ["/portfolios/{portfolioId}/{companyId}/"],
-    )
-    @PreAuthorize(
-        "hasRole('ROLE_USER')",
-    )
-    fun removeCompanyFromPortfolio(
-        @PathVariable(name = "portfolioId") portfolioId: String,
-        @PathVariable("companyId") companyId: String,
     ): ResponseEntity<Unit>
 }
