@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoIloCoreLabourStandards",
+  "name" : "ILO Core Labour Standards",
+  "businessDefinition" : "Abidance by the ILO Core Labour Standards.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

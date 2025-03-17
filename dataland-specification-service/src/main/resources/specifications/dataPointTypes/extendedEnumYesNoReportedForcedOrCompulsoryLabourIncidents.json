@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoReportedForcedOrCompulsoryLabourIncidents",
+  "name" : "Reported Forced Or Compulsory Labour Incidents",
+  "businessDefinition" : "Number of reported incidents of forced or compulsory labor within own operations or supply chain. Linked to Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 13.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

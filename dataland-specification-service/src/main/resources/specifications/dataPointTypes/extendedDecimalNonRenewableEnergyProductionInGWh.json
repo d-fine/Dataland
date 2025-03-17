@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyProductionInGWh",
+  "name" : "Non-Renewable Energy Production",
+  "businessDefinition" : "Total value of non-renewable energy produced, meaning energy from sources other than non-fossil sources. See also Regulation (EU) 2022/1288, Annex I, top (7).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

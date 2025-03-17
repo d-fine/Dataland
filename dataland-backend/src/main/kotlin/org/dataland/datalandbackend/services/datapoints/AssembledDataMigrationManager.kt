@@ -59,6 +59,7 @@ class AssembledDataMigrationManager
                 correlationId = correlationId,
                 dataContent = splitDataset.dataContent,
                 fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
+                fileReferenceToFileNameMapping = splitDataset.fileReferenceToFileNameMapping,
                 initialQaStatus = dataMetaInfo.qaStatus,
                 initialQaComment = "Status copied from stored dataset during migration.",
             )
