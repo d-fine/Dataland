@@ -1,5 +1,5 @@
 <template>
-  <span data-test="chooseFrameworkDropdown" class="p-dropdown-panel">
+  <span data-test="chooseFrameworkDropdown" class="p-dropdown-panel" ref="chooseFrameworkDropdown">
     <span
       @click="dropdownExtended = !dropdownExtended"
       class="fill-dropdown always-fill"
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType, ref } from 'vue';
+import { type PropType, ref, onMounted, onBeforeUnmount, useTemplateRef } from 'vue';
 import { FRAMEWORKS_WITH_VIEW_PAGE } from '@/utils/Constants';
 import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { type DataMetaInformation } from '@clients/backend';
@@ -45,6 +45,24 @@ const props = defineProps({
     required: true,
   },
 });
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
+const element = useTemplateRef('chooseFrameworkDropdown');
+
+/**
+ * Close drop down on click outside the element
+ * @param event The mouse pointer event anywhere
+ */
+function handleClickOutside(event: MouseEvent): void {
+  if (!element.value?.contains(event?.target as HTMLElement)) {
+    dropdownExtended.value = false;
+  }
+}
 
 const dropdownExtended = ref<boolean>(false);
 

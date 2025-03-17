@@ -1,34 +1,26 @@
 <template>
   <TheHeader v-if="!useMobileView" />
 
-  <div ref="sheet">
-    <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
-    <MarginWrapper
-      class="text-left surface-0 dataland-toolbar"
-      style="box-shadow: 0 4px 4px 0 #00000005; margin-right: 0"
-      :class="[pageScrolled ? ['fixed w-100'] : '']"
-    >
-      <div style="text-align: left; margin: 0 1rem">
-        <ChangeFrameworkDropdown
-          :data-meta-information="dataMetaInformation"
-          data-type="Documents"
-          :company-id="companyId"
-        />
-        <FrameworkDataSearchDropdownFilter
-          :disabled="waitingForData"
-          v-model="selectedDocumentType"
-          ref="DocumentTypeFilter"
-          :available-items="availableDocumentTypes"
-          filter-name="Types"
-          data-test="document-type-picker"
-          filter-id="document-type-filter"
-          filter-placeholder="Search by document type"
-          class="ml-3"
-          style="margin: 1rem"
-        />
-        <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
-      </div>
-    </MarginWrapper>
+  <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="false" />
+  <div class="selection-header">
+    <ChangeFrameworkDropdown
+      :data-meta-information="dataMetaInformation"
+      data-type="Documents"
+      :company-id="companyId"
+    />
+    <FrameworkDataSearchDropdownFilter
+      :disabled="waitingForData"
+      v-model="selectedDocumentType"
+      ref="DocumentTypeFilter"
+      :available-items="availableDocumentTypes"
+      filter-name="Types"
+      data-test="document-type-picker"
+      filter-id="document-type-filter"
+      filter-placeholder="Search by document type"
+      class="ml-3"
+      style="margin: 1rem"
+    />
+    <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
   </div>
 
   <TheContent class="paper-section flex flex-col p-3">
@@ -115,7 +107,6 @@ import { humanizeStringOrNumber, truncatedDocumentName } from '@/utils/StringFor
 import { dateStringFormatter } from '@/utils/DataFormatUtils';
 import ChangeFrameworkDropdown from '@/components/generics/ChangeFrameworkDropdown.vue';
 import type { DataMetaInformation } from '@clients/backend';
-import MarginWrapper from '@/components/wrapper/MarginWrapper.vue';
 
 const props = defineProps<{
   companyId: string;
@@ -279,6 +270,15 @@ onMounted(() => {
 </style>
 
 <style scoped lang="scss">
+.selection-header {
+  text-align: left;
+  margin: 0 1rem;
+  position: sticky;
+  top: 4rem;
+  z-index: 1000;
+  background: white;
+}
+
 .sheet {
   width: 100%;
   background-color: var(--surface-0);
