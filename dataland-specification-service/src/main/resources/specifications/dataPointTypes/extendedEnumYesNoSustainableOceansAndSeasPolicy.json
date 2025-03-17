@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoSustainableOceansAndSeasPolicy",
+  "name" : "Sustainable Oceans And Seas Policy",
+  "businessDefinition" : "Existence of sustainable oceans or seas practices or policies. See Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 12.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

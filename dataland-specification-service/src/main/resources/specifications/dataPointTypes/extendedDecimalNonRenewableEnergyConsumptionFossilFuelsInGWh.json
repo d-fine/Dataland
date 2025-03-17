@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionFossilFuelsInGWh",
+  "name" : "Non-Renewable Energy Consumption Fossil Fuels",
+  "businessDefinition" : "Energy consumption from fossil fuels (sum of crude oil, natural gas, nuclear energy, lignite and coal) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}
