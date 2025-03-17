@@ -75,11 +75,10 @@ Check the cloud provider's dashboard for manually created backups and images. De
 
 ## Check the alerts and critical alerts for prod in the grafana dashboard
 
-On the prod environment the grafana alerts should be investigated. The Grafana UI can be accessed via `ssh` server port
-forwarding and visiting http://dataland-admin:6789/grafana (go to the slack-alerts-channels and click on the link to
-dashboard in one of the alerts for prod under show more) Logs can be found under Explore.
-Log in credentials can be found here https://github.com/d-fine/DatalandInternal/wiki/Monitoring
-Check the critical alerts and alerts on prod in the dashboard since the last manual maintenance (17.03.2025)
+On the prod environment the grafana alerts should be investigated. 
+Go to the slack-alerts-channels and click on the link to the dashboard in one of the alerts.
+Log in credentials for grafana can be found here https://github.com/d-fine/DatalandInternal/wiki/Monitoring
+Check the critical alerts and alerts on prod in the dashboard since the last manual maintenance 
 Time-boxed investigation (2h-3h) of errors:
 - [ ] Are there any unresolved critical alerts for unhealthy containers? (That should not be the case and needs to be resolved immediately)
 - [ ] Are there any unresolved critical alerts for internal server errors? (Should resolve automatically after 6h when the problem doesn't persist)
