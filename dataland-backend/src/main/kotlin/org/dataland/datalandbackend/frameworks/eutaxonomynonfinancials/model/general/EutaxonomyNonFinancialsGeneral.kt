@@ -30,6 +30,14 @@ data class EutaxonomyNonFinancialsGeneral(
     val assurance: AssuranceDataPoint? = null,
     @field:Valid()
     val numberOfEmployees: ExtendedDataPoint<BigDecimal?>? = null,
+    @field:Valid()
+    val unGlobalCompactPrinciplesCompliancePolicy: ExtendedDataPoint<YesNo?>? = null,
+    @field:Valid()
+    val oecdGuidelinesForMultinationalEnterprisesCompliancePolicy: ExtendedDataPoint<YesNo?>? = null,
+    @field:Valid()
+    val iloCoreLabourStandards: ExtendedDataPoint<YesNo?>? = null,
+    @field:Valid()
+    val humanRightsDueDiligence: ExtendedDataPoint<YesNo?>? = null,
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,

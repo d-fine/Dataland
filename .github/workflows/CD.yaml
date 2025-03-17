@@ -141,6 +141,7 @@ jobs:
           QA_SERVICE_DB_PASSWORD: ${{ secrets.QA_SERVICE_DB_PASSWORD }}
           COMMUNITY_MANAGER_DB_PASSWORD: ${{ secrets.COMMUNITY_MANAGER_DB_PASSWORD }}
           EMAIL_SERVICE_DB_PASSWORD: ${{ secrets.EMAIL_SERVICE_DB_PASSWORD }}
+          EMAIL_SERVICE_DRY_RUN: ${{ vars.EMAIL_SERVICE_DRY_RUN }}
           PGADMIN_PASSWORD: ${{ secrets.PGADMIN_PASSWORD }}
           KEYCLOAK_DATALAND_ADMIN_VALUE: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_VALUE }}
           KEYCLOAK_DATALAND_ADMIN_SALT: ${{ secrets.KEYCLOAK_DATALAND_ADMIN_SALT }}
@@ -233,7 +234,7 @@ jobs:
           inputs: ${{ toJSON(inputs) }}
           vars: ${{ toJSON(vars) }}
       - name: Login to Github Packages
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}

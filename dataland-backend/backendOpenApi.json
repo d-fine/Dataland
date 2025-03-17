@@ -374,14 +374,14 @@
           "required": true
         },
         "responses": {
-          "404": {
-            "description": "Invalid input parameters."
-          },
           "200": {
             "description": "Successfully added dataset."
           },
           "400": {
             "description": "Bad request has been submitted."
+          },
+          "404": {
+            "description": "Invalid input parameters."
           },
           "default": {
             "description": "An error occurred",
@@ -1834,8 +1834,8 @@
           }
         ],
         "responses": {
-          "404": {
-            "description": "Found no company corresponding the identifier.",
+          "200": {
+            "description": "Found a company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1844,8 +1844,8 @@
               }
             }
           },
-          "200": {
-            "description": "Found a company corresponding the identifier.",
+          "404": {
+            "description": "Found no company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -5177,6 +5177,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataPointMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}/subsidiaries": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve subsidiaries.",
+        "description": "Retrieve the IDs of all subsidiaries of a given ultimate parent company.",
+        "operationId": "getCompanySubsidiariesByParentId",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasicCompanyInformation"
+                  }
                 }
               }
             }
@@ -15402,6 +15465,38 @@
               }
             ]
           },
+          "unGlobalCompactPrinciplesCompliancePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "oecdGuidelinesForMultinationalEnterprisesCompliancePolicy": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "iloCoreLabourStandards": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
+          "humanRightsDueDiligence": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExtendedDataPointYesNo"
+              }
+            ]
+          },
           "referencedReports": {
             "type": "object",
             "additionalProperties": {
@@ -20202,20 +20297,20 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           },
           "sector": {
             "type": "string",
             "nullable": true
           },
-          "headquarters": {
+          "countryCode": {
             "type": "string"
           },
-          "countryCode": {
+          "headquarters": {
             "type": "string"
           },
           "lei": {
@@ -20243,10 +20338,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
