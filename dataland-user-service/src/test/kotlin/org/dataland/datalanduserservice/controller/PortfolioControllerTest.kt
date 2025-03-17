@@ -1,9 +1,6 @@
 package org.dataland.datalanduserservice.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.ConflictApiException
-import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalanduserservice.exceptions.PortfolioNotFoundApiException
 import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.datalanduserservice.service.PortfolioService
 import org.dataland.datalanduserservice.utils.Validator
@@ -15,8 +12,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -63,7 +64,6 @@ class PortfolioControllerTest {
         val response = assertDoesNotThrow { portfolioController.createPortfolio(validPortfolioUpload) }
         assertEquals(HttpStatus.CREATED, response.statusCode)
     }
-
 
     @Test
     fun `test that replacing an existing portfolio by a valid portfolio returns 200 response`() {

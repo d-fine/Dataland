@@ -173,6 +173,6 @@ class PortfolioServiceTest {
         creationTimestamp = Instant.now().toEpochMilli(),
         lastUpdateTimestamp = Instant.now().toEpochMilli(),
         companyIds = companyIds ?: mutableSetOf(dummyCompanyId),
-        frameworks = dataTypes ?: mutableSetOf(DataTypeEnum.sfdr),
+        frameworks = dataTypes ?: setOf(DataTypeEnum.sfdr),
     )
 }
