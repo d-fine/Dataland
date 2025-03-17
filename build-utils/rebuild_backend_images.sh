@@ -7,7 +7,6 @@ dependencies+=" ./dataland-api-key-manager/apiKeyManagerOpenApi.json ./dataland-
 dependencies+=" ./dataland-internal-storage/internalStorageOpenApi.json ./environments/.env.uncritical"
 dependencies+=" ./dataland-specification-service/specificationServiceOpenApi.json ./dataland-external-storage/externalStorageOpenApi.json"
 dependencies+=" ./dataland-document-manager/documentManagerOpenApi.json"
-dependencies+=" ./dataland-user-service/userServiceOpenApi.json"
 
 ./build-utils/base_rebuild_single_docker_image.sh dataland_backend_base ./dataland-backend/DockerfileBase $dependencies
 

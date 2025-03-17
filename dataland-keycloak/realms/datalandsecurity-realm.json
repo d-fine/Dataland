@@ -1827,7 +1827,7 @@
   "enabled": true,
   "alwaysDisplayInConsole": false,
   "clientAuthenticatorType": "client-secret",
-  "secret": "${DATALAND_BACKEND_CLIENT_SECRET}",
+  "secret": "${DATALAND_USER_SERVICE_CLIENT_SECRET}",
   "redirectUris": [
     "/*"
   ],

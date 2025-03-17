@@ -35,8 +35,6 @@ dependencies {
     implementation(libs.log4j.to.slf4j)
     implementation(libs.logback.classic)
     implementation(libs.logback.core)
-    implementation(libs.moshi.adapters)
-    implementation(libs.moshi.kotlin)
     implementation(libs.okhttp)
     implementation(libs.slf4j.api)
     implementation(libs.springdoc.openapi.ui)
@@ -137,10 +135,6 @@ ktlint {
     filter {
         exclude("**/openApiClient/**")
     }
-}
-
-gitProperties {
-    keys = listOf("git.branch", "git.commit.id", "git.commit.time", "git.commit.id.abbrev")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
