@@ -166,7 +166,7 @@ class DataRequestAlterationManagerTest {
         doReturn(listOf<BasicCompanyInformation>())
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(any())
-        doReturn(listOf(BasicCompanyInformation("", "dummyChildCompanyId", "", "")))
+        doReturn(listOf(BasicCompanyInformation(companyName = "", companyId ="dummyChildCompanyId", headquarters = "", countryCode = "")))
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
 
