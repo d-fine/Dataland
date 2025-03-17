@@ -193,10 +193,10 @@
                   style="display: block; margin: 1rem 0"
                   data-test="emailOnUpdateInput"
                   inputId="emailOnUpdateInput"
-                  v-model="emailOnUpdate"
+                  v-model="storedDataRequest.emailOnUpdate"
                   @update:modelValue="changeRecieveEmails()"
                 />
-                <label for="emailOnUpdateInput" v-if="emailOnUpdate">
+                <label for="emailOnUpdateInput" v-if="storedDataRequest.emailOnUpdate">
                   You receive an email immediately after the next status change, i.e. if the data is available or the
                   data provider says there is no data.
                 </label>
@@ -325,7 +325,6 @@ export default defineComponent({
     return {
       toggleEmailDetailsError: false,
       successModalIsVisible: false,
-      emailOnUpdate: false,
       reopenModalIsVisible: false,
       reopenMessage: '',
       reopenedModalIsVisible: false,
@@ -446,7 +445,7 @@ export default defineComponent({
           undefined,
           undefined,
           undefined,
-          this.emailOnUpdate,
+          this.storedDataRequest.emailOnUpdate,
           undefined,
           this.getKeycloakPromise
         );
