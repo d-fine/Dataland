@@ -26,19 +26,4 @@ class TestUtils {
         migration(originalDataEntity)
         Assertions.assertEquals(expectedDataEntity, originalDataEntity)
     }
-
-    /**
-     * Read datasets including companyId and reporting period and return DataTableEntities as if they
-     * were read from the database.
-     *
-     * @param fileLocations a list of files to read from
-     */
-    fun readDatasetsAsStoredInDatabase(fileLocations: List<String>): List<DataTableEntity> =
-        fileLocations.map {
-            val jsonData = JsonUtils.readJsonFromResourcesFile(it)
-            DataTableEntity(
-                mockDataId,
-                jsonData.put("data", jsonData.getJSONObject("data").toString()),
-            )
-        }
 }
