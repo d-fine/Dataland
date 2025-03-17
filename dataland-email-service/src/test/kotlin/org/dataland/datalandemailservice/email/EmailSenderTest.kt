@@ -54,4 +54,15 @@ class EmailSenderTest {
 
         emailSender.sendEmail(dummyEmail)
     }
+
+    @Test
+    fun `check that no email is sent when dry run mode is on`() {
+        emailSender =
+            EmailSender(
+                mailjetClient = mockMailjetClient,
+                dryRunIsActive = true,
+            )
+
+        emailSender.sendEmail(dummyEmail)
+    }
 }
