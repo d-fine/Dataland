@@ -4,11 +4,10 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.ConflictApiException
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalanduserservice.api.PortfolioApi
-import org.dataland.datalanduserservice.model.PortfolioPayload
+import org.dataland.datalanduserservice.model.PortfolioUpload
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.dataland.keycloakAdapter.auth.DatalandRealmRole
 import org.dataland.keycloakAdapter.utils.AuthenticationMock
@@ -64,18 +63,18 @@ class DatalandUserServiceSpringbootTest
         private val validCompanyId2 = "valid-company-id-2"
         private val invalidCompanyId = "invalid-company-id"
 
-        private val dummyPortfolioPayload1 =
-            PortfolioPayload(
+        private val dummyPortfolioUpload1 =
+            PortfolioUpload(
                 portfolioName = "Test Portfolio",
                 companyIds = setOf(validCompanyId1, validCompanyId2),
-                dataTypes = setOf(DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.lksg),
+                frameworks = setOf(DataTypeEnum.eutaxonomyMinusFinancials, DataTypeEnum.lksg),
             )
 
-        private val dummyPortfolioPayload2 =
-            PortfolioPayload(
+        private val dummyPortfolioUpload2 =
+            PortfolioUpload(
                 portfolioName = "Second Test Portfolio",
                 companyIds = setOf(validCompanyId1),
-                dataTypes = setOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials, DataTypeEnum.sfdr),
+                frameworks = setOf(DataTypeEnum.eutaxonomyMinusNonMinusFinancials, DataTypeEnum.sfdr),
             )
 
         @BeforeEach
@@ -107,8 +106,8 @@ class DatalandUserServiceSpringbootTest
             @Test
             fun `test that posting and retrieving valid portfolios with valid companyIds and valid dataTypes works`() {
                 assertDoesNotThrow {
-                    portfolioApi.createPortfolio(dummyPortfolioPayload1)
-                    portfolioApi.createPortfolio(dummyPortfolioPayload2)
+                    portfolioApi.createPortfolio(dummyPortfolioUpload1)
+                    portfolioApi.createPortfolio(dummyPortfolioUpload2)
                 }
 
                 val portfolios = assertDoesNotThrow { portfolioApi.getAllPortfoliosForCurrentUser() }
@@ -116,26 +115,13 @@ class DatalandUserServiceSpringbootTest
             }
 
             @Test
-            fun `test that adding a valid companyId to an existing portfolio works as expected`() {
-                val portfolioId =
-                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload2) }.body!!.portfolioId
-                assertEquals(
-                    2,
-                    portfolioApi
-                        .patchPortfolio(portfolioId, validCompanyId2)
-                        .body!!
-                        .companyIds.size,
-                )
-            }
-
-            @Test
             fun `test that replacing an existing portfolio works as expected`() {
                 val originalPortfolioResponse =
-                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload1) }.body!!
+                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
                 assertDoesNotThrow {
                     portfolioApi.replacePortfolio(
                         originalPortfolioResponse.portfolioId,
-                        dummyPortfolioPayload2,
+                        dummyPortfolioUpload2,
                     )
                 }
 
@@ -143,36 +129,19 @@ class DatalandUserServiceSpringbootTest
                     assertDoesNotThrow { portfolioApi.getPortfolio(originalPortfolioResponse.portfolioId) }.body!!
 
                 assertEquals(originalPortfolioResponse.portfolioId, portfolioResponse.portfolioId)
-                assertEquals(dummyPortfolioPayload2.portfolioName, portfolioResponse.portfolioName)
+                assertEquals(dummyPortfolioUpload2.portfolioName, portfolioResponse.portfolioName)
                 assertEquals(originalPortfolioResponse.creationTimestamp, portfolioResponse.creationTimestamp)
                 assertTrue(originalPortfolioResponse.lastUpdateTimestamp < portfolioResponse.lastUpdateTimestamp)
-                assertEquals(dummyPortfolioPayload2.companyIds, portfolioResponse.companyIds)
-                assertEquals(dummyPortfolioPayload2.dataTypes, portfolioResponse.dataTypes)
+                assertEquals(dummyPortfolioUpload2.companyIds, portfolioResponse.companyIds)
+                assertEquals(dummyPortfolioUpload2.frameworks, portfolioResponse.frameworks)
             }
 
             @Test
             fun `test that deleting a portfolio works`() {
-                val portfolioResponse = assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload1) }.body!!
+                val portfolioResponse =
+                    assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }.body!!
                 assertDoesNotThrow { portfolioApi.deletePortfolio(portfolioResponse.portfolioId) }
                 assertEquals(0, portfolioApi.getAllPortfoliosForCurrentUser().body?.size)
-            }
-
-            @Test
-            fun `test that removing a company from an existing portfolio works as expected`() {
-                val portfolioResponse = assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload1) }.body!!
-                assertDoesNotThrow {
-                    portfolioApi.removeCompanyFromPortfolio(
-                        portfolioResponse.portfolioId,
-                        validCompanyId1,
-                    )
-                }
-                assertEquals(
-                    1,
-                    portfolioApi
-                        .getPortfolio(portfolioResponse.portfolioId)
-                        .body!!
-                        .companyIds.size,
-                )
             }
         }
 
@@ -182,32 +151,16 @@ class DatalandUserServiceSpringbootTest
             @Test
             fun `test that posting portfolio with an existing name throws ConflictException`() {
                 val portfolioWithExistingName =
-                    dummyPortfolioPayload2.copy(portfolioName = dummyPortfolioPayload1.portfolioName)
-                assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload1) }
+                    dummyPortfolioUpload2.copy(portfolioName = dummyPortfolioUpload1.portfolioName)
+                assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioUpload1) }
                 assertThrows<ConflictApiException> { portfolioApi.createPortfolio(portfolioWithExistingName) }
             }
 
             @Test
             fun `test that posting portfolio with invalid companyId throws ClientException`() {
-                val portfolio = dummyPortfolioPayload1.copy(companyIds = setOf(validCompanyId1, invalidCompanyId))
+                val portfolio = dummyPortfolioUpload1.copy(companyIds = setOf(validCompanyId1, invalidCompanyId))
 
                 assertThrows<ResourceNotFoundApiException> { portfolioApi.createPortfolio(portfolio) }
-            }
-
-            @Test
-            fun `test that patching an existing portfolio with an invalid companyId throws ResourceNotFoundException`() {
-                assertThrows<ResourceNotFoundApiException> {
-                    val portfolioId = portfolioApi.createPortfolio(dummyPortfolioPayload2).body!!.portfolioId
-                    portfolioApi.patchPortfolio(portfolioId, invalidCompanyId)
-                }
-            }
-
-            @Test
-            fun `test that removing the last company from an existing portfolio is prohibited`() {
-                val portfolioResponse = assertDoesNotThrow { portfolioApi.createPortfolio(dummyPortfolioPayload2) }.body!!
-                assertThrows<InvalidInputApiException> {
-                    portfolioApi.removeCompanyFromPortfolio(portfolioResponse.portfolioId, validCompanyId1)
-                }
             }
         }
     }

@@ -20,7 +20,7 @@ class DataTypeEnumConverterTest {
 
     @ParameterizedTest
     @EnumSource(DataTypeEnum::class)
-    fun `check that document categories are properly converted to strings`(dataType: DataTypeEnum) {
+    fun `check that data types are properly converted to strings`(dataType: DataTypeEnum) {
         val result =
             assertDoesNotThrow {
                 dataTypeEnumConverter.convertToDatabaseColumn(dataType)
@@ -31,7 +31,7 @@ class DataTypeEnumConverterTest {
     @ParameterizedTest
     @EnumSource(DataTypeEnum::class)
     @NullSource
-    fun `check that strings are properly converted to document categories`(dataType: DataTypeEnum?) {
+    fun `check that strings are properly converted to data types`(dataType: DataTypeEnum?) {
         val result =
             assertDoesNotThrow {
                 dataTypeEnumConverter.convertToEntityAttribute(dataType.toString())
