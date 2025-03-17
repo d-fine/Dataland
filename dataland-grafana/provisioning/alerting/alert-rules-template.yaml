@@ -15,7 +15,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 21600
+              from: 21600  # 6h in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -102,7 +102,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 60
+              from: 60 # time in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -192,7 +192,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 21600
+              from: 86400  # 24h in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
@@ -279,7 +279,7 @@ groups:
           - refId: A
             queryType: range
             relativeTimeRange:
-              from: 21600
+              from: 86400  # 24h in seconds (time to resolve alert)
               to: 0
             datasourceUid: P8E80F9AEF21F6940
             model:
