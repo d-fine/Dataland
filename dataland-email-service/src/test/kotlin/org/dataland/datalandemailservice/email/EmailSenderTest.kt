@@ -1,7 +1,10 @@
 package org.dataland.datalandemailservice.email
 
+import ch.qos.logback.classic.Level
 import com.mailjet.client.MailjetClient
 import com.mailjet.client.MailjetResponse
+import org.dataland.datalandbackend.utils.InMemoryLogAppender
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.anyOrNull
@@ -46,13 +49,14 @@ class EmailSenderTest {
 
     @Test
     fun `check that an email is sent when dry run mode is off`() {
+        val appender = InMemoryLogAppender().getAppender()
         emailSender =
             EmailSender(
                 mailjetClient = mockMailjetClient,
                 dryRunIsActive = false,
             )
-
         emailSender.sendEmail(dummyEmail)
+        assertTrue(appender.contains("Email successfully sent.", Level.INFO))
     }
 
     @Test
