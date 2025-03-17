@@ -5,8 +5,7 @@ import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.UserService
-import org.dataland.userService.openApiClient.model.PortfolioPayload
-import org.dataland.userService.openApiClient.model.PortfolioPayload.DataTypes
+import org.dataland.userService.openApiClient.model.PortfolioUpload
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -21,14 +20,14 @@ class UserServiceTest {
     @Test
     fun `test that creating and retrieving a portfolio for an existing company works as expected`() {
         val portfolio =
-            PortfolioPayload(
+            PortfolioUpload(
                 portfolioName = "Test Portfolio ${UUID.randomUUID()}",
                 companyIds = setOf(companyId),
-                dataTypes =
+                frameworks =
                     setOf(
-                        DataTypes.sfdr,
-                        DataTypes.additionalMinusCompanyMinusInformation,
-                        DataTypes.nuclearMinusAndMinusGas,
+                        PortfolioUpload.Frameworks.sfdr,
+                        PortfolioUpload.Frameworks.additionalMinusCompanyMinusInformation,
+                        PortfolioUpload.Frameworks.nuclearMinusAndMinusGas,
                     ),
             )
 
