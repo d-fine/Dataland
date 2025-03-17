@@ -42,10 +42,11 @@
     </a>
 </#macro>
 
-<#macro notificationSetting>
+<#macro notificationSetting(url)>
     <tr>
         <td colspan="3">
             This is an immediate notification. Future updates will be sent in a <b>weekly summary</b>.<br/>
+            <@textLink url="${url}" linkText="Reactivate immediate notifications for your data request"/>
         </td>
     </tr>
 </#macro>

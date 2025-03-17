@@ -3,7 +3,7 @@ Great news!
 
 Your data request has been answered.
 
-<@text.immediateNotification />
+<@text.immediateNotification url="${baseUrl}/requests/${dataRequestId}" />
 
 Company: ${companyName}
 Framework: ${dataTypeLabel}
