@@ -27,7 +27,7 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancialsTest {
         originalFilePath: String,
         expectedFilePath: String,
     ) {
-        val dataSets = TestUtils().readDataSetsAsStoredInDatabase(listOf(originalFilePath, expectedFilePath))
+        val dataSets = TestUtils().readDatasetsAsStoredInDatabase(listOf(originalFilePath, expectedFilePath))
         V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancials().augmentTaxonomyNonFinancialsWithSfdrData(
             dataSets[0], availableSfdrDataPointsMapping,
         )
@@ -39,10 +39,10 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancialsTest {
     fun parseSfdrData() {
         availableSfdrDataPointsMapping =
             migrationObject.extractSfdrFieldsAsMapping(
-                TestUtils().readDataSetsAsStoredInDatabase(sfdrTestDataSets),
+                TestUtils().readDatasetsAsStoredInDatabase(sfdrTestDataSets),
                 setOf(
-                    "social/socialAndEmployeeMatters/iloCoreLabourStandards",
-                    "social/humanRights/humanRightsDueDiligence",
+                    "social.socialAndEmployeeMatters.iloCoreLabourStandards",
+                    "social.humanRights.humanRightsDueDiligence",
                 ),
             )
     }

@@ -28,12 +28,12 @@ class TestUtils {
     }
 
     /**
-     * Read data sets including companyId and reporting period and return DataTableEntities as if they
+     * Read datasets including companyId and reporting period and return DataTableEntities as if they
      * were read from the database.
      *
      * @param fileLocations a list of files to read from
      */
-    fun readDataSetsAsStoredInDatabase(fileLocations: List<String>): List<DataTableEntity> =
+    fun readDatasetsAsStoredInDatabase(fileLocations: List<String>): List<DataTableEntity> =
         fileLocations.map {
             val jsonData = JsonUtils.readJsonFromResourcesFile(it)
             DataTableEntity(

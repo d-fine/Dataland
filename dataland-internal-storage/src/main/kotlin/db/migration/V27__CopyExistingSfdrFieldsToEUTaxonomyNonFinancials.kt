@@ -23,8 +23,8 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancials : BaseJavaMigration()
             extractSfdrFieldsAsMapping(
                 sfdrData,
                 setOf(
-                    "social/socialAndEmployeeMatters/iloCoreLabourStandards",
-                    "social/humanRights/humanRightsDueDiligence",
+                    "social.socialAndEmployeeMatters.iloCoreLabourStandards",
+                    "social.humanRights.humanRightsDueDiligence",
                 ),
             )
         migrateCompanyAssociatedDataOfDatatype(
@@ -37,7 +37,7 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancials : BaseJavaMigration()
     /**
      * Retrieve a mapping of companyId and reportingPeriod to a map of the given field names associated with the
      * corresponding data for all SFDR data sets.
-     * @param context the Context object
+     * @param sfdrData list of SFDR data sets
      * @param fieldPaths a set of data field specifiers that include the hierarchy
      */
     fun extractSfdrFieldsAsMapping(
@@ -50,12 +50,13 @@ class V27__CopyExistingSfdrFieldsToEUTaxonomyNonFinancials : BaseJavaMigration()
                 dataSet.companyAssociatedData.getString("reportingPeriod"),
             ) to
                 fieldPaths.associate { path ->
-                    path.substringAfterLast('/') to dataSet.dataJsonObject.getFromPath(path)
+                    path.substringAfterLast('.') to dataSet.dataJsonObject.getFromPath(path)
                 }
         }
 
     /**
-     * Migrates the rate of accidents in the sfdr data
+     * Incorporate fields from SFDR datasets to EU taxonomy non-financial datasets for new fields
+     * where such data is available.
      */
     fun augmentTaxonomyNonFinancialsWithSfdrData(
         dataTableEntity: DataTableEntity,
