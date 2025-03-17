@@ -168,7 +168,7 @@ class SingleDataRequestManagerServiceTest(
         val searchFilter =
             DataRequestsFilter(
                 dataType = setOf(sampleDataType),
-                datalandCompanyId = dummyCompanyId,
+                datalandCompanyIds = setOf(dummyCompanyId),
                 reportingPeriod = sampleReportingPeriod,
             )
 

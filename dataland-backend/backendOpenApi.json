@@ -374,14 +374,14 @@
           "required": true
         },
         "responses": {
+          "404": {
+            "description": "Invalid input parameters."
+          },
           "200": {
             "description": "Successfully added dataset."
           },
           "400": {
             "description": "Bad request has been submitted."
-          },
-          "404": {
-            "description": "Invalid input parameters."
           },
           "default": {
             "description": "An error occurred",
@@ -478,64 +478,6 @@
             "default-bearer-auth": []
           }
         ]
-      }
-    },
-    "/internal/cached/public/get-batch": {
-      "post": {
-        "tags": [
-          "temporarily-cached-data-controller"
-        ],
-        "summary": "Retrieve specific data from the cache store of the backend.",
-        "description": "Data identified by the provided data IDs is retrieved.",
-        "operationId": "getBatchReceivedPublicData",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfully retrieved dataset.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/data/vsme": {
@@ -1612,49 +1554,6 @@
         ]
       }
     },
-    "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration": {
-      "post": {
-        "tags": [
-          "assembled-dataset-migration-controller"
-        ],
-        "summary": "Triggers the migration from stored datasets to assembled datasets for all available datasets.",
-        "description": "The data is migrated.",
-        "operationId": "triggerMigrationForAllStoredDatasets",
-        "responses": {
-          "200": {
-            "description": "Migration successful."
-          },
-          "default": {
-            "description": "An error occurred",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "WWW-Authenticate": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "default-oauth": []
-          },
-          {
-            "default-bearer-auth": []
-          }
-        ]
-      }
-    },
     "/assembled-dataset-migration/stored-dataset-to-assembled-dataset-migration/{dataId}": {
       "post": {
         "tags": [
@@ -1935,8 +1834,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Found a company corresponding the identifier.",
+          "404": {
+            "description": "Found no company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1945,8 +1844,8 @@
               }
             }
           },
-          "404": {
-            "description": "Found no company corresponding the identifier.",
+          "200": {
+            "description": "Found a company corresponding the identifier.",
             "content": {
               "application/json": {
                 "schema": {
@@ -5278,6 +5177,69 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DataPointMetaInformation"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "An error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "default-oauth": []
+          },
+          {
+            "default-bearer-auth": []
+          }
+        ]
+      }
+    },
+    "/companies/{companyId}/subsidiaries": {
+      "get": {
+        "tags": [
+          "company-data-controller"
+        ],
+        "summary": "Retrieve subsidiaries.",
+        "description": "Retrieve the IDs of all subsidiaries of a given ultimate parent company.",
+        "operationId": "getCompanySubsidiariesByParentId",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved company information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BasicCompanyInformation"
+                  }
                 }
               }
             }
@@ -19888,8 +19850,7 @@
           "dataPointType",
           "qaStatus",
           "reportingPeriod",
-          "uploadTime",
-          "uploaderUserId"
+          "uploadTime"
         ],
         "type": "object",
         "properties": {
@@ -19906,7 +19867,8 @@
             "type": "string"
           },
           "uploaderUserId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "uploadTime": {
             "type": "integer",
@@ -20303,15 +20265,15 @@
         ],
         "type": "object",
         "properties": {
-          "sector": {
-            "type": "string",
-            "nullable": true
+          "companyName": {
+            "type": "string"
           },
           "companyId": {
             "type": "string"
           },
-          "companyName": {
-            "type": "string"
+          "sector": {
+            "type": "string",
+            "nullable": true
           },
           "headquarters": {
             "type": "string"
@@ -20344,10 +20306,10 @@
         ],
         "type": "object",
         "properties": {
-          "companyId": {
+          "companyName": {
             "type": "string"
           },
-          "companyName": {
+          "companyId": {
             "type": "string"
           }
         }
