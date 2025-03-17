@@ -89,31 +89,34 @@ class CategoryBuilder(
                 name = name,
                 businessDefinition = businessDefinition,
                 dataPointBaseTypeId = dataPointBaseTypeId,
-                frameworkOwnership = listOf(builder.framework.identifier),
+                frameworkOwnership = setOf(builder.framework.identifier),
                 constraints = constraints,
             )
-        if (builder.database.dataPointTypes.containsKey(id)) {
-            assertDataPointTypeConsistency(existingDataPointType = builder.database.dataPointTypes[id], newDataPointType = newDatapointType)
-            if (builder.database.dataPointTypes[id]?.frameworkOwnership != null) {
-                val allFrameworks = mutableListOf<String>()
-                allFrameworks.addAll(builder.database.dataPointTypes[id]?.frameworkOwnership!!)
-                allFrameworks.add(builder.framework.identifier)
-                builder.database.dataPointTypes[id] = newDatapointType.copy(frameworkOwnership = allFrameworks)
+        val existingDataPointType = builder.database.dataPointTypes[id]
+        val combinedDataPointType =
+            if (existingDataPointType != null) {
+                assertDataPointTypeConsistency(existingDataPointType = existingDataPointType, newDataPointType = newDatapointType)
+                require(!existingDataPointType.frameworkOwnership.contains(builder.framework.identifier)) {
+                    "Trying to add two datapoints with the same id $id to the same framework ${builder.framework.identifier}"
+                }
+                newDatapointType.copy(frameworkOwnership = existingDataPointType.frameworkOwnership + newDatapointType.frameworkOwnership)
+            } else {
+                newDatapointType
             }
-        } else {
-            builder.database.dataPointTypes[id] = newDatapointType
-        }
-
-        return builder.database.dataPointTypes[id] ?: newDatapointType
+        builder.database.dataPointTypes[id] = combinedDataPointType
+        return combinedDataPointType
     }
 
-    private fun assertDataPointTypeConsistency(existingDataPointType: DataPointType?, newDataPointType: DataPointType) {
+    private fun assertDataPointTypeConsistency(
+        existingDataPointType: DataPointType?,
+        newDataPointType: DataPointType,
+    ) {
         if (existingDataPointType == null) {
             return
         }
-        require(existingDataPointType.copy( frameworkOwnership = null) == newDataPointType.copy(frameworkOwnership = null)) {
+        require(existingDataPointType.copy(frameworkOwnership = emptySet()) == newDataPointType.copy(frameworkOwnership = emptySet())) {
             "Inconsistency detected for Data point type with id ${existingDataPointType.id}. " +
-                    "Existing: $existingDataPointType, new: $newDataPointType"
+                "Existing: $existingDataPointType, new: $newDataPointType"
         }
     }
 

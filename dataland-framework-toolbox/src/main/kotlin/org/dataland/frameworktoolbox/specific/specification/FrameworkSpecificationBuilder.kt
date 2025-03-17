@@ -32,8 +32,14 @@ class FrameworkSpecificationBuilder(
     init {
         database.dataPointTypes.values
             .filter {
-                it.frameworkOwnership?.contains(framework.identifier) ?: false
-            }.forEach { database.dataPointTypes.remove(it.id) }
+                it.frameworkOwnership.contains(framework.identifier)
+            }.forEach {
+                if (it.frameworkOwnership.size == 1) {
+                    database.dataPointTypes.remove(it.id)
+                } else {
+                    database.dataPointTypes[it.id] = it.copy(frameworkOwnership = it.frameworkOwnership - framework.identifier)
+                }
+            }
     }
 
     private fun buildFrameworkSpecification() {

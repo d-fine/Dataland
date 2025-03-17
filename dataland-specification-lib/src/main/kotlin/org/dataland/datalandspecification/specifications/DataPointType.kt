@@ -16,7 +16,7 @@ data class DataPointType(
     val name: String,
     val businessDefinition: String,
     val dataPointBaseTypeId: String,
-    val frameworkOwnership: List<String>? = null,
+    val frameworkOwnership: Set<String>,
     val constraints: List<String>? = null,
 ) {
     /**
