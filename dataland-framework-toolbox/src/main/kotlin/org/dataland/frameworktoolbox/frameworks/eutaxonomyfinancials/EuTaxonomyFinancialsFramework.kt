@@ -2,6 +2,12 @@ package org.dataland.frameworktoolbox.frameworks.eutaxonomyfinancials
 
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
+import org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAssuranceComponent
+import org.dataland.frameworktoolbox.intermediate.Framework
+import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
+import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
+import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
+import org.dataland.frameworktoolbox.intermediate.group.edit
 import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.FrameworkDataModelBuilder
 import org.dataland.frameworktoolbox.specific.datamodel.elements.DataClassBuilder
@@ -9,11 +15,6 @@ import org.dataland.frameworktoolbox.specific.datamodel.elements.PackageBuilder
 import org.dataland.frameworktoolbox.specific.qamodel.FrameworkQaModelBuilder
 import org.springframework.stereotype.Component
 import java.io.File
-import org.dataland.frameworktoolbox.intermediate.Framework
-import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
-import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent
-import org.dataland.frameworktoolbox.intermediate.group.ComponentGroup
-import org.dataland.frameworktoolbox.intermediate.group.edit
 
 /**
  * The EU Taxonomy Financials framework
@@ -48,6 +49,15 @@ class EuTaxonomyFinancialsFramework :
                             this,
                             "Enum",
                             "extendedEnumFiscalYearDeviation",
+                        )
+                    }
+                }
+                edit<EuTaxonomyAssuranceComponent>("assurance") {
+                    specificationGenerator = { categoryBuilder ->
+                        categoryBuilder.addDefaultDatapointAndSpecification(
+                            this,
+                            "Enum",
+                            "extendedEnumAssurance",
                         )
                     }
                 }
