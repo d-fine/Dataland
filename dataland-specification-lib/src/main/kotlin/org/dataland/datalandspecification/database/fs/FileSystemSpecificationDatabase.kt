@@ -1,5 +1,7 @@
 package org.dataland.datalandspecification.database.fs
 
+import com.fasterxml.jackson.core.util.DefaultIndenter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandspecification.database.SpecificationDatabase
@@ -36,7 +38,8 @@ private inline fun <reified T> saveSpecifications(
 ) {
     specifications.forEach { (id, specification) ->
         val file = File(folder, "$id.json")
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, specification)
+        val printer = DefaultPrettyPrinter().withObjectIndenter(DefaultIndenter().withLinefeed("\n"))
+        objectMapper.writer(printer).writeValue(file, specification)
     }
 }
 
