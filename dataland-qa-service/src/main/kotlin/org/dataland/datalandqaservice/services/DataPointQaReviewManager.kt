@@ -109,7 +109,7 @@ class DataPointQaReviewManager
                 companyName = message.companyName,
                 dataPointType = message.dataPointType,
                 reportingPeriod = message.reportingPeriod,
-                timestamp = message.uploadTime,
+                timestamp = dataPointQaReviewEntity.timestamp,
                 qaStatus = dataPointQaReviewEntity.qaStatus,
                 triggeringUserId = dataPointQaReviewEntity.triggeringUserId,
                 comment = dataPointQaReviewEntity.comment,
@@ -136,10 +136,18 @@ class DataPointQaReviewManager
                         "${message.dataPointId} (correlationID: $correlationId)",
                 )
                 reviewEntities.add(dataPointQaReviewEntity)
-                sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
             }
 
-            return dataPointQaReviewRepository.saveAll(reviewEntities)
+            val savedEntities = dataPointQaReviewRepository.saveAll(reviewEntities)
+            val correlationIdMap = messages.associate { it.message.dataPointId to it.correlationId }
+            savedEntities.forEach {
+                sendDataPointQaStatusChangeMessage(
+                    it,
+                    correlationIdMap[it.dataPointId]
+                        ?: throw IllegalStateException("Could not identify correlation ID. This should be impossible"),
+                )
+            }
+            return savedEntities
         }
 
         /**
