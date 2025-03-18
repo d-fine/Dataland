@@ -17,8 +17,7 @@
       data-test="document-type-picker"
       filter-id="document-type-filter"
       filter-placeholder="Search by document type"
-      class="ml-3"
-      style="margin: 1rem"
+      style="margin: 0 1rem"
     />
     <span class="tertiary-button" data-test="reset-filter" @click="resetFilter">RESET</span>
   </div>
@@ -271,6 +270,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .selection-header {
+  padding: 0.25rem 0 1rem 0;
   text-align: left;
   margin: 0 1rem;
   position: sticky;
