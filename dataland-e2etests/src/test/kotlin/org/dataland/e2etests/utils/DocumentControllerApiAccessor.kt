@@ -69,7 +69,7 @@ class DocumentControllerApiAccessor {
         } catch (clientException: ClientException) {
             if (clientException.statusCode == HttpStatus.CONFLICT.value()) {
                 logger.info("Document already exists.")
-                uploadResponse = DocumentMetaInfoResponse(documentId = expectedHash)
+                uploadResponse = DocumentMetaInfoResponse(documentId = expectedHash, uploaderId = "dummy-uploader-id")
             } else {
                 throw clientException
             }

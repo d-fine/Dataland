@@ -1,7 +1,6 @@
 // @ts-nocheck
 import ViewFrameworkBase from '@/components/generics/ViewFrameworkBase.vue';
 import { DataTypeEnum } from '@clients/backend';
-import { humanizeStringOrNumber } from '@/utils/StringFormatter';
 import { minimalKeycloakMock } from '@ct/testUtils/Keycloak';
 import { KEYCLOAK_ROLE_UPLOADER, KEYCLOAK_ROLE_USER } from '@/utils/KeycloakRoles';
 
@@ -25,21 +24,9 @@ describe('Component test for ViewFrameworkBase', () => {
         companyID: 'mock-company-id',
       },
     }).then(({ component }) => {
-      cy.wait('@metaDataFetch').then(() => {
+      cy.wait('@dataFetch').then(() => {
         assert(component.isDataProcessedSuccessfully);
-        expect(component.dataTypesInDropdown).to.be.an('array').that.is.not.empty;
-        expect(component.dataTypesInDropdown).to.deep.equal([
-          {
-            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyFinancials),
-            value: DataTypeEnum.EutaxonomyFinancials,
-          },
-          {
-            label: humanizeStringOrNumber(DataTypeEnum.EutaxonomyNonFinancials),
-            value: DataTypeEnum.EutaxonomyNonFinancials,
-          },
-          { label: humanizeStringOrNumber(DataTypeEnum.Lksg), value: DataTypeEnum.Lksg },
-          { label: humanizeStringOrNumber(DataTypeEnum.Sfdr), value: DataTypeEnum.Sfdr },
-        ]);
+        expect(component.dataMetaInformation.length).to.equal(9);
       });
     });
   });
