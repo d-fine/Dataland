@@ -12,7 +12,9 @@ import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.constants.RoutingKeyNames
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.dataland.datalandmessagequeueutils.messages.data.CopyQaStatusFromDataset
 import org.dataland.datalandmessagequeueutils.messages.data.DataPointUploadedPayload
+import org.dataland.datalandmessagequeueutils.messages.data.PresetQaStatus
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReviewEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReviewRepository
@@ -28,6 +30,7 @@ import java.time.Instant
 @Service
 class DataPointQaReviewManager
     @Autowired
+    @Suppress("LongParameterList")
     constructor(
         private val dataPointQaReviewRepository: DataPointQaReviewRepository,
         private val companyDataControllerApi: CompanyDataControllerApi,
@@ -35,6 +38,7 @@ class DataPointQaReviewManager
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val objectMapper: ObjectMapper,
         private val compositionService: DataPointCompositionService,
+        private val qaReviewManager: QaReviewManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -66,6 +70,52 @@ class DataPointQaReviewManager
             val correlationId: String,
         )
 
+        private fun createQaEntryFromPresetInitialQa(
+            message: DataPointUploadedPayload,
+            initialQaStatus: PresetQaStatus,
+        ): DataPointQaReviewEntity =
+            DataPointQaReviewEntity(
+                dataPointId = message.dataPointId,
+                companyId = message.companyId,
+                companyName = message.companyName,
+                dataPointType = message.dataPointType,
+                reportingPeriod = message.reportingPeriod,
+                timestamp = message.uploadTime,
+                qaStatus = initialQaStatus.qaStatus,
+                triggeringUserId = message.uploaderUserId,
+                comment = initialQaStatus.qaComment,
+            )
+
+        private fun createQaEntryFromCopyInitialQa(
+            message: DataPointUploadedPayload,
+            initialQaStatus: CopyQaStatusFromDataset,
+            correlationId: String,
+        ): DataPointQaReviewEntity {
+            val dataPointQaReviewEntity = qaReviewManager.getMostRecentQaReviewEntity(initialQaStatus.datasetId)
+            if (dataPointQaReviewEntity == null) {
+                logger.warn(
+                    "Could not find QA review entity for dataset ${initialQaStatus.datasetId} " +
+                        "- Setting DataPoint status to Pending (correlationID: $correlationId)",
+                )
+                return createQaEntryFromPresetInitialQa(
+                    message,
+                    PresetQaStatus(QaStatus.Pending, null),
+                )
+            }
+
+            return DataPointQaReviewEntity(
+                dataPointId = message.dataPointId,
+                companyId = message.companyId,
+                companyName = message.companyName,
+                dataPointType = message.dataPointType,
+                reportingPeriod = message.reportingPeriod,
+                timestamp = message.uploadTime,
+                qaStatus = dataPointQaReviewEntity.qaStatus,
+                triggeringUserId = dataPointQaReviewEntity.triggeringUserId,
+                comment = dataPointQaReviewEntity.comment,
+            )
+        }
+
         /**
          * Review a data point and change its QA status using the information provided in the datapoint uploaded message
          * @param messages the messages containing the information to review
@@ -76,23 +126,15 @@ class DataPointQaReviewManager
             for (messageWithCorrId in messages) {
                 val message = messageWithCorrId.message
                 val correlationId = messageWithCorrId.correlationId
+                val dataPointQaReviewEntity =
+                    when (val initialQa = message.initialQa) {
+                        is PresetQaStatus -> createQaEntryFromPresetInitialQa(message, initialQa)
+                        is CopyQaStatusFromDataset -> createQaEntryFromCopyInitialQa(message, initialQa, correlationId)
+                    }
                 logger.info(
-                    "Assigning quality status ${message.initialQaStatus} to data point with ID " +
+                    "Assigning quality status ${dataPointQaReviewEntity.qaStatus} to data point with ID " +
                         "${message.dataPointId} (correlationID: $correlationId)",
                 )
-
-                val dataPointQaReviewEntity =
-                    DataPointQaReviewEntity(
-                        dataPointId = message.dataPointId,
-                        companyId = message.companyId,
-                        companyName = message.companyName,
-                        dataPointType = message.dataPointType,
-                        reportingPeriod = message.reportingPeriod,
-                        timestamp = message.uploadTime,
-                        qaStatus = QaStatus.valueOf(message.initialQaStatus),
-                        triggeringUserId = message.uploaderUserId,
-                        comment = message.initialQaComment,
-                    )
                 reviewEntities.add(dataPointQaReviewEntity)
                 sendDataPointQaStatusChangeMessage(dataPointQaReviewEntity, correlationId)
             }
@@ -193,15 +235,11 @@ class DataPointQaReviewManager
             correlationId: String,
         ) {
             val currentlyActiveDataId =
-                if (dataPointQaReviewEntity.qaStatus == QaStatus.Accepted) {
-                    dataPointQaReviewEntity.dataPointId
-                } else {
-                    getDataIdOfCurrentlyActiveDataPoint(
-                        dataPointQaReviewEntity.companyId,
-                        dataPointQaReviewEntity.dataPointType,
-                        dataPointQaReviewEntity.reportingPeriod,
-                    )
-                }
+                getDataIdOfCurrentlyActiveDataPoint(
+                    dataPointQaReviewEntity.companyId,
+                    dataPointQaReviewEntity.dataPointType,
+                    dataPointQaReviewEntity.reportingPeriod,
+                )
 
             val qaStatusChangeMessage =
                 QaStatusChangeMessage(
