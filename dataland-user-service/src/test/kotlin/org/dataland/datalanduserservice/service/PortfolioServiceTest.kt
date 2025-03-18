@@ -84,7 +84,7 @@ class PortfolioServiceTest {
             .getAllByUserId(dummyUserId)
         assertEquals(2, portfolioService.getAllPortfoliosForUser().size)
         assertEquals(
-            listOf(dummyPortfolio.portfolioId.toString(), dummyPortfolio2.portfolioId.toString()),
+            listOf(dummyPortfolio.portfolioId, dummyPortfolio2.portfolioId),
             portfolioService.getAllPortfoliosForUser().map { it.portfolioId },
         )
     }
@@ -165,7 +165,7 @@ class PortfolioServiceTest {
         portfolioName: String,
         userId: String,
         companyIds: MutableSet<String>? = null,
-        dataTypes: MutableSet<DataTypeEnum>? = null,
+        dataTypes: Set<DataTypeEnum>? = null,
     ) = BasePortfolio(
         portfolioId = portfolioId ?: UUID.randomUUID().toString(),
         portfolioName = portfolioName,
