@@ -1,5 +1,6 @@
 package org.dataland.e2etests.tests.dataPoints
 
+import org.awaitility.Awaitility
 import org.dataland.datalandbackend.openApiClient.infrastructure.Serializer.moshi
 import org.dataland.datalandbackend.openApiClient.model.AdditionalCompanyInformationData
 import org.dataland.datalandbackend.openApiClient.model.CompanyAssociatedDataAdditionalCompanyInformationData
@@ -26,6 +27,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.http.HttpStatus
 import java.io.File
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AssembledDatasetTest {
@@ -88,14 +90,15 @@ class AssembledDatasetTest {
     fun `ensure that an uploaded dataset can be downloaded via dimensions`() {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
         val dataMetaInformation = uploadDummyAdditionalCompanyInformationDataset(companyId, bypassQa = true)
-        Thread.sleep(1500)
-        val downloadedDataset =
-            Backend.additionalCompanyInformationDataControllerApi.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
-                dataMetaInformation.reportingPeriod,
-                companyId,
-            )
+        Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
+            val downloadedDataset =
+                Backend.additionalCompanyInformationDataControllerApi.getCompanyAssociatedAdditionalCompanyInformationDataByDimensions(
+                    dataMetaInformation.reportingPeriod,
+                    companyId,
+                )
 
-        compareAdditionalCompanyInformationDatasets(dummyDataset, downloadedDataset.data)
+            compareAdditionalCompanyInformationDatasets(dummyDataset, downloadedDataset.data)
+        }
     }
 
     private fun compareAdditionalCompanyInformationDatasets(
@@ -306,16 +309,18 @@ class AssembledDatasetTest {
 
         this.postExtendedCurrencyEquityDatapoint(companyId, reportingPeriod)
 
-        val activeAdditionalCompanyInformationDataset =
-            this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)
+        Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
+            val activeAdditionalCompanyInformationDataset =
+                this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)
 
-        val currencyDataPoint =
-            activeAdditionalCompanyInformationDataset.data.general
-                ?.financialInformation
-                ?.equity
-        assertNotNull(currencyDataPoint)
-        assertEquals(currencyDataPoint?.value, testValue)
-        assertEquals(currencyDataPoint?.comment, testComment)
+            val currencyDataPoint =
+                activeAdditionalCompanyInformationDataset.data.general
+                    ?.financialInformation
+                    ?.equity
+            assertNotNull(currencyDataPoint)
+            assertEquals(currencyDataPoint?.value, testValue)
+            assertEquals(currencyDataPoint?.comment, testComment)
+        }
     }
 
     @Test
@@ -323,16 +328,17 @@ class AssembledDatasetTest {
         val companyId = apiAccessor.uploadOneCompanyWithRandomIdentifier().actualStoredCompany.companyId
 
         this.postExtendedCurrencyEquityDatapoint(companyId, reportingPeriod)
+        Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).pollDelay(1000, TimeUnit.MILLISECONDS).untilAsserted {
+            val activeAdditionalCompanyInformationDataset =
+                this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)
 
-        val activeAdditionalCompanyInformationDataset =
-            this.getAdditionalCompanyInformationDataset(companyId, reportingPeriod)
-
-        val currencyDataPoint =
-            activeAdditionalCompanyInformationDataset.data.general
-                ?.financialInformation
-                ?.equity
-        assertNotNull(currencyDataPoint)
-        assertEquals(currencyDataPoint?.value, testValue)
-        assertEquals(currencyDataPoint?.comment, testComment)
+            val currencyDataPoint =
+                activeAdditionalCompanyInformationDataset.data.general
+                    ?.financialInformation
+                    ?.equity
+            assertNotNull(currencyDataPoint)
+            assertEquals(currencyDataPoint?.value, testValue)
+            assertEquals(currencyDataPoint?.comment, testComment)
+        }
     }
 }
