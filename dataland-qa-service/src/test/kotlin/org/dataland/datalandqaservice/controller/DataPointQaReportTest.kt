@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.dataland.datalandbackendutils.model.QaStatus as UtilsQaStatus
 
 @Transactional
@@ -45,18 +45,18 @@ class DataPointQaReportTest(
     @Autowired private val dataPointQaReportController: DataPointQaReportController,
     @Autowired private val qaController: QaController,
 ) {
-    @MockBean private lateinit var dataPointApi: DataPointControllerApi
+    @MockitoBean private lateinit var dataPointApi: DataPointControllerApi
 
-    @MockBean private lateinit var companyDataControllerApi: CompanyDataControllerApi
+    @MockitoBean private lateinit var companyDataControllerApi: CompanyDataControllerApi
 
     // Mocked to avoid keycloak token request
     @Suppress("UnusedPrivateProperty")
-    @MockBean
+    @MockitoBean
     private lateinit var metaDataControllerApi: MetaDataControllerApi
 
     // Mocked to avoid RabbitMQ connection exceptions
     @Suppress("UnusedPrivateProperty")
-    @MockBean
+    @MockitoBean
     private lateinit var rabbitTemplate: RabbitTemplate
 
     private val dummyQaReportDataPoint =

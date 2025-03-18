@@ -5,6 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.AssembledDatasetMigrationC
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
+import org.dataland.datalandbackend.openApiClient.api.SfdrDataControllerApi
 import org.dataland.e2etests.BASE_PATH_TO_DATALAND_BACKEND
 
 /**
@@ -17,4 +18,5 @@ object Backend {
     val additionalCompanyInformationDataControllerApi = AdditionalCompanyInformationDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
     val dataMigrationControllerApi: AssembledDatasetMigrationControllerApi =
         AssembledDatasetMigrationControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
+    val sfdrDataControllerApi = SfdrDataControllerApi(BASE_PATH_TO_DATALAND_BACKEND)
 }

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoHumanRightsPolicy",
+  "name" : "Human Rights Policy",
+  "businessDefinition" : "Existence of a human rights policy. See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 9.",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}

@@ -24,6 +24,7 @@ include(
     "dataland-data-exporter",
     "dataland-specification-lib",
     "dataland-specification-service",
+    "dataland-user-service",
 )
 
 plugins {

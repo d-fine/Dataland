@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyTotalRevenue",
+  "name" : "Total Revenue",
+  "businessDefinition" : "Total revenue for the financial year. i.e., income arising in the course of an entity's ordinary activities, the amounts derived from the sale of products and the provision of services after deducting sales rebates and value added tax and other taxes directly linked to turnover. Overall turnover is equivalent to a firm's total revenues over some period of time.",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}
