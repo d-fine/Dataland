@@ -47,15 +47,14 @@ class CategoryBuilder(
         typeNameSuffix: String,
         dataPointBaseTypeId: String? = null,
     ): Pair<DataPointType, DatapointBuilder> {
-        val specificationId =
-            SpecificationNamingConvention.generateDataPointSpecificationName(
+        val dataPointTypeId = component.dataPointTypeName ?: SpecificationNamingConvention.generateDataPointTypeId(
                 component.documentSupport,
                 component.identifier,
                 typeNameSuffix,
             )
         val specification =
             addDatapointSpecification(
-                id = specificationId,
+                id = dataPointTypeId,
                 name = component.label ?: throw IllegalArgumentException("Component must have a label"),
                 businessDefinition =
                     component.uploadPageExplanation ?: throw IllegalArgumentException("Component must have an uploadPageExplanation"),
@@ -65,7 +64,7 @@ class CategoryBuilder(
         val datapoint =
             addDatapointToFrameworkHierarchy(
                 identifier = component.identifier,
-                dataPointId = specificationId,
+                dataPointId = dataPointTypeId,
             )
         return Pair(specification, datapoint)
     }

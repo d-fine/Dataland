@@ -40,6 +40,7 @@ open class ComponentGenerationUtils {
         component: ComponentBase,
     ) {
         component.label = row.fieldName
+        component.dataPointTypeName = row.dataPointTypeNameOverwrite
         component.uploadPageExplanation =
             if (row.combinedTooltip?.isNotBlank() == true) {
                 row.combinedTooltip
