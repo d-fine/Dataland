@@ -57,6 +57,7 @@ if [[ $RESET_STACK_AND_REPOPULATE == true ]]; then
   delete_docker_volume_if_existent_remotely "community_manager_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "batch_manager_data" "$target_server_url" "$location"
   delete_docker_volume_if_existent_remotely "email_service_data" "$target_server_url" "$location"
+  delete_docker_volume_if_existent_remotely "user_service_data" "$target_server_url" "$location"
   ssh ubuntu@"$target_server_url" "
   if [ -d '$loki_volume' ]; then
       if echo '$loki_volume' | grep -q 'loki'; then
