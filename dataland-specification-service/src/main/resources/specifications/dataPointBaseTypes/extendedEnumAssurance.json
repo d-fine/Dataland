@@ -5,8 +5,6 @@
   "validatedBy" : "org.dataland.datalandbackend.model.datapoints.extended.enums.ExtendedAssuranceDataPoint",
   "example" : {
     "value" : "LimitedAssurance",
-    "quality" : "Reported",
-    "comment" : "The value is reported by the company.",
     "dataSource" : {
       "page" : "5-7",
       "tagName" : "date",
