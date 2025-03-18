@@ -97,6 +97,46 @@ export const eutaxonomyNonFinancialsDataModel = [
             required: false,
             showIf: (): boolean => true,
           },
+          {
+            name: 'unGlobalCompactPrinciplesCompliancePolicy',
+            label: 'UN Global Compact Principles Compliance Policy',
+            description:
+                'Existence of a policy to monitor compliance with the UNGC principles.',
+            unit: '',
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'oecdGuidelinesForMultinationalEnterprisesCompliancePolicy',
+            label: 'OECD Guidelines for Multinational Enterprises Compliance Policy',
+            description:
+                'Existence of a policy to monitor compliance with the OECD Guidelines for Multinational Enterprises.',
+            unit: '',
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'iloCoreLabourStandards',
+            label: 'ILO Core Labour Standards',
+            description:
+                'Abidance by the ILO Core Labour Standards.',
+            unit: '',
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
+          {
+            name: 'humanRightsDueDiligence',
+            label: 'Human Rights Due Diligence',
+            description:
+                'Existence of due diligence processes to identify, prevent, mitigate and address adverse human rights impacts.',
+            unit: '',
+            component: 'YesNoExtendedDataPointFormField',
+            required: false,
+            showIf: (): boolean => true,
+          },
         ],
       },
     ],
