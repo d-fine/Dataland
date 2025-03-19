@@ -63,7 +63,7 @@ class RequestEmailManagerTest {
 
     @Test
     fun `validate that a access granted email is only sent on granted`() {
-        val dataRequestEntity = DataRequestEntity("", "", "", "", 0L)
+        val dataRequestEntity = DataRequestEntity("", "", false, "", "", 0L)
         for (accessStatus in AccessStatus.entries) {
             requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, null, accessStatus, null)
 
@@ -82,7 +82,7 @@ class RequestEmailManagerTest {
 
     @Test
     fun `validate that a access requested email is send`() {
-        val dataRequestEntity = DataRequestEntity("", "", "", "", 0L)
+        val dataRequestEntity = DataRequestEntity("", "", false, "", "", 0L)
         dataRequestEntity.messageHistory =
             listOf(
                 MessageEntity(

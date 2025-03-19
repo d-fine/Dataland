@@ -24,10 +24,10 @@ class EmailSender(
      * @return a sending success indicator which is true if the sending was successful
      */
     fun sendEmail(email: Email) {
-        try {
-            if (dryRunIsActive) {
-                logEmailInDryRun(email)
-            } else {
+        if (dryRunIsActive) {
+            logEmailInDryRun(email)
+        } else {
+            try {
                 logEmail(email)
                 val mailjetEmail =
                     TransactionalEmail.builder().integrateEmailIntoTransactionalEmailBuilder(email).build()
@@ -35,36 +35,32 @@ class EmailSender(
                 val response = request.sendWith(mailjetClient)
                 response.messages.forEach { logger.info(it.toString()) }
                 logger.info("Email successfully sent.")
+            } catch (e: MailjetException) {
+                logger.error("Error sending email, with error: $e")
             }
-        } catch (e: MailjetException) {
-            logger.error("Error sending email, with error: $e")
         }
     }
 
-    private fun descriptiveString(email: Email): String {
-        val description =
-            buildString {
-                append("email with subject \"${email.content.subject}\"\n")
-                append("(sender: ${email.sender.emailAddress})\n")
-                append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
+    private fun emailDescriptionForLogMessage(email: Email): String =
+        buildString {
+            append("email with subject \"${email.content.subject}\"\n")
+            append("(sender: ${email.sender.emailAddress})\n")
+            append("(receivers: ${convertListOfEmailContactsToJoinedString(email.receivers)})")
 
-                if (email.cc.isNotEmpty()) {
-                    append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
-                }
-
-                if (email.bcc.isNotEmpty()) {
-                    append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
-                }
+            if (email.cc.isNotEmpty()) {
+                append("\n(cc receivers: ${convertListOfEmailContactsToJoinedString(email.cc)})")
             }
 
-        return description
-    }
+            if (email.bcc.isNotEmpty()) {
+                append("\n(bcc receivers: ${convertListOfEmailContactsToJoinedString(email.bcc)})")
+            }
+        }
 
     private fun logEmail(email: Email) {
         val emailLog =
             buildString {
                 append("Sending ")
-                append(descriptiveString(email))
+                append(emailDescriptionForLogMessage(email))
             }
 
         logger.info(emailLog)
@@ -74,8 +70,8 @@ class EmailSender(
         val emailLog =
             buildString {
                 append("Withholding ")
-                append(descriptiveString(email))
-                append("due to email service dry run!")
+                append(emailDescriptionForLogMessage(email))
+                append("\ndue to email service dry run!")
             }
 
         logger.info(emailLog)

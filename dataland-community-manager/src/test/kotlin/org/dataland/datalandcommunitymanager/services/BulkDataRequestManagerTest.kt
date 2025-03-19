@@ -86,6 +86,7 @@ class BulkDataRequestManagerTest {
                 userId = anyString(),
                 datalandCompanyId = anyString(),
                 dataType = any(),
+                emailOnUpdate = anyBoolean(),
                 reportingPeriod = anyString(),
                 contacts = anyOrNull(),
                 message = anyOrNull(),
@@ -94,8 +95,8 @@ class BulkDataRequestManagerTest {
             DataRequestEntity(
                 dataRequestId = dummyRequestId,
                 datalandCompanyId = it.arguments[1] as String,
-                emailOnUpdate = false,
-                reportingPeriod = it.arguments[3] as String,
+                emailOnUpdate = it.arguments[3] as Boolean,
+                reportingPeriod = it.arguments[4] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
                 dataType = (it.arguments[2] as DataTypeEnum).value,

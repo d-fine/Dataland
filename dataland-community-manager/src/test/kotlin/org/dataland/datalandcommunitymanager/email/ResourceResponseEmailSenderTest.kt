@@ -57,10 +57,11 @@ class ResourceResponseEmailSenderTest {
     private fun getDataRequestEntityWithDataType(dataType: String): DataRequestEntity =
         DataRequestEntity(
             userId = userId,
-            creationTimestamp = creationTimestamp,
             dataType = dataType,
+            emailOnUpdate = false,
             reportingPeriod = reportingPeriod,
             datalandCompanyId = companyId,
+            creationTimestamp = creationTimestamp,
         )
 
     private fun getCompanyDataControllerMock(): CompanyDataControllerApi {

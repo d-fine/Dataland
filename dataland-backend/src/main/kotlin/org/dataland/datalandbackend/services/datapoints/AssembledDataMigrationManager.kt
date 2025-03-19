@@ -33,7 +33,7 @@ class AssembledDataMigrationManager
         private val logger = LoggerFactory.getLogger(javaClass)
         private val migrationCheckJsonComparisonOptions =
             JsonComparator.JsonComparisonOptions(
-                ignoredKeys = setOf("referencedReports", "publicationDate"),
+                ignoredKeys = setOf("referencedReports", "publicationDate", "fileName"),
                 fullyNullObjectsAreEqualToNull = true,
             )
 
@@ -59,6 +59,7 @@ class AssembledDataMigrationManager
                 correlationId = correlationId,
                 dataContent = splitDataset.dataContent,
                 fileReferenceToPublicationDateMapping = splitDataset.fileReferenceToPublicationDateMapping,
+                fileReferenceToFileNameMapping = splitDataset.fileReferenceToFileNameMapping,
                 initialQaStatus = dataMetaInfo.qaStatus,
                 initialQaComment = "Status copied from stored dataset during migration.",
             )

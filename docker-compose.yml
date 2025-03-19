@@ -72,10 +72,11 @@ services:
       - qa-service-db
       - community-manager-db
       - email-service-db
+      - user-service-db
       - grafana
     ports:
       - "127.0.0.1:6789:6789"
-      - "127.0.0.1:5433-5440:5433-5440"
+      - "127.0.0.1:5433-5441:5433-5441"
       - "127.0.0.1:5672:5672"
     logging:
       <<: *loki-logging
@@ -349,6 +350,7 @@ services:
       DATALAND_EMAIL_SERVICE_CLIENT_SECRET: ${DATALAND_EMAIL_SERVICE_CLIENT_SECRET}
       DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET: ${DATALAND_DOCUMENT_MANAGER_CLIENT_SECRET}
       DATALAND_BACKEND_CLIENT_SECRET: ${DATALAND_BACKEND_CLIENT_SECRET}
+      DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
       DATALAND_DATA_EXPORTER_CLIENT_SECRET: ${DATALAND_DATA_EXPORTER_CLIENT_SECRET}
       KEYCLOAK_GOOGLE_ID: ${KEYCLOAK_GOOGLE_ID}
       KEYCLOAK_GOOGLE_SECRET: ${KEYCLOAK_GOOGLE_SECRET}
@@ -374,6 +376,7 @@ services:
       - qa-service-db
       - community-manager-db
       - email-service-db
+      - user-service-db
     profiles: [ "production", "testing", "development" ]
     volumes:
       - pgadmin_config:/var/lib/pgadmin
@@ -388,6 +391,7 @@ services:
       QA_SERVICE_DB_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       COMMUNITY_MANAGER_DB_PASSWORD: ${COMMUNITY_MANAGER_DB_PASSWORD}
       EMAIL_SERVICE_DB_PASSWORD: ${EMAIL_SERVICE_DB_PASSWORD}
+      USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
       PGADMIN_DISABLE_POSTFIX: "true"
       SCRIPT_NAME: "/pgadmin"
     logging:
@@ -449,6 +453,41 @@ services:
       POSTGRES_USER: qa_service
       POSTGRES_PASSWORD: ${QA_SERVICE_DB_PASSWORD}
       PGUSER: qa_service
+    logging:
+      <<: *loki-logging
+  user-service:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - internal
+      - user-service-db
+    image: ${USER_SERVICE_IMAGE:-ghcr.io/d-fine/dataland/dataland_user_service_test:${DATALAND_USER_SERVICE_TEST_VERSION}}
+    expose:
+      - "8080"
+    <<: *uncritical-constants-env
+    environment:
+      <<: *rabbit-mq-user-and-pass
+      PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
+      INTERNAL_BACKEND_URL: ${INTERNAL_BACKEND_URL:-http://backend:8080/api}
+      USER_SERVICE_DB_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
+      DATALAND_USER_SERVICE_CLIENT_SECRET: ${DATALAND_USER_SERVICE_CLIENT_SECRET}
+    depends_on:
+      - user-service-db
+    logging:
+      <<: *loki-logging
+  user-service-db:
+    restart: always
+    profiles: [ "production", "testing", "development" ]
+    networks:
+      - user-service-db
+    image: ghcr.io/d-fine/dataland/dataland_postgres_v1:${DATALAND_POSTGRES_V1_VERSION}
+    volumes:
+      - user_service_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: user_service
+      POSTGRES_USER: user_service
+      POSTGRES_PASSWORD: ${USER_SERVICE_DB_PASSWORD}
+      PGUSER: user_service
     logging:
       <<: *loki-logging
   batch-manager:
@@ -532,7 +571,7 @@ services:
     depends_on:
       - email-service-db
     environment:
-      <<: [*mailjet-api-id-and-secret, *rabbit-mq-user-and-pass]
+      <<: [ *mailjet-api-id-and-secret, *rabbit-mq-user-and-pass ]
       PROXY_PRIMARY_URL: ${PROXY_PRIMARY_URL:-local-dev.dataland.com}
       NOTIFICATION_INTERNAL_RECEIVERS: ${NOTIFICATION_INTERNAL_RECEIVERS}
       NOTIFICATION_INTERNAL_CC: ${NOTIFICATION_INTERNAL_CC}
@@ -569,7 +608,7 @@ services:
       INTERNAL_EURODATCLIENT_URL: ${INTERNAL_EURODATCLIENT_URL:-http://eurodat-client:8080}
       IGNORE_EXTERNAL_STORAGE_ERROR: ${IGNORE_EXTERNAL_STORAGE_ERROR:-false}
     extra_hosts:
-     - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"
     logging:
       <<: *loki-logging
   eurodat-client:
@@ -698,6 +737,7 @@ networks:
   qa-service-db:
   community-manager-db:
   email-service-db:
+  user-service-db:
   loki:
   grafana:
 volumes:
@@ -720,6 +760,8 @@ volumes:
   document_manager_data:
     driver: local
   qa_service_data:
+    driver: local
+  user_service_data:
     driver: local
   community_manager_data:
     driver: local

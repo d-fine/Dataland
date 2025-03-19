@@ -166,7 +166,7 @@ class DataRequestAlterationManagerTest {
         doReturn(listOf<BasicCompanyInformation>())
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(any())
-        doReturn(listOf(BasicCompanyInformation("", "dummyChildCompanyId", "", "")))
+        doReturn(listOf(BasicCompanyInformation(companyName = "", companyId = "dummyChildCompanyId", headquarters = "", countryCode = "")))
             .whenever(mockCompanyDataControllerApi)
             .getCompanySubsidiariesByParentId(metaData.companyId)
 
@@ -201,6 +201,7 @@ class DataRequestAlterationManagerTest {
                 DataRequestEntity(
                     userId = "",
                     dataType = "p2p",
+                    emailOnUpdate = false,
                     reportingPeriod = "",
                     creationTimestamp = 0,
                     datalandCompanyId = "",
@@ -208,6 +209,7 @@ class DataRequestAlterationManagerTest {
                 DataRequestEntity(
                     userId = "dummyId",
                     dataType = "dummyDataType",
+                    emailOnUpdate = false,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 123456,
                     datalandCompanyId = dummyCompanyId,
@@ -215,6 +217,7 @@ class DataRequestAlterationManagerTest {
                 DataRequestEntity(
                     userId = "1234",
                     dataType = "p2p",
+                    emailOnUpdate = false,
                     reportingPeriod = "dummyPeriod",
                     creationTimestamp = 0,
                     datalandCompanyId = dummyCompanyId,
@@ -225,9 +228,8 @@ class DataRequestAlterationManagerTest {
             DataRequestEntity(
                 userId = "1234",
                 dataType = "p2p",
-                reportingPeriod =
-                    "dummyPeri" +
-                        "od",
+                false,
+                reportingPeriod = "dummyPeriod",
                 creationTimestamp = 0,
                 datalandCompanyId = "dummyChildCompanyId",
             )

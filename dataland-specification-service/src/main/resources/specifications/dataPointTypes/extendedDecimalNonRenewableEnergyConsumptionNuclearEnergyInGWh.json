@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalNonRenewableEnergyConsumptionNuclearEnergyInGWh",
+  "name" : "Non-Renewable Energy Consumption Nuclear Energy",
+  "businessDefinition" : "Energy consumption from nuclear energy (Uranium) (non-renewable energy source). Linked to Regulation (EU) 2022/1288, Annex I, table 2, indicator nr. 5.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : [ "min:0" ]
+}

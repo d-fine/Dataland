@@ -35,6 +35,8 @@ describeIf(
           login(reader_name, reader_pw);
           cy.visitAndCheckAppMount('/companies/' + storedCompany.companyId);
           cy.get('h1').should('contain', testCompanyName);
+          cy.get('[data-test=toggleShowAll]').scrollIntoView();
+          cy.get('[data-test=toggleShowAll]').contains('SHOW ALL').click();
           checkFrameworks();
           cy.get(`div[data-test="lksg-summary-panel"] a[data-test="lksg-provide-data-button"]`).should('exist').click();
 
