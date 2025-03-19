@@ -40,6 +40,23 @@ class DataRequestAlterationManager
         private val logger = LoggerFactory.getLogger(SingleDataRequestManager::class.java)
 
         /**
+         * Patches the email-on-update-field if necessary anr returns if it was updated.
+         * @param dataRequestPatch the DataRequestPatch holding the data to be changed
+         * @param dataRequestEntity the old DataRequestEntity that is to be changed
+         * @return true if the emailOnUpdate was updated, false otherwise
+         */
+        private fun updateEmailOnUpdateIfRequired(
+            dataRequestPatch: DataRequestPatch,
+            dataRequestEntity: DataRequestEntity,
+        ): Boolean {
+            if (dataRequestPatch.emailOnUpdate != null && dataRequestEntity.emailOnUpdate != dataRequestPatch.emailOnUpdate) {
+                dataRequestEntity.emailOnUpdate = dataRequestPatch.emailOnUpdate
+                return true
+            }
+            return false
+        }
+
+        /**
          * Updates the request status history if the request status changed
          * @param dataRequestPatch the DataRequestPatch holding the data to be changed
          * @param dataRequestEntity the old DataRequestEntity that is to be changed
@@ -150,6 +167,7 @@ class DataRequestAlterationManager
             val modificationTime = Instant.now().toEpochMilli()
             val anyChanges =
                 listOf(
+                    updateEmailOnUpdateIfRequired(dataRequestPatch, dataRequestEntity),
                     updateRequestStatusHistoryIfRequired(
                         dataRequestPatch, dataRequestEntity, modificationTime, answeringDataId,
                     ),

@@ -1,4 +1,4 @@
-package org.dataland.e2etests.utils.testDataProvivders
+package org.dataland.e2etests.utils.testDataProviders
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi

@@ -29,7 +29,7 @@ data class DataRequestEntity(
     val dataType: String,
     val reportingPeriod: String,
     val datalandCompanyId: String,
-    val emailOnUpdate: Boolean,
+    var emailOnUpdate: Boolean,
     @OneToMany(mappedBy = "dataRequest")
     var messageHistory: List<MessageEntity>,
     @OneToMany(mappedBy = "dataRequest")
@@ -47,6 +47,7 @@ data class DataRequestEntity(
     constructor(
         userId: String,
         dataType: String,
+        emailOnUpdate: Boolean,
         reportingPeriod: String,
         datalandCompanyId: String,
         creationTimestamp: Long,
@@ -57,7 +58,7 @@ data class DataRequestEntity(
         dataType = dataType,
         reportingPeriod = reportingPeriod,
         datalandCompanyId = datalandCompanyId,
-        emailOnUpdate = false,
+        emailOnUpdate = emailOnUpdate,
         messageHistory = listOf(),
         dataRequestStatusHistory = listOf(),
         lastModifiedDate = creationTimestamp,
