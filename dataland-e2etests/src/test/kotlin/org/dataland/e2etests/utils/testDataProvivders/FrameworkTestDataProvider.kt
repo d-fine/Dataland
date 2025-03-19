@@ -66,10 +66,10 @@ class FrameworkTestDataProvider<T>(
             )
 
         fun <T> forFrameworkFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
-            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.fakeFixtureFile)
+            FrameworkTestDataProvider(clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException()).fakeFixtureFile)
 
         fun <T> forFrameworkPreparedFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
-            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.preparedFixtureFile)
+            FrameworkTestDataProvider(clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException()).preparedFixtureFile)
     }
 
     private val moshi: Moshi =
