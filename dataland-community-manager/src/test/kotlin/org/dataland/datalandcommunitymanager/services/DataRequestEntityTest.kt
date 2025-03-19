@@ -35,6 +35,7 @@ class DataRequestEntityTest {
             DataRequestEntity(
                 userId = testUserId,
                 dataType = testDataType.value,
+                emailOnUpdate = false,
                 reportingPeriod = testReportingPeriod,
                 datalandCompanyId = testCompanyId,
                 creationTimestamp = Instant.now().toEpochMilli(),

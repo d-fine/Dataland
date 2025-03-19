@@ -101,10 +101,12 @@ class DataRequestProcessingUtils
          * @param contacts a list of email addresses to inform about the potentially stored data request
          * @param message a message to equip the notification with
          */
+        @Suppress("complexity:LongParameterList")
         fun storeDataRequestEntityAsOpen(
             userId: String,
             datalandCompanyId: String,
             dataType: DataTypeEnum,
+            emailOnUpdate: Boolean,
             reportingPeriod: String,
             contacts: Set<String>? = null,
             message: String? = null,
@@ -115,6 +117,7 @@ class DataRequestProcessingUtils
                 DataRequestEntity(
                     userId,
                     dataType.value,
+                    emailOnUpdate,
                     reportingPeriod,
                     datalandCompanyId,
                     creationTime,

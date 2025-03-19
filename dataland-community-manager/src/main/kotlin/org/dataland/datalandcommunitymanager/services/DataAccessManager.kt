@@ -165,6 +165,7 @@ class DataAccessManager(
             DataRequestEntity(
                 userId = userId,
                 dataType = dataType.value,
+                emailOnUpdate = false,
                 reportingPeriod = reportingPeriod,
                 datalandCompanyId = datalandCompanyId,
                 creationTimestamp = creationTime,

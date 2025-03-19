@@ -32,15 +32,6 @@ class DataRequestMaskerTest {
     private val userId = "1234-221-1111elf"
     private val testComment = "test comment"
 
-    private val dummyDataRequestEntity =
-        DataRequestEntity(
-            userId = "",
-            dataType = "p2p",
-            reportingPeriod = "",
-            creationTimestamp = 0,
-            datalandCompanyId = "",
-        )
-
     private val storedDataRequestEntityWithAdminComment =
         StoredDataRequest(
             dataRequestId = "",
@@ -81,10 +72,19 @@ class DataRequestMaskerTest {
     }
 
     private fun getExtendedStoredDataRequestEntityWithAdminComment(): ExtendedStoredDataRequest {
-        val dataRequestEntityWithAdminComment = dummyDataRequestEntity.copy(adminComment = testComment)
+        val dummyDataRequestEntity =
+            DataRequestEntity(
+                userId = "",
+                dataType = "p2p",
+                emailOnUpdate = false,
+                reportingPeriod = "",
+                creationTimestamp = 0,
+                datalandCompanyId = "",
+            )
+        dummyDataRequestEntity.adminComment = testComment
         val extendedStoredDataRequestWithAdminComment =
             ExtendedStoredDataRequest(
-                dataRequestEntity = dataRequestEntityWithAdminComment,
+                dataRequestEntity = dummyDataRequestEntity,
                 companyName = "",
                 userEmailAddress = "",
             )
