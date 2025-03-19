@@ -13,11 +13,12 @@ import org.dataland.datalandmessagequeueutils.messages.email.EmailMessage
 import org.dataland.datalandmessagequeueutils.messages.email.EmailRecipient
 import org.dataland.datalandmessagequeueutils.messages.email.InternalEmailContentTable
 import org.dataland.datalandmessagequeueutils.messages.email.MultipleDatasetsUploadedEngagement
-import org.dataland.datalandmessagequeueutils.messages.email.SingleDatasetUploadedEngagement
 import org.dataland.datalandmessagequeueutils.messages.email.TypedEmailContent
 import org.dataland.datalandmessagequeueutils.messages.email.Value
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 /**
  * A service used to send external engagement emails and internal emails in the NotificationService.
@@ -34,32 +35,21 @@ class NotificationEmailSender(
     /**
      * Sends both external and internal notification emails based on the specified parameters.
      *
-     * @param notificationEmailType The type of notification email to be sent. Either a single or a summary email.
      * @param latestElementaryEvent The most recent elementary event entity. That triggered the notification email.
      * @param unprocessedElementaryEvents A list of elementary event entities that are unprocessed
      * and contained in the summary email.
-     * @param companyName The name of the company that is receiving the notification email.
+     * @param companyId TODO
      * @param receiver A list of recipient email addresses for the company.
      * @param correlationId The correlation identifier for tracking the email notification.
      */
-    fun sendExternalAndInternalNotificationEmail(
-        notificationEmailType: NotificationEmailType,
-        latestElementaryEvent: ElementaryEventEntity,
-        unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        companyName: String,
+    fun sendExternalAndInternalInvestorRelationshipSummaryEmail(
+        unprocessedEvents: List<NotificationEventEntity>,
+        companyId: UUID,
         receiver: List<String>,
         correlationId: String,
     ) {
         val (externalEmailContent, internalEmailContent) =
-            when (notificationEmailType) {
-                is NotificationEmailType.Single ->
-                    buildExternalAndInternalSingleEmail(latestElementaryEvent, companyName, receiver)
-                is NotificationEmailType.Summary ->
-                    buildExternalAndInternalSummaryEmail(
-                        latestElementaryEvent, unprocessedElementaryEvents,
-                        companyName, notificationEmailType.daysSinceLastNotificationEmail, receiver,
-                    )
-            }
+                    buildExternalAndInternalInvestorRelationshipSummaryEmail(unprocessedEvents, companyId, receiver)
 
         receiver.forEach {
             sendEmailMessage(externalEmailContent, listOf(EmailRecipient.EmailAddress(it)), emptyList(), correlationId)
@@ -68,59 +58,29 @@ class NotificationEmailSender(
         sendEmailMessage(internalEmailContent, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), correlationId)
     }
 
-    private fun buildExternalAndInternalSingleEmail(
-        latestElementaryEvent: ElementaryEventEntity,
-        companyName: String,
-        receiver: List<String>,
-    ): Pair<TypedEmailContent, TypedEmailContent> {
-        val externalEmailContent =
-            SingleDatasetUploadedEngagement(
-                companyName = companyName,
-                companyId = latestElementaryEvent.companyId.toString(),
-                dataTypeLabel = readableFrameworkNameMapping[latestElementaryEvent.framework] ?: "",
-                reportingPeriod = latestElementaryEvent.reportingPeriod,
-            )
-
-        val internalEmailContent =
-            InternalEmailContentTable(
-                internalEmailSubject, internalEmailTextTitle, internalEmailHtmlTitle,
-                listOf(
-                    "Company" to
-                        companyIdAndNameValue(
-                            externalEmailContent.companyId,
-                            externalEmailContent.companyName,
-                        ),
-                    "Framework" to dataTypeLink(latestElementaryEvent.framework, externalEmailContent.companyId),
-                    "Reporting Period" to Value.Text(externalEmailContent.reportingPeriod),
-                    "Notification Email Type" to Value.Text("Single"),
-                    "Receiver" to receiver.map(Value::EmailAddressWithSubscriptionStatus).let(Value::List),
-                ),
-            )
-
-        return Pair(externalEmailContent, internalEmailContent)
+    fun sendDataRequestSummaryEmail(
+    ) {
+        // TODO
     }
 
-    private fun buildExternalAndInternalSummaryEmail(
-        latestElementaryEvent: ElementaryEventEntity,
-        unprocessedElementaryEvents: List<ElementaryEventEntity>,
-        companyName: String,
-        daysSinceLastNotificationEmail: Long?,
+    private fun buildExternalAndInternalInvestorRelationshipSummaryEmail(
+        unprocessedEvents: List<NotificationEventEntity>,
+        companyId: String,
         receiver: List<String>,
     ): Pair<TypedEmailContent, TypedEmailContent> {
         val frameworkData =
-            unprocessedElementaryEvents
+            unprocessedEvents
                 .groupBy { it.framework }
                 .mapValues { entry -> entry.value.map { it.reportingPeriod } }
 
         val externalEmailContent =
             MultipleDatasetsUploadedEngagement(
-                companyName = companyName,
-                companyId = latestElementaryEvent.companyId.toString(),
+                companyName = getCompanyName(companyId), // TODO: from companyRolesManager?
+                companyId = companyId,
                 frameworkData =
                     frameworkData.map {
                         MultipleDatasetsUploadedEngagement.FrameworkData(readableFrameworkNameMapping[it.key] ?: "", it.value)
                     },
-                numberOfDays = daysSinceLastNotificationEmail,
             )
 
         val internalEmailContent =
@@ -129,7 +89,6 @@ class NotificationEmailSender(
                 listOf(
                     "Company" to companyIdAndNameValue(externalEmailContent.companyId, externalEmailContent.companyName),
                     "Frameworks" to frameworkValue(frameworkData, externalEmailContent.companyId),
-                    "Number of days since last notification" to Value.Text(externalEmailContent.numberOfDays?.toString() ?: "-"),
                     "Notification Email Type" to Value.Text("Summary"),
                     "Receiver" to receiver.map(Value::EmailAddressWithSubscriptionStatus).let(Value::List),
                 ),
@@ -137,6 +96,12 @@ class NotificationEmailSender(
 
         return Pair(externalEmailContent, internalEmailContent)
     }
+
+    private fun buildDataRequestSummaryEmail(
+    ) {
+        // TODO
+    }
+
 
     private fun companyIdAndNameValue(
         companyId: String,

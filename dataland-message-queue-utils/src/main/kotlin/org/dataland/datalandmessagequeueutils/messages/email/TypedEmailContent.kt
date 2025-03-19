@@ -122,35 +122,12 @@ data class AccessToDatasetGranted(
 }
 
 /**
- * A class for the SingleDatasetUploadedEngagement email.
- */
-data class SingleDatasetUploadedEngagement(
-    val companyId: String,
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-) : TypedEmailContent(),
-    InitializeSubscriptionUuidLater,
-    InitializeBaseUrlLater {
-    override val subject = "New data for ${this.companyName} on Dataland"
-    override val textTemplate = "/text/single_dataset_uploaded_engagement.ftl"
-    override val htmlTemplate = "/html/single_dataset_uploaded_engagement.ftl"
-
-    @JsonIgnore
-    override lateinit var subscriptionUuid: String
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
  * A class for the MultipleDatasetsUploadedEngagement email.
  */
 data class MultipleDatasetsUploadedEngagement(
     val companyId: String,
     val companyName: String,
     val frameworkData: List<FrameworkData>,
-    val numberOfDays: Long?,
 ) : TypedEmailContent(),
     InitializeSubscriptionUuidLater,
     InitializeBaseUrlLater {
@@ -224,26 +201,6 @@ data class DataRequestUpdated(
     override val subject = "Your data request has been updated!"
     override val textTemplate = "/text/data_request_updated.ftl"
     override val htmlTemplate = "/html/data_request_updated.ftl"
-
-    @JsonIgnore
-    override lateinit var baseUrl: String
-}
-
-/**
- * A class for the DataRequestClosed email.
- */
-data class DataRequestClosed(
-    val companyName: String,
-    val dataTypeLabel: String,
-    val reportingPeriod: String,
-    val creationDate: String,
-    val dataRequestId: String,
-    val closedInDays: Int,
-) : TypedEmailContent(),
-    InitializeBaseUrlLater {
-    override val subject = "Your data request has been closed!"
-    override val textTemplate = "/text/data_request_closed.ftl"
-    override val htmlTemplate = "/html/data_request_closed.ftl"
 
     @JsonIgnore
     override lateinit var baseUrl: String
