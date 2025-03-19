@@ -239,7 +239,7 @@ class DataRequestAlterationManager
         ): Boolean {
             if (dataRequestEntity.emailOnUpdate) {
                 requestEmailManager.sendEmailsWhenRequestStatusChanged(
-                    dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.accessStatus, correlationId,
+                    dataRequestEntity, dataRequestPatch.requestStatus, correlationId,
                 )
             }
             return dataRequestEntity.emailOnUpdate
