@@ -144,6 +144,7 @@ class SingleDataRequestManagerTest {
                 creationTimestamp = 0,
                 lastModifiedDate = 0,
                 dataType = (it.arguments[2] as DataTypeEnum).value,
+                emailOnUpdate = false,
                 messageHistory = mutableListOf(),
                 dataRequestStatusHistory = emptyList(),
                 userId = it.arguments[0] as String,

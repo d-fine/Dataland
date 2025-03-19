@@ -3,7 +3,8 @@ package org.dataland.datalandbackend.utils
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import jakarta.validation.Validation
+import jakarta.validation.Validator
+import org.dataland.datalandbackend.interfaces.datapoints.BaseDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.utils.JsonSpecificationLeaf
@@ -12,6 +13,7 @@ import org.dataland.specificationservice.openApiClient.infrastructure.ClientExce
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Class for validating data points
@@ -26,8 +28,20 @@ class DataPointValidator
         private val objectMapper: ObjectMapper,
         private val specificationClient: SpecificationControllerApi,
         private val referencedReportsUtilities: ReferencedReportsUtilities,
+        private val validator: Validator,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
+        private val validatedExistingDatapointTypes = ConcurrentHashMap<String, Boolean>()
+
+        companion object {
+            val expectedClassNames =
+                setOf(
+                    "org.dataland.datalandbackend.model.",
+                    "java.time.LocalDate",
+                    "java.util.Map<org.dataland.datalandbackend.frameworks.sfdr.custom.HighImpactClimateSector",
+                    "org.dataland.datalandbackend.frameworks.sfdr.custom.SfdrHighImpactClimateSectorEnergyConsumption>",
+                )
+        }
 
         /**
          * Validates a single data point by casting it to the correct class and running the validations
@@ -42,9 +56,11 @@ class DataPointValidator
         ) {
             logger.info("Validating data point $dataPointType (correlation ID: $correlationId)")
             validateDataPointTypeExists(dataPointType)
-            val dataPointBaseTypeId = specificationClient.getDataPointTypeSpecification(dataPointType).dataPointBaseType.id
+            val dataPointTypeSpecification = specificationClient.getDataPointTypeSpecification(dataPointType)
+            val dataPointBaseTypeId = dataPointTypeSpecification.dataPointBaseType.id
+            val constraints = dataPointTypeSpecification.constraints
             val validationClass = specificationClient.getDataPointBaseType(dataPointBaseTypeId).validatedBy
-            validateConsistency(dataPoint, validationClass, correlationId)
+            validateConsistency(dataPoint, validationClass, correlationId, constraints)
         }
 
         /**
@@ -52,13 +68,31 @@ class DataPointValidator
          * @param dataPointType the identifier to validate
          */
         fun validateDataPointTypeExists(dataPointType: String) {
+            if (validatedExistingDatapointTypes.containsKey(dataPointType)) {
+                return
+            }
+
             try {
                 specificationClient.getDataPointTypeSpecification(dataPointType)
+                validatedExistingDatapointTypes[dataPointType] = true
             } catch (clientException: ClientException) {
                 logger.error("Data point identifier $dataPointType not found: ${clientException.message}.")
                 throw InvalidInputApiException(
                     "Specified data point identifier $dataPointType is not valid.",
                     "The specified data point identifier $dataPointType is not known to the specification service.",
+                )
+            }
+        }
+
+        private fun assertClassNameIsAuthorized(
+            className: String,
+            correlationId: String,
+        ) {
+            if (expectedClassNames.none { className.contains(it) }) {
+                logger.error("Invalid class name $className (correlation ID: $correlationId).")
+                throw InvalidInputApiException(
+                    "Invalid class name.",
+                    "The class name $className is not valid.",
                 )
             }
         }
@@ -73,17 +107,12 @@ class DataPointValidator
             jsonData: String,
             className: String,
             correlationId: String,
+            constraints: List<String>? = null,
         ) {
-            if (!className.startsWith("org.dataland.datalandbackend.model.datapoints.")) {
-                logger.error("Invalid class name $className (correlation ID: $correlationId).")
-                throw InvalidInputApiException(
-                    "Invalid class name.",
-                    "The class name $className is not valid.",
-                )
-            }
-            val classForValidation = Class.forName(className).kotlin.java
-            val dataPointObject = checkCastIntoClass(jsonData, classForValidation, className, correlationId)
+            assertClassNameIsAuthorized(className, correlationId)
+            val dataPointObject = checkCastIntoClass(jsonData, className, correlationId)
             checkForViolations(dataPointObject, className, correlationId)
+            constraints?.let { validateConstraints(dataPointObject as BaseDataPoint<*>, constraints) }
         }
 
         /**
@@ -98,20 +127,24 @@ class DataPointValidator
             correlationId: String,
         ) {
             referencedReportsUtilities.validateReferencedReportConsistency(referencedReports ?: emptyMap())
-            val observedDocumentReferences = mutableSetOf<String>()
+            assertDatasetIsNotEmpty(datasetContent, correlationId)
 
+            val observedDocumentReferences = mutableSetOf<String>()
             datasetContent.forEach { (dataPointType, dataPointJsonLeaf) ->
                 val dataPoint = objectMapper.writeValueAsString(dataPointJsonLeaf.content)
                 if (dataPoint.isEmpty()) return@forEach
                 validateDataPoint(dataPointType, dataPoint, correlationId)
 
-                val companyReport = referencedReportsUtilities.getCompanyReportFromDataSource(dataPoint)
-                if (companyReport != null && referencedReports != null) {
-                    observedDocumentReferences.add(companyReport.fileReference)
-                    referencedReportsUtilities.validateReportConsistencyWithGlobalList(
-                        companyReport,
-                        referencedReports,
-                    )
+                val companyReports = mutableListOf<CompanyReport>()
+                referencedReportsUtilities.getAllCompanyReportsFromDataSource(dataPoint, companyReports)
+                companyReports.forEach { companyReport ->
+                    if (referencedReports != null) {
+                        observedDocumentReferences.add(companyReport.fileReference)
+                        referencedReportsUtilities.validateReportConsistencyWithGlobalList(
+                            companyReport,
+                            referencedReports,
+                        )
+                    }
                 }
             }
 
@@ -129,20 +162,45 @@ class DataPointValidator
         }
 
         /**
+         * Checks if the provided dataset contains any data
+         * @param datasetContent The content of the dataset in form of a map
+         * @param correlationId The correlation ID of the operation
+         * @throws InvalidInputApiException if the dataset is empty
+         */
+        private fun assertDatasetIsNotEmpty(
+            datasetContent: Map<String, JsonSpecificationLeaf>,
+            correlationId: String,
+        ) {
+            var containsData = false
+            for (jsonSpecificationLeaf in datasetContent.values) {
+                if (!JsonComparator.isFullyNullObject(jsonSpecificationLeaf.content)) {
+                    containsData = true
+                    break
+                }
+            }
+
+            if (!containsData) {
+                throw InvalidInputApiException(
+                    "Empty dataset.",
+                    "The provided dataset is empty. Correlation ID: $correlationId",
+                )
+            }
+        }
+
+        /**
          * Checks if the JSON data can be cast into a given class
          * @param jsonData The JSON data to check
-         * @param classForValidation The class to check against
          * @param className The name of the class to check against
          * @param correlationId The correlation ID of the operation
          */
         private fun checkCastIntoClass(
             jsonData: String,
-            classForValidation: Class<out Any>,
             className: String,
             correlationId: String,
         ): Any {
             try {
-                return objectMapper.readValue(jsonData, classForValidation)
+                val typeFactory = objectMapper.typeFactory.constructFromCanonical(className)
+                return objectMapper.readValue(jsonData, typeFactory)
             } catch (ex: JsonMappingException) {
                 logger.error("Unable to cast JSON data $jsonData into $className (correlation ID: $correlationId): ${ex.message}")
                 throw InvalidInputApiException(
@@ -171,7 +229,6 @@ class DataPointValidator
             className: String,
             correlationId: String,
         ) {
-            val validator = Validation.buildDefaultValidatorFactory().validator
             val violations = validator.validate(dataPointObject)
             if (violations.isNotEmpty()) {
                 logger.error("Validation failed for data point of type $className (correlation ID: $correlationId): $violations")

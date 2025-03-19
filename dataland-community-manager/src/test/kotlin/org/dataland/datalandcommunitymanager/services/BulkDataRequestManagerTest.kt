@@ -94,6 +94,7 @@ class BulkDataRequestManagerTest {
             DataRequestEntity(
                 dataRequestId = dummyRequestId,
                 datalandCompanyId = it.arguments[1] as String,
+                emailOnUpdate = false,
                 reportingPeriod = it.arguments[3] as String,
                 creationTimestamp = 0,
                 lastModifiedDate = 0,

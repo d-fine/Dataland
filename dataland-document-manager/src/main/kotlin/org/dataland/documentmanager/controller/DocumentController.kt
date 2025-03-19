@@ -4,10 +4,13 @@ import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
+import org.dataland.datalandbackendutils.model.DocumentCategory
 import org.dataland.documentmanager.api.DocumentApi
+import org.dataland.documentmanager.entities.DocumentMetaInfoEntity
 import org.dataland.documentmanager.model.DocumentMetaInfo
 import org.dataland.documentmanager.model.DocumentMetaInfoPatch
 import org.dataland.documentmanager.model.DocumentMetaInfoResponse
+import org.dataland.documentmanager.model.DocumentMetaInformationSearchFilter
 import org.dataland.documentmanager.services.DocumentManager
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.InputStreamResource
@@ -60,6 +63,9 @@ class DocumentController(
             .body(documentContent)
     }
 
+    override fun getDocumentMetaInformation(documentId: String): ResponseEntity<DocumentMetaInfoEntity> =
+        ResponseEntity.ok(documentManager.retrieveDocumentMetaInfo(documentId))
+
     override fun patchDocumentMetaInfo(
         documentId: String,
         documentMetaInfoPatch: DocumentMetaInfoPatch,
@@ -105,5 +111,51 @@ class DocumentController(
                 throw exception
             }
         }
+    }
+
+    /**
+     * Searches in storage for document meta information.
+     */
+    override fun searchForDocumentMetaInformation(
+        companyId: String?,
+        documentCategories: Set<DocumentCategory>?,
+        reportingPeriod: String?,
+        chunkSize: Int,
+        chunkIndex: Int,
+    ): ResponseEntity<List<DocumentMetaInfoResponse>> {
+        if (chunkSize <= 0) {
+            throw InvalidInputApiException(
+                summary = "Invalid chunk size.",
+                message = "Chunk size must be positive.",
+            )
+        }
+        if (chunkIndex < 0) {
+            throw InvalidInputApiException(
+                summary = "Invalid chunk index.",
+                message = "Chunk index must be non-negative.",
+            )
+        }
+        val documentMetaInformationSearchFilter =
+            DocumentMetaInformationSearchFilter(
+                companyId,
+                documentCategories,
+                reportingPeriod,
+            )
+        if (documentMetaInformationSearchFilter.isInvalid()) {
+            throw InvalidInputApiException(
+                summary = "Invalid meta information search filter.",
+                message =
+                    "Search filter must impose an actual restriction. Please provide " +
+                        "at least one search parameter and make sure that not all document " +
+                        "categories are requested if companyId and reportingPeriod are omitted.",
+            )
+        }
+        return ResponseEntity.ok(
+            documentManager.searchForDocumentMetaInformation(
+                documentMetaInformationSearchFilter,
+                chunkSize,
+                chunkIndex,
+            ),
+        )
     }
 }

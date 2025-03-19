@@ -69,8 +69,8 @@ data class DatasetRequestedClaimOwnership(
     InitializeSubscriptionUuidLater,
     InitializeBaseUrlLater {
     override val subject = "A message from Dataland: Your data are high on demand!"
-    override val textTemplate = "/text/dataset_requested_claim_ownership.ftl"
-    override val htmlTemplate = "/html/dataset_requested_claim_ownership.ftl"
+    override val textTemplate = "/text/company_ownership_claim_dataset_requested.ftl"
+    override val htmlTemplate = "/html/company_ownership_claim_dataset_requested.ftl"
 
     @JsonIgnore
     override lateinit var subscriptionUuid: String
@@ -155,8 +155,8 @@ data class MultipleDatasetsUploadedEngagement(
     InitializeSubscriptionUuidLater,
     InitializeBaseUrlLater {
     override val subject = "New data for ${this.companyName} on Dataland"
-    override val textTemplate = "/text/multiple_datasets_uploaded_engagement.ftl"
-    override val htmlTemplate = "/html/multiple_datasets_uploaded_engagement.ftl"
+    override val textTemplate = "/text/company_ownership_claim_dataset_uploaded.ftl"
+    override val htmlTemplate = "/html/company_ownership_claim_dataset_uploaded.ftl"
 
     /**
      * A class that stores the information about the multiple frameworks that have been uploaded for the company.
@@ -203,8 +203,8 @@ data class DataRequestAnswered(
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
     override val subject = "Your data request has been answered!"
-    override val textTemplate = "/text/data_request_answered.ftl"
-    override val htmlTemplate = "/html/data_request_answered.ftl"
+    override val textTemplate = "/text/data_request_available.ftl"
+    override val htmlTemplate = "/html/data_request_available.ftl"
 
     @JsonIgnore
     override lateinit var baseUrl: String
@@ -279,8 +279,8 @@ data class InternalEmailContentTable(
     val table: List<Pair<String, Value>>,
 ) : TypedEmailContent(),
     InitializeBaseUrlLater {
-    override val textTemplate = "/text/internal_email_content_table.ftl"
-    override val htmlTemplate = "/html/internal_email_content_table.ftl"
+    override val textTemplate = "/text/company_ownership_claim_dataset_uploaded_internal.ftl"
+    override val htmlTemplate = "/html/company_ownership_claim_dataset_uploaded_internal.ftl"
 
     @JsonIgnore
     override lateinit var baseUrl: String

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalScope3GhgEmissionsInTonnes",
+  "name" : "Scope 3 GHG emissions",
+  "businessDefinition" : "Scope 3 greenhouse gas emissions in tonnes, i.e. all indirect upstream and downstream emissions that are not included in scope 2 (equity share approach preferably used).",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : "sfdr",
+  "constraints" : null
+}
