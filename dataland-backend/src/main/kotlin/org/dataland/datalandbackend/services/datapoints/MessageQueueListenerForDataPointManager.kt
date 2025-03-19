@@ -61,23 +61,32 @@ class MessageQueueListenerForDataPointManager
             logger.info("Processing ${messages.size} Data Point QA Status Updated Messages.")
 
             MessageQueueUtils.rejectMessageOnException {
-                for (message in messages) {
-                    MessageQueueUtils.validateMessageType(message.getType(), MessageType.QA_STATUS_UPDATED)
-                    val qaStatusChangeMessage =
-                        message.readMessagePayload<QaStatusChangeMessage>(objectMapper)
-                    val correlationId = message.getCorrelationId()
-                    logger.info("Received QA status change message (correlationId: $correlationId)")
+                val qaStatusChangedMessages =
+                    messages.map {
+                        MessageQueueUtils.validateMessageType(it.getType(), MessageType.QA_STATUS_UPDATED)
+                        val qaStatusChangeMessage =
+                            it.readMessagePayload<QaStatusChangeMessage>(objectMapper)
+                        val correlationId = it.getCorrelationId()
+                        logger.info(
+                            "Updating QA status for dataID ${qaStatusChangeMessage.dataId} to " +
+                                "${qaStatusChangeMessage.updatedQaStatus} (correlationId: $correlationId)",
+                        )
+                        Pair(qaStatusChangeMessage, correlationId)
+                    }
+                val lastMessagePerDataId = qaStatusChangedMessages.associateBy { it.first.dataId }
+                dataPointMetaInformationManager.updateQaStatusOfDataPointsFromMessages(lastMessagePerDataId.values.map { it.first })
 
-                    val updatedDataId = qaStatusChangeMessage.dataId
-                    MessageQueueUtils.validateDataId(updatedDataId)
-                    val newQaStatus = qaStatusChangeMessage.updatedQaStatus
-                    val newActiveDataId = qaStatusChangeMessage.currentlyActiveDataId
-                    val dataPointDimension = dataPointMetaInformationManager.getDataPointDimensionFromId(updatedDataId)
+                val dataPointDimensions =
+                    dataPointMetaInformationManager.getDataPointDimensionsFromIds(
+                        qaStatusChangedMessages.map { it.first.dataId },
+                    )
+                val lastMessagePerDataPointDimensions =
+                    qaStatusChangedMessages.associateBy {
+                        dataPointDimensions[it.first.dataId]!!
+                    }
 
-                    dataPointMetaInformationManager.updateQaStatusOfDataPoint(updatedDataId, newQaStatus)
-                    logger.info("QA status for dataID $updatedDataId updated to $newQaStatus (correlationId: $correlationId)")
-
-                    dataPointManager.updateCurrentlyActiveDataPoint(dataPointDimension, newActiveDataId, correlationId)
+                for ((key, value) in lastMessagePerDataPointDimensions) {
+                    dataPointManager.updateCurrentlyActiveDataPoint(key, value.first.currentlyActiveDataId, value.second)
                 }
             }
         }

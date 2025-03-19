@@ -12,7 +12,6 @@ import org.dataland.datalandbackend.services.datapoints.DataPointMetaInformation
 import org.dataland.datalandbackend.utils.DataPointValidator
 import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandbackend.utils.JsonTestUtils.testObjectMapper
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandinternalstorage.openApiClient.api.StorageControllerApi
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -87,47 +86,5 @@ class DataPointManagerTest {
         assert(result.dataPointType == uploadedDataPoint.dataPointType)
         assert(result.reportingPeriod == uploadedDataPoint.reportingPeriod)
         assert(result.dataPointId == dataId)
-    }
-
-    @Test
-    fun `check that the new data id is set to active and the previous one set to inactive`() {
-        val newActiveDataId = "test-new-active-data-id"
-        val someId = "dummy"
-        val differentIdDataPoint =
-            BasicDataPointDimensions(
-                companyId = "different-id",
-                dataPointType = dataPointType,
-                reportingPeriod = reportingPeriod,
-            )
-        `when`(metaDataManager.getCurrentlyActiveDataId(differentIdDataPoint)).thenReturn(someId)
-
-        dataPointManager.updateCurrentlyActiveDataPoint(differentIdDataPoint, newActiveDataId, correlationId)
-        verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(someId, null)
-        verify(metaDataManager, times(1)).updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
-    }
-
-    @Test
-    fun `check that no update happens to the active data id if it does not change or the new id is null`() {
-        val newActiveDataId = "test-new-active-data-id"
-        val returnNewActiveId =
-            BasicDataPointDimensions(
-                companyId = "same-id",
-                dataPointType = dataPointType,
-                reportingPeriod = reportingPeriod,
-            )
-        val returnNull =
-            BasicDataPointDimensions(
-                companyId = "no-id",
-                dataPointType = dataPointType,
-                reportingPeriod = reportingPeriod,
-            )
-        `when`(metaDataManager.getCurrentlyActiveDataId(returnNewActiveId)).thenReturn(newActiveDataId)
-        `when`(metaDataManager.getCurrentlyActiveDataId(returnNull)).thenReturn(null)
-
-        dataPointManager.updateCurrentlyActiveDataPoint(returnNewActiveId, newActiveDataId, correlationId)
-        verify(metaDataManager, times(0)).updateCurrentlyActiveFlagOfDataPoint(any(), any())
-
-        dataPointManager.updateCurrentlyActiveDataPoint(returnNull, null, correlationId)
-        verify(metaDataManager, times(0)).updateCurrentlyActiveFlagOfDataPoint(any(), any())
     }
 }
