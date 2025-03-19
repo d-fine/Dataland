@@ -43,7 +43,7 @@ data class TemplateRow(
     @JsonProperty("Include Category in Type Name")
     var includeCategoryInTypeName: TemplateYesNo = TemplateYesNo.No,
     @JsonProperty("Include Sub-Category in Type Name")
-    var includeSubCategoryInTypeName: TemplateYesNo  = TemplateYesNo.No,
+    var includeSubCategoryInTypeName: TemplateYesNo = TemplateYesNo.No,
 ) {
     /**
      * Calculate the first 8 characters of the SHA2-256 checksum of this DataClasses toString representation
