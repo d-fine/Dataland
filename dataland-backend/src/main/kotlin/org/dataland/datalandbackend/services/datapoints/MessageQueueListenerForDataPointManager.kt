@@ -68,7 +68,7 @@ class MessageQueueListenerForDataPointManager
                             it.readMessagePayload<QaStatusChangeMessage>(objectMapper)
                         val correlationId = it.getCorrelationId()
                         logger.info(
-                            "Updating QA status for dataID ${qaStatusChangeMessage.dataId} to " +
+                            "Updating QA status for dataId ${qaStatusChangeMessage.dataId} to " +
                                 "${qaStatusChangeMessage.updatedQaStatus} (correlationId: $correlationId)",
                         )
                         Pair(qaStatusChangeMessage, correlationId)

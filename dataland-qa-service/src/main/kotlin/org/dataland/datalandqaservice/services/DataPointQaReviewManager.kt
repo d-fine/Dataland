@@ -44,7 +44,7 @@ class DataPointQaReviewManager
          * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
          * @param correlationId the ID for the process triggering the change
          */
-        data class ReviewDataPointRequest(
+        data class ReviewDataPointTask(
             val dataPointId: String,
             val qaStatus: QaStatus,
             val triggeringUserId: String,
@@ -57,8 +57,8 @@ class DataPointQaReviewManager
          * Review a list of data points and change their QA status
          */
         @Transactional
-        fun reviewDataPoints(requests: List<ReviewDataPointRequest>): List<DataPointQaReviewEntity> {
-            val reviewEntities = createDataPointReviewEntities(requests)
+        fun reviewDataPoints(tasks: List<ReviewDataPointTask>): List<DataPointQaReviewEntity> {
+            val reviewEntities = createDataPointReviewEntities(tasks)
             sendBulkDataPointQaStatusChangeMessages(reviewEntities)
             return reviewEntities.map { it.first }
         }
@@ -169,9 +169,9 @@ class DataPointQaReviewManager
                 assertQaServiceKnowsDataPointId(it)
             }
             val timestamp = Instant.now().toEpochMilli()
-            val allQaRequests =
+            val allQaTasks =
                 allDataIds.map {
-                    ReviewDataPointRequest(
+                    ReviewDataPointTask(
                         dataPointId = it,
                         qaStatus = qaStatus,
                         triggeringUserId = triggeringUserId,
@@ -180,20 +180,20 @@ class DataPointQaReviewManager
                         timestamp = timestamp,
                     )
                 }
-            val filteredRequests =
+            val filteredTasks =
                 if (overwriteDataPointQaStatus) {
-                    allQaRequests
+                    allQaTasks
                 } else {
                     val qaStatusOfAllDataIds =
                         dataPointQaReviewRepository
                             .findLatestWhereDataPointIdIn(allDataIds)
                             .associate { it.dataPointId to it.qaStatus }
-                    allQaRequests.filter {
+                    allQaTasks.filter {
                         it.dataPointId !in qaStatusOfAllDataIds ||
                             qaStatusOfAllDataIds[it.dataPointId] == QaStatus.Pending
                     }
                 }
-            reviewDataPoints(filteredRequests)
+            reviewDataPoints(filteredTasks)
         }
 
         /**
@@ -216,36 +216,36 @@ class DataPointQaReviewManager
         fun checkIfQaServiceKnowsDataPointId(dataPointId: String): Boolean =
             dataPointQaReviewRepository.findFirstByDataPointIdOrderByTimestampDesc(dataPointId) != null
 
-        private fun createDataPointReviewEntities(requests: List<ReviewDataPointRequest>): List<Pair<DataPointQaReviewEntity, String>> {
+        private fun createDataPointReviewEntities(tasks: List<ReviewDataPointTask>): List<Pair<DataPointQaReviewEntity, String>> {
             val anyExistingReviewEntity =
                 dataPointQaReviewRepository
-                    .findAllByDataPointIdIn(requests.map { it.dataPointId })
+                    .findAllByDataPointIdIn(tasks.map { it.dataPointId })
                     .associateBy { it.dataPointId }
             val createdEntries = mutableListOf<Pair<DataPointQaReviewEntity, String>>()
-            for (request in requests) {
-                val existingEntry = anyExistingReviewEntity[request.dataPointId]
+            for (task in tasks) {
+                val existingEntry = anyExistingReviewEntity[task.dataPointId]
                 requireNotNull(existingEntry) {
-                    "Data Point ID ${request.dataPointId} not found in QA database." +
+                    "Data Point ID ${task.dataPointId} not found in QA database." +
                         "This should be impossible as they are added based on the uploadDatapoint message."
                 }
                 logger.info(
-                    "Assigning quality status ${request.qaStatus} to data point with ID ${request.dataPointId}" +
-                        " (correlationID: ${request.correlationId})",
+                    "Assigning quality status ${task.qaStatus} to data point with ID ${task.dataPointId}" +
+                        " (correlationID: ${task.correlationId})",
                 )
 
                 val dataPointQaReviewEntity =
                     DataPointQaReviewEntity(
-                        dataPointId = request.dataPointId,
+                        dataPointId = task.dataPointId,
                         companyId = existingEntry.companyId,
                         companyName = existingEntry.companyName,
                         dataPointType = existingEntry.dataPointType,
                         reportingPeriod = existingEntry.reportingPeriod,
-                        timestamp = request.timestamp,
-                        qaStatus = request.qaStatus,
-                        triggeringUserId = request.triggeringUserId,
-                        comment = request.comment,
+                        timestamp = task.timestamp,
+                        qaStatus = task.qaStatus,
+                        triggeringUserId = task.triggeringUserId,
+                        comment = task.comment,
                     )
-                createdEntries.add(Pair(dataPointQaReviewEntity, request.correlationId))
+                createdEntries.add(Pair(dataPointQaReviewEntity, task.correlationId))
             }
             dataPointQaReviewRepository.saveAll(createdEntries.map { it.first })
             return createdEntries

@@ -6,7 +6,7 @@ import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointRequest
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointTask
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -137,8 +137,8 @@ class QaController(
             "Received request to change the QA status of the data point $dataPointId to $qaStatus " +
                 "from user $reviewerId (correlationId: $correlationId)",
         )
-        val qaRequest =
-            ReviewDataPointRequest(
+        val qaTask =
+            ReviewDataPointTask(
                 dataPointId = dataPointId,
                 qaStatus = qaStatus,
                 triggeringUserId = reviewerId,
@@ -146,7 +146,7 @@ class QaController(
                 correlationId = correlationId,
                 timestamp = Instant.now().toEpochMilli(),
             )
-        dataPointQaReviewManager.reviewDataPoints(listOf(qaRequest))
+        dataPointQaReviewManager.reviewDataPoints(listOf(qaTask))
     }
 
     override fun getDataPointQaReviewInformation(

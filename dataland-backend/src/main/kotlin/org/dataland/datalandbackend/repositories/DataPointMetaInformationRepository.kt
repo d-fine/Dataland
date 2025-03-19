@@ -25,7 +25,7 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
     ): String?
 
     /**
-     * Retrieve the ID of the currently active data point for the given data point dimension
+     * Retrieve all entities of active data points associated with the companyIds, dataPointTypes and reportingPeriods
      */
     @Query(
         "SELECT dataPointMetaInformation FROM DataPointMetaInformationEntity dataPointMetaInformation " +
