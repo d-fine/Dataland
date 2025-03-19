@@ -127,7 +127,7 @@ class QaControllerTest(
         for (mockDataId in listOf(dataId, originalActiveDataId)) {
             dataPointQaReviewManager.reviewDataPoints(
                 listOf(
-                    DataPointQaReviewManager.ReviewDataPointRequest(
+                    DataPointQaReviewManager.ReviewDataPointTask(
                         dataPointId = mockDataId,
                         qaStatus = QaStatus.Pending,
                         triggeringUserId = "some-user-id",

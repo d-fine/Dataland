@@ -230,10 +230,16 @@ class DataMigrationTest {
                 .getByCompanyName("Sfdr-dataset-with-no-null-fields")
                 .t
 
-        uploadGenericDummyDataset(firstDataset, DataTypeEnum.sfdr, companyId = companyId)
-        uploadGenericDummyDataset(secondDataset, DataTypeEnum.sfdr, companyId = companyId)
-        Backend.dataMigrationControllerApi.triggerMigrationForAllStoredDatasets()
-        Thread.sleep(30000)
+        val metaInfo1 = uploadGenericDummyDataset(firstDataset, DataTypeEnum.sfdr, companyId = companyId)
+        val metaInfo2 = uploadGenericDummyDataset(secondDataset, DataTypeEnum.sfdr, companyId = companyId)
+
+        Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(metaInfo1.dataId)
+        Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(metaInfo2.dataId)
+        val allDataPoints = Backend.metaDataControllerApi.getContainedDataPoints(metaInfo2.dataId)
+
+        ApiAwait.waitForCondition {
+            allDataPoints.all { Backend.dataPointControllerApi.getDataPointMetaInfo(it.value).currentlyActive }
+        }
 
         val downloadedData =
             Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrDataByDimensions(reportingPeriod = reportingPeriod, companyId = companyId)

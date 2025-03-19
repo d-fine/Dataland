@@ -31,7 +31,6 @@ class MessageQueueListenerForDataPointManager
     constructor(
         private val objectMapper: ObjectMapper,
         private val dataPointMetaInformationManager: DataPointMetaInformationManager,
-        private val dataPointManager: DataPointManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -68,7 +67,7 @@ class MessageQueueListenerForDataPointManager
                             it.readMessagePayload<QaStatusChangeMessage>(objectMapper)
                         val correlationId = it.getCorrelationId()
                         logger.info(
-                            "Updating QA status for dataID ${qaStatusChangeMessage.dataId} to " +
+                            "Updating QA status for dataId ${qaStatusChangeMessage.dataId} to " +
                                 "${qaStatusChangeMessage.updatedQaStatus} (correlationId: $correlationId)",
                         )
                         Pair(qaStatusChangeMessage, correlationId)
@@ -82,12 +81,22 @@ class MessageQueueListenerForDataPointManager
                     )
                 val lastMessagePerDataPointDimensions =
                     qaStatusChangedMessages.associateBy {
-                        dataPointDimensions[it.first.dataId]!!
+                        dataPointDimensions[it.first.dataId]
+                            ?: error(
+                                "Data point dimensions not found for dataId ${it.first.dataId}. " +
+                                    "This should be impossible.",
+                            )
                     }
 
-                for ((key, value) in lastMessagePerDataPointDimensions) {
-                    dataPointManager.updateCurrentlyActiveDataPoint(key, value.first.currentlyActiveDataId, value.second)
-                }
+                dataPointMetaInformationManager.updateCurrentlyActiveDataPointBulk(
+                    lastMessagePerDataPointDimensions.map {
+                        DataPointMetaInformationManager.UpdateCurrentlyActiveDataPointTask(
+                            dataPointDimensions = it.key,
+                            newActiveDataId = it.value.first.currentlyActiveDataId,
+                            correlationId = it.value.second,
+                        )
+                    },
+                )
             }
         }
     }

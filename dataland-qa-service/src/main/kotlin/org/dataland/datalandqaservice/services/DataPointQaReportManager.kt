@@ -11,7 +11,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
-import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointRequest
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointTask
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -105,7 +105,7 @@ class DataPointQaReportManager(
         if (mappedQaStatus != null) {
             dataPointQaReviewManager.reviewDataPoints(
                 listOf(
-                    ReviewDataPointRequest(
+                    ReviewDataPointTask(
                         dataPointId = dataPointId,
                         qaStatus = mappedQaStatus,
                         triggeringUserId = reporterUserId,
