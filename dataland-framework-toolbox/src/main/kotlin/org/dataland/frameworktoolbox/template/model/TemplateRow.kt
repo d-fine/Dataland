@@ -40,6 +40,10 @@ data class TemplateRow(
     var mandatoryField: TemplateYesNo,
     @JsonProperty("Data Point Type Name Overwrite")
     var dataPointTypeNameOverwrite: String? = null,
+    @JsonProperty("Include Category in Type Name")
+    var includeCategoryInTypeName: TemplateYesNo,
+    @JsonProperty("Include Sub-Category in Type Name")
+    var includeSubCategoryInTypeName: TemplateYesNo,
 ) {
     /**
      * Calculate the first 8 characters of the SHA2-256 checksum of this DataClasses toString representation

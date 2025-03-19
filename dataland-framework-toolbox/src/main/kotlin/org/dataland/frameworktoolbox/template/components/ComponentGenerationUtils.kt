@@ -33,6 +33,20 @@ open class ComponentGenerationUtils {
     open fun generateFieldIdentifierFromRow(row: TemplateRow): String = Naming.getNameFromLabel(row.fieldName)
 
     /**
+     * Generate a data point type name from a template row
+     */
+    open fun generateDataPointTypeNameFromRow(row: TemplateRow): String? {
+        var fieldName = row.dataPointTypeNameOverwrite ?: generateFieldIdentifierFromRow(row).capitalizeEn()
+        if (row.includeSubCategoryInTypeName == TemplateYesNo.Yes) {
+            fieldName = "${generateSubSectionIdentifierFromRow(row).capitalizeEn()}$fieldName"
+        }
+        if (row.includeCategoryInTypeName == TemplateYesNo.Yes) {
+            fieldName = "${generateSectionIdentifierFromRow(row).capitalizeEn()}$fieldName"
+        }
+        return fieldName
+    }
+
+    /**
      * Loads properties shared across components from the row into the component
      */
     open fun setCommonProperties(
@@ -40,7 +54,8 @@ open class ComponentGenerationUtils {
         component: ComponentBase,
     ) {
         component.label = row.fieldName
-        component.dataPointTypeName = row.dataPointTypeNameOverwrite
+        component.dataPointTypeName = generateDataPointTypeNameFromRow(row)
+
         component.uploadPageExplanation =
             if (row.combinedTooltip?.isNotBlank() == true) {
                 row.combinedTooltip

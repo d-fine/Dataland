@@ -46,11 +46,12 @@ class CategoryBuilder(
         component: ComponentBase,
         typeNameSuffix: String,
         dataPointBaseTypeId: String? = null,
+        dataPointTypeIdOverwrite: String? = null
     ): Pair<DataPointType, DatapointBuilder> {
-        val dataPointTypeId =
-            component.dataPointTypeName ?: SpecificationNamingConvention.generateDataPointTypeId(
+        val dataPointTypeId = dataPointTypeIdOverwrite ?:
+             SpecificationNamingConvention.generateDataPointTypeId(
                 component.documentSupport,
-                component.identifier,
+                 component.dataPointTypeName ?: component.identifier,
                 typeNameSuffix,
             )
         val specification =
