@@ -45,8 +45,6 @@ class SingleDataRequestManager
         @Autowired private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
-        val companyIdRegex = Regex("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\$")
-
         /**
          * Data structure holding the process request information
          */
@@ -114,9 +112,10 @@ class SingleDataRequestManager
             singleDataRequest: SingleDataRequest,
             userIdToUse: String,
         ): PreprocessedRequest {
-            val companyId = findDatalandCompanyIdForCompanyIdentifier(singleDataRequest.companyIdentifier)
-
             utils.throwExceptionIfNotJwtAuth()
+            val companyId = singleDataRequest.companyIdentifier
+            companyIdValidator.assertCompanyIdIsValid(companyId)
+
             validateSingleDataRequestContent(singleDataRequest)
             performQuotaCheckForNonPremiumUser(
                 userIdToUse,
@@ -258,21 +257,6 @@ class SingleDataRequestManager
                         "Without at least one valid email address being provided no message can be forwarded.",
                 )
             }
-        }
-
-        private fun findDatalandCompanyIdForCompanyIdentifier(companyIdentifier: String): String {
-            val datalandCompanyId: String? =
-                if (companyIdRegex.matches(companyIdentifier)) {
-                    companyIdValidator.checkIfCompanyIdIsValid(companyIdentifier)
-                    companyIdentifier
-                } else {
-                    utils.getDatalandCompanyIdAndNameForIdentifierValue(companyIdentifier)?.companyId
-                }
-
-            return datalandCompanyId ?: throw InvalidInputApiException(
-                "The specified company is unknown to Dataland.",
-                "The company with identifier: $companyIdentifier is unknown to Dataland.",
-            )
         }
 
         private fun sendSingleDataRequestEmailMessage(

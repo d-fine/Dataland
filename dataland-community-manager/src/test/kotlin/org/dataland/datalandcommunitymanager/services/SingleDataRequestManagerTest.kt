@@ -2,6 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
@@ -75,7 +76,7 @@ class SingleDataRequestManagerTest {
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
         mockSecurityUtilsService = mock(SecurityUtilsService::class.java)
         mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
-        doNothing().`when`(mockCompanyIdValidator).checkIfCompanyIdIsValid(anyString())
+        doNothing().`when`(mockCompanyIdValidator).assertCompanyIdIsValid(anyString())
         mockDataRequestRepository = createDataRequestRepositoryMock()
         mockAccessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
@@ -319,7 +320,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = DatalandAuthentication.fromContext().userId
 
-        assertThrows<NullPointerException> {
+        assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
 
@@ -332,7 +333,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = "impersonated-user-id"
 
-        assertThrows<NullPointerException> {
+        assertThrows<InvalidInputApiException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest, expectedUserIdToUse)
         }
 
