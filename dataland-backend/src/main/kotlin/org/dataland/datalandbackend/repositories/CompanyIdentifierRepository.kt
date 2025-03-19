@@ -22,4 +22,9 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
      * Auto-Generated function to delete all identifiers belonging to a company
      */
     fun deleteAllByCompany(company: StoredCompanyEntity)
+
+    /**
+     * Retrieve an entry based on the identifier value
+     */
+    fun getByIdentifierValueIs(identifierValue: String): CompanyIdentifierEntity?
 }
