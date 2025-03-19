@@ -24,27 +24,16 @@
     <@spacerRow/>
     <tr>
         <td colspan="3">
-            <#include "../general/display_request.ftl">
+            <#include "../general/data_request_information.ftl">
         </td>
     </tr>
     <@spacerRow/>
-    <tr>
-        <td colspan="3" style="font-weight: bold;">How to proceed?</td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <ol style="line-height: 25px;">
-                <li>Review the provided data.</li>
-                <li>Resolve or reopen your data request.</li>
-            </ol>
-        </td>
-    </tr>
+    <@howToProceedDataRequest/>
     <@spacerRowTiny/>
     <@buttonLink url="${baseUrl}/requests/${dataRequestId}" linkText="REVIEW YOUR DATA REQUEST" />
     <@spacerRow/>
     <tr>
-        <td colspan="3"> Without any actions,
-            your data request will be set to closed automatically
+        <td colspan="3"> Without any actions, your data request will be set to closed automatically
             in <b>${closedInDays} days</b>.
         </td>
     </tr>

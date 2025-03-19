@@ -30,7 +30,7 @@
     <@spacerRow/>
     <tr>
         <td colspan="3">
-            <#include "../general/display_request.ftl">
+            <#include "../general/data_request_information.ftl">
         </td>
     </tr>
     <@spacerRow/>
