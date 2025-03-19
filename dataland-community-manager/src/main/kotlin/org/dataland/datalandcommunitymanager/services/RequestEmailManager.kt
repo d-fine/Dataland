@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
+import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.DataRequestResponseEmailSender
@@ -29,33 +30,17 @@ class RequestEmailManager(
      * @param accessStatus the new access status of the request
      * @param correlationId the correlationId of the operation
      */
-    fun sendEmailsWhenStatusChanged(
+    fun sendEmailsWhenRequestStatusChanged(
         dataRequestEntity: DataRequestEntity,
         requestStatus: RequestStatus?,
-        accessStatus: AccessStatus?,
         correlationId: String?,
     ) {
         val correlationId = correlationId ?: UUID.randomUUID().toString()
         if (requestStatus == RequestStatus.Answered) {
             dataRequestResponseEmailMessageSender.sendDataRequestAnsweredEmail(dataRequestEntity, correlationId)
         }
-        if (requestStatus == RequestStatus.Closed) {
-            dataRequestResponseEmailMessageSender.sendDataRequestClosedEmail(dataRequestEntity, correlationId)
-        }
         if (requestStatus == RequestStatus.NonSourceable) {
             dataRequestResponseEmailMessageSender.sendDataRequestNonSourceableEmail(dataRequestEntity, correlationId)
-        }
-        if (accessStatus == AccessStatus.Granted) {
-            accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
-                AccessRequestEmailSender.GrantedEmailInformation(dataRequestEntity),
-                correlationId,
-            )
-        }
-        if (requestStatus == RequestStatus.Answered && accessStatus == AccessStatus.Pending) {
-            accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
-                AccessRequestEmailSender.RequestEmailInformation(dataRequestEntity),
-                correlationId,
-            )
         }
     }
 
@@ -97,5 +82,27 @@ class RequestEmailManager(
             dataRequestEntity,
             correlationId,
         )
+    }
+
+    /**
+     * Function to send relevant e-mail notifications on a patch event for an access request.
+     */
+    fun sendNotificationsForAccessRequests(
+        dataRequestEntity: DataRequestEntity,
+        dataRequestPatch: DataRequestPatch,
+        correlationId: String,
+    ) {
+        if (dataRequestPatch.accessStatus == AccessStatus.Granted) {
+            accessRequestEmailSender.notifyRequesterAboutGrantedRequest(
+                AccessRequestEmailSender.GrantedEmailInformation(dataRequestEntity),
+                correlationId,
+            )
+        }
+        if (dataRequestPatch.requestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) {
+            accessRequestEmailSender.notifyCompanyOwnerAboutNewRequest(
+                AccessRequestEmailSender.RequestEmailInformation(dataRequestEntity),
+                correlationId,
+            )
+        }
     }
 }

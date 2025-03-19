@@ -251,7 +251,7 @@ class DataRequestAlterationManagerTest {
             null,
         )
         verify(mockRequestEmailManager, times(1))
-            .sendEmailsWhenStatusChanged(
+            .sendEmailsWhenRequestStatusChanged(
                 any(), eq(RequestStatus.Answered), eq(null), eq(null),
             )
         dataRequestAlterationManager.patchDataRequest(
@@ -260,7 +260,7 @@ class DataRequestAlterationManagerTest {
             null,
         )
         verify(mockRequestEmailManager, times(1))
-            .sendEmailsWhenStatusChanged(
+            .sendEmailsWhenRequestStatusChanged(
                 any(), eq(RequestStatus.Closed), eq(null), eq(null),
             )
         verify(mockDataRequestProcessingUtils, times(2))
@@ -300,10 +300,10 @@ class DataRequestAlterationManagerTest {
         dataRequestAlterationManager.patchRequestStatusFromOpenOrNonSourceableToAnsweredByDataId(metaData.dataId, correlationId)
         dummyDataRequestEntities.forEach {
             verify(mockRequestEmailManager)
-                .sendEmailsWhenStatusChanged(eq(it), eq(RequestStatus.Answered), eq(null), anyString())
+                .sendEmailsWhenRequestStatusChanged(eq(it), eq(RequestStatus.Answered), eq(null), anyString())
         }
         verify(mockRequestEmailManager)
-            .sendEmailsWhenStatusChanged(
+            .sendEmailsWhenRequestStatusChanged(
                 eq(dummyChildCompanyDataRequestEntity),
                 eq(RequestStatus.Answered),
                 eq(null),

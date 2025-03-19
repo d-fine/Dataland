@@ -42,7 +42,7 @@ class RequestEmailManagerTest {
     fun `validate that a response email is only sent when a request status is patched to any but answered or closed`() {
         val dataRequestEntity = mock(DataRequestEntity::class.java)
         for (requestStatus in RequestStatus.entries) {
-            requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, requestStatus, null, null)
+            requestEmailManager.sendEmailsWhenRequestStatusChanged(dataRequestEntity, requestStatus, null, null)
 
             if (requestStatus == RequestStatus.Answered) {
                 verify(dataRequestResponseEmailMessageSender, times(1))
@@ -65,7 +65,7 @@ class RequestEmailManagerTest {
     fun `validate that a access granted email is only sent on granted`() {
         val dataRequestEntity = DataRequestEntity("", "", false, "", "", 0L)
         for (accessStatus in AccessStatus.entries) {
-            requestEmailManager.sendEmailsWhenStatusChanged(dataRequestEntity, null, accessStatus, null)
+            requestEmailManager.sendEmailsWhenRequestStatusChanged(dataRequestEntity, null, accessStatus, null)
 
             if (accessStatus == AccessStatus.Granted) {
                 verify(accessRequestEmailSender, times(1))
@@ -90,7 +90,7 @@ class RequestEmailManagerTest {
                     "Message", 0L, dataRequestEntity,
                 ),
             )
-        requestEmailManager.sendEmailsWhenStatusChanged(
+        requestEmailManager.sendEmailsWhenRequestStatusChanged(
             dataRequestEntity, RequestStatus.Answered, AccessStatus.Pending, null,
         )
 

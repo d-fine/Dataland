@@ -185,9 +185,23 @@ class DataRequestAlterationManager
 
             val dataRequestStatus = dataRequestEntity.getLatestRequestStatus()
 
-            if (dataRequestStatus != RequestStatus.Withdrawn) {
+            if (
+                (dataRequestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
+                (dataRequestPatch.accessStatus == AccessStatus.Granted)
+            ) {
+                requestEmailManager.sendNotificationsForAccessRequests(dataRequestEntity, dataRequestPatch, correlationId)
+            } else if (dataRequestStatus != RequestStatus.Withdrawn &&
+                (
+                    dataRequestPatch.requestStatus == RequestStatus.Answered ||
+                        dataRequestPatch.requestStatus == RequestStatus.NonSourceable
+                )
+            ) {
                 val immediateNotificationWasSent =
-                    sendImmediateNotificationOnStatusChangeIfApplicable(dataRequestEntity, dataRequestPatch, correlationId)
+                    sendImmediateNotificationOnRequestStatusChangeIfApplicable(
+                        dataRequestEntity,
+                        dataRequestPatch,
+                        correlationId,
+                    )
                 resetImmediateNotificationFlagIfApplicable(
                     dataRequestEntity,
                     dataRequestPatch,
@@ -217,13 +231,13 @@ class DataRequestAlterationManager
          * If applicable, send an immediate notification email corresponding to the status change to the user.
          * @returns whether an immediate notification was sent
          */
-        private fun sendImmediateNotificationOnStatusChangeIfApplicable(
+        private fun sendImmediateNotificationOnRequestStatusChangeIfApplicable(
             dataRequestEntity: DataRequestEntity,
             dataRequestPatch: DataRequestPatch,
             correlationId: String,
         ): Boolean {
             if (dataRequestEntity.emailOnUpdate) {
-                requestEmailManager.sendEmailsWhenStatusChanged(
+                requestEmailManager.sendEmailsWhenRequestStatusChanged(
                     dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.accessStatus, correlationId,
                 )
             }
@@ -249,19 +263,48 @@ class DataRequestAlterationManager
         }
 
         /**
-         * Create the suitable user-specific notification event in the "QA Status Accepted" pipeline.
+         * Create the suitable user-specific notification event in the "QA Status Accepted" and "Data Non-Sourceable" pipelines.
+         * Do note that this function is also called by the "patch data request" endpoint of MetaDataController, but it will
+         * only do something in the cases that are naturally covered by the pipelines.
          * @param dataRequestEntity represents the data request in question
          */
         private fun createUserSpecificNotificationEvent(
             dataRequestEntity: DataRequestEntity,
-            requestStatusAfter: RequestStatus?,
+            requestStatusAfter: RequestStatus? = null,
             immediateNotificationWasSent: Boolean,
             earlierQaApprovedVersionExists: Boolean = false,
         ) {
             val requestStatusBefore = dataRequestEntity.getLatestRequestStatus()
+
+            val requestStatusBeforeIsOpenOrNonSourceable =
+                requestStatusBefore == RequestStatus.Open || requestStatusBefore == RequestStatus.NonSourceable
+
+            if (requestStatusBeforeIsOpenOrNonSourceable && requestStatusAfter == RequestStatus.Answered) {
+                notificationEventRepository.save(
+                    NotificationEventEntity(
+                        notificationEventType =
+                            if (earlierQaApprovedVersionExists) {
+                                NotificationEventType.UpdatedEvent
+                            } else {
+                                NotificationEventType.AvailableEvent
+                            },
+                        userId = UUID.fromString(dataRequestEntity.userId),
+                        isProcessed = immediateNotificationWasSent,
+                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
+                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                        reportingPeriod = dataRequestEntity.reportingPeriod,
+                    ),
+                )
+            }
+
+            val requestStatusBeforeIsAnsweredOrClosedOrResolved =
+                requestStatusBefore == RequestStatus.Answered ||
+                    requestStatusBefore == RequestStatus.Closed ||
+                    requestStatusBefore == RequestStatus.Resolved
+
             if (
-                (requestStatusBefore == RequestStatus.Open || requestStatusBefore == RequestStatus.NonSourceable) &&
-                requestStatusAfter == RequestStatus.Answered
+                requestStatusBeforeIsAnsweredOrClosedOrResolved &&
+                (requestStatusAfter == requestStatusBefore || requestStatusAfter == null)
             ) {
                 notificationEventRepository.save(
                     NotificationEventEntity(
@@ -271,6 +314,19 @@ class DataRequestAlterationManager
                             } else {
                                 NotificationEventType.AvailableEvent
                             },
+                        userId = UUID.fromString(dataRequestEntity.userId),
+                        isProcessed = immediateNotificationWasSent,
+                        companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
+                        framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                        reportingPeriod = dataRequestEntity.reportingPeriod,
+                    ),
+                )
+            }
+
+            if (requestStatusBefore == RequestStatus.Open && requestStatusAfter == RequestStatus.NonSourceable) {
+                notificationEventRepository.save(
+                    NotificationEventEntity(
+                        notificationEventType = NotificationEventType.NonSourceableEvent,
                         userId = UUID.fromString(dataRequestEntity.userId),
                         isProcessed = immediateNotificationWasSent,
                         companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
@@ -444,28 +500,21 @@ class DataRequestAlterationManager
                         it,
                         correlationId,
                     )
-                    notificationEventRepository.save(
-                        NotificationEventEntity(
-                            notificationEventType = NotificationEventType.UpdatedEvent,
-                            userId = UUID.fromString(it.userId),
-                            isProcessed = true,
-                            companyId = UUID.fromString(it.datalandCompanyId),
-                            framework = DataTypeEnum.decode(it.dataType)!!,
-                            reportingPeriod = it.reportingPeriod,
-                        ),
-                    )
-                } else {
-                    notificationEventRepository.save(
-                        NotificationEventEntity(
-                            notificationEventType = NotificationEventType.UpdatedEvent,
-                            userId = UUID.fromString(it.userId),
-                            isProcessed = false,
-                            companyId = UUID.fromString(it.datalandCompanyId),
-                            framework = DataTypeEnum.decode(it.dataType)!!,
-                            reportingPeriod = it.reportingPeriod,
-                        ),
-                    )
                 }
+                val earlierQaApprovedVersionExists =
+                    metaDataControllerApi
+                        .getListOfDataMetaInfo(
+                            companyId = it.datalandCompanyId,
+                            dataType = DataTypeEnum.decode(it.dataType),
+                            reportingPeriod = it.reportingPeriod,
+                            showOnlyActive = true,
+                            qaStatus = QaStatus.Accepted,
+                        ).isNotEmpty()
+                createUserSpecificNotificationEvent(
+                    dataRequestEntity = it,
+                    immediateNotificationWasSent = it.emailOnUpdate,
+                    earlierQaApprovedVersionExists = earlierQaApprovedVersionExists,
+                )
             }
         }
     }
