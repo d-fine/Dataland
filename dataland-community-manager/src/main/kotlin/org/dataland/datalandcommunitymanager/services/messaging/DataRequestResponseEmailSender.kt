@@ -147,11 +147,11 @@ class DataRequestResponseEmailSender(
      * has been a QA approval for a dataset with regard to the same company, reporting period and
      * framework.
      */
-    fun sendEmailToUserWithAnsweredOrClosedOrResolvedRequest(
+    fun sendDataUpdatedEmail(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        val message = buildEmailMessageForUserWithAnsweredOrClosedOrResolvedRequest(dataRequestEntity)
+        val message = buildDataUpdatedEmailMessage(dataRequestEntity)
         cloudEventMessageHandler.buildCEMessageAndSendToQueue(
             body = objectMapper.writeValueAsString(message),
             type = MessageType.SEND_EMAIL,
@@ -165,7 +165,7 @@ class DataRequestResponseEmailSender(
      * Function to build the EmailMessage object corresponding to the e-mail sent to
      * a user with a closed request after a relevant QA status update event happened.
      */
-    fun buildEmailMessageForUserWithAnsweredOrClosedOrResolvedRequest(dataRequestEntity: DataRequestEntity): EmailMessage {
+    fun buildDataUpdatedEmailMessage(dataRequestEntity: DataRequestEntity): EmailMessage {
         val dataRequestUpdatedMail =
             DataRequestUpdated(
                 companyName = getCompanyNameById(dataRequestEntity.datalandCompanyId),

@@ -86,15 +86,14 @@ class RequestEmailManager(
     }
 
     /**
-     * Function to send an e-mail notification to a user with a closed data request that there
-     * has been a QA approval for a dataset with regard to the same company, reporting period and
-     * framework.
+     * Function to send an e-mail notification to a user with an answered, closed or resolved data request that there
+     * has been a QA approval for a dataset with regard to the same company, reporting period and framework.
      */
-    fun sendEmailToUserWithAnsweredOrClosedOrResolvedRequest(
+    fun sendDataUpdatedEmail(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        dataRequestResponseEmailMessageSender.sendEmailToUserWithAnsweredOrClosedOrResolvedRequest(
+        dataRequestResponseEmailMessageSender.sendDataUpdatedEmail(
             dataRequestEntity,
             correlationId,
         )
