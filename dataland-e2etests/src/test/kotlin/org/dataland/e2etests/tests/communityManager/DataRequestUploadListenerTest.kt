@@ -25,7 +25,7 @@ import org.dataland.e2etests.utils.communityManager.getUsersStoredRequestWithLat
 import org.dataland.e2etests.utils.communityManager.patchDataRequestAndAssertNewStatusAndLastModifiedUpdated
 import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll

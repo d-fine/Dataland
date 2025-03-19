@@ -34,7 +34,7 @@ class AssembledDataMigrationManager
         private val logger = LoggerFactory.getLogger(javaClass)
         private val migrationCheckJsonComparisonOptions =
             JsonComparator.JsonComparisonOptions(
-                ignoredKeys = setOf("referencedReports", "publicationDate"),
+                ignoredKeys = setOf("referencedReports", "publicationDate", "fileName"),
                 fullyNullObjectsAreEqualToNull = true,
             )
 

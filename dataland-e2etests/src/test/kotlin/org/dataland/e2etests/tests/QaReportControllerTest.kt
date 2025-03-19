@@ -11,8 +11,8 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.QaApiAccessor
 import org.dataland.e2etests.utils.UploadConfiguration
 import org.dataland.e2etests.utils.UploadInfo
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
-import org.dataland.e2etests.utils.testDataProvivders.QaReportTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.QaReportTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test

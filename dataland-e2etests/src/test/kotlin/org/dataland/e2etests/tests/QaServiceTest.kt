@@ -12,7 +12,7 @@ import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
-import org.dataland.e2etests.utils.testDataProvivders.GeneralTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
