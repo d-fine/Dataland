@@ -45,6 +45,7 @@ export default defineComponent({
   props: {
     label: String,
     suffix: String,
+    page: { type: Number, required: false },
     downloadName: { type: String, required: true },
     fileReference: { type: String, required: true },
     dataId: String,
@@ -130,11 +131,12 @@ export default defineComponent({
         .then((getDocumentsFromStorageResponse) => {
           downloadCompleted = true;
           this.percentCompleted = 100;
-          const fileExtension = getFileExtensionFromHeaders(getDocumentsFromStorageResponse.headers);
           const mimeType = getMimeTypeFromHeaders(getDocumentsFromStorageResponse.headers);
           const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
           docUrl.href = URL.createObjectURL(newBlob);
-          docUrl.setAttribute('download', `${this.downloadName}.${fileExtension}`);
+          docUrl.target = '_blank';
+          if (this.page) docUrl.href += `#page=${this.page}`;
+          console.log(URL.createObjectURL(newBlob));
           document.body.appendChild(docUrl);
           docUrl.click();
         });
