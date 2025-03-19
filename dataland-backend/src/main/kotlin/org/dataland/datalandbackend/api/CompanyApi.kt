@@ -450,6 +450,7 @@ interface CompanyApi {
         value = ["/validation"],
         produces = ["application/json"],
     )
+    @PreAuthorize("hasRole('ROLE_USER')")
     fun postCompanyValidation(
         @Valid @RequestBody
         identifiers: List<String>,

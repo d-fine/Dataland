@@ -272,4 +272,28 @@ class CompanyManagerTest
             }
             assertEquals(expectedResults, testCompanyQueryManager.validateCompanyIdentifiers(testData))
         }
+
+        @Test
+        fun `verify that duplicate identifiers lead to only entry in the validation results`() {
+            val expectedResults = mutableListOf<CompanyIdentifierValidationResult>()
+            val testData = mutableListOf<String>()
+            val testCompany = testCompanyList.first()
+            val identifier =
+                testCompany.identifiers.values
+                    .first { values -> values.isNotEmpty() }
+                    .first()
+            testData.addAll(listOf(identifier, identifier))
+            expectedResults.add(
+                CompanyIdentifierValidationResult(
+                    identifier = identifier,
+                    companyId =
+                        testCompanyQueryManager
+                            .searchCompaniesByNameOrIdentifierAndGetApiModel(identifier, 1)
+                            .first()
+                            .companyId,
+                    companyName = testCompany.companyName,
+                ),
+            )
+            assertEquals(expectedResults, testCompanyQueryManager.validateCompanyIdentifiers(testData))
+        }
     }
