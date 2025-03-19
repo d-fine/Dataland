@@ -116,7 +116,6 @@ class SingleDataRequestManagerServiceTest(
             SingleDataRequestManager(
                 dataRequestLogger = dataRequestLogger,
                 dataRequestRepository = dataRequestRepository,
-                companyIdValidator = mockCompanyIdValidator,
                 singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
                 utils = spyDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,

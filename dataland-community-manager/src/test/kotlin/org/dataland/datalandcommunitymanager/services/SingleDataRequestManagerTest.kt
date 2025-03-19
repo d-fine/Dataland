@@ -2,7 +2,6 @@ package org.dataland.datalandcommunitymanager.services
 
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.CompanyRoleAssignmentEntity
@@ -14,7 +13,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.TestUtils
@@ -26,10 +24,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
@@ -42,6 +38,7 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
+import org.mockito.ArgumentMatchers.anyList
 
 class SingleDataRequestManagerTest {
     private lateinit var singleDataRequestManager: SingleDataRequestManager
@@ -50,7 +47,6 @@ class SingleDataRequestManagerTest {
     private lateinit var mockAuthentication: DatalandJwtAuthentication
     private lateinit var mockDataRequestProcessingUtils: DataRequestProcessingUtils
     private lateinit var mockSecurityUtilsService: SecurityUtilsService
-    private lateinit var mockCompanyIdValidator: CompanyIdValidator
     private lateinit var mockAccessRequestEmailSender: AccessRequestEmailSender
     private lateinit var mockCompanyRolesManager: CompanyRolesManager
     private lateinit var mockDataAccessManager: DataAccessManager
@@ -75,8 +71,6 @@ class SingleDataRequestManagerTest {
         mockSingleDataRequestEmailMessageSender = mock(SingleDataRequestEmailMessageSender::class.java)
         mockDataRequestProcessingUtils = createDataRequestProcessingUtilsMock()
         mockSecurityUtilsService = mock(SecurityUtilsService::class.java)
-        mockCompanyIdValidator = mock(CompanyIdValidator::class.java)
-        doNothing().`when`(mockCompanyIdValidator).assertCompanyIdIsValid(anyString())
         mockDataRequestRepository = createDataRequestRepositoryMock()
         mockAccessRequestEmailSender = mock(AccessRequestEmailSender::class.java)
         mockCompanyRolesManager = mock(CompanyRolesManager::class.java)
@@ -86,7 +80,6 @@ class SingleDataRequestManagerTest {
             SingleDataRequestManager(
                 dataRequestLogger = mock(DataRequestLogger::class.java),
                 dataRequestRepository = mockDataRequestRepository,
-                companyIdValidator = mockCompanyIdValidator,
                 singleDataRequestEmailMessageSender = mockSingleDataRequestEmailMessageSender,
                 utils = mockDataRequestProcessingUtils,
                 dataAccessManager = mockDataAccessManager,
@@ -152,8 +145,8 @@ class SingleDataRequestManagerTest {
                 adminComment = "dummyAdminComment",
             )
         }
-        `when`(utilsMock.getDatalandCompanyIdAndNameForIdentifierValue(anyString(), anyBoolean())).thenReturn(
-            dummyCompanyIdAndName,
+        `when`(utilsMock.performIdentifierValidation(anyList())).thenReturn(
+            Pair(mapOf(companyIdRegexSafeCompanyId to dummyCompanyIdAndName), emptyList()),
         )
         return utilsMock
     }
@@ -320,7 +313,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = DatalandAuthentication.fromContext().userId
 
-        assertThrows<InvalidInputApiException> {
+        assertThrows<NoSuchElementException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest)
         }
 
@@ -333,7 +326,7 @@ class SingleDataRequestManagerTest {
         val mockSingleDataRequest = mock(SingleDataRequest::class.java)
         val expectedUserIdToUse = "impersonated-user-id"
 
-        assertThrows<InvalidInputApiException> {
+        assertThrows<NoSuchElementException> {
             spySingleDataRequestManager.processSingleDataRequest(mockSingleDataRequest, expectedUserIdToUse)
         }
 

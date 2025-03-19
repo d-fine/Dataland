@@ -10,7 +10,6 @@ import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
 import org.dataland.datalandcommunitymanager.services.messaging.AccessRequestEmailSender
 import org.dataland.datalandcommunitymanager.services.messaging.SingleDataRequestEmailMessageSender
-import org.dataland.datalandcommunitymanager.utils.CompanyIdValidator
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.ReportingPeriodKeys
@@ -32,17 +31,17 @@ import java.util.UUID
 @Service("SingleDataRequestManager")
 class SingleDataRequestManager
     @Suppress("LongParameterList")
+    @Autowired
     constructor(
-        @Autowired private val dataRequestLogger: DataRequestLogger,
-        @Autowired private val dataRequestRepository: DataRequestRepository,
-        @Autowired private val companyIdValidator: CompanyIdValidator,
-        @Autowired private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
-        @Autowired private val utils: DataRequestProcessingUtils,
-        @Autowired private val dataAccessManager: DataAccessManager,
-        @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
-        @Autowired private val securityUtilsService: SecurityUtilsService,
-        @Autowired private val companyRolesManager: CompanyRolesManager,
-        @Autowired private val keycloakUserService: KeycloakUserService,
+        private val dataRequestLogger: DataRequestLogger,
+        private val dataRequestRepository: DataRequestRepository,
+        private val singleDataRequestEmailMessageSender: SingleDataRequestEmailMessageSender,
+        private val utils: DataRequestProcessingUtils,
+        private val dataAccessManager: DataAccessManager,
+        private val accessRequestEmailSender: AccessRequestEmailSender,
+        private val securityUtilsService: SecurityUtilsService,
+        private val companyRolesManager: CompanyRolesManager,
+        private val keycloakUserService: KeycloakUserService,
         @Value("\${dataland.community-manager.max-number-of-data-requests-per-day-for-role-user}") val maxRequestsForUser: Int,
     ) {
         /**
@@ -113,8 +112,16 @@ class SingleDataRequestManager
             userIdToUse: String,
         ): PreprocessedRequest {
             utils.throwExceptionIfNotJwtAuth()
-            val companyId = singleDataRequest.companyIdentifier
-            companyIdValidator.assertCompanyIdIsValid(companyId)
+
+            val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
+                utils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
+            if (rejectedIdentifiers.isNotEmpty()) {
+                throw InvalidInputApiException(
+                    "The company identifier is unknown.",
+                    "No company is associated to the identifier ${rejectedIdentifiers.first()}.",
+                )
+            }
+            val companyId = acceptedIdentifiersToCompanyIdAndName.getValue(singleDataRequest.companyIdentifier).companyId
 
             validateSingleDataRequestContent(singleDataRequest)
             performQuotaCheckForNonPremiumUser(

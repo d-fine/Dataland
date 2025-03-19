@@ -41,18 +41,9 @@ class BulkDataRequestManager(
         assureValidityOfRequests(bulkDataRequest)
         val correlationId = UUID.randomUUID().toString()
         dataRequestLogger.logMessageForBulkDataRequest(correlationId)
-        val rejectedIdentifiers = mutableListOf<String>()
-        val acceptedIdentifiersToCompanyIdAndName = mutableMapOf<String, CompanyIdAndName>()
 
-        for (userProvidedIdentifier in bulkDataRequest.companyIdentifiers) {
-            val datalandCompanyIdAndName =
-                utils.getDatalandCompanyIdAndNameForIdentifierValue(userProvidedIdentifier, returnOnlyUnique = true)
-            if (datalandCompanyIdAndName == null) {
-                rejectedIdentifiers.add(userProvidedIdentifier)
-                continue
-            }
-            acceptedIdentifiersToCompanyIdAndName[userProvidedIdentifier] = datalandCompanyIdAndName
-        }
+        val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
+            utils.performIdentifierValidation(bulkDataRequest.companyIdentifiers.toList())
 
         val validRequestCombinations =
             getValidRequestCombinations(bulkDataRequest, acceptedIdentifiersToCompanyIdAndName)

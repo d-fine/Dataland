@@ -2,13 +2,9 @@ package org.dataland.datalandcommunitymanager.utils
 
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
-import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.AuthenticationMethodNotSupportedException
-import org.dataland.datalandbackendutils.exceptions.ExceptionForwarder
-import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.entities.RequestStatusEntity
@@ -39,7 +35,6 @@ class DataRequestProcessingUtils
         private val dataRequestLogger: DataRequestLogger,
         private val companyApi: CompanyDataControllerApi,
         private val metaDataApi: MetaDataControllerApi,
-        private val exceptionForwarder: ExceptionForwarder,
     ) {
         /**
          * We want to avoid users from using other authentication methods than jwt-authentication, such as
@@ -52,45 +47,23 @@ class DataRequestProcessingUtils
         }
 
         /**
-         * Returns the ID of the company corresponding to a provided identifier value, else null if none is found
-         * @param identifierValue the identifier value
-         * @param returnOnlyUnique boolean if only unique matches should be returned (null if not unique) or if an
-         * exception will be thrown (default)
-         * @return the company ID or null
+         * Validates provided company identifiers by querring the backend.
+         * @param identifiers the identifiers to validate
+         * @return a pair of a map of valid identifiers to company ID and name and a list of invalid identifiers
          */
-        fun getDatalandCompanyIdAndNameForIdentifierValue(
-            identifierValue: String,
-            returnOnlyUnique: Boolean = false,
-        ): CompanyIdAndName? {
-            val matchingCompanyIdsAndNamesOnDataland =
-                try {
-                    companyApi.getCompaniesBySearchString(identifierValue)
-                } catch (clientException: ClientException) {
-                    val responseBody = (clientException.response as ClientError<*>).body.toString()
-                    exceptionForwarder.catchSearchStringTooShortClientException(
-                        responseBody,
-                        clientException.statusCode,
-                        clientException,
+        fun performIdentifierValidation(identifiers: List<String>): Pair<Map<String, CompanyIdAndName>, List<String>> {
+            val validationResults = companyApi.postCompanyValidation(identifiers)
+            val validIdentifiers = mutableMapOf<String, CompanyIdAndName>()
+            val invalidIdentifiers = validationResults.filter { it.companyId.isNullOrEmpty() }.map { it.identifier }
+            validationResults.filter { it.companyId != null }.forEach {
+                validIdentifiers[it.identifier] =
+                    CompanyIdAndName(
+                        companyName = it.companyName ?: "",
+                        companyId = it.companyId ?: "",
                     )
-                    throw clientException
-                }
-            val datalandCompanyIdAndName =
-                if (matchingCompanyIdsAndNamesOnDataland.size == 1) {
-                    matchingCompanyIdsAndNamesOnDataland.first()
-                } else if (matchingCompanyIdsAndNamesOnDataland.size > 1 && !returnOnlyUnique) {
-                    throw InvalidInputApiException(
-                        summary = "No unique identifier. Multiple companies could be found.",
-                        message = "Multiple companies have been found for the identifier you specified.",
-                    )
-                } else {
-                    null
-                }
-            dataRequestLogger
-                .logMessageWhenCrossReferencingIdentifierValueWithDatalandCompanyId(
-                    identifierValue,
-                    datalandCompanyIdAndName?.companyId,
-                )
-            return datalandCompanyIdAndName
+            }
+
+            return Pair(validIdentifiers, invalidIdentifiers)
         }
 
         /**
