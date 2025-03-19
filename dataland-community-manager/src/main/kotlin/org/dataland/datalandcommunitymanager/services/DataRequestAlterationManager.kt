@@ -155,7 +155,6 @@ class DataRequestAlterationManager
          * Method to patch a data request
          * @param dataRequestId the id of the data request to patch
          * @param dataRequestPatch the patch object containing information about the required changes
-         * @param adminComment the admin comment of the data request
          *
          * @return the updated data request object
          */
@@ -187,10 +186,12 @@ class DataRequestAlterationManager
 
             if (
                 (dataRequestStatus == RequestStatus.Answered && dataRequestPatch.accessStatus == AccessStatus.Pending) ||
-                (dataRequestPatch.accessStatus == AccessStatus.Granted)
+                dataRequestPatch.accessStatus == AccessStatus.Granted
             ) {
                 requestEmailManager.sendNotificationsForAccessRequests(dataRequestEntity, dataRequestPatch, correlationId)
-            } else if (dataRequestStatus != RequestStatus.Withdrawn &&
+            }
+
+            if (dataRequestStatus != RequestStatus.Withdrawn &&
                 (
                     dataRequestPatch.requestStatus == RequestStatus.Answered ||
                         dataRequestPatch.requestStatus == RequestStatus.NonSourceable

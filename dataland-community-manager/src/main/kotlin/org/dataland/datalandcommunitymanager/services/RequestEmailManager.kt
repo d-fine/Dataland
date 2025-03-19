@@ -24,10 +24,9 @@ class RequestEmailManager(
     @Autowired private val accessRequestEmailSender: AccessRequestEmailSender,
 ) {
     /**
-     * Method to send email when the request status or access status changes
+     * Method to send email when the request status changes
      * @param dataRequestEntity the request entity
      * @param requestStatus the new request status of the request
-     * @param accessStatus the new access status of the request
      * @param correlationId the correlationId of the operation
      */
     fun sendEmailsWhenRequestStatusChanged(
