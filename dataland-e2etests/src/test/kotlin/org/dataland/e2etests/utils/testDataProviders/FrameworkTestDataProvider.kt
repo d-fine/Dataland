@@ -1,4 +1,4 @@
-package org.dataland.e2etests.utils.testDataProvivders
+package org.dataland.e2etests.utils.testDataProviders
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -66,10 +66,10 @@ class FrameworkTestDataProvider<T>(
             )
 
         fun <T> forFrameworkFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
-            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.fakeFixtureFile)
+            FrameworkTestDataProvider(clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException()).fakeFixtureFile)
 
         fun <T> forFrameworkPreparedFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
-            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.preparedFixtureFile)
+            FrameworkTestDataProvider(clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException()).preparedFixtureFile)
     }
 
     private val moshi: Moshi =

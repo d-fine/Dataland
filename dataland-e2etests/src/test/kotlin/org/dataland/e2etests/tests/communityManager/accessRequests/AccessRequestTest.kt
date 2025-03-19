@@ -19,7 +19,7 @@ import org.dataland.e2etests.utils.VsmeTestUtils
 import org.dataland.e2etests.utils.communityManager.assertAccessDeniedResponseBodyInCommunityManagerClientException
 import org.dataland.e2etests.utils.communityManager.getNewlyStoredRequestsAfterTimestamp
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
