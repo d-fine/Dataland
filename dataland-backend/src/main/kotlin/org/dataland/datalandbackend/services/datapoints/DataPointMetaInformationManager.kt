@@ -63,9 +63,9 @@ class DataPointMetaInformationManager
             dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds).associate {
                 it.dataPointId to
                     BasicDataPointDimensions(
-                        it.reportingPeriod,
-                        it.companyId,
-                        it.dataPointType,
+                        reportingPeriod = it.reportingPeriod,
+                        companyId = it.companyId,
+                        dataPointType = it.dataPointType,
                     )
             }
 

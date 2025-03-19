@@ -37,7 +37,7 @@ interface DataPointMetaInformationRepository : JpaRepository<DataPointMetaInform
     fun getBulkActiveDataPoints(
         @Param("companyIds") companyIds: List<String>,
         @Param("dataPointTypes") dataPointTypes: List<String>,
-        @Param("reportingPeriod") reportingPeriods: List<String>,
+        @Param("reportingPeriods") reportingPeriods: List<String>,
     ): List<DataPointMetaInformationEntity>
 
     /**

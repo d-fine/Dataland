@@ -31,7 +31,6 @@ class MessageQueueListenerForDataPointManager
     constructor(
         private val objectMapper: ObjectMapper,
         private val dataPointMetaInformationManager: DataPointMetaInformationManager,
-        private val dataPointManager: DataPointManager,
     ) {
         private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -85,9 +84,15 @@ class MessageQueueListenerForDataPointManager
                         dataPointDimensions[it.first.dataId]!!
                     }
 
-                for ((key, value) in lastMessagePerDataPointDimensions) {
-                    dataPointManager.updateCurrentlyActiveDataPoint(key, value.first.currentlyActiveDataId, value.second)
-                }
+                dataPointMetaInformationManager.updateCurrentlyActiveDataPointBulk(
+                    lastMessagePerDataPointDimensions.map {
+                        DataPointMetaInformationManager.UpdateCurrentlyActiveDataPointTask(
+                            dataPointDimensions = it.key,
+                            newActiveDataId = it.value.first.currentlyActiveDataId,
+                            correlationId = it.value.second,
+                        )
+                    },
+                )
             }
         }
     }
