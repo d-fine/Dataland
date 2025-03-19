@@ -82,7 +82,7 @@ export function getMountingFunction(additionalOptions: DatalandMountOptions = {}
     if (additionalOptions.keycloak) {
       options.global.provide.apiClientProvider = new ApiClientProvider(Promise.resolve(options.keycloak));
       options.global.provide.getKeycloakPromise = (): Promise<Keycloak> => {
-        return Promise.resolve(additionalOptions.keycloak as Keycloak);
+        return Promise.resolve(additionalOptions.keycloak!);
       };
       options.global.provide.authenticated = additionalOptions.keycloak.authenticated;
     }

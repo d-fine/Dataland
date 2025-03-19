@@ -102,7 +102,7 @@ class Sfdr {
         val companyInformation =
             FrameworkTestDataProvider.forFrameworkPreparedFixtures(SfdrData::class.java).getByCompanyName(companyName)
 
-        val dataset = companyInformation!!.t
+        val dataset = companyInformation.t
 
         val uploadPair = Pair(dataset, "2022")
 

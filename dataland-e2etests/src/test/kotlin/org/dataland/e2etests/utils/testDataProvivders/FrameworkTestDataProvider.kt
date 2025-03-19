@@ -16,6 +16,8 @@ import org.dataland.datalandbackend.openApiClient.model.VsmeData
 import java.io.File
 import java.util.UUID
 
+const val NO_SUCH_DATA_MESSAGE = "Test data does not exist for given class!"
+
 class FrameworkTestDataProvider<T>(
     private val clazz: Class<T>,
     private val dataFile: File,
@@ -66,10 +68,14 @@ class FrameworkTestDataProvider<T>(
             )
 
         fun <T> forFrameworkFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
-            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.fakeFixtureFile)
+            FrameworkTestDataProvider(
+                clazz, jsonFilesForTesting[clazz]?.fakeFixtureFile ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE),
+            )
 
         fun <T> forFrameworkPreparedFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
-            FrameworkTestDataProvider(clazz, jsonFilesForTesting[clazz]!!.preparedFixtureFile)
+            FrameworkTestDataProvider(
+                clazz, jsonFilesForTesting[clazz]?.preparedFixtureFile ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE),
+            )
     }
 
     private val moshi: Moshi =
