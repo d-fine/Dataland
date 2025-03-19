@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.email
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.services.NotificationService
 import org.dataland.datalandcommunitymanager.services.messaging.NotificationEmailSender
 import org.dataland.datalandcommunitymanager.utils.readableFrameworkNameMapping
@@ -60,7 +60,7 @@ class NotificationEmailSenderTest {
         reportingPeriod: String,
     ): ElementaryEventEntity =
         ElementaryEventEntity(
-            elementaryEventType = ElementaryEventType.UploadEvent,
+            elementaryEventType = NotificationEventType.UploadEvent,
             companyId = companyId, framework = dataType,
             reportingPeriod = reportingPeriod, creationTimestamp = Instant.now().toEpochMilli(),
             notificationEvent = null,

@@ -8,9 +8,9 @@ import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
 import org.dataland.datalandcommunitymanager.services.messaging.NotificationEmailSender
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -62,7 +62,7 @@ class NotificationServiceTest {
         assertAssumptionsForTests()
 
         val notificationEventRepository = mock(NotificationEventRepository::class.java)
-        val elementaryEventRepository = mock(ElementaryEventRepository::class.java)
+        val uploadEventRepository = mock(UploadEventRepository::class.java)
         val companyRolesManager = mock(CompanyRolesManager::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
         val companyDataControllerApiMock = mock(CompanyDataControllerApi::class.java)
@@ -71,7 +71,7 @@ class NotificationServiceTest {
         notificationService =
             NotificationService(
                 notificationEventRepository,
-                elementaryEventRepository,
+                uploadEventRepository,
                 companyDataControllerApiMock,
                 notificationEmailSender,
                 companyRolesManager,
@@ -101,7 +101,7 @@ class NotificationServiceTest {
         reportingPeriod: String = testReportingPeriod,
     ): ElementaryEventEntity =
         ElementaryEventEntity(
-            elementaryEventType = ElementaryEventType.UploadEvent,
+            elementaryEventType = NotificationEventType.UploadEvent,
             companyId = testCompanyId,
             framework = framework,
             reportingPeriod = reportingPeriod,
@@ -113,14 +113,14 @@ class NotificationServiceTest {
     private fun createNotificationEventEntityForDataUploads(creationTimeInDaysBeforeNow: Long): NotificationEventEntity =
         NotificationEventEntity(
             companyId = testCompanyId,
-            elementaryEventType = ElementaryEventType.UploadEvent,
+            elementaryEventType = NotificationEventType.UploadEvent,
             creationTimestamp = Instant.now().minus(creationTimeInDaysBeforeNow, ChronoUnit.DAYS).toEpochMilli(),
         )
 
     private fun setTheReturnValueForNotificationEventRepoQuery(notificationEventEntitiesToReturn: List<NotificationEventEntity>) {
         `when`(
             notificationService.notificationEventRepository
-                .findNotificationEventByCompanyIdAndElementaryEventType(testCompanyId, ElementaryEventType.UploadEvent),
+                .findNotificationEventByCompanyIdAndElementaryEventType(testCompanyId, NotificationEventType.UploadEvent),
         ).thenReturn(
             notificationEventEntitiesToReturn,
         )
@@ -200,7 +200,7 @@ class NotificationServiceTest {
         setTheReturnValueForNotificationEventRepoQuery(notificationEvents)
 
         val lastNotificationEvent =
-            notificationService.getLastNotificationEventOrNull(testCompanyId, ElementaryEventType.UploadEvent)
+            notificationService.getLastNotificationEventOrNull(testCompanyId, NotificationEventType.UploadEvent)
 
         assertEquals(expectedLastNotificationEvent, lastNotificationEvent)
     }
@@ -241,12 +241,12 @@ class NotificationServiceTest {
                 storedNotificationEventEntity = invocation.getArgument(0)
 
                 assertEquals(testCompanyId, storedNotificationEventEntity.companyId)
-                assertEquals(ElementaryEventType.UploadEvent, storedNotificationEventEntity.elementaryEventType)
+                assertEquals(NotificationEventType.UploadEvent, storedNotificationEventEntity.elementaryEventType)
 
                 storedNotificationEventEntity
             }
 
-        `when`(notificationService.elementaryEventRepository.saveAndFlush(any(ElementaryEventEntity::class.java)))
+        `when`(notificationService.uploadEventRepository.saveAndFlush(any(ElementaryEventEntity::class.java)))
             .thenAnswer { invocation ->
                 val elementaryEventEntityToStore = invocation.getArgument<ElementaryEventEntity>(0)
 

@@ -6,7 +6,7 @@ import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
+import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
@@ -27,7 +27,7 @@ class PublicDataUploadProcessorTest {
 
     private val objectMapper = jacksonObjectMapper()
 
-    private lateinit var elementaryEventRepositoryMock: ElementaryEventRepository
+    private lateinit var uploadEventRepositoryMock: UploadEventRepository
 
     private var dataId = UUID.randomUUID()
     private val activeDataId = UUID.randomUUID()
@@ -38,8 +38,8 @@ class PublicDataUploadProcessorTest {
         val notificationServiceMock = mock(NotificationService::class.java)
         val metaDataControllerApiMock = mock(MetaDataControllerApi::class.java)
 
-        elementaryEventRepositoryMock = mock(ElementaryEventRepository::class.java)
-        `when`(elementaryEventRepositoryMock.saveAndFlush(any())).then { invocation -> invocation.arguments[0] }
+        uploadEventRepositoryMock = mock(UploadEventRepository::class.java)
+        `when`(uploadEventRepositoryMock.saveAndFlush(any())).then { invocation -> invocation.arguments[0] }
 
         `when`(metaDataControllerApiMock.getDataMetaInfo(any()))
             .thenReturn(
@@ -52,7 +52,7 @@ class PublicDataUploadProcessorTest {
         publicDataUploadProcessor =
             PublicDataUploadProcessor(
                 notificationServiceMock,
-                elementaryEventRepositoryMock,
+                uploadEventRepositoryMock,
                 objectMapper,
                 metaDataControllerApiMock,
             )
@@ -96,7 +96,7 @@ class PublicDataUploadProcessorTest {
 
         publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_UPDATED)
 
-        Mockito.verifyNoInteractions(elementaryEventRepositoryMock)
+        Mockito.verifyNoInteractions(uploadEventRepositoryMock)
     }
 
     @Test
@@ -111,6 +111,6 @@ class PublicDataUploadProcessorTest {
 
         publicDataUploadProcessor.processEvent(payload, "correlationId", MessageType.QA_STATUS_UPDATED)
 
-        verify(elementaryEventRepositoryMock, times(1)).saveAndFlush(any())
+        verify(uploadEventRepositoryMock, times(1)).saveAndFlush(any())
     }
 }

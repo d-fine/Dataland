@@ -90,11 +90,11 @@ class RequestEmailManager(
      * has been a QA approval for a dataset with regard to the same company, reporting period and
      * framework.
      */
-    fun sendEmailToUserWithClosedOrResolvedRequest(
+    fun sendEmailToUserWithAnsweredOrClosedOrResolvedRequest(
         dataRequestEntity: DataRequestEntity,
         correlationId: String,
     ) {
-        dataRequestResponseEmailMessageSender.sendEmailToUserWithClosedOrResolvedRequest(
+        dataRequestResponseEmailMessageSender.sendEmailToUserWithAnsweredOrClosedOrResolvedRequest(
             dataRequestEntity,
             correlationId,
         )

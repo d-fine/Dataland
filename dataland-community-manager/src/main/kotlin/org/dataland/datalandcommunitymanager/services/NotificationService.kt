@@ -3,10 +3,10 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
 import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
+import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
 import org.dataland.datalandcommunitymanager.services.messaging.NotificationEmailSender
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,7 +27,7 @@ class NotificationService
     @Autowired
     constructor(
         val notificationEventRepository: NotificationEventRepository,
-        val elementaryEventRepository: ElementaryEventRepository,
+        val uploadEventRepository: UploadEventRepository,
         val companyDataControllerApi: CompanyDataControllerApi,
         val notificationEmailSender: NotificationEmailSender,
         val companyRolesManager: CompanyRolesManager,
@@ -67,7 +67,7 @@ class NotificationService
         ) {
             val companyId = latestElementaryEvent.companyId
             val unprocessedElementaryEvents =
-                elementaryEventRepository.findAllByCompanyIdAndElementaryEventTypeAndNotificationEventIsNull(
+                uploadEventRepository.findAllByCompanyIdAndElementaryEventTypeAndNotificationEventIsNull(
                     companyId,
                     latestElementaryEvent.elementaryEventType,
                 )
@@ -133,13 +133,13 @@ class NotificationService
             val notificationEvent =
                 NotificationEventEntity(
                     companyId = latestElementaryEvent.companyId,
-                    elementaryEventType = latestElementaryEvent.elementaryEventType,
+                    notificationEventType = latestElementaryEvent.elementaryEventType,
                     creationTimestamp = Instant.now().toEpochMilli(),
                 )
             val savedNotificationEvent = notificationEventRepository.saveAndFlush(notificationEvent)
             unprocessedElementaryEvents.forEach {
                 it.notificationEvent = savedNotificationEvent
-                elementaryEventRepository.saveAndFlush(it)
+                uploadEventRepository.saveAndFlush(it)
             }
         }
 
@@ -151,7 +151,7 @@ class NotificationService
          */
         fun getLastNotificationEventOrNull(
             companyId: UUID,
-            elementaryEventType: ElementaryEventType,
+            elementaryEventType: NotificationEventType,
         ): NotificationEventEntity? =
             notificationEventRepository
                 .findNotificationEventByCompanyIdAndElementaryEventType(

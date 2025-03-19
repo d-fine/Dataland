@@ -3,9 +3,9 @@ package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
+import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -32,11 +32,11 @@ import org.springframework.stereotype.Component
 @Component
 class PublicDataUploadProcessor(
     @Autowired notificationService: NotificationService,
-    @Autowired elementaryEventRepository: ElementaryEventRepository,
+    @Autowired uploadEventRepository: UploadEventRepository,
     @Autowired objectMapper: ObjectMapper,
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
-) : BaseEventProcessor(notificationService, elementaryEventRepository, objectMapper) {
-    override val elementaryEventType = ElementaryEventType.UploadEvent
+) : BaseEventProcessor(notificationService, uploadEventRepository, objectMapper) {
+    override val elementaryEventType = NotificationEventType.UploadEvent
     override val messageType = MessageType.QA_STATUS_UPDATED
     override val actionType = null
     override var logger: Logger = LoggerFactory.getLogger(this.javaClass)

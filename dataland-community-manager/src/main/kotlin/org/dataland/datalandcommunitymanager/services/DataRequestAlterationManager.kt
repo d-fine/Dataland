@@ -3,14 +3,18 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandbackend.openApiClient.model.QaStatus
 import org.dataland.datalandcommunitymanager.entities.DataRequestEntity
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
+import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.exceptions.DataRequestNotFoundApiException
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.DataRequestPatch
 import org.dataland.datalandcommunitymanager.model.dataRequest.RequestStatus
 import org.dataland.datalandcommunitymanager.model.dataRequest.StoredDataRequest
 import org.dataland.datalandcommunitymanager.repositories.DataRequestRepository
+import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.utils.DataRequestLogger
 import org.dataland.datalandcommunitymanager.utils.DataRequestProcessingUtils
 import org.dataland.datalandcommunitymanager.utils.DataRequestsFilter
@@ -19,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Instant
+import java.util.UUID
 import kotlin.jvm.optionals.getOrElse
 
 /**
@@ -30,6 +35,7 @@ class DataRequestAlterationManager
     @Autowired
     constructor(
         private val dataRequestRepository: DataRequestRepository,
+        private val notificationEventRepository: NotificationEventRepository,
         private val dataRequestLogger: DataRequestLogger,
         private val requestEmailManager: RequestEmailManager,
         private val metaDataControllerApi: MetaDataControllerApi,
@@ -159,11 +165,88 @@ class DataRequestAlterationManager
 
             if (anyChanges) dataRequestEntity.lastModifiedDate = modificationTime
 
-            requestEmailManager.sendEmailsWhenStatusChanged(
-                dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.accessStatus, correlationId,
-            )
+            val dataRequestStatus = dataRequestEntity.getLatestRequestStatus()
+
+            if (dataRequestStatus != RequestStatus.Withdrawn) {
+                val immediateNotificationWasSent =
+                    sendImmediateNotificationOnStatusChangedIfApplicable(dataRequestEntity, dataRequestPatch, correlationId)
+                resetImmediateNotificationFlagIfApplicable(
+                    dataRequestEntity,
+                    dataRequestPatch,
+                    immediateNotificationWasSent,
+                )
+                createUserSpecificNotificationEvent(dataRequestEntity, immediateNotificationWasSent)
+            }
 
             return dataRequestEntity.toStoredDataRequest()
+        }
+
+        /**
+         * If applicable, send an immediate notification email corresponding to the status change to the user.
+         * @returns whether an immediate notification was sent
+         */
+        private fun sendImmediateNotificationOnStatusChangedIfApplicable(
+            dataRequestEntity: DataRequestEntity,
+            dataRequestPatch: DataRequestPatch,
+            correlationId: String?,
+        ): Boolean {
+            if (dataRequestEntity.emailOnUpdate) {
+                requestEmailManager.sendEmailsWhenStatusChanged(
+                    dataRequestEntity, dataRequestPatch.requestStatus, dataRequestPatch.accessStatus, correlationId,
+                )
+            }
+            return dataRequestEntity.emailOnUpdate
+        }
+
+        /**
+         * Reset the immediate notification flag of the data request entity from true to false if the request status is
+         * about to change from Open to Answered.
+         */
+        private fun resetImmediateNotificationFlagIfApplicable(
+            dataRequestEntity: DataRequestEntity,
+            dataRequestPatch: DataRequestPatch,
+            immediateNotificationWasSent: Boolean,
+        ) {
+            if (
+                immediateNotificationWasSent &&
+                dataRequestEntity.getLatestRequestStatus() == RequestStatus.Open &&
+                dataRequestPatch.requestStatus == RequestStatus.Answered
+            ) {
+                dataRequestEntity.emailOnUpdate = false
+            }
+        }
+
+        /**
+         * Create the suitable user-specific notification event in the "QA Status Accepted" pipeline.
+         * @param dataRequestEntity represents the data request in question
+         */
+        private fun createUserSpecificNotificationEvent(
+            dataRequestEntity: DataRequestEntity,
+            immediateNotificationWasSent: Boolean,
+        ) {
+            val searchResults =
+                metaDataControllerApi.getListOfDataMetaInfo(
+                    companyId = dataRequestEntity.datalandCompanyId,
+                    dataType = DataTypeEnum.decode(dataRequestEntity.dataType),
+                    reportingPeriod = dataRequestEntity.reportingPeriod,
+                    showOnlyActive = true,
+                    qaStatus = QaStatus.Accepted,
+                )
+            notificationEventRepository.save(
+                NotificationEventEntity(
+                    notificationEventType =
+                        if (searchResults.isEmpty()) {
+                            NotificationEventType.AvailableEvent
+                        } else {
+                            NotificationEventType.UpdatedEvent
+                        },
+                    userId = UUID.fromString(dataRequestEntity.userId),
+                    isProcessed = immediateNotificationWasSent,
+                    companyId = UUID.fromString(dataRequestEntity.datalandCompanyId),
+                    framework = DataTypeEnum.decode(dataRequestEntity.dataType)!!,
+                    reportingPeriod = dataRequestEntity.reportingPeriod,
+                ),
+            )
         }
 
         /**
@@ -308,32 +391,49 @@ class DataRequestAlterationManager
          * @param correlationId The correlation id of the QA approval event.
          */
         @Transactional
-        fun notifyUsersWithClosedOrResolvedRequests(
+        fun processAnsweredOrClosedOrResolvedRequests(
             dataId: String,
             correlationId: String,
         ) {
             val metaData = metaDataControllerApi.getDataMetaInfo(dataId)
-            logger.info(
-                "Sending out e-mail notifications to users with a closed request" +
-                    "concerning company Id ${metaData.companyId}, " +
-                    "reporting period ${metaData.reportingPeriod} and framework ${metaData.dataType.name} " +
-                    "because there is a new dataset with QA status Accepted. Correlation ID: $correlationId",
-            )
             val dataRequestEntities =
                 dataRequestRepository.searchDataRequestEntity(
                     DataRequestsFilter(
                         dataType = setOf(metaData.dataType),
                         datalandCompanyIds = setOf(metaData.companyId),
                         reportingPeriod = metaData.reportingPeriod,
-                        requestStatus = setOf(RequestStatus.Closed, RequestStatus.Resolved),
+                        requestStatus = setOf(RequestStatus.Answered, RequestStatus.Closed, RequestStatus.Resolved),
                     ),
                 )
 
             dataRequestEntities.forEach {
-                requestEmailManager.sendEmailToUserWithClosedOrResolvedRequest(
-                    it,
-                    correlationId,
-                )
+                if (it.emailOnUpdate) {
+                    requestEmailManager.sendEmailToUserWithAnsweredOrClosedOrResolvedRequest(
+                        it,
+                        correlationId,
+                    )
+                    notificationEventRepository.save(
+                        NotificationEventEntity(
+                            notificationEventType = NotificationEventType.UpdatedEvent,
+                            userId = UUID.fromString(it.userId),
+                            isProcessed = true,
+                            companyId = UUID.fromString(it.datalandCompanyId),
+                            framework = DataTypeEnum.decode(it.dataType)!!,
+                            reportingPeriod = it.reportingPeriod,
+                        ),
+                    )
+                } else {
+                    notificationEventRepository.save(
+                        NotificationEventEntity(
+                            notificationEventType = NotificationEventType.UpdatedEvent,
+                            userId = UUID.fromString(it.userId),
+                            isProcessed = false,
+                            companyId = UUID.fromString(it.datalandCompanyId),
+                            framework = DataTypeEnum.decode(it.dataType)!!,
+                            reportingPeriod = it.reportingPeriod,
+                        ),
+                    )
+                }
             }
         }
     }

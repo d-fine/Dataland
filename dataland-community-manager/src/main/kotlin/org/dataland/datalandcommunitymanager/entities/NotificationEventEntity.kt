@@ -5,7 +5,9 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -16,8 +18,12 @@ import java.util.UUID
 data class NotificationEventEntity(
     @Id
     val notificationEventId: UUID = UUID.randomUUID(),
-    val companyId: UUID,
     @Enumerated(EnumType.STRING)
-    val elementaryEventType: ElementaryEventType,
-    val creationTimestamp: Long,
+    val notificationEventType: NotificationEventType,
+    val userId: UUID? = null,
+    val isProcessed: Boolean,
+    val companyId: UUID,
+    val framework: DataTypeEnum,
+    val reportingPeriod: String,
+    val creationTimestamp: Long = Instant.now().toEpochMilli(),
 )

@@ -3,7 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
+import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PrivateDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -23,13 +23,13 @@ class PrivateDataUploadProcessorTest {
     @BeforeEach
     fun setup() {
         val notificationServiceMock = mock(NotificationService::class.java)
-        val elementaryEventRepositoryMock = mock(ElementaryEventRepository::class.java)
+        val uploadEventRepositoryMock = mock(UploadEventRepository::class.java)
         val objectMapper = jacksonObjectMapper()
 
         privateDataUploadProcessor =
             PrivateDataUploadProcessor(
                 notificationServiceMock,
-                elementaryEventRepositoryMock,
+                uploadEventRepositoryMock,
                 objectMapper,
             )
     }

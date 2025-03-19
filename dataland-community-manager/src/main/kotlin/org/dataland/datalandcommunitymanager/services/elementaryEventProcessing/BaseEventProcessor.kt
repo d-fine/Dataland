@@ -3,9 +3,9 @@ package org.dataland.datalandcommunitymanager.services.elementaryEventProcessing
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.ElementaryEventRepository
+import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,13 +19,13 @@ import java.time.Instant
 @Component
 abstract class BaseEventProcessor(
     @Autowired val notificationService: NotificationService,
-    @Autowired val elementaryEventRepository: ElementaryEventRepository,
+    @Autowired val uploadEventRepository: UploadEventRepository,
     @Autowired val objectMapper: ObjectMapper,
 ) {
     @Value("\${dataland.community-manager.notification-feature-flag:false}")
     var notificationFeatureFlagAsString: String? = null
 
-    abstract val elementaryEventType: ElementaryEventType
+    abstract val elementaryEventType: NotificationEventType
     abstract val messageType: String
     abstract val actionType: String?
     lateinit var logger: org.slf4j.Logger
@@ -66,9 +66,9 @@ abstract class BaseEventProcessor(
      */
     protected fun createAndSaveElementaryEvent(
         elementaryEventBasicInfo: ElementaryEventBasicInfo,
-        elementaryEventType: ElementaryEventType,
+        elementaryEventType: NotificationEventType,
     ): ElementaryEventEntity =
-        elementaryEventRepository.saveAndFlush(
+        uploadEventRepository.saveAndFlush(
             ElementaryEventEntity(
                 elementaryEventType = elementaryEventType,
                 companyId = elementaryEventBasicInfo.companyId,

@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import java.util.UUID
 
 /**
@@ -20,7 +20,7 @@ data class ElementaryEventEntity(
     @Id
     val elementaryEventId: UUID = UUID.randomUUID(),
     @Enumerated(EnumType.STRING)
-    val elementaryEventType: ElementaryEventType,
+    val elementaryEventType: NotificationEventType,
     val companyId: UUID,
     val framework: DataTypeEnum,
     val reportingPeriod: String,

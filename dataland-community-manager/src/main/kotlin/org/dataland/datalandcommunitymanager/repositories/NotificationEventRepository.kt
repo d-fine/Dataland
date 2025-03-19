@@ -1,7 +1,7 @@
 package org.dataland.datalandcommunitymanager.repositories
 
 import org.dataland.datalandcommunitymanager.entities.NotificationEventEntity
-import org.dataland.datalandcommunitymanager.events.ElementaryEventType
+import org.dataland.datalandcommunitymanager.events.NotificationEventType
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
@@ -17,6 +17,6 @@ interface NotificationEventRepository : JpaRepository<NotificationEventEntity, U
      */
     fun findNotificationEventByCompanyIdAndElementaryEventType(
         companyId: UUID,
-        elementaryEventType: ElementaryEventType,
+        elementaryEventType: NotificationEventType,
     ): List<NotificationEventEntity>
 }
