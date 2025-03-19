@@ -81,7 +81,11 @@ class MessageQueueListenerForDataPointManager
                     )
                 val lastMessagePerDataPointDimensions =
                     qaStatusChangedMessages.associateBy {
-                        dataPointDimensions[it.first.dataId]!!
+                        dataPointDimensions[it.first.dataId]
+                            ?: error(
+                                "Data point dimensions not found for dataId ${it.first.dataId}. " +
+                                    "This should be impossible.",
+                            )
                     }
 
                 dataPointMetaInformationManager.updateCurrentlyActiveDataPointBulk(

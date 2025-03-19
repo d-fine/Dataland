@@ -223,11 +223,13 @@ class DataPointQaReviewManager
                     .associateBy { it.dataPointId }
             val createdEntries = mutableListOf<Pair<DataPointQaReviewEntity, String>>()
             for (task in tasks) {
-                val existingEntry = anyExistingReviewEntity[task.dataPointId]
-                requireNotNull(existingEntry) {
-                    "Data Point ID ${task.dataPointId} not found in QA database." +
-                        "This should be impossible as they are added based on the uploadDatapoint message."
-                }
+                val existingEntry =
+                    anyExistingReviewEntity[task.dataPointId]
+                        ?: throw ResourceNotFoundApiException(
+                            "Data Point not found in QA database.",
+                            "The data point with ID ${task.dataPointId} was not yet found in the QA database. " +
+                                "Please retry in a few seconds.",
+                        )
                 logger.info(
                     "Assigning quality status ${task.qaStatus} to data point with ID ${task.dataPointId}" +
                         " (correlationID: ${task.correlationId})",
