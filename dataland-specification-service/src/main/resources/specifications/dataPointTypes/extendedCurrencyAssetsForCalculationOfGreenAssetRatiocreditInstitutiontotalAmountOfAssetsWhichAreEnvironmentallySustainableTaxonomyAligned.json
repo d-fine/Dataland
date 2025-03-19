@@ -1,8 +1,0 @@
-{
-  "id" : "extendedCurrencyAssetsForCalculationOfGreenAssetRatiocreditInstitutiontotalAmountOfAssetsWhichAreEnvironmentallySustainableTaxonomyAligned",
-  "name" : "Total Amount of Assets which are Environmentally Sustainable (Taxonomy-aligned)",
-  "businessDefinition" : "Total amount of assets which are Taxonomy-aligned for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)",
-  "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "min:0" ]
-}

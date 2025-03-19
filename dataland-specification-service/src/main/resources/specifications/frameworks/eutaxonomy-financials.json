@@ -8,7 +8,7 @@
       "general" : {
         "fiscalYearDeviation" : "extendedEnumFiscalYearDeviation",
         "fiscalYearEnd" : "extendedDateFiscalYearEnd",
-        "areAllGroupEntitiesCovered" : "extendedEnumYesNoAreAllGroupEntitiesCovered",
+        "areAllGroupEntitiesCovered" : "extendedEnumYesNoAreAllGroupEntitiesCoveredByEuTaxonomyReports",
         "numberOfEmployees" : "extendedDecimalNumberOfEmployees",
         "isNfrdMandatory" : "extendedEnumYesNoIsNfrdMandatory",
         "assurance" : "customEnumEuTaxonomyReportingAssurance"

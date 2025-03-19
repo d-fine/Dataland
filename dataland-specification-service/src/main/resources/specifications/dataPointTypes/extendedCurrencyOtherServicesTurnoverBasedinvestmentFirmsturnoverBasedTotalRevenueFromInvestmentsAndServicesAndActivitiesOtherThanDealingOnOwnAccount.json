@@ -1,8 +1,0 @@
-{
-  "id" : "extendedCurrencyOtherServicesTurnoverBasedinvestmentFirmsturnoverBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount",
-  "name" : "Turnover-based Total Revenue from Investments and Services and Activities other than Dealing on own Account",
-  "businessDefinition" : "Total Revenue (i.e. fees, commissions and other monetary benefits) from investment and services and activities other than dealing on own account (as per Section A of Annex I to Directive 2014/65/EU)",
-  "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "min:0" ]
-}

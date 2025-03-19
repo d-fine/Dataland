@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalInsuranceReinsuranceproportionOfAbsolutePremiumsOfTaxonomyAlignedActivities",
-  "name" : "Proportion of Absolute Premiums of Taxonomy-aligned Activities",
-  "businessDefinition" : "Proportion of Non-life Insurance and Reinsurance Undertakings underwriting Taxonomy-aligned Activities. Shall be reported as ‘gross premiums written’ or, as applicable, turnover relating to non-life insurance and reinsurance activity.",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

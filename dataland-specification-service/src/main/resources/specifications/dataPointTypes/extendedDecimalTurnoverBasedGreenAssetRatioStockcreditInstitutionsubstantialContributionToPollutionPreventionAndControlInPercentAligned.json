@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalTurnoverBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToPollutionPreventionAndControlInPercentAligned",
-  "name" : "Substantial Contribution to Pollution Prevention and Control in Percent - Aligned",
-  "businessDefinition" : "Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Pollution Prevention and Control",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

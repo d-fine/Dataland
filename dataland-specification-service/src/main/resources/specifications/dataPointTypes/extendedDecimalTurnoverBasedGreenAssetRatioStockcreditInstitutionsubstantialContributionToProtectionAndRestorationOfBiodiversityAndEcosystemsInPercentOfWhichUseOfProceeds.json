@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalTurnoverBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentOfWhichUseOfProceeds",
-  "name" : "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Of which Use of Proceeds",
-  "businessDefinition" : "Taxonomy-aligned Use of Proceeds Share substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

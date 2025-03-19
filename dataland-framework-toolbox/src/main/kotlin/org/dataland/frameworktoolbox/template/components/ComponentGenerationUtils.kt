@@ -36,7 +36,13 @@ open class ComponentGenerationUtils {
      * Generate a data point type name from a template row
      */
     open fun generateDataPointTypeNameFromRow(row: TemplateRow): String? {
-        var fieldName = row.dataPointTypeNameOverwrite ?: generateFieldIdentifierFromRow(row).capitalizeEn()
+        val fieldNameOverwrite = row.dataPointTypeNameOverwrite
+        var fieldName =
+            if (!fieldNameOverwrite.isNullOrBlank()) {
+                fieldNameOverwrite
+            } else {
+                generateFieldIdentifierFromRow(row).capitalizeEn()
+            }
         if (row.includeSubCategoryInTypeName == TemplateYesNo.Yes) {
             fieldName = "${generateSubSectionIdentifierFromRow(row).capitalizeEn()}$fieldName"
         }

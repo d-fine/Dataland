@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalDealingOnOwnAccountServicesCapexBasedinvestmentFirmscapexBasedProportionOfAssetsSubstantiallyContributingToCircularEconomyOfWhichEnabling",
-  "name" : "CapEx-based Proportion of Assets substantially contributing to Circular Economy - Of which Enabling",
-  "businessDefinition" : "Taxonomy-aligned and enabling CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Circular Economy",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalCapexBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichEnabling",
-  "name" : "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Enabling",
-  "businessDefinition" : "Taxonomy-aligned and enabling Proportion of CapEx-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

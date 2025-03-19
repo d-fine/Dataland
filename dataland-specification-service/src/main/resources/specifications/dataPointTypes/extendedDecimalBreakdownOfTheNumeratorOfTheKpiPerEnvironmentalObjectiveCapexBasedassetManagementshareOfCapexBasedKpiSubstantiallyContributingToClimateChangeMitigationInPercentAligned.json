@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedassetManagementshareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned",
-  "name" : "Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned",
-  "businessDefinition" : "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

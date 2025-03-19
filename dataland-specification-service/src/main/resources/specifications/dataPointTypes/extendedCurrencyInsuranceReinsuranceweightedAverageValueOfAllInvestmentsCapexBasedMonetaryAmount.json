@@ -1,8 +1,0 @@
-{
-  "id" : "extendedCurrencyInsuranceReinsuranceweightedAverageValueOfAllInvestmentsCapexBasedMonetaryAmount",
-  "name" : "Weighted Average Value of all Investments - CapEx-based monetary amount",
-  "businessDefinition" : "The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities, with following weights for investments in undertakings - CapEx-based monetary amount.",
-  "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "min:0" ]
-}

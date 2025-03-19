@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalOtherServicesCapexBasedinvestmentFirmscapexBasedProportionOfRevenueSubstantiallyContributingToClimateChangeMitigationOfWhichEnabling",
-  "name" : "CapEx-based Proportion of Revenue substantially contributing to Climate Change Mitigation - Of which Enabling",
-  "businessDefinition" : "Taxonomy-aligned and enabling CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Climate Change Mitigation",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

@@ -119,7 +119,7 @@ class EuTaxonomyAssuranceComponent(
             this,
             "Enum",
             "customEnumEuTaxonomyReportingAssurance",
-            dataPointTypeIdOverwrite = "customEnumEuTaxonomyReportingAssurance"
+            dataPointTypeIdOverwrite = "customEnumEuTaxonomyReportingAssurance",
         )
     }
 }

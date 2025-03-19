@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalCapexBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentOfWhichUseOfProceeds",
-  "name" : "Substantial Contribution to any of the six Environmental Objectives in Percent - Of which Use of Proceeds",
-  "businessDefinition" : "Taxonomy-aligned Use of Proceeds Share substantially contributing to any of the six Environmental Objectives",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

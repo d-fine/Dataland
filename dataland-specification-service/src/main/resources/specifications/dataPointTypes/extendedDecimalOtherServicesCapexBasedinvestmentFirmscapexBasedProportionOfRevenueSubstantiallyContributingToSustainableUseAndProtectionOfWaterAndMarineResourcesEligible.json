@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalOtherServicesCapexBasedinvestmentFirmscapexBasedProportionOfRevenueSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible",
-  "name" : "CapEx-based Proportion of Revenue substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible",
-  "businessDefinition" : "Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalDealingOnOwnAccountServicesCapexBasedinvestmentFirmscapexBasedProportionOfAssetsSubstantiallyContributingToSustainableUseAndProtectionOfWaterAndMarineResourcesEligible",
-  "name" : "CapEx-based Proportion of Assets substantially contributing to Sustainable Use and Protection of Water and Marine Resources - Eligible",
-  "businessDefinition" : "Taxonomy-aligned CapEx-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

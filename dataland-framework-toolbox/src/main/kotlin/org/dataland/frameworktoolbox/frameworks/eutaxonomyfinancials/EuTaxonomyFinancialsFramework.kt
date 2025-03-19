@@ -2,7 +2,6 @@ package org.dataland.frameworktoolbox.frameworks.eutaxonomyfinancials
 
 import org.dataland.frameworktoolbox.frameworks.FrameworkGenerationFeatures
 import org.dataland.frameworktoolbox.frameworks.PavedRoadFramework
-import org.dataland.frameworktoolbox.frameworks.eutaxonomynonfinancials.custom.EuTaxonomyAssuranceComponent
 import org.dataland.frameworktoolbox.intermediate.Framework
 import org.dataland.frameworktoolbox.intermediate.components.ReportPreuploadComponent
 import org.dataland.frameworktoolbox.intermediate.components.SingleSelectComponent

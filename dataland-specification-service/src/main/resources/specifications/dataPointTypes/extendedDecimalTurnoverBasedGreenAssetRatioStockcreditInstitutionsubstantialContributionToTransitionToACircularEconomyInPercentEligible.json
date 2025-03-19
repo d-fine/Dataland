@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalTurnoverBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToTransitionToACircularEconomyInPercentEligible",
-  "name" : "Substantial Contribution to Transition to a Circular Economy in Percent - Eligible",
-  "businessDefinition" : "Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Circular Economy",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}

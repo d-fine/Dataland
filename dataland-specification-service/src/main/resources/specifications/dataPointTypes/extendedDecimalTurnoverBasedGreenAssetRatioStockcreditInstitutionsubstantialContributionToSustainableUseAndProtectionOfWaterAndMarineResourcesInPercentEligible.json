@@ -1,8 +1,0 @@
-{
-  "id" : "extendedDecimalTurnoverBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentEligible",
-  "name" : "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Eligible",
-  "businessDefinition" : "Taxonomy-eligible Proportion of Revenue-based Green Asset Ratio substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
-  "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : [ "eutaxonomy-financials" ],
-  "constraints" : [ "between:0,100" ]
-}
