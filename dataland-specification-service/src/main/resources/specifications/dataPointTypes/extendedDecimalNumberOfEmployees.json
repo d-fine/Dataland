@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalNumberOfEmployees",
+  "name" : "Number of Employees",
+  "businessDefinition" : "Total Number of Employees (including temporary workers with assignment duration longer than 6 months)",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "min:0" ]
+}

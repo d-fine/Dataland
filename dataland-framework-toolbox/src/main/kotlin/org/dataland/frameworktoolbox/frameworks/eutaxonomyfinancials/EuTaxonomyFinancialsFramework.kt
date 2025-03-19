@@ -52,15 +52,6 @@ class EuTaxonomyFinancialsFramework :
                         )
                     }
                 }
-                edit<EuTaxonomyAssuranceComponent>("assurance") {
-                    specificationGenerator = { categoryBuilder ->
-                        categoryBuilder.addDefaultDatapointAndSpecification(
-                            this,
-                            "Enum",
-                            "extendedEnumAssurance",
-                        )
-                    }
-                }
             }
         }
     }

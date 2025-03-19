@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalTurnoverBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToSustainableUseAndProtectionOfWaterAndMarineResourcesInPercentOfWhichUseOfProceeds",
+  "name" : "Substantial Contribution to Sustainable Use and Protection of Water and Marine Resources in Percent - Of which Use of Proceeds",
+  "businessDefinition" : "Taxonomy-aligned Use of Proceeds Share substantially contributing to Sustainable Use and Protection of Water and Marine Resources",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

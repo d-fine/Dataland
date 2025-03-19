@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalTurnoverBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToClimateChangeAdaptationInPercentAligned",
+  "name" : "Substantial Contribution to Climate Change Adaptation in Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to Climate Change Adaptation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCapexBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToProtectionAndRestorationOfBiodiversityAndEcosystemsInPercentEligible",
+  "name" : "Substantial Contribution to Protection and Restoration of Biodiversity and Ecosystems in Percent - Eligible",
+  "businessDefinition" : "Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Protection and Restoration of Biodiversity and Ecosystems",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

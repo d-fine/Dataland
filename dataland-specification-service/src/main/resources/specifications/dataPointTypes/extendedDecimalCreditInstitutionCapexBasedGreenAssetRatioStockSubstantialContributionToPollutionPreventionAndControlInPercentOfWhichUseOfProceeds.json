@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToPollutionPreventionAndControlInPercentOfWhichUseOfProceeds",
+  "name" : "Substantial Contribution to Pollution Prevention and Control in Percent - Of which Use of Proceeds",
+  "businessDefinition" : "Taxonomy-aligned Use of Proceeds Share substantially contributing to Pollution Prevention and Control",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

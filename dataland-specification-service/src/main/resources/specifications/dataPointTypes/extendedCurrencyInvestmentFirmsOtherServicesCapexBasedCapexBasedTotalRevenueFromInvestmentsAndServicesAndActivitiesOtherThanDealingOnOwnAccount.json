@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyInvestmentFirmsOtherServicesCapexBasedCapexBasedTotalRevenueFromInvestmentsAndServicesAndActivitiesOtherThanDealingOnOwnAccount",
+  "name" : "CapEx-based Total Revenue from Investments and Services and Activities other than Dealing on own Account",
+  "businessDefinition" : "Total assets invested under investment firms' activities Other Services (as per Section A of Annex I to Directive 2014/65/EU)",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "min:0" ]
+}

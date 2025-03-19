@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoIsNfrdMandatory",
+  "name" : "Is NFRD mandatory?",
+  "businessDefinition" : "Is the NFRD mandatory for your company?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : null
+}

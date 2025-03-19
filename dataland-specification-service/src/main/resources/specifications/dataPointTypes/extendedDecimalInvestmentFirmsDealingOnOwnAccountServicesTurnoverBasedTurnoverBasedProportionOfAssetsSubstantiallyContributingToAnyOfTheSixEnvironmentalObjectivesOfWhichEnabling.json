@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInvestmentFirmsDealingOnOwnAccountServicesTurnoverBasedTurnoverBasedProportionOfAssetsSubstantiallyContributingToAnyOfTheSixEnvironmentalObjectivesOfWhichEnabling",
+  "name" : "Turnover-based Proportion of Assets substantially contributing to any of the six Environmental Objectives - Of which Enabling",
+  "businessDefinition" : "Taxonomy-aligned and enabling Turnover-based Proportion of Total Assets invested under Investment Firms' Activities dealing on own Account (as per Section A of Annex I to Directive 2014/65/EU) substantially contributing to any of the six Environmental Objectives",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInsuranceReinsuranceweightedAverageValueOfAllInvestmentsTurnoverBasedInPercent",
+  "name" : "Weighted Average Value of all Investments - Turnover-based in Percent",
+  "businessDefinition" : "The weighted average value of all the investments of insurance or reinsurance undertakings that are directed at funding, or are associated with Taxonomy-aligned economic activities relative to the value of total assets covered by the KPI, with following weights for investments in undertakings - Turnover-based in Percent.",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

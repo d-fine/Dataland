@@ -117,7 +117,9 @@ class EuTaxonomyAssuranceComponent(
         requireDocumentSupportIn(setOf(NoDocumentSupport))
         specificationCategoryBuilder.addDefaultDatapointAndSpecification(
             this,
-            "Assurance",
+            "Enum",
+            "customEnumEuTaxonomyReportingAssurance",
+            dataPointTypeIdOverwrite = "customEnumEuTaxonomyReportingAssurance"
         )
     }
 }

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalTurnoverBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToAnyOfTheSixEnvironmentalObjectivesInPercentAligned",
+  "name" : "Substantial Contribution to any of the six Environmental Objectives in Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Proportion of Revenue-based Green Asset Ratio substantially contributing to any of the six Environmental Objectives",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

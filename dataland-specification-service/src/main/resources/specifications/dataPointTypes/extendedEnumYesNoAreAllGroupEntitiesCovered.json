@@ -1,0 +1,8 @@
+{
+  "id" : "extendedEnumYesNoAreAllGroupEntitiesCovered",
+  "name" : "Are all Group Entities covered?",
+  "businessDefinition" : "Are all Group legal entities covered in the reports?",
+  "dataPointBaseTypeId" : "extendedEnumYesNo",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : null
+}

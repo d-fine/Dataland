@@ -1,0 +1,8 @@
+{
+  "id" : "extendedCurrencyAssetsForCalculationOfGreenAssetRatiocreditInstitutiontotalAmountOfAssetsTowardsTaxonomyRelevantSectorsTaxonomyEligible",
+  "name" : "Total Amount of Assets towards Taxonomy-relevant Sectors (Taxonomy-eligible)",
+  "businessDefinition" : "Total amount of assets which are Taxonomy-eligible for any of the six environmental objectives (Climate Change Mitigation, Climate Change Adaptation, Water and Marine Resources, Circular Economy, Pollution Prevention and Control, Biodiversity and Ecosystems)",
+  "dataPointBaseTypeId" : "extendedCurrency",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "min:0" ]
+}

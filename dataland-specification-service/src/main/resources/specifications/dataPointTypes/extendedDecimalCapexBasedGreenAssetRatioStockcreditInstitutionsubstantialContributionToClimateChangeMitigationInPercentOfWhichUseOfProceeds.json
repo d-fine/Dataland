@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCapexBasedGreenAssetRatioStockcreditInstitutionsubstantialContributionToClimateChangeMitigationInPercentOfWhichUseOfProceeds",
+  "name" : "Substantial Contribution to Climate Change Mitigation in Percent - Of which Use of Proceeds",
+  "businessDefinition" : "Taxonomy-aligned Use of Proceeds Share substantially contributing to Climate Change Mitigation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}
