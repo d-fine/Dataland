@@ -1,4 +1,4 @@
-FROM dpage/pgadmin4:8.14@sha256:8a68677a97b8c8d1427dc915672a26d2c4a04376916a68256f53d669d6171be7
+FROM dpage/pgadmin4:9.1@sha256:bdebdfc4b165c10d0ad60e58f1d7ef41af6c881c9556ae331adaa35bba6dacf3
 
 USER root
 
