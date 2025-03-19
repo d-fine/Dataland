@@ -30,6 +30,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.http.HttpStatus
 import java.io.File
 import java.math.BigDecimal
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DataMigrationTest {
@@ -138,6 +139,8 @@ class DataMigrationTest {
             QaService.qaControllerApi.changeQaStatus(dataMetaInfo.dataId, qaStatus)
         }
 
+        val datasetQaEntity = QaService.qaControllerApi.getQaReviewResponseByDataId(UUID.fromString(dataMetaInfo.dataId))
+
         ApiAwait.waitForCondition {
             Backend.metaDataControllerApi
                 .getDataMetaInfo(dataMetaInfo.dataId)
@@ -153,7 +156,11 @@ class DataMigrationTest {
                 .waitForData(
                     supplier = { QaService.qaControllerApi.getDataPointQaReviewInformationByDataId(dataPoint) },
                     condition = { it.isNotEmpty() },
-                ).let { assertEquals(qaStatus, it[0].qaStatus) }
+                ).let {
+                    assertEquals(qaStatus, it[0].qaStatus)
+                    assertEquals(datasetQaEntity.timestamp, it[0].timestamp)
+                    assertEquals(datasetQaEntity.triggeringUserId, it[0].reviewerId)
+                }
         }
     }
 

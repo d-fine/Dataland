@@ -4,7 +4,8 @@ import org.dataland.datalandbackend.entities.DataPointMetaInformationEntity
 import org.dataland.datalandbackend.repositories.DataPointMetaInformationRepository
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
-import org.dataland.datalandbackendutils.model.QaStatus
+import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,6 +19,8 @@ class DataPointMetaInformationManager
     constructor(
         private val dataPointMetaInformationRepositoryInterface: DataPointMetaInformationRepository,
     ) {
+        private val logger = LoggerFactory.getLogger(javaClass)
+
         /**
          * Get meta info about one specific data point
          * @param dataPointId filters the requested meta info to one specific data ID
@@ -52,18 +55,19 @@ class DataPointMetaInformationManager
 
         /**
          * Method to get the data point dimensions from a data id
-         * @param dataPointId the id of the data point
+         * @param dataPointIds the ids of the data point
          * @return the data point dimensions
          */
         @Transactional(readOnly = true)
-        fun getDataPointDimensionFromId(dataPointId: String): BasicDataPointDimensions {
-            val dataPointMetaInformation = getDataPointMetaInformationById(dataPointId)
-            return BasicDataPointDimensions(
-                reportingPeriod = dataPointMetaInformation.reportingPeriod,
-                companyId = dataPointMetaInformation.companyId,
-                dataPointType = dataPointMetaInformation.dataPointType,
-            )
-        }
+        fun getDataPointDimensionsFromIds(dataPointIds: List<String>): Map<String, BasicDataPointDimensions> =
+            dataPointMetaInformationRepositoryInterface.findAllById(dataPointIds).associate {
+                it.dataPointId to
+                    BasicDataPointDimensions(
+                        it.reportingPeriod,
+                        it.companyId,
+                        it.dataPointType,
+                    )
+            }
 
         /**
          * Method to store the meta information of a data point
@@ -75,37 +79,86 @@ class DataPointMetaInformationManager
             dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
 
         /**
-         * Method to update the QA status of a data point
-         * @param dataPointId the id of the data point to update
-         * @param newQaStatus the new value for the QA status
+         * Method to update the QA status of multiple data points
+         * @param messages the messages containing the data point id and the new QA status
          */
         @Transactional
-        fun updateQaStatusOfDataPoint(
-            dataPointId: String,
-            newQaStatus: QaStatus,
-        ) {
-            val dataPointMetaInformation = getDataPointMetaInformationById(dataPointId)
-            dataPointMetaInformation.qaStatus = newQaStatus
-            dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
+        fun updateQaStatusOfDataPointsFromMessages(messages: Collection<QaStatusChangeMessage>) {
+            val dataPointMetaInformation =
+                dataPointMetaInformationRepositoryInterface
+                    .findAllById(
+                        messages.map {
+                            it.dataId
+                        },
+                    ).associateBy { it.dataPointId }
+            for (message in messages) {
+                val dataPointId = message.dataId
+                val dataPointMetaInformationEntity = dataPointMetaInformation[dataPointId]
+                requireNotNull(dataPointMetaInformationEntity) {
+                    "Data point with id $dataPointId not found in the data base. This should be impossible."
+                }
+                dataPointMetaInformationEntity.qaStatus = message.updatedQaStatus
+            }
+            dataPointMetaInformationRepositoryInterface.saveAll(dataPointMetaInformation.values)
         }
 
         /**
-         * Method to update the currently active flag of a data point
-         * @param dataPointId the id of the data point to update
-         * @param newCurrentlyActiveValue the new value for the currently active flag
+         * Task for updating the currently active data point for specific data point dimensions
+         */
+        data class UpdateCurrentlyActiveDataPointTask(
+            val dataPointDimensions: BasicDataPointDimensions,
+            val newActiveDataId: String?,
+            val correlationId: String,
+        )
+
+        /**
+         * Update the currently active data point for specific data point dimensions in bulk
          */
         @Transactional
-        fun updateCurrentlyActiveFlagOfDataPoint(
-            dataPointId: String?,
-            newCurrentlyActiveValue: Boolean?,
-        ) {
-            if (dataPointId == null) {
-                return
+        fun updateCurrentlyActiveDataPointBulk(tasks: List<UpdateCurrentlyActiveDataPointTask>) {
+            val dataPointDimensions = tasks.map { it.dataPointDimensions }
+            require(dataPointDimensions.toSet().size == tasks.size) {
+                "The data point dimensions must be unique for each task."
             }
-            require(newCurrentlyActiveValue != false) { "Currently active can only be true or null due to a constraint in the data base." }
-            val dataPointMetaInformation = getDataPointMetaInformationById(dataPointId)
-            dataPointMetaInformation.currentlyActive = newCurrentlyActiveValue
-            dataPointMetaInformationRepositoryInterface.save(dataPointMetaInformation)
+            val atLeastTheActiveInvolvedEntities =
+                dataPointMetaInformationRepositoryInterface.getBulkActiveDataPoints(
+                    companyIds = dataPointDimensions.map { it.companyId },
+                    dataPointTypes = dataPointDimensions.map { it.dataPointType },
+                    reportingPeriods = dataPointDimensions.map { it.reportingPeriod },
+                )
+            val currentlyActiveEntityByDimension =
+                atLeastTheActiveInvolvedEntities.associateBy {
+                    BasicDataPointDimensions(it.companyId, it.dataPointType, it.reportingPeriod)
+                }
+            val newlyActiveDataEntities =
+                dataPointMetaInformationRepositoryInterface
+                    .findAllById(tasks.mapNotNull { it.newActiveDataId })
+                    .associateBy { it.dataPointId }
+
+            for (task in tasks) {
+                logger.info(
+                    "Updating currently active data point for ${task.dataPointDimensions} " +
+                        "(correlation ID: ${task.correlationId}).",
+                )
+                val currentlyActive = currentlyActiveEntityByDimension[task.dataPointDimensions]
+                val newlyActive = newlyActiveDataEntities[task.newActiveDataId]
+                logger
+                    .info(
+                        "Currently and newly active IDs are ${currentlyActive?.dataPointId} and " +
+                            "${task.newActiveDataId} (correlation ID: ${task.correlationId}).",
+                    )
+                if (currentlyActive?.dataPointId == newlyActive?.dataPointId) {
+                    logger.info(
+                        "No update of the currently active flag required " +
+                            "(correlation ID: ${task.correlationId}).",
+                    )
+                } else {
+                    currentlyActive?.currentlyActive = null
+                    newlyActive?.currentlyActive = true
+                }
+            }
+            dataPointMetaInformationRepositoryInterface.saveAll(atLeastTheActiveInvolvedEntities)
+            dataPointMetaInformationRepositoryInterface.saveAll(newlyActiveDataEntities.values)
         }
 
         /**

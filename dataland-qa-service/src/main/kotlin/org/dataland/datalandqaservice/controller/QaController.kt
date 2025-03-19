@@ -6,6 +6,7 @@ import org.dataland.datalandqaservice.api.QaApi
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.DataPointQaReviewInformation
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.QaReviewResponse
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointRequest
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.QaReviewManager
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.DataPointQaReviewItemFilter
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 import java.util.UUID
 import java.util.UUID.randomUUID
 
@@ -135,7 +137,16 @@ class QaController(
             "Received request to change the QA status of the data point $dataPointId to $qaStatus " +
                 "from user $reviewerId (correlationId: $correlationId)",
         )
-        dataPointQaReviewManager.reviewDataPoint(dataPointId, qaStatus, reviewerId, comment, correlationId)
+        val qaRequest =
+            ReviewDataPointRequest(
+                dataPointId = dataPointId,
+                qaStatus = qaStatus,
+                triggeringUserId = reviewerId,
+                comment = comment,
+                correlationId = correlationId,
+                timestamp = Instant.now().toEpochMilli(),
+            )
+        dataPointQaReviewManager.reviewDataPoints(listOf(qaRequest))
     }
 
     override fun getDataPointQaReviewInformation(
