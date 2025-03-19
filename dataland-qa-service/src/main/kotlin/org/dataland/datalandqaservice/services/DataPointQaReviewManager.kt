@@ -2,10 +2,7 @@ package org.dataland.datalandqaservice.org.dataland.datalandqaservice.services
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.transaction.Transactional
-import org.dataland.datalandbackend.openApiClient.api.CompanyDataControllerApi
-import org.dataland.datalandbackend.openApiClient.api.DataPointControllerApi
 import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
-import org.dataland.datalandbackendutils.model.BasicDataPointDimensions
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandmessagequeueutils.cloudevents.CloudEventMessageHandler
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
@@ -33,8 +30,6 @@ class DataPointQaReviewManager
     @Suppress("LongParameterList")
     constructor(
         private val dataPointQaReviewRepository: DataPointQaReviewRepository,
-        private val companyDataControllerApi: CompanyDataControllerApi,
-        private val dataPointControllerApi: DataPointControllerApi,
         private val cloudEventMessageHandler: CloudEventMessageHandler,
         private val objectMapper: ObjectMapper,
         private val compositionService: DataPointCompositionService,
@@ -49,17 +44,23 @@ class DataPointQaReviewManager
          * @param triggeringUserId keycloakId of user triggering QA Status change or upload event
          * @param correlationId the ID for the process triggering the change
          */
+        data class ReviewDataPointRequest(
+            val dataPointId: String,
+            val qaStatus: QaStatus,
+            val triggeringUserId: String,
+            val comment: String?,
+            val correlationId: String,
+            val timestamp: Long,
+        )
+
+        /**
+         * Review a list of data points and change their QA status
+         */
         @Transactional
-        fun reviewDataPoint(
-            dataPointId: String,
-            qaStatus: QaStatus,
-            triggeringUserId: String,
-            comment: String?,
-            correlationId: String,
-        ): DataPointQaReviewEntity {
-            val reviewEntity = saveDataPointQaReviewEntity(dataPointId, qaStatus, triggeringUserId, comment, correlationId)
-            sendDataPointQaStatusChangeMessage(reviewEntity, correlationId)
-            return reviewEntity
+        fun reviewDataPoints(requests: List<ReviewDataPointRequest>): List<DataPointQaReviewEntity> {
+            val reviewEntities = createDataPointReviewEntities(requests)
+            sendBulkDataPointQaStatusChangeMessages(reviewEntities)
+            return reviewEntities.map { it.first }
         }
 
         /**
@@ -122,7 +123,7 @@ class DataPointQaReviewManager
          */
         @Transactional
         fun reviewDataPointFromMessages(messages: List<DataPointUploadedMessageWithCorrelationId>): List<DataPointQaReviewEntity> {
-            val reviewEntities = mutableListOf<DataPointQaReviewEntity>()
+            val reviewEntities = mutableListOf<Pair<DataPointQaReviewEntity, String>>()
             for (messageWithCorrId in messages) {
                 val message = messageWithCorrId.message
                 val correlationId = messageWithCorrId.correlationId
@@ -135,18 +136,12 @@ class DataPointQaReviewManager
                     "Assigning quality status ${dataPointQaReviewEntity.qaStatus} to data point with ID " +
                         "${message.dataPointId} (correlationID: $correlationId)",
                 )
-                reviewEntities.add(dataPointQaReviewEntity)
+                reviewEntities.add(Pair(dataPointQaReviewEntity, correlationId))
             }
 
-            val savedEntities = dataPointQaReviewRepository.saveAll(reviewEntities)
-            val correlationIdMap = messages.associate { it.message.dataPointId to it.correlationId }
-            savedEntities.forEach {
-                sendDataPointQaStatusChangeMessage(
-                    it,
-                    correlationIdMap[it.dataPointId]
-                        ?: throw IllegalStateException("Could not identify correlation ID. This should be impossible"),
-                )
-            }
+            val savedEntities = dataPointQaReviewRepository.saveAll(reviewEntities.map { it.first })
+
+            sendBulkDataPointQaStatusChangeMessages(reviewEntities)
             return savedEntities
         }
 
@@ -173,22 +168,32 @@ class DataPointQaReviewManager
             allDataIds.forEach {
                 assertQaServiceKnowsDataPointId(it)
             }
-
-            if (overwriteDataPointQaStatus) {
-                allDataIds.forEach {
-                    reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)
+            val timestamp = Instant.now().toEpochMilli()
+            val allQaRequests =
+                allDataIds.map {
+                    ReviewDataPointRequest(
+                        dataPointId = it,
+                        qaStatus = qaStatus,
+                        triggeringUserId = triggeringUserId,
+                        comment = comment,
+                        correlationId = correlationId,
+                        timestamp = timestamp,
+                    )
                 }
-            } else {
-                val qaStatusOfAllDataIds =
-                    dataPointQaReviewRepository
-                        .findLatestWhereDataPointIdIn(allDataIds)
-                        .associate { it.dataPointId to it.qaStatus }
-                allDataIds.forEach {
-                    if (it !in qaStatusOfAllDataIds || qaStatusOfAllDataIds[it] == QaStatus.Pending) {
-                        reviewDataPoint(it, qaStatus, triggeringUserId, comment, correlationId)
+            val filteredRequests =
+                if (overwriteDataPointQaStatus) {
+                    allQaRequests
+                } else {
+                    val qaStatusOfAllDataIds =
+                        dataPointQaReviewRepository
+                            .findLatestWhereDataPointIdIn(allDataIds)
+                            .associate { it.dataPointId to it.qaStatus }
+                    allQaRequests.filter {
+                        it.dataPointId !in qaStatusOfAllDataIds ||
+                            qaStatusOfAllDataIds[it.dataPointId] == QaStatus.Pending
                     }
                 }
-            }
+            reviewDataPoints(filteredRequests)
         }
 
         /**
@@ -211,85 +216,77 @@ class DataPointQaReviewManager
         fun checkIfQaServiceKnowsDataPointId(dataPointId: String): Boolean =
             dataPointQaReviewRepository.findFirstByDataPointIdOrderByTimestampDesc(dataPointId) != null
 
-        private fun saveDataPointQaReviewEntity(
-            dataPointId: String,
-            qaStatus: QaStatus,
-            triggeringUserId: String,
-            comment: String?,
-            correlationId: String,
-        ): DataPointQaReviewEntity {
-            val dataMetaInfo = dataPointControllerApi.getDataPointMetaInfo(dataPointId)
-            val companyName = companyDataControllerApi.getCompanyById(dataMetaInfo.companyId).companyInformation.companyName
-
-            logger.info("Assigning quality status $qaStatus to data point with ID $dataPointId (correlationID: $correlationId)")
-
-            val dataPointQaReviewEntity =
-                DataPointQaReviewEntity(
-                    dataPointId = dataPointId,
-                    companyId = dataMetaInfo.companyId,
-                    companyName = companyName,
-                    dataPointType = dataMetaInfo.dataPointType,
-                    reportingPeriod = dataMetaInfo.reportingPeriod,
-                    timestamp = Instant.now().toEpochMilli(),
-                    qaStatus = qaStatus,
-                    triggeringUserId = triggeringUserId,
-                    comment = comment,
+        private fun createDataPointReviewEntities(requests: List<ReviewDataPointRequest>): List<Pair<DataPointQaReviewEntity, String>> {
+            val anyExistingReviewEntity =
+                dataPointQaReviewRepository
+                    .findAllByDataPointIdIn(requests.map { it.dataPointId })
+                    .associateBy { it.dataPointId }
+            val createdEntries = mutableListOf<Pair<DataPointQaReviewEntity, String>>()
+            for (request in requests) {
+                val existingEntry = anyExistingReviewEntity[request.dataPointId]
+                requireNotNull(existingEntry) {
+                    "Data Point ID ${request.dataPointId} not found in QA database." +
+                        "This should be impossible as they are added based on the uploadDatapoint message."
+                }
+                logger.info(
+                    "Assigning quality status ${request.qaStatus} to data point with ID ${request.dataPointId}" +
+                        " (correlationID: ${request.correlationId})",
                 )
-            return dataPointQaReviewRepository.save(dataPointQaReviewEntity)
+
+                val dataPointQaReviewEntity =
+                    DataPointQaReviewEntity(
+                        dataPointId = request.dataPointId,
+                        companyId = existingEntry.companyId,
+                        companyName = existingEntry.companyName,
+                        dataPointType = existingEntry.dataPointType,
+                        reportingPeriod = existingEntry.reportingPeriod,
+                        timestamp = request.timestamp,
+                        qaStatus = request.qaStatus,
+                        triggeringUserId = request.triggeringUserId,
+                        comment = request.comment,
+                    )
+                createdEntries.add(Pair(dataPointQaReviewEntity, request.correlationId))
+            }
+            dataPointQaReviewRepository.saveAll(createdEntries.map { it.first })
+            return createdEntries
         }
 
-        private fun sendDataPointQaStatusChangeMessage(
-            dataPointQaReviewEntity: DataPointQaReviewEntity,
-            correlationId: String,
+        private fun sendBulkDataPointQaStatusChangeMessages(
+            reviewEntitiesWithCorrelationIds: List<Pair<DataPointQaReviewEntity, String>>,
         ) {
-            val currentlyActiveDataId =
-                getDataIdOfCurrentlyActiveDataPoint(
-                    dataPointQaReviewEntity.companyId,
-                    dataPointQaReviewEntity.dataPointType,
-                    dataPointQaReviewEntity.reportingPeriod,
+            val allCompanyIds = reviewEntitiesWithCorrelationIds.map { it.first.companyId }.distinct()
+            val allDataPointTypes = reviewEntitiesWithCorrelationIds.map { it.first.dataPointType }.distinct()
+            val allReportingPeriods = reviewEntitiesWithCorrelationIds.map { it.first.reportingPeriod }.distinct()
+
+            val activeDataPoints =
+                dataPointQaReviewRepository
+                    .getActiveDataPointsForAllTriplets(allCompanyIds, allDataPointTypes, allReportingPeriods)
+                    .associate { Triple(it.companyId, it.dataPointType, it.reportingPeriod) to it.dataPointId }
+
+            reviewEntitiesWithCorrelationIds.forEach { (reviewEntity, correlationId) ->
+                val qaStatusChangeMessage =
+                    QaStatusChangeMessage(
+                        dataId = reviewEntity.dataPointId,
+                        updatedQaStatus = reviewEntity.qaStatus,
+                        currentlyActiveDataId =
+                            activeDataPoints[
+                                Triple(
+                                    reviewEntity.companyId,
+                                    reviewEntity.dataPointType,
+                                    reviewEntity.reportingPeriod,
+                                ),
+                            ],
+                    )
+
+                logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
+                cloudEventMessageHandler.buildCEMessageAndSendToQueue(
+                    body = objectMapper.writeValueAsString(qaStatusChangeMessage),
+                    type = MessageType.QA_STATUS_UPDATED,
+                    correlationId = correlationId,
+                    exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
+                    routingKey = RoutingKeyNames.DATA_POINT_QA,
                 )
-
-            val qaStatusChangeMessage =
-                QaStatusChangeMessage(
-                    dataId = dataPointQaReviewEntity.dataPointId,
-                    updatedQaStatus = dataPointQaReviewEntity.qaStatus,
-                    currentlyActiveDataId = currentlyActiveDataId,
-                )
-
-            logger.info("Publishing QA status change message for dataId ${qaStatusChangeMessage.dataId}.")
-            cloudEventMessageHandler.buildCEMessageAndSendToQueue(
-                body = objectMapper.writeValueAsString(qaStatusChangeMessage),
-                type = MessageType.QA_STATUS_UPDATED,
-                correlationId = correlationId,
-                exchange = ExchangeName.QA_SERVICE_DATA_QUALITY_EVENTS,
-                routingKey = RoutingKeyNames.DATA_POINT_QA,
-            )
-        }
-
-        /**
-         * Retrieve dataId of currently active dataset for same triple (companyId, dataType, reportingPeriod)
-         * @param companyId ID of the company the data point is associated to
-         * @param dataPointType Identifier of the type of the data point
-         * @param reportingPeriod Reporting period of the data point
-         * @return Returns the dataId of the active data point, or null if no active dataset can be found
-         */
-        private fun getDataIdOfCurrentlyActiveDataPoint(
-            companyId: String,
-            dataPointType: String,
-            reportingPeriod: String,
-        ): String? {
-            logger.info(
-                "Searching for currently active data point for company $companyId, " +
-                    "data point identifier $dataPointType, and reportingPeriod $reportingPeriod",
-            )
-            val searchFilter =
-                BasicDataPointDimensions(
-                    companyId = companyId,
-                    dataPointType = dataPointType,
-                    reportingPeriod = reportingPeriod,
-                )
-
-            return dataPointQaReviewRepository.getDataPointIdOfCurrentlyActiveDataPoint(searchFilter)
+            }
         }
 
         /**

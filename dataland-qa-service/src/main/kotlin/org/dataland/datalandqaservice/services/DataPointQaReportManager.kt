@@ -11,6 +11,7 @@ import org.dataland.datalandqaservice.model.reports.QaReportDataPoint
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.entities.DataPointQaReportEntity
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.model.reports.DataPointQaReport
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.repositories.DataPointQaReportRepository
+import org.dataland.datalandqaservice.org.dataland.datalandqaservice.services.DataPointQaReviewManager.ReviewDataPointRequest
 import org.dataland.datalandqaservice.org.dataland.datalandqaservice.utils.IdUtils
 import org.dataland.keycloakAdapter.auth.DatalandAuthentication
 import org.slf4j.LoggerFactory
@@ -102,12 +103,17 @@ class DataPointQaReportManager(
 
         val mappedQaStatus = report.verdict.toQaStatus()
         if (mappedQaStatus != null) {
-            dataPointQaReviewManager.reviewDataPoint(
-                dataPointId = dataPointId,
-                triggeringUserId = reporterUserId,
-                comment = report.comment,
-                correlationId = correlationId,
-                qaStatus = mappedQaStatus,
+            dataPointQaReviewManager.reviewDataPoints(
+                listOf(
+                    ReviewDataPointRequest(
+                        dataPointId = dataPointId,
+                        qaStatus = mappedQaStatus,
+                        triggeringUserId = reporterUserId,
+                        comment = report.comment,
+                        correlationId = correlationId,
+                        timestamp = uploadTime,
+                    ),
+                ),
             )
         }
 
