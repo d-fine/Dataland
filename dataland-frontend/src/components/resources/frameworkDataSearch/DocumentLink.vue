@@ -135,8 +135,8 @@ export default defineComponent({
           const newBlob = new Blob([getDocumentsFromStorageResponse.data], { type: mimeType });
           docUrl.href = URL.createObjectURL(newBlob);
           docUrl.target = '_blank';
+          docUrl.dataset.test = `report-${this.downloadName}-link`;
           if (this.page) docUrl.href += `#page=${this.page}`;
-          console.log(URL.createObjectURL(newBlob));
           document.body.appendChild(docUrl);
           docUrl.click();
         });

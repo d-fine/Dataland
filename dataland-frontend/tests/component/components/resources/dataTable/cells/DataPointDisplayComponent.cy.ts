@@ -14,7 +14,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
@@ -45,7 +45,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
@@ -70,7 +70,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
@@ -95,7 +95,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: 5,
+            page: '5',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },

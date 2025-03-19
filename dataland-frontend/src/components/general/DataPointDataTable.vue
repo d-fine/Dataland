@@ -82,8 +82,8 @@ export default defineComponent({
     },
     dataSourcePage(): number | undefined {
       const dataSource = this.dialogData.dataPointDisplay.dataSource;
-      if (dataSource && 'page' in dataSource) {
-        return Number(dataSource.page?.split('-')[0]);
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return Number(dataSource.page.split('-')[0]);
       } else return undefined;
     },
   },

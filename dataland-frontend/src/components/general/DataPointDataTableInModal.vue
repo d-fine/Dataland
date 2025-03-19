@@ -58,15 +58,15 @@ export default defineComponent({
     dataSourceLabel(): string | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
       if (!dataSource || !dataSource.fileName) return undefined;
-      if ('page' in dataSource) {
-        return `${dataSource.fileName}, page ${dataSource.page}`;
+      if ('page' in dataSource && dataSource.page != null) {
+        return `${dataSource.fileName}, page(s) ${dataSource.page}`;
       }
       return dataSource.fileName;
     },
     dataSourcePage(): number | undefined {
       const dataSource = this.dataPointDisplay?.dataSource;
-      if (dataSource && 'page' in dataSource) {
-        return Number(dataSource.page?.split('-')[0]);
+      if (dataSource && 'page' in dataSource && dataSource.page != null) {
+        return Number(dataSource.page.split('-')[0]);
       } else return undefined;
     },
   },
