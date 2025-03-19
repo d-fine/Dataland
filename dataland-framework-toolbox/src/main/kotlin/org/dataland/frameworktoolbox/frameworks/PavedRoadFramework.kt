@@ -266,7 +266,12 @@ abstract class PavedRoadFramework(
         if (!enabledFeatures.contains(FrameworkGenerationFeatures.DataPointSpecifications)) {
             return
         }
-
+        framework.root.nestedChildren.forEach {
+            require(!it.isRequired) {
+                "All components must be optional for the data point migration to work." +
+                        "The component ${it.identifier} is marked as required."
+            }
+        }
         val specifications = framework.generateSpecifications(datalandProject)
         specifications.build()
     }
