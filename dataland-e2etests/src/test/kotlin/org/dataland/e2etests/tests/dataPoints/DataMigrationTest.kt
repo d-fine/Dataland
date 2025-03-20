@@ -18,6 +18,7 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringPublicationDates
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -190,7 +191,10 @@ class DataMigrationTest {
         val dataMetaInfo = uploadGenericDummyDataset(data = originalData, dataType = DataTypeEnum.sfdr)
         Backend.dataMigrationControllerApi.migrateStoredDatasetToAssembledDataset(dataMetaInfo.dataId)
         val migratedData = Backend.sfdrDataControllerApi.getCompanyAssociatedSfdrData(dataMetaInfo.dataId)
-        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(originalData, migratedData.data)
+        assertDataEqualsIgnoringPublicationDates(
+            originalData, migratedData.data,
+            { it.general?.general?.referencedReports },
+        )
     }
 
     @ParameterizedTest
