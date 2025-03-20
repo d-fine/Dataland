@@ -16,7 +16,7 @@ import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.api.Backend
 import org.dataland.e2etests.utils.api.QaService
-import org.dataland.e2etests.utils.testDataProvivders.FrameworkTestDataProvider
+import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeAll

@@ -13,6 +13,7 @@ import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
+import org.dataland.e2etests.utils.testDataProviders.CompanyInformationWithT
 import java.io.File
 import java.util.UUID
 
@@ -69,12 +70,12 @@ class FrameworkTestDataProvider<T>(
 
         fun <T> forFrameworkFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
             FrameworkTestDataProvider(
-                clazz, jsonFilesForTesting[clazz]?.fakeFixtureFile ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE),
+                clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE)).fakeFixtureFile
             )
 
         fun <T> forFrameworkPreparedFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
             FrameworkTestDataProvider(
-                clazz, jsonFilesForTesting[clazz]?.preparedFixtureFile ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE),
+                clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE)).preparedFixtureFile
             )
     }
 
