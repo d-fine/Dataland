@@ -11,9 +11,9 @@ import java.time.LocalDate
  * The data-model for the General section
  */
 data class SfdrGeneralGeneral(
-    val dataDate: LocalDate,
-    val fiscalYearDeviation: SfdrGeneralGeneralFiscalYearDeviationOptions,
-    val fiscalYearEnd: LocalDate,
+    val dataDate: LocalDate? = null,
+    val fiscalYearDeviation: SfdrGeneralGeneralFiscalYearDeviationOptions? = null,
+    val fiscalYearEnd: LocalDate? = null,
     @field:Schema(example = JsonExampleFormattingConstants.REFERENCED_REPORTS_DEFAULT_VALUE)
     @field:Valid()
     val referencedReports: Map<String, CompanyReport>? = null,

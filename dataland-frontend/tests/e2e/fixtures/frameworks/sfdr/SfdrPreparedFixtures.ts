@@ -136,7 +136,7 @@ function manipulateFixtureForNoNullFields(input: FixtureData<SfdrData>): Fixture
  */
 function manipulateFixtureForOneFilledSubcategory(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'companyWithOneFilledSfdrSubcategory';
-  input.t.general.general.fiscalYearEnd = '2020-01-03';
+  input.t.general!.general!.fiscalYearEnd = '2020-01-03';
   input.t.environmental!.energyPerformance = null;
   input.t.environmental!.waste = null;
   input.t.environmental!.water = null;
@@ -199,7 +199,7 @@ function generateFixtureWithBrokenFileReference(input: FixtureData<SfdrData>): F
  */
 function generateFixtureWithIncompleteReferencedReport(input: FixtureData<SfdrData>): FixtureData<SfdrData> {
   input.companyInformation.companyName = 'TestForIncompleteReferencedReport';
-  input.t.general.general.referencedReports = {
+  input.t.general!.general!.referencedReports = {
     notReferencedFile: { fileReference: 'invalidFileReference', fileName: 'notReferencedFile' },
   };
   return input;

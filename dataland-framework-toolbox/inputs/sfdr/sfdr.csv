@@ -1,7 +1,7 @@
 Field Identifier,Category,Sub-Category,Field Name,Tooltip - upload page,Tooltip - view page (if different from upload page),Component,Options,Unit,Document-Support,Dependency,Show when value is,Mandatory Field
-1,General,General,Data Date,The year for which the data is reported., ,Date, , , ,,,Yes
-2,General,General,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?, ,Single-Select Radio Button,Deviation| No Deviation, , ,,,Yes
-3,General,General,Fiscal Year End,The date the fiscal year ends., ,Date, , , ,,,Yes
+1,General,General,Data Date,The year for which the data is reported., ,Date, , , ,,,
+2,General,General,Fiscal Year Deviation,Does the fiscal year deviate from the calendar year?, ,Single-Select Radio Button,Deviation| No Deviation, , ,,,
+3,General,General,Fiscal Year End,The date the fiscal year ends., ,Date, , , ,,,
 4,General,General,Referenced Reports,Please upload all relevant reports for this dataset in the PDF format.,All relevant reports for this dataset in PDF format.,Report Preupload,, , ,,,
 5,Environmental,Greenhouse gas emissions ,Scope 1 GHG emissions,"Scope 1 greenhouse gas emissions, namely emissions generated from sources that are controlled by the company that issues the underlying assets (equity share approach preferably used).", ,Number,,Tonnes,Extended,,,
 6,Environmental,Greenhouse gas emissions ,Scope 2 GHG emissions,"Scope 2 greenhouse gas emissions, namely emissions from the consumption of purchased electricity, steam, or other sources of energy generated upstream from the company that issues the underlying assets (preferably using the location-based method and equity share approach).",,Number,,Tonnes,Extended,,,

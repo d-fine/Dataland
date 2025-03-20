@@ -32,7 +32,7 @@ class ReferencedReportsListConstraintValidator :
         if (dataset == null) {
             return false
         }
-        val referencedReportsMap = dataset.general.general.referencedReports
+        val referencedReportsMap = dataset.general?.general?.referencedReports
         val referencedReportsFileReference = getFileReferencesFromReports(referencedReportsMap)
 
         val extendedDocumentsFileReferences = getExtendedDocumentReferences(dataset).filterNotNull()

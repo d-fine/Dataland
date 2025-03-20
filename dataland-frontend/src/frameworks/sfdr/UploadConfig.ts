@@ -18,9 +18,8 @@ export const sfdrDataModel = [
             description: 'The year for which the data is reported.',
 
             component: 'DateFormField',
-            required: true,
+            required: false,
             showIf: (): boolean => true,
-            validation: 'required',
           },
           {
             name: 'fiscalYearDeviation',
@@ -38,9 +37,8 @@ export const sfdrDataModel = [
             ],
 
             component: 'RadioButtonsFormField',
-            required: true,
+            required: false,
             showIf: (): boolean => true,
-            validation: 'required',
           },
           {
             name: 'fiscalYearEnd',
@@ -48,9 +46,8 @@ export const sfdrDataModel = [
             description: 'The date the fiscal year ends.',
 
             component: 'DateFormField',
-            required: true,
+            required: false,
             showIf: (): boolean => true,
-            validation: 'required',
           },
           {
             name: 'referencedReports',

@@ -127,7 +127,7 @@ const sortedReports = computed(() => {
     }
     case DataTypeEnum.Sfdr: {
       return sortedDataAndMetaInfo.value
-        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general.referencedReports)
+        .map((singleDataAndMetaInfo) => (singleDataAndMetaInfo.data as SfdrData).general?.general?.referencedReports)
         .filter((reports): reports is { [key: string]: CompanyReport } => reports !== null && reports !== undefined);
     }
     default: {
