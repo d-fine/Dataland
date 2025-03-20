@@ -45,7 +45,7 @@ it('tests if modal with link into position in text file works', () => {
           fieldLabel: 'testingFieldLabel',
           value: 'testingValue',
           dataSource: {
-            page: '5',
+            page: '5-7',
             fileName: 'testFileName',
             fileReference: 'fileReference',
           },
@@ -58,7 +58,7 @@ it('tests if modal with link into position in text file works', () => {
   cy.get('a').click();
   cy.get('.p-datatable-body > tr').should('have.length', 3);
 
-  //populate second optinal field
+  //populate second optional field
   cy.mountWithDialog(
     DataPointDisplayComponent,
     {
