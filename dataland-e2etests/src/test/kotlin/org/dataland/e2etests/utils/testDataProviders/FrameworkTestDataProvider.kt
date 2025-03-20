@@ -1,4 +1,4 @@
-package org.dataland.e2etests.utils.testDataProvivders
+package org.dataland.e2etests.utils.testDataProviders
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -13,7 +13,6 @@ import org.dataland.datalandbackend.openApiClient.model.LksgData
 import org.dataland.datalandbackend.openApiClient.model.PathwaysToParisData
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.datalandbackend.openApiClient.model.VsmeData
-import org.dataland.e2etests.utils.testDataProviders.CompanyInformationWithT
 import java.io.File
 import java.util.UUID
 
