@@ -127,7 +127,7 @@ fun checkThatDataRequestExistsExactlyOnceInRecentlyStored(
 
 fun checkClientExceptionErrorMessage(
     clientException: ClientException,
-    errorCode: String? = "400",
+    errorCode: Int? = 400,
 ) {
     assertEquals(errorCode, clientException.statusCode)
     assertEquals("Client error : $errorCode ", clientException.message)
@@ -262,13 +262,7 @@ fun generateCompaniesWithOneRandomValueForEachIdentifierType(uniqueIdentifiersMa
         apiAccessor.companyDataControllerApi.postCompany(
             baseCompany.copy(
                 companyName = "Company${identifierType.value}",
-                identifiers =
-                    mapOf(
-                        identifierType.value to
-                            listOf(
-                                "Test-${identifierType.value}${uniqueIdentifiersMap.getValue(identifierType)}",
-                            ),
-                    ),
+                identifiers = mapOf(identifierType.value to listOf(uniqueIdentifiersMap.getValue(identifierType))),
             ),
         )
     }

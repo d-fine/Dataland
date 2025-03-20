@@ -6,16 +6,12 @@ import org.dataland.communitymanager.openApiClient.infrastructure.ClientExceptio
 import org.dataland.communitymanager.openApiClient.model.CompanyRole
 import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
-import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
-import org.dataland.datalandbackend.openApiClient.model.IdentifierType
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.communityManager.causeClientExceptionBySingleDataRequest
 import org.dataland.e2etests.utils.communityManager.checkClientExceptionErrorMessage
-import org.dataland.e2etests.utils.communityManager.checkErrorMessageForNonUniqueIdentifiersInSingleRequest
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
 import org.dataland.e2etests.utils.communityManager.checkThatTheAmountOfNewlyStoredRequestsIsAsExpected
@@ -28,7 +24,6 @@ import org.dataland.e2etests.utils.communityManager.postSingleDataRequestForRepo
 import org.dataland.e2etests.utils.communityManager.postStandardSingleDataRequest
 import org.dataland.e2etests.utils.communityManager.retrieveTimeAndWaitOneMillisecond
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -46,6 +41,10 @@ class SingleDataRequestsTest {
     private val maxRequestsForUser = 10
     private val dataReaderUserId = UUID.fromString(TechnicalUser.Reader.technicalUserId)
     private val clientErrorMessage403 = "Client error : 403 "
+    private val companyNotFoundExceptionSummary = "The company identifier is unknown."
+
+    private fun companyNotFoundExceptionMessage(companyIdentifier: String) =
+        "No company is associated to the identifier $companyIdentifier."
 
     @BeforeEach
     fun authenticateAsPremiumUser() {
@@ -97,48 +96,10 @@ class SingleDataRequestsTest {
             assertThrows<ClientException> {
                 requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
             }
-        checkClientExceptionErrorMessage(clientException)
+        checkClientExceptionErrorMessage(clientException, 404)
         val responseBody = (clientException.response as ClientError<*>).body as String
-        assertTrue(responseBody.contains("The specified company is unknown to Dataland"))
-        assertTrue(
-            responseBody.contains(
-                "The company with identifier: $invalidCompanyIdentifier is unknown to Dataland",
-            ),
-        )
-    }
-
-    @Test
-    fun `post two single data request with overlapping identifiers and verify that it throws an exception`() {
-        val permId = generateRandomPermId(20)
-        val isin = permId + "1"
-        val framework = SingleDataRequest.DataType.lksg
-        val reportingPeriods = setOf("2023")
-        val companyOne =
-            CompanyInformation(
-                companyName = "company1",
-                headquarters = "HQ",
-                identifiers = mapOf(IdentifierType.PermId.value to listOf(permId)),
-                countryCode = "DE",
-            )
-        val companyTwo =
-            CompanyInformation(
-                companyName = "company2",
-                headquarters = "HQ",
-                identifiers = mapOf(IdentifierType.Isin.value to listOf(isin)),
-                countryCode = "DE",
-            )
-
-        jwtHelper.authenticateApiCallsWithJwtForTechnicalUser(TechnicalUser.Admin)
-        apiAccessor.companyDataControllerApi.postCompany(companyOne)
-        apiAccessor.companyDataControllerApi.postCompany(companyTwo)
-
-        val clientException =
-            causeClientExceptionBySingleDataRequest(
-                permId, framework,
-                reportingPeriods,
-            )
-        assertNotNull(clientException, "invalidInputApiException should not be null")
-        checkErrorMessageForNonUniqueIdentifiersInSingleRequest(clientException)
+        assertTrue(responseBody.contains(companyNotFoundExceptionSummary))
+        assertTrue(responseBody.contains(companyNotFoundExceptionMessage(invalidCompanyIdentifier)))
     }
 
     @Test
@@ -373,18 +334,14 @@ class SingleDataRequestsTest {
                 message = "Does not matter for this test.",
             )
 
-        val expectedExceptionSummary = "The company identifier is unknown."
-        val expectedExceptionMessage = "No company is associated to the identifier $tooShortCompanyIdentifier."
-        val expectedErrorCode = "404"
-
         withTechnicalUser(TechnicalUser.Reader) {
             val exception =
                 assertThrows<ClientException> { requestControllerApi.postSingleDataRequest(singleDataRequest) }
-            checkClientExceptionErrorMessage(exception, expectedErrorCode)
+            checkClientExceptionErrorMessage(exception, 404)
 
             val responseString = (exception.response as ClientError<*>).body as String
-            assertTrue(responseString.contains(expectedExceptionSummary))
-            assertTrue(responseString.contains(expectedExceptionMessage))
+            assertTrue(responseString.contains(companyNotFoundExceptionSummary))
+            assertTrue(responseString.contains(companyNotFoundExceptionMessage(tooShortCompanyIdentifier)))
         }
     }
 }

@@ -26,5 +26,5 @@ interface CompanyIdentifierRepository : JpaRepository<CompanyIdentifierEntity, C
     /**
      * Retrieve an entry based on the identifier value
      */
-    fun getByIdentifierValueIs(identifierValue: String): CompanyIdentifierEntity?
+    fun getFirstByIdentifierValueIs(identifierValue: String): CompanyIdentifierEntity?
 }

@@ -222,7 +222,7 @@ class CompanyQueryManager
             }
 
             unprocessedIdentifiers.forEach { identifier ->
-                val identifierEntry = companyIdentifierRepository.getByIdentifierValueIs(identifier)
+                val identifierEntry = companyIdentifierRepository.getFirstByIdentifierValueIs(identifier)
                 if (identifierEntry != null) {
                     result.add(
                         CompanyIdentifierValidationResult(
