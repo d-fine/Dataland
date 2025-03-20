@@ -216,7 +216,16 @@ class CompanyQueryManager
                     return@forEach
                 }
                 if (doesCompanyIdExist(identifier)) {
-                    result.add(CompanyIdentifierValidationResult(identifier, identifier, getCompanyById(identifier).companyName))
+                    val storedCompanyEntity = getCompanyById(identifier)
+                    result.add(
+                        CompanyIdentifierValidationResult(
+                            identifier = identifier,
+                            companyId = identifier,
+                            companyName = storedCompanyEntity.companyName,
+                            sector = storedCompanyEntity.sector,
+                            countryCode = storedCompanyEntity.countryCode,
+                        ),
+                    )
                     unprocessedIdentifiers.remove(identifier)
                 }
             }
@@ -229,6 +238,8 @@ class CompanyQueryManager
                             identifier = identifier,
                             companyId = identifierEntry.company?.companyId,
                             companyName = identifierEntry.company?.companyName,
+                            sector = identifierEntry.company?.sector,
+                            countryCode = identifierEntry.company?.countryCode,
                         ),
                     )
                 } else {

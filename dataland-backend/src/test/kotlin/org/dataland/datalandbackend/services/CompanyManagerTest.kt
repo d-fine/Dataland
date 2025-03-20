@@ -267,6 +267,8 @@ class CompanyManagerTest
                                 .first()
                                 .companyId,
                         companyName = it.companyName,
+                        sector = it.sector,
+                        countryCode = it.countryCode,
                     ),
                 )
             }
@@ -292,6 +294,8 @@ class CompanyManagerTest
                             .first()
                             .companyId,
                     companyName = testCompany.companyName,
+                    sector = testCompany.sector,
+                    countryCode = testCompany.countryCode,
                 ),
             )
             assertEquals(expectedResults, testCompanyQueryManager.validateCompanyIdentifiers(testData))

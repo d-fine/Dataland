@@ -11,4 +11,6 @@ data class CompanyIdentifierValidationResult(
     val identifier: String,
     val companyId: String? = null,
     val companyName: String? = null,
+    val sector: String? = null,
+    val countryCode: String? = null,
 )
