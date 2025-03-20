@@ -52,8 +52,18 @@ inline fun <reified T> assertDataEqualsIgnoringPublicationDates(
             .build()
             .adapter(Map::class.java)
 
-    val actualJson = jsonAdapter.toJson(actual).replace(referencedReportsAdapter.toJson(referencedReportsGetter(actual)!!), "null")
-    val expectedJson = jsonAdapter.toJson(expected).replace(referencedReportsAdapter.toJson(referencedReportsGetter(expected)!!), "null")
+    val referencedReportsFromActual = referencedReportsAdapter.toJson(referencedReportsGetter(actual))
+    val referencedReportsFromExpected = referencedReportsAdapter.toJson(referencedReportsGetter(expected))
+
+    var actualJson = jsonAdapter.toJson(actual)
+    if (referencedReportsFromActual != null) {
+        actualJson = actualJson.replace(referencedReportsFromActual, "null")
+    }
+
+    var expectedJson = jsonAdapter.toJson(expected)
+    if (referencedReportsFromExpected != null) {
+        expectedJson = expectedJson.replace(referencedReportsFromExpected, "null")
+    }
 
     assertEquals(expectedJson, actualJson)
 }
