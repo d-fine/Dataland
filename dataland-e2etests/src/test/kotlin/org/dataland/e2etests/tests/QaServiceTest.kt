@@ -12,6 +12,7 @@ import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
+import org.dataland.e2etests.utils.api.ApiAwait
 import org.dataland.e2etests.utils.testDataProviders.GeneralTestDataProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.springframework.http.HttpStatus
 import java.time.Instant
 import java.util.UUID
 import java.util.concurrent.TimeUnit
@@ -387,7 +389,9 @@ class QaServiceTest {
         dataId: String,
         qaStatus: QaStatus,
     ) {
-        qaServiceController.changeQaStatus(dataId, qaStatus)
+        ApiAwait.waitForSuccess(retryOnHttpErrors = setOf(HttpStatus.NOT_FOUND)) {
+            qaServiceController.changeQaStatus(dataId, qaStatus)
+        }
     }
 
     private fun getReviewInfoById(dataId: UUID): QaReviewResponse = qaServiceController.getQaReviewResponseByDataId(dataId)
