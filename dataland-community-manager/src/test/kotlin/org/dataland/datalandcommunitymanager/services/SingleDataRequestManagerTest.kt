@@ -24,6 +24,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
@@ -38,7 +39,6 @@ import org.mockito.kotlin.verifyNoInteractions
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import java.util.UUID
-import org.mockito.ArgumentMatchers.anyList
 
 class SingleDataRequestManagerTest {
     private lateinit var singleDataRequestManager: SingleDataRequestManager

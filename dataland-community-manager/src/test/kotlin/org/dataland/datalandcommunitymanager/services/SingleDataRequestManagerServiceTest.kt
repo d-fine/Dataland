@@ -1,6 +1,7 @@
 package org.dataland.datalandcommunitymanager.services
 
 import jakarta.transaction.Transactional
+import org.dataland.datalandbackend.openApiClient.model.CompanyIdAndName
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.DatalandCommunityManager
@@ -19,6 +20,7 @@ import org.dataland.keycloakAdapter.utils.AuthenticationMock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.ArgumentMatchers.anyList
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.reset
 import org.mockito.kotlin.any
@@ -111,6 +113,9 @@ class SingleDataRequestManagerServiceTest(
         doReturn(listOf("ROLE_USER"))
             .whenever(mockKeycloakUserService)
             .getUserRoleNames(eq(dummyUserId))
+        doReturn(Pair(mapOf(dummyCompanyId to CompanyIdAndName("dummy", dummyCompanyId)), emptyList<String>()))
+            .whenever(spyDataRequestProcessingUtils)
+            .performIdentifierValidation(anyList())
 
         singleDataRequestManager =
             SingleDataRequestManager(
