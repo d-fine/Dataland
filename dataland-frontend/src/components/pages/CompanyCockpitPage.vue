@@ -4,7 +4,7 @@
     <CompanyInfoSheet :company-id="companyId" :show-single-data-request-button="true" />
     <div class="grid-container">
       <div class="paper-section">
-        <div class="card">
+        <div class="card documents-card">
           <div class="card__title">Latest Documents</div>
           <div class="card__separator" />
           <div v-for="(category, label) in DocumentMetaInfoDocumentCategoryEnum" :key="category" :data-test="category">
@@ -267,7 +267,7 @@ export default defineComponent({
 }
 .grid-container {
   display: grid;
-  grid-template-columns: 5fr 6fr 30px;
+  grid-template-columns: 3fr 6fr 30px;
   padding: 40px;
   gap: 40px;
   @media only screen and (max-width: newVariables.$small) {
