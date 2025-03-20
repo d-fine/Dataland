@@ -3,6 +3,8 @@ package org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.gener
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.eutaxonomyfinancials.model.general.general
+    .EutaxonomyFinancialsGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport

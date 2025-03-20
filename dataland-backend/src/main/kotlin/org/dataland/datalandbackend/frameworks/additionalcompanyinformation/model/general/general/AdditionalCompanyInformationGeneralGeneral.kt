@@ -3,6 +3,8 @@ package org.dataland.datalandbackend.frameworks.additionalcompanyinformation.mod
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
+import org.dataland.datalandbackend.frameworks.additionalcompanyinformation.model.general.general
+    .AdditionalCompanyInformationGeneralGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.utils.JsonExampleFormattingConstants

@@ -4,6 +4,8 @@ package org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.ge
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
 import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.custom.AssuranceDataPoint
+import org.dataland.datalandbackend.frameworks.eutaxonomynonfinancials.model.general
+    .EutaxonomyNonFinancialsGeneralFiscalYearDeviationOptions
 import org.dataland.datalandbackend.model.datapoints.ExtendedDataPoint
 import org.dataland.datalandbackend.model.documents.CompanyReport
 import org.dataland.datalandbackend.model.enums.commons.YesNo

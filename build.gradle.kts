@@ -51,7 +51,11 @@ tasks.dependencyUpdates.configure {
 
 dependencies {
     detekt(libs.detekt.cli)
-    detekt(libs.kotlin.compiler.embeddable)
+    detekt(libs.kotlin.compiler.embeddable) {
+        version {
+            strictly("2.0.21")
+        }
+    }
 }
 
 java.sourceCompatibility = jvmVersion
@@ -72,6 +76,7 @@ plugins {
     alias(libs.plugins.com.github.ben.manes.versions)
     alias(libs.plugins.org.jetbrains.kotlin.plugin.jpa) apply false
     alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
 }
 
 sonar {
