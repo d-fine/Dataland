@@ -70,12 +70,12 @@ class FrameworkTestDataProvider<T>(
 
         fun <T> forFrameworkFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
             FrameworkTestDataProvider(
-                clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE)).fakeFixtureFile
+                clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE)).fakeFixtureFile,
             )
 
         fun <T> forFrameworkPreparedFixtures(clazz: Class<T>): FrameworkTestDataProvider<T> =
             FrameworkTestDataProvider(
-                clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE)).preparedFixtureFile
+                clazz, (jsonFilesForTesting[clazz] ?: throw NoSuchElementException(NO_SUCH_DATA_MESSAGE)).preparedFixtureFile,
             )
     }
 
