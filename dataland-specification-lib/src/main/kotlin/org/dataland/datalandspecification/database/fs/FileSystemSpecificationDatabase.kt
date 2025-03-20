@@ -43,7 +43,7 @@ private inline fun <reified T> saveSpecifications(
         val printer = DefaultPrettyPrinter().withObjectIndenter(DefaultIndenter().withLinefeed("\n"))
         objectMapper.writer(printer).writeValue(file, specification)
     }
-    allExistingPaths.forEach { File(folder, it).delete() }
+    allExistingPaths.forEach { require(File(folder, it).delete()) }
 }
 
 /**
