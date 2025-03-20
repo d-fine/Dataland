@@ -48,7 +48,11 @@ class DataRequestTimeScheduler(
                 "Patching stale answered data request ${it.dataRequestId} to closed and " +
                     "informing user ${it.userId}. CorrelationId: $correlationId",
             )
-            alterationManager.patchDataRequest(it.dataRequestId, DataRequestPatch(requestStatus = RequestStatus.Closed))
+            alterationManager.patchDataRequest(
+                it.dataRequestId,
+                DataRequestPatch(requestStatus = RequestStatus.Closed),
+                correlationId = UUID.randomUUID().toString(),
+            )
         }
     }
 }

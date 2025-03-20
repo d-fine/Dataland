@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandcommunitymanager.entities.ElementaryEventEntity
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.NotificationEventBasicInfo
+import org.dataland.datalandcommunitymanager.repositories.NotificationEventRepository
 import org.dataland.datalandcommunitymanager.services.NotificationService
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,13 +19,13 @@ import java.time.Instant
 @Component
 abstract class BaseEventProcessor(
     @Autowired val notificationService: NotificationService,
-    @Autowired val uploadEventRepository: UploadEventRepository,
+    @Autowired val notificationEventRepository: NotificationEventRepository,
     @Autowired val objectMapper: ObjectMapper,
 ) {
     @Value("\${dataland.community-manager.notification-feature-flag:false}")
     var notificationFeatureFlagAsString: String? = null
 
-    abstract val elementaryEventType: NotificationEventType
+    abstract val notificationEventType: NotificationEventType
     abstract val messageType: String
     abstract val actionType: String?
     lateinit var logger: org.slf4j.Logger
@@ -36,7 +36,7 @@ abstract class BaseEventProcessor(
      * Event-specific processing logic needs to be implemented in child classes.
      */
     fun processEvent(
-        elementaryEventBasicInfo: ElementaryEventBasicInfo,
+        notificationEventBasicInfo: NotificationEventBasicInfo,
         correlationId: String,
         messageType: String,
     ) {
@@ -56,7 +56,7 @@ abstract class BaseEventProcessor(
                 "CorrelationId: $correlationId",
         )
 
-        val storedElementaryEvent = createAndSaveElementaryEvent(elementaryEventBasicInfo, elementaryEventType)
+        val storedElementaryEvent = createAndSaveElementaryEvent(notificationEventBasicInfo, notificationEventType)
 
         notificationService.notifyOfElementaryEvents(storedElementaryEvent, correlationId)
     }
@@ -65,15 +65,15 @@ abstract class BaseEventProcessor(
      * Create and persist new elementary event
      */
     protected fun createAndSaveElementaryEvent(
-        elementaryEventBasicInfo: ElementaryEventBasicInfo,
+        notificationEventBasicInfo: NotificationEventBasicInfo,
         elementaryEventType: NotificationEventType,
     ): ElementaryEventEntity =
-        uploadEventRepository.saveAndFlush(
+        notificationEventRepository.saveAndFlush(
             ElementaryEventEntity(
                 elementaryEventType = elementaryEventType,
-                companyId = elementaryEventBasicInfo.companyId,
-                framework = elementaryEventBasicInfo.framework,
-                reportingPeriod = elementaryEventBasicInfo.reportingPeriod,
+                companyId = notificationEventBasicInfo.companyId,
+                framework = notificationEventBasicInfo.framework,
+                reportingPeriod = notificationEventBasicInfo.reportingPeriod,
                 creationTimestamp = Instant.now().toEpochMilli(),
                 notificationEvent = null,
             ),
@@ -85,13 +85,13 @@ abstract class BaseEventProcessor(
      * @param jsonString the content of the message
      * @returns an object that contains basic info about the elementary event associated with the payload
      */
-    fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {
+    fun createElementaryEventBasicInfo(jsonString: String): NotificationEventBasicInfo {
         val temporaryObjectMapper =
             objectMapper
                 .copy()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-        return temporaryObjectMapper.readValue(jsonString, ElementaryEventBasicInfo::class.java)
+        return temporaryObjectMapper.readValue(jsonString, NotificationEventBasicInfo::class.java)
     }
 
     /**

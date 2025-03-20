@@ -5,8 +5,7 @@ import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackend.openApiClient.model.DataMetaInformation
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.model.QaStatus
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.NotificationEventBasicInfo
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PublicDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.MessageType
 import org.dataland.datalandmessagequeueutils.messages.QaStatusChangeMessage
@@ -74,14 +73,14 @@ class PublicDataUploadProcessorTest {
             ).toString()
 
         val actualElementaryEventBasicInfo = publicDataUploadProcessor.createElementaryEventBasicInfo(jsonString)
-        val expectedElementaryEventBasicInfo =
-            ElementaryEventBasicInfo(
+        val expectedNotificationEventBasicInfo =
+            NotificationEventBasicInfo(
                 companyId = companyId,
                 framework = DataTypeEnum.heimathafen,
                 reportingPeriod = dummyReportingPeriod,
             )
 
-        assertEquals(expectedElementaryEventBasicInfo, actualElementaryEventBasicInfo)
+        assertEquals(expectedNotificationEventBasicInfo, actualElementaryEventBasicInfo)
     }
 
     @Test

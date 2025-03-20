@@ -2,8 +2,7 @@ package org.dataland.datalandcommunitymanager.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.NotificationEventBasicInfo
 import org.dataland.datalandcommunitymanager.services.elementaryEventProcessing.PrivateDataUploadProcessor
 import org.dataland.datalandmessagequeueutils.constants.ActionType
 import org.dataland.datalandmessagequeueutils.constants.MessageType
@@ -98,9 +97,9 @@ class PrivateDataUploadProcessorTest {
         }
 
         val actualElementaryEventBasicInfo = privateDataUploadProcessor.createElementaryEventBasicInfo(payload)
-        val expectedElementaryEventBasicInfo =
-            ElementaryEventBasicInfo(dummyCompanyId, DataTypeEnum.heimathafen, dummyReportingPeriod)
+        val expectedNotificationEventBasicInfo =
+            NotificationEventBasicInfo(dummyCompanyId, DataTypeEnum.heimathafen, dummyReportingPeriod)
 
-        assertEquals(expectedElementaryEventBasicInfo, actualElementaryEventBasicInfo)
+        assertEquals(expectedNotificationEventBasicInfo, actualElementaryEventBasicInfo)
     }
 }

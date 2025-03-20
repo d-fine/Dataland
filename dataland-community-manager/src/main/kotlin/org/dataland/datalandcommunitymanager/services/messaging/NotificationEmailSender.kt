@@ -53,11 +53,14 @@ class NotificationEmailSender(
         sendEmailMessage(internalEmailContent, listOf(EmailRecipient.Internal), listOf(EmailRecipient.InternalCc), correlationId)
     }
 
-    /*
+    /**
+     * Function for sending the weekly data request summary email.
+     */
     fun sendDataRequestSummaryEmail() {
-        // toto
+        return
     }
 
+    /*
     private fun buildExternalAndInternalInvestorRelationshipSummaryEmail(
         unprocessedEvents: List<NotificationEventEntity>,
         companyId: String,

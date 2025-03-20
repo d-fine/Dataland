@@ -8,4 +8,5 @@ enum class NotificationEventType {
     InvestorRelationshipsEvent,
     UpdatedEvent,
     NonSourceableEvent,
+    UploadEvent,
 }

@@ -21,7 +21,7 @@ data class NotificationEventEntity(
     @Enumerated(EnumType.STRING)
     val notificationEventType: NotificationEventType,
     val userId: UUID? = null,
-    val isProcessed: Boolean,
+    var isProcessed: Boolean,
     val companyId: UUID,
     val framework: DataTypeEnum,
     val reportingPeriod: String,

@@ -23,12 +23,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
     JsonSubTypes.Type(value = DatasetRequestedClaimOwnership::class, name = "DatasetRequestedClaimOwnership"),
     JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetRequested"),
     JsonSubTypes.Type(value = AccessToDatasetRequested::class, name = "AccessToDatasetGranted"),
-    JsonSubTypes.Type(value = SingleDatasetUploadedEngagement::class, name = "SingleDatasetUploadedEngagement"),
     JsonSubTypes.Type(value = MultipleDatasetsUploadedEngagement::class, name = "MultipleDatasetsUploadedEngagement"),
     JsonSubTypes.Type(value = CompanyOwnershipClaimApproved::class, name = "CompanyOwnershipClaimApproved"),
     JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),
     JsonSubTypes.Type(value = DataRequestAnswered::class, name = "DataRequestAnswered"),
-    JsonSubTypes.Type(value = DataRequestClosed::class, name = "DataRequestClosed"),
     JsonSubTypes.Type(value = InternalEmailContentTable::class, name = "KeyValueTable"),
 )
 sealed class TypedEmailContent {

@@ -1,7 +1,6 @@
 package org.dataland.datalandcommunitymanager.controller
 
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
-import org.dataland.datalandbackend.utils.IdUtils
 import org.dataland.datalandcommunitymanager.api.RequestApi
 import org.dataland.datalandcommunitymanager.model.companyRoles.CompanyRole
 import org.dataland.datalandcommunitymanager.model.dataRequest.AccessStatus
@@ -171,7 +170,7 @@ class RequestController(
             dataRequestAlterationManager.patchDataRequest(
                 dataRequestId.toString(),
                 dataRequestPatch,
-                correlationId = IdUtils.generateUUID(),
+                correlationId = UUID.randomUUID().toString(),
             ),
         )
 }

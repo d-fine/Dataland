@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.dataland.datalandbackend.openApiClient.api.MetaDataControllerApi
 import org.dataland.datalandbackendutils.model.QaStatus
 import org.dataland.datalandcommunitymanager.events.NotificationEventType
-import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.ElementaryEventBasicInfo
-import org.dataland.datalandcommunitymanager.repositories.UploadEventRepository
+import org.dataland.datalandcommunitymanager.model.elementaryEventProcessing.NotificationEventBasicInfo
 import org.dataland.datalandcommunitymanager.services.NotificationService
 import org.dataland.datalandmessagequeueutils.constants.ExchangeName
 import org.dataland.datalandmessagequeueutils.constants.MessageHeaderKey
@@ -32,11 +31,11 @@ import org.springframework.stereotype.Component
 @Component
 class PublicDataUploadProcessor(
     @Autowired notificationService: NotificationService,
-    @Autowired uploadEventRepository: UploadEventRepository,
+    @Autowired notificationEventRepository: NotificationEventRepository,
     @Autowired objectMapper: ObjectMapper,
     @Autowired val metaDataControllerApi: MetaDataControllerApi,
-) : BaseEventProcessor(notificationService, uploadEventRepository, objectMapper) {
-    override val elementaryEventType = NotificationEventType.UploadEvent
+) : BaseEventProcessor(notificationService, notificationEventRepository, objectMapper) {
+    override val notificationEventType = NotificationEventType.UploadEvent
     override val messageType = MessageType.QA_STATUS_UPDATED
     override val actionType = null
     override var logger: Logger = LoggerFactory.getLogger(this.javaClass)
@@ -87,7 +86,7 @@ class PublicDataUploadProcessor(
         }
     }
 
-    override fun createElementaryEventBasicInfo(jsonString: String): ElementaryEventBasicInfo {
+    override fun createElementaryEventBasicInfo(jsonString: String): NotificationEventBasicInfo {
         val metaDataJsonObject = JSONObject(jsonString)
         val frameworkValue = metaDataJsonObject.getString("dataType")
         metaDataJsonObject.remove("dataType")
