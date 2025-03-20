@@ -6,17 +6,28 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 /**
- * A JPA repository for storing and retrieving notification events for elementary event types
+ * A JPA repository for storing and retrieving notification events for notification event types
  */
 interface NotificationEventRepository : JpaRepository<NotificationEventEntity, UUID> {
     /**
-     * A function for searching for notification events by companyId and the type of the associated elementary events
-     * @param companyId to filter for
-     * @param elementaryEventType to filter for
-     * @returns the notification events
+     * A function for searching for unprocessed notification events by companyId and the type of the notification events
+     * @param companyId the UUID of the company to filter by
+     * @param notificationEventType default set to InvestorRelationshipsEvent
+     * @return a list of unprocessed notification events matching the criteria
      */
-    fun findNotificationEventByCompanyIdAndElementaryEventType(
+    fun findAllByCompanyIdAndNotificationEventTypeAndIsProcessedFalse(
         companyId: UUID,
-        elementaryEventType: NotificationEventType,
+        notificationEventType: NotificationEventType = NotificationEventType.InvestorRelationshipsEvent,
+    ): List<NotificationEventEntity>
+
+    /**
+     * A function for searching for unprocessed notification events by userId and the type of the notification events
+     * @param userId the UUID of the user to filter by.
+     * @param notificationEventTypes a list of notification event types to filter by.
+     * @return a list of unprocessed notification events matching the criteria.
+     */
+    fun findAllByUserIdAndNotificationEventTypeInAndIsProcessedFalse(
+        userId: UUID,
+        notificationEventTypes: List<NotificationEventType>,
     ): List<NotificationEventEntity>
 }

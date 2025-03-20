@@ -1,4 +1,5 @@
 <#include "../general/general_makros_html.ftl">
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +25,7 @@
     <@spacerRow/>
     <tr>
         <td colspan="3">
-            <#include "../general/display_request.ftl">
+            <#include "../general/data_request_information.ftl">
         </td>
     </tr>
     <@spacerRowTiny/>

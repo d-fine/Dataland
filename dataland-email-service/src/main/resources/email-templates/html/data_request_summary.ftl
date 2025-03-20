@@ -1,5 +1,52 @@
 <#include "../general/general_makros_html.ftl">
-<#include "../general/summary_table.ftl">
+
+<#---------------------------------->
+<!-- MACRO USED ONLY IN THIS FILE -->
+<#---------------------------------->
+<#macro renderDataRequestSummaryTable(data)>
+    <div style="background-color: #f6f6f6; padding: 20px; border-radius: 15px">
+        <table style="background-color: #f6f6f6; border-collapse: collapse; margin: 0; width: 100%">
+            <tbody>
+            <#assign previousFramework = "">
+            <#list data as item>
+                <#if (item_index != 0) && (item.framework != previousFramework)>
+                    <@spacerRowHorizontalLine position="top"/>
+                </#if>
+                <tr>
+                    <td>
+                        <#if item.framework != previousFramework>Framework</#if>
+                    </td>
+                    <td>Reporting period</td>
+                    <td>
+                        <#if (item.companies?size > 1)>Companies<#else>Company</#if>
+                    </td>
+                </tr>
+                <@spacerRowTiny />
+                <tr>
+                    <td style="vertical-align: top; font-weight: bold; font-size:19px">
+                        <#if item.framework != previousFramework>${item.framework}</#if>
+                    </td>
+                    <td style="vertical-align: top; font-weight: bold; font-size:19px">${item.reportingPeriod}</td>
+                    <td style="vertical-align: top; font-weight: bold; font-size:19px">
+                        <#list item.companies as company>
+                            <#if company_index < 5><div>${company}</div></#if>
+                        </#list>
+                        <#if (item.companies?size > 5)><div>and more</div></#if>
+                    </td>
+                </tr>
+                <#if item_index + 1 != data?size>
+                    <@spacerRow />
+                </#if>
+                <#assign previousFramework = item.framework>
+            </#list>
+            </tbody>
+        </table>
+    </div>
+</#macro>
+
+<#---------------------->
+<!-- TEMPLATE CONTENT -->
+<#---------------------->
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,13 +83,13 @@
     <div class="container">
         <table>
             <tbody>
+            <!-- EMAIL TEXT -->
             <@spacerRow/>
             <tr>
                 <td colspan="3">Weekly Summary 📣
                     <br><br>Data for your request(s) has been updated on Dataland this week,
-                    listed in the sections below.
-                    Please note that you may have already reviewed these updates.
-                    <br><br>Check details for all your requests using the link below:</td>
+                    listed in the sections below. Please note that you may have already reviewed these updates.
+                    <br><br>Check details for all your requests using the following link:</td>
             </tr>
             <@spacerRow/>
             <@buttonLink url="${baseUrl}/requests" linkText="VIEW MY DATA REQUESTS" />
@@ -51,11 +98,7 @@
             <#if newData?exists && (newData?size > 0)>
                 <@boldTitle title="New Data" />
                 <@spacerRow/>
-                <tr>
-                    <td colspan="3"> <@renderTable data=newData /> </td>
-                </tr>
-<#--                <@spacerRow />-->
-<#--                <@buttonLink url="${baseUrl}/requests" linkText="VIEW NEW DATA ON MY DATA REQUESTS" />-->
+                <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=newData /> </td> </tr>
                 <@spacerRow/>
                 <@spacerRow/>
             </#if>
@@ -63,9 +106,7 @@
             <#if updatedData?exists && (updatedData?size > 0)>
                 <@boldTitle title="Updated Data" />
                 <@spacerRow/>
-                <tr>
-                    <td colspan="3"> <@renderTable data=updatedData /> </td>
-                </tr>
+                <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=updatedData /> </td> </tr>
                 <@spacerRow/>
                 <@spacerRow/>
             </#if>
@@ -73,9 +114,7 @@
             <#if nonSourceableData?exists && (nonSourceableData?size > 0)>
                 <@boldTitle title="Non sourceable Data" />
                 <@spacerRow/>
-                <tr>
-                    <td colspan="3"> <@renderTable data=nonSourceableData /> </td>
-                </tr>
+                <tr> <td colspan="3"> <@renderDataRequestSummaryTable data=nonSourceableData /> </td> </tr>
                 <@spacerRow/>
                 <@spacerRow/>
             </#if>
