@@ -8,15 +8,13 @@ import org.dataland.communitymanager.openApiClient.model.RequestStatus
 import org.dataland.communitymanager.openApiClient.model.SingleDataRequest
 import org.dataland.datalandbackend.openApiClient.model.CompanyInformation
 import org.dataland.datalandbackend.openApiClient.model.IdentifierType
-import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_THRESHOLD
-import org.dataland.datalandbackendutils.exceptions.SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE
 import org.dataland.e2etests.BASE_PATH_TO_COMMUNITY_MANAGER
 import org.dataland.e2etests.auth.GlobalAuth.withTechnicalUser
 import org.dataland.e2etests.auth.JwtAuthenticationHelper
 import org.dataland.e2etests.auth.TechnicalUser
 import org.dataland.e2etests.utils.ApiAccessor
 import org.dataland.e2etests.utils.communityManager.causeClientExceptionBySingleDataRequest
-import org.dataland.e2etests.utils.communityManager.check400ClientExceptionErrorMessage
+import org.dataland.e2etests.utils.communityManager.checkClientExceptionErrorMessage
 import org.dataland.e2etests.utils.communityManager.checkErrorMessageForNonUniqueIdentifiersInSingleRequest
 import org.dataland.e2etests.utils.communityManager.checkThatAllReportingPeriodsAreTreatedAsExpected
 import org.dataland.e2etests.utils.communityManager.checkThatDataRequestExistsExactlyOnceInRecentlyStored
@@ -99,7 +97,7 @@ class SingleDataRequestsTest {
             assertThrows<ClientException> {
                 requestControllerApi.postSingleDataRequest(invalidSingleDataRequest)
             }
-        check400ClientExceptionErrorMessage(clientException)
+        checkClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("The specified company is unknown to Dataland"))
         assertTrue(
@@ -156,7 +154,7 @@ class SingleDataRequestsTest {
                     ),
                 )
             }
-        check400ClientExceptionErrorMessage(clientException)
+        checkClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("The list of reporting periods must not be empty."))
         assertTrue(
@@ -228,7 +226,7 @@ class SingleDataRequestsTest {
                 assertThrows<ClientException> {
                     postStandardSingleDataRequest(validLei, it.toSet(), "Dummy test message.")
                 }
-            check400ClientExceptionErrorMessage(clientException)
+            checkClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
             assertTrue(responseBody.contains("Invalid contact ${it[0]}"))
             assertTrue(
@@ -252,7 +250,7 @@ class SingleDataRequestsTest {
                 assertThrows<ClientException> {
                     postStandardSingleDataRequest(validLei, it, "Dummy test message.")
                 }
-            check400ClientExceptionErrorMessage(clientException)
+            checkClientExceptionErrorMessage(clientException)
             val responseBody = (clientException.response as ClientError<*>).body as String
             assertTrue(responseBody.contains("No recipients provided for the message"))
             assertTrue(
@@ -375,13 +373,14 @@ class SingleDataRequestsTest {
                 message = "Does not matter for this test.",
             )
 
-        val expectedExceptionSummary = "Failed to retrieve companies by search string."
-        val expectedExceptionMessage = "$SEARCHSTRING_TOO_SHORT_VALIDATION_MESSAGE: $SEARCHSTRING_TOO_SHORT_THRESHOLD"
+        val expectedExceptionSummary = "The company identifier is unknown."
+        val expectedExceptionMessage = "No company is associated to the identifier $tooShortCompanyIdentifier."
+        val expectedErrorCode = "404"
 
         withTechnicalUser(TechnicalUser.Reader) {
             val exception =
                 assertThrows<ClientException> { requestControllerApi.postSingleDataRequest(singleDataRequest) }
-            check400ClientExceptionErrorMessage(exception)
+            checkClientExceptionErrorMessage(exception, expectedErrorCode)
 
             val responseString = (exception.response as ClientError<*>).body as String
             assertTrue(responseString.contains(expectedExceptionSummary))

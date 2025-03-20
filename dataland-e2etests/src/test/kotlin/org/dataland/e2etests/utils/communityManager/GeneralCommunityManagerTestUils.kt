@@ -125,9 +125,12 @@ fun checkThatDataRequestExistsExactlyOnceInRecentlyStored(
     )
 }
 
-fun check400ClientExceptionErrorMessage(clientException: ClientException) {
-    assertEquals(400, clientException.statusCode)
-    assertEquals("Client error : 400 ", clientException.message)
+fun checkClientExceptionErrorMessage(
+    clientException: ClientException,
+    errorCode: String? = "400",
+) {
+    assertEquals(errorCode, clientException.statusCode)
+    assertEquals("Client error : $errorCode ", clientException.message)
 }
 
 fun checkThatRequestExistsExactlyOnceOnAggregateLevelWithCorrectCount(

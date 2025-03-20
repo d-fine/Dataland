@@ -3,6 +3,7 @@ package org.dataland.datalandcommunitymanager.services
 import org.dataland.datalandbackend.openApiClient.model.DataTypeEnum
 import org.dataland.datalandbackendutils.exceptions.InvalidInputApiException
 import org.dataland.datalandbackendutils.exceptions.QuotaExceededException
+import org.dataland.datalandbackendutils.exceptions.ResourceNotFoundApiException
 import org.dataland.datalandbackendutils.services.KeycloakUserService
 import org.dataland.datalandcommunitymanager.entities.MessageEntity
 import org.dataland.datalandcommunitymanager.model.dataRequest.SingleDataRequest
@@ -116,7 +117,7 @@ class SingleDataRequestManager
             val (acceptedIdentifiersToCompanyIdAndName, rejectedIdentifiers) =
                 utils.performIdentifierValidation(listOf(singleDataRequest.companyIdentifier))
             if (rejectedIdentifiers.isNotEmpty()) {
-                throw InvalidInputApiException(
+                throw ResourceNotFoundApiException(
                     "The company identifier is unknown.",
                     "No company is associated to the identifier ${rejectedIdentifiers.first()}.",
                 )
