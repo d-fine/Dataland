@@ -48,7 +48,7 @@ class EuTaxonomyFinancials {
 
         val companyInformation =
             FrameworkTestDataProvider.forFrameworkPreparedFixtures(EutaxonomyFinancialsData::class.java).getByCompanyName(companyName)
-        val dataset = companyInformation!!.t
+        val dataset = companyInformation.t
 
         val uploadPair = Pair(dataset, "2023")
 

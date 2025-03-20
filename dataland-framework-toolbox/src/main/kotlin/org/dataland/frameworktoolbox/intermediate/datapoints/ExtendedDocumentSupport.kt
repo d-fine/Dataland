@@ -4,12 +4,11 @@ import org.dataland.frameworktoolbox.specific.datamodel.Annotation
 import org.dataland.frameworktoolbox.specific.datamodel.TypeReference
 import org.dataland.frameworktoolbox.specific.datamodel.annotations.ValidAnnotation
 import org.dataland.frameworktoolbox.specific.qamodel.getBackendClientTypeReference
-import org.dataland.frameworktoolbox.specific.viewconfig.functional.FrameworkDisplayValueLambda
 
 /**
  * Elements marked with ExtendedDocumentSupport are converted to ExtendedDataPoints
  */
-data object ExtendedDocumentSupport : DocumentSupport {
+data object ExtendedDocumentSupport : DocumentSupport by SimpleDocumentSupport {
     override fun getNamingPrefix(): String = "extended"
 
     override fun getJvmTypeReference(
@@ -31,19 +30,6 @@ data object ExtendedDocumentSupport : DocumentSupport {
             true,
             listOf(getJvmTypeReference(innerType, nullable).getBackendClientTypeReference()),
         )
-
-    override fun getFrameworkDisplayValueLambda(
-        innerLambda: FrameworkDisplayValueLambda,
-        fieldLabel: String?,
-        dataPointAccessor: String,
-    ): FrameworkDisplayValueLambda = SimpleDocumentSupport.getFrameworkDisplayValueLambda(innerLambda, fieldLabel, dataPointAccessor)
-
-    override fun getDataAccessor(
-        dataPointAccessor: String,
-        nullable: Boolean,
-    ): String =
-        SimpleDocumentSupport
-            .getDataAccessor(dataPointAccessor, nullable)
 
     override fun getFixtureExpression(
         nullableFixtureExpression: String,

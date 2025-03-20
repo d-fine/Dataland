@@ -35,7 +35,7 @@ class InvalidSfdrRequestTests {
             assertThrows<ClientException> {
                 apiAccessor.sfdrUploaderFunction(
                     companyInformation.actualStoredCompany.companyId,
-                    oneInvalidSfdrDataset!!.t,
+                    oneInvalidSfdrDataset.t,
                     "",
                 )
             }

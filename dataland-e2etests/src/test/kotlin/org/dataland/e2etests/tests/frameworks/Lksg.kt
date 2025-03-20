@@ -120,7 +120,7 @@ class Lksg {
         val companyName = "TestForBrokenFileReference"
         val companyInformation =
             FrameworkTestDataProvider.forFrameworkPreparedFixtures(LksgData::class.java).getByCompanyName(companyName)
-        val lksgData = companyInformation!!.t
+        val lksgData = companyInformation.t
 
         val dataset = removeNullMapEntriesFromSupplierCountryCountAndSortAllRiskPositions(lksgData)
 

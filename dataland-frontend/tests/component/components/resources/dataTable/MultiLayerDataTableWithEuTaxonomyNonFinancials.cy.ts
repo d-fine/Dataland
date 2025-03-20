@@ -52,22 +52,22 @@ describe('Component test for the Eu-Taxonomy-Non-Financials view page', () => {
 
         gammaCapex = assertDefined(fixturesForTests[2].t.capex);
         const gammaCapexAlignedActivities = assertDefined(gammaCapex.alignedActivities);
-        if (gammaCapexAlignedActivities.value!.length < 1) {
+        if (!gammaCapexAlignedActivities.value || gammaCapexAlignedActivities.value.length < 1) {
           throw new Error(
             'Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value![0];
+        gammaCapexFirstAlignedActivity = gammaCapexAlignedActivities.value[0];
         gammaCapexFirstAlignedActivity.activityName = Activity.Afforestation;
         gammaCapexFirstAlignedActivity.substantialContributionToClimateChangeAdaptationInPercent = 0;
 
         const gammaCapexNonAlignedActivities = assertDefined(gammaCapex.nonAlignedActivities);
-        if (gammaCapexNonAlignedActivities.value!.length < 1) {
+        if (!gammaCapexNonAlignedActivities.value || gammaCapexNonAlignedActivities.value.length < 1) {
           throw new Error(
             'Non-Aligned activities list for capex of gamma dataset needs at least one element for this test to make sense.'
           );
         }
-        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value![0];
+        gammaCapexFirstNonAlignedActivity = gammaCapexNonAlignedActivities.value[0];
         gammaCapexFirstNonAlignedActivity.activityName = Activity.Education;
         assertDefined(gammaCapexFirstNonAlignedActivity.share).relativeShareInPercent = 0;
 
