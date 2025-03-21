@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalAssetManagementBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToPollutionPreventionAndControlInPercentOfWhichEnabling",
+  "name" : "Share of CapEx-based KPI substantially contributing to Pollution Prevention and Control in Percent - Of which Enabling",
+  "businessDefinition" : "Taxonomy-aligned and enabling Proportion of CapEx-based KPI substantially contributing to Pollution Prevention and Control",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

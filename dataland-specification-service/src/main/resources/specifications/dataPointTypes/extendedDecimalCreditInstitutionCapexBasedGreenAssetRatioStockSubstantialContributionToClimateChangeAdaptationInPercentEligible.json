@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalCreditInstitutionCapexBasedGreenAssetRatioStockSubstantialContributionToClimateChangeAdaptationInPercentEligible",
+  "name" : "Substantial Contribution to Climate Change Adaptation in Percent - Eligible",
+  "businessDefinition" : "Taxonomy-eligible Proportion of CapEx-based Green Asset Ratio substantially contributing to Climate Change Adaptation",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

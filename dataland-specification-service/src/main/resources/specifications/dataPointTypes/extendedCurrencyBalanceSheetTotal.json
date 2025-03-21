@@ -3,6 +3,6 @@
   "name" : "Balance Sheet Total",
   "businessDefinition" : "The sum of all assets listed on the balance sheet, representing the total value of the company's resources.",
   "dataPointBaseTypeId" : "extendedCurrency",
-  "frameworkOwnership" : "additional-company-information",
+  "frameworkOwnership" : [ "additional-company-information" ],
   "constraints" : null
 }

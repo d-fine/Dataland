@@ -1,0 +1,8 @@
+{
+  "id" : "customEnumEuTaxonomyReportingAssurance",
+  "name" : "Assurance",
+  "businessDefinition" : "Level of Assurance of the EU Taxonomy Disclosure (Reasonable Assurance, Limited Assurance, None)",
+  "dataPointBaseTypeId" : "customEnumEuTaxonomyReportingAssurance",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : null
+}

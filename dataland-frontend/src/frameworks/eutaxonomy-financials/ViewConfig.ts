@@ -51,7 +51,7 @@ export const eutaxonomyFinancialsViewConfiguration: MLDTConfig<EutaxonomyFinanci
           {
             type: 'cell',
             label: 'Fiscal Year End',
-            explanation: 'The date at which the fiscal year ends.',
+            explanation: 'The date the fiscal year ends.',
             shouldDisplay: (): boolean => true,
             valueGetter: (dataset: EutaxonomyFinancialsData): AvailableMLDTDisplayObjectTypes =>
               wrapDisplayValueWithDatapointInformation(

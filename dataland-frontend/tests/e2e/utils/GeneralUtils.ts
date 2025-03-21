@@ -58,6 +58,19 @@ export function compareObjectKeysAndValuesDeep(
     }
   }
 }
+
+/**
+ * This method checks if an object is null or if all nested objects are null
+ * @param object the object to check
+ * @returns true if the object is null or if all nested objects are null, false otherwise
+ */
+function isNullOrNestedNull(object: null | undefined | Record<string, object> | object): boolean {
+  if (object === null || object === undefined) {
+    return true;
+  }
+  return Object.values(object).every((value) => isNullOrNestedNull(value));
+}
+
 /**
  * This method compares if two values are the same, if not it will throw an error
  * @param valueA the first value of the comparison
@@ -76,7 +89,7 @@ function checkIfContentIsIdentical(
   };
   if (typeof valueA === 'object' && typeof valueB === 'object') {
     if (valueA === null || valueB === null) {
-      if (valueA !== valueB && !ignoredValue(newPath, ignoreFields)) {
+      if (isNullOrNestedNull(valueA) !== isNullOrNestedNull(valueB) && !ignoredValue(newPath, ignoreFields)) {
         throwErrorBecauseOfFieldValue(newPath);
       }
     } else {

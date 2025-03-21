@@ -7,7 +7,7 @@ object SpecificationNamingConvention {
     /**
      * Generate a name for a specification element
      */
-    fun generateDataPointSpecificationName(
+    fun generateDataPointTypeId(
         documentSupport: DocumentSupport,
         identifier: String,
         dataType: String,

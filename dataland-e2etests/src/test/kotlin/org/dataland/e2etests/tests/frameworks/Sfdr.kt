@@ -4,9 +4,9 @@ import org.dataland.datalandbackend.openApiClient.infrastructure.ClientError
 import org.dataland.datalandbackend.openApiClient.infrastructure.ClientException
 import org.dataland.datalandbackend.openApiClient.model.SfdrData
 import org.dataland.e2etests.utils.ApiAccessor
-import org.dataland.e2etests.utils.DataPointTestUtils
 import org.dataland.e2etests.utils.DocumentControllerApiAccessor
 import org.dataland.e2etests.utils.api.ApiAwait
+import org.dataland.e2etests.utils.assertDataEqualsIgnoringPublicationDates
 import org.dataland.e2etests.utils.testDataProviders.FrameworkTestDataProvider
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -51,7 +51,10 @@ class Sfdr {
         assertEquals(receivedDataMetaInformation.companyId, downloadedAssociatedData.companyId)
         assertEquals(receivedDataMetaInformation.dataType, downloadedAssociatedDataType)
 
-        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+        assertDataEqualsIgnoringPublicationDates(
+            listOfOneSfdrDataset[0], downloadedAssociatedData.data,
+            { it.general?.general?.referencedReports },
+        )
     }
 
     @Test
@@ -74,7 +77,10 @@ class Sfdr {
                     )
             }
 
-        DataPointTestUtils().assertDataEqualsIgnoringPublicationDates(listOfOneSfdrDataset[0], downloadedAssociatedData.data)
+        assertDataEqualsIgnoringPublicationDates(
+            listOfOneSfdrDataset[0], downloadedAssociatedData.data,
+            { it.general?.general?.referencedReports },
+        )
     }
 
     @Test

@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveTurnoverBasedShareOfTurnoverBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentOfWhichTransitional",
+  "name" : "Share of Turnover-based KPI substantially contributing to Climate Change Mitigation in Percent - Of which Transitional",
+  "businessDefinition" : "Taxonomy-aligned and transitional Proportion of Turnover-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

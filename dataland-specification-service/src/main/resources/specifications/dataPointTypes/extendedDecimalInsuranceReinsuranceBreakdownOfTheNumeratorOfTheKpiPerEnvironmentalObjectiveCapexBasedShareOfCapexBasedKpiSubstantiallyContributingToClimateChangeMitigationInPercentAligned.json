@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInsuranceReinsuranceBreakdownOfTheNumeratorOfTheKpiPerEnvironmentalObjectiveCapexBasedShareOfCapexBasedKpiSubstantiallyContributingToClimateChangeMitigationInPercentAligned",
+  "name" : "Share of CapEx-based KPI substantially contributing to Climate Change Mitigation in Percent - Aligned",
+  "businessDefinition" : "Taxonomy-aligned Proportion of CapEx-based KPI substantially contributing to Climate Change Mitigation - provided 'do-not-significant harm' (DNSH) and social safeguards positive assessment",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}

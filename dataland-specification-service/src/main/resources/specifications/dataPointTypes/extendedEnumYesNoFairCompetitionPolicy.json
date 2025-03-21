@@ -3,6 +3,6 @@
   "name" : "Fair Competition Policy",
   "businessDefinition" : "Do you have policies and procedures in place related to fair competition and anti-competitive cartels? If yes, please share the relevant documents with us.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

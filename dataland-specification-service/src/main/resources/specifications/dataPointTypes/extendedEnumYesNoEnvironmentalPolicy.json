@@ -3,6 +3,6 @@
   "name" : "Environmental Policy",
   "businessDefinition" : "Existence of an environmental policy.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

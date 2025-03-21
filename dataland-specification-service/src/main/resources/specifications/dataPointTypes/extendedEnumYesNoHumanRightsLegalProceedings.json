@@ -3,6 +3,6 @@
   "name" : "Human Rights Legal Proceedings",
   "businessDefinition" : "Involvement in Human Rights related legal proceedings.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

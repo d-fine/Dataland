@@ -202,19 +202,13 @@ class DataPointManager
             newActiveDataId: String?,
             correlationId: String,
         ) {
-            logger.info("Updating currently active data point for $dataPointDimensions (correlation ID: $correlationId).")
-            val currentlyActiveDataId = metaDataManager.getCurrentlyActiveDataId(dataPointDimensions)
-            logger.info("Currently and newly active IDs are $currentlyActiveDataId and $newActiveDataId (correlation ID: $correlationId).")
-            if (newActiveDataId.isNullOrEmpty() && !currentlyActiveDataId.isNullOrEmpty()) {
-                logger.info("Setting data point with dataId $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, null)
-            } else if (newActiveDataId != currentlyActiveDataId) {
-                logger.info("Setting $newActiveDataId to active and $currentlyActiveDataId to inactive (correlation ID: $correlationId).")
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(currentlyActiveDataId, null)
-                metaDataManager.updateCurrentlyActiveFlagOfDataPoint(newActiveDataId, true)
-            } else {
-                logger.info("No update of the currently active flag required (correlation ID: $correlationId).")
-            }
+            metaDataManager.updateCurrentlyActiveDataPointBulk(
+                listOf(
+                    DataPointMetaInformationManager.UpdateCurrentlyActiveDataPointTask(
+                        dataPointDimensions, newActiveDataId, correlationId,
+                    ),
+                ),
+            )
         }
 
         /**

@@ -3,6 +3,6 @@
   "name" : "Excessive CEO pay ratio",
   "businessDefinition" : "Annual total compensation for the highest compensated individual divided by the median annual total compensation for all employees (excluding the highest-compensated individual). See Regulation (EU) 2022/1288, Annex I, table 3, indicator nr. 8.",
   "dataPointBaseTypeId" : "extendedDecimal",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : [ "min:0" ]
 }

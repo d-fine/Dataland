@@ -3,6 +3,6 @@
   "name" : "Transparency Disclosure Policy",
   "businessDefinition" : "Do you have a transparency policy? If yes, please share the policy with us. According to the OECD Guidelines for Multinational Enterprises, multinational companies should inform the public not only about their financial performance, but also about all of the important aspects of their business activities, such as how they are meeting social and environmental standards and what risks they foresee linked to their business activities.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

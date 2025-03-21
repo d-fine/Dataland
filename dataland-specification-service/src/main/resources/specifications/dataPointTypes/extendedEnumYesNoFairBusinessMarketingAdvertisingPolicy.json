@@ -3,6 +3,6 @@
   "name" : "Fair Business Marketing Advertising Policy",
   "businessDefinition" : "Do you have policies and procedures in place to apply fair business, marketing and advertising practices and to guarantee the safety and quality of the goods and services? If yes, please share the relevant documents with us.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

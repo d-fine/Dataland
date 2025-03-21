@@ -3,6 +3,6 @@
   "name" : "Primary Forest And Wooded Land Of Native Species Exposure",
   "businessDefinition" : "Sites or operations that are located, either partially or entirely, in or near primary forests and other wooded areas where their activities have a negative impact on these environments. Refer to Regulation (EU) 2022/1288, Annex I, table 1, indicator number 7 for more details.",
   "dataPointBaseTypeId" : "extendedEnumYesNo",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

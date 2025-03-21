@@ -1,5 +1,7 @@
 package org.dataland.datalandspecification.database.fs
 
+import com.fasterxml.jackson.core.util.DefaultIndenter
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.dataland.datalandspecification.database.SpecificationDatabase
@@ -34,10 +36,14 @@ private inline fun <reified T> saveSpecifications(
     objectMapper: ObjectMapper,
     specifications: Map<String, T>,
 ) {
+    val allExistingPaths = folder.listFiles()?.map { it.name }?.toMutableSet() ?: mutableSetOf()
     specifications.forEach { (id, specification) ->
         val file = File(folder, "$id.json")
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, specification)
+        allExistingPaths.remove(file.name)
+        val printer = DefaultPrettyPrinter().withObjectIndenter(DefaultIndenter().withLinefeed("\n"))
+        objectMapper.writer(printer).writeValue(file, specification)
     }
+    allExistingPaths.forEach { require(File(folder, it).delete()) }
 }
 
 /**

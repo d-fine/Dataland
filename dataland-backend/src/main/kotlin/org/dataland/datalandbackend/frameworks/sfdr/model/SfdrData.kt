@@ -16,7 +16,7 @@ import org.dataland.datalandbackend.frameworks.sfdr.model.validator.ReferencedRe
 @ReferencedReportsListValidator()
 data class SfdrData(
     @field:Valid()
-    val general: SfdrGeneral,
+    val general: SfdrGeneral? = null,
     @field:Valid()
     val environmental: SfdrEnvironmental? = null,
     @field:Valid()

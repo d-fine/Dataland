@@ -3,6 +3,6 @@
   "name" : "Applicable High Impact Climate Sectors",
   "businessDefinition" : "Sector applicable activities.",
   "dataPointBaseTypeId" : "plainSfdrHighImpactClimateSectors",
-  "frameworkOwnership" : "sfdr",
+  "frameworkOwnership" : [ "sfdr" ],
   "constraints" : null
 }

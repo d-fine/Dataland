@@ -1,0 +1,8 @@
+{
+  "id" : "extendedDecimalInvestmentFirmsOtherServicesCapexBasedCapexBasedProportionOfRevenueSubstantiallyContributingToCircularEconomyAligned",
+  "name" : "CapEx-based Proportion of Revenue substantially contributing to Circular Economy - Aligned",
+  "businessDefinition" : "Taxonomy-aligned CapEx-based Proportion of Revenue (Fees, Commissions and other Monetary Services) from Investments and Services and Activities substantially contributing to Circular Economy",
+  "dataPointBaseTypeId" : "extendedDecimal",
+  "frameworkOwnership" : [ "eutaxonomy-financials" ],
+  "constraints" : [ "between:0,100" ]
+}
