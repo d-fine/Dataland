@@ -37,13 +37,13 @@ class CompanyIdValidator(
     }
 
     /**
-     * Checks if a companyId exists on Dataland by trying to retrieve it in the backend.
-     * If it does not exist the method catches the not-found-exception from the backend and throws a
-     * resource-not-found exception here in the community manager.
+     * Asserts that a companyId is valid by querring the backend.
+     * If it does not exist the method catches the client exception and throws a
+     * resource-not-found exception.
      * @param companyId is the companyId to check for
-     * @returns nothing if the company exists or throws an resource not found exception if the company does not exists
+     * @throws ResourceNotFoundApiException if the companyId is not valid
      */
-    fun checkIfCompanyIdIsValid(companyId: String) {
+    fun assertCompanyIdIsValid(companyId: String) {
         try {
             return companyApi.isCompanyIdValid(companyId)
         } catch (e: ClientException) {

@@ -90,7 +90,7 @@ class DataMetaInformationManager(
      * @return a list of meta info about data depending on the filters
      */
     fun searchDataMetaInfo(searchFilter: DataMetaInformationSearchFilter): List<DataMetaInformationEntity> {
-        searchFilter.companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.verifyCompanyIdExists(it) }
+        searchFilter.companyId?.takeIf { it.isNotBlank() }?.let { companyQueryManager.assertCompanyIdExists(it) }
         return dataMetaInformationRepository.searchDataMetaInformation(searchFilter)
     }
 

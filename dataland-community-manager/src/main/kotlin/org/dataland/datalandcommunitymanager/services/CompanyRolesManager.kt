@@ -133,7 +133,7 @@ class CompanyRolesManager(
         userId: String?,
     ): List<CompanyRoleAssignmentEntity> {
         if (companyId != null) {
-            companyIdValidator.checkIfCompanyIdIsValid(companyId)
+            companyIdValidator.assertCompanyIdIsValid(companyId)
         }
         return companyRoleAssignmentRepository.getCompanyRoleAssignmentsByProvidedParameters(
             companyId = companyId, userId = userId, companyRole = companyRole,
@@ -162,7 +162,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ) {
-        companyIdValidator.checkIfCompanyIdIsValid(companyId)
+        companyIdValidator.assertCompanyIdIsValid(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         val companyRoleAssignmentEntityOptional = companyRoleAssignmentRepository.findById(id)
         if (companyRoleAssignmentEntityOptional.isPresent) {
@@ -184,7 +184,7 @@ class CompanyRolesManager(
         companyId: String,
         userId: String,
     ) {
-        companyIdValidator.checkIfCompanyIdIsValid(companyId)
+        companyIdValidator.assertCompanyIdIsValid(companyId)
         val id = CompanyRoleAssignmentId(companyRole = companyRole, companyId = companyId, userId = userId)
         if (!companyRoleAssignmentRepository.existsById(id)) {
             throwExceptionDueToRoleNotAssignedToUser(companyRole, companyId, userId)
@@ -197,7 +197,7 @@ class CompanyRolesManager(
      */
     @Transactional(readOnly = true)
     fun validateIfCompanyHasAtLeastOneCompanyOwner(companyId: String) {
-        companyIdValidator.checkIfCompanyIdIsValid(companyId)
+        companyIdValidator.assertCompanyIdIsValid(companyId)
         val companyRoleAssignments = getCompanyRoleAssignmentsByParameters(CompanyRole.CompanyOwner, companyId, null)
         if (companyRoleAssignments.isEmpty()) {
             throw ResourceNotFoundApiException(

@@ -90,7 +90,7 @@ fun sendBulkRequestWithEmptyInputAndCheckErrorMessage(
             causeClientExceptionByBulkDataRequest(
                 identifiers, dataTypes, reportingPeriods,
             )
-        check400ClientExceptionErrorMessage(clientException)
+        checkClientExceptionErrorMessage(clientException)
         val responseBody = (clientException.response as ClientError<*>).body as String
         assertTrue(responseBody.contains("No empty lists are allowed as input for bulk data request."))
         assertTrue(

@@ -184,7 +184,7 @@ class CompanyRoleChecker(
         companyInformationPatch: CompanyInformationPatch,
         companyId: String,
     ): Boolean {
-        companyQueryManager.verifyCompanyIdExists(companyId)
+        companyQueryManager.assertCompanyIdExists(companyId)
         val companyUUID = UUID.fromString(companyId)
         val authContext = DatalandAuthentication.fromContext()
         val userUUID = UUID.fromString(authContext.userId)
